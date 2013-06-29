@@ -336,26 +336,9 @@ $\alpha$, $X_{lag}$, and $Z_{t}$ remain the same as above. $B_{i}$ is an indicat
 
 Data on school district budgets is fairly comprehensive and can be acquired from a number of sources. This data includes specific details about the types of positions, types of programs, and types of revenue decisions school districts made in response to the sharp decrease in state aid and revenue limit authority available to support school district operations. It also includes information about the maximum tax base available to the district, and the maximum levy available to assess for funding school operations. 
 
-\subsection{Partisanship in Board Elections}
-\label{sec:pid}
-
-\textbf{Note: This part of the project will not be part of the dissertation, but is a very likely additional paper/extension of the project later.}
-
-Wisconsin school boards are non-partisan offices. Previous research has shown that board members are typically a moderate bunch when asked to self-identify their political ideology \citep{RefWorks:321,RefWorks:333}. However, relying on self-assessments of officials holding a non-partisan office is not a reliable measure of the political leanings of board members. Unfortunately, finding a valid external measure of board member ideology or partisanship has been previously impossible in non-partisan board elections--making member self-reports the only available data. 
-
-Again, the situation in Wisconsin provides unique leverage on this question. Of school boards with the option to extend contracts to teachers' unions, all school board members had to publicly vote in support of or against the extension of the contract on the record at a public board meeting. These votes, like all official board votes, are recorded in the minutes of the board meeting and available for the public to review. Board members were under no illusion that this vote was anything other than a statement of public support or opposition for Governor Walker, a Republican. While this measure is not necessarily indicative of a board member's political leanings on other issues, it is a public signal of partisanship to the electorate. The ability even to simply describe the partisan makeup of the majority of school districts for a single year is of great interest to compare to findings from national surveys and surveys in other states.
-
-However, the study can go a step further with some basic assumptions. To understand the partisan makeup of Wisconsin school districts before and after the Spring elections, the votes of all board members for and against extension of employee union contracts will be collected and then for those facing re-election the outcome of their Spring 2012 election will be coded.\footnote{Or a sample will be drawn depending on the difficulty of collecting the data and the number of board members in the population of interest.} Then an empirical model of partisanship looks something like this:\\
-
-$(5) \hspace{2 in} PID_{i} = \alpha + \beta X_{lag} + \gamma Z_{t} + \epsilon$ \\
-
-$\alpha$, $X_{lag}$ remain the same as above. $Z_{t}$ is again the vote share for Governor Walker. Here $PID_{i}$ represents the change in partisanship of the board from before and after the Spring 2012 election in terms of direction and magnitude of seat swings on the board. For example, if the board had five members, two supportive of the Governor's policies and three in opposition, the board would be -1 in terms of the strength of support for the Governor. Thus, $\gamma$ is expected to be positive, with more community support for Governor Walker translating into an increase in the number of seats filled by board members also supportive of the Governor's policies.  
-
-This analysis will rely on the assumption that a board member who is defeated is defeated by a candidate with an opposite position on extending union contracts. If this assumption appears too dubious the sample could be reduced to a size where the position of both candidates could be verified in all elections by reviewing local newspaper coverage of the elections. And, it should be noted, this analysis will only be possible if two conditions are met: that the results of these votes can be reliably located and that boards exhibited significant enough public contestation over such votes--neither of which are known at this time.
-
 \subsection{Summary of Questions, Hypotheses, and Models}
 
-Table \ref{hypotab} summarizes the variables of interest and their expected influence on the dependent variable from the models above in sections \nameref{sec:ce}, \nameref{sec:vp}, \nameref{sec:bp},and \nameref{sec:pid}. 
+Table \ref{hypotab} summarizes the variables of interest and their expected influence on the dependent variable from the models above in sections \nameref{sec:ce}, \nameref{sec:vp}, and \nameref{sec:bp}. 
 
 \begin{table}[h!]
 \begin{center}
@@ -365,7 +348,7 @@ Table \ref{hypotab} summarizes the variables of interest and their expected infl
 \begin{tabular}{| p{.25\textwidth} | p{.4\textwidth} | p{.25\textwidth} |}
 \hline
 \textbf{Dependent Variable}  & \textbf{Independent Variable} & \textbf{Expectation} \\ \hline
-\multirow{2}{*}{Candidate Participation} & Unity on State Policy ($\uparrow$) & Negative \\ & Previous Challenger Emergence $(\uparrow)$ & Null \\ \hline
+\multirow{2}{*}Candidate \\ Participation & Unity on State Policy ($\uparrow$) & Negative \\ & Previous Challenger Emergence $(\uparrow)$ & Null \\ \hline
 \multirow{4}{*}{Voter Participation} & Prior Turnout $(\uparrow)$ & Positive \\ & Number of Challengers $(\uparrow)$ & Positive \\ & Interest Group Strength $(\uparrow)$ & Positive \\
                 & Policy Divergence $(\uparrow)$ & Positive \\ \hline
 \multirow{2}{*}{Union Policy} & Union Strength $(\uparrow)$ & Policy Resistance \\ & Governor Walker Support $(\uparrow)$ & Policy Support \\ \hline

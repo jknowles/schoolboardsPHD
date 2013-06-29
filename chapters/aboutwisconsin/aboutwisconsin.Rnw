@@ -1,0 +1,41 @@
+\chapter{Why Wisconsin?}
+\chapterstyle{deposit}
+
+\begin{document}
+
+\section{Consider This}
+
+Wisconsin is located in the region of the United States known as the Midwest and ranks 
+23rd in terms of total area, 20th in terms of population size with 5.7 million residents, 
+and has over 420 local school districts. Recently, Wisconsin has become a crucial swing state 
+exhibiting a close split between Republican and Democratic voters in presidential politics. 
+
+
+<<setup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
+setwd("../../../Data/Raw Files/Election Data")
+source("dataclean.R")
+source("mappingfunctions.R")
+source("k8uhs.R")
+opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
+               warning=FALSE, echo=FALSE, dev='pdf')
+# Map
+library(plyr)
+library(eeptools)
+gpclibPermit()
+# setwd("../../../MasterText")
+@
+
+
+
+<<animation, fig.show='animate'>>=
+makemap(distvotes02,"Gubernatorial Dem Vote Share 2002","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
+makemap(distvotes04,"Presidential  Dem Vote Share 2004","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
+makemap(distvotes06,"Gubernatorial Dem Vote Share 2006","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
+makemap(distvotes08,"Presidential Dem Vote Share 2008","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
+makemap(distvotes10,"Gubernatorial Dem Vote Share 2010","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
+makemap(distvotes12,"Presidential Dem Vote Share 2012","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
+makemap(distvotes12,"Gubernatorial Dem Vote Share 2012","CODE","NAME","plotdf$GOVDEM/plotdf$RECTOT")
+@
+
+There we go. 
+\end{document}

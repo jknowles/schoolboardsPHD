@@ -1,4 +1,9 @@
 # Do Sweave
+library(knitr)
+
+setwd("chapters/aboutwisconsin")
+knit("aboutwisconsin.Rnw")
+setwd("../..")
 
 
 # Build PDF

@@ -24,5 +24,6 @@ for(i in 1:length(struc2)){
   }
 
 }
+head(dat)
 
-
+length(unique(dat$distid))
