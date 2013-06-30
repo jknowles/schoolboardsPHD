@@ -12,6 +12,7 @@ system("pdflatex dissertation")
 system("bibtex dissertation")
 system("pdflatex dissertation")
 system("pdflatex dissertation")
+system("pdflatex dissertation")
 
 cleantex <- function(mydoc,keepPDF){
   a <- list.files(pattern=mydoc)

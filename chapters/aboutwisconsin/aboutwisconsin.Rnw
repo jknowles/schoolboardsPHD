@@ -1,7 +1,6 @@
 \chapter{Why Wisconsin?}
 \chapterstyle{deposit}
 
-\begin{document}
 
 \section{Consider This}
 
@@ -11,23 +10,27 @@ and has over 420 local school districts. Recently, Wisconsin has become a crucia
 exhibiting a close split between Republican and Democratic voters in presidential politics. 
 
 
-<<setup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
+<<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
 setwd("../../../Data/Raw Files/Election Data")
+#setwd("../Data/Raw Files/Election Data")
 source("dataclean.R")
 source("mappingfunctions.R")
 source("k8uhs.R")
-opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
+opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, fig.path="../../phd_figs/chap2-",
                warning=FALSE, echo=FALSE, dev='pdf')
 # Map
 library(plyr)
 library(eeptools)
 gpclibPermit()
-# setwd("../../../MasterText")
+#setwd("../../../MasterText")
+#elec <- read.csv("data/electionpartisanshippanel.csv")
 @
 
+<<create-preamble2,echo=FALSE,results='asis'>>=
+#cat(knitr:::make_header_latex())
+@
 
-
-<<animation, fig.show='animate'>>=
+<<animation2, fig.show='animation', echo=FALSE>>=
 makemap(distvotes02,"Gubernatorial Dem Vote Share 2002","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
 makemap(distvotes04,"Presidential  Dem Vote Share 2004","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
 makemap(distvotes06,"Gubernatorial Dem Vote Share 2006","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
@@ -37,5 +40,4 @@ makemap(distvotes12,"Presidential Dem Vote Share 2012","CODE","NAME","plotdf$PRE
 makemap(distvotes12,"Gubernatorial Dem Vote Share 2012","CODE","NAME","plotdf$GOVDEM/plotdf$RECTOT")
 @
 
-There we go. 
-\end{document}
+There we go.
