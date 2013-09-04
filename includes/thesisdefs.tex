@@ -47,7 +47,7 @@
 \gdef\@degree{Doctor of Philosophy}    %Default is PhD
 \gdef\@doctype{A dissertation}         %Default is dissertation
 
-\gdef\@department{(Electrical Engineering)} % Default is Electical Engineering
+\gdef\@department{(Political Science)} % Default is Electical Engineering
 
 \renewcommand{\maketitle}{%
   \begin{titlepage}
@@ -409,10 +409,10 @@
 %   \altbibtitle has been added to change the chapter title.
 %   This command does nothing more than change REFERENCES to BIBLIOGRAPHY
 %============================================================================
-\def\@bibchaptitle{Bibliography}
-\def\altbibtitle{\def\@bibchaptitle{Bibliography}}
+\def\@bibchaptitle{References}
+\def\altbibtitle{\def\@bibchaptitle{References}}
 \def\thebibliography#1{
-  %\separatorpage{\@bibchaptitle}
+  \separatorpage{\@bibchaptitle}
   \global\@bibpresenttrue
   \chapter*{\@bibchaptitle\markboth{\@bibchaptitle}{\@bibchaptitle}}
   \addcontentsline{toc}{chapter}{\@bibchaptitle}

@@ -27,5 +27,5 @@ cleantex <- function(mydoc,keepPDF){
   file.remove(rm)
 }
 
-cleantex("dissertation",keepPDF=TRUE)
+cleantex("dissertation", keepPDF=TRUE)
 

@@ -7,7 +7,8 @@
 Wisconsin is located in the region of the United States known as the Midwest and ranks 
 23rd in terms of total area, 20th in terms of population size with 5.7 million residents, 
 and has over 420 local school districts. Recently, Wisconsin has become a crucial swing state 
-exhibiting a close split between Republican and Democratic voters in presidential politics. 
+exhibiting a close split between Republican and Democratic voters in presidential 
+politics.\citet{RefWorks:311}
 
 
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
@@ -37,7 +38,7 @@ makemap(distvotes06,"Gubernatorial Dem Vote Share 2006","CODE","NAME","plotdf$GO
 makemap(distvotes08,"Presidential Dem Vote Share 2008","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
 makemap(distvotes10,"Gubernatorial Dem Vote Share 2010","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
 makemap(distvotes12,"Presidential Dem Vote Share 2012","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
-makemap(distvotes12,"Gubernatorial Dem Vote Share 2012","CODE","NAME","plotdf$GOVDEM/plotdf$RECTOT")
+makemap(distvotes12r,"Gubernatorial Dem Vote Share 2012","CODE","NAME","plotdf$GOVDEM/plotdf$RECTOT")
 @
 
 There we go.
