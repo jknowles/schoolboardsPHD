@@ -1,0 +1,158 @@
+\chapter{Why Vote for School Board?}
+\chapterstyle{deposit}
+
+<<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
+#setwd("../../../Data/Raw Files/Election Data")
+#setwd("../Data/Raw Files/Election Data")
+# source("dataclean.R")
+# source("mappingfunctions.R")
+# source("k8uhs.R")
+opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
+               fig.path="../../phd_figs/chap4-",
+               warning=FALSE, echo=FALSE, dev='pdf')
+@
+
+
+\section{Introduction}
+Since \citet{Downs57} political scientists have been asking the question: why vote? 
+Voters in local school board elections may have been asking this question even 
+earlier. Despite the fact that in general school boards are in charge of levying 
+a substantial share of many citizens' tax bill through property taxes and 
+collectively manage expenditures annually equivalent to the budget of the US 
+Department of Defense, when school board elections are held off-cycle turnout 
+and voter interest in them appears to be remarkably low \citep{RefWorks:333; RefWorks:321}. 
+This despite the fact that the community stake in quality education is large, not 
+just for parents of the students, but for the social, economic, and political 
+impacts that high or low quality schools can have on a community. %citation needed
+
+We know that voter turnout even in national on-cycle elections in the US remains 
+lower than many other democracies \citep{BlaisTurnout2006}. We also have an extensive 
+literature seeking to explain patterns in turnout between years and within years 
+between social groups \citep{ParticAnnReview2004, econvoting2007, Galston2001, EconandOutcomes2000}.
+The specific puzzle of voter turnout in school board elections has even spawned 
+its own set of theories with empirical tests \citep{RefWorks:311,RefWorks:243,RefWorks:340}.
+
+Despite this rich ground, much work remains to be done to adequately test the 
+mechanisms at play in predicting turnout in off-cycle, local, non-partisan elections 
+like school board elections. Furthermore, theories of participation in on-cycle and 
+higher profile elections benefit from examining the limits of their generalizability and 
+exploring the mechanisms that contribute to this. In this paper I seek to explore 
+voter turnout in school board elections through the lenses of the major theories of 
+voter turnout. I begin by reviewing these theories. Then, I move into a discussion 
+of school boards and the contribution a study of school boards can bring to 
+the understanding of these theories. Then I discuss the unique panel dataset of 
+school board results that I have collected and the methods with which I will test 
+these competing theories on the data. Finally, I conclude with an assessment of 
+the performance of each of the theories and the foundations for future work. 
+
+
+\section{Why Vote?}
+
+Setting aside important though largely settled issues of access to the polls, 
+enfranchisement laws, administrative and cognitive barriers to casting a ballot, and 
+freedom from intimidation -- all thankfully of minimal concern in American school 
+board elections -- there remains a wealth of intricate and interrelated factors 
+which shape a voter's decision to cast a ballot. I broadly group this literature 
+into three major strands and include the theories that have sprung up uniquely 
+around school boards as a fourth category. My aim is not to fully summarize this 
+rich theoretical ground, but to reframe these debates in light of the particular 
+challenge of school board elections. As prologue, I succinctly summarize the 
+unique case against voting in school board elections as follows:
+
+\begin{itemize}
+  \item I don't know when the election is, or I forgot. (salience)
+	\item I don't know who is running. (attention)
+	\item I don't have a choice - no one is challenging the incumbent. (opportunity)
+	\item I don't know care which candidate wins. (lack of partisan cues)
+	\item I'm satisfied with my schools. (lack of impetus)
+	\item I don't care how schools perform or what the property tax is (salience)
+	\item My vote won't matter
+\end{itemize}
+
+These concerns of our average potential voter are important to keep in mind as 
+the major strands of voter participation theory are sketched out in the next 
+sections. Macro and micro-foundations of voter participation. Why do individuals 
+votes? Why do districts exhibit lower or higher turnout?
+
+\begin{itemize}
+	\item Rational Choice
+	\item Socialization and Education
+	\item Issue Voting
+	\item Dissatisfaction and Protest
+\end{itemize}
+
+\subsection{Rational Choice}
+
+\citet{Downs57}'s elegant statement and \citet{VoteCalculus68}'s ellaboration of the paradox 
+posed by citizens voting touched off a decades long project in the discipline to understand first 
+why voters would ever vote in the first place, and next why some choose to exercise 
+their right to vote, and others stay home. \citet{nonvoting74} rejected the notion 
+that voters were rationally assigning probabilities to different outcomes of their 
+voting decision and posited instead that citizens seek to minimize their regret 
+at the outcome of the election and the role their decision to vote played. However, 
+these theories are significantly challenged by the fact that voting is "for many 
+people, most of the time, a low-cost, low-benefit activity" \citep{aldrich1993}. 
+
+Some of the information burden placed on voters is met by the strategic emergence 
+of candidates \citep{aldrich1993}. If \citep{JacobsonBook} is correct, then the 
+emergence of a strong candidate provides a clear signal to voters that the election 
+is going to be close, which should drive up turnout. How this works in a low-salience 
+and low-information election remains to be seen. (CAN BE TESTED BY INCLUDING EMERGENCE 
+OF PRIOR CANDIDATE ON THE BALLOT AS A COVARIATE IN ANALYSIS)
+
+Much of the long-term grounding of this school of thought is grounded in partisan 
+attachment as a key supporter of turnout by reducing costs, mobilizing voters, and 
+making democratic duty more clear to voters \citep{aldrich1993}. 
+
+An important feature of this school of thought is that much of the empirical testing 
+of these theories has been done in situations where voters have a high chance of being 
+incidentally, that is without incurring costs, exposed to information about the election 
+because of the high profile nature of these races \citep{aldrich1993}. The informational 
+cues provided by partisan signals in such races even further reduces this. School board
+races, for the most part, feature neither of these cost reducing features. It seems unlikely 
+that these higher costs are accompanied by higher benefits in such elections. Though 
+voters are assured a higher likelihood of casting the deciding vote, they are much less certain 
+that the election of candidate A over candidate B will make much of a difference in 
+their quality of life in the immediate or medium term. 
+
+School boards may prove to be the electoral unit for which the Downsian hypothesis 
+is the most strained. In many state school boards are sub-county administrative 
+entities without partisan office holders and who often elect multiple members in 
+one election cycle. Furthermore, the low level of information about school board 
+candidates, their positions on issues, their likely vote share in an election, and 
+the voters' own feelings on issues facing the school board make this environment 
+dramatically different than the presidential election. What's more, the likelihood 
+that the vote of any single voter matters in a school district is orders of 
+magnitude larger than for state wide or nation wide office. 
+
+\subsection{Socialization and Education}
+
+\subsubsection{Socioeconomic Conditions}
+
+
+Carlson
+Civic knowledge and participation
+
+\subsection{Issue Voting}
+
+Closeness (Blas p. 119) - can we test closeness as a predictor with school boards 
+where we can argue that voters have little ability to predict the closeness 
+of school board elections? 
+
+
+Teacher unions
+Religious issues
+Taxation
+
+\subsection{Dissatisfaction and Protest}
+
+Throw the bums out. Dahl to Alsbury. 
+
+
+\section{Data and Methods}
+
+
+\section{Results}
+
+
+\section{Conclusion}

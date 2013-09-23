@@ -3,6 +3,11 @@ library(knitr)
 
 setwd("chapters/aboutwisconsin")
 knit("aboutwisconsin.Rnw")
+setwd("chapters/candidacy")
+knit("candidacy.Rnw")
+setwd("chapters/voterturnout")
+knit("voterturnout.Rnw")
+
 setwd("../..")
 
 

@@ -130,22 +130,66 @@ print(paste0(length(dat$"repeat."[is.na(dat$"repeat.")]),
 # Minor candidates
 table(dat$minor)
 
+print(paste0(length(dat$minor[dat$minor != 0 & dat$minor != 1 & 
+                                    !is.na(dat$minor)]), 
+             " observations with invalid repeater codes."))
 
+print(paste0(dat$distid[dat$minor != 0 & dat$minor != 1 & 
+                          !is.na(dat$minor)], 
+             " district id with invalid repeater codes."))
+
+
+print(paste0(length(dat$minor[is.na(dat$minor)]), 
+             " observations with missing repeater codes."))
+
+
+# Notes
+
+dat$notes[is.na(dat$notes)] <- ""
+
+#################
+# Final output
+#################
+
+dimNA <- function(df){
+  dims <- dim(df)[1] * dim(df)[2]
+  propNA <- apply(df, 2, vecNAsearch)
+  countNA <- propNA * dim(df)[1]
+  total <- sum(countNA)
+  totalP <- total / dims
+  return(list("TotalCells" = dims, "MissingbyColumn" = countNA, 
+              "TotalMissing" = total, "TotalProportionMissing" = totalP))
+  
+}
+
+vecNAsearch <- function(x){
+  l <- length(x)
+  lNA <- length(x[is.na(x)])
+  return(lNA / l)
+}
+
+print(paste0("Total records: ", nrow(dat)))
+print(paste0("Records with some missing data: ", nrow(na.omit(dat))))
+print(paste0(round(nrow(na.omit(dat))/ nrow(dat),2) *100, "% records with some missigness"))
+
+
+dimNA(dat)
 
 ################################################################################
 # Build checks between metadata and data
 # Use data to validate metadata 
 ################################################################################
 
-
 # Query metadata
 metadata <- read.csv("../Data/sbelectionresults/WisconsinSBelectionMetaData.csv")
 
-
 "%notin%" <- function(x, y) x[!x %in% y] #--  x without y
 
-unique(dat$distid)[unique(dat$distid) %notin% metadata$distid]
+incomp <- unique(dat$distid) %notin% unique(metadata$distid)
 
+print(paste0("Districts without metadata: ", length(incomp)))
+print(paste0("Districts with metadata: ", nrow(metadata) - length(incomp)))
+print(paste0("Districts without metadata: ", paste0(incomp, collapse=",")))
 
 metadata$general <- rowSums(metadata[, 3:13], na.rm=T)
 table(metadata$general)
@@ -153,12 +197,5 @@ table(metadata$general)
 metadata$primary <- rowSums(metadata[, 14:24], na.rm=T)
 table(metadata$primary)
 
-
-if(length(unique(dat$distid)) < 290){
-  print(paste0("Too few districts with election records: ", length(unique(dat$distid)))) 
-} else {
-  print(paste0("Enough districts with election records: ", length(unique(dat$distid)))) 
-}
-
-
-
+dat$repeater <- dat$"repeat."
+dat$"repeat." <- NULL
