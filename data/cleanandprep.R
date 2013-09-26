@@ -9,9 +9,12 @@ library(data.table)
 
 ## reshape school district by year
 
+
+# How to calculate total votes in elections with multiple winners...
+
 distyear <- as.data.table(dat[dat$electiontype==1,])[, list(candidates = length(unique(candidateid2)),
                                       winners = sum(winner),
-                                      totalvotes = sum(votes),
+                                      totalvotes = sum(votes)/ifelse(sum(winner)<1, 1, sum(winner)),
                                       incdefeat = sum(incumbent[winner!=1]),
                                       minorcand = sum(minor), 
                                       repeatcand = sum(repeater)), 
