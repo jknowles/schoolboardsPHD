@@ -529,9 +529,6 @@ sd03$year <- 2003
 sd04 <- cleanSDdata(sd04)
 sd04$year <- 2004
 
-head(sd05)
-
-
 cleanSDdata2 <- function(df){
   df$eqv <- gsub(",", "", df$eqv)
   if(exists("eqvout", where=df)){
@@ -594,16 +591,14 @@ for(i in 1:length(struc)){
   }
 }
 
-
-table(vptemp$year)
-
+rm(vptempA)
 
 for(i in 1:length(struc)){
   #eval(parse(text=paste0("sd0", 1+i,"<- sd0", 1+i, "[, vars]")))
   eval(parse(text=paste0("rm(sd0",1+i,")")))
 }
 
-rm(vptempA)
+rm(collength, i, struc, vars)
 
 
 sdprop <- ddply(vptemp,.(distid, year),summarize,"dist_vaptot"=sum(vap,na.rm=T))
@@ -614,6 +609,133 @@ rm(sdprop)
 
 vptemp$dist_vap_share <- vptemp$vap / vptemp$dist_vaptot
 
+vptemp <- as.data.table(vptemp)
+
+VAP_dist <- vptemp[, list(VAP = sum(vap, na.rm=T), 
+                          TOTPOP = sum(PopEstimate, na.rm=T),
+                          LastCensusPop = sum(LastCensusPop, na.rm=T), 
+                          LastCensusVAP = sum(LastCensusVAP, na.rm=T)),
+                   by=c("year", "distid")]
 
 
 
+################################################################################
+## Add the regular voter turnout from standard elections
+## 
+################################################################################
+
+setwd("../Data/Raw Files/Election Data")
+source("dataclean.R")
+setwd("../../../MasterText")
+
+names(distvotes02)
+
+distvotes02 <- subset(distvotes02, select=c("distid", "year","TOTPOP18", "GOVTOT", 
+                                            "GOVDEM", "GOVREP", "CONTOT", 
+                                            "CONDEM", "CONREP"))
+
+mynames <- c("distid", "year", "TOTPOP", "TOPTOTVOTES", "TOPDEM", "TOPREP", 
+             "SECTOT", "SECDEM", "SECREP")
+
+names(distvotes04)
+
+distvotes04 <- subset(distvotes04, select=c("distid", "year", "TOTPOP18", "PRESTOT", 
+                                            "PRESDEM", "PRESREP", "CONTOT", "CONDEM", 
+                                            "CONREP"))
+
+names(distvotes06)
+
+distvotes06 <- subset(distvotes06, select=c("distid", "year","TOTPOP18", "GOVTOT", 
+                                            "GOVDEM", "GOVREP", "CONTOT", "CONDEM",
+                                            "CONREP"))
+
+names(distvotes08)
+
+distvotes08 <- subset(distvotes08, select=c("distid", "year", "TOTPOP18", "PRESTOT", 
+                                            "PRESDEM", "PRESREP", "CONTOT", "CONDEM", 
+                                            "CONREP"))
+
+names(distvotes10)
+
+distvotes10$TOTPOP18 <- NA
+
+distvotes10 <- subset(distvotes10, select=c("distid", "year","TOTPOP18", "GOVTOT", 
+                                            "GOVDEM", "GOVREP", "USCONTOT", "USCONDEM",
+                                            "USCONREP"))
+
+
+distvotes12$TOTPOP18 <- NA
+
+
+test <- merge(distvotes12, distvotes12r)
+
+distvotes12 <- subset(test, select=c("distid", "year", "TOTPOP18", "PRESTOT", "PRESDEM", "PRESREP",  "RECTOT", 
+                                     "GOVDEM", "GOVREP"))
+
+
+
+names(distvotes02) <- mynames
+names(distvotes04) <- mynames
+names(distvotes06) <- mynames
+names(distvotes08) <- mynames
+names(distvotes10) <- mynames
+names(distvotes12) <- mynames
+
+
+district_vote_panel <- rbind(distvotes02, distvotes04)
+district_vote_panel <- rbind(district_vote_panel, distvotes06)
+district_vote_panel <- rbind(district_vote_panel, distvotes08)
+district_vote_panel <- rbind(district_vote_panel, distvotes10)
+district_vote_panel <- rbind(district_vote_panel, distvotes12)
+
+###################################################################################
+# Interpolate district population
+##################################################################################
+
+library(data.table)
+dvp <- as.data.table(district_vote_panel)
+
+
+dvp2 <- dvp[, list(TOTPOP_CHG = (TOTPOP[year==2008] - TOTPOP[year==2002]) / 4),
+            by=c("distid")]
+
+
+dvp <- merge(dvp, dvp2, by=c("distid"))
+
+for(i in unique(dvp$distid)){
+  for(j in c(2010,2012)){
+    dvp$TOTPOP[dvp$distid==i & dvp$year==j] <- 
+      dvp$TOTPOP[dvp$distid==i & dvp$year==j - 2] + dvp$TOTPOP_CHG[dvp$distid==i & dvp$year == j-2]
+    
+  }
+}
+
+###############################################################################################
+
+dvp <- as.data.frame(dvp)
+rm(district_vote_panel)
+
+dvp$TOPturnout <- dvp$TOPTOTVOTES / dvp$TOTPOP
+dvp$TOPdemShare <- dvp$TOPDEM / dvp$TOPTOTVOTES
+dvp$TOPrepShare <- dvp$TOPREP / dvp$TOPTOTVOTES
+dvp$SECdemShare <- dvp$SECDEM / dvp$SECTOT
+dvp$SECrepShare <- dvp$SECREP / dvp$SECTOT
+
+
+dvp$TOTPOP_CHG <- NULL
+dvp$SECdemShare <- ifelse(is.finite(dvp$SECdemShare), dvp$SECdemShare, 0)
+dvp$SECrepShare <- ifelse(is.finite(dvp$SECrepShare), dvp$SECrepShare, 0)
+
+# Clean up divide by 0 errors
+
+
+names(dvp) <- tolower(names(dvp))
+
+rm(distvotes12r, distvotes12, distvotes10, distvotes09, distvotes08, 
+   distvotes06, distvotes05, distvotes04, distvotes02, bigtest11)
+rm(dvp2, prespref11, sd11, test, i, j, mynames, wisc)
+
+save(vptemp, vaplong, cw, dvp, file="data/cache/VotingPopulation.rda", 
+     compress="gzip")
+
+rm(vptemp, vaplong, cw, dvp)
