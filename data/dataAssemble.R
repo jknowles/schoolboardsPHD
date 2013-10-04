@@ -200,3 +200,420 @@ table(metadata$primary)
 
 dat$repeater <- dat$"repeat."
 dat$"repeat." <- NULL
+
+################################################################################
+## Read in CSV Files of voter turnout
+## 
+################################################################################
+
+
+struc <- list.files("../Data/Raw Files/Election Data/VoterCounts", 
+                    full.names=TRUE)
+
+struc <- struc[grep(".csv", struc)]
+
+for(i in 1:length(struc)){
+  eval(parse(text=paste0("dat",i,"<- read.csv(file=struc[",i,"])")))
+}
+
+rm(i,struc)
+
+names(dat1) <- c("doacode", "muni", "split", "county", "Census2000", 
+                 "PopEstimate2009", "num_change", "per_change", 
+                 "vap2000", "vap2009")
+vap2009 <- dat1
+rm(dat1)
+
+dat2 <- dat2[, c(1:8,12,13)]
+names(dat2) <- c("doacode", "muni", "split", "county", "Census2000", 
+                 "PopEstimate2009", "num_change", "per_change", 
+                 "vap2000", "vap2010")
+vap2010 <- dat2
+rm(dat2)
+
+names(dat3) <- c("doacode", "muni", "split", "county", "PopEstimate2011", 
+                 "Census2010", "num_change", "per_change", 
+                 "vap2011", "vap2010_census")
+vap2011 <- dat3
+rm(dat3)
+
+
+names(dat4) <- c("doacode", "muni", "split", "county", "PopEstimate2012", 
+                 "Census2010", "num_change", "per_change", 
+                 "vap2012", "vap2010_census")
+vap2012 <- dat4
+rm(dat4)
+
+names(dat5) <- c("doacode", names(dat5)[2:length(names(dat5))])
+
+vap2000_08 <- dat5
+rm(dat5)
+
+gc()
+
+# Reshape vap2000_08 long
+
+names(vap2000_08)[7:17] <- c("vap.1993", "vap.1999", "vap.2000", "vap.2001", 
+                             "vap.2002", "vap.2003", "vap.2004", "vap.2005", 
+                             "vap.2006", "vap.2007", "vap.2008")
+
+vNames <- names(vap2000_08)[7:17]
+
+vap2000_08 <- vap2000_08[!duplicated(vap2000_08$doacode),]
+
+vaplong <- reshape(vap2000_08, idvar = c("doacode", "mcd_type", "municipality", "county_name"), 
+                   varying=vNames, direction="long", sep=".")
+
+
+row.names(vaplong) <- 1:nrow(vaplong)
+vaplong$split <- ""
+vaplong$LastCensusPop <- NA
+vaplong$LastCensusVAP <- NA
+vaplong$LastCensusYear <- NA
+vaplong$year <- vaplong$time
+vaplong$time <- NULL
+vaplong$PopEstimate <- NA
+
+vaplong <- vaplong[, c('doacode', 'mcd_type', 'municipality', 'split','county_name', 
+                       'change_type', 'change_date', 'year', 'vap','LastCensusPop',
+                       'LastCensusVAP', 'LastCensusYear', "PopEstimate")]
+
+# Split the 09-12 muni names into muni name and muni type
+# reformat the data so it can be rbinded onto the vaplong dataframe
+
+vap2009$mcd_type <- substr(vap2009$muni, 1,1)
+vap2009$mcd_type <- toupper(vap2009$mcd_type)
+vap2009$year <- 2009
+vap2009$PopEstimate <- vap2009$PopEstimate2009
+vap2009$PopEstimate2009 <- NULL
+vap2009$LastCensusPop <- vap2009$Census2000
+vap2009$Census2000 <- NULL
+vap2009$LastCensusVAP <- vap2009$vap2000
+vap2009$LastCensusYear <- 2000
+vap2009$vap2000 <- NULL
+vap2009$vap <- vap2009$vap2009
+vap2009$vap2009 <- NULL
+vap2009$per_change <- NULL
+vap2009$num_change <- NULL
+vap2009$change_type <- ""
+vap2009$change_date <- ""
+
+
+vap2009 <- vap2009[, c("doacode", "mcd_type", "muni", 'split',"county", "change_type", 
+                       "change_date", "year", "vap", "LastCensusPop", 
+                       "LastCensusVAP", "LastCensusYear", "PopEstimate")]
+
+names(vap2009) <- names(vaplong)
+
+vap2009$municipality <- as.character(vap2009$municipality)
+vap2009$municipality <- substr(vap2009$municipality, 2, nchar(vap2009$municipality))
+
+vaplong <- rbind(vaplong, vap2009)
+
+rm(vap2009)
+
+###########################
+# 2010
+
+vap2010$mcd_type <- substr(vap2010$muni, 1,1)
+vap2010$mcd_type <- toupper(vap2010$mcd_type)
+vap2010$year <- 2010
+vap2010$PopEstimate <- vap2010$PopEstimate2009
+vap2010$PopEstimate2009 <- NULL
+vap2010$LastCensusPop <- vap2010$Census2000
+vap2010$Census2000 <- NULL
+vap2010$LastCensusVAP <- vap2010$vap2000
+vap2010$LastCensusYear <- 2000
+vap2010$vap2000 <- NULL
+vap2010$vap <- vap2010$vap2010
+vap2010$vap2010 <- NULL
+vap2010$per_change <- NULL
+vap2010$num_change <- NULL
+vap2010$change_type <- ""
+vap2010$change_date <- ""
+
+
+vap2010 <- vap2010[, c("doacode", "mcd_type", "muni", 'split',"county", "change_type", 
+                       "change_date", "year", "vap", "LastCensusPop", 
+                       "LastCensusVAP", "LastCensusYear", "PopEstimate")]
+
+names(vap2010) <- names(vaplong)
+vap2010$municipality <- as.character(vap2010$municipality)
+vap2010$municipality <- substr(vap2010$municipality, 2, nchar(vap2010$municipality))
+
+vaplong <- rbind(vaplong, vap2010)
+
+rm(vap2010)
+
+########################
+# 2011
+#
+
+vap2011$mcd_type <- substr(vap2011$muni, 1,1)
+vap2011$mcd_type <- toupper(vap2011$mcd_type)
+vap2011$year <- 2011
+vap2011$PopEstimate <- vap2011$PopEstimate2011
+vap2011$PopEstimate2011 <- NULL
+vap2011$LastCensusPop <- vap2011$Census2010
+vap2011$Census2010 <- NULL
+vap2011$LastCensusVAP <- vap2011$vap2010_census
+vap2011$LastCensusYear <- 2010
+vap2011$vap2010_census <- NULL
+vap2011$vap <- vap2011$vap2011
+vap2011$vap2011 <- NULL
+vap2011$per_change <- NULL
+vap2011$num_change <- NULL
+vap2011$change_type <- ""
+vap2011$change_date <- ""
+
+
+vap2011 <- vap2011[, c("doacode", "mcd_type", "muni", 'split',"county", "change_type", 
+                       "change_date", "year", "vap", "LastCensusPop", 
+                       "LastCensusVAP", "LastCensusYear", "PopEstimate")]
+
+names(vap2011) <- names(vaplong)
+vap2011$municipality <- as.character(vap2011$municipality)
+vap2011$municipality <- substr(vap2011$municipality, 2, nchar(vap2011$municipality))
+
+vaplong <- rbind(vaplong, vap2011)
+
+rm(vap2011)
+
+##########################
+# 2012
+#
+
+vap2012$mcd_type <- substr(vap2012$muni, 1,1)
+vap2012$mcd_type <- toupper(vap2012$mcd_type)
+vap2012$year <- 2012
+vap2012$PopEstimate <- vap2012$PopEstimate2012
+vap2012$PopEstimate2012 <- NULL
+vap2012$LastCensusPop <- vap2012$Census2010
+vap2012$Census2010 <- NULL
+vap2012$LastCensusVAP <- vap2012$vap2010_census
+vap2012$LastCensusYear <- 2010
+vap2012$vap2010_census <- NULL
+vap2012$vap <- vap2012$vap2012
+vap2012$vap2012 <- NULL
+vap2012$per_change <- NULL
+vap2012$num_change <- NULL
+vap2012$change_type <- ""
+vap2012$change_date <- ""
+
+
+vap2012 <- vap2012[, c("doacode", "mcd_type", "muni", 'split',"county", "change_type", 
+                       "change_date", "year", "vap", "LastCensusPop", 
+                       "LastCensusVAP", "LastCensusYear", "PopEstimate")]
+
+names(vap2012) <- names(vaplong)
+vap2012$municipality <- as.character(vap2012$municipality)
+vap2012$municipality <- substr(vap2012$municipality, 2, nchar(vap2012$municipality))
+
+
+vaplong <- rbind(vaplong, vap2012)
+
+rm(vap2012)
+
+rm(vap2000_08, z, vNames, incomp)
+################################################################################
+############ CLEAN UP VAP LONG #################################################
+################################################################################
+apply(vaplong, 2, class)
+
+
+vaplong <- vaplong[!is.na(vaplong$doacode),]
+
+vaplong$municipality <- gsub("\\*", "", vaplong$municipality)
+library(stringr)
+vaplong$municipality <- str_trim(vaplong$municipality, side="both")
+
+vaplong$county_name <- as.character(vaplong$county_name)
+vaplong$county_name[vaplong$county_name=="ST. CROIX"] <- "SAINT CROIX"
+
+#vaplong$municipality <- gsub(" +\\*", "", vaplong$municipality)
+#vaplong$municipality <- gsub(" *", "", vaplong$municipality, fixed=TRUE)
+
+char2num <- function(x){
+  x <- gsub(",", "", x)
+  x <- as.numeric(x)
+  return(x)
+}
+
+vaplong$year <- as.numeric(vaplong$year)
+vaplong$vap <- char2num(vaplong$vap)
+
+vaplong$LastCensusPop <- char2num(vaplong$LastCensusPop)
+vaplong$LastCensusVAP <- char2num(vaplong$LastCensusVAP)
+vaplong$LastCensusYear <- char2num(vaplong$LastCensusYear)
+vaplong$PopEstimate <- char2num(vaplong$PopEstimate)
+
+vaplong$LastCensusYear[vaplong$year < 2009] <- 2000
+vaplong$LastCensusYear[vaplong$year < 2000] <- 1990
+
+
+# Backfill Census population data
+
+library(data.table)
+
+#vaplongDT <- as.data.table(vaplong)
+
+#vaplong <- as.data.frame(vaplongDT)
+
+vaplongLag <- subset(vaplong, year==2009, select=c("doacode", "year","LastCensusPop", "LastCensusVAP"))
+
+yrs <- c(2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008)
+
+vaplongTEST <- vaplong
+
+for(i in yrs){
+  vaplongLag$year <- i
+  vaplongTEST <- merge(vaplongTEST, vaplongLag, by=c("doacode","year"), all.x=TRUE)
+  vaplongTEST$LastCensusPop[vaplongTEST$year == i] <- vaplongTEST$LastCensusPop.y[vaplongTEST$year==i] 
+  vaplongTEST$LastCensusPop[vaplongTEST$year != i] <- vaplongTEST$LastCensusPop.x[vaplongTEST$year!=i] 
+  vaplongTEST$LastCensusVAP[vaplongTEST$year == i] <- vaplongTEST$LastCensusVAP.y[vaplongTEST$year==i] 
+  vaplongTEST$LastCensusVAP[vaplongTEST$year != i] <- vaplongTEST$LastCensusVAP.x[vaplongTEST$year!= i] 
+  vaplongTEST$LastCensusVAP.x <- NULL; vaplongTEST$LastCensusVAP.y <- NULL
+  vaplongTEST$LastCensusPop.x <- NULL; vaplongTEST$LastCensusPop.y <- NULL
+}
+
+# Check that merge worked
+identical(vaplongTEST$LastCensusVAP[vaplongTEST$year == 2010], vaplong$LastCensusVAP[vaplong$year == 2010])
+identical(vaplongTEST$LastCensusVAP[vaplongTEST$year == 2011], vaplong$LastCensusVAP[vaplong$year == 2011])
+identical(vaplongTEST$LastCensusVAP[vaplongTEST$year == 2012], vaplong$LastCensusVAP[vaplong$year == 2012])
+identical(vaplongTEST$LastCensusVAP[vaplongTEST$year == 2009], vaplong$LastCensusVAP[vaplong$year == 2009])
+
+vaplong <- vaplongTEST
+
+rm(vaplongLag, vaplongTEST, yrs, i)
+
+################################################################################
+# Calculate district VAP using munipieces
+################################################################################
+
+
+cw <- read.csv("../Data/Raw Files/Election Data/mcdcrosswalk.csv")
+
+struc <- list.files("../Data/Raw Files/Election Data/sdmunipieces", 
+                    full.names=TRUE)
+
+
+for(i in 1:length(struc)){
+  eval(parse(text=paste0("sd0",1+i,"<- read.csv(file=struc[",i,"])")))
+  eval(parse(text=paste0("collength <- ifelse(ncol(sd0",i+1,")>11, 11, ncol(sd0", i+1,"))")))
+  eval(parse(text=paste0("sd0",1+i,"<- sd0", 1+i,"[,1:collength]")))
+}
+
+library(plyr)
+
+
+cleanSDdata <- function(df){
+  df$eqv <- gsub(",", "", df$eqv)
+  df$levy <- gsub(",","", df$levy)
+  df <- df[, 1:6]
+  df <- na.omit(df)
+  df[,1] <- as.character(df[,1])
+  df[,1] <-  substr(df[,1],1,5)
+  df[,1] <- as.numeric(df[,1])
+  names(df)[1] <- "municode"
+  df$eqv<-as.numeric(df$eqv)
+  df$levy<-as.numeric(df$levy)
+  df$rate <- NA
+  df$eqvout <- NA
+  return(df)
+}
+
+sd02 <- cleanSDdata(sd02)
+sd02$year <- 2002
+sd03 <- cleanSDdata(sd03)
+sd03$year <- 2003
+sd04 <- cleanSDdata(sd04)
+sd04$year <- 2004
+
+head(sd05)
+
+
+cleanSDdata2 <- function(df){
+  df$eqv <- gsub(",", "", df$eqv)
+  if(exists("eqvout", where=df)){
+    df$eqvout <- gsub(",", "", df$eqvout)
+    df$eqvout <- as.numeric(df$eqvout)
+  }
+  if(exists("rate", where=df)){
+    df$rate <- as.numeric(df$rate)
+  }
+  if(exists("taxrate", where=df)){
+    df$rate <- as.numeric(df$taxrate)
+    df$taxrate <- NULL
+  }
+  df$rate <- NA
+  df$eqvout <- NA
+  df$levy <- gsub(",","", df$levy)
+  df$distname <- NULL
+  df$muniname <- NULL
+  df$X <- NULL
+  df$county <- NULL
+  df[,1] <- as.numeric(df[,1])
+  names(df)[1] <- "municode"
+  df$eqv<-as.numeric(df$eqv)
+  df$levy<-as.numeric(df$levy)
+  return(df)
+}
+
+sd05 <- cleanSDdata2(sd05)
+sd05$year <- 2005
+sd06 <- cleanSDdata2(sd06)
+sd06$year <- 2006
+sd07 <- cleanSDdata2(sd07)
+sd07$year <- 2007
+sd08 <- cleanSDdata2(sd08)
+sd08$year <- 2008
+sd09 <- cleanSDdata2(sd09)
+sd09$year <- 2009
+sd09$distid <- sd09$distcode
+sd09$distcode <- NULL
+sd010 <- cleanSDdata2(sd010)
+sd010$year <- 2010
+sd011 <- cleanSDdata2(sd011)
+sd011$year <- 2011
+sd012 <- cleanSDdata2(sd012)
+sd012$year <- 2012
+sd012$municname <- NULL
+
+
+vars <- names(sd02)
+
+
+for(i in 1:length(struc)){
+  eval(parse(text=paste0("sd0", 1+i,"<- sd0", 1+i, "[, vars]")))
+  eval(parse(text=paste0("vptempA <- merge(vaplong, sd0", 1+i,", by.x=c('doacode', 'year'), 
+                         by.y=c('municode', 'year'))")))
+  if(exists("vptemp")){
+    vptemp <- rbind(vptempA, vptemp)
+  } else if(!exists("vptemp")){
+    vptemp <- vptempA
+  }
+}
+
+
+table(vptemp$year)
+
+
+for(i in 1:length(struc)){
+  #eval(parse(text=paste0("sd0", 1+i,"<- sd0", 1+i, "[, vars]")))
+  eval(parse(text=paste0("rm(sd0",1+i,")")))
+}
+
+rm(vptempA)
+
+
+sdprop <- ddply(vptemp,.(distid, year),summarize,"dist_vaptot"=sum(vap,na.rm=T))
+
+vptemp <- merge(vptemp,sdprop)
+rm(sdprop)
+
+
+vptemp$dist_vap_share <- vptemp$vap / vptemp$dist_vaptot
+
+
+
+
