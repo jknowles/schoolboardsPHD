@@ -601,20 +601,22 @@ for(i in 1:length(struc)){
 rm(collength, i, struc, vars)
 
 
-sdprop <- ddply(vptemp,.(distid, year),summarize,"dist_vaptot"=sum(vap,na.rm=T))
 
+# Pro-rate vap by size of EQV in the district
+# This is the only correct way to measure the share of each MCD that is in the 
+# school district
+# Data comes from DOR records
+sdprop <- ddply(vptemp,.(doacode, year),summarize,"eqvtot"=sum(eqv,na.rm=T))
 vptemp <- merge(vptemp,sdprop)
-rm(sdprop)
+vptemp$share <- vptemp$eqv / vptemp$eqvtot
 
-
-vptemp$dist_vap_share <- vptemp$vap / vptemp$dist_vaptot
 
 vptemp <- as.data.table(vptemp)
 
-VAP_dist <- vptemp[, list(VAP = sum(vap, na.rm=T), 
-                          TOTPOP = sum(PopEstimate, na.rm=T),
-                          LastCensusPop = sum(LastCensusPop, na.rm=T), 
-                          LastCensusVAP = sum(LastCensusVAP, na.rm=T)),
+VAP_dist <- vptemp[, list(VAP = sum(vap*share, na.rm=T), 
+                          TOTPOP = sum(PopEstimate*share, na.rm=T),
+                          LastCensusPop = sum(LastCensusPop*share, na.rm=T), 
+                          LastCensusVAP = sum(LastCensusVAP*share, na.rm=T)),
                    by=c("year", "distid")]
 
 
