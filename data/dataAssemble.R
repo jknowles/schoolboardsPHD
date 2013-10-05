@@ -182,12 +182,66 @@ dimNA(dat)
 # Within districts
 ################################################################################
 
-## By district
+## By district year
 ## Minimax
 
-#check_dat <- 
+# As.double allows data.table to proceed in cases of Inf
+check_dat <- as.data.table(dat)[, list(totalvotes = as.double(sum(votes, na.rm=T)), 
+                                       minvotes = as.double(min(votes, na.rm=T)),
+                                       maxvotes = as.double(max(votes, na.rm=T)),
+                                       candidates = .N, 
+                                       winners = as.double(sum(winner, na.rm=T)),
+                                       incumbents = as.double(sum(incumbent, na.rm=T))),
+                                      by = c("distid", "year", "electiontype")]
 
+# Only focus on general elections for now
+check_dat <- as.data.frame(check_dat[check_dat$electiontype==1,])
+check_dat$electiontype <- NULL
+#
+check_dat$totalvotes[!is.finite(check_dat$totalvotes)] <- 0
+check_dat$minvotes[!is.finite(check_dat$minvotes)] <- 0
+check_dat$maxvotes[!is.finite(check_dat$maxvotes)] <- 0
+summary(check_dat$maxvotes/check_dat$totalvotes)
 
+# reshape wide by district to check within district consistency
+
+check_dat_ts <- reshape(check_dat, idvar="distid", drop=c("minvotes", "maxvotes"),
+                        v.names=c("totalvotes"),
+                        timevar="year", direction="wide")
+
+check_dat_ts <- check_dat_ts[!is.na(check_dat_ts$distid),]
+
+check_dat_ts$totalvotes.max <- apply(check_dat_ts[ , 2:15], 1, max, na.rm=T)
+check_dat_ts$totalvotes.min <- apply(check_dat_ts[ , 2:15], 1, min, na.rm=T)
+check_dat_ts$totalvotes.med <- apply(check_dat_ts[ , 2:15], 1, median, na.rm=T)
+
+# check for large within district swings
+
+check_dat_ts$consist1 <- (check_dat_ts$totalvotes.max - check_dat_ts$totalvotes.min) / check_dat_ts$totalvotes.med 
+check_dat_ts$consist1[is.na(check_dat_ts$consist1)] <- 0
+
+check_dat_ts$consist2 <- (check_dat_ts$totalvotes.max) / check_dat_ts$totalvotes.med 
+check_dat_ts$consist2[is.na(check_dat_ts$consist2)] <- 0
+
+check_dat_ts$consist3 <- (check_dat_ts$totalvotes.min) / check_dat_ts$totalvotes.med 
+check_dat_ts$consist3[is.na(check_dat_ts$consist3)] <- 0
+
+check_dat_ts$flag <- 0
+check_dat_ts$flag[check_dat_ts$consist1 > 3 & check_dat_ts$consist2 >3] <- 1
+check_dat_ts$flag[check_dat_ts$consist1 > 3 & check_dat_ts$consist3 < 0.2] <- 1
+check_dat_ts$flag[check_dat_ts$consist2 > 3 & check_dat_ts$consist3 < 0.2] <- 1
+
+# View(check_dat_ts[check_dat_ts$consist1 > 3,])
+# View(check_dat_ts[check_dat_ts$consist2 > 3,])
+# View(check_dat_ts[check_dat_ts$consist3 < 0.2,])
+
+################################################################################
+# Output checks
+
+print(paste0("Total deviations: ", nrow(check_dat_ts[check_dat_ts$flag >0,])))
+
+#
+#
 ################################################################################
 # Build checks between metadata and data
 # Use data to validate metadata 
