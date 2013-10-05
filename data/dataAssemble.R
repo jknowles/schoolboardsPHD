@@ -3,6 +3,7 @@
 # Check data for errors
 ################################################################################
 
+library(data.table)
 struc <- list.dirs("../Data/sbelectionresults")
 file.exists(Sys.glob(file.path(struc[5],"*.csv")))
 
@@ -175,6 +176,17 @@ print(paste0(round(nrow(na.omit(dat))/ nrow(dat),2) *100, "% records with some m
 
 
 dimNA(dat)
+
+################################################################################
+# Check for extreme values
+# Within districts
+################################################################################
+
+## By district
+## Minimax
+
+#check_dat <- 
+
 
 ################################################################################
 # Build checks between metadata and data
