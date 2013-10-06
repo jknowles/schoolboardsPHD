@@ -31,13 +31,13 @@ gpclibPermit()
 #cat(knitr:::make_header_latex())
 @
 
-<<animation2, fig.show='animation', echo=FALSE>>=
+<<animation2, fig.show='asis', echo=FALSE>>=
 makemap(distvotes02,"Gubernatorial Dem Vote Share 2002","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
-makemap(distvotes04,"Presidential  Dem Vote Share 2004","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
-makemap(distvotes06,"Gubernatorial Dem Vote Share 2006","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
-makemap(distvotes08,"Presidential Dem Vote Share 2008","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
-makemap(distvotes10,"Gubernatorial Dem Vote Share 2010","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
-makemap(distvotes12,"Presidential Dem Vote Share 2012","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
+#makemap(distvotes04,"Presidential  Dem Vote Share 2004","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
+#makemap(distvotes06,"Gubernatorial Dem Vote Share 2006","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
+#makemap(distvotes08,"Presidential Dem Vote Share 2008","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
+#makemap(distvotes10,"Gubernatorial Dem Vote Share 2010","CODE","NAME","plotdf$GOVDEM/plotdf$GOVTOT")
+#makemap(distvotes12,"Presidential Dem Vote Share 2012","CODE","NAME","plotdf$PRESDEM/plotdf$PRESTOT")
 makemap(distvotes12r,"Gubernatorial Dem Vote Share 2012","CODE","NAME","plotdf$GOVDEM/plotdf$RECTOT")
 @
 

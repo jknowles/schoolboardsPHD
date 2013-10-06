@@ -2,13 +2,18 @@
 library(knitr)
 
 setwd("chapters/aboutwisconsin")
-knit("aboutwisconsin.Rnw")
-setwd("chapters/candidacy")
-knit("candidacy.Rnw")
-setwd("chapters/voterturnout")
-knit("voterturnout.Rnw")
+knit("aboutwisconsin.Rnw",envir=new.env())
+setwd("../candidacy")
+knit("candidacy.Rnw",envir=new.env())
+setwd("../voterturnout")
+knit("voterturnout.Rnw",envir=new.env())
 
 setwd("../..")
+
+# Set texenv
+BIBINPUTS=paste0(getwd(),"/","bib") #Path to tex file in Windows
+BSTINPUTS=paste0(getwd(),"/","includes")
+Sys.setenv(BIBINPUTS=BIBINPUTS, BSTINPUTS=BSTINPUTS)
 
 
 # Build PDF

@@ -55,8 +55,8 @@
 \include{chapters/intro/intro}
 \include{chapters/theoryreview/theoryreview}
 \include{chapters/aboutwisconsin/aboutwisconsin}
-\include{chapters/candidacy/candidacy}
 \include{chapters/voterturnout/voterturnout}
+\include{chapters/candidacy/candidacy}
 
 % \include{related/related}
 
@@ -76,10 +76,12 @@
 
 
 %% McBride is a very nice style (some version is included in this distribution)
+%% To include multiple bibliographies you must set up the BIBINPUTS and BSTINPUTS 
+%% global variables in your path. This can be done in R and an example is given in the 
+%% build.R file
+
 \bibliographystyle{includes/mcbride}
-\bibliography{bib/bib2}
-\bibliography{bib/candidcacy}
-\bibliography{bib/turnoutBIB}
+\bibliography{bib2,candidacy,turnoutBIB}
 
 
 

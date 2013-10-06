@@ -1,4 +1,29 @@
 %\svnidlong{$LastChangedBy$}{$LastChangedRevision$}{$LastChangedDate$}{$HeadURL: http://freevariable.com/dissertation/trunk/frontmatter.tex $}
 %\vcinfo{}
 
-This dissertation makes use of the template found online developed by: 
+This dissertation makes use of the template found online developed by: William C. Benton. 
+Any errors introduced by the modification of this dissertation template are mine and 
+mine alone. To produce this dissertation the following build process was employed: 
+
+\begin{enumerate}
+\item Chapters were drafted using the R knitr package and analysis and text were 
+combined using the knitr workflow
+\item The Wisconsin Thesis \LaTeX template was used and incorporated the .tex files 
+produced by knitr for the chapters as well as the other .tex files
+\item The bibliography files were included using bibtex of .bib files developed 
+independently for each chapter
+\item The file change history and version control was maintained using git with 
+GitHub serving as the remote backup
+\item The dissertation was built within RStudio using R scripts calling MikTex 
+and bibtex libraries
+\end{enumerate}
+
+All attempts were made to preserve the reproducibility and the cross-platform 
+nature of this dissertation. All of the tools used are open source and freely 
+available on any major computing platform. The analyses for the dissertation 
+were built as nearly as possible to be reproducible from the data cleaning and 
+reformating stage, all the way to the fitting of the statistical models and the 
+producing of formatted tables of results. All of this code and supporting 
+documentation will be maintained open sourced and freely available in the hope 
+that others who are interested will be able to build on and extend the work 
+presented here, or at least learn more about the process. 
