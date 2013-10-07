@@ -3,45 +3,210 @@
 
 \section*{Introduction}
 
-A major part of the effort associated with this dissertation involved the data collection. Collecting new data was vital to the success of this dissertation and this appendix attempts to capture the outline of this data collection effort. 
+A major part of the effort associated with this dissertation involved the data 
+collection. Collecting new data was vital to the success of this dissertation and
+this appendix attempts to capture the outline of this data collection effort. The 
+data collection here leveraged administrative and public records about school 
+districts in the state of Wisconsin over the period from 2002-2012. Information 
+collected included information about the student and adult populations in each 
+school district, the finances of school districts, election returns, and academic 
+performance. 
 
 \section*{Strategy}
 
 Three distinct sets of data were needed for this dissertation:
 \begin{enumerate}
+  \item School district demographics
   \item School district finances
   \item Election results
   \item Student-level longitudinal test scores
 \end{enumerate}
 
-Each of these data presented unique data collection challenges requiring different strategies to collect and assemble the data for this purpose. 
+Each of these data presented unique data collection challenges requiring different 
+strategies to collect and assemble the data for this purpose. 
 
-\subsubsection*{School Finance Data}
+\subsection*{School District Demographics}
 
-The Department of Public Instruction maintains detailed records on the finances 
+School district demographic data are derived from the results of the US Census. 
+Census estimates for many demographic characteristics of school districts at the 
+school district level are available in both 2000 and 2010 US Census and the 
+2007 American Community Survey (ACS) estimates.\footnote{Data available from the 
+School District Demographic System (SDDS): http://nces.ed.gov/surveys/sdds/} The 
+data were linearly interpolated which follows the method employed for the estimates 
+provided by the Wisconsin Department of Administration for most Census data at the 
+sub-county level. 
+
+These variables include primarily indicators of per-capita income, race and ethnic 
+makeup of the school district, and housing status. 
+
+\subsection*{School Finance Data}
+
+Since levying taxes and spending funds on educational services is a primary 
+responsibility of the school board, school finance indicators are an important 
+set of data to include in any study of school board elections. The Department of 
+Public Instruction (DPI) maintains detailed records on the finances 
 of all of the public school districts in the state. This data is reported and 
-made publicly available through the School Finance Data Warehouse (SFDW) at DPI. 
+made publicly available through the School Finance Data Warehouse (SFDW) at DPI.
+\footnote{DPI data:http://dpi.wi.gov/sfs/long\_data.html and some data here 
+http://www2.dpi.state.wi.us/sfsref/ref\_Home.aspx. The SFDW is available here: 
+http://www2.dpi.state.wi.us/sfsdw/Download.asp} 
 
-Data sources:
+These data include information about the tax rates in the school district, the 
+revenue limit of the school district, the amount levied, the maximum allowable 
+levy, and the amount of categorical aid and general school aid from the state 
+received by the district. 
+
+
+\subsection*{Election Results}
+
+Two types of election results were necessary for the analyses above. First, 
+the municipality and ward level results of statewide elections were necessary to
+understand the political climate within each school district. Obviously, school 
+districts are not a standard reporting level for election results in the state of 
+Wisconsin. In order to generate school-district level returns of vote totals and 
+vote shares for candidates for statewide office, the municipality and ward-level 
+returns had to be constructed. 
+
+In order to this the Minor Civil Division (MCD) and, where possible, ward-level 
+results from statewide races were gathered from the Government Accountability Board 
+(GAB) in Wisconsin.\footnote{Available online: http://gab.wi.gov/elections-voting/results. 
+Statistics for Wisconsin Minor Civil Divisons are maintained by the Department of Administration 
+Demographic Services Center: http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9} 
+From these files, the data were cleaned and standardized and combined into a panel 
+over time comprising all statewide elections from 2002-2012. To convert the results 
+from wards and MCD into school districts, it was necessary to derive some estimate of 
+how each ward and MCD was mapped into a school district. Unfortunately, such data 
+was unavailable until 2006 when Wisconsin established a Statewide Voter Registration System 
+(SVRS) and the data from the SVRS is quite expensive to obtain year to year. 
+
+Instead, as a close approximation an additional data source was used -- the property 
+tax master file (PTM) used to determine the school district property tax levy and 
+maintained by the Wisconsin Department of Revenue (DOR).\footnote{Found online: http://www.revenue.wi.gov/html/govpub.html} 
+The PTM file for each year 
+reports for each school district every MCD that is located entirely or partially 
+within the boundaries of the school district, as well as the share of property wealth 
+(as measured by equalized values, or EQV), for that MCD that the school district 
+is authorized to levy tax for. For each year, the share of every MCD's EQV that 
+was allocated to each school district was calculated. This share was used to 
+pro-rate the population of each school district both for the purposes of 
+calculating the voting age population, and for calculating votes cast for and 
+against candidates in statewide elections.
+
+The primary issue with this method is that voters are 
+obviously not distributed equally with property wealth in a school district. A 
+large share of a school district's EQV may lie in an MCD, but that EQV may be 
+associated with property that is not residential or sparsely residential. This 
+would lead to an overestimate of the MCD population associated with the school 
+district. 
+
+That said, this method is preferable to alternative methods for a number of reasons. 
+First, this method provides consistent estimates of partisanship and population 
+size for school districts from 2002-2012. Any bias or errors that result from the 
+above estimate are consistent for the period under study. Second, EQV is a better 
+approximation than alternative approximations such as geographic area, because 
+the distribution of property should more closely reflect the distribution of 
+the population. Third, in most cases the distribution from MCD to school district 
+is quite clear -- either 100\% or close to 0\%, and so the potential for bias 
+occurs primarily in edge cases. In fact, 60\% of MCD to school district relationships 
+in any given year result in less than 10\% of the MCD being attributed to the 
+school district, or greater than 90\%. 75\% of such relationships are within the 
+20\% and 80\% range. Additionally, almost all districts have one such edge case 
+within their borders, meaning that the problem does not systematically bias one 
+type of district such as rural districts. 
+
+The final result is election results from all statewide elections in Wisconsin 
+from 2002-2012 including the recall primary and Gubernatorial recall elections of 
+2012 and voting-age population estimates for all school districts in Wisconsin. 
+
+
+
+\subsubsection{School Board Election Results}
+
+With over 400 elected school boards in Wisconsin, collecting the election results 
+was a substantial part of the work that went into this project.\footnote{Many 
+details of the collection of school district election results can be found 
+in the Research Log appendix. However, a brief overview of the data collection 
+strategy will be provided here.} First, I reached out to the Wisconsin Association 
+of School Boards to see if they maintained records of school board election results 
+in the state. Unfortunately, they did not, but from these conversations I discovered 
+that in Wisconsin school districts are the sole legal custodian of the school 
+board election records.\footnote{Sections \textsection 7.53(3)(a) and \textsection 120.06(14) Wis. Stat.} 
+Thus, the request for official results would have to be made to each of the 400+
+school districts, and not with the 72 county clerks elected in the state. 
+
+In order to minimize costs and maximize the likelihood of receiving records an 
+e-mail request strategy was devised. Four waves of requests were made: 
+
+\begin{enumerate}
+\item Initial Request: January $22^{nd}$ to all school district superintendents in 
+the state. 
+\item Follow up: March $4^{th}$ 2013 to all school districts that had not replied. 
+\item Follow up: April $12^{th}$ 2013
+\item Follow up: October 2013
+\end{enumerate}
+
+At the start of this request process the request was too large and too difficult 
+for many school districts to fulfill. For subsequent requests I reduced the request 
+to two documents legally required to be on file for all elections for school board 
+and retained for ten years the Certification of the Board of Canvassers and the 
+Statement of the Board of Canvassers.\footnote{Retention timeline per guidance issued 
+by the DPI in May 2010: http://publicrecordsboard.wi.gov/docview.asp?docid=15892\&locid=165. 
+Election documents information from WASB: http://www.wasb.org/websites/legal/File/P-ElectionSchedule.pdf} 
+Subsequent requests asked simply for these two documents which stated the names 
+of each candidate for office, the number of votes received, and the winners 
+determined in each race. 
+
+However, the record availability across the state was very uneven. The further 
+back in the decade, the more difficult school districts had locating and providing 
+the Certification and Statement documents. Records that were provided came in a 
+variety of formats and with varying degrees of quality and accuracy. Staff turnover 
+contributed greatly to the varying continuity in the records. In all cases, 
+scanned PDFs of the original records were stored by school district, as well as 
+all e-mail communication with school district staff regarding the nature of the 
+request and how to interpret the files provided the district. 
+
+The next step in this process was to turn the PDF election records into a database 
+of candidates, votes, and election winners for all school districts in the state. 
+For this task, a research assistant was hired. For each district a separate spreadsheet 
+was created with the following information for each candidate in each election in each year:
+
 \begin{itemize}
-\item DPI: http://dpi.wi.gov/sfs/long\_data.html
-\item DPI: http://www2.dpi.state.wi.us/sfsref/ref\_Home.aspx
-\item DPI Finance Data Warehouse: http://www2.dpi.state.wi.us/sfsdw/Download.asp
+\item District ID Code: The unique identifying code for each school district
+\item Year: The year the election was held
+\item Election Type: 1 for general election, 2 for primary, and 3 for a special election
+\item Candidate ID: A unique identifier for each individual within the district appearing on ballots
+\item First Name: Candidate's first name
+\item Last Name: Candidate's last name
+\item Votes Received: Number of votes for each candidate
+\item Winner: 1 indicates candidate won office, 0 did not win office
+\item Incumbent: 1 if candidate previously held office, 0 for candidates that did not
+\item Repeat: 1 if candidate previously ran for office (successfully or not), 0 if candidate did not
+\item Minor: 1 if candidate receives fewer than 100 votes, or is listed as scatter, 0 if not
 \end{itemize}
 
+In many cases determining a winner was the most difficult challenge. In order to 
+do this, a secondary data source was collected from the Wisconsin DPI -- the master 
+roster of school board members from 2002-2012. This roster file is provided to 
+DPI annually by the Wisconsin Association of School Boards and contains the names 
+of all school board members known to be serving in the state. If a candidate was 
+found to be on the school board in the next school year, they were assumed to have 
+won the election the preceding April. 
 
-\subsubsection*{Election Results}
+The dataset has some limitations. Primarily, determining incumbency and repeat 
+candidate status are limited by the number of years of records that school 
+boards were able to provide -- the data is left censored in 2002. Candidates in 
+2002 must all be assumed to be starting off as fresh in the data. This places a 
+downward bias on the value of incumbency because long-tenured incumbents will 
+be treated as first time candidates. 
 
-Two types of election results were necessary for the analyses above. First, the ward-level results of statewide elections were necessary to understand the political climate within each school district. 
+From the database for each school district, a master database is constructed 
+for all school districts supplying records. From there, the records are collapsed 
+to school district - election - year records to allow comparisons across districts 
+about voter turnout, candidate emergence, and incumbent defeat in school board 
+elections. 
 
-Second, and more difficultly, election results from Wisconsin school board elections were needed. 
+\subsection*{Student Test Scores}
 
-\begin{itemize}
-\item DOR: http://www.revenue.wi.gov/html/govpub.html
-\item NCES: http://nces.ed.gov/surveys/sdds/index.aspx (US Census Data)
-\end{itemize}
-
-\subsubsection*{Student Test Scores}
-
-The final type of data was student test scores. 
+The final type of data was student test scores. These are available in various 
+forms online from DPI at oea.dpi.wi.gov and at winss.dpi.wi.gov. 
 

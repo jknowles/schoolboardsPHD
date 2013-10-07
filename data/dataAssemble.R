@@ -178,6 +178,15 @@ print(paste0(round(nrow(na.omit(dat))/ nrow(dat),2) *100, "% records with some m
 dimNA(dat)
 
 ################################################################################
+# Assemble candidate quality measure
+# Meaure 1 = number of elections run
+# Measure 2 = Measure 1 + number of times incumbent
+#
+################################################################################
+
+
+
+################################################################################
 # Check for extreme values
 # Within districts
 ################################################################################
