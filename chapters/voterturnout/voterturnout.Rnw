@@ -1,4 +1,5 @@
 \chapter{Why Vote for School Board?}
+\label{chap:turnout}
 \chapterstyle{deposit}
 
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
@@ -148,8 +149,105 @@ Taxation
 
 Throw the bums out. Dahl to Alsbury. 
 
+Dissatisfaction theory is the closest link in the school board literature to 
+larger political science theories of voter turnout. 
+
+\section{School Boards and Voter Turnout}
+
+The current project adds importantly to the puzzle of voter turnout in two important ways. 
+First, it provides an important update to the prior literature on school board 
+election participation by explicitly measuring voter turnout in school board 
+elections and investigating several hypothesized drivers of voter participation 
+in such elections \citep{RefWorks:311,RefWorks:243,RefWorks:340}. Second, this study 
+explores the linkage between state level politics and local electoral participation. 
+Thus, the study represents an attempt to estimate the causal effect of a state 
+level policy shock on voter turnout in local elections by leveraging the unique 
+conditions in Wisconsin from 2010-2012. The present study presents an important 
+oppotunity to test theories of participation and cross-level linkages in a federal 
+system that previously were not available to political scientists. 
+
+\subsection{Voter Turnout in School Board Elections}
+
+While some rational choice models have been adapted to the school board contest, 
+there exist no large scale studies of voter turnout in school board elections 
+that have empirically tested these theories 
+\citep{RefWorks:243, RefWorks:340, RefWorks:339}. Instead, studies have focused 
+predominantly on candidates for school board, why they run, and if their races 
+are competitive \citep{RefWorks:311, RefWorks:321, RefWorks:322, RefWorks:207}. 
+Yet, it might be argued, that such studies are jumping the gun. The conventional 
+wisdom about school board elections is that they are minor affairs, settled on 
+obscure issues, and conducted among large public apathy. Off-cycle school board 
+elections are decidedly low turnout affairs. If boards have competitive elections 
+that lead to consequential decisions like superintendent turnover (ala Dissatisfaction 
+Theory \citep{RefWorks:297}), what does it matter if those hotly contested electoral 
+defeats of incumbents came at the hand of 10\% of the electorate? The overwhelming 
+majority has indeed cast a vote of indifference. 
+
+By leaving out the question of turnout, Dissatisfaction Theory has left out an 
+important strategic actor in the act of expressing dissatisfaction with the 
+direction of the schools -- the voter \citep{RefWorks:243}. The current study 
+rectifies this by providing a descriptive analysis of voter turnout over an extended 
+number of election cycles at hundreds of school districts within Wisconsin simultaneously. 
+Naturally it is not expected to find school board races to be high turnout affairs 
+year in and year out. But, if Dissatisfaction Theory is to be saved from criticism 
+that it ignores voters in favor of focusing on board-superintendent relationships, 
+some cases of heightened turnout must be identified. The current study is fruitful 
+ground for examining voter turnout trends in school board elections as well as exploring 
+possible opportunities for voters to express dissatisfaction with academic, fiscal, 
+or the policy performance of the local school district. 
+
+\subsection{Exogenous State Level Policy Shocks and Voter Decisions}
+
+There is one specific theory about voter turnout that this data can test is the 
+linkage between voter turnout in school board elections and state level policy 
+shocks. While there has recently been more attention on the linkage between 
+national political trends and state level election returns (CITATION NEEDED), these 
+studies have not been extended to the local level. However, the local level provides 
+an interesting level of analysis because local elections are much more diverse than 
+their state level counterparts in terms of the timing, partisanship of office, and 
+structure of the elections. Where it is difficult to disentangle relationships between 
+national legislature and state legislature composition from national trends in 
+partisanship and strategic redistricting (CITATION NEEDED), the diversity of local 
+elections allows more opportunities for exogenous variation to explore the causal 
+transmission of voter preferences at the state level being expressed in local 
+elections. 
+
+Wisconsin from 2010-2012 provides an ideal test case for the transmission of 
+state level political preferences to local non-partisan office. As discussed in 
+Chapter \ref{chap:theoryreview} and illustrated in Figure \ref{fig:wiscotimeline} 
+the election of Scott Walker to Governor and the subsequent passage of Act 10, the 
+2011-13 biennial budget, and the mass protests in Madison, WI, state level politics 
+in Wisconsin became suddenly extremely polarized. In addition to the sudden 
+polarization, much of the rhetoric, protest, and contentiousness surrounding 
+the Walker administration was focused squarely on education politics and labor 
+relations - issues that school boards have great local influence over. In fact, 
+Act 10 represented a sweeping expansion of the power of school boards away from 
+local teachers' unions. Thus, the composition of the school board mattered more 
+than ever after Act 10. Importantly, the passage of Act 10 was completely unforeseen 
+by political observers and the public and represent an exogenous shock to the 
+state political system. \footnote{This last point is somewhat disputed by some 
+political observers and Scott Walker himself, but the consensus has been that 
+this was not the case according to the \href{http://www.politifact.com/wisconsin/statements/2011/feb/22/scott-walker/wisconsin-gov-scott-walker-says-he-campaigned-his-/}{Milwaukee Journal Sentinel}.}
+
+This paper leverages the unexpected passage of Act 10 as providing a natural 
+experiment of the effect of state level policy shocks on local level electoral 
+participation. In fact, in this case, the policy shock and surrounding political 
+polarization was directly related to the powers of school boards, a locally 
+elected non-partisan office. Even more interestingly, school board elections are 
+held off-cycle in Wisconsin in the spring on the $2^{nd}$ Tuesday each April. This 
+combination of non-partisan off-cycle elections and a wide and deeply salient policy 
+shock provide an ideal test of whether or not state level policy actions can spur 
+voters in local elections. If there is no impact on voter turnout in the wake 
+of such a broad expansion of school board power over an issue as polarizing as 
+collective bargaining rights for local employees, we would expect smaller policy 
+shocks to have no effect either. 
+
 
 \section{Data and Methods}
+
+%% Standard data writeup here
+%% Write up the method for the descriptive analysis
+%% Write up method for causal analysis
 
 
 \section{Results}
