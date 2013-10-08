@@ -21,7 +21,7 @@ earlier. Despite the fact that in general school boards are in charge of levying
 a substantial share of many citizens' tax bill through property taxes and 
 collectively manage expenditures annually equivalent to the budget of the US 
 Department of Defense, when school board elections are held off-cycle turnout 
-and voter interest in them appears to be remarkably low \citep{RefWorks:333; RefWorks:321}. 
+and voter interest in them appears to be remarkably low \citep{RefWorks:333, RefWorks:321}. 
 This despite the fact that the community stake in quality education is large, not 
 just for parents of the students, but for the social, economic, and political 
 impacts that high or low quality schools can have on a community. %citation needed
@@ -81,7 +81,6 @@ school board elections in Wisconsin.
 \begin{itemize}
 	\item Rational Choice
 	\item Socialization and Education
-	\item Issue Voting
 	\item Dissatisfaction and Protest
 \end{itemize}
 
@@ -104,7 +103,7 @@ refined the equation further by adding the D term:
 which was intended to capture the benefit of self-expression associated with voting -- 
 either self-expression of candidate preference, or self-expression of the utility of 
 voting. However, the D-term merely shifted the debate - the probability of benefit 
-from an individual vote still remained zero, so voters would only vote when D > C - 
+from an individual vote still remained zero, so voters would only vote when $D > C$ - 
 that is, when the benefit of self-expression was greater than the cost of voting 
 \citep{nonvoting74, feddersenreview}.\footnote{\citet{Dowding2005} places an interesting 
 wrinkle on this by questioning why voters care about being the decisive vote when 
@@ -113,13 +112,13 @@ This seems less germane to the present case - school board members and the commu
 are unlikely to interpret a substantial victory as a mandate.} 
 While the D term did not solve the puzzle posed by \citet{Downs57}, it 
 did touch off a decades long research project to uncover why the D term varies 
-among voters, and the functional form of this benefit of self-expression. %citations
+among voters, and the functional form of this benefit of self-expression.\citep[see:][]{KanYang2001, 
+Dowding2005,feddersenreview,Schuessler1} 
 
 %%%%%%%%%%% CITES %%%%%%%%%%%%%%%%%
 
-
 While I will not attempt to summarize this theoretically rich debate here 
-\citet[see:]{feddersenreview,geysreview}, I do want to highlight that most empirical 
+\citep[see instead:][]{feddersenreview,geysreview}, I do want to highlight that most empirical 
 tests of these voter turnout theories have focused on large-scale electorates such 
 as state or national elections. There exists a class of voter turnout theories that 
 predict very different behaviors for differently sized electorates. School board 
@@ -136,7 +135,7 @@ behavior of the electorate or social group could spur turnout to be higher.
 In the game theoretic case the argument is that if everyone pursues the optimal 
 strategy of not voting, then the value of PB increase. This sets of a strategic 
 game amongst voters where the value of P is determined by the strategies selected by 
-all other voters in the electorate. In order for positive turnout to emerge from 
+all other voters in the electorate \citep{Palfrey83, Palfrey85,Ledyard84}. In order for positive turnout to emerge from 
 such a game, voters are expected to have certainty about the costs of voting and 
 the preferences of other voters -- an unrealistic assumption in large electorates that 
 hurts the case for such an approach \citep{Mueller3, aldrich1993}. This approach 
@@ -148,7 +147,7 @@ it does not give an accurate reflection of the margins of victory \citep{Coate20
 
 % Group mobilization
 
-Social networks and group organization might also help explain voter turnout. \citet{geysreview}
+Social networks and group organization might also help explain voter turnout. \citet[p.23]{geysreview}
 states the key of the group-based models:
 
 \begin{quote}
@@ -157,27 +156,28 @@ The reason is that politicians may provide groups with extra beneﬁts – in te
 policies that come closer to the group’s optimum – to win the support of the group \citep{Lapp99}. 
 Second, as the political inﬂuence of a social group can be assumed to be proportional to its size
 \citep{SchrWinden1991}, the group as a whole is more likely to have a 
-non-negligible impact on the election outcome. (p.23)
+non-negligible impact on the election outcome. 
 \end{quote}
 
 The group approach appears to more accurately reflect the modern political environment 
 and campaign strategy of mobilization and targeted messaging to voters \citep{Lapp99}. 
 The theory is more nuanced because it allows for the case where the optimal strategy 
-for a group is to abstain from voting \citep{geysreview, Fowler2007}. 
+for a group is to abstain from voting \citep{geysreview, Fowler2005}. 
 Crucially, such group-based mobilization relies on the group being able to enforce 
 the voting norm within the group. This enforcement has been shown to depend on 
 factors that seem especially reflected within small-scale local elections. 
 \citet[p.25]{GrossmanHelpman} identify three such factors: the 
 frequency of interactions within the group, the risk of social isolation resulting 
 from deviating from the group's behavior, and the ability of group members to 
-monitor one another.
+monitor one another. These factors are essential to preventing free riding \citep[see][]{Olson65}.  
+\citet{SchrWinden1991} identifies opinion leaders within these groups as a key 
+transmitter of social pressure. These leaders have incentives to increase turnout such 
+as increasing their influence with elected officianls, and voters wanting to build 
+credibility with these leaders find that turning out to vote is important. In the case 
+of school board elections such local effects might be amplified in communities with 
+strong local organizations where monitoring costs are low. \footnote{\citet{Morton91} finds that there is an equilibrium 
+with positive turnout if at least one leader has a strict preference for a single candidate.}
 
-%%%%%%%%%%% CITES %%%%%%%%%%%%%%%%%
-
-
-% Morton (1991) finds that there is an equilibrium with positive turnout if at 
-% least one leader has a strict preference for a single candidate. Later authors 
-% have extended this model to capture the mechanics of the US electoral college.
 
 % Information
 An important addition to this theoretical base came by adding the influence of 
@@ -214,33 +214,33 @@ magnitude larger than for state wide or nation wide office.
 
 %%%%%%%%%%% CITES %%%%%%%%%%%%%%%%%
 
-\subsection{Socialization and Education}
+\subsection{Socialization}
 
-\citet{Plutzer2002} and \citet{Gerber2003}, for example, argue that voting 
-(abstaining) in a given election in and of itself makes people more likely to 
-vote (abstain) in future elections, independent of rewards/punishments 
-originating from the election outcome. ‘Voting and abstention, in other words, 
-are habit forming’ \citep[p.540]{Gerber2003}.
-
-It has been argued that learning mainly affects the D-term from the calculus of
-voting model \citep{Kanazawa2000}. Citizens who are rewarded for their vote (via
-the election of their preferred candidate) or punished for their abstention
+Other scholars have found that the D term can be endogenous for individuals from 
+election to election \citep{Plutzer2002}. Experimental 
+evidence has found that ``Voting and abstention, in other words, are habit forming'' 
+\citep[p.540]{Gerber2003} This is related to the group mobilization arguments 
+above because social groups may well be the mechanism by which the habit is 
+formed \citep{Kanazawa2000}. Particularly in groups that interact frequently or 
+in tight knit communities social rewards may be found for voting and sanctions 
+may be made for those who abstain \citep{Fowler2005}. Then, citizens who are 
+rewarded for their vote (via the election of their preferred candidate) or punished for their abstention
 (through the election of a less-preferred candidate) acquire an increased prefer-
 ence for voting. In contrast, if their voting is punished or their abstention is
 rewarded, they lose some of their preference for voting
 
-Man is a social animal. Man should therefore act with his group to achieve group benefits. Problem: Free riding \citep[see][]{Olson65}. \citet{SchrWinden1991} tries to skirt this problem by differentiating opinion leaders from ordinary voters. The opinion leaders (like Olson's entrepreneurs) have their own incentives to incite turnout; voters might want to build credibility or a reputation with these leaders, so they want to turn out. Thus, social pressure leads to turnout.
+In school boards there is evidence that such socialization has occurred in the case of 
+conservative Christians \citep{RefWorks:240}, unionized teachers \citep[chapter 5]{RefWorks:249, RefWorks:207}, 
+and suggestions about the role institutions may play in deepening or weakening 
+such socialization among ethnic minorities \citep{RefWorks:195}. Evidence of socialization 
+is occurring might be found by observing ``stickiness'' in voter turnout 
+in school board elections year to year, independent of other factors. \citet{RefWorks:248} 
+called this the social conditioning model of school board turnout and found it held 
+explanatory power in California school board election voter registration rates, 
+but not rates of voter turnout. If members of the community vote at a higher 
+average level after a high turnout election, this may provide evidence that the 
+influx of turnout in the prior election has influenced the current election. 
 
-Alternatively, a social norm might be at play. Particularly in groups that interact frequently, groups might have social rewards for voting (i.e. furthering the group's ends) and social sanctions for abstention. This fits empirical evidence that more connected people vote more.
-
-This is a D term argument. I learn either that voting (in general) is worth it, or I learn the opposite. Recall Geys's criticism that (early) D-term arguments failed because they did not explain where the D term came from. Learning theory seeks to right this wrong; the D term changes in response to our previous experience with voting.
-
-One branch of this approach is the "habit" school: "Voting and abstention, in other words, are habit forming" (Gerber et al 2003).
-
-
-% Teacher unions
-% Religious issues
-% Taxation
 
 \subsection{Summing Up}
 
@@ -248,6 +248,7 @@ Major questions that can be explored by analyzing small scale elections in WI:
 - Does the closeness of the election/margin relate to turnout ala \citep{Coate2008582}
 - Does the size of the electorate affect turnout? 
 - Does relative group size affect the turnout? (Can investigate traditional partisanship, but not other methods)
+- Is turnout sticky?
 
 Throw the bums out. Dahl to Alsbury. 
 
