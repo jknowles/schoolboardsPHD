@@ -1,4 +1,5 @@
 \chapter{Why Run for School Board?}
+\label{chap:candidacy}
 \chapterstyle{deposit}
 
 
@@ -78,7 +79,9 @@ the financing of school board campaigns.}
 However, there are studies in the literature where the applicability of the 
 strategic emergence and personal and psychological factors have been tested empirically, 
 most notably in city council elections \citep{boardfundraising2008, prewitt1, 
-bledsoe1}.
+bledsoe1}. \citet{Krebs01111999} finds evidence of strategic candidate emergence in ward level 
+elections. 
+
 
 % Candidates for school board, as discussed in the introduction, are 
 % representing a narrow interest to an inherently very local constituency. This 
@@ -99,7 +102,8 @@ bledsoe1}.
 The strategic view of candidate emergence argues that candidates emerge for 
 office when they perceive victory to be most likely \citep{schlesinger1}. This includes avoiding 
 running against incumbents or choosing to run against incumbents when they are 
-weak or when redistricting has altered the political conditions in the district \citep{Black72}. 
+weak or when redistricting has altered the political conditions in the district 
+\citep{Black72, Black1972}. 
 \citet{JacobsonBook} represents targues that high-quality challengers emerge when 
 favorable electoral conditions emerge for their party. For U.S. House election, 
 strategic timing indeed has been found to increase the likelihood of a win 
@@ -123,6 +127,7 @@ lower levels of government, where candidates are likely to be beginning their
 political career. Certainly, defining candidate quality as holding prior office 
 creates a very different and much smaller group of candidates than in higher 
 level state and federal offices. 
+
 
 Though the Rational Model has empirical support from U.S. Congressional elections, 
 important questions remain about how to operationalize some of the key concepts of 
@@ -208,12 +213,18 @@ candidates.
 
 \section{Data and Methods}
 
-With these three frames I know turn my attention to investigating the motivations 
+With these three frames I now turn my attention to investigating the motivations 
 behind the emergence of candidates in school board elections. In this study, two 
 approaches will be taken to allow for a more explicit test of the theories outlined 
-above. 
+above. First, theories of candidate emergence will be explored in the context of 
+school board elections using the longitudinal database of school board election 
+results from Wisconsin. Next, we will turn our attention to assessing the causal 
+impact of policy preferences on candidate emergence by leveraging the unique 
+political conditions in Wisconsin in the period studied - namely the availablility 
+of fine-grained policy preference indicators for school districts through the 
+2012 recall election. 
 
-\subsection{Wisconsin}
+\subsection{Wisconsin Data}
 
 This paper utilizes a unique dataset of school board election results in the state 
 of Wisconsin from 2002-2012.\footnote{For more details on the collection method, 
@@ -241,13 +252,64 @@ unprecedented cuts in per-pupil-spending, Act 10 was framed as a set of "tools"
 to give local officials - elected school boards - the flexibility to reduce their 
 fixed costs by renegotiating employee compensation and benefits with employees now 
 with much weakened labor representation and substantial limits on their bargaining 
-authority. \footnote{Perhaps the most salient issue is the requirement under the law 
-that any wage increase greater than a cost of living adjustment pegged to CPI be approved 
-by a district wide referenda -- effectively placing a firm ceiling on any salary negotiations}
+authority. \footnote{Perhaps the most salient 
+issue is the requirement under the law that any wage increase greater than a cost 
+of living adjustment pegged to CPI be approved by a district wide referenda - 
+effectively placing a firm ceiling on any salary negotiations2011 Wisconsin Act 10: 
+https://docs.legis.wisconsin.gov/2011/related/acts/10}
 
 
+Figure \ref{model} provides an illustration of way that school board elections can 
+be an important window into candidate emergence. 
 
-\subsection{Methods}
+\subsection{Methods: Descriptive}
+
+Using data gleaned from administrative records and election returns leaves little 
+room to conduct an in-depth analysis at the motivations of individual candidates 
+to run. However, evidence of two motivators of candidate entry can be compared 
+in Wisconsin school districts. First, evidence of policy goal entry can be 
+assessed. Second, evidence of strategic entry can be examined by looking at 
+exogenous variations in voter turnout. In both cases we can estimate the probability 
+of an election being contested through the following equation:
+
+\[ (1) \hspace{1.2 in}  \Pr_CE_{t} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
+
+Here, $\Pr_CE_{t}$ represents the probability that a school board seat is contested 
+in an election. $\gamma$ will either represent the variable measuring the variation 
+in voter turnout or the policy condition prompting candidate entry, such as a 
+change in property tax rates or a change in student achievement. 
+
+
+\subsection{Methods: Causal}
+
+
+Combining this information with returns from the late spring recall election of 
+the Governor--certain to be a statewide referendum on the Governor's education policies--it is 
+possible using data from all 424 school districts in the state to directly to test 
+whether divided communities see greater participation by challenger candidates than 
+unified communities. This would represent the first comprehensive test of the public 
+choice theory of school board elections and represent the first test of Dissatisfaction 
+Theory across an entire state using actual election results instead of self-reports 
+of school board members and superintendents \citep{RefWorks:243,RefWorks:297}. The 
+empirical model of candidate emergence (CE) would look something like: \\
+
+\[ (2) \hspace{1.2 in}  CE_{t} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
+
+Where $CE_{t}$ represents a measure of the number of candidates greater than one per seat, 
+$\alpha$ is an intercept, $X_{t-1}$ is a vector of lagged covariates such as prior 
+levels of contestation and district size, and $Z_{t}$ is the absolute value of the 
+deviation from 50\% of the vote share for the Governor in a recall election aggregated 
+to the school district from ward level returns.\footnote{Depending on the data and 
+the prevalence of incumbent retirements candidate emergence may need to be measured a 
+number of additional ways. \citet{RefWorks:337} discuss a number of possibilities for 
+turnover that could be adapted to candidate emergence including: Seats available 
+divided by incumbents + challengers minus retired candidates; seats available divided 
+by all candidates; or seats available divided by challengers.} Thus, when $Z_{t} = 0$ 
+the community is completely divided on the Governor. When $Z_{t}=.5$ the community is 
+either united for or against the Governor. Thus, all things equal, we would expect 
+$\gamma$ to have a negative value--as $Z_{t}$ increases, the number of challengers, 
+$Y_{t}$ should decrease because the community is fairly homogeneous and the school 
+board should reflect existing preferences for or against the Governor's reforms. 
 
 
 
