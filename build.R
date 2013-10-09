@@ -7,6 +7,8 @@ setwd("../candidacy")
 knit("candidacy.Rnw",envir=new.env())
 setwd("../voterturnout")
 knit("voterturnout.Rnw",envir=new.env())
+setwd("../policy")
+knit("policy.Rnw",envir=new.env())
 
 setwd("../..")
 

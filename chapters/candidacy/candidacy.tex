@@ -205,7 +205,7 @@ candidates.
 
 \section{Data and Methods}
 
-With these three frames I know turn my attention to investigating the motivations 
+With these three frames I now turn my attention to investigating the motivations 
 behind the emergence of candidates in school board elections. In this study, two 
 approaches will be taken to allow for a more explicit test of the theories outlined 
 above. First, theories of candidate emergence will be explored in the context of 
@@ -256,7 +256,20 @@ be an important window into candidate emergence.
 
 \subsection{Methods: Descriptive}
 
+Using data gleaned from administrative records and election returns leaves little 
+room to conduct an in-depth analysis at the motivations of individual candidates 
+to run. However, evidence of two motivators of candidate entry can be compared 
+in Wisconsin school districts. First, evidence of policy goal entry can be 
+assessed. Second, evidence of strategic entry can be examined by looking at 
+exogenous variations in voter turnout. In both cases we can estimate the probability 
+of an election being contested through the following equation:
 
+\[ (1) \hspace{0.5 in}  \Pr_{CE_{t}} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
+
+Here, $\Pr_{CE_{t}}$ represents the probability that a school board seat is contested 
+in an election. $\gamma$ will either represent the variable measuring the variation 
+in voter turnout or the policy condition prompting candidate entry, such as a 
+change in property tax rates or a change in student achievement. 
 
 
 \subsection{Methods: Causal}
@@ -272,7 +285,7 @@ Theory across an entire state using actual election results instead of self-repo
 of school board members and superintendents \citep{RefWorks:243,RefWorks:297}. The 
 empirical model of candidate emergence (CE) would look something like: \\
 
-\[  \hspace{1.2 in}  CE_{t} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
+\[ (2) \hspace{0.5 in}  CE_{t} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
 
 Where $CE_{t}$ represents a measure of the number of candidates greater than one per seat, 
 $\alpha$ is an intercept, $X_{t-1}$ is a vector of lagged covariates such as prior 

@@ -272,9 +272,9 @@ assessed. Second, evidence of strategic entry can be examined by looking at
 exogenous variations in voter turnout. In both cases we can estimate the probability 
 of an election being contested through the following equation:
 
-\[ (1) \hspace{1.2 in}  \Pr_CE_{t} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
+\[ (1) \hspace{0.5 in}  \Pr_{CE_{t}} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
 
-Here, $\Pr_CE_{t}$ represents the probability that a school board seat is contested 
+Here, $\Pr_{CE_{t}}$ represents the probability that a school board seat is contested 
 in an election. $\gamma$ will either represent the variable measuring the variation 
 in voter turnout or the policy condition prompting candidate entry, such as a 
 change in property tax rates or a change in student achievement. 
@@ -293,7 +293,7 @@ Theory across an entire state using actual election results instead of self-repo
 of school board members and superintendents \citep{RefWorks:243,RefWorks:297}. The 
 empirical model of candidate emergence (CE) would look something like: \\
 
-\[ (2) \hspace{1.2 in}  CE_{t} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
+\[ (2) \hspace{0.5 in}  CE_{t} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
 
 Where $CE_{t}$ represents a measure of the number of candidates greater than one per seat, 
 $\alpha$ is an intercept, $X_{t-1}$ is a vector of lagged covariates such as prior 
