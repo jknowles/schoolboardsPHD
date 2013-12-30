@@ -276,6 +276,8 @@ table(metadata$primary)
 dat$repeater <- dat$"repeat."
 dat$"repeat." <- NULL
 
+rm(check_dat, check_dat_ts)
+
 ################################################################################
 ## Read in CSV Files of voter turnout
 ## 
@@ -582,7 +584,8 @@ struc <- list.files("../Data/Raw Files/Election Data/sdmunipieces",
 
 
 for(i in 1:length(struc)){
-  eval(parse(text=paste0("sd0",1+i,"<- read.csv(file=struc[",i,"])")))
+  eval(parse(text=paste0("sd0",1+i,"<- read.csv(file=struc[",i,"], 
+                         stringsAsFactors=FALSE)")))
   eval(parse(text=paste0("collength <- ifelse(ncol(sd0",i+1,")>11, 11, ncol(sd0", i+1,"))")))
   eval(parse(text=paste0("sd0",1+i,"<- sd0", 1+i,"[,1:collength]")))
 }
@@ -698,7 +701,7 @@ rm(collength, i, struc, vars)
 # This is the only correct way to measure the share of each MCD that is in the 
 # school district
 # Data comes from DOR records
-sdprop <- ddply(vptemp,.(doacode, year),summarize,"eqvtot"=sum(eqv,na.rm=T))
+sdprop <- ddply(vptemp, .(doacode, year), summarize, "eqvtot"=sum(eqv,na.rm=T))
 vptemp <- merge(vptemp, sdprop, by=c("doacode", "year"))
 vptemp$share <- vptemp$eqv / vptemp$eqvtot
 
@@ -751,7 +754,7 @@ mylag <- function(df){
   return(lag4)
 }
 
-VAPwide <- reshape(VAP_dist[, c(1, 2, 3)], timevar="year", idvar = "distid",direction="wide")
+#VAPwide <- reshape(VAP_dist[, c(1, 2, 3)], timevar="year", idvar = "distid",direction="wide")
 
 ## Fully smooth
 
@@ -775,6 +778,7 @@ LinInterp <- function(x, includeLast = NULL){
   }
   return(y)
 }
+
 annlchg <- mylag(as.data.frame(VAP_dist))
 
 annlchg$VAP_chg <- (annlchg$VAP - annlchg$VAP.lag1) / annlchg$VAP.lag1
@@ -988,14 +992,21 @@ table(annlchg$VAP_flag3)
 table(annlchg$VAP_flag4)
 
 
-
-
 ################################################################################
 # Recombine VAP adjusted
 ################################################################################
 
 
+names(annlchg)
+annlchg <- annlchg[, c(1, 2, 3)]
+names(annlchg) <- c("distid", "year", "VAP_adj")
 
+VAP_dist <- merge(as.data.frame(VAP_dist), as.data.frame(annlchg), 
+                  by=c("year", "distid"))
+
+names(VAP_dist)
+
+rm(annlchg.tmp, tmp, sdprop,  annlchg)
 
 ################################################################################
 ## Add the regular voter turnout from standard elections
@@ -1118,9 +1129,9 @@ save(vptemp, vaplong, cw, dvp, file="data/cache/VotingPopulation.rda",
 
 rm(vptemp, vaplong, cw, dvp)
 
-####################
-# For export
-
+###################
+#For export
+# 
 # dvp1 <- dvp
 # dvp2 <- dvp
 # dvp2$year <- as.numeric(dvp2$year) + 1
@@ -1137,7 +1148,7 @@ rm(vptemp, vaplong, cw, dvp)
 # 
 # 
 # save(tmp2, file="VotingPopulationAndPartisanship.rda")
-
+# 
 
 ################################################################################
 
