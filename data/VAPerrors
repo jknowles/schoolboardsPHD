@@ -1,0 +1,34 @@
+> table(outliers$year, as.character(outliers$sdname))
+      
+       Boulder Junction J 1 Neosho J 3 North Lakeland Phelps Sheboygan Area Spooner
+  2005                    1          0              0      0              1       1
+  2006                    0          0              0      1              0       0
+  2007                    0          1              0      0              0       0
+  2009                    0          0              1      0              0       0
+  2011                    0          0              0      0              0       0
+> table(outliers$year, as.character(outliers$distid))
+      
+       2177 3913 4330 5271 5474 616
+  2005    0    0    0    1    1   1
+  2006    0    0    1    0    0   0
+  2007    0    1    0    0    0   0
+  2009    0    0    0    0    0   1
+  2011    1    0    0    0    0   0
+
+DISTRICT 4820 and 4843 are having errors in their VAP calculations in 2008 (Friess Lake) 
+(Richfield J1)
+
+# 2842 Kohler has some wacky data
+# 2006 VAP is 14,632 and all other years are 2,000 to 3,000
+# 2005 LastCensusPop is 52,876 in 2005, but all other years are 3,893
+# Must be a merge error somewhere
+
+
+> table(annlchg.tmp$year)
+
+2003 2004 2005 2006 2007 2008 2009 2010 2011 
+   2    3    4    3    3    5    3    2    2 
+> 
+
+2604 2842 3976 4613 4820 4843 5271 
+   1    5    5    4    4    4    4 
