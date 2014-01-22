@@ -14,6 +14,8 @@ test <- merge(VAP_dist, dvp, by=c("distid", "year"))
 library(data.table)
 library(ggplot2)
 
+#interpolate dvp
+
 
 ## reshape school district by year
 
@@ -32,7 +34,7 @@ distyear <- as.data.table(dat[dat$electiontype==1,])[,
 
 distyear <- as.data.frame(distyear)
 
-distyear$totalvotes2 <- distyear$totalvotes / ifelse(distyear$winners < 2, 1, distyear$winners)
+# distyear$totalvotes2 <- distyear$totalvotes / ifelse(distyear$winners < 2, 1, distyear$winners)
 zed <- merge(VAP_dist, distyear)
 
 zed$turnout1 <- zed$totalvotes/zed$VAP

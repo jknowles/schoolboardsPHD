@@ -4,14 +4,15 @@
 
 
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
-#setwd("../../../Data/Raw Files/Election Data")
-#setwd("../Data/Raw Files/Election Data")
-# source("dataclean.R")
-# source("mappingfunctions.R")
-# source("k8uhs.R")
+
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
                fig.path="../../phd_figs/chap3-",
                warning=FALSE, echo=FALSE, dev='pdf')
+
+source("../../data/cleanandprep_CANDIDACY.R")
+
+# load data
+# print descriptives
 @
 
 
@@ -213,6 +214,8 @@ candidates.
 
 \section{Data and Methods}
 
+
+
 With these three frames I now turn my attention to investigating the motivations 
 behind the emergence of candidates in school board elections. In this study, two 
 approaches will be taken to allow for a more explicit test of the theories outlined 
@@ -261,6 +264,13 @@ https://docs.legis.wisconsin.gov/2011/related/acts/10}
 
 Figure \ref{model} provides an illustration of way that school board elections can 
 be an important window into candidate emergence. 
+
+<<candidatedescriptives>>=
+aggregate(SBELEC$candidates, by=list(SBELEC$year), function(x) sum(x) / length(x))
+
+
+@
+
 
 \subsection{Methods: Descriptive}
 

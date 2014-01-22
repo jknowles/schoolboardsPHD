@@ -11,11 +11,11 @@ dat <- read.csv(Sys.glob(file.path(struc[6],"*.csv")))
 dat <- dat[0, ]
 
 
-struc2 <- struc[-1]
-struc2 <- struc2[-1]
+struc <- struc[-1]
 
-for(i in 1:length(struc2)){
-  f <- Sys.glob(file.path(struc2[i],"*.csv"))
+
+for(i in 1:length(struc)){
+  f <- Sys.glob(file.path(struc[i],"*.csv"))
   if(length(f) > 0){
     tmp <- read.csv(f)
     dat <- rbind(dat, tmp)
@@ -134,15 +134,15 @@ table(dat$minor)
 
 print(paste0(length(dat$minor[dat$minor != 0 & dat$minor != 1 & 
                                     !is.na(dat$minor)]), 
-             " observations with invalid repeater codes."))
+             " observations with invalid minor codes."))
 
 print(paste0(dat$distid[dat$minor != 0 & dat$minor != 1 & 
                           !is.na(dat$minor)], 
-             " district id with invalid repeater codes."))
+             " district id with invalid minor codes."))
 
 
 print(paste0(length(dat$minor[is.na(dat$minor)]), 
-             " observations with missing repeater codes."))
+             " observations with missing minor codes."))
 
 
 # Notes
@@ -185,7 +185,6 @@ dimNA(dat)
 ################################################################################
 
 
-
 ################################################################################
 # Check for extreme values
 # Within districts
@@ -200,12 +199,14 @@ check_dat <- as.data.table(dat)[, list(totalvotes = as.double(sum(votes, na.rm=T
                                        maxvotes = as.double(max(votes, na.rm=T)),
                                        candidates = .N, 
                                        winners = as.double(sum(winner, na.rm=T)),
-                                       incumbents = as.double(sum(incumbent, na.rm=T))),
+                                       incumbents = as.double(sum(incumbent, na.rm=T)), 
+                                       minor = as.double(sum(minor, na.rm=TRUE))),
                                       by = c("distid", "year", "electiontype")]
 
 # Only focus on general elections for now
 check_dat <- as.data.frame(check_dat[check_dat$electiontype==1,])
 check_dat$electiontype <- NULL
+
 #
 check_dat$totalvotes[!is.finite(check_dat$totalvotes)] <- 0
 check_dat$minvotes[!is.finite(check_dat$minvotes)] <- 0
@@ -1101,7 +1102,8 @@ for(i in unique(dvp$distid)){
 
 ###############################################################################################
 
-dvp <- as.data.frame(dvp)
+
+
 rm(district_vote_panel)
 
 dvp$TOPturnout1 <- dvp$TOPTOTVOTES / dvp$TOTPOP
@@ -1120,6 +1122,12 @@ dvp$SECrepShare <- ifelse(is.finite(dvp$SECrepShare), dvp$SECrepShare, 0)
 
 names(dvp) <- tolower(names(dvp))
 
+dvp <- as.data.frame(dvp)
+dvp2 <- dvp
+dvp2$year <- as.numeric(dvp2$year) + 1
+dvp <- rbind(dvp, dvp2)
+rm(dvp2)
+
 rm(distvotes12r, distvotes12, distvotes10, distvotes09, distvotes08, 
    distvotes06, distvotes05, distvotes04, distvotes02, bigtest11)
 rm(dvp2, prespref11, sd11, test, i, j, mynames, wisc)
@@ -1127,7 +1135,7 @@ rm(dvp2, prespref11, sd11, test, i, j, mynames, wisc)
 save(vptemp, vaplong, cw, dvp, file="data/cache/VotingPopulation.rda", 
      compress="gzip")
 
-rm(vptemp, vaplong, cw, dvp)
+rm(vptemp, vaplong, cw)
 
 ###################
 #For export
