@@ -268,6 +268,13 @@ be an important window into candidate emergence.
 <<candidatedescriptives>>=
 aggregate(SBELEC$candidates, by=list(SBELEC$year), function(x) sum(x) / length(x))
 
+SBELEC$contested <- ifelse(SBELEC$candidates > SBELEC$winners, 1, 0)
+table(SBELEC$contested, SBELEC$year)
+
+# Now toss out minor candidates
+SBELEC$contested2 <- ifelse((SBELEC$candidates - SBELEC$minorcand) > SBELEC$winners, 1, 0)
+table(SBELEC$contested2, SBELEC$year)
+
 
 @
 
@@ -324,6 +331,31 @@ board should reflect existing preferences for or against the Governor's reforms.
 
 
 \section{Results}
+
+\subsection{Descriptive}
+
+<<candidatedescriptives>>=
+
+tax_model <- glm(contested2 ~ primary + millrate_delta + total_attempts + 
+                   wins +
+                   balance_member_lag2 + member_delta2 + locale3, 
+                 data=SBELEC, family="binomial")
+
+@
+
+\subsection{Causal}
+
+<<candidatedescriptives>>=
+
+SBELEC$secturnout <- SBELEC$sectot.x / SBELEC$VAP_adj.x
+SBELEC$recallpartisan <- abs(.5 - SBELEC$secrepshare.x)
+library(arm)
+simple_model <- bayesglm(contested2 ~  millrate_delta + 
+                      recallpartisan + secturnout +
+                   balance_member_lag2 + member_delta2 + locale3, 
+                 data=SBELEC[SBELEC$year == 2011, ], family="binomial")
+
+@
 
 \section{Conclusions}
 
