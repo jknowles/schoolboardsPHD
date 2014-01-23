@@ -299,13 +299,40 @@ evaluated and explored.
 
 In addition to this unique dataset on school board election results, there exist 
 a large array of publicly available data about the performance, financial health, 
-and demographics of the public school districts in the state. 
+and demographics of the public school districts in the state. These data are useful 
+in understanding the impact of local factors on school board election conditions. 
+Importantly, we can use these data elements to identify if the sample of school 
+districts responding to the records request is representative of the school 
+districts in the state. 
 
 
 <<samplecoverage>>=
 # Table showing sample and non-sample on key covariates
+# Need to finish
+mysub <- FULLDAT[FULLDAT$year == 2012, ]
+
+selectVars <- c("TOTPOP.x", "toprepshare.x", "member", "econ_disadv_per", 
+                "millrate", "PerBachelorOrAbove", "avg_salary", "average_fringe", 
+                "median_income", "OOH_share", "sample", "balance_lag")
+
+round(t(aggregate(mysub[, selectVars], 
+                  by = list(sample = mysub$sample), mean, na.rm=TRUE)), digits=2)
+round(t(aggregate(mysub[, selectVars], 
+                  by = list(sample = mysub$sample), sd, na.rm=TRUE)), digits=2)
+
+
 
 @
+
+% Describe above table
+
+As you can see, there is little difference between schools in and out of the sample. 
+
+\subsubsection{Dependent Variable}
+
+To understand candidacy it is important to consider measures of candidate emergence 
+that make the most sense. % Find studies of candidate emergence in low-level elections
+
 
 <<candidatedescriptives>>=
 aggregate(SBELEC$candidates, by=list(SBELEC$year), function(x) sum(x) / length(x))
