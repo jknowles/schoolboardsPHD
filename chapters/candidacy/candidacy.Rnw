@@ -9,8 +9,11 @@ opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE,
                fig.path="../../phd_figs/chap3-",
                warning=FALSE, echo=FALSE, dev='pdf')
 
-source("../../data/cleanandprep_CANDIDACY.R")
+setwd("../../")
+source("data/dataAssemble.R")
+source("data/cleanandprep_CANDIDACY.R")
 
+SAMPSIZE <- length(unique(SBELEC$distid))
 # load data
 # print descriptives
 @
@@ -261,9 +264,48 @@ of living adjustment pegged to CPI be approved by a district wide referenda -
 effectively placing a firm ceiling on any salary negotiations2011 Wisconsin Act 10: 
 https://docs.legis.wisconsin.gov/2011/related/acts/10}
 
+% Section on sample and coverage
+One reason that school board elections have not been comprehensively studied in a 
+single state is the highly decentralized state of record keeping for school board 
+elections in many states. In Wisconsin school district election records are not 
+kept in any central record keeping, but are the sole responsibility of the school 
+district clerk (CITE STATUTE).\footnote{While a few enterprising county clerks have 
+collected school board election results and made them available, these can be incomplete 
+by only including the precincts that are within the county. They also are not official. 
+(CITE PERSONAL CORRESPONDENCE)} In order to conduct this study then, a records 
+request was made to all public school districts in the state of Wisconsin (COUNT). 
+This request was e-mailed to the school district administrator in each of Wisconsin's 
+424 school districts in January of 2013. Three follow up waves were conducted, and 
+at the end of the collection period, \Sexpr{print(SAMPSIZE)} districts responded 
+with records. 
 
-Figure \ref{model} provides an illustration of way that school board elections can 
-be an important window into candidate emergence. 
+School board election records came in many forms. The official and preferred 
+records included the Statement of the Board of Canvass and the Certificate of the 
+Board of Canvass. These two documents are legally mandated for each school board 
+election and certify the winner for each school board seat, as well as the votes 
+cast for each candidate. In most cases the records were provided electronically, 
+though some were also received as hard copy in the mail. Full details on the data 
+collection process can be found in the appendix. % INCLUDE ACTUAL REFERENCE 
+These records were then transcribed from the various records provided by school 
+districts into spreadsheets that combined together form the key database for this 
+analysis. 
+
+Using the names, vote totals, and winners from each school board election allow 
+for the construction of measures of the number of candidates in each election 
+cycle, the number of contested seats, the level of voter participation, and other 
+metrics of electoral activity at the school board level. Importantly, because the 
+data was collected for several years in each district, time-variant trends can be 
+evaluated and explored. 
+
+In addition to this unique dataset on school board election results, there exist 
+a large array of publicly available data about the performance, financial health, 
+and demographics of the public school districts in the state. 
+
+
+<<samplecoverage>>=
+# Table showing sample and non-sample on key covariates
+
+@
 
 <<candidatedescriptives>>=
 aggregate(SBELEC$candidates, by=list(SBELEC$year), function(x) sum(x) / length(x))
@@ -278,6 +320,10 @@ table(SBELEC$contested2, SBELEC$year)
 
 @
 
+
+
+Figure \ref{model} provides an illustration of way that school board elections can 
+be an important window into candidate emergence. 
 
 \subsection{Methods: Descriptive}
 
