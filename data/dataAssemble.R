@@ -1131,9 +1131,9 @@ rm(dvp2)
 rm(distvotes12r, distvotes12, distvotes10, distvotes09, distvotes08, 
    distvotes06, distvotes05, distvotes04, distvotes02, bigtest11)
 rm(dvp2, prespref11, sd11, test, i, j, mynames, wisc)
-
-save(vptemp, vaplong, cw, dvp, file="data/cache/VotingPopulation.rda", 
-     compress="gzip")
+# 
+# save(vptemp, vaplong, cw, dvp, file="data/cache/VotingPopulation.rda", 
+#      compress="gzip")
 
 rm(vptemp, vaplong, cw)
 

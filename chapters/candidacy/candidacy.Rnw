@@ -16,6 +16,9 @@ source("data/cleanandprep_CANDIDACY.R")
 SAMPSIZE <- length(unique(SBELEC$distid))
 # load data
 # print descriptives
+
+library(xtable)
+options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 @
 
 
@@ -306,27 +309,34 @@ districts responding to the records request is representative of the school
 districts in the state. 
 
 
-<<samplecoverage>>=
+<<samplecoverage, results='asis'>>=
 # Table showing sample and non-sample on key covariates
 # Need to finish
 mysub <- FULLDAT[FULLDAT$year == 2012, ]
 
 selectVars <- c("TOTPOP.x", "toprepshare.x", "member", "econ_disadv_per", 
                 "millrate", "PerBachelorOrAbove", "avg_salary", "average_fringe", 
-                "median_income", "OOH_share", "sample", "balance_lag")
+                "median_income", "OOH_share", "balance_lag")
 
-round(t(aggregate(mysub[, selectVars], 
+a <- round(t(aggregate(mysub[, selectVars], 
                   by = list(sample = mysub$sample), mean, na.rm=TRUE)), digits=2)
-round(t(aggregate(mysub[, selectVars], 
+b <- round(t(aggregate(mysub[, selectVars], 
                   by = list(sample = mysub$sample), sd, na.rm=TRUE)), digits=2)
 
+a <- as.data.frame(a); names(a) <- c("Out of Sample (Mean)", "Sample (Mean)")
+b <- as.data.frame(b); names(b) <- c("Out of Sample (SD)", "Sample (SD)")
 
+ab <- as.data.frame(cbind(a[,2], b[,2], a[,1], a[,2]))
+names(ab) <- c("Sample (mean)", "Sample (SD)", "Out of Sample (mean)", "Out of Sample (SD)")
 
+print(xtable(ab[-1,]), format.args = list(big.mark=","))
+
+rm(a, b, ab, selectVars)
 @
 
 % Describe above table
 
-As you can see, there is little difference between schools in and out of the sample. 
+As shown in table X, there is little difference between schools in and out of the sample. 
 
 \subsubsection{Dependent Variable}
 
@@ -345,15 +355,23 @@ and if the number of non-minor candidates is greater than the number of victors.
 aggregate(SBELEC$candidates, by=list(SBELEC$year), function(x) sum(x) / length(x))
 
 SBELEC$contested <- ifelse(SBELEC$candidates > SBELEC$winners, 1, 0)
-table(SBELEC$contested, SBELEC$year)
+a <- table(SBELEC$contested, SBELEC$year)
+rownames(a) <- c("Uncontested", "Contested")
+print(xtable(a[, 3:13]), include.rownames=TRUE)
 
 # Now toss out minor candidates
 SBELEC$contested2 <- ifelse((SBELEC$candidates - SBELEC$minorcand) > SBELEC$winners, 1, 0)
-table(SBELEC$contested2, SBELEC$year)
-
+a <- table(SBELEC$contested2, SBELEC$year)
+rownames(a) <- c("Uncontested", "Contested")
+print(xtable(a[, 3:13]), include.rownames=TRUE)
 
 @
 
+
+In general, the years surrounding Act 10 do not appear more contested than the 
+years prior to Act 10 -- whether minor candidates are included or excluded. However, 
+we have to control for local factors as well as macro factors in order to evaluate 
+the independent effect Act 10 may have had on the likelihood of running for office. 
 
 
 Figure \ref{model} provides an illustration of way that school board elections can 
