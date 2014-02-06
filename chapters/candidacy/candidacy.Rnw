@@ -184,7 +184,8 @@ theory draws its conclusions.
 It is clear that the study of nascent political ambition provides a vital frame for understanding 
 the emergence of candidates in local and municipal elections. What is less obvious, 
 but perhaps more important, is that the study of local and municipal elections is 
-vital to understanding the candidate pool for higher offices. By moving down to the level of state politicians, \citet{MaestasEtAl} 
+vital to understanding the candidate pool for higher offices. By moving down to 
+the level of state politicians, \citet{MaestasEtAl} 
 find substantial variation among state legislators based on the level of professionalization 
 of their legislature. This work demonstrates that the Rational Choice Model alone 
 is not sufficient to explain why some highly qualified candidates do not emerge 
@@ -275,7 +276,7 @@ kept in any central record keeping, but are the sole responsibility of the schoo
 district clerk (CITE STATUTE).\footnote{While a few enterprising county clerks have 
 collected school board election results and made them available, these can be incomplete 
 by only including the precincts that are within the county. They also are not official. 
-(CITE PERSONAL CORRESPONDENCE)} In order to conduct this study then, a records 
+\citep{clerk1}.} In order to conduct this study then, a records 
 request was made to all public school districts in the state of Wisconsin (COUNT). 
 This request was e-mailed to the school district administrator in each of Wisconsin's 
 424 school districts in January of 2013. Three follow up waves were conducted, and 
@@ -318,6 +319,11 @@ selectVars <- c("TOTPOP.x", "toprepshare.x", "member", "econ_disadv_per",
                 "millrate", "PerBachelorOrAbove", "avg_salary", "average_fringe", 
                 "median_income", "OOH_share", "balance_lag")
 
+rnames <- c("Total Population", "Republican Share", "Students", 
+            "% FRL", "Millrate", "Share Bachelor +", "Average Salary", 
+            "Average Fringe", "Median Income", "Owner Occupied Share", 
+            "Lagged Acct. Balance")
+
 a <- round(t(aggregate(mysub[, selectVars], 
                   by = list(sample = mysub$sample), mean, na.rm=TRUE)), digits=2)
 b <- round(t(aggregate(mysub[, selectVars], 
@@ -326,10 +332,13 @@ b <- round(t(aggregate(mysub[, selectVars],
 a <- as.data.frame(a); names(a) <- c("Out of Sample (Mean)", "Sample (Mean)")
 b <- as.data.frame(b); names(b) <- c("Out of Sample (SD)", "Sample (SD)")
 
-ab <- as.data.frame(cbind(a[,2], b[,2], a[,1], a[,2]))
+ab <- as.data.frame(cbind(a[,2], b[,2], a[,1], b[,1]))
+ab[10, ] <- ab[10, ] * 10000
+ab[12, ] <- ab[12, ] / 1000
 names(ab) <- c("Sample (mean)", "Sample (SD)", "Out of Sample (mean)", "Out of Sample (SD)")
+row.names(ab) <- c("Var", rnames)
 
-print(xtable(ab[-1,]), format.args = list(big.mark=","))
+print(xtable(ab[-1,]), format.args = list(big.mark=","), include.rownames=TRUE)
 
 rm(a, b, ab, selectVars)
 @
@@ -351,7 +360,7 @@ two factors -- if the number of candidates is greater than the number of victors
 and if the number of non-minor candidates is greater than the number of victors. 
 
 
-<<candidatedescriptives>>=
+<<candidatedescriptives, results='asis'>>=
 aggregate(SBELEC$candidates, by=list(SBELEC$year), function(x) sum(x) / length(x))
 
 SBELEC$contested <- ifelse(SBELEC$candidates > SBELEC$winners, 1, 0)
@@ -394,6 +403,13 @@ in an election. $\gamma$ will either represent the variable measuring the variat
 in voter turnout or the policy condition prompting candidate entry, such as a 
 change in property tax rates or a change in student achievement. 
 
+In the literature there is only very sparse indication about what local factors 
+may cause candidates to enter a school board race. This is likely due to the limits 
+of previous data collections to test a wide variety of hypotheses. The present 
+collection combines sample election results from a large proportion of Wisconsin 
+school districts with extensive administrative records capturing diverse school 
+district attributes over time including change in enrollment, fiscal health, 
+student and adult demographics, and school district referenda. 
 
 \subsection{Methods: Causal}
 
@@ -434,11 +450,26 @@ board should reflect existing preferences for or against the Governor's reforms.
 
 <<candidatedescriptives>>=
 
-tax_model <- glm(contested2 ~ primary + millrate_delta + total_attempts + 
-                   wins +
-                   balance_member_lag2 + member_delta2 + locale3, 
+SBELEC$primary2 <- ifelse(SBELEC$primary == "None", "None", "Primary")
+
+tax_model <- glm(contested2 ~ primary2 + millrate + cum_attptsD + overlevy_ind_lag +
+                   passedD + toprepshare.x + OOH_share + perwhite + levy_chg +
+                   balance_member_lag + median_income + locale3, 
                  data=SBELEC, family="binomial")
 
+
+
+library(lme4)
+
+mermod1 <- glmer(contested2 ~ primary2 + millrate + cum_attptsD + overlevy_ind_lag +
+                    perwhite + levy_chg +
+                   balance_member_lag + median_income + 
+                   (1|fyear) + (1|distid), 
+                 data=SBELEC, family="binomial")
+
+rr1 <- ranef(mermod1, condVar=TRUE)
+
+confint(mermod1, method="Wald")
 @
 
 \subsection{Causal}
