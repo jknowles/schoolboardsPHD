@@ -19,6 +19,8 @@ SAMPSIZE <- length(unique(SBELEC$distid))
 
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
+library(eeptools); library(gridExtra)
+library(ROCR); library(lme4)
 @
 
 
@@ -338,14 +340,14 @@ ab[12, ] <- ab[12, ] / 1000
 names(ab) <- c("Sample (mean)", "Sample (SD)", "Out of Sample (mean)", "Out of Sample (SD)")
 row.names(ab) <- c("Var", rnames)
 
-print(xtable(ab[-1,]), format.args = list(big.mark=","), include.rownames=TRUE)
+print(xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study." ), format.args = list(big.mark=","), include.rownames=TRUE, size="tiny")
 
 rm(a, b, ab, selectVars)
 @
 
 % Describe above table
 
-As shown in table X, there is little difference between schools in and out of the sample. 
+As shown in table \ref{tab:samplecomp}, there is little difference between schools in and out of the sample. 
 
 \subsubsection{Dependent Variable}
 
@@ -360,24 +362,45 @@ two factors -- if the number of candidates is greater than the number of victors
 and if the number of non-minor candidates is greater than the number of victors. 
 
 
-<<candidatedescriptives, results='asis'>>=
-aggregate(SBELEC$candidates, by=list(SBELEC$year), function(x) sum(x) / length(x))
+<<candidatedescriptives4, echo=FALSE, fig.cap="Districts with contested school board elections under two different measures of candidate contestation.">>=
+#aggregate(SBELEC$candidates, by=list(SBELEC$year), function(x) sum(x) / length(x))
 
 SBELEC$contested <- ifelse(SBELEC$candidates > SBELEC$winners, 1, 0)
-a <- table(SBELEC$contested, SBELEC$year)
-rownames(a) <- c("Uncontested", "Contested")
-print(xtable(a[, 3:13]), include.rownames=TRUE)
+# a <- table(SBELEC$contested, SBELEC$year)
+# rownames(a) <- c("Uncontested", "Contested")
+# print(xtable(a[, 3:13]), include.rownames=TRUE)
 
 # Now toss out minor candidates
 SBELEC$contested2 <- ifelse((SBELEC$candidates - SBELEC$minorcand) > SBELEC$winners, 1, 0)
-a <- table(SBELEC$contested2, SBELEC$year)
-rownames(a) <- c("Uncontested", "Contested")
-print(xtable(a[, 3:13]), include.rownames=TRUE)
+# 
+# rownames(a) <- c("Uncontested", "Contested")
+# print(xtable(a[, 3:13]), include.rownames=TRUE)
 
+a <- table(SBELEC$contested2, SBELEC$year)
+a <- t(a)
+a <- as.data.frame(a)
+a$Var1 <- as.numeric(as.character(a$Var1))
+
+p1 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack') + 
+  labs(x= "Year", y = "Districts", title = "Excluding Minor Candidates", 
+       fill = "Contested") + theme_bw()
+
+
+a <- table(SBELEC$contested, SBELEC$year)
+a <- t(a)
+a <- as.data.frame(a)
+a$Var1 <- as.numeric(as.character(a$Var1))
+
+
+p2 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack')+ 
+  labs(x= "Year", y = "Districts", title = "Including Minor Candidates", 
+       fill = "Contested")+ theme_bw()
+grid.arrange(p1, p2, main = "Comparing School Board Contestation Measures")
 @
 
 
-In general, the years surrounding Act 10 do not appear more contested than the 
+Figure \ref{fig:candidatedescriptives4} depicts the pattern of school board candidate 
+emergence over time. In general, the years surrounding Act 10 do not appear more contested than the 
 years prior to Act 10 -- whether minor candidates are included or excluded. However, 
 we have to control for local factors as well as macro factors in order to evaluate 
 the independent effect Act 10 may have had on the likelihood of running for office. 
@@ -448,40 +471,140 @@ board should reflect existing preferences for or against the Governor's reforms.
 
 \subsection{Descriptive}
 
-<<candidatedescriptives>>=
+The challenge in the descriptive analysis is to identify non-local contextual 
+factors that have influence over school board candidate emergence. 
+
+<<modelcomparisonD, fig.cap="Comparing Tax, Politics, and Policy Models of Candidate Emergence in School Board Elections Using ROC">>=
+
+## Tax model -- voters are driven by tax concdrns
+## Politics model -- voters are driven by political ideology
+## Policy model -- teacher salary and benefits? 
+
 
 SBELEC$primary2 <- ifelse(SBELEC$primary == "None", "None", "Primary")
+SBELEC$politicaldivide <- abs(SBELEC$toprepshare.x - .5)
+tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
+                    perwhite + levy_chg + log(Population18O)
+                   balance_member_lag +  median_income + fyear, 
+                 data=SBELEC, family=binomial("logit"))
 
-tax_model <- glm(contested2 ~ primary2 + millrate + cum_attptsD + overlevy_ind_lag +
-                   passedD + toprepshare.x + OOH_share + perwhite + levy_chg +
-                   balance_member_lag + median_income + locale3, 
-                 data=SBELEC, family="binomial")
+summary(tax_model)
+#sigma1 <- sum(residuals(tax_model, type = "pearson")^2) / df.residual(tax_model)
+
+poli_model <- glm(contested2 ~ primary2 + cum_attptsD + perwhite + Per65over + 
+                   attemptsD + log(politicaldivide) + PerBachelorOrAbove +
+                    median_income + log(Population18O), 
+                 data=SBELEC, family=binomial("logit"))
+
+summary(poli_model)
+
+poly_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
+                    avg_total_exp + log(Population18O) + 
+                    median_income +member_delta + total_attempts, 
+                  data=SBELEC, family = binomial("logit"))
+
+summary(poly_model)
+
+uber_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
+                    avg_total_exp + log(Population18O) + 
+                    median_income +member_delta + total_attempts + 
+                    primary2 + cum_attptsD + perwhite + Per65over + 
+                   attemptsD + log(politicaldivide) + PerBachelorOrAbove +
+                    millrate + overlevy_ind_lag +
+                    levy_chg + balance_member_lag + fyear, 
+                  data=SBELEC, family = binomial("logit"))
+                   
+
+predicted <- predict(tax_model)
+
+prob <- prediction(predicted, tax_model$model$contested2)
+tprfpr <- performance(prob, "tpr", "fpr")
+tpr <- unlist(slot(tprfpr, "y.values"))
+fpr <- unlist(slot(tprfpr, "x.values"))
+roc <- data.frame(tpr, fpr)
+roc$mod <- "tax"
+
+predicted <- predict(poli_model)
+prob <- prediction(predicted, poli_model$model$contested2)
+tprfpr <- performance(prob, "tpr", "fpr")
+tpr <- unlist(slot(tprfpr, "y.values"))
+fpr <- unlist(slot(tprfpr, "x.values"))
+roc2 <- data.frame(tpr, fpr)
+roc2$mod <- "politics"
+
+roc <- rbind(roc, roc2); rm(roc2)
+
+predicted <- predict(poly_model)
+prob <- prediction(predicted, poly_model$model$contested2)
+tprfpr <- performance(prob, "tpr", "fpr")
+tpr <- unlist(slot(tprfpr, "y.values"))
+fpr <- unlist(slot(tprfpr, "x.values"))
+roc2 <- data.frame(tpr, fpr)
+roc2$mod <- "policy"
+
+roc <- rbind(roc, roc2); rm(roc2)
+
+predicted <- predict(uber_model)
+prob <- prediction(predicted, uber_model$model$contested2)
+tprfpr <- performance(prob, "tpr", "fpr")
+tpr <- unlist(slot(tprfpr, "y.values"))
+fpr <- unlist(slot(tprfpr, "x.values"))
+roc2 <- data.frame(tpr, fpr)
+roc2$mod <- "uber"
+
+roc <- rbind(roc, roc2); rm(roc2)
 
 
+ggplot(roc) + geom_line(aes(x = fpr, y = tpr, color=mod)) + 
+   geom_abline(intercept = 0, slope = 1, colour = "gray") + 
+   ylab("Sensitivity") + 
+   xlab("1 - Specificity") + 
+  coord_cartesian(xlim=c(0, 1), ylim=c(0,1)) + theme_bw() + 
+  labs(title = "Comparing Models of Candidate Contestation in School Board Elections", 
+       color = "Model")
 
-library(lme4)
-
-mermod1 <- glmer(contested2 ~ primary2 + millrate + cum_attptsD + overlevy_ind_lag +
-                    perwhite + levy_chg +
-                   balance_member_lag + median_income + 
-                   (1|fyear) + (1|distid), 
-                 data=SBELEC, family="binomial")
-
-rr1 <- ranef(mermod1, condVar=TRUE)
-
-confint(mermod1, method="Wald")
+# Alternative is to model number of cnadidates as poisson
+# 
+# SBELEC$candidatesDV <- SBELEC$candidates - SBELEC$minorcand - SBELEC$winners
+# SBELEC$candidatesDV <- ifelse(SBELEC$candidatesDV > -1, SBELEC$candidatesDV, 0)
+# # Investigate why negative numbers come up here
+# 
+# tax_model <- glm(candidatesDV ~ primary2 + millrate + cum_attptsD + overlevy_ind_lag +
+#                     log(politicaldivide) + perwhite + levy_chg +
+#                    balance_member_lag +  median_income + locale3, 
+#                  data=SBELEC, family="poisson")
+# 
+# summary(tax_model)
+# # # Zero inflated
+# # library(pscl)
+# # summary(tax_model <- zeroinfl(candidatesDV ~  millrate + cum_attptsD + overlevy_ind_lag +
+# #                     log(politicaldivide) + perwhite + levy_chg +
+# #                    balance_member_lag +  median_income + locale3, 
+# #                  data=SBELEC))
+# 
+# library(lme4)
+# 
+# mermod1 <- glmer(contested2 ~ primary2 + millrate + cum_attptsD + overlevy_ind_lag +
+#                     perwhite + levy_chg + log(politicaldivide) + 
+#                    balance_member_lag + median_income + 
+#                    (1|fyear) + (1|distid), 
+#                  data=SBELEC, family="binomial")
+# summary(mermod1)
+# rr1 <- ranef(mermod1, condVar=TRUE)
+# 
+# confint(mermod1, method="Wald")
 @
 
 \subsection{Causal}
 
-<<candidatedescriptives>>=
+<<candidatedescriptives3>>=
 
 SBELEC$secturnout <- SBELEC$sectot.x / SBELEC$VAP_adj.x
 SBELEC$recallpartisan <- abs(.5 - SBELEC$secrepshare.x)
 library(arm)
 simple_model <- bayesglm(contested2 ~  millrate_delta + 
                       recallpartisan + secturnout +
-                   balance_member_lag2 + member_delta2 + locale3, 
+                   balance_member_lag + member_delta + locale3, 
                  data=SBELEC[SBELEC$year == 2011, ], family="binomial")
 
 @
