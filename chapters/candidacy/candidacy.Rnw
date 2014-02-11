@@ -21,6 +21,24 @@ library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 library(eeptools); library(gridExtra)
 library(ROCR); library(lme4)
+
+
+SBELEC$contested <- ifelse(SBELEC$candidates > SBELEC$winners, 1, 0)
+SBELEC$contested2 <- ifelse((SBELEC$candidates - SBELEC$minorcand) > SBELEC$winners, 1, 0)
+walkerrecall <- subset(FULLDAT, year == 2011, 
+                       select=c("distid", "secrepshare", "sectot", "VAP_adj"))
+
+walkerrecall$RECALLturnout <-  walkerrecall$sectot / walkerrecall$VAP_adj 
+
+walkerrecall$VAP_adj <- NULL
+names(walkerrecall) <- c("distid", "walkersupport", "recallvotes", "recallturnout")
+
+SBELEC <- merge(SBELEC, walkerrecall, by = c("distid"), all.x=TRUE)
+rm(walkerrecall)
+
+SBELEC$primary2 <- ifelse(SBELEC$primary == "None", "None", "Primary")
+SBELEC$politicaldivide <- abs(SBELEC$toprepshare - .5)
+
 @
 
 
@@ -317,7 +335,7 @@ districts in the state.
 # Need to finish
 mysub <- FULLDAT[FULLDAT$year == 2012, ]
 
-selectVars <- c("TOTPOP.x", "toprepshare.x", "member", "econ_disadv_per", 
+selectVars <- c("TOTPOP", "toprepshare", "member", "econ_disadv_per", 
                 "millrate", "PerBachelorOrAbove", "avg_salary", "average_fringe", 
                 "median_income", "OOH_share", "balance_lag")
 
@@ -340,7 +358,7 @@ ab[12, ] <- ab[12, ] / 1000
 names(ab) <- c("Sample (mean)", "Sample (SD)", "Out of Sample (mean)", "Out of Sample (SD)")
 row.names(ab) <- c("Var", rnames)
 
-print(xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study." ), format.args = list(big.mark=","), include.rownames=TRUE, size="tiny")
+print(xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study." ), format.args = list(big.mark=","), include.rownames=TRUE, size="small")
 
 rm(a, b, ab, selectVars)
 @
@@ -365,13 +383,12 @@ and if the number of non-minor candidates is greater than the number of victors.
 <<candidatedescriptives4, echo=FALSE, fig.cap="Districts with contested school board elections under two different measures of candidate contestation.">>=
 #aggregate(SBELEC$candidates, by=list(SBELEC$year), function(x) sum(x) / length(x))
 
-SBELEC$contested <- ifelse(SBELEC$candidates > SBELEC$winners, 1, 0)
 # a <- table(SBELEC$contested, SBELEC$year)
 # rownames(a) <- c("Uncontested", "Contested")
 # print(xtable(a[, 3:13]), include.rownames=TRUE)
 
 # Now toss out minor candidates
-SBELEC$contested2 <- ifelse((SBELEC$candidates - SBELEC$minorcand) > SBELEC$winners, 1, 0)
+
 # 
 # rownames(a) <- c("Uncontested", "Contested")
 # print(xtable(a[, 3:13]), include.rownames=TRUE)
@@ -381,7 +398,7 @@ a <- t(a)
 a <- as.data.frame(a)
 a$Var1 <- as.numeric(as.character(a$Var1))
 
-p1 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack') + 
+p1 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Districts", title = "Excluding Minor Candidates", 
        fill = "Contested") + theme_bw()
 
@@ -392,7 +409,7 @@ a <- as.data.frame(a)
 a$Var1 <- as.numeric(as.character(a$Var1))
 
 
-p2 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack')+ 
+p2 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Districts", title = "Including Minor Candidates", 
        fill = "Contested")+ theme_bw()
 grid.arrange(p1, p2, main = "Comparing School Board Contestation Measures")
@@ -481,29 +498,28 @@ factors that have influence over school board candidate emergence.
 ## Policy model -- teacher salary and benefits? 
 
 
-SBELEC$primary2 <- ifelse(SBELEC$primary == "None", "None", "Primary")
-SBELEC$politicaldivide <- abs(SBELEC$toprepshare.x - .5)
+
 tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
-                    perwhite + levy_chg + log(Population18O)
+                    perwhite + levy_chg + log(Population18O) +
                    balance_member_lag +  median_income + fyear, 
                  data=SBELEC, family=binomial("logit"))
 
-summary(tax_model)
+#summary(tax_model)
 #sigma1 <- sum(residuals(tax_model, type = "pearson")^2) / df.residual(tax_model)
 
 poli_model <- glm(contested2 ~ primary2 + cum_attptsD + perwhite + Per65over + 
-                   attemptsD + log(politicaldivide) + PerBachelorOrAbove +
-                    median_income + log(Population18O), 
+                   attemptsD + toprepshare + PerBachelorOrAbove +
+                    median_income + log(Population18O) + fyear, 
                  data=SBELEC, family=binomial("logit"))
 
-summary(poli_model)
+#summary(poli_model)
 
 poly_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
                     avg_total_exp + log(Population18O) + 
-                    median_income +member_delta + total_attempts, 
+                    median_income +member_delta + total_attempts + fyear, 
                   data=SBELEC, family = binomial("logit"))
 
-summary(poly_model)
+#summary(poly_model)
 
 uber_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
                     avg_total_exp + log(Population18O) + 
@@ -595,17 +611,55 @@ ggplot(roc) + geom_line(aes(x = fpr, y = tpr, color=mod)) +
 # confint(mermod1, method="Wald")
 @
 
+
+Model tables
+
+<<modeltables, results='asis'>>=
+library(stargazer)
+stargazer(tax_model, poli_model, poly_model, uber_model, 
+          omit = "fyear", font.size="small")
+
+@
+
 \subsection{Causal}
 
-<<candidatedescriptives3>>=
+<<candidatedescriptives3, eval=FALSE, echo=FALSE>>=
 
-SBELEC$secturnout <- SBELEC$sectot.x / SBELEC$VAP_adj.x
-SBELEC$recallpartisan <- abs(.5 - SBELEC$secrepshare.x)
+
+
 library(arm)
+
+SBELEC$walkerdivide <- abs(SBELEC$walkersupport - .5)
+
 simple_model <- bayesglm(contested2 ~  millrate_delta + 
-                      recallpartisan + secturnout +
-                   balance_member_lag + member_delta + locale3, 
-                 data=SBELEC[SBELEC$year == 2011, ], family="binomial")
+                      walkerdivide + recallturnout +
+                   balance_member_lag + member_delta + log(Population18O) + 
+                     fyear, 
+                 data=SBELEC[SBELEC$year >= 2009, ], family="binomial")
+
+summary(simple_model)
+
+
+blahmod <- glmer(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
+                    log(Population18O) + 
+                    median_income + primary2 + perwhite + Per65over + 
+                   attemptsD +
+                    millrate + overlevy_ind_lag + fyear+ (1|distid), 
+                 data = SBELEC, family = binomial("logit"))
+
+
+
+blahmod2 <- glmer(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
+                    log(Population18O) + 
+                    median_income + primary2 + perwhite + Per65over + 
+                   attemptsD +
+                    millrate + overlevy_ind_lag + fyear + 
+                    (1 + walkerdivide|distid), 
+                 data = SBELEC, family = binomial)
+# 
+# dotplot(ranef(blahmod2, condVar=TRUE))
+# 
+# anova(blahmod, blahmod2)
 
 @
 

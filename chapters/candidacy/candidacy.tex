@@ -296,9 +296,10 @@ districts in the state.
 
 
 % latex table generated in R 3.0.2 by xtable 1.7-1 package
-% Sun Feb 09 13:48:23 2014
+% Mon Feb 10 20:11:16 2014
 \begin{table}[ht]
 \centering
+{\small
 \begin{tabular}{rrrrr}
   \hline
  & Sample (mean) & Sample (SD) & Out of Sample (mean) & Out of Sample (SD) \\ 
@@ -316,13 +317,16 @@ Total Population & 13,793.33 & 22,705.65 & 12,908.58 & 56,139.76 \\
   Lagged Acct. Balance & 8,142.53 & 10,802.10 & 7,245.33 & 14,682.82 \\ 
    \hline
 \end{tabular}
+}
+\caption{Comparing school districts that provided board election results to those that did not and are not included in the study.} 
+\label{tab:samplecomp}
 \end{table}
 
 
 
 % Describe above table
 
-As shown in table X, there is little difference between schools in and out of the sample. 
+As shown in table \ref{tab:samplecomp}, there is little difference between schools in and out of the sample. 
 
 \subsubsection{Dependent Variable}
 
@@ -337,52 +341,19 @@ two factors -- if the number of candidates is greater than the number of victors
 and if the number of non-minor candidates is greater than the number of victors. 
 
 
-   Group.1     x
-1     2000 3.000
-2     2001 3.444
-3     2002 3.896
-4     2003 4.054
-5     2004 4.127
-6     2005 3.927
-7     2006 3.978
-8     2007 4.095
-9     2008 3.808
-10    2009 3.973
-11    2010 3.950
-12    2011 3.896
-13    2012 3.870
-14    2013 4.400
-% latex table generated in R 3.0.2 by xtable 1.7-1 package
-% Sun Feb 09 13:48:23 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrrr}
-  \hline
- & 2002 & 2003 & 2004 & 2005 & 2006 & 2007 & 2008 & 2009 & 2010 & 2011 & 2012 \\ 
-  \hline
-Uncontested &  34 &  30 &  28 &  33 &  42 &  43 &  45 &  52 &  31 &  40 &  42 \\ 
-  Contested & 188 & 210 & 224 & 215 & 225 & 252 & 252 & 241 & 267 & 258 & 257 \\ 
-   \hline
-\end{tabular}
-\end{table}
-% latex table generated in R 3.0.2 by xtable 1.7-1 package
-% Sun Feb 09 13:48:23 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrrrrrrrrrr}
-  \hline
- & 2002 & 2003 & 2004 & 2005 & 2006 & 2007 & 2008 & 2009 & 2010 & 2011 & 2012 \\ 
-  \hline
-Uncontested & 107 &  97 & 107 & 105 & 123 & 134 & 167 & 146 & 137 & 153 & 144 \\ 
-  Contested & 115 & 143 & 145 & 143 & 144 & 161 & 130 & 147 & 161 & 145 & 155 \\ 
-   \hline
-\end{tabular}
-\end{table}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-candidatedescriptives4} \caption[Districts with contested school board elections under two different measures of candidate contestation]{Districts with contested school board elections under two different measures of candidate contestation.\label{fig:candidatedescriptives4}}
+\end{figure}
+
+
+\end{knitrout}
 
 
 
-
-In general, the years surrounding Act 10 do not appear more contested than the 
+Figure \ref{fig:candidatedescriptives4} depicts the pattern of school board candidate 
+emergence over time. In general, the years surrounding Act 10 do not appear more contested than the 
 years prior to Act 10 -- whether minor candidates are included or excluded. However, 
 we have to control for local factors as well as macro factors in order to evaluate 
 the independent effect Act 10 may have had on the likelihood of running for office. 
@@ -453,22 +424,111 @@ board should reflect existing preferences for or against the Governor's reforms.
 
 \subsection{Descriptive}
 
+The challenge in the descriptive analysis is to identify non-local contextual 
+factors that have influence over school board candidate emergence. 
+
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-##                        2.5 %   97.5 %
-## (Intercept)        -1.439813  2.16534
-## primary2Primary     1.524959  2.82812
-## millrate           -0.063298  0.06492
-## cum_attptsD         0.045839  0.15460
-## overlevy_ind_lag    0.071603  0.54227
-## perwhite           -1.291707  2.17820
-## levy_chg           -0.006193  0.01093
-## balance_member_lag -0.090671 -0.01129
-## median_income      -0.387973 -0.07641
-\end{verbatim}
-\end{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-modelcomparisonD} \caption[Comparing Tax, Politics, and Policy Models of Candidate Emergence in School Board Elections Using ROC]{Comparing Tax, Politics, and Policy Models of Candidate Emergence in School Board Elections Using ROC\label{fig:modelcomparisonD}}
+\end{figure}
+
+
 \end{knitrout}
+
+
+
+Model tables
+
+
+% Table created by stargazer v.4.5.3 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Mon, Feb 10, 2014 - 8:11:20 PM
+\begin{table}[!htbp] \centering 
+  \caption{} 
+  \label{} 
+\small 
+\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-5} 
+\\[-1.8ex] & \multicolumn{4}{c}{contested2} \\ 
+\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
+\hline \\[-1.8ex] 
+ millrate & 0.027 &  &  & 0.027 \\ 
+  & (0.024) &  &  & (0.025) \\ 
+  & & & & \\ 
+ primary2Primary &  & 2.117$^{***}$ &  & 2.091$^{***}$ \\ 
+  &  & (0.315) &  & (0.314) \\ 
+  & & & & \\ 
+ cum\_attptsD & 0.048$^{**}$ & 0.043$^{**}$ &  & 0.039$^{**}$ \\ 
+  & (0.019) & (0.019) &  & (0.020) \\ 
+  & & & & \\ 
+ overlevy\_ind\_lag & 0.247$^{**}$ &  &  & 0.264$^{**}$ \\ 
+  & (0.113) &  &  & (0.115) \\ 
+  & & & & \\ 
+ perwhite & 1.542$^{**}$ & 2.234$^{***}$ &  & 1.858$^{**}$ \\ 
+  & (0.622) & (0.670) &  & (0.736) \\ 
+  & & & & \\ 
+ levy\_chg & 0.002 &  &  & 0.002 \\ 
+  & (0.004) &  &  & (0.004) \\ 
+  & & & & \\ 
+ Per65over &  & 1.083 &  & 1.868 \\ 
+  &  & (1.211) &  & (1.366) \\ 
+  & & & & \\ 
+ attemptsD &  & 0.239$^{**}$ &  & 0.267$^{**}$ \\ 
+  &  & (0.108) &  & (0.110) \\ 
+  & & & & \\ 
+ toprepshare &  & $-$1.116$^{**}$ &  &  \\ 
+  &  & (0.480) &  &  \\ 
+  & & & & \\ 
+ log(politicaldivide) &  &  &  & 0.020 \\ 
+  &  &  &  & (0.039) \\ 
+  & & & & \\ 
+ PerBachelorOrAbove &  & $-$1.389 &  & $-$0.636 \\ 
+  &  & (1.007) &  & (0.988) \\ 
+  & & & & \\ 
+ log(dv\_r) &  &  & $-$1.089 & $-$1.423 \\ 
+  &  &  & (0.789) & (0.869) \\ 
+  & & & & \\ 
+ avg\_salary &  &  & $-$0.00002$^{*}$ & $-$0.00001 \\ 
+  &  &  & (0.00001) & (0.00001) \\ 
+  & & & & \\ 
+ average\_fringe &  &  & $-$0.00002$^{*}$ & $-$0.00002 \\ 
+  &  &  & (0.00001) & (0.00001) \\ 
+  & & & & \\ 
+ avg\_total\_exp &  &  & 0.014 & 0.002 \\ 
+  &  &  & (0.020) & (0.021) \\ 
+  & & & & \\ 
+ log(Population18O) & 0.535$^{***}$ & 0.533$^{***}$ & 0.622$^{***}$ & 0.556$^{***}$ \\ 
+  & (0.049) & (0.051) & (0.059) & (0.065) \\ 
+  & & & & \\ 
+ balance\_member\_lag & $-$0.008 &  &  & $-$0.013 \\ 
+  & (0.016) &  &  & (0.018) \\ 
+  & & & & \\ 
+ median\_income & $-$0.286$^{***}$ & $-$0.114 & $-$0.142$^{**}$ & $-$0.155$^{*}$ \\ 
+  & (0.057) & (0.095) & (0.059) & (0.094) \\ 
+  & & & & \\ 
+ member\_delta &  &  & $-$1.542 & $-$1.463 \\ 
+  &  &  & (1.439) & (1.511) \\ 
+  & & & & \\ 
+ total\_attempts &  &  & 0.012 & $-$0.018 \\ 
+  &  &  & (0.025) & (0.026) \\ 
+  & & & & \\ 
+ Constant & $-$5.203$^{***}$ & $-$5.702$^{***}$ & 1.548 & 1.111 \\ 
+  & (0.910) & (0.815) & (3.642) & (3.983) \\ 
+  & & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 2,708 & 2,708 & 2,708 & 2,708 \\ 
+Log Likelihood & $-$1,763.000 & $-$1,724.000 & $-$1,769.000 & $-$1,719.000 \\ 
+Akaike Inf. Crit. & 3,561.000 & 3,487.000 & 3,573.000 & 3,495.000 \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\normalsize 
+\end{tabular} 
+\end{table} 
+
 
 
 \subsection{Causal}

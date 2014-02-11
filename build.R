@@ -22,7 +22,6 @@ Sys.setenv(BIBINPUTS=BIBINPUTS, BSTINPUTS=BSTINPUTS)
 
 system("pdflatex dissertation")
 system("bibtex dissertation")
-system("bibtex dissertation")
 system("pdflatex dissertation")
 system("pdflatex dissertation")
 system("pdflatex dissertation")

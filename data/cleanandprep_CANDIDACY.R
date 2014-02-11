@@ -9,7 +9,7 @@ library(data.table)
 #load("data/cache/VotingPopulation.rda")
 
 VAP_dist <- as.data.frame(VAP_dist)
-
+dvp$totpop <- NULL
 
 MACROpart <- merge(VAP_dist, dvp, by=c("distid", "year"))
 
@@ -59,7 +59,9 @@ SBELEC$primary[SBELEC$contested == 1] <- "Contested"
 SBELEC$contested <- NULL
 SBELEC$electiontype <- NULL
 
+FINANCE <- FINANCE[, c(1:103, 121:273)]
 FULLDAT <- merge(MACROpart, FINANCE, by = c("distid", "year"))
+
 
 FULLDAT$sample <- 0
 FULLDAT$sample[FULLDAT$distid %in% unique(SBELEC$distid)] <- 1
