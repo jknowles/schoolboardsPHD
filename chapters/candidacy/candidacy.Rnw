@@ -25,6 +25,12 @@ library(ROCR); library(lme4)
 
 SBELEC$contested <- ifelse(SBELEC$candidates > SBELEC$winners, 1, 0)
 SBELEC$contested2 <- ifelse((SBELEC$candidates - SBELEC$minorcand) > SBELEC$winners, 1, 0)
+# Ratio
+SBELEC$contested3 <-  (SBELEC$candidates - SBELEC$minorcand) /SBELEC$winners
+# Check data issue with - values
+SBELEC$contested3 <- ifelse(SBELEC$contested3 > -.01, SBELEC$contested3, 1)
+
+
 walkerrecall <- subset(FULLDAT, year == 2011, 
                        select=c("distid", "secrepshare", "sectot", "VAP_adj"))
 
@@ -416,6 +422,8 @@ grid.arrange(p1, p2, main = "Comparing School Board Contestation Measures")
 @
 
 
+% Compare other measures of contestation, number of candidates per seat, etc. 
+
 Figure \ref{fig:candidatedescriptives4} depicts the pattern of school board candidate 
 emergence over time. In general, the years surrounding Act 10 do not appear more contested than the 
 years prior to Act 10 -- whether minor candidates are included or excluded. However, 
@@ -621,6 +629,16 @@ stargazer(tax_model, poli_model, poly_model, uber_model,
 
 @
 
+Let's look at within district variability. We can do this by fitting partial pooling 
+models using a random-intercept framework \citep{gelhill} using the \texttt{lme4} 
+package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
+trends within districts and separate between and within district variance. 
+
+<<descrmixedeff>>=
+
+
+@
+
 \subsection{Causal}
 
 <<candidatedescriptives3, eval=FALSE, echo=FALSE>>=
@@ -640,22 +658,26 @@ simple_model <- bayesglm(contested2 ~  millrate_delta +
 summary(simple_model)
 
 
-blahmod <- glmer(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
-                    log(Population18O) + 
-                    median_income + primary2 + perwhite + Per65over + 
-                   attemptsD +
-                    millrate + overlevy_ind_lag + fyear+ (1|distid), 
-                 data = SBELEC, family = binomial("logit"))
+##### 
+# LME4
 
-
-
-blahmod2 <- glmer(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
-                    log(Population18O) + 
-                    median_income + primary2 + perwhite + Per65over + 
-                   attemptsD +
-                    millrate + overlevy_ind_lag + fyear + 
-                    (1 + walkerdivide|distid), 
-                 data = SBELEC, family = binomial)
+# 
+# blahmod <- glmer(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
+#                     log(Population18O) + walkerdivide +
+#                     median_income + primary2 + perwhite + Per65over + 
+#                    attemptsD +
+#                     millrate + overlevy_ind_lag + fyear+ (1|distid), 
+#                  data = SBELEC, family = binomial("logit"))
+# 
+# 
+# 
+# blahmod2 <- glmer(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
+#                     log(Population18O) + 
+#                     median_income + primary2 + perwhite + Per65over + 
+#                    attemptsD +
+#                     millrate + overlevy_ind_lag + fyear + 
+#                     (1 + walkerdivide|distid), 
+#                  data = SBELEC, family = binomial)
 # 
 # dotplot(ranef(blahmod2, condVar=TRUE))
 # 
