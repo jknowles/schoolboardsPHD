@@ -21,14 +21,16 @@ library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 library(eeptools); library(gridExtra)
 library(ROCR); library(lme4)
+library(arm)
 
 
 SBELEC$contested <- ifelse(SBELEC$candidates > SBELEC$winners, 1, 0)
 SBELEC$contested2 <- ifelse((SBELEC$candidates - SBELEC$minorcand) > SBELEC$winners, 1, 0)
 # Ratio
-SBELEC$contested3 <-  (SBELEC$candidates - SBELEC$minorcand) /SBELEC$winners
+SBELEC$contested3 <-  (SBELEC$candidates - SBELEC$minorcand) / SBELEC$winners
 # Check data issue with - values
 SBELEC$contested3 <- ifelse(SBELEC$contested3 > -.01, SBELEC$contested3, 1)
+SBELEC$contested3 <- ifelse(is.finite(SBELEC$contested3), SBELEC$contested3, 0)
 
 
 walkerrecall <- subset(FULLDAT, year == 2011, 
@@ -430,6 +432,19 @@ years prior to Act 10 -- whether minor candidates are included or excluded. Howe
 we have to control for local factors as well as macro factors in order to evaluate 
 the independent effect Act 10 may have had on the likelihood of running for office. 
 
+Another way we might measure the level of candidate emergence in school board races 
+would be to look at the number of candidates per open seat. This measure would 
+differentiate between districts with wide spread contestation and those with 
+simply a single contested seat -- perhaps adding some additional information. 
+
+<<perseatcontests, >>=
+
+
+
+@
+
+% Add a map of contested districts
+
 
 Figure \ref{model} provides an illustration of way that school board elections can 
 be an important window into candidate emergence. 
@@ -461,7 +476,6 @@ student and adult demographics, and school district referenda.
 
 \subsection{Methods: Causal}
 
-
 Combining this information with returns from the late spring recall election of 
 the Governor--certain to be a statewide referendum on the Governor's education policies--it is 
 possible using data from all 424 school districts in the state to directly to test 
@@ -490,22 +504,45 @@ $\gamma$ to have a negative value--as $Z_{t}$ increases, the number of challenge
 $Y_{t}$ should decrease because the community is fairly homogeneous and the school 
 board should reflect existing preferences for or against the Governor's reforms. 
 
-
-
 \section{Results}
 
 \subsection{Descriptive}
 
-The challenge in the descriptive analysis is to identify non-local contextual 
-factors that have influence over school board candidate emergence. 
+The challenge in the descriptive analysis is to identify systematic contextual 
+factors that have influence over school board candidate emergence. In essence, we 
+can imagine three types of contextual factors that may influence the local political 
+conditions in a school board -- taxation decisions, political conditions, and 
+policy decisions. Of particular interest is understanding which of these factors, 
+for the sample observed and over the time period of observation, are the most 
+predictive of the emergence of contested school board seats. 
+
+<<causaldataclean, echo=FALSE, results='hide'>>=
+
+SBELEC$treatment <- 0
+SBELEC$treatment[SBELEC$year == 2011] <- 1
+SBELEC$treatment[SBELEC$year == 2012] <- 1
+SBELEC$walkerdivide <- abs(SBELEC$walkersupport - .5)
+
+# Create lags
+
+
+lagvars <- c("contested", "contested2", "contested3", "primary2", "totalvotes", 
+             "VAP")
+
+SBELEC <- lag_data(SBELEC, group = "distid", time = "year", periods = c(1), 
+                 values = lagvars)
+
+
+SBELEC$time <- SBELEC$year - 2010
+
+@
+
 
 <<modelcomparisonD, fig.cap="Comparing Tax, Politics, and Policy Models of Candidate Emergence in School Board Elections Using ROC">>=
 
 ## Tax model -- voters are driven by tax concdrns
 ## Politics model -- voters are driven by political ideology
 ## Policy model -- teacher salary and benefits? 
-
-
 
 tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
                     perwhite + levy_chg + log(Population18O) +
@@ -515,7 +552,8 @@ tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
 #summary(tax_model)
 #sigma1 <- sum(residuals(tax_model, type = "pearson")^2) / df.residual(tax_model)
 
-poli_model <- glm(contested2 ~ primary2 + cum_attptsD + perwhite + Per65over + 
+poli_model <- glm(contested2 ~ primary2 + contested2.lag1 + 
+                    cum_attptsD + perwhite + Per65over + 
                    attemptsD + toprepshare + PerBachelorOrAbove +
                     median_income + log(Population18O) + fyear, 
                  data=SBELEC, family=binomial("logit"))
@@ -530,7 +568,7 @@ poly_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe +
 #summary(poly_model)
 
 uber_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
-                    avg_total_exp + log(Population18O) + 
+                    avg_total_exp + log(Population18O) + contested2.lag1 +
                     median_income +member_delta + total_attempts + 
                     primary2 + cum_attptsD + perwhite + Per65over + 
                    attemptsD + log(politicaldivide) + PerBachelorOrAbove +
@@ -539,44 +577,25 @@ uber_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe +
                   data=SBELEC, family = binomial("logit"))
                    
 
-predicted <- predict(tax_model)
+makeROCdf <- function(model, name){
+  predicted <- predict(model)
+  prob <- prediction(predicted, model$model$contested2)
+  tprfpr <- performance(prob, "tpr", "fpr")
+  tpr <- unlist(slot(tprfpr, "y.values"))
+  fpr <- unlist(slot(tprfpr, "x.values"))
+  roc <- data.frame(tpr, fpr)
+  roc$mod <- name
+  return(roc)
+}
 
-prob <- prediction(predicted, tax_model$model$contested2)
-tprfpr <- performance(prob, "tpr", "fpr")
-tpr <- unlist(slot(tprfpr, "y.values"))
-fpr <- unlist(slot(tprfpr, "x.values"))
-roc <- data.frame(tpr, fpr)
-roc$mod <- "tax"
-
-predicted <- predict(poli_model)
-prob <- prediction(predicted, poli_model$model$contested2)
-tprfpr <- performance(prob, "tpr", "fpr")
-tpr <- unlist(slot(tprfpr, "y.values"))
-fpr <- unlist(slot(tprfpr, "x.values"))
-roc2 <- data.frame(tpr, fpr)
-roc2$mod <- "politics"
-
-roc <- rbind(roc, roc2); rm(roc2)
-
-predicted <- predict(poly_model)
-prob <- prediction(predicted, poly_model$model$contested2)
-tprfpr <- performance(prob, "tpr", "fpr")
-tpr <- unlist(slot(tprfpr, "y.values"))
-fpr <- unlist(slot(tprfpr, "x.values"))
-roc2 <- data.frame(tpr, fpr)
-roc2$mod <- "policy"
+roc <- makeROCdf(tax_model, "tax")
+roc2 <- makeROCdf(poli_model, "politics")
+roc3 <- makeROCdf(poly_model, "policy")
+roc4 <- makeROCdf(uber_model, "uber")
 
 roc <- rbind(roc, roc2); rm(roc2)
-
-predicted <- predict(uber_model)
-prob <- prediction(predicted, uber_model$model$contested2)
-tprfpr <- performance(prob, "tpr", "fpr")
-tpr <- unlist(slot(tprfpr, "y.values"))
-fpr <- unlist(slot(tprfpr, "x.values"))
-roc2 <- data.frame(tpr, fpr)
-roc2$mod <- "uber"
-
-roc <- rbind(roc, roc2); rm(roc2)
+roc <- rbind(roc, roc3); rm(roc3)
+roc <- rbind(roc, roc4); rm(roc4)
 
 
 ggplot(roc) + geom_line(aes(x = fpr, y = tpr, color=mod)) + 
@@ -586,6 +605,25 @@ ggplot(roc) + geom_line(aes(x = fpr, y = tpr, color=mod)) +
   coord_cartesian(xlim=c(0, 1), ylim=c(0,1)) + theme_bw() + 
   labs(title = "Comparing Models of Candidate Contestation in School Board Elections", 
        color = "Model")
+
+@
+
+
+Model tables
+
+<<modeltables, results='asis'>>=
+library(stargazer)
+stargazer(tax_model, poli_model, poly_model, uber_model, 
+          omit = "fyear", font.size="small")
+
+@
+
+Let's look at within district variability. We can do this by fitting partial pooling 
+models using a random-intercept framework \citep{gelhill} using the \texttt{lme4} 
+package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
+trends within districts and separate between and within district variance. 
+
+<<descrmixedeff>>=
 
 # Alternative is to model number of cnadidates as poisson
 # 
@@ -617,47 +655,43 @@ ggplot(roc) + geom_line(aes(x = fpr, y = tpr, color=mod)) +
 # rr1 <- ranef(mermod1, condVar=TRUE)
 # 
 # confint(mermod1, method="Wald")
-@
-
-
-Model tables
-
-<<modeltables, results='asis'>>=
-library(stargazer)
-stargazer(tax_model, poli_model, poly_model, uber_model, 
-          omit = "fyear", font.size="small")
-
-@
-
-Let's look at within district variability. We can do this by fitting partial pooling 
-models using a random-intercept framework \citep{gelhill} using the \texttt{lme4} 
-package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
-trends within districts and separate between and within district variance. 
-
-<<descrmixedeff>>=
-
 
 @
 
 \subsection{Causal}
 
+To test the effect of the passage of Act 10 on participation in school board elections, 
+we fit a simple longitudinal model of school districts. 
+
+
 <<candidatedescriptives3, eval=FALSE, echo=FALSE>>=
 
 
 
-library(arm)
 
-SBELEC$walkerdivide <- abs(SBELEC$walkersupport - .5)
+# Base model with simple treatment dummy
+# Time model with linear time for Act 10
+# Longitudinal within district using lmer
 
-simple_model <- bayesglm(contested2 ~  millrate_delta + 
-                      walkerdivide + recallturnout +
-                   balance_member_lag + member_delta + log(Population18O) + 
-                     fyear, 
-                 data=SBELEC[SBELEC$year >= 2009, ], family="binomial")
+
+
+simple_model <- bayesglm(contested2 ~  millrate + contested2.lag1 +
+                      walkerdivide + recallturnout +  
+                       log(Population18O) + time + I(time^2), 
+                 data=SBELEC[SBELEC$year >= 2008 & SBELEC$year < 2013, ], 
+                 family="binomial")
 
 summary(simple_model)
 
+library(lme4)
+simple_lmer <- glmer(contested2 ~ treatment +  
+                       millrate + log(Population18O) +
+                       contested2.lag1 + 
+                       (1 + sqrt(walkerdivide) + recallturnout | distid), 
+                     data=SBELEC[SBELEC$year >=2008 & SBELEC$year <2013, ], 
+                     family = "binomial")
 
+summary(simple_lmer)
 ##### 
 # LME4
 
