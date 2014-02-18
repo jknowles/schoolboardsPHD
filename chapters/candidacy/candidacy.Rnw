@@ -437,11 +437,17 @@ would be to look at the number of candidates per open seat. This measure would
 differentiate between districts with wide spread contestation and those with 
 simply a single contested seat -- perhaps adding some additional information. 
 
-<<perseatcontests, >>=
-
+<<perseatcontests,  echo=FALSE, fig.cap="Serious candidates per open seat by school year in Wisconsin school districts over time.">>=
+qplot(fyear, contested3, data=SBELEC[!is.na(SBELEC$fyear),], geom='boxplot') + 
+  theme_bw() + 
+  labs(x="Year", y="Candidates per Open Seat")
 
 
 @
+
+As Figure \ref{fig:perseatcontests} demonstrates, the level of contestation per open 
+seat does not change much across the years with the vast majority of seats having 
+between 1 and 2 candidates per seat. 
 
 % Add a map of contested districts
 
