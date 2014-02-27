@@ -46,7 +46,7 @@ rm(walkerrecall)
 
 SBELEC$primary2 <- ifelse(SBELEC$primary == "None", "None", "Primary")
 SBELEC$politicaldivide <- abs(SBELEC$toprepshare - .5)
-
+SBELEC$log_politicaldivide <- log(SBELEC$politicaldivide)
 @
 
 
@@ -544,7 +544,7 @@ SBELEC$time <- SBELEC$year - 2010
 @
 
 
-<<modelcomparisonD, fig.cap="Comparing Tax, Politics, and Policy Models of Candidate Emergence in School Board Elections Using ROC">>=
+<<modelcomparisonD>>=
 
 ## Tax model -- voters are driven by tax concdrns
 ## Politics model -- voters are driven by political ideology
@@ -553,7 +553,8 @@ SBELEC$time <- SBELEC$year - 2010
 tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
                     perwhite + levy_chg + log(Population18O) +
                    balance_member_lag +  median_income + fyear, 
-                 data=SBELEC, family=binomial("logit"))
+                 data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
+                 family=binomial("logit"))
 
 #summary(tax_model)
 #sigma1 <- sum(residuals(tax_model, type = "pearson")^2) / df.residual(tax_model)
@@ -569,7 +570,8 @@ poli_model <- glm(contested2 ~ primary2 + contested2.lag1 +
 poly_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
                     avg_total_exp + log(Population18O) + 
                     median_income +member_delta + total_attempts + fyear, 
-                  data=SBELEC, family = binomial("logit"))
+                   data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
+                  family = binomial("logit"))
 
 #summary(poly_model)
 
@@ -580,7 +582,8 @@ uber_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe +
                    attemptsD + log(politicaldivide) + PerBachelorOrAbove +
                     millrate + overlevy_ind_lag +
                     levy_chg + balance_member_lag + fyear, 
-                  data=SBELEC, family = binomial("logit"))
+                   data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
+                  family = binomial("logit"))
                    
 
 makeROCdf <- function(model, name){
@@ -602,9 +605,10 @@ roc4 <- makeROCdf(uber_model, "uber")
 roc <- rbind(roc, roc2); rm(roc2)
 roc <- rbind(roc, roc3); rm(roc3)
 roc <- rbind(roc, roc4); rm(roc4)
+@
 
-
-ggplot(roc) + geom_line(aes(x = fpr, y = tpr, color=mod)) + 
+<<rocplot1, echo=FALSE, fig.cap="ROC Curves for 4 Models of Election Contestation in Wisconsin School Boards", fig.keep='last'>>=
+ggplot(roc) + geom_line(aes(x = fpr, y = tpr, color=mod), size= I(1.1)) + 
    geom_abline(intercept = 0, slope = 1, colour = "gray") + 
    ylab("Sensitivity") + 
    xlab("1 - Specificity") + 
@@ -614,6 +618,33 @@ ggplot(roc) + geom_line(aes(x = fpr, y = tpr, color=mod)) +
 
 @
 
+When understanding model fit for binomial outcomes, the receiver operating characteristic, or ROC, provides a standard metric for performance \citep{hanley, vivo, zwieg}. 
+Of particular value is the area-under-the-curve. This metric tells us how well a 
+model performances across the range of thresholds. As we are modeling a discrete 
+event -- whether or not a challenger emerges in a school district board election -- 
+it makes most sense to judge model fit using a measure of how well the model 
+accurately classifies elections into types -- contested and uncontested. 
+
+In Figure \ref{fig:rocplot1} it is clear that policy and tax variables have less 
+explanatory power than politics and the full model. The x-axis represents the 
+false-alarm rate, or uncontested elections that would be classified as contested 
+elections. The y-axis represents the true contested elections that would be 
+correctly classified. Our politics model and our uber model both exhibit superior 
+performance for a lower rate of false-alarms than the policy or tax measures. 
+
+A table of likelihood ratio tests shows the same result:
+
+<<anovatable1, results='asis'>>=
+library(xtable)
+print(xtable(anova(tax_model, poly_model, poli_model, uber_model, test="LRT")))
+@
+
+This provides some evidence that school district elections are driven by political 
+factors -- both local and cross-district -- more so than the measures of financial 
+and policy concern that we have available at a statewide level. As the task is to 
+explain school district elections using consistent and statewide available data, 
+it appears that measures of political climate in the school district are particularly 
+well suited to the task. 
 
 Model tables
 
@@ -629,7 +660,7 @@ models using a random-intercept framework \citep{gelhill} using the \texttt{lme4
 package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
 trends within districts and separate between and within district variance. 
 
-<<descrmixedeff>>=
+<<descrmixedeff, eval=FALSE>>=
 
 # Alternative is to model number of cnadidates as poisson
 # 
@@ -650,18 +681,31 @@ trends within districts and separate between and within district variance.
 # #                    balance_member_lag +  median_income + locale3, 
 # #                  data=SBELEC))
 # 
-# library(lme4)
-# 
-# mermod1 <- glmer(contested2 ~ primary2 + millrate + cum_attptsD + overlevy_ind_lag +
-#                     perwhite + levy_chg + log(politicaldivide) + 
-#                    balance_member_lag + median_income + 
-#                    (1|fyear) + (1|distid), 
-#                  data=SBELEC, family="binomial")
+library(lme4)
+
+SBELEC$distidF <- factor(SBELEC$distid)
+mermod1 <- glmer(contested2 ~  log(dv_r) +   
+    avg_total_exp + log(Population18O) +  median_income + 
+      cum_attptsD + attemptsD +
+    perwhite +  log(politicaldivide) + 
+    millrate + overlevy_ind_lag +  
+     fyear + (1 + walkerdivide|distidF), 
+                 data=SBELEC[SBELEC$year > 2004, ], family="binomial")
+
+nullmermod <- glmer(contested2 ~  log(dv_r) +   
+    avg_total_exp + log(Population18O) +  median_income + 
+      cum_attptsD + attemptsD +
+    perwhite +  log(politicaldivide) + 
+    millrate + overlevy_ind_lag +  
+     fyear + (1|distidF), 
+                 data=SBELEC[SBELEC$year > 2004, ], family="binomial")
+
+
 # summary(mermod1)
 # rr1 <- ranef(mermod1, condVar=TRUE)
 # 
 # confint(mermod1, method="Wald")
-
+#dotplot(ranef(mermod1, condVar=TRUE))
 @
 
 \subsection{Causal}
@@ -672,14 +716,9 @@ we fit a simple longitudinal model of school districts.
 
 <<candidatedescriptives3, eval=FALSE, echo=FALSE>>=
 
-
-
-
 # Base model with simple treatment dummy
 # Time model with linear time for Act 10
 # Longitudinal within district using lmer
-
-
 
 simple_model <- bayesglm(contested2 ~  millrate + contested2.lag1 +
                       walkerdivide + recallturnout +  
