@@ -16,7 +16,7 @@ MACROpart <- merge(VAP_dist, dvp, by=c("distid", "year"))
 rm(dvp, VAP_dist, cw, vaplong, vptemp)
 
 
-load("data/cache/DistrictDatabaseForDissertation.rda")
+load("data/cache/AnalyticalSampleFeb2014.rda")
 FINANCE <- newdat; rm(newdat)
 
 
@@ -59,7 +59,7 @@ SBELEC$primary[SBELEC$contested == 1] <- "Contested"
 SBELEC$contested <- NULL
 SBELEC$electiontype <- NULL
 
-FINANCE <- FINANCE[, c(1:103, 121:273)]
+FINANCE <- FINANCE[, c(1:93, 110:264)]
 FULLDAT <- merge(MACROpart, FINANCE, by = c("distid", "year"))
 
 
