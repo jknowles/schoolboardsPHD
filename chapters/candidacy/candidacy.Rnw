@@ -559,7 +559,7 @@ SBELEC$time <- SBELEC$year - 2010
 SBELEC$winshare.lag1 <- SBELEC$total_wins.lag1/ SBELEC$total_attempts.lag1
 tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
                     perwhite + levy_chg + log(Population18O) + 
-                   total_attempts.lag1 + winshare.lag1 +
+                   ref_share +
                    balance_member_lag +  median_income + fyear, 
                  data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
                  family=binomial("logit"))
@@ -568,10 +568,12 @@ tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
 #sigma1 <- sum(residuals(tax_model, type = "pearson")^2) / df.residual(tax_model)
 
 poli_model <- glm(contested2 ~ primary2 + contested2.lag1 + 
-                    cum_attptsD + perwhite + Per65over + 
-                   attemptsD + toprepshare + PerBachelorOrAbove +
+                    cum_attptsD + perwhite + Per65over + log_politicaldivide +
+                   winshare.lag1 + attemptsD.lag1 + toprepshare + 
+                    PerBachelorOrAbove +
                     median_income + log(Population18O) + fyear, 
-                 data=SBELEC, family=binomial("logit"))
+                 data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
+                 family=binomial("logit"))
 
 #summary(poli_model)
 
@@ -587,9 +589,9 @@ uber_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe +
                     avg_total_exp + log(Population18O) + contested2.lag1 +
                     median_income +member_delta + total_attempts + 
                     primary2 + cum_attptsD + perwhite + Per65over + 
-                   attemptsD + log(politicaldivide) + PerBachelorOrAbove +
+                   attemptsD.lag1 + log_politicaldivide + PerBachelorOrAbove +
                     millrate + overlevy_ind_lag + toprepshare +
-                    total_attempts.lag1 + winshare.lag1 +
+                    winshare.lag1 +
                     levy_chg + balance_member_lag + fyear, 
                    data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
                   family = binomial("logit"))
@@ -617,7 +619,8 @@ roc <- rbind(roc, roc4); rm(roc4)
 @
 
 <<rocplot1, echo=FALSE, fig.cap="ROC Curves for 4 Models of Election Contestation in Wisconsin School Boards", fig.keep='last'>>=
-ggplot(roc) + geom_line(aes(x = fpr, y = tpr, color=mod), size= I(1.1)) + 
+ggplot(roc) + geom_smooth(aes(x = fpr, y = tpr, color=mod), 
+                          se=FALSE,size= I(1.1)) + 
    geom_abline(intercept = 0, slope = 1, colour = "gray") + 
    ylab("Sensitivity") + 
    xlab("1 - Specificity") + 
@@ -640,6 +643,13 @@ false-alarm rate, or uncontested elections that would be classified as contested
 elections. The y-axis represents the true contested elections that would be 
 correctly classified. Our politics model and our uber model both exhibit superior 
 performance for a lower rate of false-alarms than the policy or tax measures. 
+
+This is not evidence that taxation and compensation policy do not matter to school 
+districts or in determining board elections. The goal here is to simply compare 
+the explanatory power of different classes of descriptive predictors available 
+statewide over time for all school districts in order to understand which, if any, 
+macro-level measures that are publicly reported provide strong evidence of a 
+school district having a contested election. 
 
 A table of likelihood ratio tests shows the same result:
 
@@ -726,15 +736,15 @@ SBELEC$distidF <- factor(SBELEC$distid)
 mermod1 <- glmer(contested2 ~  log(dv_r) +   
     avg_total_exp + log(Population18O) +  median_income + 
       cum_attptsD + attemptsD +
-    perwhite +  log(politicaldivide) + 
+    perwhite +  log_politicaldivide + 
     millrate + overlevy_ind_lag +  
-     fyear + (1 + walkerdivide|distidF), 
+     fyear + (1 + log_politicaldivide|distidF), 
                  data=SBELEC[SBELEC$year > 2004, ], family="binomial")
 
 nullmermod <- glmer(contested2 ~  log(dv_r) +   
     avg_total_exp + log(Population18O) +  median_income + 
       cum_attptsD + attemptsD +
-    perwhite +  log(politicaldivide) + 
+    perwhite +  log_politicaldivide + 
     millrate + overlevy_ind_lag +  
      fyear + (1|distidF), 
                  data=SBELEC[SBELEC$year > 2004, ], family="binomial")
@@ -846,6 +856,9 @@ School board elections are not marked by much contestation.
 <<modeltables, results='asis'>>=
 library(stargazer)
 stargazer(tax_model, poli_model, poly_model, uber_model, 
-          omit = "fyear", font.size="scriptsize")
+          omit = "fyear", font.size="scriptsize", label = "tab:descrmodels", 
+          title = "Comparing 4 Models of Contestation in School Board Elections", 
+          column.labels = c("Taxation Model", "Politics Model", "Policy Model", 
+                            "Overall Model"))
 @
 
