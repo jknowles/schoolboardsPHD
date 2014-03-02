@@ -682,6 +682,17 @@ multiplot(poli_model, tax_model, poly_model, uber_model, intercept=FALSE,
 
 @
 
+Figure \ref{fig:modelsplot} shows the coefficients and their standard errors 
+plotted for the four models.\footnote{Graph made using the excellent \texttt{coefplot} package for R along with \texttt{theme_dpi} theme for \texttt{ggplot2} provided 
+in the \texttt{eeptools} package \citep{eeptools, coefplot, gg}.} The scale is 
+exaggerated around 0 to allow for presentation of smaller coefficient sizes and 
+to be able to distinguish them from 0. 
+
+From this we can see that the comprehensive model provides point estimates very 
+close to the estimates in the corresponding topic models. We can also see that 
+most of the effects are very low - the coefficients reported here are logistic 
+coefficients - with a few pointed exceptions. 
+
 Let's look at within district variability. We can do this by fitting partial pooling 
 models using a random-intercept framework of \citet{gelhill} using the \texttt{lme4} 
 package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
