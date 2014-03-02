@@ -368,7 +368,7 @@ row.names(ab) <- c("Var", rnames)
 
 print(xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
              from the 2011-2012 school year." ), 
-      format.args = list(big.mark=","), include.rownames=TRUE, size="small")
+      format.args = list(big.mark=","), include.rownames=TRUE, size="scriptsize")
 
 rm(a, b, ab, selectVars)
 @
@@ -457,6 +457,7 @@ between 1 and 2 candidates per seat.
 Figure \ref{model} provides an illustration of way that school board elections can 
 be an important window into candidate emergence. 
 
+\clearpage
 \subsection{Methods: Descriptive}
 
 Using data gleaned from administrative records and election returns leaves little 
@@ -525,17 +526,20 @@ for the sample observed and over the time period of observation, are the most
 predictive of the emergence of contested school board seats. 
 
 <<causaldataclean, echo=FALSE, results='hide'>>=
-
 SBELEC$treatment <- 0
 SBELEC$treatment[SBELEC$year == 2011] <- 1
 SBELEC$treatment[SBELEC$year == 2012] <- 1
 SBELEC$walkerdivide <- abs(SBELEC$walkersupport - .5)
 
 # Create lags
+SBELEC$total_wins <- SBELEC$wins; SBELEC$wins <- NULL
+
+SBELEC$total_attempts <- ifelse(is.na(SBELEC$total_attempts), 0, 
+                                 SBELEC$total_attempts)
 
 
 lagvars <- c("contested", "contested2", "contested3", "primary2", "totalvotes", 
-             "VAP")
+             "VAP", "attemptsD", "total_attempts", "total_wins")
 
 SBELEC <- lag_data(SBELEC, group = "distid", time = "year", periods = c(1), 
                  values = lagvars)
@@ -552,8 +556,10 @@ SBELEC$time <- SBELEC$year - 2010
 ## Politics model -- voters are driven by political ideology
 ## Policy model -- teacher salary and benefits? 
 
+SBELEC$winshare.lag1 <- SBELEC$total_wins.lag1/ SBELEC$total_attempts.lag1
 tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
-                    perwhite + levy_chg + log(Population18O) +
+                    perwhite + levy_chg + log(Population18O) + 
+                   total_attempts.lag1 + winshare.lag1 +
                    balance_member_lag +  median_income + fyear, 
                  data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
                  family=binomial("logit"))
@@ -582,7 +588,8 @@ uber_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe +
                     median_income +member_delta + total_attempts + 
                     primary2 + cum_attptsD + perwhite + Per65over + 
                    attemptsD + log(politicaldivide) + PerBachelorOrAbove +
-                    millrate + overlevy_ind_lag +
+                    millrate + overlevy_ind_lag + toprepshare +
+                    total_attempts.lag1 + winshare.lag1 +
                     levy_chg + balance_member_lag + fyear, 
                    data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
                   family = binomial("logit"))
@@ -637,8 +644,8 @@ performance for a lower rate of false-alarms than the policy or tax measures.
 A table of likelihood ratio tests shows the same result:
 
 <<anovatable1, results='asis'>>=
-library(xtable)
-print(xtable(anova(tax_model, poly_model, poli_model, uber_model, test="LRT")))
+print(xtable(anova(tax_model, poly_model, poli_model, uber_model, test="LRT")), 
+      include.rownames=TRUE)
 @
 
 This provides some evidence that school district elections are driven by political 
@@ -650,10 +657,28 @@ well suited to the task.
 
 Model tables
 
-<<modeltables, results='asis'>>=
-library(stargazer)
-stargazer(tax_model, poli_model, poly_model, uber_model, 
-          omit = "fyear", font.size="small")
+<<modelsplot, fig.cap="Comparing Coefficients for the 4 Models of School Board Election Contestation">>=
+
+plotcoefs = c("total_attempts", "avg_total_exp", "log(politicaldivide)", 
+          "Per65over", "average_fringe", "avg_salary", "log(dv_r)", 
+          "PerBachelorOrAbove", "toprepshare", "attemptsD", "Per65over", 
+          "contested2.lag1", "primary2Primary", "median_income",
+          "balance_member_lag", "log(Population180)", "levy_chg", 
+          "perwhite", "overlevy_ind_lag", "cum_attptsD", "millrate")
+
+library(coefplot)
+
+library(scales)
+asinh_trans <- function(){
+  trans_new(name = 'asinh', transform = function(x) asinh(x * 2), 
+            inverse = function(x) sinh(x)/2)
+}
+multiplot(poli_model, tax_model, poly_model, uber_model, intercept=FALSE, 
+          coefficients = plotcoefs, sort = c("magnitude"), 
+          title = "Change in Probability of A Contested Election") + 
+  scale_x_continuous(trans = "asinh") + 
+  theme_dpi() + theme(legend.position = "bottom")
+
 
 @
 
@@ -661,6 +686,20 @@ Let's look at within district variability. We can do this by fitting partial poo
 models using a random-intercept framework of \citet{gelhill} using the \texttt{lme4} 
 package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
 trends within districts and separate between and within district variance. 
+
+The model estimated follows the form:
+
+\begin{align*} 
+\Pr_{CE_{tj}} &= \alpha_{tj} + \beta X_{tj} + \gamma_{j} + \epsilon   \\ 
+\gamma_{j} &=  \alpha_{j} + \zeta Z_{j}
+\end{align*}
+
+Here the $\gamma_{j}$ terms represent independent intercepts for each school 
+district as predicted by $Z_{j}$, a vector of school district characteristics 
+that are time invariant. $X_{tj}$ is a vector of time variant school district - 
+election cycle characteristics, some of which may be lagged. In the mixed-effect 
+framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
+is explaiend by the linear combination of $\alpha$ and $\zeta$. 
 
 <<descrmixedeff, eval=FALSE>>=
 
@@ -697,6 +736,7 @@ nullmermod <- glmer(contested2 ~  log(dv_r) +
 #dotplot(ranef(mermod1, condVar=TRUE))
 @
 
+\clearpage
 \subsection{Causal}
 
 To test the effect of the passage of Act 10 on participation in school board elections, 
@@ -787,4 +827,14 @@ dotplot(ranef(simple_lmer, condVar=TRUE))
 
 \section{Conclusions}
 
+School board elections are not marked by much contestation. 
+
+
+\section{Tables}
+
+<<modeltables, results='asis'>>=
+library(stargazer)
+stargazer(tax_model, poli_model, poly_model, uber_model, 
+          omit = "fyear", font.size="scriptsize")
+@
 

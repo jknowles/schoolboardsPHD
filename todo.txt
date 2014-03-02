@@ -3,7 +3,6 @@
 * Update the bibliography to be Chicago and not McBride
 * Implement perl script for WordCount
 * build connectors and scrapers for data
-* Reduce dependencies in the data scraping and assembly
 * Identify the number of votes a voter can cast in these elections [e-mail Rossmiller]
 * Write unit tests for data module
 * Make final manual changes to dataAssemble.R to correct for data errors in the VAP data
@@ -13,7 +12,6 @@
 * Finalize chapter 4 policy implication review/motivation/theory draft
 * Ensure that years line up right in cleandandprep_CANDIDACY file
   - Clean up data and drop unused variables
-  - Create necessary lags for school districts
 * Check if incumbency was backfilled (incumbents in first year of data by district?)
   * Back fill incumbency by using the master candidate roster if Vanessa did not do this
 * Set up meeting with David Canon -- outline some questions for this meeting 
@@ -32,7 +30,7 @@
    * Fall Primary   = 2nd Tuesday in August
 http://gab.wi.gov/elections-voting/2014/fall
 http://gab.wi.gov/elections-voting/2014/spring
-* Clean and update and take care of items in the data notes from Vanessa
 * Add teacher data to dataset
 * Add WERC data and sketch out last chapter
 * Add achievement data
+* Add school district demographics from DPI
