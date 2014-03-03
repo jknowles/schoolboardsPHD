@@ -1,0 +1,30 @@
+\documentclass{article}
+
+\begin{document}
+
+<<loadlibraries>>=
+library(ggplot2)
+library(scales)
+data(diamonds)
+@
+
+<<definetranform>>=
+asinh_trans <- function(){
+   trans_new(name = 'asinh', transform = function(x) asinh(x * 2), 
+            inverse = function(x) sinh(x)/2)
+}
+
+@
+
+
+<<buildplot1>>=
+qplot(carat, price, data=diamonds) + coord_trans(y = "sqrt")
+
+@
+
+<<buildplot2>>=
+qplot(carat, price, data=diamonds) + coord_trans(y = "asinh")
+
+@
+
+\end{document}

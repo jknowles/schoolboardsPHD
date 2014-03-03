@@ -75,3 +75,8 @@ rm(FINANCE, dat, metadata)
 
 #distyear <- as.data.frame(distyear)
 
+
+asinh_trans <- function(){
+  trans_new(name = 'asinh', transform = function(x) asinh(x * 2), 
+            inverse = function(x) sinh(x)/2)
+}

@@ -50,11 +50,12 @@ SBELEC$primary2 <- ifelse(SBELEC$primary == "None", "None", "Primary")
 SBELEC$politicaldivide <- abs(SBELEC$toprepshare - .5)
 SBELEC$log_politicaldivide <- log(SBELEC$politicaldivide)
 
-
 asinh_trans <- function(){
-  trans_new(name = 'asinh', transform = function(x) asinh(x * 2), 
+   trans_new(name = 'asinh', transform = function(x) asinh(x * 2), 
             inverse = function(x) sinh(x)/2)
 }
+
+
 @
 
 
@@ -690,14 +691,14 @@ plotcoefs = c("total_attempts", "avg_total_exp", "log(politicaldivide)",
 multiplot(poli_model, tax_model, poly_model, uber_model, intercept=FALSE, 
           coefficients = plotcoefs, sort = c("magnitude"), 
           title = "Change in Probability of A Contested Election") + 
-  scale_x_continuous(trans = "asinh") + 
+  coord_trans(x = "asinh") + 
   theme_dpi() + theme(legend.position = "bottom")
 
 
 @
 
 Figure \ref{fig:modelsplot} shows the coefficients and their standard errors 
-plotted for the four models.\footnote{Graph made using the excellent \texttt{coefplot} package for R along with \texttt{theme_dpi} theme for \texttt{ggplot2} provided 
+plotted for the four models.\footnote{Graph made using the excellent \texttt{coefplot} package for R along with \texttt{theme\_dpi} theme for \texttt{ggplot2} provided 
 in the \texttt{eeptools} package \citep{eeptools, coefplot, gg}.} The scale is 
 exaggerated around 0 to allow for presentation of smaller coefficient sizes and 
 to be able to distinguish them from 0. 

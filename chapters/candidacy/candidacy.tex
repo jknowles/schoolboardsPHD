@@ -296,7 +296,7 @@ districts in the state.
 
 
 % latex table generated in R 3.0.2 by xtable 1.7-1 package
-% Sun Mar 02 21:13:54 2014
+% Mon Mar 03 00:34:53 2014
 \begin{table}[ht]
 \centering
 {\scriptsize
@@ -495,7 +495,7 @@ school district having a contested election.
 A table of likelihood ratio tests shows the same result:
 
 % latex table generated in R 3.0.2 by xtable 1.7-1 package
-% Sun Mar 02 21:14:00 2014
+% Mon Mar 03 00:34:57 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrrr}
@@ -521,11 +521,181 @@ well suited to the task.
 
 Model tables
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-modelsplot} \caption[Comparing Coefficients for the 4 Models of School Board Election Contestation]{Comparing Coefficients for the 4 Models of School Board Election Contestation\label{fig:modelsplot}}
+\end{figure}
+
+
+\end{knitrout}
+
+
+Figure \ref{fig:modelsplot} shows the coefficients and their standard errors 
+plotted for the four models.\footnote{Graph made using the excellent \texttt{coefplot} package for R along with \texttt{theme\_dpi} theme for \texttt{ggplot2} provided 
+in the \texttt{eeptools} package \citep{eeptools, coefplot, gg}.} The scale is 
+exaggerated around 0 to allow for presentation of smaller coefficient sizes and 
+to be able to distinguish them from 0. 
+
+From this we can see that the comprehensive model provides point estimates very 
+close to the estimates in the corresponding topic models. We can also see that 
+most of the effects are very low - the coefficients reported here are logistic 
+coefficients - with a few pointed exceptions. 
+
+Let's look at within district variability. We can do this by fitting partial pooling 
+models using a random-intercept framework of \citet{gelhill} using the \texttt{lme4} 
+package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
+trends within districts and separate between and within district variance. 
+
+The model estimated follows the form:
+
+\begin{align*} 
+\Pr_{CE_{tj}} &= \alpha_{tj} + \beta X_{tj} + \gamma_{j} + \epsilon   \\ 
+\gamma_{j} &=  \alpha_{j} + \zeta Z_{j}
+\end{align*}
+
+Here the $\gamma_{j}$ terms represent independent intercepts for each school 
+district as predicted by $Z_{j}$, a vector of school district characteristics 
+that are time invariant. $X_{tj}$ is a vector of time variant school district - 
+election cycle characteristics, some of which may be lagged. In the mixed-effect 
+framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
+is explaiend by the linear combination of $\alpha$ and $\zeta$. 
+
+
+
+
+\clearpage
+\subsection{Causal}
+
+To test the effect of the passage of Act 10 on participation in school board elections, 
+we fit a simple longitudinal model of school districts. In this model, school district 
+elections are treated as repeated measures, nested within the school districts 
+themselves. Using this repeated measures framework allows us to estimate cross 
+district and within district effects. Act 10 represented a statewide intervention 
+in the relative power of school boards in Wisconsin by giving school boards much 
+more authority and control over the compensation of teachers and staff, and by 
+dramatically restricting the ability of the districts' employees to bargain over 
+wages, working conditions, and benefits. This shift in power, in essence, raised 
+the stakes for school board elections substantially and should have increased the 
+overall contestation of school board elections. 
+
+To evaluate this, a series of models of school board election contestation over 
+time are fit to attempt to detect changes in contestation levels relative to the 
+levels of contestation observed in school districts prior to the passage of 
+Act 10. If levels of contestation increase after the introduction of Act 10, even 
+after controlling for the factors that influenced this above, it would be strong 
+evidence that the statewide policy lever pulled by Act 10 did spur a response 
+from candidates in terms of increasing the attractiveness of school board seats. 
 
 
 
 
 
+\section{Conclusions}
+
+School board elections are not marked by much contestation. 
+
+
+\section{Tables}
+
+
+% Table created by stargazer v.4.5.3 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Mon, Mar 03, 2014 - 12:35:00 AM
+\begin{table}[!htbp] \centering 
+  \caption{Comparing 4 Models of Contestation in School Board Elections} 
+  \label{tab:descrmodels} 
+\scriptsize 
+\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-5} 
+\\[-1.8ex] & \multicolumn{4}{c}{contested2} \\ 
+ & Taxation Model & Politics Model & Policy Model & Overall Model \\ 
+\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
+\hline \\[-1.8ex] 
+ millrate & 0.057$^{**}$ &  &  & 0.033 \\ 
+  & (0.023) &  &  & (0.025) \\ 
+  & & & & \\ 
+ contested2.lag1 &  & 0.651$^{***}$ &  & 0.633$^{***}$ \\ 
+  &  & (0.085) &  & (0.086) \\ 
+  & & & & \\ 
+ primary2.lag1Primary &  & 0.537$^{**}$ &  & 0.530$^{**}$ \\ 
+  &  & (0.222) &  & (0.223) \\ 
+  & & & & \\ 
+ cum\_attptsD & 0.047$^{**}$ & 0.055$^{***}$ &  & 0.054$^{**}$ \\ 
+  & (0.019) & (0.020) &  & (0.021) \\ 
+  & & & & \\ 
+ overlevy\_ind\_lag & 0.232$^{**}$ &  &  & 0.250$^{**}$ \\ 
+  & (0.116) &  &  & (0.118) \\ 
+  & & & & \\ 
+ perwhite & 1.331$^{**}$ & 1.745$^{***}$ &  & 1.356$^{*}$ \\ 
+  & (0.646) & (0.655) &  & (0.729) \\ 
+  & & & & \\ 
+ levy\_chg & 0.002 &  &  & 0.003 \\ 
+  & (0.004) &  &  & (0.005) \\ 
+  & & & & \\ 
+ Per65over &  & 0.863 &  & 2.178 \\ 
+  &  & (1.240) &  & (1.379) \\ 
+  & & & & \\ 
+ log\_politicaldivide &  & 0.017 &  & 0.013 \\ 
+  &  & (0.039) &  & (0.040) \\ 
+  & & & & \\ 
+ winshare.lag1 &  & 0.482 &  & 0.455 \\ 
+  &  & (0.309) &  & (0.312) \\ 
+  & & & & \\ 
+ attemptsD.lag1 &  & $-$0.132 &  & $-$0.114 \\ 
+  &  & (0.101) &  & (0.101) \\ 
+  & & & & \\ 
+ toprepshare &  & $-$1.223$^{**}$ &  & $-$0.852 \\ 
+  &  & (0.494) &  & (0.547) \\ 
+  & & & & \\ 
+ PerBachelorOrAbove &  & $-$1.306 &  & $-$0.921 \\ 
+  &  & (1.043) &  & (1.069) \\ 
+  & & & & \\ 
+ log(dv\_r) &  &  & $-$1.280 & $-$1.698$^{**}$ \\ 
+  &  &  & (0.803) & (0.862) \\ 
+  & & & & \\ 
+ avg\_salary &  &  & $-$0.00002$^{*}$ & $-$0.00000 \\ 
+  &  &  & (0.00001) & (0.00001) \\ 
+  & & & & \\ 
+ average\_fringe &  &  & $-$0.00003$^{**}$ & $-$0.00002 \\ 
+  &  &  & (0.00001) & (0.00001) \\ 
+  & & & & \\ 
+ avg\_total\_exp &  &  & 0.026 & 0.003 \\ 
+  &  &  & (0.020) & (0.021) \\ 
+  & & & & \\ 
+ log(Population18O) & 0.540$^{***}$ & 0.498$^{***}$ & 0.636$^{***}$ & 0.511$^{***}$ \\ 
+  & (0.051) & (0.053) & (0.061) & (0.068) \\ 
+  & & & & \\ 
+ ref\_share & 0.155 &  &  &  \\ 
+  & (0.480) &  &  &  \\ 
+  & & & & \\ 
+ balance\_member\_lag & $-$0.017 &  &  & $-$0.023 \\ 
+  & (0.016) &  &  & (0.018) \\ 
+  & & & & \\ 
+ median\_income & $-$0.303$^{***}$ & $-$0.118 & $-$0.150$^{**}$ & $-$0.103 \\ 
+  & (0.059) & (0.098) & (0.061) & (0.101) \\ 
+  & & & & \\ 
+ member\_delta &  &  & $-$1.687 & $-$1.666 \\ 
+  &  &  & (1.488) & (1.571) \\ 
+  & & & & \\ 
+ total\_attempts &  &  & 0.010 & $-$0.022 \\ 
+  &  &  & (0.025) & (0.026) \\ 
+  & & & & \\ 
+ Constant & $-$5.253$^{***}$ & $-$5.069$^{***}$ & 2.325 & 2.782 \\ 
+  & (0.941) & (0.800) & (3.706) & (3.954) \\ 
+  & & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 2,618 & 2,618 & 2,618 & 2,618 \\ 
+Log Likelihood & $-$1,701.000 & $-$1,666.000 & $-$1,709.000 & $-$1,658.000 \\ 
+Akaike Inf. Crit. & 3,440.000 & 3,377.000 & 3,453.000 & 3,379.000 \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\normalsize 
+\end{tabular} 
+\end{table} 
 
 
 
