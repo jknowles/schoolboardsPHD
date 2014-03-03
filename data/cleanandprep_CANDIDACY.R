@@ -59,7 +59,7 @@ SBELEC$primary[SBELEC$contested == 1] <- "Contested"
 SBELEC$contested <- NULL
 SBELEC$electiontype <- NULL
 
-FINANCE <- FINANCE[, c(1:93, 110:264)]
+FINANCE <- FINANCE[, c(1:93, 110:263)]
 FULLDAT <- merge(MACROpart, FINANCE, by = c("distid", "year"))
 
 

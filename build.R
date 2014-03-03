@@ -2,14 +2,17 @@
 library(knitr)
 
 setwd("chapters/aboutwisconsin")
-knit("aboutwisconsin.Rnw",envir=new.env())
+knit("aboutwisconsin.Rnw", envir=new.env())
+rm(list=ls())
 setwd("../candidacy")
-knit("candidacy.Rnw",envir=new.env())
+knit("candidacy.Rnw", envir=new.env())
+rm(list=ls())
 setwd("../voterturnout")
-knit("voterturnout.Rnw",envir=new.env())
+knit("voterturnout.Rnw", envir=new.env())
+rm(list=ls())
 setwd("../policy")
-knit("policy.Rnw",envir=new.env())
-
+knit("policy.Rnw", envir=new.env())
+rm(list=ls())
 setwd("../..")
 
 # Set texenv

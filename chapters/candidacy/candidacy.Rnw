@@ -22,7 +22,9 @@ options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 library(eeptools); library(gridExtra)
 library(ROCR); library(lme4)
 library(arm)
-
+library(coefplot)
+library(scales); 
+library(stargazer)
 
 SBELEC$contested <- ifelse(SBELEC$candidates > SBELEC$winners, 1, 0)
 SBELEC$contested2 <- ifelse((SBELEC$candidates - SBELEC$minorcand) > SBELEC$winners, 1, 0)
@@ -47,6 +49,12 @@ rm(walkerrecall)
 SBELEC$primary2 <- ifelse(SBELEC$primary == "None", "None", "Primary")
 SBELEC$politicaldivide <- abs(SBELEC$toprepshare - .5)
 SBELEC$log_politicaldivide <- log(SBELEC$politicaldivide)
+
+
+asinh_trans <- function(){
+  trans_new(name = 'asinh', transform = function(x) asinh(x * 2), 
+            inverse = function(x) sinh(x)/2)
+}
 @
 
 
@@ -546,6 +554,9 @@ SBELEC <- lag_data(SBELEC, group = "distid", time = "year", periods = c(1),
 
 
 SBELEC$time <- SBELEC$year - 2010
+SBELEC$winshare.lag1 <- SBELEC$total_wins.lag1/ SBELEC$total_attempts.lag1
+
+SBELEC$winshare.lag1 <- ifelse(is.na(SBELEC$winshare.lag1), 0, SBELEC$winshare.lag1)
 
 @
 
@@ -556,7 +567,6 @@ SBELEC$time <- SBELEC$year - 2010
 ## Politics model -- voters are driven by political ideology
 ## Policy model -- teacher salary and benefits? 
 
-SBELEC$winshare.lag1 <- SBELEC$total_wins.lag1/ SBELEC$total_attempts.lag1
 tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
                     perwhite + levy_chg + log(Population18O) + 
                    ref_share +
@@ -567,9 +577,9 @@ tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
 #summary(tax_model)
 #sigma1 <- sum(residuals(tax_model, type = "pearson")^2) / df.residual(tax_model)
 
-poli_model <- glm(contested2 ~ primary2 + contested2.lag1 + 
+poli_model <- glm(contested2 ~ contested2.lag1 + primary2.lag1 +
                     cum_attptsD + perwhite + Per65over + log_politicaldivide +
-                   winshare.lag1 + attemptsD.lag1 + toprepshare + 
+                   winshare.lag1 + attemptsD.lag1 +  toprepshare +
                     PerBachelorOrAbove +
                     median_income + log(Population18O) + fyear, 
                  data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
@@ -588,7 +598,7 @@ poly_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe +
 uber_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
                     avg_total_exp + log(Population18O) + contested2.lag1 +
                     median_income +member_delta + total_attempts + 
-                    primary2 + cum_attptsD + perwhite + Per65over + 
+                    primary2.lag1 + cum_attptsD + perwhite + Per65over + 
                    attemptsD.lag1 + log_politicaldivide + PerBachelorOrAbove +
                     millrate + overlevy_ind_lag + toprepshare +
                     winshare.lag1 +
@@ -676,13 +686,7 @@ plotcoefs = c("total_attempts", "avg_total_exp", "log(politicaldivide)",
           "balance_member_lag", "log(Population180)", "levy_chg", 
           "perwhite", "overlevy_ind_lag", "cum_attptsD", "millrate")
 
-library(coefplot)
 
-library(scales)
-asinh_trans <- function(){
-  trans_new(name = 'asinh', transform = function(x) asinh(x * 2), 
-            inverse = function(x) sinh(x)/2)
-}
 multiplot(poli_model, tax_model, poly_model, uber_model, intercept=FALSE, 
           coefficients = plotcoefs, sort = c("magnitude"), 
           title = "Change in Probability of A Contested Election") + 
@@ -854,7 +858,6 @@ School board elections are not marked by much contestation.
 \section{Tables}
 
 <<modeltables, results='asis'>>=
-library(stargazer)
 stargazer(tax_model, poli_model, poly_model, uber_model, 
           omit = "fyear", font.size="scriptsize", label = "tab:descrmodels", 
           title = "Comparing 4 Models of Contestation in School Board Elections", 

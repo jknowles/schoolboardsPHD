@@ -296,10 +296,10 @@ districts in the state.
 
 
 % latex table generated in R 3.0.2 by xtable 1.7-1 package
-% Fri Feb 28 20:28:21 2014
+% Sun Mar 02 21:13:54 2014
 \begin{table}[ht]
 \centering
-{\small
+{\scriptsize
 \begin{tabular}{rrrrr}
   \hline
  & Sample (mean) & Sample (SD) & Out of Sample (mean) & Out of Sample (SD) \\ 
@@ -312,7 +312,7 @@ Total Population & 13,793.33 & 22,705.65 & 12,908.58 & 56,139.76 \\
   Share Bachelor + & 0.16 & 0.07 & 0.16 & 0.07 \\ 
   Average Salary & 52,052.83 & 6,103.28 & 50,917.02 & 6,479.56 \\ 
   Average Fringe & 28,319.19 & 3,716.63 & 28,290.19 & 3,701.06 \\ 
-  Median Income & 34,000.00 & 9,100.00 & 32,700.00 & 8,400.00 \\ 
+  Median Income & 34,000.00 & 9,100.00 & 33,000.00 & 8,600.00 \\ 
   Owner Occupied Share & 0.67 & 0.13 & 0.66 & 0.15 \\ 
   Lagged Acct. Balance & 8,142.53 & 10,802.10 & 7,245.33 & 14,682.82 \\ 
    \hline
@@ -386,6 +386,7 @@ between 1 and 2 candidates per seat.
 Figure \ref{model} provides an illustration of way that school board elections can 
 be an important window into candidate emergence. 
 
+\clearpage
 \subsection{Methods: Descriptive}
 
 Using data gleaned from administrative records and election returns leaves little 
@@ -484,20 +485,27 @@ elections. The y-axis represents the true contested elections that would be
 correctly classified. Our politics model and our uber model both exhibit superior 
 performance for a lower rate of false-alarms than the policy or tax measures. 
 
+This is not evidence that taxation and compensation policy do not matter to school 
+districts or in determining board elections. The goal here is to simply compare 
+the explanatory power of different classes of descriptive predictors available 
+statewide over time for all school districts in order to understand which, if any, 
+macro-level measures that are publicly reported provide strong evidence of a 
+school district having a contested election. 
+
 A table of likelihood ratio tests shows the same result:
 
 % latex table generated in R 3.0.2 by xtable 1.7-1 package
-% Fri Feb 28 20:28:25 2014
+% Sun Mar 02 21:14:00 2014
 \begin{table}[ht]
 \centering
-\begin{tabular}{rrrrr}
+\begin{tabular}{lrrrrr}
   \hline
-Resid. Df & Resid. Dev & Df & Deviance & Pr($>$Chi) \\ 
+ & Resid. Df & Resid. Dev & Df & Deviance & Pr($>$Chi) \\ 
   \hline
-2542 & 3320.20 &  &  &  \\ 
-  2542 & 3329.35 & -0 & -9.16 &  \\ 
-  2540 & 3194.86 & 2 & 134.49 & 0.0000 \\ 
-  2530 & 3184.25 & 10 & 10.61 & 0.3887 \\ 
+1 & 2599 & 3402.03 &  &  &  \\ 
+  2 & 2600 & 3417.24 & -1 & -15.22 & 0.0001 \\ 
+  3 & 2596 & 3332.75 & 4 & 84.49 & 0.0000 \\ 
+  4 & 2586 & 3315.07 & 10 & 17.68 & 0.0606 \\ 
    \hline
 \end{tabular}
 \end{table}
@@ -514,133 +522,10 @@ well suited to the task.
 Model tables
 
 
-% Table created by stargazer v.4.5.3 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Fri, Feb 28, 2014 - 8:28:27 PM
-\begin{table}[!htbp] \centering 
-  \caption{} 
-  \label{} 
-\small 
-\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-5} 
-\\[-1.8ex] & \multicolumn{4}{c}{contested2} \\ 
-\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
-\hline \\[-1.8ex] 
- millrate & 0.026 &  &  & 0.022 \\ 
-  & (0.024) &  &  & (0.026) \\ 
-  & & & & \\ 
- primary2Primary &  & 1.974$^{***}$ &  & 1.958$^{***}$ \\ 
-  &  & (0.319) &  & (0.318) \\ 
-  & & & & \\ 
- contested2.lag1 &  & 0.659$^{***}$ &  & 0.652$^{***}$ \\ 
-  &  & (0.086) &  & (0.087) \\ 
-  & & & & \\ 
- cum\_attptsD & 0.045$^{**}$ & 0.034$^{*}$ &  & 0.032 \\ 
-  & (0.019) & (0.020) &  & (0.021) \\ 
-  & & & & \\ 
- overlevy\_ind\_lag & 0.226$^{*}$ &  &  & 0.256$^{**}$ \\ 
-  & (0.117) &  &  & (0.120) \\ 
-  & & & & \\ 
- perwhite & 1.457$^{**}$ & 2.021$^{***}$ &  & 1.620$^{**}$ \\ 
-  & (0.645) & (0.684) &  & (0.754) \\ 
-  & & & & \\ 
- levy\_chg & 0.002 &  &  & 0.003 \\ 
-  & (0.004) &  &  & (0.004) \\ 
-  & & & & \\ 
- Per65over &  & 1.026 &  & 1.759 \\ 
-  &  & (1.257) &  & (1.421) \\ 
-  & & & & \\ 
- attemptsD &  & 0.244$^{**}$ &  & 0.275$^{**}$ \\ 
-  &  & (0.114) &  & (0.115) \\ 
-  & & & & \\ 
- toprepshare &  & $-$1.087$^{**}$ &  &  \\ 
-  &  & (0.502) &  &  \\ 
-  & & & & \\ 
- log(politicaldivide) &  &  &  & 0.014 \\ 
-  &  &  &  & (0.040) \\ 
-  & & & & \\ 
- PerBachelorOrAbove &  & $-$1.209 &  & $-$0.450 \\ 
-  &  & (1.058) &  & (1.038) \\ 
-  & & & & \\ 
- log(dv\_r) &  &  & $-$1.175 & $-$1.307 \\ 
-  &  &  & (0.803) & (0.878) \\ 
-  & & & & \\ 
- avg\_salary &  &  & $-$0.00002 & $-$0.00001 \\ 
-  &  &  & (0.00001) & (0.00001) \\ 
-  & & & & \\ 
- average\_fringe &  &  & $-$0.00003$^{*}$ & $-$0.00002 \\ 
-  &  &  & (0.00001) & (0.00002) \\ 
-  & & & & \\ 
- avg\_total\_exp &  &  & 0.013 & $-$0.0002 \\ 
-  &  &  & (0.021) & (0.022) \\ 
-  & & & & \\ 
- log(Population18O) & 0.554$^{***}$ & 0.485$^{***}$ & 0.641$^{***}$ & 0.493$^{***}$ \\ 
-  & (0.051) & (0.054) & (0.061) & (0.069) \\ 
-  & & & & \\ 
- balance\_member\_lag & $-$0.011 &  &  & $-$0.017 \\ 
-  & (0.017) &  &  & (0.018) \\ 
-  & & & & \\ 
- median\_income & $-$0.293$^{***}$ & $-$0.100 & $-$0.153$^{**}$ & $-$0.152 \\ 
-  & (0.060) & (0.100) & (0.062) & (0.098) \\ 
-  & & & & \\ 
- member\_delta &  &  & $-$1.746 & $-$1.999 \\ 
-  &  &  & (1.505) & (1.600) \\ 
-  & & & & \\ 
- total\_attempts &  &  & 0.004 & $-$0.025 \\ 
-  &  &  & (0.025) & (0.027) \\ 
-  & & & & \\ 
- Constant & $-$5.253$^{***}$ & $-$5.487$^{***}$ & 1.781 & 0.917 \\ 
-  & (0.944) & (0.834) & (3.706) & (4.039) \\ 
-  & & & & \\ 
-\hline \\[-1.8ex] 
-Observations & 2,560 & 2,560 & 2,560 & 2,560 \\ 
-Log Likelihood & $-$1,660.000 & $-$1,597.000 & $-$1,665.000 & $-$1,592.000 \\ 
-Akaike Inf. Crit. & 3,356.000 & 3,235.000 & 3,365.000 & 3,244.000 \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\normalsize 
-\end{tabular} 
-\end{table} 
-
-
-
-Let's look at within district variability. We can do this by fitting partial pooling 
-models using a random-intercept framework of \citet{gelhill} using the \texttt{lme4} 
-package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
-trends within districts and separate between and within district variance. 
-
-
-
-
-\subsection{Causal}
-
-To test the effect of the passage of Act 10 on participation in school board elections, 
-we fit a simple longitudinal model of school districts. In this model, school district 
-elections are treated as repeated measures, nested within the school districts 
-themselves. Using this repeated measures framework allows us to estimate cross 
-district and within district effects. Act 10 represented a statewide intervention 
-in the relative power of school boards in Wisconsin by giving school boards much 
-more authority and control over the compensation of teachers and staff, and by 
-dramatically restricting the ability of the districts' employees to bargain over 
-wages, working conditions, and benefits. This shift in power, in essence, raised 
-the stakes for school board elections substantially and should have increased the 
-overall contestation of school board elections. 
-
-To evaluate this, a series of models of school board election contestation over 
-time are fit to attempt to detect changes in contestation levels relative to the 
-levels of contestation observed in school districts prior to the passage of 
-Act 10. If levels of contestation increase after the introduction of Act 10, even 
-after controlling for the factors that influenced this above, it would be strong 
-evidence that the statewide policy lever pulled by Act 10 did spur a response 
-from candidates in terms of increasing the attractiveness of school board seats. 
 
 
 
 
 
-\section{Conclusions}
 
 
