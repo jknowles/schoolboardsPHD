@@ -508,6 +508,32 @@ Here, $\Pr_{CE_{t}}$ represents the probability that a school board seat is cont
 in an election. The $X_{t-1}$ represent lagged variables measuring school districts 
 in three domains -- taxation decisions, political conditions, and policy choices. 
 
+Table \ref{tab:emergenceD} shows the theories and expected evidence in support of 
+them that can be explored using a descriptive analysis of the Wisconsin data. Here 
+we are evaluating what evidence there is that is suggestive of a relationship in 
+macro-level motivations among school board candidates common across the state of 
+Wisconsin. A lack of evidence tells us that we have the wrong measures. Finding 
+supportive measures suggests that further work with better measures should be 
+undertaken. 
+
+\begin{table}[h!]
+\begin{center}
+\begin{small}
+\caption{Theories of Candidate Emergence and Expected Evidence}
+\label{tab:emergenceD}
+\begin{tabular}{| p{.15\textwidth} | p{.2\textwidth} | p{.6\textwidth} |}
+\hline
+\textbf{Theory}  & \textbf{Citation} & \textbf{Expected Finding} \\ \hline
+Strategic Candidates  & \citet{Plutzer2002} & Change in partisanship preceeds increase in candidates \\ \hline
+Policy Oriented Candidates & \citet{deckman1, CanonBook} & Changes in policy drive change \\ \hline
+%Fiscal Revolt & \citet{RefWorks:297,RefWorks:271} & Union membership as share of electorate drives up turnout \\ \hline
+Ambition & \citet{AJPS:AJPS147, Lasswell} & No data available to test \\ \hline
+Dissatisfaction & \citet{RefWorks:297,RefWorks:271} & Failed referenda leads to more candidates running \\ \hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
 \subsection{Methods: Causal}
 
 Combining this information with returns from the late spring recall election of 
