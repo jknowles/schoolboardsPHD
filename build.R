@@ -1,8 +1,19 @@
 # Do Sweave
 library(knitr)
 
+# libraries
+# library(eeptools)
+# library(ROCR)
+# library(coefplot)
+# library(eeptools); library(gridExtra)
+# library(ROCR); library(lme4)
+# library(arm)
+# library(coefplot)
+# library(scales); 
+# library(stargazer)
+
 setwd("chapters/aboutwisconsin")
-knit("aboutwisconsin.Rnw", envir=new.env())
+#knit("aboutwisconsin.Rnw", envir=new.env())
 rm(list=ls())
 setwd("../candidacy")
 knit("candidacy.Rnw", envir=new.env())

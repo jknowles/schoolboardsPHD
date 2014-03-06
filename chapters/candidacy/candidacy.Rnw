@@ -491,7 +491,7 @@ between 1 and 2 candidates per seat.
 \clearpage
 \subsection{Methods: Descriptive}
 
-Using data gleaned from administrative records and election returns leaves little 
+Using administrative records and election returns leaves little 
 room to conduct an in-depth analysis at the motivations of individual candidates 
 to run. In the literature there is only very sparse indication about what local factors 
 may cause candidates to enter a school board race. This is likely due to the limits 
@@ -521,7 +521,7 @@ undertaken.
 \begin{small}
 \caption{Theories of Candidate Emergence and Expected Evidence}
 \label{tab:emergenceD}
-\begin{tabular}{| p{.15\textwidth} | p{.2\textwidth} | p{.6\textwidth} |}
+\begin{tabular}{| p{.2\textwidth} | p{.25\textwidth} | p{.45\textwidth} |}
 \hline
 \textbf{Theory}  & \textbf{Citation} & \textbf{Expected Finding} \\ \hline
 Strategic Candidates  & \citet{Plutzer2002} & Change in partisanship preceeds increase in candidates \\ \hline
@@ -533,6 +533,35 @@ Dissatisfaction & \citet{RefWorks:297,RefWorks:271} & Failed referenda leads to 
 \end{small}
 \end{center}
 \end{table}
+
+To do this we will fit three models plus an overall model: 
+
+
+\begin{table}[h!]
+\begin{center}
+\begin{small}
+\caption{Descriptive Models of Candidate Emergence}
+\label{tab:emergenceDmodels}
+\begin{tabular}{| p{.1\textwidth} | p{.4\textwidth} | p{.35\textwidth} |}
+\hline
+\textbf{Model}  & \textbf{Predictors} & \textbf{Interpretation} \\ \hline
+Fiscal   & revenue limit, tax rate, median income, referenda & If the model is explanatory, fiscal forces may motivate candidates\\ \hline
+Politics & Lagged contestation, lagged primary, cumulative debt referenda, political division, lagged referendum & Political activity \\ \hline
+%Fiscal Revolt & \citet{RefWorks:297,RefWorks:271} & Union membership as share of electorate drives up turnout \\ \hline
+Policy & teacher compensation, referenda attempts & Unsure \\ \hline \hline
+Controls & District population, white \%,  median income & To control for differences in contexts \\ \hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+There are some unexplored measures to be added including the turnover of the 
+district administrator (to test dissatisfaction theory), union support in the 
+district measured by recertification strength, and more precise measures of 
+referenda outcomes, share of students in public education,  and school and 
+district staff, teacher, and administrative salaries. This section will be much 
+improved!
+
 
 \subsection{Methods: Causal}
 
@@ -720,7 +749,7 @@ well suited to the task.
 
 Model tables
 
-<<modelsplot, fig.cap="Comparing Coefficients for the 4 Models of School Board Election Contestation">>=
+<<modelsplot, fig.cap="Comparing Coefficients for the 4 Models of School Board Election Contestation", fig.height=9>>=
 
 plotcoefs = c("total_attempts", "avg_total_exp", "log(politicaldivide)", 
           "Per65over", "average_fringe", "avg_salary", "log(dv_r)", 
@@ -803,6 +832,11 @@ nullmermod <- glmer(contested2 ~  log(dv_r) +
 # confint(mermod1, method="Wald")
 #dotplot(ranef(mermod1, condVar=TRUE))
 @
+
+Here is some text about the within district variation. 
+
+Not sure which specification to use yet. 
+
 
 \clearpage
 \subsection{Causal}
