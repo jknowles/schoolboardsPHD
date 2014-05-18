@@ -80,3 +80,28 @@ asinh_trans <- function(){
   trans_new(name = 'asinh', transform = function(x) asinh(x * 2), 
             inverse = function(x) sinh(x)/2)
 }
+
+
+############################################################
+# District administrators
+############################################################
+# 
+# da0212<-read.csv('cache/districtadmin0211.csv',colClasses='character')
+# da0212[,1]<-as.factor(da0212[,1])
+# da0212[,2]<-as.factor(da0212[,2])
+# da0212[,3]<-as.factor(da0212[,3])
+# da0212[,31]<-as.factor(da0212[,31])
+# 
+# da0212$district<-as.character(da0212$district)
+# da0212$district<-as.numeric(da0212$district)
+# da0212$year<-as.character(da0212$year)
+# da0212$year<-as.numeric(da0212$year)
+# 
+# sub<-subset(da0212,select=c('year','district','contact_name','district_name'))
+# 
+# admintenure<-ddply(sub,.(contact_name,district,district_name),summarise,start=min(year,na.rm=T),
+#                    end=max(year,na.rm=T),.progress='text')
+# 
+# adminsperdistrict<-ddply(admintenure,.(district),summarise,change=length(start))
+# 
+# rm(da0212,sub)
