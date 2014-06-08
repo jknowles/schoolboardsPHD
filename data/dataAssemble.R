@@ -4,20 +4,24 @@
 ################################################################################
 
 library(data.table); library(plyr)
-struc <- list.dirs("../Data/sbelectionresults")
+struc <- list.dirs("../Data/sbelectionresults", recursive = FALSE)
 file.exists(Sys.glob(file.path(struc[5],"*.csv")))
 
 dat <- read.csv(Sys.glob(file.path(struc[6],"*.csv")))
 dat <- dat[0, ]
-
-
-struc <- struc[-1]
+names(dat) <- tolower(names(dat))
+names(dat) <- gsub("\\.", "", names(dat))
+#struc <- struc[-1]
 
 
 for(i in 1:length(struc)){
   f <- Sys.glob(file.path(struc[i],"*.csv"))
   if(length(f) > 0){
     tmp <- read.csv(f)
+    names(tmp) <- tolower(names(tmp))
+    # clean up names
+    names(tmp) <- gsub("\\.", "", names(tmp))
+    names(tmp) <- gsub("q", "", names(tmp))
     dat <- rbind.fill(dat, tmp)
     rm(tmp)    
   } else if(length(f) < 1){
