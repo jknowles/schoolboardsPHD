@@ -84,10 +84,10 @@ asinh_trans <- function(){
 
 ############################################################
 # District administrators
-############################################################
-# 
+# ############################################################
+# # 
 # da0212<-read.csv('cache/districtadmin0211.csv',colClasses='character')
-# da0212[,1]<-as.factor(da0212[,1])
+# da0212[,1]<-as.numeric(da0212[,1])
 # da0212[,2]<-as.factor(da0212[,2])
 # da0212[,3]<-as.factor(da0212[,3])
 # da0212[,31]<-as.factor(da0212[,31])
@@ -102,6 +102,12 @@ asinh_trans <- function(){
 # admintenure<-ddply(sub,.(contact_name,district,district_name),summarise,start=min(year,na.rm=T),
 #                    end=max(year,na.rm=T),.progress='text')
 # 
+# admintenure$turnover <- 0 
+# admintenure$turnover[admintenure$start > 2002] <- 1
+# 
 # adminsperdistrict<-ddply(admintenure,.(district),summarise,change=length(start))
 # 
-# rm(da0212,sub)
+
+
+
+rm(da0212,sub)

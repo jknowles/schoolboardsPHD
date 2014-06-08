@@ -3,7 +3,7 @@
 # Check data for errors
 ################################################################################
 
-library(data.table)
+library(data.table); library(plyr)
 struc <- list.dirs("../Data/sbelectionresults")
 file.exists(Sys.glob(file.path(struc[5],"*.csv")))
 
@@ -18,7 +18,7 @@ for(i in 1:length(struc)){
   f <- Sys.glob(file.path(struc[i],"*.csv"))
   if(length(f) > 0){
     tmp <- read.csv(f)
-    dat <- rbind(dat, tmp)
+    dat <- rbind.fill(dat, tmp)
     rm(tmp)    
   } else if(length(f) < 1){
     message("skip")
@@ -34,6 +34,13 @@ if(length(dat$distid[is.na(dat$distid)]) > 1){
   print(paste0("NAs in District IDs: ", length(dat$distid[is.na(dat$distid)])))
 } else {
   print("No missing district IDs")
+}
+
+
+if(length(dat$Race.ID[is.na(dat$Race.ID)]) > 1){
+  print(paste0("NAs in Race IDs: ", length(dat$Race.ID[is.na(dat$Race.ID)])))
+} else {
+  print("No missing Race IDs")
 }
 
 
@@ -80,6 +87,26 @@ print(paste0(length(dat$votes[is.na(dat$votes)]),
              " observations with NA votes"))
 print(paste0(length(dat$votes[dat$votes > 50000 & !is.na(dat$votes)]), 
              " observations with greater than 50,000 votes"))
+
+## Races
+
+names(dat)
+
+# Make unique race ID by district and year
+
+dat$raceID <- paste(dat$distid, dat$year, dat$Race.ID, sep = "-")
+length(unique(dat$raceID))
+
+plyr::ddply(dat, .(year), summarize, uniqueRaces = length(unique(raceID)))
+
+plyr::ddply(dat, .(year), summarize, 
+            racesperDistrict = length(unique(raceID))/ length(unique(distid)))
+
+
+# 
+# plyr::ddply(dat, .(year, distid), summarize, 
+#             candidatesPerRace = length(unique(raceID))/ length(unique(candidateid2)))
+
 
 # Winners
 table(dat$winner)
