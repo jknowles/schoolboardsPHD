@@ -41,8 +41,8 @@ if(length(dat$distid[is.na(dat$distid)]) > 1){
 }
 
 
-if(length(dat$Race.ID[is.na(dat$Race.ID)]) > 1){
-  print(paste0("NAs in Race IDs: ", length(dat$Race.ID[is.na(dat$Race.ID)])))
+if(length(dat$Race.ID[is.na(dat$raceid)]) > 1){
+  print(paste0("NAs in Race IDs: ", length(dat$Race.ID[is.na(dat$raceid)])))
 } else {
   print("No missing Race IDs")
 }
@@ -52,8 +52,8 @@ mysub <- dat[is.na(dat$distid),]
 
 if(is.null(dim(mysub[!is.na(mysub)]))){
   dat <- dat[!is.na(dat$distid),]
+  print(paste0(nrow(mysub), " spurious rows removed."))
   rm(mysub)
-  print("Spurious rows removed.")
 } else {
   print("Check NAs in mysub dataframe")
 }
@@ -72,6 +72,18 @@ print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$electiontyp
 print(paste0(length(dat$electiontype[dat$electiontype > 3 | dat$electiontype < 1]), 
              " observations with improper election type"))
 
+
+# candidate ID
+## Recode Scatter
+
+dat$candidateid[tolower(dat$first) == "scatter"] <- 99
+
+print(paste0(length(dat$candidateid[is.na(dat$candidateid)]), " observations missing candidate id"))
+print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$candidateid)]), collapse="|")))
+print(paste0(length(dat$candidateid[dat$candidateid == 99]), 
+             " observations of scatter votes"))
+print(paste0(sum(dat$votes[is.na(dat$candidateid)], na.rm=TRUE), " votes cast for candidates with no ID and not scatter"))
+
 # Candidate IDs
 ## Make them unique by school district
 ##
@@ -89,7 +101,7 @@ print(paste0(length(dat$votes[dat$votes < 2]),
              " observations with less than 2 votes"))
 print(paste0(length(dat$votes[is.na(dat$votes)]), 
              " observations with NA votes"))
-print(paste0(length(dat$votes[dat$votes > 50000 & !is.na(dat$votes)]), 
+print(paste0(length(dat$votes[dat$votes > 20000 & !is.na(dat$votes)]), 
              " observations with greater than 50,000 votes"))
 
 ## Races
@@ -98,14 +110,13 @@ names(dat)
 
 # Make unique race ID by district and year
 
-dat$raceID <- paste(dat$distid, dat$year, dat$Race.ID, sep = "-")
-length(unique(dat$raceID))
+dat$raceid2 <- paste(dat$distid, dat$year, dat$raceid, sep = "-")
+length(unique(dat$raceid2))
 
-plyr::ddply(dat, .(year), summarize, uniqueRaces = length(unique(raceID)))
+plyr::ddply(dat, .(year), summarize, uniqueRaces = length(unique(raceid2)))
 
 plyr::ddply(dat, .(year), summarize, 
-            racesperDistrict = length(unique(raceID))/ length(unique(distid)))
-
+            racesperDistrict = length(unique(raceid2))/ length(unique(distid)))
 
 # 
 # plyr::ddply(dat, .(year, distid), summarize, 
@@ -145,18 +156,18 @@ print(paste0(length(dat$incumbent[is.na(dat$incumbent)]),
 
 
 # Repeaters
-table(dat$"repeat.")
+table(dat$"repeat")
 
-print(paste0(length(dat$"repeat."[dat$"repeat." != 0 & dat$"repeat." != 1 & 
-                                    !is.na(dat$"repeat.")]), 
+print(paste0(length(dat$"repeat"[dat$"repeat" != 0 & dat$"repeat" != 1 & 
+                                    !is.na(dat$"repeat")]), 
              " observations with invalid repeater codes."))
 
-print(paste0(dat$distid[dat$"repeat." != 0 & dat$"repeat." != 1 & 
-                          !is.na(dat$"repeat.")], 
+print(paste0(dat$distid[dat$"repeat" != 0 & dat$"repeat" != 1 & 
+                          !is.na(dat$"repeat")], 
              " district id with invalid repeater codes."))
 
 
-print(paste0(length(dat$"repeat."[is.na(dat$"repeat.")]), 
+print(paste0(length(dat$"repeat"[is.na(dat$"repeat")]), 
              " observations with missing repeater codes."))
 
 
@@ -178,7 +189,7 @@ print(paste0(length(dat$minor[is.na(dat$minor)]),
 
 # Notes
 
-dat$notes[is.na(dat$notes)] <- ""
+# dat$notes[is.na(dat$notes)] <- ""
 
 #################
 # Final output

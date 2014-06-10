@@ -46,5 +46,14 @@ http://gab.wi.gov/elections-voting/2014/spring
  - Lagged and regular
 * Calculate incumbency rates and incumbency defeat rates by district
 * Update research log
+
+########################
+# Data cleaning
+#########################
 * Clean up data issues identified by Jason Orne
 * Identify "off elections" with highly contested spring elections
+* Check winners counts for sanity by calculating board size and comparing to number of winners
+* Check for races without winners
+* Flag races with all winners
+* Backfill incumbency using snapshot of board size
+* Get board size into the dataset, compare with winner lists
