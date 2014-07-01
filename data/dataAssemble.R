@@ -101,6 +101,9 @@ print(paste0(length(dat$votes[dat$votes < 2]),
              " observations with less than 2 votes"))
 print(paste0(length(dat$votes[is.na(dat$votes)]), 
              " observations with NA votes"))
+
+print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$votes)]), collapse="|")))
+
 print(paste0(length(dat$votes[dat$votes > 20000 & !is.na(dat$votes)]), 
              " observations with greater than 50,000 votes"))
 
@@ -138,6 +141,8 @@ print(paste0(dat$distid[dat$winner != 0 & dat$winner != 1 &
 print(paste0(length(dat$winner[is.na(dat$winner)]), 
              " observations with missing winner codes."))
 
+print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$winner)]), collapse="|")))
+
 # Incumbents
 
 table(dat$incumbent)
@@ -153,6 +158,8 @@ print(paste0(dat$distid[dat$incumbent != 0 & dat$incumbent != 1 &
 
 print(paste0(length(dat$incumbent[is.na(dat$incumbent)]), 
              " observations with missing incumbent codes."))
+
+print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$incumbent)]), collapse="|")))
 
 
 # Repeaters

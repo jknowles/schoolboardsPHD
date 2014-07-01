@@ -50,10 +50,49 @@ http://gab.wi.gov/elections-voting/2014/spring
 ########################
 # Data cleaning
 #########################
-* Clean up data issues identified by Jason Orne
+* Clean up data issues identified by Jason Orne (DONE)
 * Identify "off elections" with highly contested spring elections
 * Check winners counts for sanity by calculating board size and comparing to number of winners
 * Check for races without winners
 * Flag races with all winners
 * Backfill incumbency using snapshot of board size
 * Get board size into the dataset, compare with winner lists
+* Look at Door County school districts using data received from County Clerk
+
+############################
+# Districts to clean up
+###########################
+***********************
+Check TREVOR WILMOT
+Impute votes for Albany? (63)
+Check CAMPBELLSPORT for accuracy
+Check Gale-Ettrick-Trempeleau 2003 for vote totals
+Check Glendale-River Hills for vote totals in 2002
+Check Hartford J1 for vote totals
+Check Maple Dale Indian Hills for vote totals
+Check Marathon for vote totals
+Check Monticello for vote totals
+Check Necedah for vote totals
+Check Neillsville for vote totals
+Oconto for vote totals
+Oostburg for vote totals
+Weyauwega-Fremont for vote totals
+Check Wilmot UHS for vote totals
+Check Wonewoc-Union Center for vote totals
+
+Confirm Winners:
+Abbotsford
+Almond Bancroft
+Antigo
+Bristol
+Campbellsport
+Cedarburg
+Gale-Ettrick
+SCRAP GoodmanArmstrong Creek?
+Hortonville
+Osseo
+Pepin
+Wautoma 2011
+Beloit 2011 Listenbee
+
+Check Incumbency
