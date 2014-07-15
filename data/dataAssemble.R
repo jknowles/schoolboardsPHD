@@ -17,7 +17,7 @@ names(dat) <- gsub("\\.", "", names(dat))
 for(i in 1:length(struc)){
   f <- Sys.glob(file.path(struc[i],"*.csv"))
   if(length(f) > 0){
-    tmp <- read.csv(f)
+    tmp <- read.csv(f, colClasses = "character")
     names(tmp) <- tolower(names(tmp))
     # clean up names
     names(tmp) <- gsub("\\.", "", names(tmp))
@@ -33,6 +33,31 @@ for(i in 1:length(struc)){
 
 rm(i, struc)
 
+## Parse the column types
+table(dat$electiontype)
+dat$electiontype <- as.numeric(dat$electiontype)
+
+table(dat$candidateid)
+dat$candidateid[dat$candidateid == "Na"] <- NA
+dat$candidateid <- as.numeric(dat$candidateid)
+dat$candidateid[dat$candidateid == 0] <- NA
+
+table(dat$year)
+dat$year <- as.numeric(dat$year)
+
+table(dat$distid)
+dat$distid <- as.numeric(dat$distid)
+
+dat$votes <- as.numeric(dat$votes)
+dat$winner <- as.numeric(dat$winner)
+dat$incumbent <- as.numeric(dat$incumbent)
+dat$'repeat' <- as.numeric(dat$'repeat')
+dat$minor <- as.numeric(dat$minor)
+dat$raceid <- as.character(dat$raceid)
+dat$areaid <- as.character(dat$areaid)
+dat$districtwide <- as.numeric(dat$districtwide)
+
+# table(dat$districtwide)
 
 if(length(dat$distid[is.na(dat$distid)]) > 1){
   print(paste0("NAs in District IDs: ", length(dat$distid[is.na(dat$distid)])))
@@ -75,9 +100,7 @@ print(paste0(length(dat$electiontype[dat$electiontype > 3 | dat$electiontype < 1
 
 # candidate ID
 ## Recode Scatter
-
 dat$candidateid[tolower(dat$first) == "scatter"] <- 99
-
 print(paste0(length(dat$candidateid[is.na(dat$candidateid)]), " observations missing candidate id"))
 print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$candidateid)]), collapse="|")))
 print(paste0(length(dat$candidateid[dat$candidateid == 99]), 
@@ -110,21 +133,15 @@ print(paste0(length(dat$votes[dat$votes > 20000 & !is.na(dat$votes)]),
              " observations with greater than 50,000 votes"))
 
 ## Races
-
 # Make unique race ID by district and year
 
-dat$raceid2 <- paste(dat$distid, dat$year, dat$raceid, sep = "-")
+dat$raceid2 <- paste(dat$distid, dat$year, dat$raceid, dat$electiontype, sep = "-")
 length(unique(dat$raceid2))
 
 plyr::ddply(dat, .(year), summarize, uniqueRaces = length(unique(raceid2)))
 
 plyr::ddply(dat, .(year), summarize, 
             racesperDistrict = length(unique(raceid2))/ length(unique(distid)))
-
-# 
-# plyr::ddply(dat, .(year, distid), summarize, 
-#             candidatesPerRace = length(unique(raceID))/ length(unique(candidateid2)))
-
 
 # Winners
 table(dat$winner)
@@ -144,7 +161,6 @@ print(paste0(length(dat$winner[is.na(dat$winner)]),
 print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$winner)]), collapse="|")))
 
 # Incumbents
-
 table(dat$incumbent)
 
 print(paste0(length(dat$incumbent[dat$incumbent != 0 & dat$incumbent != 1 & 
@@ -179,6 +195,7 @@ print(paste0(length(dat$"repeat"[is.na(dat$"repeat")]),
 
 
 print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$"repeat")]), collapse="|")))
+
 # Minor candidates
 table(dat$minor)
 
@@ -203,7 +220,6 @@ print(paste0(length(dat$raceid[is.na(dat$raceid)]),
 print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$raceid)]), collapse="|")))
 
 print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$districtwide)]), collapse="|")))
-
 
 #################
 # Final output
@@ -230,29 +246,25 @@ print(paste0("Total records: ", nrow(dat)))
 print(paste0("Records without some missing data: ", nrow(na.omit(dat))))
 print(paste0(round(1-nrow(na.omit(dat))/ nrow(dat),2) *100, "% records with some missigness"))
 
-
 dimNA(dat)
-
 
 ###########################
 # Check multiple variable combinations
 
 ## Same Race and area ID
-
 length(dat$distid[dat$raceid != dat$areaid])
-
-
 
 ## At least one winner per race id
 length(unique(dat$raceid2))
 
-winsPer <- as.data.table(dat)[, list(winsPer = sum(winner)), 
+winsPer <- as.data.table(dat[dat$candidateid!= 99,])[, list(winsPer = sum(winner)), 
                                      by = c("raceid2")]
 
 check1 <- winsPer$raceid2[winsPer$winsPer == 0]
 
-print(paste0(length(check1), " districts with no winners in a race."))
+print(paste0(length(check1), " races with no winners in a race."))
 
+library(stringr)
 extr <- str_split(check1, "-")
 distid <- as.character(lapply(extr, "[[", 1))
 
@@ -300,6 +312,12 @@ cand <- as.data.table(dat[dat$candidateid2 != 99,])[, list(nraces = .N,
                                   ninc = sum(incumbent)), 
                            by = c("candidateid2")]
 
+races <- as.data.table(dat)[, list(ncand = .N, 
+                                   nwins = sum(winner), 
+                                   ninc = sum(incumbent), 
+                                   nminor = sum(minor), 
+                                   votes = sum(votes)), 
+                            by = c("raceid2")]
 
 ################################################################################
 # Check for extreme values
@@ -368,6 +386,10 @@ print(paste0("Total deviations: ", nrow(check_dat_ts[check_dat_ts$flag >0,])))
 
 #
 #
+
+
+
+
 ################################################################################
 # Build checks between metadata and data
 # Use data to validate metadata 
