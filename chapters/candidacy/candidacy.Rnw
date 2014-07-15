@@ -11,6 +11,7 @@ opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE,
 
 setwd("../../")
 source("data/dataAssemble.R")
+source("data/dataMerge.R")
 source("data/cleanandprep_CANDIDACY.R")
 
 SAMPSIZE <- length(unique(SBELEC$distid))

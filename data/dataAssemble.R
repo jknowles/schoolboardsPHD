@@ -384,6 +384,8 @@ check_dat_ts$flag[check_dat_ts$consist2 > 3 & check_dat_ts$consist3 < 0.2] <- 1
 
 print(paste0("Total deviations: ", nrow(check_dat_ts[check_dat_ts$flag >0,])))
 
+print(paste0("Check districts: ", paste0(unique(check_dat_ts$distid[check_dat_ts$flag >0]), collapse="|")))
+
 #
 #
 
@@ -395,24 +397,27 @@ print(paste0("Total deviations: ", nrow(check_dat_ts[check_dat_ts$flag >0,])))
 # Use data to validate metadata 
 ################################################################################
 
-# Query metadata
-metadata <- read.csv("../Data/sbelectionresults/WisconsinSBelectionMetaData.csv")
-
-"%notin%" <- function(x, y) x[!x %in% y] #--  x without y
-
-incomp <- unique(dat$distid) %notin% unique(metadata$distid)
-
-print(paste0("Districts without metadata: ", length(incomp)))
-print(paste0("Districts with metadata: ", nrow(metadata) - length(incomp)))
-print(paste0("Districts without metadata: ", paste0(incomp, collapse=",")))
-
-metadata$general <- rowSums(metadata[, 3:13], na.rm=T)
-table(metadata$general)
-
-metadata$primary <- rowSums(metadata[, 14:24], na.rm=T)
-table(metadata$primary)
-
-dat$repeater <- dat$"repeat."
-dat$"repeat." <- NULL
+# # Query metadata
+# metadata <- read.csv("../Data/sbelectionresults/WisconsinSBelectionMetaData.csv")
+# 
+# "%notin%" <- function(x, y) x[!x %in% y] #--  x without y
+# 
+# incomp <- unique(dat$distid) %notin% unique(metadata$distid)
+# 
+# print(paste0("Districts without metadata: ", length(incomp)))
+# print(paste0("Districts with metadata: ", nrow(metadata) - length(incomp)))
+# print(paste0("Districts without metadata: ", paste0(incomp, collapse=",")))
+# 
+# metadata$general <- rowSums(metadata[, 3:13], na.rm=T)
+# table(metadata$general)
+# 
+# metadata$primary <- rowSums(metadata[, 14:24], na.rm=T)
+# table(metadata$primary)
+# 
+# dat$repeater <- dat$"repeat."
+# dat$"repeat." <- NULL
 
 rm(check_dat, check_dat_ts)
+
+dat$repeater <- dat$'repeat'
+dat$'repeat' <- NULL
