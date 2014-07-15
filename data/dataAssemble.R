@@ -421,3 +421,10 @@ rm(check_dat, check_dat_ts)
 
 dat$repeater <- dat$'repeat'
 dat$'repeat' <- NULL
+
+
+tmp <- str_split(races$raceid2, "-")
+races$distid <- as.character(lapply(tmp, "[[", 1))
+races$year <- as.character(lapply(tmp, "[[", 2))
+races$raceid <- as.character(lapply(tmp, "[[", 3))
+races$electiontype <- as.character(lapply(tmp, "[[", 4))

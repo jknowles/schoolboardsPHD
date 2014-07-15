@@ -13,7 +13,7 @@ source("data/dataAssemble.R")
 source("data/dataMerge.R")
 library(plyr)
 library(eeptools)
-gpclibPermit()
+# gpclibPermit()
 #setwd("../../../MasterText")
 #elec <- read.csv("data/electionpartisanshippanel.csv")
 @
@@ -67,6 +67,31 @@ of 3-11 members each representing either a specific region of the school distric
 the entire district. The only restriction on the way seats are allocated is that the 
 plan is proposed with a petition by a threshold of voters and passed by the board 
 at an annual meeting or through an election (Wis. Stat \S 120.02 (2)). 
+
+\section{Studying Wisconsin School Board Elections}
+
+In Wisconsin, school boards are the offical holder of all school district elections. 
+This means that offical school board election records are maintained solely by 
+school districts themselves and gathering school board election results in Wisconsin 
+requires requesting records from individual school districts.\footnote{See Appendix 
+\ref{app:data} and the Appendix \ref{app:log} for details on the request process.} 
+An additional challenge is that though school boards are required by law to retain 
+these records, the record keeping is often incomplete, unclear, or confusing (Wis. 
+Stat \S 120.06 (8) (g)). In this project I requested school board election records 
+from the district administrator in every school district across the state. Working 
+with each school district, I constructed as complete of a history of school board 
+elections in Wisconsin between 2002 and 2012 as possible. 
+
+In the end, \Sexpr{length(unique(dat$distid))} districts provided records for at 
+least one year, and the median district provided 
+\Sexpr{median(ddply(races, .(distid), summarize, out = length(unique(year)))[, 2])} 
+years of records. Overall, records were provided on \Sexpr{nrow(races)} school 
+board races involving \Sexpr{nrow(cand)} candidates in the state. For each election 
+the votes received by each candidate was recorded, as well as whether the candidate 
+won, was an incumbent, was a repeat candidate in the school district, or was a 
+minor candidate. For each race, whether the candidate was running for district 
+wide or regional seat was also recorded. 
+
 
 \section{Putting School Board Elections in Context}
 

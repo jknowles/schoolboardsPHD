@@ -13,7 +13,7 @@ library(knitr)
 # library(stargazer)
 
 setwd("chapters/aboutwisconsin")
-#knit("aboutwisconsin.Rnw", envir=new.env())
+knit("aboutwisconsin.Rnw", envir=new.env())
 rm(list=ls())
 setwd("../candidacy")
 knit("candidacy.Rnw", envir=new.env())
