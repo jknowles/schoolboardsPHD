@@ -307,12 +307,13 @@ rm(winsPer, check1, distid, extr, z)
 #
 ################################################################################
 
-cand <- as.data.table(dat[dat$candidateid2 != 99,])[, list(nraces = .N, 
+cand <- as.data.table(dat[dat$candidateid != 99,])[, list(nraces = .N, 
                                   nwins = sum(winner), 
                                   ninc = sum(incumbent)), 
                            by = c("candidateid2")]
 
-races <- as.data.table(dat)[, list(ncand = .N, 
+races <- as.data.table(dat)[, list(ncand = .N,
+                                   nrealcand = length(winner[candidateid!=99]),
                                    nwins = sum(winner), 
                                    ninc = sum(incumbent), 
                                    nminor = sum(minor), 
