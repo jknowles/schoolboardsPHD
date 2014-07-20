@@ -93,8 +93,8 @@ This request was e-mailed to the school district administrator in each of Wiscon
 2013, and at the end of the collection period,312 
 districts responded with records. The median district provided 
  11 
-years of records. Overall, records were provided on 4,182 school 
-board races involving 5,864 candidates in the state. For each election 
+years of records. Overall, records were provided on 4,181 school 
+board races involving 5,863 candidates in the state. For each election 
 the votes received by each candidate was recorded, as well as whether the candidate 
 won, was an incumbent, was a repeat candidate in the school district, or was a 
 minor candidate. For each race, whether the candidate was running for district 
@@ -137,11 +137,11 @@ first look at how often elections are contested, and how this varies compared to
 other elected bodies. 
 
 First, let's consider the pool of school board races for which records were successfully 
-obtained. Of the 4,182, 4,001 
+obtained. Of the 4,181, 4,000 
 were general elections. Another 174 
 were primary elections, and the reamining   7 
 were special or recall elections. Of the general election races, 
-2,856 feature 
+2,855 feature 
 two or more candidates who either were on the ballot or garnered more than 20 votes. 
 However, it is important to note that in many school districts voters select more than 
 one candidate for each seat and elect the top N vote recipients to the board. A 
@@ -195,30 +195,99 @@ rebuilding voter data at the district level.
 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Sun Jul 20 11:40:17 2014
+% Sun Jul 20 18:40:42 2014
 \begin{table}[ht]
 \centering
-\begin{tabular}{rrrrrrr}
+{\footnotesize
+\begin{tabular}{lrrrrrr}
   \hline
 Year & Official Total Votes & Offical VAP & Offical Turnout & Estimated Total Votes & Estimated VAP & Estimated Turnout \\ 
   \hline
-2002 & 1785710 & 4060973 & 44 & 1770028 & 4060924 & 44 \\ 
-  2004 & 3016288 & 4118621 & 73 & 2961919 & 4079302 & 73 \\ 
-  2006 & 2166671 & 4260038 & 51 & 2159033 & 4241864 & 51 \\ 
-  2008 & 2996869 & 4330695 & 69 & 2981638 & 4321981 & 69 \\ 
-  2010 & 2171331 & 4372347 & 50 & 2152344 & 4370268 & 49 \\ 
-  2012 & 3071434 & 4378741 & 70 & 3056571 & 4375320 & 70 \\ 
+2002 & 1,785,710 & 4,060,973 & 44 & 1,770,028 & 4,060,924 & 44 \\ 
+  2004 & 3,016,288 & 4,118,621 & 73 & 2,961,919 & 4,079,302 & 72 \\ 
+  2006 & 2,166,671 & 4,260,038 & 51 & 2,159,033 & 4,241,864 & 51 \\ 
+  2008 & 2,996,869 & 4,330,695 & 69 & 2,981,638 & 4,321,981 & 69 \\ 
+  2010 & 2,171,331 & 4,372,347 & 50 & 2,152,344 & 4,370,268 & 49 \\ 
+  2012 & 3,071,434 & 4,378,741 & 70 & 3,056,571 & 4,375,320 & 70 \\ 
    \hline
 \end{tabular}
+}
 \caption{Comparing estimates of voter turnout derived from MCD estimates to official GAB turnout records.} 
 \label{tab:turnoutEst}
 \end{table}
 
 
 As shown in Table \ref{tab:turnoutEst}, the estimation procedure is very accurate. 
+Using these estimates, we can be confident that the procedure used generates 
+reasonable estimates of the VAP at the school district level. This takes care 
+of the denominator of the turnout equation. TODO: Say something about vapadj
+
+Collecting votes cast in school board elections presents a second set of challenges. 
+I begin by collecting election returns from as many school districts as possible 
+in Wisconsin.\footnote{For details on the collection procedure see Appendix \ref{app:data}} 
+However, unlike a top ticket race such as a presidential or gubernatorial race, 
+the election rules vary across school district jurisdictions. In some districts, 
+voters may have multiple votes to cast in the election -- eliminating the ability 
+to judge voter turnout based on the number of votes cast. In other districts, only 
+a subsection of the electorate may be eligible to vote for a school district office 
+due to apportionment in the district. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-turnoutgraph} \caption[Turnout for district wide school board races]{Turnout for district wide school board races.\label{fig:turnoutgraph}}
+\end{figure}
 
 
+\end{knitrout}
 
+There is one set of cases for which estimating voter turnout is easy - the case 
+where a school board seat is chosen district wide. Figure \ref{fig:turnoutgraph} 
+shows that district wide school board races feature an average turnout below 25\%. 
+
+% latex table generated in R 3.1.0 by xtable 1.7-3 package
+% Sun Jul 20 18:40:43 2014
+\begin{table}[ht]
+\centering
+{\footnotesize
+\begin{tabular}{lrrrrrr}
+  \hline
+Year & District Wide Races & Districts with District Wide & All SB Races & All Districts with Records & Districts without District Wide & Non-district Wide Races \\ 
+  \hline
+2002 & 189 & 183 & 291 & 220 &  37 & 102 \\ 
+  2003 & 202 & 200 & 341 & 242 &  42 & 139 \\ 
+  2004 & 221 & 215 & 352 & 257 &  42 & 131 \\ 
+  2005 & 211 & 205 & 349 & 255 &  50 & 138 \\ 
+  2006 & 227 & 224 & 379 & 270 &  46 & 152 \\ 
+  2007 & 250 & 248 & 414 & 297 &  49 & 164 \\ 
+  2008 & 249 & 244 & 391 & 299 &  55 & 142 \\ 
+  2009 & 253 & 249 & 409 & 298 &  49 & 156 \\ 
+  2010 & 253 & 250 & 408 & 300 &  50 & 155 \\ 
+  2011 & 258 & 254 & 400 & 303 &  49 & 142 \\ 
+  2012 & 261 & 257 & 413 & 304 &  47 & 152 \\ 
+   \hline
+\end{tabular}
+}
+\caption{Comparing sample size for district wide vs. apportioned school board races.} 
+\label{tab:yearsample}
+\end{table}
+
+
+Estimating turnout in the roughly 50 districts annually, as shown in Table \ref{tab:yearsample}, 
+which do not have a district wide school board race is a different matter. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-nondistraces} \caption[Turnout for non-district wide school board races]{Turnout for non-district wide school board races.\label{fig:nondistraces}}
+\end{figure}
+
+
+\end{knitrout}
+
+Figure \ref{fig:nondistraces} shows the pattern for non-district wide races appears 
+very similar under the estimation method of collapsing all races in a district 
+into one race and dividing the votes counted by the number of winners. 
 
 \section{Putting School Board Elections in Context}
 

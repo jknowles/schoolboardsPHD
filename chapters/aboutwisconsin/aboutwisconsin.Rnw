@@ -353,8 +353,57 @@ print(xtable(table2, label="tab:yearsample",
 
 @
 
-Estimating turnout in the roughly 50 districts annually, as shown in Table \ref{tab:yearsample} 
-we have 
+Estimating turnout in the roughly 50 districts annually, as shown in Table \ref{tab:yearsample}, 
+which do not have a district wide school board race is a different matter. 
+
+<<nondistraces, fig.cap="Turnout for non-district wide school board races.">>=
+races <- as.data.frame(races)
+races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
+
+presTurn$presTwoPartyVote <- presTurn$presDemVotes + presTurn$presRepVotes
+presTurn$presTwoPartyShareDem <- presTurn$presDemVotes / presTurn$presTwoPartyVote
+
+govTurn$govTwoPartyVote <- govTurn$govDemVotes + govTurn$govRepVotes
+govTurn$govTwoPartyShareDem <- govTurn$govDemVotes / govTurn$govTwoPartyVote
+
+races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
+                                          "nrealcand", "nwins", "ninc", "raceid",
+                                          "nminor", "votes", "districtwide", 
+                                          "electiontype", "VAP_adj"))
+
+races.tmp <- subset(races.tmp, raceid!=0)
+# look at general
+races.tmp <- subset(races.tmp, electiontype == 1)
+# Look at non-districtwide only
+races.tmp <- subset(races.tmp, districtwide == 0)
+races.tmp <- subset(races.tmp, nrealcand > 0)
+races.tmp <- races.tmp[!is.na(races.tmp$distid),]
+
+# collapse to the district level
+
+dist.tmp <- ddply(races.tmp, .(distid, year), summarize, 
+              ncand = sum(ncand), nrealcand = sum(nrealcand), 
+              nwins = sum(nwins), ninc = sum(ninc), 
+              nminor = sum(nminor), votes = sum(votes), 
+              VAP_adj = statamode(VAP_adj), 
+              nraces = length(distid))
+
+# turnout over the prior presidential election
+dist.tmp <- merge(dist.tmp, presTurn, by = c("distid", "year"), all.x=TRUE)
+dist.tmp <- merge(dist.tmp, govTurn, by = c("distid", "year"), all.x=TRUE)
+dist.tmp$VAP_adj <- as.numeric(dist.tmp$VAP_adj)
+
+dist.tmp$voters <- dist.tmp$votes / dist.tmp$nwins
+dist.tmp$turnout <- dist.tmp$voters / dist.tmp$VAP_adj
+qplot(year, turnout, data = dist.tmp, geom = 'boxplot') + 
+  scale_y_continuous(label = percent) + theme_dpi()
+
+@
+
+Figure \ref{fig:nondistraces} shows the pattern for non-district wide races appears 
+very similar under the estimation method of collapsing all races in a district 
+into one race and dividing the votes counted by the number of winners. 
+
 \section{Putting School Board Elections in Context}
 
 The authority given to school districts in Wisconsin to determine their own electoral 

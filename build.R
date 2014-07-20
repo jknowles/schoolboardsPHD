@@ -54,4 +54,3 @@ cleantex <- function(mydoc,keepPDF){
 }
 
 cleantex("dissertation", keepPDF=TRUE)
-
