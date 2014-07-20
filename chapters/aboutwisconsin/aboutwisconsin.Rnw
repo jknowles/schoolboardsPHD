@@ -14,6 +14,9 @@ source("data/dataMerge.R")
 library(plyr)
 library(eeptools)
 
+library(xtable)
+options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
+
 iNum <- function(x){formatC(x, big.mark = ",", digits = 2)}
 
 # gpclibPermit()
@@ -213,7 +216,7 @@ of votes cast and voter turnout statewide to the statewide estimates derived by
 rebuilding voter data at the district level. 
 
 
-<<turnout, echo = FALSE>>=
+<<turnout, echo = FALSE,  results='asis'>>=
 races <- as.data.frame(races)
 races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
 races.tmp$turnout <- races.tmp$votes / races.tmp$VAP_adj # need to define VAP_adj
@@ -252,11 +255,29 @@ turnoutEst <- c(sum(turnoutEst$topGovVotesPrior[turnoutEst$year == 2002], na.rm 
 
 turnoutPerEst <- (turnoutEst / vapEst)*100
 
-table1 <- cbind(years, turnoutOf, vapOf, turnoutPerOf, turnoutEst, vapEst, turnoutPerEst)
+tab1names <- c("Year", "Official Total Votes", "Offical VAP", "Offical Turnout", 
+               "Estimated Total Votes", "Estimated VAP", "Estimated Turnout")
+table1 <- cbind(years, turnoutOf, vapOf, turnoutPerOf, turnoutEst, vapEst, 
+                turnoutPerEst)
+table1 <- as.data.frame(table1)
+table1$years <- as.character(table1$years)
+names(table1) <- tab1names
+
+
+print(xtable(table1, digits =0, label="tab:turnoutEst", 
+             caption = "Comparing estimates of voter turnout derived from MCD estimates to official GAB turnout records." ), 
+      include.rownames = FALSE, 
+      format.args = list(big.mark = ",", decimal.mark = "."), 
+      size = "footnotesize")
 
 @
 
+As shown in Table \ref{tab:turnoutEst}, the estimation procedure is very accurate. 
+Using these estimates, we can be confident that the procedure used generates 
+reasonable estimates of the VAP at the school district level. This takes care 
+of the denominator of the turnout equation. 
 
+Collecting votes cast in school board elections presents a second set of challenges. 
 
 
 

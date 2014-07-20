@@ -156,7 +156,69 @@ Wisconsin has had between 4 and 4.35 million voting age population residents. Ho
 in this time period the spring election has seen around 800,000 votes cast on 
 average with a peak of 1.5 million.\footnote{Statistics from a Wisconsin Government Accountability 
 Board report, available online: \url{http://gab.wi.gov/sites/default/files/page/non\_partisan\_turnout\_2000\_2013\_pdf\_15069.pdf}}
-School board elections are also low turnout affairs. 
+Turnout is typically around 18\% in such elections. Unsurprisingly then, school 
+board elections are also low turnout affairs. By comparison, 
+in the November partisn general election voter turnout is around 70\% in the last 
+three presidential elections, and around 48\% in the last three gubernatorial 
+elections.\footnote{Statistics from a Wisconsin Government Accountability 
+Board report, available online: \url{http://gab.wi.gov/sites/default/files/page/partisan\_voter_turnout\_statistics\_1948\_2012\_pdf\_20396.pdf}}
+
+Estimating school board election turnout is decidedly difficult because it requires 
+both a reliable assessment of the votes cast in the election and a reliable 
+estimate of the voting age population in the school district. Due to the fact that 
+school districts have diverse organizational structure above, and no requirements 
+on election reporting to a central authority, it is often difficult to ascertain 
+the number of votes cast by voters within the school district. To determine the voting 
+age population (VAP) of the school district in Wisconsin, I employ the finest resolution 
+estimate of voting age population available -- VAP estimates by minor civil division (MCD) 
+conducted by the Wisconsin Department of Administration.\footnote{Available online: \url{http://gab.wi.gov/elections-voting/results}. 
+Statistics for Wisconsin Minor Civil Divisons are maintained by the Department of Administration 
+Demographic Services Center: \url{http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9}}
+However, MCDs are not perfectly contiguous with school districts -- school districts 
+are contiguous only at the ward level where VAP estimates are not available. In 
+order to estimate the proportion of the VAP that belongs to a given school district, 
+I use property tax records provided by the Wisconsin Department of Revenue (DOR). 
+These records annually report for each school district every MCD that is located entirely or partially 
+within the boundaries of the school district, as well as the share of property wealth 
+(as measured by equalized values, or EQV), for that MCD that the school district 
+is authorized to levy tax for. For each year, the share of every MCD's EQV that 
+was allocated to each school district was calculated. This share was used to 
+pro-rate the population of each school district both for the purposes of 
+calculating the voting age population, and for calculating votes cast for and 
+against candidates in statewide elections.\footnote{A sensitivity check was done 
+to determine if weighting by residential property values only changed the estimates, but 
+it did not. For more details see Appendix \ref{app:data}}
+
+We can measure how accurate this estimation procedure is by comparing the official number 
+of votes cast and voter turnout statewide to the statewide estimates derived by 
+rebuilding voter data at the district level. 
+
+
+% latex table generated in R 3.1.0 by xtable 1.7-3 package
+% Sun Jul 20 11:40:17 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrr}
+  \hline
+Year & Official Total Votes & Offical VAP & Offical Turnout & Estimated Total Votes & Estimated VAP & Estimated Turnout \\ 
+  \hline
+2002 & 1785710 & 4060973 & 44 & 1770028 & 4060924 & 44 \\ 
+  2004 & 3016288 & 4118621 & 73 & 2961919 & 4079302 & 73 \\ 
+  2006 & 2166671 & 4260038 & 51 & 2159033 & 4241864 & 51 \\ 
+  2008 & 2996869 & 4330695 & 69 & 2981638 & 4321981 & 69 \\ 
+  2010 & 2171331 & 4372347 & 50 & 2152344 & 4370268 & 49 \\ 
+  2012 & 3071434 & 4378741 & 70 & 3056571 & 4375320 & 70 \\ 
+   \hline
+\end{tabular}
+\caption{Comparing estimates of voter turnout derived from MCD estimates to official GAB turnout records.} 
+\label{tab:turnoutEst}
+\end{table}
+
+
+As shown in Table \ref{tab:turnoutEst}, the estimation procedure is very accurate. 
+
+
+
 
 \section{Putting School Board Elections in Context}
 
