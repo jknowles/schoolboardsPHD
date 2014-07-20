@@ -13,7 +13,7 @@ source("data/dataAssemble.R")
 source("data/dataMerge.R")
 library(plyr)
 library(eeptools)
-
+library(scales)
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
@@ -217,17 +217,6 @@ rebuilding voter data at the district level.
 
 
 <<turnout, echo = FALSE,  results='asis'>>=
-races <- as.data.frame(races)
-races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
-races.tmp$turnout <- races.tmp$votes / races.tmp$VAP_adj # need to define VAP_adj
-
-# turnout over the prior presidential election
-races.tmp <- merge(races.tmp, presTurn, by = c("distid", "year"), all.x=TRUE)
-races.tmp <- merge(races.tmp, govTurn, by = c("distid", "year"), all.x=TRUE)
-
-races.tmp$turnout2 <- races.tmp$votes / races.tmp$topPresVotesPrior
-
-# 
 # qplot(races.tmp$turnout, races.tmp$topPresTurnoutPrior, geom = 'point') + 
 #   ylim(c(0,1)) + xlim(c(0,1)) + geom_smooth()
 
@@ -246,6 +235,15 @@ vapEst <- c(sum(turnoutEst$VAP[turnoutEst$year == 2002], na.rm =TRUE),
             sum(turnoutEst$VAP[turnoutEst$year == 2010], na.rm =TRUE), 
             sum(turnoutEst$VAP[turnoutEst$year == 2012], na.rm =TRUE))
 
+
+vapadjEst <- c(sum(turnoutEst$VAP_adj[turnoutEst$year == 2002], na.rm =TRUE), 
+            sum(turnoutEst$VAP_adj[turnoutEst$year == 2004], na.rm =TRUE), 
+            sum(turnoutEst$VAP_adj[turnoutEst$year == 2006], na.rm =TRUE), 
+            sum(turnoutEst$VAP_adj[turnoutEst$year == 2008], na.rm =TRUE), 
+            sum(turnoutEst$VAP_adj[turnoutEst$year == 2010], na.rm =TRUE), 
+            sum(turnoutEst$VAP_adj[turnoutEst$year == 2012], na.rm =TRUE))
+
+
 turnoutEst <- c(sum(turnoutEst$topGovVotesPrior[turnoutEst$year == 2002], na.rm =TRUE), 
             sum(turnoutEst$topPresVotesPrior[turnoutEst$year == 2004], na.rm =TRUE), 
             sum(turnoutEst$topGovVotesPrior[turnoutEst$year == 2006], na.rm =TRUE), 
@@ -253,7 +251,7 @@ turnoutEst <- c(sum(turnoutEst$topGovVotesPrior[turnoutEst$year == 2002], na.rm 
             sum(turnoutEst$topGovVotesPrior[turnoutEst$year == 2010], na.rm =TRUE), 
             sum(turnoutEst$topPresVotesPrior[turnoutEst$year == 2012], na.rm =TRUE))
 
-turnoutPerEst <- (turnoutEst / vapEst)*100
+turnoutPerEst <- (turnoutEst / vapadjEst)*100
 
 tab1names <- c("Year", "Official Total Votes", "Offical VAP", "Offical Turnout", 
                "Estimated Total Votes", "Estimated VAP", "Estimated Turnout")
@@ -262,7 +260,8 @@ table1 <- cbind(years, turnoutOf, vapOf, turnoutPerOf, turnoutEst, vapEst,
 table1 <- as.data.frame(table1)
 table1$years <- as.character(table1$years)
 names(table1) <- tab1names
-
+rm(years, turnoutOf, vapOf, turnoutPerOf, turnoutEst, vapEst, turnoutPerEst, 
+   tab1names, vapadjEst)
 
 print(xtable(table1, digits =0, label="tab:turnoutEst", 
              caption = "Comparing estimates of voter turnout derived from MCD estimates to official GAB turnout records." ), 
@@ -275,13 +274,87 @@ print(xtable(table1, digits =0, label="tab:turnoutEst",
 As shown in Table \ref{tab:turnoutEst}, the estimation procedure is very accurate. 
 Using these estimates, we can be confident that the procedure used generates 
 reasonable estimates of the VAP at the school district level. This takes care 
-of the denominator of the turnout equation. 
+of the denominator of the turnout equation. TODO: Say something about vapadj
 
 Collecting votes cast in school board elections presents a second set of challenges. 
+I begin by collecting election returns from as many school districts as possible 
+in Wisconsin.\footnote{For details on the collection procedure see Appendix \ref{app:data}} 
+However, unlike a top ticket race such as a presidential or gubernatorial race, 
+the election rules vary across school district jurisdictions. In some districts, 
+voters may have multiple votes to cast in the election -- eliminating the ability 
+to judge voter turnout based on the number of votes cast. In other districts, only 
+a subsection of the electorate may be eligible to vote for a school district office 
+due to apportionment in the district. 
 
+<<turnoutgraph, echo=FALSE, fig.cap="Turnout for district wide school board races.">>=
+races <- as.data.frame(races)
+races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
 
+presTurn$presTwoPartyVote <- presTurn$presDemVotes + presTurn$presRepVotes
+presTurn$presTwoPartyShareDem <- presTurn$presDemVotes / presTurn$presTwoPartyVote
 
+govTurn$govTwoPartyVote <- govTurn$govDemVotes + govTurn$govRepVotes
+govTurn$govTwoPartyShareDem <- govTurn$govDemVotes / govTurn$govTwoPartyVote
 
+# turnout over the prior presidential election
+races.tmp <- merge(races.tmp, presTurn, by = c("distid", "year"), all.x=TRUE)
+races.tmp <- merge(races.tmp, govTurn, by = c("distid", "year"), all.x=TRUE)
+
+races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
+                                          "nrealcand", "nwins", "ninc", "raceid",
+                                          "nminor", "votes", "districtwide", 
+                                          "electiontype", "VAP", "VAP_adj", 
+                                          "topPresVotesPrior", "presTwoPartyShareDem", 
+                                          "topGovVotesPrior", "govTwoPartyShareDem"))
+
+races.tmp <- subset(races.tmp, raceid!=0)
+# look at general
+races.tmp <- subset(races.tmp, electiontype == 1)
+
+# Look at districtwide only
+races.tmp <- subset(races.tmp, districtwide == 1)
+races.tmp <- subset(races.tmp, nrealcand > 0)
+
+races.tmp <- races.tmp[!is.na(races.tmp$distid),]
+races.tmp$voters <- races.tmp$votes / races.tmp$nwins
+races.tmp$turnout <- races.tmp$voters/races.tmp$VAP_adj
+qplot(year, turnout, data = races.tmp, geom = 'boxplot') + 
+  scale_y_continuous(label = percent) + theme_dpi()
+@
+
+There is one set of cases for which estimating voter turnout is easy - the case 
+where a school board seat is chosen district wide. Figure \ref{fig:turnoutgraph} 
+shows that district wide school board races feature an average turnout below 25\%. 
+
+<<comparison, results='asis', echo=FALSE>>=
+out1 <- ddply(races.tmp, .(year), summarize, 
+              nraces = length(distid), 
+              ndists = length(unique(distid)))
+names(out1) <- c("year", "nDistWideRaces", "nDistrictsDistWide")
+
+out2 <- ddply(races, .(year), summarize, 
+              nraces = length(distid), 
+              ndists = length(unique(distid)))
+names(out2) <- c("year", "nAllRaces", "nAllDistricts")
+
+table2 <- merge(out1, out2)
+rm(out1, out2)
+table2$difference <- table2[, 5] - table2[, 3]
+table2$difference2 <- table2[, 4] - table2[, 2]
+names(table2) <- c("Year", "District Wide Races", "Districts with District Wide", 
+                   "All SB Races", "All Districts with Records", 
+                   "Districts without District Wide", "Non-district Wide Races")
+
+print(xtable(table2, label="tab:yearsample", 
+             caption = "Comparing sample size for district wide vs. apportioned school board races." ), 
+      include.rownames = FALSE, 
+      format.args = list(big.mark = ",", decimal.mark = "."), 
+      size = "footnotesize")
+
+@
+
+Estimating turnout in the roughly 50 districts annually, as shown in Table \ref{tab:yearsample} 
+we have 
 \section{Putting School Board Elections in Context}
 
 The authority given to school districts in Wisconsin to determine their own electoral 

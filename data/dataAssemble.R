@@ -317,7 +317,8 @@ races <- as.data.table(dat)[, list(ncand = .N,
                                    nwins = sum(winner), 
                                    ninc = sum(incumbent), 
                                    nminor = sum(minor), 
-                                   votes = sum(votes)), 
+                                   votes = sum(votes), 
+                                   districtwide = max(districtwide)), 
                             by = c("raceid2")]
 
 ################################################################################
