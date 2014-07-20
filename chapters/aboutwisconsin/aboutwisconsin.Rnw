@@ -228,6 +228,32 @@ races.tmp$turnout2 <- races.tmp$votes / races.tmp$topPresVotesPrior
 # qplot(races.tmp$turnout, races.tmp$topPresTurnoutPrior, geom = 'point') + 
 #   ylim(c(0,1)) + xlim(c(0,1)) + geom_smooth()
 
+years <- c(2002, 2004, 2006, 2008, 2010, 2012)
+turnoutEst <- merge(VAP_dist, presTurn, by = c("distid", "year"), all.x=TRUE)
+turnoutEst <- merge(turnoutEst, govTurn, by = c("distid", "year"), all.x=TRUE)
+
+turnoutOf <- c(1785710, 3016288, 2166671, 2996869, 2171331, 3071434)
+vapOf <- c(4060973, 4118621, 4260038, 4330695, 4372347, 4378741)
+turnoutPerOf <- c(44, 72.9, 50.9, 69.2, 49.7, 70.1)
+
+vapEst <- c(sum(turnoutEst$VAP[turnoutEst$year == 2002], na.rm =TRUE), 
+            sum(turnoutEst$VAP[turnoutEst$year == 2004], na.rm =TRUE), 
+            sum(turnoutEst$VAP[turnoutEst$year == 2006], na.rm =TRUE), 
+            sum(turnoutEst$VAP[turnoutEst$year == 2008], na.rm =TRUE), 
+            sum(turnoutEst$VAP[turnoutEst$year == 2010], na.rm =TRUE), 
+            sum(turnoutEst$VAP[turnoutEst$year == 2012], na.rm =TRUE))
+
+turnoutEst <- c(sum(turnoutEst$topGovVotesPrior[turnoutEst$year == 2002], na.rm =TRUE), 
+            sum(turnoutEst$topPresVotesPrior[turnoutEst$year == 2004], na.rm =TRUE), 
+            sum(turnoutEst$topGovVotesPrior[turnoutEst$year == 2006], na.rm =TRUE), 
+            sum(turnoutEst$topPresVotesPrior[turnoutEst$year == 2008], na.rm =TRUE), 
+            sum(turnoutEst$topGovVotesPrior[turnoutEst$year == 2010], na.rm =TRUE), 
+            sum(turnoutEst$topPresVotesPrior[turnoutEst$year == 2012], na.rm =TRUE))
+
+turnoutPerEst <- (turnoutEst / vapEst)*100
+
+table1 <- cbind(years, turnoutOf, vapOf, turnoutPerOf, turnoutEst, vapEst, turnoutPerEst)
+
 @
 
 
