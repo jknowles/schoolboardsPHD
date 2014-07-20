@@ -175,18 +175,65 @@ Wisconsin has had between 4 and 4.35 million voting age population residents. Ho
 in this time period the spring election has seen around 800,000 votes cast on 
 average with a peak of 1.5 million.\footnote{Statistics from a Wisconsin Government Accountability 
 Board report, available online: \url{http://gab.wi.gov/sites/default/files/page/non\_partisan\_turnout\_2000\_2013\_pdf\_15069.pdf}}
-Unsurprisingly, school board elections are also low turnout affairs. 
+Turnout is typically around 18\% in such elections. Unsurprisingly then, school 
+board elections are also low turnout affairs. By comparison, 
+in the November partisn general election voter turnout is around 70\% in the last 
+three presidential elections, and around 48\% in the last three gubernatorial 
+elections.\footnote{Statistics from a Wisconsin Government Accountability 
+Board report, available online: \url{http://gab.wi.gov/sites/default/files/page/partisan\_voter_turnout\_statistics\_1948\_2012\_pdf\_20396.pdf}}
 
 Estimating school board election turnout is decidedly difficult because it requires 
 both a reliable assessment of the votes cast in the election and a reliable 
 estimate of the voting age population in the school district. Due to the fact that 
-school districts have diverse organizational structure above, it is often not 
-clear that the number of votes cast in the election is representative of the 
-number of voters who voted. 
+school districts have diverse organizational structure above, and no requirements 
+on election reporting to a central authority, it is often difficult to ascertain 
+the number of votes cast by voters within the school district. To determine the voting 
+age population (VAP) of the school district in Wisconsin, I employ the finest resolution 
+estimate of voting age population available -- VAP estimates by minor civil division (MCD) 
+conducted by the Wisconsin Department of Administration.\footnote{Available online: \url{http://gab.wi.gov/elections-voting/results}. 
+Statistics for Wisconsin Minor Civil Divisons are maintained by the Department of Administration 
+Demographic Services Center: \url{http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9}}
+However, MCDs are not perfectly contiguous with school districts -- school districts 
+are contiguous only at the ward level where VAP estimates are not available. In 
+order to estimate the proportion of the VAP that belongs to a given school district, 
+I use property tax records provided by the Wisconsin Department of Revenue (DOR). 
+These records annually report for each school district every MCD that is located entirely or partially 
+within the boundaries of the school district, as well as the share of property wealth 
+(as measured by equalized values, or EQV), for that MCD that the school district 
+is authorized to levy tax for. For each year, the share of every MCD's EQV that 
+was allocated to each school district was calculated. This share was used to 
+pro-rate the population of each school district both for the purposes of 
+calculating the voting age population, and for calculating votes cast for and 
+against candidates in statewide elections.\footnote{A sensitivity check was done 
+to determine if weighting by residential property values only changed the estimates, but 
+it did not. For more details see Appendix \ref{app:data}}
 
-Even comparing the votes cast in one district in one year to the next year is 
-fraught because of the shifts in the number of candidates up for election and 
-whether or not those represent districtwide elections. 
+We can measure how accurate this estimation procedure is by comparing the official number 
+of votes cast and voter turnout statewide to the statewide estimates derived by 
+rebuilding voter data at the district level. 
+
+
+<<turnout, echo = FALSE>>=
+races <- as.data.frame(races)
+races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
+races.tmp$turnout <- races.tmp$votes / races.tmp$VAP_adj # need to define VAP_adj
+
+# turnout over the prior presidential election
+races.tmp <- merge(races.tmp, presTurn, by = c("distid", "year"), all.x=TRUE)
+races.tmp <- merge(races.tmp, govTurn, by = c("distid", "year"), all.x=TRUE)
+
+races.tmp$turnout2 <- races.tmp$votes / races.tmp$topPresVotesPrior
+
+# 
+# qplot(races.tmp$turnout, races.tmp$topPresTurnoutPrior, geom = 'point') + 
+#   ylim(c(0,1)) + xlim(c(0,1)) + geom_smooth()
+
+@
+
+
+
+
+
 
 \section{Putting School Board Elections in Context}
 

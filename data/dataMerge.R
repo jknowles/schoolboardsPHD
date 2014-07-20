@@ -824,8 +824,6 @@ for(i in unique(dvp$distid)){
 
 ###############################################################################################
 
-
-
 rm(district_vote_panel)
 
 dvp$TOPturnout1 <- dvp$TOPTOTVOTES / dvp$TOTPOP
@@ -848,6 +846,43 @@ dvp <- as.data.frame(dvp)
 dvp2 <- dvp
 dvp2$year <- as.numeric(dvp2$year) + 1
 dvp <- rbind(dvp, dvp2)
+
+rm(vptemp, vaplong, cw)
+
+dvp$year <- as.numeric(dvp$year)
+presTurn <- subset(dvp, year == 2004 | year == 2008 | year ==2012)
+presTurn <- subset(presTurn, select = c("distid", "year", "toptotvotes", 
+                                        "topturnout1", "topdem", "toprep"))
+govTurn <- subset(dvp, year == 2002 | year == 2006 | year ==2010)
+govTurn <- subset(govTurn, select = c("distid", "year", "toptotvotes", 
+                                      "topturnout1", "topdem", "toprep"))
+
+presTurn.tmp <- presTurn
+presTurn.tmp$year <- presTurn.tmp$year - 1
+presTurn <- rbind(presTurn, presTurn.tmp)
+presTurn.tmp$year <- presTurn.tmp$year - 1
+presTurn <- rbind(presTurn, presTurn.tmp)
+presTurn.tmp$year <- presTurn.tmp$year - 1
+presTurn <- rbind(presTurn, presTurn.tmp)
+rm(presTurn.tmp)
+
+govTurn.tmp <- govTurn
+govTurn.tmp$year <- govTurn.tmp$year - 1
+govTurn <- rbind(govTurn, govTurn.tmp)
+govTurn.tmp$year <- govTurn.tmp$year - 1
+govTurn <- rbind(govTurn, govTurn.tmp)
+govTurn.tmp$year <- govTurn.tmp$year - 1
+govTurn <- rbind(govTurn, govTurn.tmp)
+rm(govTurn.tmp)
+
+names(presTurn) <- c("distid", "year", "topPresVotesPrior", 
+                     "topPresTurnoutPrior", "presDemVotes", "presRepVotes")
+
+presTurn <- presTurn[order(presTurn$distid, presTurn$year),]
+names(govTurn) <- c("distid", "year", "topGovVotesPrior", 
+                    "topGovTurnoutPrior", "govDemVotes", "govRepVotes")
+govTurn <- govTurn[order(govTurn$distid, govTurn$year),]
+
 rm(dvp2)
 
 rm(distvotes12r, distvotes12, distvotes10, distvotes09, distvotes08, 
@@ -856,10 +891,16 @@ rm(dvp2, prespref11, sd11, test, i, j, mynames, wisc)
 # 
 # save(vptemp, vaplong, cw, dvp, file="data/cache/VotingPopulation.rda", 
 #      compress="gzip")
-
-rm(vptemp, vaplong, cw)
-
-###################
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
 #For export
 # 
 # dvp1 <- dvp
