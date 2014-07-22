@@ -18,7 +18,7 @@ library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
 iNum <- function(x){prettyNum(x, big.mark = ",", digits = 3)}
-
+iPer <- function(x){paste0(prettyNum(x, big.mark = ",", digits = 3),"\\%")}
 # gpclibPermit()
 #setwd("../../../MasterText")
 #elec <- read.csv("data/electionpartisanshippanel.csv")
@@ -189,8 +189,8 @@ special election is not required to fill a vacancy for any other school district
 instead vacancies are filled by appointment of the remaining members [Wis. Stat \S 17.26 (1)]. 
 
 For the entire dataset there are \Sexpr{iNum(length(races$distid[races$electiontype == 1]))} 
-general election races, \Sexpr{\Sexpr{iNum(length(races$distid[races$electiontype == 2]))}} 
-primary election races, and \Sexpr{\Sexpr{iNum(length(races$distid[races$electiontype == 3]))}} 
+general election races,\Sexpr{iNum(length(races$distid[races$electiontype == 2]))} 
+primary election races, and \Sexpr{iNum(length(races$distid[races$electiontype == 3]))}
 special elections. Table \ref{tab:electype} shows the number of races of each type 
 for the period between 2007 and 2012 with the best election record coverage.
 
@@ -282,13 +282,39 @@ list to infer their incumbency status.
 <<incumb1, echo=FALSE, results='hide'>>=
 nrow(races[races$ninc > 0 & races$electiontype == 1,])
 nrow(races[races$ninc > 1 & races$electiontype == 1,])
+contested <- nrow(races[races$nrealcand > races$ninc & races$electiontype == 1, ])
+base <- nrow(races[races$electiontype == 1,])
+@
+
+In general elections, \Sexpr{iPer(nrow(races[races$ninc > 0 & races$electiontype == 1,])/nrow(races[races$electiontype == 1,])*100)} 
+of all races featured at least one incumbent. However, a more important figure is 
+identifying how many races featured at least one serious challenger against an incumbent. 
+\Sexpr{iPer(contested/base*100)} of Wisconsin school board general elections featured 
+this pattern of contestation. In order to qualify as a serious challenger, a candidate 
+needed to garner at least 30 votes -- which represents \Sexpr{30/median(races$votes[races$electiontype==1,], na.rm=TRUE)/2*100} 
+of the votes cast in the median school board race. This represents a conservative 
+estimate, because in some cases a write-in candidate may garner 30 votes. % elaborate
+
+<<incumbtable, echo=FALSE, results='asis'>>=
+
+# Make a table showing races featuring incumbent challenger by year
+races.tmp <- subset(races, electiontype ==1 & year > 2006 & year <2013)
+races.tmp$contest <- "No Contested Incumbent"
+races.tmp$contest[races.tmp$nrealcand > races.tmp$ninc] <- "Incumbent Contested"
+
+table.tmp <- table(races.tmp$year, races.tmp$contest)
+
+table.tmp <- xtable(t(table.tmp), digits = 0, label = "tab:incumbentContest", 
+                    caption = "Races featuring a serious challenge to an incumbent 2007-2012.")
+
+print(table.tmp, include.rownames=TRUE, size = "footnotesize")
 
 @
 
-Focusing on general elections
+% Serious challengers
 
-
-
+In Table \ref{tab:incumbentContest} we see that school board elections featuring an 
+incumbent are contested more often than we might think.
 
 
 \subsection{Voter Turnout}

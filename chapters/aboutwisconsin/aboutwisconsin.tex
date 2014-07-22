@@ -92,7 +92,7 @@ This request was e-mailed to the school district administrator in each of Wiscon
 424 school districts in January of 2013. Three follow up waves were conducted throughout 
 2013, and at the end of the collection period,312 
 districts responded with records. The median district provided 
- 11 
+11 
 years of records. Overall, records were provided on 4,181 school 
 board races involving 5,863 candidates in the state. For each election 
 the votes received by each candidate was recorded, as well as whether the candidate 
@@ -129,9 +129,9 @@ the period with the most complete set of records.
 
 
 
-The mean district provided records on  13 school 
+The mean district provided records on 13.4 school 
 board races. 283 districts had 
-a race in each year between 2007 and 2012, while  29 
+a race in each year between 2007 and 2012, while 29 
 did not. 
 
 \subsection{General Elections, Primaries, and Special Elections}
@@ -158,11 +158,49 @@ in the Milwaukee Public School system (MPS). [Wis. Stat \S 8.50 (intro.)] A
 special election is not required to fill a vacancy for any other school district - 
 instead vacancies are filled by appointment of the remaining members [Wis. Stat \S 17.26 (1)]. 
 
-% # Count of general elections
-% 
-% # Count of primaries
-% 
-% # count of special elections
+For the entire dataset there are 4,000 
+general election races,174 
+primary election races, and 7
+special elections. Table \ref{tab:electype} shows the number of races of each type 
+for the period between 2007 and 2012 with the best election record coverage.
+
+% latex table generated in R 3.1.0 by xtable 1.7-3 package
+% Tue Jul 22 14:14:08 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & General & Primary & Special \\ 
+  \hline
+2007 & 399 &  15 &   0 \\ 
+  2008 & 378 &  13 &   0 \\ 
+  2009 & 393 &  15 &   1 \\ 
+  2010 & 392 &  16 &   0 \\ 
+  2011 & 388 &  12 &   0 \\ 
+  2012 & 391 &  22 &   0 \\ 
+   \hline
+\end{tabular}
+\caption{Number of records for general, primary, and special school board elections 2007-2012.} 
+\label{tab:electype}
+\end{table}
+
+
+In all, 100 districts 
+reported a primary, with 61 
+reporting a primary between 2007 and 2012. Only 1
+district reported a special election during this period, and 312 
+reported a general election race. 
+
+Since Wisconsin school boards are non-partisan offices, a primary is not a symbol of 
+an ideological challenge to an incumbent or a battle to win the hearts and minds of 
+strict partisans. Instead, a primary is a signal of a substantial level of candidate 
+activity for a school board race. 
+
+The only special election that occurred during the 2007 to 2012 period. This was a
+recall election held on December 29\^{th}, 2009 in the Crivitz school district which 
+was triggered after a school board member, David Kwiatkowski resigned his seat 
+that November in the face of a recall petition.\footnote{For a full account of this 
+particular case, see the Peshtigo Times article online \url{http://www.peshtigotimes.net/?id=12617}}
 
 \subsection{Contestation: Frequency and Context}
 
@@ -197,12 +235,10 @@ jurisdictions that do not require elector signatures, candidates must file a dec
 of candidacy to register for the election with the election clerk in the school district. 
 
 
-
-
 Let's consider the pool of school board races for which records were successfully 
 obtained. Of the 4,181, 4,000 
 were general elections. Another 174 
-were primary elections, and the reamining   7 
+were primary elections, and the reamining 7 
 were special or recall elections. Of the general election races, 
 2,855 feature 
 two or more candidates who either were on the ballot or garnered more than 20 votes.\footnote{
@@ -211,7 +247,7 @@ However, it is important to note that in many school districts voters select mor
 one candidate for each seat and elect the top N vote recipients to the board. A 
 better measure of contestation is to see how many races featured more candidates than 
 winners - 1,808 
-races featured this, or  45\% of all races. 
+races featured this, or 45.2\% of all races. 
 
 Next, let's look at how often incumbents stand for election and how often they are 
 defeated. In order to code incumbency, two data sources were used. First, if a 
@@ -227,7 +263,12 @@ list to infer their incumbency status.
 
 
 
-Focusing on general elections
+In general elections, 57.5\% 
+of all races featured at least 1 incumbent. However, a more important figure is 
+identifying how many races featured at least one serious challenger against an incumbent. 
+72.2\% of Wisconsin school board general elections featured 
+a challenger. 
+
 
 
 
@@ -279,7 +320,7 @@ rebuilding voter data at the district level.
 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Jul 22 11:29:47 2014
+% Tue Jul 22 14:14:08 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
@@ -330,7 +371,7 @@ where a school board seat is chosen district wide. Figure \ref{fig:turnoutgraph}
 shows that district wide school board races feature an average turnout below 25\%. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Jul 22 11:29:48 2014
+% Tue Jul 22 14:14:09 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
