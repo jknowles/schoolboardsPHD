@@ -94,7 +94,7 @@ evaluated and explored.
 
 
 \section{Studying Wisconsin School Board Elections}
-
+\label{sec:wiscolaw}
 In Wisconsin, school boards are the offical holder of all school district elections. 
 This means that offical school board election records are maintained solely by 
 school districts themselves and gathering school board election results in Wisconsin 
@@ -164,6 +164,36 @@ board races. \Sexpr{iNum(table(rowSums(continuity) >5)[[2]])} districts had
 a race in each year between 2007 and 2012, while \Sexpr{iNum(table(rowSums(continuity) >5)[[1]])} 
 did not. 
 
+\subsection{General Elections, Primaries, and Special Elections}
+
+General elections for school board members follow the schedule described in Section 
+\ref{sec:wiscolaw}. However, for this project, I requested records for \emph{all} elections 
+for school board office including school board member primaries and special elections 
+if applicable. School board primaries occur whenthe number of candidates exceeds twice 
+the number of seats open in a race.\footnote{In Wisconsin first class cities, currently 
+only Milwaukee, a primary must be held whenever there are more than two candidates for 
+a race. Wis. Stat \S 8.11 (2m)} Special 
+elections can also occur if a candidate is recalled under Wis. Stat \S 9.10 (1) (a) 
+which states generally that a petition for recall must be signed by electors equal 
+in number to at least 25\% of the votes cast for the office of President of the United 
+States at the last election within the same jurisdiction.\footnote{It is unclear if this 
+would hold for school districts because the determination to hold the election is made by 
+school district election official, who may determine that a reliable count of votes cast 
+is not available and thus may defer to a formula specified in statute to determine the 
+number of petitioners required to initiate a recall. Wis. Stat \S 9.10 (1) (c) to (d). 
+Cited in a Staff Brief by the Joint Legislative Council Special Committee on Election 
+Law Review, October 2004 \url{http://libcd.law.wisc.edu/~wilc/sb/sb\_2004\_07.pdf}} 
+A special election is also required to fill a vacancy for board of school directors 
+in the Milwaukee Public School system (MPS). [Wis. Stat \S 8.50 (intro.)] A 
+special election is not required to fill a vacancy for any other school district - 
+instead vacancies are filled by appointment of the remaining members [Wis. Stat \S 17.26 (1)]. 
+
+# Count of general elections
+
+# Count of primaries
+
+# count of special elections
+
 \subsection{Contestation: Frequency and Context}
 
 The biggest question in the school board literature seems to be -- are school 
@@ -172,7 +202,34 @@ will explore when candidates emerge for school board elections, this section wil
 first look at how often elections are contested, and how this varies compared to 
 other elected bodies. 
 
-First, let's consider the pool of school board races for which records were successfully 
+Unlike studies of congressional or state legislative races, where the barriers to 
+appearing on the ballot are generally understood, I begin by discussing the decisions 
+a potential school board candidate faces when deciding to run. To appear on the 
+ballot in the spring election a candidate may not begin circulating nomination 
+papers prior to December 1 in the previous year. The nomination papers must be 
+filed no later than 5 p.m. on the first Tuesday in January preceding the election. 
+[Wis. Stat \S 8.10 and 8.15] The number of signatures by electors varies in statute, 
+depending on the proximity of the school district to cities. In Milwaukee Public Schools 
+candidates must obtain between 400 to 800 signatures within the jurisdiction they 
+are running to represent (either district wide, or a specific region of the district). 
+If the school district contains any territory that lies within a second class city, a 
+candidate must obtain between 100 and 200 signatures. School districts that have no 
+territory that lies within a first or second class city are free to deterimine 
+whether or not require nomination papers.\footnote{Milwaukee is the only first 
+class city that meets all requirements in Wis. Stat \S 62.05 (I). There are currently 
+sixteen second class cities in Wisconsin, and two more which qualify but have not switched 
+status yet. The second class cities are Madison, Green Bay, Kenosha, Racine, Appleton, 
+Waukesha, Oshkosh, Eau Claire, Janesville, West Allis, La Crosse, Sheboygan, Wauwatosa, 
+Fond du Lac, Brookfield, and Superior.} [Wis. Stat \S 120.06 (a)] The statutes specify that these remaining 
+districts can choose to require nomination papers from candidates, but may only require 
+between 20 and 100 signatures of electors [Wis. Stat \S 8.10 (3) and 8.15 (6)]. In 
+jurisdictions that do not require elector signatures, candidates must file a declaration 
+of candidacy to register for the election with the election clerk in the school district. 
+
+
+
+
+Let's consider the pool of school board races for which records were successfully 
 obtained. Of the \Sexpr{iNum(nrow(races))}, \Sexpr{iNum(nrow(races[races$electiontype == 1,]))} 
 were general elections. Another \Sexpr{iNum(nrow(races[races$electiontype == 2,]))} 
 were primary elections, and the reamining \Sexpr{iNum(nrow(races[races$electiontype == 3, ]))} 
@@ -199,14 +256,15 @@ and year of service for school board members in Wisconsin. Candidates appearing 
 in the early years of a school district's election records were cross referenced against this 
 list to infer their incumbency status. 
 
-<<incumb1>>=
+<<incumb1, echo=FALSE, results='hide'>>=
 nrow(races[races$ninc > 0 & races$electiontype == 1,])
 nrow(races[races$ninc > 1 & races$electiontype == 1,])
 
 @
 
+Focusing on general elections
 
-\subsection{General Elections, Primaries, and Special Elections}
+
 
 
 
