@@ -299,8 +299,10 @@ estimate, because in some cases a write-in candidate may garner 30 votes. % elab
 
 # Make a table showing races featuring incumbent challenger by year
 races.tmp <- subset(races, electiontype ==1 & year > 2006 & year <2013)
-races.tmp$contest <- "No Contested Incumbent"
-races.tmp$contest[races.tmp$nrealcand > races.tmp$ninc] <- "Incumbent Contested"
+races.tmp$contest <- "Uncontested"
+races.tmp$contest[races.tmp$nrealcand > races.tmp$nwins & races.tmp$ninc > 0] <- "Incumbent Contested"
+races.tmp$contest[races.tmp$nrealcand > races.tmp$nwins & races.tmp$ninc ==0] <- "Open Contested"
+
 
 table.tmp <- table(races.tmp$year, races.tmp$contest)
 
@@ -314,7 +316,10 @@ print(table.tmp, include.rownames=TRUE, size = "footnotesize")
 % Serious challengers
 
 In Table \ref{tab:incumbentContest} we see that school board elections featuring an 
-incumbent are contested more often than we might think.
+incumbent are contested more often than we might think. However, Table \ref{tab:incumbentContest} 
+represents an overestimate of contestation by using a generous definition of a serious 
+contest. Another way to look at this is to look at the differential vote share between 
+winners and losers. 
 
 
 \subsection{Voter Turnout}
