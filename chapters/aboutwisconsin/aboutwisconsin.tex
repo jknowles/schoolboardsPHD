@@ -75,7 +75,7 @@ evaluated and explored.
 
 
 \section{Studying Wisconsin School Board Elections}
-
+\label{sec:wiscolaw}
 In Wisconsin, school boards are the offical holder of all school district elections. 
 This means that offical school board election records are maintained solely by 
 school districts themselves and gathering school board election results in Wisconsin 
@@ -119,14 +119,50 @@ the period with the most complete set of records.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
 
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-racesgraph} \caption[Number of Races Provided by Districts]{Number of Races Provided by Districts. Red line indicates the mean.\label{fig:racesgraph}}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-racesgraph} \caption[Number of Races Provided by Districts]{Number of Races Provided by Districts. Red line indicates the median.\label{fig:racesgraph}}
 \end{figure}
 
 
 \end{knitrout}
 
+
+
+
+
 The mean district provided records on  13 school 
-board races. However, it is important to consider 
+board races. 283 districts had 
+a race in each year between 2007 and 2012, while  29 
+did not. 
+
+\subsection{General Elections, Primaries, and Special Elections}
+
+General elections for school board members follow the schedule described in Section 
+\ref{sec:wiscolaw}. However, for this project, I requested records for \emph{all} elections 
+for school board office including school board member primaries and special elections 
+if applicable. School board primaries occur whenthe number of candidates exceeds twice 
+the number of seats open in a race.\footnote{In Wisconsin first class cities, currently 
+only Milwaukee, a primary must be held whenever there are more than two candidates for 
+a race. Wis. Stat \S 8.11 (2m)} Special 
+elections can also occur if a candidate is recalled under Wis. Stat \S 9.10 (1) (a) 
+which states generally that a petition for recall must be signed by electors equal 
+in number to at least 25\% of the votes cast for the office of President of the United 
+States at the last election within the same jurisdiction.\footnote{It is unclear if this 
+would hold for school districts because the determination to hold the election is made by 
+school district election official, who may determine that a reliable count of votes cast 
+is not available and thus may defer to a formula specified in statute to determine the 
+number of petitioners required to initiate a recall. Wis. Stat \S 9.10 (1) (c) to (d). 
+Cited in a Staff Brief by the Joint Legislative Council Special Committee on Election 
+Law Review, October 2004 \url{http://libcd.law.wisc.edu/~wilc/sb/sb\_2004\_07.pdf}} 
+A special election is also required to fill a vacancy for board of school directors 
+in the Milwaukee Public School system (MPS). [Wis. Stat \S 8.50 (intro.)] A 
+special election is not required to fill a vacancy for any other school district - 
+instead vacancies are filled by appointment of the remaining members [Wis. Stat \S 17.26 (1)]. 
+
+% # Count of general elections
+% 
+% # Count of primaries
+% 
+% # count of special elections
 
 \subsection{Contestation: Frequency and Context}
 
@@ -136,20 +172,68 @@ will explore when candidates emerge for school board elections, this section wil
 first look at how often elections are contested, and how this varies compared to 
 other elected bodies. 
 
-First, let's consider the pool of school board races for which records were successfully 
+Unlike studies of congressional or state legislative races, where the barriers to 
+appearing on the ballot are generally understood, I begin by discussing the decisions 
+a potential school board candidate faces when deciding to run. To appear on the 
+ballot in the spring election a candidate may not begin circulating nomination 
+papers prior to December 1 in the previous year. The nomination papers must be 
+filed no later than 5 p.m. on the first Tuesday in January preceding the election. 
+[Wis. Stat \S 8.10 and 8.15] The number of signatures by electors varies in statute, 
+depending on the proximity of the school district to cities. In Milwaukee Public Schools 
+candidates must obtain between 400 to 800 signatures within the jurisdiction they 
+are running to represent (either district wide, or a specific region of the district). 
+If the school district contains any territory that lies within a second class city, a 
+candidate must obtain between 100 and 200 signatures. School districts that have no 
+territory that lies within a first or second class city are free to deterimine 
+whether or not require nomination papers.\footnote{Milwaukee is the only first 
+class city that meets all requirements in Wis. Stat \S 62.05 (I). There are currently 
+sixteen second class cities in Wisconsin, and two more which qualify but have not switched 
+status yet. The second class cities are Madison, Green Bay, Kenosha, Racine, Appleton, 
+Waukesha, Oshkosh, Eau Claire, Janesville, West Allis, La Crosse, Sheboygan, Wauwatosa, 
+Fond du Lac, Brookfield, and Superior.} [Wis. Stat \S 120.06 (a)] The statutes specify that these remaining 
+districts can choose to require nomination papers from candidates, but may only require 
+between 20 and 100 signatures of electors [Wis. Stat \S 8.10 (3) and 8.15 (6)]. In 
+jurisdictions that do not require elector signatures, candidates must file a declaration 
+of candidacy to register for the election with the election clerk in the school district. 
+
+
+
+
+Let's consider the pool of school board races for which records were successfully 
 obtained. Of the 4,181, 4,000 
 were general elections. Another 174 
 were primary elections, and the reamining   7 
 were special or recall elections. Of the general election races, 
 2,855 feature 
-two or more candidates who either were on the ballot or garnered more than 20 votes. 
+two or more candidates who either were on the ballot or garnered more than 20 votes.\footnote{
+It is not uncommon in school board races for a write-in candidate to garner more than 20 votes.} 
 However, it is important to note that in many school districts voters select more than 
 one candidate for each seat and elect the top N vote recipients to the board. A 
 better measure of contestation is to see how many races featured more candidates than 
 winners - 1,808 
 races featured this, or  45\% of all races. 
 
-\subsection{Margins and Voters}
+Next, let's look at how often incumbents stand for election and how often they are 
+defeated. In order to code incumbency, two data sources were used. First, if a 
+candidate appeared in consecutive races and was coded as a winner in the prior 
+race, they are coded as an incumbent. However, for races that were the beginning 
+of the dataset, incumbency was coded using a master roster of known school board 
+members provided by the Wisconsin Department of Public Instruction to the author.\footnote{
+This collection is not required or official, but is maintained by the DPI in partnership with 
+the Wisconsin Association of School Boards.} This collection indicates name, school district, 
+and year of service for school board members in Wisconsin. Candidates appearing on the ballot 
+in the early years of a school district's election records were cross referenced against this 
+list to infer their incumbency status. 
+
+
+
+Focusing on general elections
+
+
+
+
+
+\subsection{Voter Turnout}
 
 The spring elections in Wisconsin are decidedly low turnout affairs. Since 2000 
 Wisconsin has had between 4 and 4.35 million voting age population residents. However, 
@@ -195,11 +279,11 @@ rebuilding voter data at the district level.
 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Jul 22 08:32:38 2014
+% Tue Jul 22 11:29:47 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
-\begin{tabular}{lrrrrrr}
+\begin{tabular}{p{.3in}p{.8in}p{.8in}p{1in}p{1in}p{1in}p{1in}}
   \hline
 Year & Official Total Votes & Offical VAP & Offical Turnout & Estimated Total Votes & Estimated VAP & Estimated Turnout \\ 
   \hline
@@ -246,11 +330,11 @@ where a school board seat is chosen district wide. Figure \ref{fig:turnoutgraph}
 shows that district wide school board races feature an average turnout below 25\%. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Jul 22 08:32:39 2014
+% Tue Jul 22 11:29:48 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
-\begin{tabular}{p{1in}p{1in}p{1in}p{1in}p{1in}p{1in}p{1in}}
+\begin{tabular}{p{.3in}p{.8in}p{.8in}p{1in}p{1in}p{1in}p{1in}}
   \hline
 Year & District Wide Races & Districts with District Wide & All SB Races & All Districts with Records & Districts without District Wide & Non-district Wide Races \\ 
   \hline
@@ -287,7 +371,9 @@ which do not have a district wide school board race is a different matter.
 
 Figure \ref{fig:nondistraces} shows the pattern for non-district wide races appears 
 very similar under the estimation method of collapsing all races in a district 
-into one race and dividing the votes counted by the number of winners. 
+into one race and dividing the votes counted by the number of winners. This most 
+certainly represents an underestimate, as even districts with apportioned seats 
+do not elect all portions of their district in the same election cycle. 
 
 \section{Putting School Board Elections in Context}
 

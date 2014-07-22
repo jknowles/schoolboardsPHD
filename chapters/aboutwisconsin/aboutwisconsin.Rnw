@@ -17,7 +17,7 @@ library(scales)
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
-iNum <- function(x){formatC(x, big.mark = ",", digits = 2)}
+iNum <- function(x){prettyNum(x, big.mark = ",", digits = 3)}
 
 # gpclibPermit()
 #setwd("../../../MasterText")
@@ -188,11 +188,36 @@ in the Milwaukee Public School system (MPS). [Wis. Stat \S 8.50 (intro.)] A
 special election is not required to fill a vacancy for any other school district - 
 instead vacancies are filled by appointment of the remaining members [Wis. Stat \S 17.26 (1)]. 
 
-# Count of general elections
+For the entire dataset there are \Sexpr{iNum(length(races$distid[races$electiontype == 1]))} 
+general election races, \Sexpr{\Sexpr{iNum(length(races$distid[races$electiontype == 2]))}} 
+primary election races, and \Sexpr{\Sexpr{iNum(length(races$distid[races$electiontype == 3]))}} 
+special elections. Table \ref{tab:electype} shows the number of races of each type 
+for the period between 2007 and 2012 with the best election record coverage.
 
-# Count of primaries
+<<electype, results='asis'>>=
+tabledf <- subset(races, year > 2006 & year < 2013)
+tabledf$electype2 <- ifelse(tabledf$electiontype == 1, "General", 
+                            ifelse(tabledf$electiontype == 2, "Primary", "Special"))
+print(xtable(table(tabledf$year, tabledf$electype2), label="tab:electype", 
+             caption = "Number of records for general, primary, and special school board elections 2007-2012."), include.rownames=TRUE)
+@
 
-# count of special elections
+In all, \Sexpr{iNum(length(unique(races$distid[races$electiontype == 2])))} districts 
+reported a primary, with \Sexpr{iNum(length(unique(tabledf$distid[tabledf$electiontype == 2])))} 
+reporting a primary between 2007 and 2012. Only \Sexpr{iNum(length(unique(tabledf$distid[tabledf$electiontype == 3])))}
+district reported a special election during this period, and \Sexpr{iNum(length(unique(tabledf$distid[tabledf$electiontype == 1])))} 
+reported a general election race. 
+
+Since Wisconsin school boards are non-partisan offices, a primary is not a symbol of 
+an ideological challenge to an incumbent or a battle to win the hearts and minds of 
+strict partisans. Instead, a primary is a signal of a substantial level of candidate 
+activity for a school board race. 
+
+The only special election that occurred during the 2007 to 2012 period. This was a
+recall election held on December 29\^{th}, 2009 in the Crivitz school district which 
+was triggered after a school board member, David Kwiatkowski resigned his seat 
+that November in the face of a recall petition.\footnote{For a full account of this 
+particular case, see the Peshtigo Times article online \url{http://www.peshtigotimes.net/?id=12617}}
 
 \subsection{Contestation: Frequency and Context}
 
@@ -225,8 +250,6 @@ districts can choose to require nomination papers from candidates, but may only 
 between 20 and 100 signatures of electors [Wis. Stat \S 8.10 (3) and 8.15 (6)]. In 
 jurisdictions that do not require elector signatures, candidates must file a declaration 
 of candidacy to register for the election with the election clerk in the school district. 
-
-
 
 
 Let's consider the pool of school board races for which records were successfully 
