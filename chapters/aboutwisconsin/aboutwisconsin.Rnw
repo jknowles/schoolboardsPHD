@@ -136,18 +136,33 @@ qplot(year, out, data = plotdf, geom = 'bar', stat = 'identity') + theme_dpi() +
 The good news is that the most crucial period of the sample, from 2007 to 2012, is 
 the period with the most complete set of records. 
 
-<<racesgraph, echo=FALSE, fig.cap="Number of Races Provided by Districts. Red line indicates the mean.">>=
+<<racesgraph, echo=FALSE, fig.cap="Number of Races Provided by Districts. Red line indicates the median.">>=
 plotdf <- ddply(races, .(distid), summarize, years = length(unique(year)), 
                 races = length(year))
 
 qplot(races, data = plotdf) + theme_dpi() + 
-  geom_vline(xintercept = mean(plotdf$races), color = I('red')) + 
+  geom_vline(xintercept = median(plotdf$races), color = I('red')) + 
   labs(x = "Number of School Board Races", y = "Count of Districts", 
        title = "Number of Race Records Provided by Each District")
 @
 
+
+
+<<continuityinrecords, echo=FALSE, results='hide'>>=
+continuity <- as.matrix(table(races$distid, races$year))
+continuity <- continuity[, -14]
+
+# Let's look at continuity from 2007 to 2012
+
+continuity <- continuity[, 8:13]
+
+
+@
+
 The mean district provided records on \Sexpr{iNum(mean(plotdf$races))} school 
-board races. However, it is important to consider 
+board races. \Sexpr{iNum(table(rowSums(continuity) >5)[[2]])} districts had 
+a race in each year between 2007 and 2012, while \Sexpr{iNum(table(rowSums(continuity) >5)[[1]])} 
+did not. 
 
 \subsection{Contestation: Frequency and Context}
 
@@ -163,7 +178,8 @@ were general elections. Another \Sexpr{iNum(nrow(races[races$electiontype == 2,]
 were primary elections, and the reamining \Sexpr{iNum(nrow(races[races$electiontype == 3, ]))} 
 were special or recall elections. Of the general election races, 
 \Sexpr{iNum(nrow(races[races$electiontype == 1 & races$nrealcand > 1,]))} feature 
-two or more candidates who either were on the ballot or garnered more than 20 votes. 
+two or more candidates who either were on the ballot or garnered more than 20 votes.\footnote{
+It is not uncommon in school board races for a write-in candidate to garner more than 20 votes.} 
 However, it is important to note that in many school districts voters select more than 
 one candidate for each seat and elect the top N vote recipients to the board. A 
 better measure of contestation is to see how many races featured more candidates than 
@@ -171,7 +187,30 @@ winners - \Sexpr{iNum(nrow(races[races$electiontype == 1 & races$nrealcand > rac
 races featured this, or \Sexpr{iNum(nrow(races[races$electiontype == 1 & races$nrealcand > races$nwins,])/ 
 nrow(races[races$electiontype == 1,])*100)}\% of all races. 
 
-\subsection{Margins and Voters}
+Next, let's look at how often incumbents stand for election and how often they are 
+defeated. In order to code incumbency, two data sources were used. First, if a 
+candidate appeared in consecutive races and was coded as a winner in the prior 
+race, they are coded as an incumbent. However, for races that were the beginning 
+of the dataset, incumbency was coded using a master roster of known school board 
+members provided by the Wisconsin Department of Public Instruction to the author.\footnote{
+This collection is not required or official, but is maintained by the DPI in partnership with 
+the Wisconsin Association of School Boards.} This collection indicates name, school district, 
+and year of service for school board members in Wisconsin. Candidates appearing on the ballot 
+in the early years of a school district's election records were cross referenced against this 
+list to infer their incumbency status. 
+
+<<incumb1>>=
+nrow(races[races$ninc > 0 & races$electiontype == 1,])
+nrow(races[races$ninc > 1 & races$electiontype == 1,])
+
+@
+
+
+\subsection{General Elections, Primaries, and Special Elections}
+
+
+
+\subsection{Voter Turnout}
 
 The spring elections in Wisconsin are decidedly low turnout affairs. Since 2000 
 Wisconsin has had between 4 and 4.35 million voting age population residents. However, 
@@ -263,11 +302,18 @@ names(table1) <- tab1names
 rm(years, turnoutOf, vapOf, turnoutPerOf, turnoutEst, vapEst, turnoutPerEst, 
    tab1names, vapadjEst)
 
-print(xtable(table1, digits =0, label="tab:turnoutEst", 
-             caption = "Comparing estimates of voter turnout derived from MCD estimates to official GAB turnout records." ), 
+
+table1 <- xtable(table1, digits =0, label="tab:turnoutEst", 
+             caption = "Comparing estimates of voter turnout derived from MCD estimates to official GAB turnout records." )
+align(table1) <- c('p{.3in}','p{.3in}',  'p{.8in}','p{.8in}','p{1in}','p{1in}',
+                   'p{1in}','p{1in}')
+
+print(table1, 
       include.rownames = FALSE, 
       format.args = list(big.mark = ",", decimal.mark = "."), 
       size = "footnotesize")
+
+
 
 @
 
@@ -345,8 +391,13 @@ names(table2) <- c("Year", "District Wide Races", "Districts with District Wide"
                    "All SB Races", "All Districts with Records", 
                    "Districts without District Wide", "Non-district Wide Races")
 
-print(xtable(table2, label="tab:yearsample", 
-             caption = "Comparing sample size for district wide vs. apportioned school board races." ), 
+
+table2 <- xtable(table2, label="tab:yearsample", 
+             caption = "Comparing sample size for district wide vs. apportioned school board races." )
+align(table2) <- c('p{.3in}','p{.3in}',  'p{.8in}','p{.8in}','p{1in}','p{1in}',
+                   'p{1in}','p{1in}')
+
+print(table2, 
       include.rownames = FALSE, 
       format.args = list(big.mark = ",", decimal.mark = "."), 
       size = "footnotesize")
@@ -402,7 +453,9 @@ qplot(year, turnout, data = dist.tmp, geom = 'boxplot') +
 
 Figure \ref{fig:nondistraces} shows the pattern for non-district wide races appears 
 very similar under the estimation method of collapsing all races in a district 
-into one race and dividing the votes counted by the number of winners. 
+into one race and dividing the votes counted by the number of winners. This most 
+certainly represents an underestimate, as even districts with apportioned seats 
+do not elect all portions of their district in the same election cycle. 
 
 \section{Putting School Board Elections in Context}
 
