@@ -321,6 +321,26 @@ represents an overestimate of contestation by using a generous definition of a s
 contest. Another way to look at this is to look at the differential vote share between 
 winners and losers. 
 
+<<votemargin1, eval = FALSE>>=
+cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
+votes.tmp <- merge(cand.tmp, as.data.frame(races)[races$nwins >0, c("raceid2", "votes", "districtwide", "ninc", 
+                                       "nminor","nwins", "ncand", "nrealcand")], 
+                   by = c("raceid2"), suffixes = c(".cand", ".race"))
+
+plotdf <- as.data.table(votes.tmp)[, list(cand = .N, 
+                                          winshare = mean(votes.cand/(votes.race/nwins))), 
+                                   by = c("distid", "year", "raceid", "winner")]
+
+plotdf <- reshape(plotdf, direction = "wide", timevar = "winner", idvar = c("distid", "year", "raceid"))
+errors <- subset(plotdf, winshare > 0.5 & winner == 0)
+# Figure out if geometric mean is the way to go
+votes.tmp <- as.data.table(dat[dat$candidateid!=99 & dat$electiontype == 1,])[, list(cand = .N, 
+                                                                                     winshare = mean(votes[winner==1])/sum(votes), 
+                                                                                     loseshare = mean(votes[winner==0])/sum(votes)), 
+                                                                              by = c("raceid2")]
+
+@
+
 
 \subsection{Voter Turnout}
 
