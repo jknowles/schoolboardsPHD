@@ -374,7 +374,40 @@ One method to do this is to take the share of votes won by each candidate as a s
 by taking votes for one candidate over the total votes cast in the election.\footnote{All 
 school board elections in Wisconsin restrict voters to one vote per candidate -- 
 though in multi-member districts voters may select two or three candidates total 
-for election to office.} 
+for election to office.} Then, the vote share for the winners is summed and the 
+vote share for the losers is summed, and the difference is taken as the margin 
+of victory for the winners. Another method takes the mean of the winners' vote 
+share and the mean of the losers' vote share and differences these. A final measure 
+captures the share of votes all the winners in the election captured above the 
+maximum they can capture -- determined by the proportion of votes available to 
+each candidate (1 over the number of candidates) multiplied by the number of winners. 
+For a district with three candidates running for two seats, this would mean that 
+the winners collectively need to win 66\% of the vote. If they win 70\% this equates 
+to a margin of victory of 4\%. For a district with five candidates running for three seats, 
+the winners collectively need to win 60\% of the vote. If they win 70\% of the vote 
+this equates to a 10\% margin of victory, even though each candidate has only won 
+on average 23.3\% of the vote in this race as compared to 35\% of the vote in the 
+prior race. 
+
+This final method has some limitations. First, school board race vote share measures 
+are more heavily influenced by the presence of write-in candidates than state or 
+federal legislative districts. This is because the average school board race has 
+only \Sexpr{iNum(mean(plotdf$votescast, na.rm=TRUE))} votes cast and the median 
+race has only \Sexpr{iNum(median(plotdf$votescast, na.rm=TRUE))}. A large number 
+of scatter votes can thus swing the vote share calculation. Note that in the current 
+dataset, any candidate receiving more than 20 votes is counted as a candidate, but 
+districts with many candidates receiving fewer than 20 votes will still be affected 
+by this concern. This makes it possible for the winning candidates 
+to collectively secure only 58\% of the votes and win election, resulting in a 
+negative win margin from the expected total. 
+
+One adjustment to deal with this concern is to subtract out votes for write-in 
+candidates where possible. This is not always possible because voting records do not 
+always indicate in which school board race the scattered votes were cast. 
+
+% can we subtract scatter votes from total votes cast?
+
+% write in and scatter
 
 \subsection{Voter Turnout}
 
