@@ -156,7 +156,6 @@ continuity <- continuity[, -14]
 
 continuity <- continuity[, 8:13]
 
-
 @
 
 The mean district provided records on \Sexpr{iNum(mean(plotdf$races))} school 
@@ -313,34 +312,6 @@ print(table.tmp, include.rownames=TRUE, size = "footnotesize")
 
 @
 
-% Serious challengers
-
-In Table \ref{tab:incumbentContest} we see that school board elections featuring an 
-incumbent are contested more often than we might think. However, Table \ref{tab:incumbentContest} 
-represents an overestimate of contestation by using a generous definition of a serious 
-contest. Another way to look at this is to look at the differential vote share between 
-winners and losers. 
-
-<<votemargin1, eval = FALSE>>=
-cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
-votes.tmp <- merge(cand.tmp, as.data.frame(races)[races$nwins >0, c("raceid2", "votes", "districtwide", "ninc", 
-                                       "nminor","nwins", "ncand", "nrealcand")], 
-                   by = c("raceid2"), suffixes = c(".cand", ".race"))
-
-plotdf <- as.data.table(votes.tmp)[, list(cand = .N, 
-                                          winshare = mean(votes.cand/(votes.race/nwins))), 
-                                   by = c("distid", "year", "raceid", "winner")]
-
-plotdf <- reshape(plotdf, direction = "wide", timevar = "winner", idvar = c("distid", "year", "raceid"))
-errors <- subset(plotdf, winshare > 0.5 & winner == 0)
-# Figure out if geometric mean is the way to go
-votes.tmp <- as.data.table(dat[dat$candidateid!=99 & dat$electiontype == 1,])[, list(cand = .N, 
-                                                                                     winshare = mean(votes[winner==1])/sum(votes), 
-                                                                                     loseshare = mean(votes[winner==0])/sum(votes)), 
-                                                                              by = c("raceid2")]
-
-@
-
 % Comparisons
 
 In comparison to school board races, legislative races at both the state and federal 
@@ -353,6 +324,57 @@ of contestation. Taking Wisconsin as an example, in 2012 only 26 of 99 seats in 
 Wisconsin Assembly were uncontested, and only 8 out of 33 seats in the Wisconsin 
 Senate were uncontested in 2012 and 2010 combined.\footnote{All results provided 
 by Ballotpedia.} 
+
+% Serious challengers
+
+In Table \ref{tab:incumbentContest} we see that school board elections featuring an 
+incumbent are contested more often than we might think. However, Table \ref{tab:incumbentContest} 
+represents an overestimate of contestation by using a generous definition of a serious 
+contest. Another way to look at this is to look at the differential vote share between 
+winners and losers. 
+
+<<votemargin1, eval = FALSE>>=
+cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
+votes.tmp <- merge(cand.tmp, as.data.frame(races)[races$nwins >0, c("raceid2", "votes", 
+                                                                    "districtwide", "ninc",
+                                                                    "nminor","nwins", "ncand",
+                                                                    "nrealcand")], 
+                   by = c("raceid2"), suffixes = c(".cand", ".race"))
+
+votes.tmp$vote_share <- votes.tmp$votes.cand / votes.tmp$votes.race
+votes.tmp$vote_share[is.na(votes.tmp$vote_share)] <- 0
+plotdf <- as.data.table(votes.tmp)[, list(cand = .N, 
+                                          winners = sum(winner),
+                                          votescast = sum(votes.cand),
+                                          winshare = sum(vote_share[winner ==1]),
+                    winmargin = sum(vote_share[winner == 1]) - sum(vote_share[winner == 0]),
+                    winmargin2 = mean(vote_share[winner==1]) - mean(vote_share[winner == 0])), 
+                                   by = c("raceid2")]
+plotdf$winmargin3 <- plotdf$winshare - (1/plotdf$cand * plotdf$winners)
+plotdf$winmargin3[plotdf$cand == plotdf$winners] <- .5
+
+errors <- subset(plotdf, winmargin < 0)
+plotdf <- reshape(plotdf, direction = "wide", timevar = "winner", idvar = c("distid", "year", "raceid"))
+
+# hist(plotdf$winmargin3[plotdf$winners < plotdf$cand & !is.na(plotdf$votescast) & plotdf$votescast > 100])
+@
+
+For an analysis of the intensity of competitiveness in school board races, we turn 
+our attention to races where voters have a choice -- those with serious candidates 
+on the ballot. As we saw above, this is a much smaller subset of all races than 
+the corresponding restriction would be for state or federal legislative offices. 
+I restrict the sample to the 
+\Sexpr{iPer(nrow(plotdf[plotdf$cand > plotdf$winners])/nrow(plotdf) * 100)} of 
+general election races that features more candidates than winners. These races 
+are most commonly for one, two, or three seats simultaneously. These multi-member 
+districts pose a challenge in calculating the win margin and making comparisons 
+across races with differing expected pluralities. 
+
+One method to do this is to take the share of votes won by each candidate as a start 
+by taking votes for one candidate over the total votes cast in the election.\footnote{All 
+school board elections in Wisconsin restrict voters to one vote per candidate -- 
+though in multi-member districts voters may select two or three candidates total 
+for election to office.} 
 
 \subsection{Voter Turnout}
 
@@ -394,10 +416,17 @@ against candidates in statewide elections.\footnote{A sensitivity check was done
 to determine if weighting by residential property values only changed the estimates, but 
 it did not. For more details see Appendix \ref{app:data}}
 
+For the analysis here I elect to use Voting Age Population (VAP) as the measure for 
+the denominator of the voter turnout calculation instead of registered or eligible 
+voters. VAP is the only measure available both at the MCD level and at the statewide 
+level that can allow for consistent comparisons between the two. Furthermore, the 
+state of Wisconsin does not maintain MCD level registered voter or eligible voter counts 
+at the MCD level historically -- though such figures can be obtained from the GAB 
+around election time for a current election.%confirm 
+
 We can measure how accurate this estimation procedure is by comparing the official number 
 of votes cast and voter turnout statewide to the statewide estimates derived by 
 rebuilding voter data at the district level. 
-
 
 <<turnout, echo = FALSE,  results='asis'>>=
 # qplot(races.tmp$turnout, races.tmp$topPresTurnoutPrior, geom = 'point') + 
