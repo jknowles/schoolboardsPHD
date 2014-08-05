@@ -95,8 +95,8 @@ evaluated and explored.
 
 \section{Studying Wisconsin School Board Elections}
 \label{sec:wiscolaw}
-In Wisconsin, school boards are the offical holder of all school district elections. 
-This means that offical school board election records are maintained solely by 
+In Wisconsin, school boards are the official holder of all school district elections. 
+This means that official school board election records are maintained solely by 
 school districts themselves and gathering school board election results in Wisconsin 
 requires requesting records from individual school districts.\footnote{See Appendix 
 \ref{app:data} and the Appendix \ref{app:log} for details on the request process.} 
@@ -168,7 +168,7 @@ did not.
 General elections for school board members follow the schedule described in Section 
 \ref{sec:wiscolaw}. However, for this project, I requested records for \emph{all} elections 
 for school board office including school board member primaries and special elections 
-if applicable. School board primaries occur whenthe number of candidates exceeds twice 
+if applicable. School board primaries occur when the number of candidates exceeds twice 
 the number of seats open in a race.\footnote{In Wisconsin first class cities, currently 
 only Milwaukee, a primary must be held whenever there are more than two candidates for 
 a race. Wis. Stat \S 8.11 (2m)} Special 
@@ -187,7 +187,7 @@ in the Milwaukee Public School system (MPS). [Wis. Stat \S 8.50 (intro.)] A
 special election is not required to fill a vacancy for any other school district - 
 instead vacancies are filled by appointment of the remaining members [Wis. Stat \S 17.26 (1)]. 
 
-For the entire dataset there are \Sexpr{iNum(length(races$distid[races$electiontype == 1]))} 
+For the entire data set there are \Sexpr{iNum(length(races$distid[races$electiontype == 1]))} 
 general election races,\Sexpr{iNum(length(races$distid[races$electiontype == 2]))} 
 primary election races, and \Sexpr{iNum(length(races$distid[races$electiontype == 3]))}
 special elections. Table \ref{tab:electype} shows the number of races of each type 
@@ -238,7 +238,7 @@ candidates must obtain between 400 to 800 signatures within the jurisdiction the
 are running to represent (either district wide, or a specific region of the district). 
 If the school district contains any territory that lies within a second class city, a 
 candidate must obtain between 100 and 200 signatures. School districts that have no 
-territory that lies within a first or second class city are free to deterimine 
+territory that lies within a first or second class city are free to determine 
 whether or not require nomination papers.\footnote{Milwaukee is the only first 
 class city that meets all requirements in Wis. Stat \S 62.05 (I). There are currently 
 sixteen second class cities in Wisconsin, and two more which qualify but have not switched 
@@ -254,7 +254,7 @@ of candidacy to register for the election with the election clerk in the school 
 Let's consider the pool of school board races for which records were successfully 
 obtained. Of the \Sexpr{iNum(nrow(races))}, \Sexpr{iNum(nrow(races[races$electiontype == 1,]))} 
 were general elections. Another \Sexpr{iNum(nrow(races[races$electiontype == 2,]))} 
-were primary elections, and the reamining \Sexpr{iNum(nrow(races[races$electiontype == 3, ]))} 
+were primary elections, and the remaining \Sexpr{iNum(nrow(races[races$electiontype == 3, ]))} 
 were special or recall elections. Of the general election races, 
 \Sexpr{iNum(nrow(races[races$electiontype == 1 & races$nrealcand > 1,]))} feature 
 two or more candidates who either were on the ballot or garnered more than 20 votes.\footnote{
@@ -395,19 +395,57 @@ federal legislative districts. This is because the average school board race has
 only \Sexpr{iNum(mean(plotdf$votescast, na.rm=TRUE))} votes cast and the median 
 race has only \Sexpr{iNum(median(plotdf$votescast, na.rm=TRUE))}. A large number 
 of scatter votes can thus swing the vote share calculation. Note that in the current 
-dataset, any candidate receiving more than 20 votes is counted as a candidate, but 
+data set, any candidate receiving more than 20 votes is counted as a candidate, but 
 districts with many candidates receiving fewer than 20 votes will still be affected 
 by this concern. This makes it possible for the winning candidates 
 to collectively secure only 58\% of the votes and win election, resulting in a 
 negative win margin from the expected total. 
 
+\subsubsection{Scattered Votes}
+
 One adjustment to deal with this concern is to subtract out votes for write-in 
 candidates where possible. This is not always possible because voting records do not 
-always indicate in which school board race the scattered votes were cast. 
+always indicate in which school board race the scattered votes were cast. In most 
+cases, school board election clerks record candidates getting very few votes -- 
+less than 10 -- together into a single category of votes called "scatter". Though 
+these votes are largely inconsequential in federal and state legislative races, 
+in non-partisan local races with low vote counts they can make a significant 
+impact on measures of turnout, win share, and contestation. Of the \Sexpr{iNum(nrow(dat))} 
+candidate-races of data on school board elections in Wisconsin, \Sexpr{iNum(nrow(dat[dat$candidateid == 99, ]))} 
+were scatter votes. 
 
-% can we subtract scatter votes from total votes cast?
+Votes were labeled scatter in the Wisconsin data set for two reasons: first, all 
+candidates receiving fewer than 20 votes in a single race were compiled together 
+into a scatter category. This decision was put in place to reduce the data 
+collection burden that already involved hand coding \Sexpr{iNum(nrow(dat[dat$candidateid != 99,]))} 
+candidate-race records. Including the "long-tail" of write-in votes, protest votes, 
+and spurious candidates would have added substantial burden to the data collection 
+process. 
 
-% write in and scatter
+Second, some jurisdictions pre-compiled their results and already collapsed votes 
+into a "scatter" category for reporting in newspapers, to county election officials, 
+or for local reporting. In these cases, the threshold for a candidate being labeled 
+in the "scatter" category is unknown, however, for some races it greatly exceeds 
+the threshold of 20. 
+
+<<scatter1>>=
+scat1 <- dat[dat$candidateid == 99, ]
+
+head(scat1[order(-scat1$votes),], 20)
+
+
+@
+
+
+
+\subsubsection{Write-in Candidates}
+
+In only the rarest legislative elections are write-in candidates consequential with 
+only a handful of write-in candidates at the state or federal level over the past 
+50 years making an impact at the polls. However, in school board elections in Wisconsin, 
+serious challenges and even victories by write-in candidates are frequent enough to 
+merit special consideration. Unfortunately, write-in candidates are often not 
+noted in election returns explicitly in Wisconsin school board elections. 
 
 \subsection{Voter Turnout}
 
@@ -418,7 +456,7 @@ average with a peak of 1.5 million.\footnote{Statistics from a Wisconsin Governm
 Board report, available online: \url{http://gab.wi.gov/sites/default/files/page/non\_partisan\_turnout\_2000\_2013\_pdf\_15069.pdf}}
 Turnout is typically around 18\% in such elections. Unsurprisingly then, school 
 board elections are also low turnout affairs. By comparison, 
-in the November partisn general election voter turnout is around 70\% in the last 
+in the November partisan general election voter turnout is around 70\% in the last 
 three presidential elections, and around 48\% in the last three gubernatorial 
 elections.\footnote{Statistics from a Wisconsin Government Accountability 
 Board report, available online: \url{http://gab.wi.gov/sites/default/files/page/partisan\_voter_turnout\_statistics\_1948\_2012\_pdf\_20396.pdf}}
@@ -432,7 +470,7 @@ the number of votes cast by voters within the school district. To determine the 
 age population (VAP) of the school district in Wisconsin, I employ the finest resolution 
 estimate of voting age population available -- VAP estimates by minor civil division (MCD) 
 conducted by the Wisconsin Department of Administration.\footnote{Available online: \url{http://gab.wi.gov/elections-voting/results}. 
-Statistics for Wisconsin Minor Civil Divisons are maintained by the Department of Administration 
+Statistics for Wisconsin Minor Civil Divisions are maintained by the Department of Administration 
 Demographic Services Center: \url{http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9}}
 However, MCDs are not perfectly contiguous with school districts -- school districts 
 are contiguous only at the ward level where VAP estimates are not available. In 
@@ -523,7 +561,7 @@ print(table1,
 
 @
 
-As shown in Table \ref{tab:turnoutEst}, the estimation procedure is very accurate. 
+As shown in Table \ref{tab:turnoutEst}, the estimation procedure is accurate. 
 Using these estimates, we can be confident that the procedure used generates 
 reasonable estimates of the VAP at the school district level. This takes care 
 of the denominator of the turnout equation. TODO: Say something about vapadj
