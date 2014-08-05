@@ -17,8 +17,8 @@ library(scales)
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
-iNum <- function(x){prettyNum(x, big.mark = ",", digits = 3)}
-iPer <- function(x){paste0(prettyNum(x, big.mark = ",", digits = 3),"\\%")}
+iNum <- function(x){prettyNum(as.character(x), big.mark = ",", digits = 3)}
+iPer <- function(x){paste0(prettyNum(as.character(x), big.mark = ",", digits = 3),"\\%")}
 # gpclibPermit()
 #setwd("../../../MasterText")
 #elec <- read.csv("data/electionpartisanshippanel.csv")
@@ -290,7 +290,7 @@ of all races featured at least one incumbent. However, a more important figure i
 identifying how many races featured at least one serious challenger against an incumbent. 
 \Sexpr{iPer(contested/base*100)} of Wisconsin school board general elections featured 
 this pattern of contestation. In order to qualify as a serious challenger, a candidate 
-needed to garner at least 30 votes -- which represents \Sexpr{30/median(races$votes[races$electiontype==1,], na.rm=TRUE)/2*100} 
+needed to garner at least 30 votes -- which represents \Sexpr{30/median(races$votes[races$electiontype==1], na.rm=TRUE)/2*100} 
 of the votes cast in the median school board race. This represents a conservative 
 estimate, because in some cases a write-in candidate may garner 30 votes. % elaborate
 
@@ -354,7 +354,7 @@ plotdf$winmargin3 <- plotdf$winshare - (1/plotdf$cand * plotdf$winners)
 plotdf$winmargin3[plotdf$cand == plotdf$winners] <- .5
 
 errors <- subset(plotdf, winmargin < 0)
-plotdf <- reshape(plotdf, direction = "wide", timevar = "winner", idvar = c("distid", "year", "raceid"))
+#plotdf <- reshape(plotdf, direction = "wide", timevar = "winner", idvar = c("distid", "year", "raceid"))
 
 # hist(plotdf$winmargin3[plotdf$winners < plotdf$cand & !is.na(plotdf$votescast) & plotdf$votescast > 100])
 @
@@ -364,7 +364,7 @@ our attention to races where voters have a choice -- those with serious candidat
 on the ballot. As we saw above, this is a much smaller subset of all races than 
 the corresponding restriction would be for state or federal legislative offices. 
 I restrict the sample to the 
-\Sexpr{iPer(nrow(plotdf[plotdf$cand > plotdf$winners])/nrow(plotdf) * 100)} of 
+\Sexpr{iPer(nrow(plotdf[plotdf$cand > plotdf$winners,])/nrow(plotdf) * 100)} of 
 general election races that features more candidates than winners. These races 
 are most commonly for one, two, or three seats simultaneously. These multi-member 
 districts pose a challenge in calculating the win margin and making comparisons 
@@ -415,28 +415,26 @@ candidate-races of data on school board elections in Wisconsin, \Sexpr{iNum(nrow
 were scatter votes. 
 
 Votes were labeled scatter in the Wisconsin data set for two reasons: first, all 
-candidates receiving fewer than 20 votes in a single race were compiled together 
+candidates receiving fewer than 30 votes in a single race were compiled together 
 into a scatter category. This decision was put in place to reduce the data 
 collection burden that already involved hand coding \Sexpr{iNum(nrow(dat[dat$candidateid != 99,]))} 
 candidate-race records. Including the "long-tail" of write-in votes, protest votes, 
 and spurious candidates would have added substantial burden to the data collection 
 process. 
 
-Second, some jurisdictions pre-compiled their results and already collapsed votes 
-into a "scatter" category for reporting in newspapers, to county election officials, 
+Second, some jurisdictions reported their votes with a "scatter" category for 
+reporting in newspapers, to county election officials, 
 or for local reporting. In these cases, the threshold for a candidate being labeled 
-in the "scatter" category is unknown, however, for some races it greatly exceeds 
-the threshold of 20. 
+in the "scatter" category is unknown, however, for \Sexpr{iNum(nrow(dat[dat$candidateid == 99 & dat$votes > 30,]))} 
+races it exceeds the threshold of 30, and for \Sexpr{iNum(nrow(dat[dat$candidateid == 99 & dat$votes > 200,]))} 
+it exceeds 200. In these cases, it is important to consider how these votes should 
+be included in further analysis -- should they be subtracted from the total votes, 
+should they be a control?
 
 <<scatter1>>=
-scat1 <- dat[dat$candidateid == 99, ]
-
-head(scat1[order(-scat1$votes),], 20)
-
-
+# scat1 <- dat[dat$candidateid == 99, ]
+# head(scat1[order(-scat1$votes),], 20)
 @
-
-
 
 \subsubsection{Write-in Candidates}
 
@@ -697,9 +695,114 @@ qplot(year, turnout, data = dist.tmp, geom = 'boxplot') +
 
 Figure \ref{fig:nondistraces} shows the pattern for non-district wide races appears 
 very similar under the estimation method of collapsing all races in a district 
-into one race and dividing the votes counted by the number of winners. This most 
-certainly represents an underestimate, as even districts with apportioned seats 
-do not elect all portions of their district in the same election cycle. 
+into one race and dividing the votes counted by the number of winners. This 
+represents an underestimate, as even districts with apportioned seats 
+do not elect all portions of their district in the same election cycle or even 
+have consistent apportionment from one cycle to the next. 
+
+Putting these two together, we can estimate overall voter turnout in school board 
+races by school district, over time. To do this, we prefer the districtwide race 
+turnout. If no districtwide race is present in a given district in a given year, 
+we then use the adjusted districtwide turnout based on the apportioned seats 
+available. 
+
+<<overallturnoutest, fig.cap="Turnout for school board races by school district.">>=
+races <- as.data.frame(races)
+races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
+
+# turnout over the prior presidential election
+races.tmp <- merge(races.tmp, presTurn, by = c("distid", "year"), all.x=TRUE)
+races.tmp <- merge(races.tmp, govTurn, by = c("distid", "year"), all.x=TRUE)
+
+races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
+                                          "nrealcand", "nwins", "ninc", "raceid",
+                                          "nminor", "votes", "districtwide", 
+                                          "electiontype", "VAP", "VAP_adj", 
+                                          "topPresVotesPrior", "presTwoPartyShareDem", 
+                                          "topGovVotesPrior", "govTwoPartyShareDem"))
+
+races.tmp <- subset(races.tmp, raceid!=0)
+# look at general
+races.tmp <- subset(races.tmp, electiontype == 1)
+
+# Look at districtwide only
+races.tmp <- subset(races.tmp, districtwide == 1)
+races.tmp <- subset(races.tmp, nrealcand > 0)
+
+races.tmp <- races.tmp[!is.na(races.tmp$distid),]
+races.tmp$voters <- races.tmp$votes / races.tmp$nwins
+races.tmp$turnout <- races.tmp$voters/races.tmp$VAP_adj
+## Convert to district average somehow
+
+dist_turn <- ddply(races.tmp, .(distid, year), summarize, 
+              ncand = sum(ncand), nrealcand = sum(nrealcand), 
+              nwins = sum(nwins), ninc = sum(ninc), 
+              nminor = sum(nminor), votes = sum(votes), 
+              VAP_adj = statamode(VAP_adj), 
+              nraces = length(distid))
+
+dist_turn$districtwide <- 1
+############
+# Non district-wide
+############
+races <- as.data.frame(races)
+races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
+
+presTurn$presTwoPartyVote <- presTurn$presDemVotes + presTurn$presRepVotes
+presTurn$presTwoPartyShareDem <- presTurn$presDemVotes / presTurn$presTwoPartyVote
+
+govTurn$govTwoPartyVote <- govTurn$govDemVotes + govTurn$govRepVotes
+govTurn$govTwoPartyShareDem <- govTurn$govDemVotes / govTurn$govTwoPartyVote
+
+races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
+                                          "nrealcand", "nwins", "ninc", "raceid",
+                                          "nminor", "votes", "districtwide", 
+                                          "electiontype", "VAP_adj"))
+
+races.tmp <- subset(races.tmp, raceid!=0)
+# look at general
+races.tmp <- subset(races.tmp, electiontype == 1)
+# Look at non-districtwide only
+races.tmp <- subset(races.tmp, districtwide == 0)
+races.tmp <- subset(races.tmp, nrealcand > 0)
+races.tmp <- races.tmp[!is.na(races.tmp$distid),]
+
+# collapse to the district level
+
+dist.tmp <- ddply(races.tmp, .(distid, year), summarize, 
+              ncand = sum(ncand), nrealcand = sum(nrealcand), 
+              nwins = sum(nwins), ninc = sum(ninc), 
+              nminor = sum(nminor), votes = sum(votes), 
+              VAP_adj = statamode(VAP_adj), 
+              nraces = length(distid))
+
+dist.tmp$districtwide <- 0
+
+dist_turn <- rbind(dist_turn, dist.tmp)
+
+row_counts <- ddply(dist_turn, .(distid, year), nrow)
+dist_turn <- merge(dist_turn, row_counts, all.x=TRUE)
+dist_turn$recs <- dist_turn$V1; dist_turn$V1 <- NULL
+dist_turn1 <- dist_turn[dist_turn$recs >= 1 & dist_turn$districtwide > 0,]
+dist_turn2 <- dist_turn[dist_turn$recs == 1 & dist_turn$districtwide == 0,]
+
+dist_turn <- rbind(dist_turn1, dist_turn2)
+dist_turn$recs <- NULL
+
+## Clean up metrics
+# turnout over the prior presidential election
+dist_turn <- merge(dist_turn, presTurn, by = c("distid", "year"), all.x=TRUE)
+dist_turn <- merge(dist_turn, govTurn, by = c("distid", "year"), all.x=TRUE)
+dist_turn$VAP_adj <- as.numeric(dist_turn$VAP_adj)
+dist_turn$voters <- dist_turn$votes / dist_turn$nwins
+dist_turn$turnout <- dist_turn$voters / dist_turn$VAP_adj
+
+qplot(year, turnout, data = dist_turn[dist_turn$turnout < 0.75 & !is.na(dist_turn$turnout),], geom = 'boxplot') + 
+  scale_y_continuous(label = percent) + theme_dpi() + 
+  labs(x = "Year", y = "Turnout as Share of VAP Estimate")
+@
+
+
 
 \section{Putting School Board Elections in Context}
 
