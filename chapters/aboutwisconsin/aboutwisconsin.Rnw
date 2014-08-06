@@ -18,7 +18,7 @@ library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
 iNum <- function(x){prettyNum(as.character(x), big.mark = ",", digits = 3)}
-iPer <- function(x){paste0(prettyNum(as.character(x), big.mark = ",", digits = 3),"\\%")}
+iPer <- function(x){paste0(prettyNum(as.character(x), big.mark = ",", digits = 1),"\\%")}
 # gpclibPermit()
 #setwd("../../../MasterText")
 #elec <- read.csv("data/electionpartisanshippanel.csv")
@@ -26,7 +26,7 @@ iPer <- function(x){paste0(prettyNum(as.character(x), big.mark = ",", digits = 3
 
 
 
-\section{Consider This}
+\section{The Wisconsin Case}
 
 Wisconsin is located in the region of the United States known as the Midwest and ranks 
 23rd in terms of total area, 20th in terms of population size with 5.7 million residents, 
@@ -34,7 +34,7 @@ and has over 420 local school districts. Recently, Wisconsin has become a crucia
 exhibiting a close split between Republican and Democratic voters in presidential 
 politics.\citet{RefWorks:311} 
 
-\section{Background and Legal Basis of School District Elections}
+\section{Background and Legal Basis of Wisconsin School District Elections}
 
 This project represents the first attempt to comprehensively study the patterns 
 in school board elections across an entire state over multiple years. Before 
@@ -45,7 +45,7 @@ local control state. This means that Wisconsin school districts have revenue
 authority independent of municipalities and counties, and are governed by 
 a non-partisan elected board independent of counties and other local government 
 bodies. The independence of Wisconsin school districts is established in the 
-state constitution. 
+state constitution and through state law (WI Const. art. X, \S 3 and Wis. Stat 120.10). 
 
 This independence gives Wisconsin school districts considerable power and authority. 
 Importantly, school boards administer their own elections and retain their own 
@@ -109,19 +109,17 @@ by only including the precincts that are within the county. They also are not of
 request was made to all 424 public school districts in the state of Wisconsin. 
 This request was e-mailed to the school district administrator in each of Wisconsin's 
 424 school districts in January of 2013. Three follow up waves were conducted throughout 
-2013, and at the end of the collection period,\Sexpr{iNum(length(unique(dat$distid)))} 
+2013, and at the end of the collection period, \Sexpr{iNum(length(unique(dat$distid)))} 
 districts responded with records. The median district provided 
 \Sexpr{iNum(median(ddply(races, .(distid), summarize, out = length(unique(year)))[, 2]))} 
-years of records. Overall, records were provided on \Sexpr{iNum(nrow(races))} school 
+years of records.\footnote{While each district was requested to provide the maximum amount of records legally 
+required to be retained, ten years, many districts were unable to locate complete 
+records going this far back.} Overall, records were provided on \Sexpr{iNum(nrow(races))} school 
 board races involving \Sexpr{iNum(nrow(cand))} candidates in the state. For each election 
 the votes received by each candidate was recorded, as well as whether the candidate 
 won, was an incumbent, was a repeat candidate in the school district, or was a 
 minor candidate. For each race, whether the candidate was running for district 
 wide or regional seat was also recorded. 
-
-While each district was requested to provide the maximum amount of records legally 
-required to be retained, ten years, many districts were unable to locate complete 
-records going this far back. 
 
 <<yeargraph, echo=FALSE, fig.cap="Number of Districts Providing Records by Year">>=
 plotdf <- ddply(races, .(year), summarize, out = length(unique(distid)))
@@ -133,8 +131,7 @@ qplot(year, out, data = plotdf, geom = 'bar', stat = 'identity') + theme_dpi() +
 
 @
 
-The good news is that the most crucial period of the sample, from 2007 to 2012, is 
-the period with the most complete set of records. 
+
 
 <<racesgraph, echo=FALSE, fig.cap="Number of Races Provided by Districts. Red line indicates the median.">>=
 plotdf <- ddply(races, .(distid), summarize, years = length(unique(year)), 
@@ -158,7 +155,9 @@ continuity <- continuity[, 8:13]
 
 @
 
-The mean district provided records on \Sexpr{iNum(mean(plotdf$races))} school 
+The good news is that the most crucial period of the sample, from 2007 to 2012, is 
+the period with the most complete set of records. The mean district provided records on 
+\Sexpr{prettyNum(mean(plotdf$races), big.mark=",", digits = 3)} school 
 board races. \Sexpr{iNum(table(rowSums(continuity) >5)[[2]])} districts had 
 a race in each year between 2007 and 2012, while \Sexpr{iNum(table(rowSums(continuity) >5)[[1]])} 
 did not. 
@@ -172,8 +171,9 @@ if applicable. School board primaries occur when the number of candidates exceed
 the number of seats open in a race.\footnote{In Wisconsin first class cities, currently 
 only Milwaukee, a primary must be held whenever there are more than two candidates for 
 a race. Wis. Stat \S 8.11 (2m)} Special 
-elections can also occur if a candidate is recalled under Wis. Stat \S 9.10 (1) (a) 
-which states generally that a petition for recall must be signed by electors equal 
+elections occur either if a vacancy occurs in a specific window or in a first class 
+city, or if a candidate is recalled under Wis. Stat \S 9.10 (1) (a) 
+which states that a petition for recall must be signed by electors equal 
 in number to at least 25\% of the votes cast for the office of President of the United 
 States at the last election within the same jurisdiction.\footnote{It is unclear if this 
 would hold for school districts because the determination to hold the election is made by 
@@ -191,7 +191,7 @@ For the entire data set there are \Sexpr{iNum(length(races$distid[races$election
 general election races,\Sexpr{iNum(length(races$distid[races$electiontype == 2]))} 
 primary election races, and \Sexpr{iNum(length(races$distid[races$electiontype == 3]))}
 special elections. Table \ref{tab:electype} shows the number of races of each type 
-for the period between 2007 and 2012 with the best election record coverage.
+for the period between 2007 and 2012.
 
 <<electype, results='asis'>>=
 tabledf <- subset(races, year > 2006 & year < 2013)
@@ -208,12 +208,12 @@ district reported a special election during this period, and \Sexpr{iNum(length(
 reported a general election race. 
 
 Since Wisconsin school boards are non-partisan offices, a primary is not a symbol of 
-an ideological challenge to an incumbent or a battle to win the hearts and minds of 
+an ideological challenge to an incumbent or a battle to win the votes of 
 strict partisans. Instead, a primary is a signal of a substantial level of candidate 
 activity for a school board race. 
 
 The only special election that occurred during the 2007 to 2012 period. This was a
-recall election held on December 29\^{th}, 2009 in the Crivitz school district which 
+recall election held on December 29$\^{th}$, 2009 in the Crivitz school district which 
 was triggered after a school board member, David Kwiatkowski resigned his seat 
 that November in the face of a recall petition.\footnote{For a full account of this 
 particular case, see the Peshtigo Times article online \url{http://www.peshtigotimes.net/?id=12617}}
@@ -232,7 +232,7 @@ a potential school board candidate faces when deciding to run. To appear on the
 ballot in the spring election a candidate may not begin circulating nomination 
 papers prior to December 1 in the previous year. The nomination papers must be 
 filed no later than 5 p.m. on the first Tuesday in January preceding the election. 
-[Wis. Stat \S 8.10 and 8.15] The number of signatures by electors varies in statute, 
+(Wis. Stat \S 8.10 and 8.15). The number of signatures by electors varies in statute, 
 depending on the proximity of the school district to cities. In Milwaukee Public Schools 
 candidates must obtain between 400 to 800 signatures within the jurisdiction they 
 are running to represent (either district wide, or a specific region of the district). 
@@ -250,9 +250,15 @@ between 20 and 100 signatures of electors [Wis. Stat \S 8.10 (3) and 8.15 (6)]. 
 jurisdictions that do not require elector signatures, candidates must file a declaration 
 of candidacy to register for the election with the election clerk in the school district. 
 
+Outside of first and second class cities, running for school board presents very 
+few barriers of entry for potential candidates. Couple this with the low cost of 
+school board campaigns, most often fewer than \$1,000, and the campaign presents 
+very little friction toward serving on a school board \citep{RefWorks:322}. If we 
+observe low levels of candidate participation in school board races, then, we must 
+look to other explanations. 
 
-Let's consider the pool of school board races for which records were successfully 
-obtained. Of the \Sexpr{iNum(nrow(races))}, \Sexpr{iNum(nrow(races[races$electiontype == 1,]))} 
+To explore candidate participation, let's consider the pool of school board races 
+for which records were successfully obtained. Of the \Sexpr{iNum(nrow(races))}, \Sexpr{iNum(nrow(races[races$electiontype == 1,]))} 
 were general elections. Another \Sexpr{iNum(nrow(races[races$electiontype == 2,]))} 
 were primary elections, and the remaining \Sexpr{iNum(nrow(races[races$electiontype == 3, ]))} 
 were special or recall elections. Of the general election races, 
@@ -308,7 +314,7 @@ table.tmp <- table(races.tmp$year, races.tmp$contest)
 table.tmp <- xtable(t(table.tmp), digits = 0, label = "tab:incumbentContest", 
                     caption = "Races featuring a serious challenge to an incumbent 2007-2012.")
 
-print(table.tmp, include.rownames=TRUE, size = "footnotesize")
+print(table.tmp, include.rownames=TRUE, size = "small")
 
 @
 
@@ -316,7 +322,7 @@ print(table.tmp, include.rownames=TRUE, size = "footnotesize")
 
 In comparison to school board races, legislative races at both the state and federal 
 level have much higher rates of contestation. In 2012, 10 out of 435 U.S. House 
-races were uncontested, and 0 out of 33 races were uncontested. While these races 
+races were uncontested, and 0 out of 33 U.S. Senate races were uncontested. While these races 
 are considerably more attractive to candidates due to the career and financial 
 opportunities they represent, they are also more difficult to qualify for and 
 labor intensive to compete in. State legislative races also exhibit high level 
@@ -324,6 +330,13 @@ of contestation. Taking Wisconsin as an example, in 2012 only 26 of 99 seats in 
 Wisconsin Assembly were uncontested, and only 8 out of 33 seats in the Wisconsin 
 Senate were uncontested in 2012 and 2010 combined.\footnote{All results provided 
 by Ballotpedia.} 
+
+Candidates have many fewer reasons to run for school board. Despite the low barrier 
+of entry, serving on a school board is much less prestigous than other offices, 
+requires attending evening meetings, and in most cases offers only a modest stipend 
+and no benefits. 
+
+% Some more discussion here
 
 % Serious challengers
 
@@ -547,8 +560,8 @@ rm(years, turnoutOf, vapOf, turnoutPerOf, turnoutEst, vapEst, turnoutPerEst,
 
 table1 <- xtable(table1, digits =0, label="tab:turnoutEst", 
              caption = "Comparing estimates of voter turnout derived from MCD estimates to official GAB turnout records." )
-align(table1) <- c('p{.3in}','p{.3in}',  'p{.8in}','p{.8in}','p{1in}','p{1in}',
-                   'p{1in}','p{1in}')
+align(table1) <- c('p{.3in}','p{.3in}',  'p{.4in}','p{.4in}','p{.5in}','p{.5in}',
+                   'p{.4in}','p{.4in}')
 
 print(table1, 
       include.rownames = FALSE, 
@@ -636,8 +649,8 @@ names(table2) <- c("Year", "District Wide Races", "Districts with District Wide"
 
 table2 <- xtable(table2, label="tab:yearsample", 
              caption = "Comparing sample size for district wide vs. apportioned school board races." )
-align(table2) <- c('p{.3in}','p{.3in}',  'p{.8in}','p{.8in}','p{1in}','p{1in}',
-                   'p{1in}','p{1in}')
+align(table2) <- c('p{.3in}','p{.3in}',  'p{.8in}','p{.5in}','p{.5in}','p{.5in}',
+                   'p{.5in}','p{.5in}')
 
 print(table2, 
       include.rownames = FALSE, 
