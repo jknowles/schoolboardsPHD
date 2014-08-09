@@ -81,6 +81,11 @@ asinh_trans <- function(){
             inverse = function(x) sinh(x)/2)
 }
 
+distnames <- read.csv("data/cache/districtadmin0211.csv")
+distnames <- distnames[, c("district", "district_name", "legal_name")]
+distnames <- distnames[!duplicated(distnames),]
+FULLDAT <- merge(FULLDAT, distnames, by.x = "distid", by.y = "district")
+rm(distnames)
 
 ############################################################
 # District administrators

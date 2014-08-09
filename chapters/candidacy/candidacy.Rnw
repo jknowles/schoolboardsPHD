@@ -59,7 +59,10 @@ asinh_trans <- function(){
 
 @
 
-
+% 3 modeling strategies
+%% model binomial by district, contested or not
+%% model beta by district, # of contested out of # of races
+%% model nested, races in districts
 
 \section{Introduction}
 
@@ -337,53 +340,9 @@ Importantly, we can use these data elements to identify if the sample of school
 districts responding to the records request is representative of the school 
 districts in the state. 
 
-
-<<samplecoverage, results='asis'>>=
-# Table showing sample and non-sample on key covariates
-# Need to finish
-mysub <- FULLDAT[FULLDAT$year == 2012, ]
-
-selectVars <- c("TOTPOP", "toprepshare", "member", "econ_disadv_per", 
-                "millrate", "PerBachelorOrAbove", "avg_salary", "average_fringe", 
-                "median_income", "OOH_share", "balance_lag")
-
-rnames <- c("Total Population", "Republican Share", "Students", 
-            "% FRL", "Millrate", "Share Bachelor +", "Average Salary", 
-            "Average Fringe", "Median Income", "Owner Occupied Share", 
-            "Lagged Acct. Balance")
-
-a <- round(t(aggregate(mysub[, selectVars], 
-                  by = list(sample = mysub$sample), mean, na.rm=TRUE)), digits=2)
-b <- round(t(aggregate(mysub[, selectVars], 
-                  by = list(sample = mysub$sample), sd, na.rm=TRUE)), digits=2)
-
-a <- as.data.frame(a); names(a) <- c("Non-Sample (Mean)", "Sample (Mean)")
-b <- as.data.frame(b); names(b) <- c("Non-Sample (SD)", "Sample (SD)")
-
-ab <- as.data.frame(cbind(a[,2], b[,2], a[,1], b[,1]))
-ab[10, ] <- ab[10, ] * 10000
-ab[12, ] <- ab[12, ] / 1000
-names(ab) <- c("Sample (mean)", "Sample (SD)", "Out of Sample (mean)", "Out of Sample (SD)")
-row.names(ab) <- c("Var", rnames)
-
-print(xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
-             from the 2011-2012 school year." ), 
-      format.args = list(big.mark=","), include.rownames=TRUE, size="scriptsize")
-
-rm(a, b, ab, selectVars)
-@
-
-% Describe above table
-
 As shown in table \ref{tab:samplecomp}, there is little difference between schools 
-in and out of the sample.\footnote{For now the standard deviations are influenced by 
-the state's largest school district, Milwaukee, not being included in the sample while 
-the election records are still processed.} The sample and the full data look remarkable 
-close on all measures. Each year a different set of schools is in the sample owing 
-the variable availability of records from school districts, but the sample size 
-is consistent. 
-
-% Graph showing number of districts with data for each year and number of years per district
+in and out of the sample. From Chapter \ref{chap:wisco} we saw that the school 
+districts providing records 
 
 \subsubsection{Dependent Variable}
 

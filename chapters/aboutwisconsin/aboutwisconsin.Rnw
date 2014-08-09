@@ -213,7 +213,7 @@ strict partisans. Instead, a primary is a signal of a substantial level of candi
 activity for a school board race. 
 
 The only special election that occurred during the 2007 to 2012 period. This was a
-recall election held on December 29$\^{th}$, 2009 in the Crivitz school district which 
+recall election held on December 29$^{th}$, 2009 in the Crivitz school district which 
 was triggered after a school board member, David Kwiatkowski resigned his seat 
 that November in the face of a recall petition.\footnote{For a full account of this 
 particular case, see the Peshtigo Times article online \url{http://www.peshtigotimes.net/?id=12617}}
@@ -815,6 +815,16 @@ qplot(year, turnout, data = dist_turn[dist_turn$turnout < 0.75 & !is.na(dist_tur
   labs(x = "Year", y = "Turnout as Share of VAP Estimate")
 @
 
+\clearpage
+
+\subsection{Undervote}
+
+It is difficult to draw conclusions about school board voter turnout separate 
+from the lower turnout more generally associated with non-partisan offices and 
+Wisconsin's spring non-partisan election specifically. One way to approach this 
+is to look at the undervote for school board office relative to the top ticket 
+race in spring elections. 
+
 
 
 \section{Putting School Board Elections in Context}
@@ -825,4 +835,131 @@ school board electoral participation across contexts. In addition to the context
 variation across school districts, Wisconsin school districts also vary widely in 
 size, wealth, performance, and student and household demographics. 
 
-There we go.
+<<samplecomparisons, results='asis'>>=
+rm(list=ls())
+source("data/dataAssemble.R")
+source("data/dataMerge.R")
+source("data/cleanandprep_CANDIDACY.R")
+
+SAMPSIZE <- length(unique(SBELEC$distid))
+# Table showing sample and non-sample on key covariates
+# Need to finish
+## Per pupil expenditures
+## 
+
+mysub <- FULLDAT[FULLDAT$year == 2012, ]
+
+selectVars <- c("TOTPOP", "toprepshare", "member", "econ_disadv_per", 
+                "millrate", "PerBachelorOrAbove", "perwhite","avg_salary", "average_fringe", 
+                "median_income", "OOH_share", "balance_member_lag", "teacherpupil_ratio", 
+                "eqv_member")
+
+rnames <- c("Total Population", "Republican Share", "Students", 
+            "% FRL", "Millrate", "Share Bachelor +", "White %","Average Salary", 
+            "Average Fringe", "Median Income", "Owner Occupied Share", 
+            "Lagged Acct. Balance per Member", "Teacher-Pupil Ratio", "Property Value per Member")
+
+a <- round(t(aggregate(mysub[, selectVars], 
+                  by = list(sample = mysub$sample), mean, na.rm=TRUE)), digits=2)
+b <- round(t(aggregate(mysub[, selectVars], 
+                  by = list(sample = mysub$sample), sd, na.rm=TRUE)), digits=2)
+
+a <- as.data.frame(a); names(a) <- c("Non-Sample (Mean)", "Sample (Mean)")
+b <- as.data.frame(b); names(b) <- c("Non-Sample (SD)", "Sample (SD)")
+
+ab <- as.data.frame(cbind(a[,2], b[,2], a[,1], b[,1]))
+ab[3, ] <- ab[3, ] *100
+ab[5, ] <- ab[5, ] *100
+ab[7, ] <- ab[7, ] *100
+ab[8, ] <- ab[8, ] *100
+ab[12, ] <- ab[12, ] *100
+ab[11, ] <- ab[11, ] * 10000
+ab[13, ] <- ab[13, ] * 1000
+names(ab) <- c("Sample (mean)", "Sample (SD)", "Out of Sample (mean)", "Out of Sample (SD)")
+row.names(ab) <- c("Var", rnames)
+
+print(xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
+             from the 2011-2012 school year." ), 
+      format.args = list(big.mark=","), include.rownames=TRUE, size="scriptsize")
+
+rm(a, b, ab, selectVars)
+@
+
+% Describe above table
+
+As shown in table \ref{tab:samplecomp}, there is little difference between districts 
+in and out of the sample for the year 2012 on a range of measures of school district 
+characteristics. Politically, the sample and the non-respondents reflect the rest of 
+the state of Wisconsin -- evenly split. The groups have similar levels of student 
+economic disadvantage as measured by eligibility for free and reduced price lunch and 
+similar proportions of minority students in their schools. 
+Their communities have similar levels of income, owner occupied housing, and levels 
+of education. Teacher salary and fringe benefit rates are also nearly identical, as 
+is the teacher-pupil ratio. 
+
+The biggest discrepancy is that sample districts tend to be larger on average than 
+out-of-sample districts in terms of student membership. This is no surprise as the largest 
+Wisconsin school districts publish their election results online, making them among 
+the easiest to obtain. The sample districts tend to have slightly smaller account balances or 
+district savings accounts on a per pupil basis which is likely related to their larger size. 
+Finally, sample districts tend to have less property value per member, or taxable 
+assets to raise revenue from, owing to the slightly higher populations of sample 
+districts and the inclusion of all urban areas. 
+
+Similar tables are available for other years, but show the same general pattern. 
+Thus, while the current sample does not include all of the school districts in the 
+state of Wisconsin, it is safe to say that such school districts are representative 
+of the diversity of Wisconsin public school districts at large. 
+
+\subsection{School District Diversity}
+
+Wisconsin, like other states with independent school districts, has a great diversity 
+in school district size, demographic make up, and structure. To illustrate the wide 
+array of organizations that school boards in Wisconsin govern, I present tables 
+describing the five largest and five smallest school districts in Wisconsin and how 
+they compare on a number of observable characteristics. These tables are intended 
+to illustrate the range of organizational contexts that govern public K-12 education 
+in Wisconsin and to illustrate the diversity of jurisdictions within which school 
+board members are contesting elections. 
+
+% Top 5 districts on some measures
+
+<<top5>>=
+
+names(ab) <- c("Sample (mean)", "Sample (SD)", "Out of Sample (mean)", "Out of Sample (SD)")
+row.names(ab) <- c("Var", rnames)
+
+print(xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
+             from the 2011-2012 school year." ), 
+      format.args = list(big.mark=","), include.rownames=TRUE, size="scriptsize")
+
+rm(a, b, ab, selectVars)
+
+xtable(head(mysub[order(mysub$member), c("legal_name", selectVars)]))
+
+xtable(t(head(mysub[order(-mysub$member), c("legal_name", selectVars)])))
+
+@
+
+% Bottom 5 districts
+
+Contrast this to legislative districts, which are designed to be homogenous in 
+terms of size. 
+
+\section{Conclusion}
+
+Wisconsin is a valuable case to study in the examination of school board elections. 
+The statewide nature of this data collection allows for the exploration of the level 
+of contestation and turnout in school board elections across a variety of contexts and 
+within the same state political system. 
+
+From the data collection we can already see that school boards are less frequently 
+contested than many higher offices -- confirming prior work. School boards, despite 
+their lower barrier to ballot entry and campaign costs, are contested less than half 
+the time. School board elections are less prestigious, carry little financial benefit 
+for members, and often require late evening meetings -- making them less attractive 
+to potential candidates. School boards are also not shown to be a stepping stone 
+to further political office, reducing their attractiveness to potential political 
+candidates. 
+
+Voters vote less in school board elections as well. In Wisconsin school board 
