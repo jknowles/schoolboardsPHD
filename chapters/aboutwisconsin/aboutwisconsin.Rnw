@@ -825,8 +825,6 @@ Wisconsin's spring non-partisan election specifically. One way to approach this
 is to look at the undervote for school board office relative to the top ticket 
 race in spring elections. 
 
-
-
 \section{Putting School Board Elections in Context}
 
 The authority given to school districts in Wisconsin to determine their own electoral 
@@ -837,6 +835,7 @@ size, wealth, performance, and student and household demographics.
 
 <<samplecomparisons, results='asis'>>=
 rm(list=ls())
+setwd("../../")
 source("data/dataAssemble.R")
 source("data/dataMerge.R")
 source("data/cleanandprep_CANDIDACY.R")
@@ -849,13 +848,13 @@ SAMPSIZE <- length(unique(SBELEC$distid))
 
 mysub <- FULLDAT[FULLDAT$year == 2012, ]
 
-selectVars <- c("TOTPOP", "toprepshare", "member", "econ_disadv_per", 
-                "millrate", "PerBachelorOrAbove", "perwhite","avg_salary", "average_fringe", 
+selectVars <- c("TOTPOP", "member", "econ_disadv_per", 
+                "millrate", "toprepshare", "PerBachelorOrAbove", "perwhite","avg_salary", "average_fringe", 
                 "median_income", "OOH_share", "balance_member_lag", "teacherpupil_ratio", 
                 "eqv_member")
 
-rnames <- c("Total Population", "Republican Share", "Students", 
-            "% FRL", "Millrate", "Share Bachelor +", "White %","Average Salary", 
+rnames <- c("Total Population", "Students", 
+            "% FRL", "Millrate", "Republican Share", "Share Bachelor +", "White %","Average Salary", 
             "Average Fringe", "Median Income", "Owner Occupied Share", 
             "Lagged Acct. Balance per Member", "Teacher-Pupil Ratio", "Property Value per Member")
 
@@ -868,8 +867,8 @@ a <- as.data.frame(a); names(a) <- c("Non-Sample (Mean)", "Sample (Mean)")
 b <- as.data.frame(b); names(b) <- c("Non-Sample (SD)", "Sample (SD)")
 
 ab <- as.data.frame(cbind(a[,2], b[,2], a[,1], b[,1]))
-ab[3, ] <- ab[3, ] *100
-ab[5, ] <- ab[5, ] *100
+ab[3, ] <- ab[4, ] *100
+ab[5, ] <- ab[6, ] *100
 ab[7, ] <- ab[7, ] *100
 ab[8, ] <- ab[8, ] *100
 ab[12, ] <- ab[12, ] *100
@@ -882,7 +881,7 @@ print(xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school distri
              from the 2011-2012 school year." ), 
       format.args = list(big.mark=","), include.rownames=TRUE, size="scriptsize")
 
-rm(a, b, ab, selectVars)
+rm(a, b, ab)
 @
 
 % Describe above table
@@ -920,24 +919,46 @@ describing the five largest and five smallest school districts in Wisconsin and 
 they compare on a number of observable characteristics. These tables are intended 
 to illustrate the range of organizational contexts that govern public K-12 education 
 in Wisconsin and to illustrate the diversity of jurisdictions within which school 
-board members are contesting elections. 
+board members are contesting elections. Table \ref{tab:small5} shows that the smallest 
+school districts in Wisconsin have fewer than 100 students and fewer than 1,000 
+residents. Contrast this with \ref{tab:big5} where the student population is 200 to 
+300 times larger than the smallest districts. 
 
-% Top 5 districts on some measures
-
-<<top5>>=
-
-names(ab) <- c("Sample (mean)", "Sample (SD)", "Out of Sample (mean)", "Out of Sample (SD)")
-row.names(ab) <- c("Var", rnames)
-
-print(xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
+<<small5, results='asis'>>=
+tmp.mat <- head(mysub[order(mysub$member), c("legal_name", selectVars)])
+row.names(tmp.mat) <- tmp.mat[,1]
+tmp.mat <- tmp.mat[,-1]
+small5 <- as.data.frame(t(tmp.mat))
+row.names(small5) <- rnames
+small5[3, ] <- small5[3, ] * 100
+small5[5, ] <- small5[5, ] * 100
+small5[6, ] <- small5[6, ] * 100
+small5[7, ] <- small5[7, ] * 100
+small5[11, ] <- small5[11, ] *100
+small5[10, ] <- small5[10, ] * 10000
+small5[12, ] <- small5[12, ] * 1000
+print(xtable(small5, label="tab:small5", caption = "Some attributes of Wisconsin's 5 smallest school districts. Data 
              from the 2011-2012 school year." ), 
       format.args = list(big.mark=","), include.rownames=TRUE, size="scriptsize")
+rm(small5)
+@
 
-rm(a, b, ab, selectVars)
-
-xtable(head(mysub[order(mysub$member), c("legal_name", selectVars)]))
-
-xtable(t(head(mysub[order(-mysub$member), c("legal_name", selectVars)])))
+<<big5, results='asis'>>=
+tmp.mat <- head(mysub[order(-mysub$member), c("legal_name", selectVars)])
+row.names(tmp.mat) <- tmp.mat[,1]
+tmp.mat <- tmp.mat[,-1]
+big5 <- as.data.frame(t(tmp.mat))
+row.names(big5) <- rnames
+big5[3, ] <- big5[3, ] * 100
+big5[5, ] <- big5[5, ] * 100
+big5[6, ] <- big5[6, ] * 100
+big5[7, ] <- big5[7, ] * 100
+big5[11, ] <- big5[11, ] *100
+big5[10, ] <- big5[10, ] * 10000
+big5[12, ] <- big5[12, ] * 1000
+print(xtable(big5, label="tab:big5", caption = "Some attributes of Wisconsin's 5 largest school districts. Data 
+             from the 2011-2012 school year." ), 
+      format.args = list(big.mark=","), include.rownames=TRUE, size="scriptsize")
 
 @
 
@@ -945,6 +966,8 @@ xtable(t(head(mysub[order(-mysub$member), c("legal_name", selectVars)])))
 
 Contrast this to legislative districts, which are designed to be homogenous in 
 terms of size. 
+
+\clearpage
 
 \section{Conclusion}
 
@@ -962,4 +985,30 @@ to potential candidates. School boards are also not shown to be a stepping stone
 to further political office, reducing their attractiveness to potential political 
 candidates. 
 
-Voters vote less in school board elections as well. In Wisconsin school board 
+Chapter 3 will seek to explore further the predictors of candidates 
+emerging for office by exploring what local and state level factors may explain the 
+emergence of a challenger to a school board election. Theory suggests that events 
+like failed school bond referenda, turnover in district leadership, or fiscal pressure 
+may drive local challenges. Theory also suggests that changing the powers of the school board, 
+partisan identification of school board candidates, or political polarization may 
+drive school board challenges to emerge statewide. Evidence of these state and 
+local factors will be explored and evaluated to test whether theories of candidate 
+emergence explain the case of school boards. 
+
+Voters vote less in school board elections as well. In Wisconsin school board elections 
+are held during the non-partisan spring elections, which have much lower turnout 
+than partisan fall elections. In general, school board voter turnout hovers around 
+20\% in school districts, but has plenty of variability. Voter turnout should be 
+suppressed in school board elections because of both their non-partisan nature and 
+their lower probability of being contested. School board researchers have long evaluated 
+the dissatisfaction theory, which suggests that school boards exhibit higher contestation 
+and voter turnout when local policy conditions change and the electorate is unsatisfied 
+with the governance of the board. 
+
+Chapter 4 will futher explore the puzzle of low school board turnout and identify 
+if voter turnout does indeed respond to policy shocks. Local policy shocks such 
+as leadership turnover and school fiscal challenges will be evaluated as well as 
+statewide policy shocks like the passage of Act 10 and budget cuts. This will 
+represent the fullest test of dissatisfaction theory to date and the first time 
+exogenous policy shocks are leveraged to explore the causal relationship between 
+changes in policy and voter turnout. 

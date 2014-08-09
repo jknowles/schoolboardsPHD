@@ -5,7 +5,10 @@
 
 
 
-
+% 3 modeling strategies
+%% model binomial by district, contested or not
+%% model beta by district, # of contested out of # of races
+%% model nested, races in districts
 
 \section{Introduction}
 
@@ -283,47 +286,9 @@ Importantly, we can use these data elements to identify if the sample of school
 districts responding to the records request is representative of the school 
 districts in the state. 
 
-
-% latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Aug 05 14:18:19 2014
-\begin{table}[ht]
-\centering
-{\scriptsize
-\begin{tabular}{rrrrr}
-  \hline
- & Sample (mean) & Sample (SD) & Out of Sample (mean) & Out of Sample (SD) \\ 
-  \hline
-Total Population & 15,622.91 & 40,094.36 & 7,753.02 & 8,297.81 \\ 
-  Republican Share & 0.51 & 0.11 & 0.51 & 0.10 \\ 
-  Students & 2,339.28 & 5,661.66 & 1,196.38 & 1,247.61 \\ 
-  \% FRL & 0.36 & 0.15 & 0.39 & 0.16 \\ 
-  Millrate & 9.55 & 2.15 & 9.21 & 2.55 \\ 
-  Share Bachelor + & 0.16 & 0.07 & 0.16 & 0.08 \\ 
-  Average Salary & 52,141.94 & 6,092.03 & 50,646.03 & 6,462.58 \\ 
-  Average Fringe & 28,371.21 & 3,767.12 & 28,143.54 & 3,548.26 \\ 
-  Median Income & 34,000.00 & 9,100.00 & 33,100.00 & 8,700.00 \\ 
-  Owner Occupied Share & 0.67 & 0.13 & 0.66 & 0.15 \\ 
-  Lagged Acct. Balance & 8,558.52 & 13,400.48 & 6,060.45 & 5,971.70 \\ 
-   \hline
-\end{tabular}
-}
-\caption{Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
-             from the 2011-2012 school year.} 
-\label{tab:samplecomp}
-\end{table}
-
-
-% Describe above table
-
 As shown in table \ref{tab:samplecomp}, there is little difference between schools 
-in and out of the sample.\footnote{For now the standard deviations are influenced by 
-the state's largest school district, Milwaukee, not being included in the sample while 
-the election records are still processed.} The sample and the full data look remarkable 
-close on all measures. Each year a different set of schools is in the sample owing 
-the variable availability of records from school districts, but the sample size 
-is consistent. 
-
-% Graph showing number of districts with data for each year and number of years per district
+in and out of the sample. From Chapter \ref{chap:wisco} we saw that the school 
+districts providing records 
 
 \subsubsection{Dependent Variable}
 
@@ -539,17 +504,17 @@ school district having a contested election.
 A table of likelihood ratio tests shows the same result:
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Aug 05 14:18:23 2014
+% Sat Aug 09 11:28:10 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrrr}
   \hline
  & Resid. Df & Resid. Dev & Df & Deviance & Pr($>$Chi) \\ 
   \hline
-1 & 2622 & 3482.64 &  &  &  \\ 
-  2 & 2623 & 3485.64 & -1 & -3.01 & 0.0828 \\ 
-  3 & 2619 & 3405.50 & 4 & 80.15 & 0.0000 \\ 
-  4 & 2609 & 3385.42 & 10 & 20.08 & 0.0285 \\ 
+1 & 3365 & 4341.65 &  &  &  \\ 
+  2 & 3366 & 4340.27 & -1 & 1.38 &  \\ 
+  3 & 3362 & 4218.07 & 4 & 122.21 & 0.0000 \\ 
+  4 & 3352 & 4196.40 & 10 & 21.66 & 0.0169 \\ 
    \hline
 \end{tabular}
 \end{table}
@@ -645,7 +610,7 @@ School board elections are not marked by much contestation.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Aug 05, 2014 - 2:18:26 PM
+% Date and time: Sat, Aug 09, 2014 - 11:28:13 AM
 \begin{table}[!htbp] \centering 
   \caption{Comparing 4 Models of Contestation in School Board Elections} 
   \label{tab:descrmodels} 
@@ -659,82 +624,82 @@ School board elections are not marked by much contestation.
  & Taxation Model & Politics Model & Policy Model & Overall Model \\ 
 \\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
 \hline \\[-1.8ex] 
- millrate & 0.054$^{**}$ &  &  & 0.035 \\ 
-  & (0.022) &  &  & (0.025) \\ 
+ millrate & 0.048$^{**}$ &  &  & 0.030 \\ 
+  & (0.020) &  &  & (0.023) \\ 
   & & & & \\ 
- contested2.lag1 &  & 0.697$^{***}$ &  & 0.687$^{***}$ \\ 
-  &  & (0.084) &  & (0.084) \\ 
+ contested2.lag1 &  & 0.768$^{***}$ &  & 0.755$^{***}$ \\ 
+  &  & (0.076) &  & (0.077) \\ 
   & & & & \\ 
- primary2.lag1Primary &  & 0.471$^{**}$ &  & 0.453$^{**}$ \\ 
-  &  & (0.216) &  & (0.217) \\ 
+ primary2.lag1Primary &  & 0.370$^{**}$ &  & 0.341$^{*}$ \\ 
+  &  & (0.181) &  & (0.182) \\ 
   & & & & \\ 
- cum\_attptsD & 0.027 & 0.035$^{*}$ &  & 0.030 \\ 
-  & (0.019) & (0.020) &  & (0.020) \\ 
+ cum\_attptsD & 0.023 & 0.027$^{*}$ &  & 0.021 \\ 
+  & (0.014) & (0.015) &  & (0.016) \\ 
   & & & & \\ 
- overlevy\_ind\_lag & 0.217$^{*}$ &  &  & 0.238$^{**}$ \\ 
-  & (0.114) &  &  & (0.117) \\ 
+ overlevy\_ind\_lag & 0.192$^{*}$ &  &  & 0.182$^{*}$ \\ 
+  & (0.100) &  &  & (0.103) \\ 
   & & & & \\ 
- perwhite & 0.348 & 0.878 &  & 0.449 \\ 
-  & (0.602) & (0.618) &  & (0.704) \\ 
+ perwhite & 1.413$^{**}$ & 1.198$^{**}$ &  & 1.059 \\ 
+  & (0.585) & (0.606) &  & (0.674) \\ 
   & & & & \\ 
- levy\_chg & 0.001 &  &  & 0.003 \\ 
-  & (0.004) &  &  & (0.004) \\ 
+ levy\_chg & $-$0.002 &  &  & $-$0.001 \\ 
+  & (0.003) &  &  & (0.003) \\ 
   & & & & \\ 
- Per65over &  & 0.611 &  & 2.041 \\ 
-  &  & (1.222) &  & (1.370) \\ 
+ Per65over &  & 1.402 &  & 2.343$^{*}$ \\ 
+  &  & (1.076) &  & (1.258) \\ 
   & & & & \\ 
- log\_politicaldivide &  & 0.022 &  & 0.018 \\ 
-  &  & (0.039) &  & (0.039) \\ 
+ log\_politicaldivide &  & $-$0.032 &  & $-$0.040 \\ 
+  &  & (0.035) &  & (0.035) \\ 
   & & & & \\ 
- winshare.lag1 &  & 0.101 &  & 0.048 \\ 
-  &  & (0.304) &  & (0.306) \\ 
+ winshare.lag1 &  & 0.100 &  & 0.024 \\ 
+  &  & (0.284) &  & (0.285) \\ 
   & & & & \\ 
- attemptsD.lag1 &  & $-$0.067 &  & $-$0.048 \\ 
-  &  & (0.100) &  & (0.100) \\ 
+ attemptsD.lag1 &  & 0.044 &  & 0.043 \\ 
+  &  & (0.090) &  & (0.091) \\ 
   & & & & \\ 
- toprepshare &  & $-$1.265$^{***}$ &  & $-$0.843 \\ 
-  &  & (0.489) &  & (0.541) \\ 
+ toprepshare &  & $-$1.280$^{***}$ &  & $-$0.980$^{*}$ \\ 
+  &  & (0.470) &  & (0.513) \\ 
   & & & & \\ 
- PerBachelorOrAbove &  & $-$1.833$^{*}$ &  & $-$1.181 \\ 
-  &  & (1.026) &  & (1.055) \\ 
+ PerBachelorOrAbove &  & $-$2.886$^{***}$ &  & $-$2.761$^{***}$ \\ 
+  &  & (0.963) &  & (0.999) \\ 
   & & & & \\ 
- log(dv\_r) &  &  & $-$1.935$^{**}$ & $-$2.246$^{**}$ \\ 
-  &  &  & (0.843) & (0.893) \\ 
+ log(dv\_r) &  &  & $-$2.090$^{**}$ & $-$2.657$^{***}$ \\ 
+  &  &  & (0.831) & (0.896) \\ 
   & & & & \\ 
- avg\_salary &  &  & $-$0.00003$^{***}$ & $-$0.00002 \\ 
+ avg\_salary &  &  & $-$0.00001 & 0.00001 \\ 
   &  &  & (0.00001) & (0.00001) \\ 
   & & & & \\ 
- average\_fringe &  &  & $-$0.00001 & $-$0.00000 \\ 
+ average\_fringe &  &  & $-$0.00003$^{**}$ & $-$0.00002 \\ 
   &  &  & (0.00001) & (0.00001) \\ 
   & & & & \\ 
- avg\_total\_exp &  &  & 0.023 & 0.006 \\ 
-  &  &  & (0.020) & (0.021) \\ 
+ avg\_total\_exp &  &  & 0.013 & $-$0.005 \\ 
+  &  &  & (0.018) & (0.019) \\ 
   & & & & \\ 
- log(Population18O) & 0.441$^{***}$ & 0.422$^{***}$ & 0.570$^{***}$ & 0.456$^{***}$ \\ 
-  & (0.050) & (0.051) & (0.059) & (0.066) \\ 
+ log(Population18O) & 0.540$^{***}$ & 0.497$^{***}$ & 0.542$^{***}$ & 0.466$^{***}$ \\ 
+  & (0.044) & (0.046) & (0.051) & (0.058) \\ 
   & & & & \\ 
- ref\_share & $-$0.151 &  &  &  \\ 
-  & (0.475) &  &  &  \\ 
+ ref\_share & $-$0.129 &  &  &  \\ 
+  & (0.397) &  &  &  \\ 
   & & & & \\ 
- balance\_member\_lag & $-$0.024 &  &  & $-$0.027 \\ 
-  & (0.016) &  &  & (0.018) \\ 
+ balance\_member\_lag & $-$0.007 &  &  & $-$0.009 \\ 
+  & (0.015) &  &  & (0.016) \\ 
   & & & & \\ 
- median\_income & $-$0.262$^{***}$ & $-$0.057 & $-$0.125$^{**}$ & $-$0.028 \\ 
-  & (0.058) & (0.096) & (0.060) & (0.099) \\ 
+ median\_income & $-$0.300$^{***}$ & 0.012 & $-$0.174$^{***}$ & 0.035 \\ 
+  & (0.055) & (0.091) & (0.056) & (0.094) \\ 
   & & & & \\ 
- member\_delta &  &  & $-$1.473 & $-$1.496 \\ 
-  &  &  & (1.481) & (1.558) \\ 
+ member\_delta &  &  & $-$0.394 & $-$0.292 \\ 
+  &  &  & (1.350) & (1.433) \\ 
   & & & & \\ 
- total\_attempts &  &  & 0.015 & $-$0.008 \\ 
-  &  &  & (0.025) & (0.026) \\ 
+ total\_attempts &  &  & 0.074$^{***}$ & 0.047$^{**}$ \\ 
+  &  &  & (0.021) & (0.023) \\ 
   & & & & \\ 
- Constant & $-$3.430$^{***}$ & $-$3.598$^{***}$ & 5.981 & 6.675 \\ 
-  & (0.898) & (0.755) & (3.887) & (4.089) \\ 
+ Constant & $-$5.033$^{***}$ & $-$4.739$^{***}$ & 6.465$^{*}$ & 7.108$^{*}$ \\ 
+  & (0.868) & (0.747) & (3.822) & (4.083) \\ 
   & & & & \\ 
 \hline \\[-1.8ex] 
-Observations & 2,641 & 2,641 & 2,641 & 2,641 \\ 
-Log Likelihood & $-$1,741.000 & $-$1,703.000 & $-$1,743.000 & $-$1,693.000 \\ 
-Akaike Inf. Crit. & 3,521.000 & 3,449.000 & 3,522.000 & 3,449.000 \\ 
+Observations & 3,384 & 3,384 & 3,384 & 3,384 \\ 
+Log Likelihood & $-$2,171.000 & $-$2,109.000 & $-$2,170.000 & $-$2,098.000 \\ 
+Akaike Inf. Crit. & 4,380.000 & 4,262.000 & 4,376.000 & 4,260.000 \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
