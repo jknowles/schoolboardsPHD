@@ -545,13 +545,109 @@ gubernatorial, and non-partisan spring elections.
 
 \end{knitrout}
 
-We can take the explanations in Table \ref{turnoutH} and explore them using the Wisconsin 
-data. 
+I begin with the explanations in Table \ref{turnoutH} and explore them using the Wisconsin 
+data. I start with the models based on electorate size and explore if at the 
+extremely small electorate sizes common in school board elections there is evidence 
+that voters are more likely to turnout than in larger school board races. Figure 
+\ref{fig:turnoutSize} shows that there is a consistent negative relationship 
+between electorate size and school board election turnout across the years of data 
+available in Wisconsin. As voting age population increases, Wisconsin school board 
+elections have lower turnout with a correlation of 
+-0.134. 
+This conforms with the predictions of game-theoretic approaches which state that 
+in a small electorate a voter can expect their vote to matter more in the outcome and 
+thus increase the potential benefits associated with voting
+\citep{Mueller3, aldrich1993, Downs57}. However, this does not represent a full test 
+of this theory, as voters are also voting up ticket in statewide non-partisan races 
+such as Supreme Court and State Superintendent, and school board turnout may be 
+driven by these races. 
+
+Having competitive races is critical in driving voter turnout, as voters have 
+very little reason to vote if they are not presented with a meaningful choice \citep{Downs57}. 
+Figure \ref{turnoutCompetitive} shows voter turnout across the competitiveness typologies 
+described in Chapter \ref{chap:wisco} with a clear pattern of higher turnout in races 
+featuring an incumbent and a serious challenger. Open seats also appear to feature higher 
+turnout than uncontested races. The turnout in uncontested races in the bottom panel 
+is very likely being driven by the presence of other contested races on the ticket. 
+Using a statistical model we will be able to explore this in greater detail. 
 
 
+Figure \ref{fig:turnoutAutocorrelation} explores how habit forming turnout may be 
+in spring elections in school districts \citep{Plutzer2002}. Using a two-year lag 
+of turnout, Figure \ref{fig:turnoutAutocorrelation} shows a consistently high 
+positive correlation between lagged and current turnout, averaging 
+0.349.
+\footnote{For a single year lag, the corresponding correlation is 
+0.31 and the 
+year to year pattern is largely similar.} A robust linear model is used to show 
+the smoothed relationship between lagged and current turnout. Of note is the pattern 
+shift in both 2005 and 2011 where the correlation is more pronounced and turnout 
+appears to be inflated. Figure \ref{fig:turnoutComparison} looks at this further 
+yet by showing the relationship between the average of the turnout in the prior two 
+fall elections for Governor and President compared to the current school board turnout. 
+These correlate positively as well at a level of 
+0.188. 
+
+With a reduced electorate, school board elections are an interesting case to study 
+the role substantial interest groups can play in an election. \citet{Fowler2005} 
+provides the premise that cohesive social groups can increase turnout by activating 
+their members to vote. \citet{RefWorks:207} suggests that unionized teachers are 
+just one such group and provides evidence of school board elections being influenced 
+substantially by such groups. To evaluate this, Figure \ref{fig:unionInf} shows 
+the turnout in the school board election compared to the percentage of the twice lagged 
+school board electorate that licensed teachers would make up if they all voted. 
+This comparison illustrates how large of a voting block a cohesive teacher union 
+might estimate they possess based on the number of votes cast in previous elections. 
+The relationship shown in Figure \ref{fig:unionInf} is not what theory would expect. 
+Here a higher teacher share of the prior school board turnout is associated with depressed turnout rates, 
+instead of elevated turnout. The average correlation across years is 
+-0.124. 
+I will pursue this finding further with statistical models, 
+but it is worth noting that there may be limits on the impact social groups can have 
+on driving up turnout before they capture the electorate and thus reduce competitiveness 
+and turnout. In fact, for \citet{RefWorks:207} this would represent the ideal condition 
+for a union, freeing their members from the need to be politically active and influencing 
+the school board through the nomination and campaign process instead. 
+
+Still, when school board races are competitive, do they exhibit much higher turnout? Figure 
+\ref{fig:competition} shows that races where the winner and loser are within 15\% of 
+one another in votes do exhibit higher turnout.\footnote{For this graph the definition 
+of win-margin described in Chapter \ref{chap:wisco} was used.} About 1/3 races is 
+competitive in this way. This is an imperfect measure however, because voters do 
+not know before they go to the ballot how competitive a race will be. In fact, in 
+school board races, it is very unlikely that voters have much information at all about 
+how close the race will be due to a lack of polling information and very little 
+campaigning common in school board races \citep{RefWorks:321, RefWorks:217, RefWorks:322}. 
+
+Figure \ref{fig:partyDivision} takes a different approach to this problem by looking 
+at the information voters may have about their community -- the level of partisan 
+polarization. Using the average Democratic share of the two-party vote from the prior 
+Gubernatorial and Presidential election, I explore the variation in school board election 
+turnout. Theory would suggest that the more divided a community is on partisan issues, the 
+greater the impetus to vote \citep{Fowler2005}. Thus in Figure \ref{fig:partyDivision} we 
+should expect to see an inverted U shape representing higher turnout around 50\% share of 
+the two party vote. In fact, this pattern does not occur in any year, and in some years 
+there is evidence of just the opposite relationship -- a correlation between higher 
+partisan unity and turnout. Figure \ref{fig:partisan2} shows the linear relationship 
+between higher partisan unity and turnout. In most years there is almost no relationship, 
+but in 2011 and 2012 there appears to be an uptick in school board turnout associated 
+with more strongly partisan school districts. The correlation is 
+0.134. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-partisan2} \caption[Another Look at Relationship Between Turnout and Partisanship]{Another Look at Relationship Between Turnout and Partisanship\label{fig:partisan2}}
+\end{figure}
 
 
-We will address 
+\end{knitrout}
+
+Taken alone, these figures do not suggest that any of the theories in Table \ref{turnoutH} 
+are confirmed or denied, but it does help illustrate the diversity of school board 
+elections in Wisconsin and the need for statistical models to help separate out 
+competing explanations that may themselves by highly correlated or confound 
+one another. 
 
 \clearpage
 \subsection{Methods}
