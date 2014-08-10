@@ -288,7 +288,6 @@ rm(vaplongLag, vaplongTEST, yrs, i)
 #
 #outlier <- subset(vaplong, (vaplong$vap - vaplong$LastCensusVAP) > 2000)
 
-
 ################################################################################
 # Calculate district VAP using munipieces
 ################################################################################
@@ -437,7 +436,11 @@ VAP_dist <- vptemp[, list(VAP = sum(vap*share, na.rm=T),
                           LastCensusVAP = sum(LastCensusVAP*share, na.rm=T)),
                    by=c("year", "distid")]
 
+VAP_dist <- as.data.frame(VAP_dist)
 
+# Checks for overall state numbers look good
+# checks <- aggregate(vaplong[, c(9:13)], list(Year = vaplong$year), sum)
+# checks2 <- aggregate(VAP_dist[, c(3:6)], list(Year = VAP_dist$year), sum)
 ###########################
 # Checks
 ###########################
@@ -800,6 +803,21 @@ district_vote_panel <- rbind(district_vote_panel, distvotes08)
 district_vote_panel <- rbind(district_vote_panel, distvotes10)
 district_vote_panel <- rbind(district_vote_panel, distvotes12)
 
+################################################################################
+##
+## District spring results
+##
+################################################################################
+
+setwd("../Data/Raw Files/Election Data")
+
+
+
+source("dataclean.R")
+setwd("../../../MasterText")
+
+
+
 ###################################################################################
 # Interpolate district population
 ##################################################################################
@@ -858,20 +876,20 @@ govTurn <- subset(govTurn, select = c("distid", "year", "toptotvotes",
                                       "topturnout1", "topdem", "toprep"))
 
 presTurn.tmp <- presTurn
-presTurn.tmp$year <- presTurn.tmp$year - 1
+presTurn.tmp$year <- presTurn.tmp$year + 1
 presTurn <- rbind(presTurn, presTurn.tmp)
-presTurn.tmp$year <- presTurn.tmp$year - 1
+presTurn.tmp$year <- presTurn.tmp$year + 1
 presTurn <- rbind(presTurn, presTurn.tmp)
-presTurn.tmp$year <- presTurn.tmp$year - 1
+presTurn.tmp$year <- presTurn.tmp$year + 1
 presTurn <- rbind(presTurn, presTurn.tmp)
 rm(presTurn.tmp)
 
 govTurn.tmp <- govTurn
-govTurn.tmp$year <- govTurn.tmp$year - 1
+govTurn.tmp$year <- govTurn.tmp$year + 1
 govTurn <- rbind(govTurn, govTurn.tmp)
-govTurn.tmp$year <- govTurn.tmp$year - 1
+govTurn.tmp$year <- govTurn.tmp$year + 1
 govTurn <- rbind(govTurn, govTurn.tmp)
-govTurn.tmp$year <- govTurn.tmp$year - 1
+govTurn.tmp$year <- govTurn.tmp$year + 1
 govTurn <- rbind(govTurn, govTurn.tmp)
 rm(govTurn.tmp)
 

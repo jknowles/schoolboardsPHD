@@ -3,14 +3,24 @@
 \chapterstyle{deposit}
 
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
-#setwd("../../../Data/Raw Files/Election Data")
-#setwd("../Data/Raw Files/Election Data")
-# source("dataclean.R")
-# source("mappingfunctions.R")
-# source("k8uhs.R")
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
                fig.path="../../phd_figs/chap4-",
                warning=FALSE, echo=FALSE, dev='pdf')
+
+setwd("../../")
+source("data/dataAssemble.R")
+source("data/dataMerge.R")
+library(plyr)
+library(eeptools)
+library(scales)
+library(xtable)
+options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
+
+iNum <- function(x){prettyNum(as.character(x), big.mark = ",", digits = 3)}
+iPer <- function(x){paste0(prettyNum(as.character(x), big.mark = ",", digits = 1),"\\%")}
+# gpclibPermit()
+#setwd("../../../MasterText")
+#elec <- read.csv("data/electionpartisanshippanel.csv")
 @
 
 
@@ -464,11 +474,182 @@ to vote.
 
 \subsection{Data}
 
-I leverage a unique dataset consisting of school board election returns for 
-several hundred Wisconsin school districts from 2007-2012. 
-
 %% Standard data writeup here
 
+As we saw in Chapter \ref{chap:wisco}, the spring elections in Wisconsin are decidedly low turnout affairs. Estimating school board election turnout is decidedly difficult because it requires 
+both a reliable assessment of the votes cast in the election and a reliable 
+estimate of the voting age population in the school district. Due to the fact that 
+school districts have diverse organizational structure above, and no requirements 
+on election reporting to a central authority, it is often difficult to ascertain 
+the number of votes cast by voters within the school district. To determine the voting 
+age population (VAP) of the school district in Wisconsin, I employ the finest resolution 
+estimate of voting age population available -- VAP estimates by minor civil division (MCD) 
+conducted by the Wisconsin Department of Administration described in Chapter \ref{chap:wisco} Section \ref{subsec:turnout}.\footnote{Available online: \url{http://gab.wi.gov/elections-voting/results}. Statistics for Wisconsin Minor Civil Divisions are maintained by the Department of Administration Demographic Services Center: \url{http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9}}
+
+With the method described in that section, I am able to estimate the voter turnout for 
+each school district in Wisconsin on school board elections as well as on presidential, 
+gubernatorial, and non-partisan spring elections. 
+
+<<modelsetup>>=
+races <- as.data.frame(races)
+races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
+
+# turnout over the prior presidential election
+races.tmp <- merge(races.tmp, presTurn, by = c("distid", "year"), all.x=TRUE)
+races.tmp <- merge(races.tmp, govTurn, by = c("distid", "year"), all.x=TRUE)
+
+races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
+                                          "nrealcand", "nwins", "ninc", "raceid",
+                                          "nminor", "votes", "districtwide", 
+                                          "electiontype", "VAP", "VAP_adj", 
+                                          "topPresVotesPrior", "presTwoPartyShareDem", 
+                                          "topGovVotesPrior", "govTwoPartyShareDem"))
+
+races.tmp <- subset(races.tmp, raceid!=0)
+# look at general
+races.tmp <- subset(races.tmp, electiontype == 1)
+
+# Look at districtwide only
+races.tmp <- subset(races.tmp, districtwide == 1)
+races.tmp <- subset(races.tmp, nrealcand > 0)
+
+races.tmp <- races.tmp[!is.na(races.tmp$distid),]
+races.tmp$voters <- races.tmp$votes / races.tmp$nwins
+races.tmp$turnout <- races.tmp$voters/races.tmp$VAP_adj
+## Convert to district average somehow
+
+dist_turn <- ddply(races.tmp, .(distid, year), summarize, 
+              ncand = sum(ncand), nrealcand = sum(nrealcand), 
+              nwins = sum(nwins), ninc = sum(ninc), 
+              nminor = sum(nminor), votes = sum(votes), 
+              VAP_adj = statamode(VAP_adj), 
+              nraces = length(distid))
+
+dist_turn$districtwide <- 1
+############
+# Non district-wide
+############
+races <- as.data.frame(races)
+races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
+
+presTurn$presTwoPartyVote <- presTurn$presDemVotes + presTurn$presRepVotes
+presTurn$presTwoPartyShareDem <- presTurn$presDemVotes / presTurn$presTwoPartyVote
+
+govTurn$govTwoPartyVote <- govTurn$govDemVotes + govTurn$govRepVotes
+govTurn$govTwoPartyShareDem <- govTurn$govDemVotes / govTurn$govTwoPartyVote
+
+races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
+                                          "nrealcand", "nwins", "ninc", "raceid",
+                                          "nminor", "votes", "districtwide", 
+                                          "electiontype", "VAP_adj"))
+
+races.tmp <- subset(races.tmp, raceid!=0)
+# look at general
+races.tmp <- subset(races.tmp, electiontype == 1)
+# Look at non-districtwide only
+races.tmp <- subset(races.tmp, districtwide == 0)
+races.tmp <- subset(races.tmp, nrealcand > 0)
+races.tmp <- races.tmp[!is.na(races.tmp$distid),]
+
+# collapse to the district level
+
+dist.tmp <- ddply(races.tmp, .(distid, year), summarize, 
+              ncand = sum(ncand), nrealcand = sum(nrealcand), 
+              nwins = sum(nwins), ninc = sum(ninc), 
+              nminor = sum(nminor), votes = sum(votes), 
+              VAP_adj = statamode(VAP_adj), 
+              nraces = length(distid))
+
+dist.tmp$districtwide <- 0
+
+dist_turn <- rbind(dist_turn, dist.tmp)
+
+row_counts <- ddply(dist_turn, .(distid, year), nrow)
+dist_turn <- merge(dist_turn, row_counts, all.x=TRUE)
+dist_turn$recs <- dist_turn$V1; dist_turn$V1 <- NULL
+dist_turn1 <- dist_turn[dist_turn$recs >= 1 & dist_turn$districtwide > 0,]
+dist_turn2 <- dist_turn[dist_turn$recs == 1 & dist_turn$districtwide == 0,]
+
+dist_turn <- rbind(dist_turn1, dist_turn2)
+dist_turn$recs <- NULL
+
+## Clean up metrics
+# turnout over the prior presidential election
+dist_turn <- merge(dist_turn, presTurn, by = c("distid", "year"), all.x=TRUE)
+dist_turn <- merge(dist_turn, govTurn, by = c("distid", "year"), all.x=TRUE)
+dist_turn$VAP_adj <- as.numeric(dist_turn$VAP_adj)
+dist_turn$voters <- dist_turn$votes / dist_turn$nwins
+dist_turn$turnout <- dist_turn$voters / dist_turn$VAP_adj
+
+rm(dist_turn1, dist_turn2, races.tmp, row_counts)
+@
+
+
+
+<<turnoutComparison, echo=FALSE, fig.cap="Comparison of Fall and Spring Turnout in Wisconsin Elections">>=
+# Fall turnout 
+dist_turn$fallTurnout <- (dist_turn$topGovTurnoutPrior + dist_turn$topPresTurnoutPrior) / 2
+dist_turn$fallTwoPartyShareDem <- (dist_turn$govTwoPartyShareDem + dist_turn$presTwoPartyShareDem) /2
+
+
+qplot(fallTurnout, turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.95,])) + facet_wrap(~year) + 
+  geom_smooth(se = TRUE, method = "lm") + theme_dpi() + 
+  scale_x_continuous(label = percent) + 
+  scale_y_continuous(label = percent) + 
+  labs(x = "Average Fall Turnout Pres and Gov", y = "School Board Turnout", 
+       title = "Comparing Fall and Spring Turnout in Wisconsin Elections")
+@
+
+
+<<partyDivision, echo=FALSE, fig.cap="Comparison of School Board Turnout to Electorate Polarization">>=
+
+qplot(fallTwoPartyShareDem, turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.95,])) + facet_wrap(~year) + 
+  geom_smooth(se = TRUE) + theme_dpi() + 
+  scale_x_continuous(label = percent) + 
+  scale_y_continuous(label = percent) + 
+  labs(x = "Democrat Share of Two Party Gubernatorial and Presidential Vote", y = "School Board Turnout", 
+       title = "Comparing Turnout and Voter Partisanship in Wisconsin")
+@
+
+<<turnoutCompetitive, echo=FALSE, fig.cap="Turnout in School Board Elections based on Competitiveness">>=
+dist_turn$contest <- "Uncontested"
+dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Contested"
+dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc ==0] <- "Open Contested"
+
+
+qplot(turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.95,]), fill = contest, 
+      color = I("gray90")) +  
+  theme_dpi() + 
+  facet_wrap(~contest, ncol = 1) +
+  scale_x_continuous(label = percent) + 
+  labs(x = "Turnout in School Board Elections", fill = "Type of Contestation", 
+       y = "Count of Races",
+       title = "Comparing Turnout and Race Typology in Wisconsin School Board Elections") + 
+  theme(legend.position = c(0.8, 0.85))
+
+@
+
+<<exploratory, eval=FALSE, results='hide'>>=
+
+
+qplot(topGovTurnoutPrior, turnout, data = dist_turn) + facet_wrap(~year) + 
+  geom_smooth(se = TRUE, method = "lm") + theme_dpi()
+qplot(topPresTurnoutPrior, turnout, data = dist_turn) + facet_wrap(~year)+ 
+  geom_smooth(se = TRUE, method = "lm") + theme_dpi()
+
+
+
+qplot(govTwoPartyShareDem -.5, turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.85,])) + facet_wrap(~year) + 
+  geom_smooth(se = TRUE) + theme_dpi()
+
+
+
+qplot(presTwoPartyShareDem -.5, turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.85,])) + facet_wrap(~year) + 
+  geom_smooth(se = TRUE) + theme_dpi()
+
+@
+
+\clearpage
 \subsection{Methods}
 
 
@@ -590,9 +771,8 @@ participation will increase as predicted by \citep{RefWorks:243}--voters seeing
 dissonance between their preferences and board policy are more likely to vote. 
 Thus $\tau$ should be negative.  %Add detail here
 
-
-
 \section{Results}
+
 
 
 \section{Conclusion}

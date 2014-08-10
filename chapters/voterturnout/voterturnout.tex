@@ -455,139 +455,29 @@ to vote.
 
 \subsection{Data}
 
-I leverage a unique dataset consisting of school board election returns for 
-several hundred Wisconsin school districts from 2007-2012. 
-
 %% Standard data writeup here
 
-\subsection{Methods}
+As we saw in Chapter \ref{chap:wisco}, the spring elections in Wisconsin are decidedly low turnout affairs. Estimating school board election turnout is decidedly difficult because it requires 
+both a reliable assessment of the votes cast in the election and a reliable 
+estimate of the voting age population in the school district. Due to the fact that 
+school districts have diverse organizational structure above, and no requirements 
+on election reporting to a central authority, it is often difficult to ascertain 
+the number of votes cast by voters within the school district. To determine the voting 
+age population (VAP) of the school district in Wisconsin, I employ the finest resolution 
+estimate of voting age population available -- VAP estimates by minor civil division (MCD) 
+conducted by the Wisconsin Department of Administration described in Chapter \ref{chap:wisco} Section \ref{subsec:turnout}.\footnote{Available online: \url{http://gab.wi.gov/elections-voting/results}. Statistics for Wisconsin Minor Civil Divisions are maintained by the Department of Administration Demographic Services Center: \url{http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9}}
 
-
-This paper has two main methodological approaches to evaluating theories of voter 
-turnout in school board elections. The first follows on several empirical studies 
-of theories of voter turnout to compare the power of various theories of voter 
-turnout to one another \citep{Larcinese, Lapp99, KanYang2001,Coate2008582}. The 
-second approach leverages the exogenous shock of the Walker administration in 
-Wisconsin and the passage of Act 10 to evaluate the causal impact of changes in 
-voter information on both the level of turnout in school board elections, and 
-the prompting of voters to exercise their dissatisfaction through the ballot. 
-
-A key factor to control for in the case of school boards is the fiscal issue dimension. 
-Researchers have studied the impact of economic conditions on voting before, and 
-have found some evidence that economic conditions influence voting patterns 
-\citep{EconandOutcomes2000}. 
-If we reduce school boards to a two-dimensional game with incumbents and non-incumbents 
-along one dimension and the relative fiscal performance along the other, ceteris 
-paribus we would expect that incumbents are at an advantage (and turnout is lower) 
-when fiscal performance is strong. To measure fiscal performance we use the share 
-of the revenue limit a district is spending.
-
-
-\subsection{Evaluating Theories in Non-Partisan Local Elections}
-
-Now we turn to operationalizing Table \ref{turnoutH} into estimable equations to 
-look for evidence of voter turnout theories in school board elections. 
-
-\[(1) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{lag} + \psi Ce_{t}+\epsilon \] \\
-
-Here $VP_{t}$ is voter turnout in time $t$. $\alpha$ is the intercept and $x_{lag}$ 
-represents a vector of lagged covariates such as turnout in school district $i$. 
-Additionally, we include a term $Ce_{t}$ for the level of candidate participation 
-in the election as a control. As per \citet{habit02}, a high predictive value 
-of the lagged term, especially in smaller districts, would suggest the electorate 
-is largely consistent of the same individuals year to year, suggesting that learning 
-is occurring. To test this more rigorously, we could specifically look at years 
-where turnout increases are particularly sharp, and see if these correspond to 
-heightened turnout in particular years through the inclusion of a $\delta turnout$ 
-term. 
-
-Next, we turn to testing the pivotal-voter model using a similar method as \citep{Coate2008582}. 
-The pivotal-voter model predicts that turnout should be higher in elections that 
-are closer. % OR IS IT THE OPPOSITE? 
-Thus we include the $M_{t}$ for the margin of victory for candidates in the school 
-board election in the equation below. 
-
-%% do we consider controlling for the effect of candidate participation?
-%% Consider including candidate participation in table 4.1?
-
-\[(2) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta M_{t} + \psi Ce_{t} + \epsilon \] \\
-
-The size of the electorate is important in many theories of voter turnout. \citet{dahl1973size} 
-first hypothesized that the motivation to participate would be higher in small 
-electorates, and there has been some evidence to support this \citep{Frandsen2002}. 
-Thus, in equation three we include a $\theta S_{t}$ term that controls for the 
-size of the electorate. In a game-theoretic perspective, the smaller electorate 
-would drive turnout because the costs of non-voting can be more easily estimated 
-by voters in small electorates, and the expected benefit of such non-voting is 
-larger. 
-
-\[(3) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta S_{t} + \psi Ce_{t} + \epsilon \] \\
-
-A pure \citet{Downs57} model would suggest that as the value of PB increases, then 
-so should turnout. Thus, equation 4 contains terms for both the size of the electorate 
-and the closeness of victory $ \theta S_{t} *\theta M_{t}$. Unfortunately, this 
-equation is not able to estimate the value of B, or the expected benefit of 
-the candidate in question to a voter. This will be addressed in the next section. 
-
-\[(4) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta S_{t} *\theta M_{t}  + \epsilon \] \\
-
-Finally, following \citet{Fowler2005}, we investigate the impact that social group 
-membership may have on voting. In equation 5, $P_{t}$ represents a measure of the
-polarization in the community. There are two options for measuring $P_{t}$ - either 
-by looking at the partisan makeup of the electorate using the partisanship of the 
-school district in partisan statewide elections, or looking at teacher membership 
-as a share of the total electorate. There has been little work explicitly testing the 
-former, but some evidence that the share of teachers in the electorate is an 
-important driver of turnout and policy change in school board elections \citep{RefWorks:207, 
-RefWorks:218,RefWorks:320}. 
-
-\[(5) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta S_{t} 
-+ \gamma P_{t} + \psi Ce_{t} + \epsilon \] \\
-
-For all of the above equations to be estimated both panel and pooled estimators 
-will have to be explored. 
-
-\subsection{The Impact of Salience and Information on Voter Turnout}
-
-While the equations above can prove useful for providing evidence of various theories 
-of voter turnout in non-partisan local elections, they cannot test some theories and 
-they do not shed any light on causes of voter turnout. Table \ref{turnoutH2} demonstrates 
-how two such models can be explicitly tested by leveraging the exogenous shock of 
-the passage of Act 10. To estimate these effects, we estimate an equation like below: \\
-
-\[(6) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{lag} + \gamma W_{t} + \lambda P_{lag} +
-      \tau 1- |W_{t} * P_{lag}| + \theta I_{lag} + \psi Ce_{t}+\epsilon \] \\
-
-Here $VP_{t}$ is voter turnout in either the 2011 or 2012 Spring Elections by school 
-district in Wisconsin. $\alpha$, $X_{lag}$ remain the same as above though now 
-including some measure of prior turnout in the district such as turnout in the 
-Gubernatorial election in 2010.  $Z_{t}$ is the absolute value of the deviation 
-from 50\% of the vote share for the Governor. $I_{lag}$ representing an indicator 
-of the strength of teachers' unions in the district--likely the most salient and 
-relevant interest group in the spring elections \citep{RefWorks:320, RefWorks:207, RefWorks:218}.
-Voters are unlikely to participate if presented with no choice, so $Ce_{t}$ represents 
-a measure of the number of candidates per seat. $W_{t}$ represents the vote share 
-for Governor Walker in the recall election--a measure of community support or opposition 
-to the Governor's education policy. Thus it would be expected that $\theta$ should 
-be positive--strong interest groups should drive political activity. The inclusion 
-of partisanship predictors of voter turnout could also be explored here. The 
-effects of $\gamma$  and $\lambda$ alone are uninteresting, but the interaction 
-of $W_{t} * P_{lag}$ is of great interest. This essentially represents a measure 
-of board policy alignment with voter preferences--taking the absolute value simplifies 
-interpretation. As such, it should be expected that for large values of $W_{t} * P_{lag}$, 
-voter participation would be small as the board policy and the community 
-preferences would be aligned. As $W_{t} * P_{lag}$ approaches zero, voter 
-participation will increase as predicted by \citep{RefWorks:243}--voters seeing 
-dissonance between their preferences and board policy are more likely to vote. 
-Thus $\tau$ should be negative.  %Add detail here
+With the method described in that section, I am able to estimate the voter turnout for 
+each school district in Wisconsin on school board elections as well as on presidential, 
+gubernatorial, and non-partisan spring elections. 
 
 
 
-\section{Results}
 
 
-\section{Conclusion}
 
-An interesting proposition here is considering whether or not voters in low-salience 
-and low-turnout school board elections are a subset of the voters in higher salience 
-and higher turnout elections \citep{Cho2008}
+
+
+
+
+
