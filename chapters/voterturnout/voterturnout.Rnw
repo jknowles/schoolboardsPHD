@@ -494,6 +494,14 @@ gubernatorial, and non-partisan spring elections.
 races <- as.data.frame(races)
 races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
 
+
+presTurn$presTwoPartyVote <- presTurn$presDemVotes + presTurn$presRepVotes
+presTurn$presTwoPartyShareDem <- presTurn$presDemVotes / presTurn$presTwoPartyVote
+
+govTurn$govTwoPartyVote <- govTurn$govDemVotes + govTurn$govRepVotes
+govTurn$govTwoPartyShareDem <- govTurn$govDemVotes / govTurn$govTwoPartyVote
+
+
 # turnout over the prior presidential election
 races.tmp <- merge(races.tmp, presTurn, by = c("distid", "year"), all.x=TRUE)
 races.tmp <- merge(races.tmp, govTurn, by = c("distid", "year"), all.x=TRUE)
@@ -531,12 +539,6 @@ dist_turn$districtwide <- 1
 ############
 races <- as.data.frame(races)
 races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
-
-presTurn$presTwoPartyVote <- presTurn$presDemVotes + presTurn$presRepVotes
-presTurn$presTwoPartyShareDem <- presTurn$presDemVotes / presTurn$presTwoPartyVote
-
-govTurn$govTwoPartyVote <- govTurn$govDemVotes + govTurn$govRepVotes
-govTurn$govTwoPartyShareDem <- govTurn$govDemVotes / govTurn$govTwoPartyVote
 
 races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
                                           "nrealcand", "nwins", "ninc", "raceid",
