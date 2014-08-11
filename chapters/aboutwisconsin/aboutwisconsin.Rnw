@@ -10,7 +10,8 @@ opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE,
 
 setwd("../../")
 source("data/dataAssemble.R")
-source("data/dataMerge.R")
+# source("data/dataMerge.R")
+load("data/cache/DataMergeVAP.rda")
 library(plyr)
 library(eeptools)
 library(scales)
@@ -111,7 +112,7 @@ This request was e-mailed to the school district administrator in each of Wiscon
 424 school districts in January of 2013. Three follow up waves were conducted throughout 
 2013, and at the end of the collection period, \Sexpr{iNum(length(unique(dat$distid)))} 
 districts responded with records. The median district provided 
-\Sexpr{iNum(median(ddply(races, .(distid), summarize, out = length(unique(year)))[, 2]))} 
+\Sexpr{iNum(median(ddply(races, .(distid), summarise, out = length(unique(year)))[, 2]))} 
 years of records.\footnote{While each district was requested to provide the maximum amount of records legally 
 required to be retained, ten years, many districts were unable to locate complete 
 records going this far back.} Overall, records were provided on \Sexpr{iNum(nrow(races))} school 
@@ -838,8 +839,9 @@ size, wealth, performance, and student and household demographics.
 rm(list=ls())
 setwd("../../")
 source("data/dataAssemble.R")
-source("data/dataMerge.R")
+# load("data/cache/DataMergeVAP.rda")
 source("data/cleanandprep_CANDIDACY.R")
+
 
 SAMPSIZE <- length(unique(SBELEC$distid))
 # Table showing sample and non-sample on key covariates

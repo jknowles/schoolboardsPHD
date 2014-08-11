@@ -138,9 +138,9 @@ print(paste0(length(dat$votes[dat$votes > 20000 & !is.na(dat$votes)]),
 dat$raceid2 <- paste(dat$distid, dat$year, dat$raceid, dat$electiontype, sep = "-")
 length(unique(dat$raceid2))
 
-plyr::ddply(dat, .(year), summarize, uniqueRaces = length(unique(raceid2)))
+ddply(dat, .(year), summarise, uniqueRaces = length(unique(raceid2)))
 
-plyr::ddply(dat, .(year), summarize, 
+ddply(dat, .(year), summarise, 
             racesperDistrict = length(unique(raceid2))/ length(unique(distid)))
 
 # Winners

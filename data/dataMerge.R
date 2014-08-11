@@ -5,7 +5,10 @@
 ## Read in CSV Files of voter turnout
 ## 
 ################################################################################
-
+library(stringr)
+library(data.table)
+library(eeptools)
+library(plyr)
 
 struc <- list.files("../Data/Raw Files/Election Data/VoterCounts", 
                     full.names=TRUE)
@@ -225,7 +228,6 @@ apply(vaplong, 2, class)
 vaplong <- vaplong[!is.na(vaplong$doacode),]
 
 vaplong$municipality <- gsub("\\*", "", vaplong$municipality)
-library(stringr)
 vaplong$municipality <- str_trim(vaplong$municipality, side="both")
 
 vaplong$county_name <- as.character(vaplong$county_name)
@@ -250,8 +252,6 @@ vaplong$LastCensusYear[vaplong$year < 2009] <- 2000
 vaplong$LastCensusYear[vaplong$year < 2000] <- 1990
 
 # Backfill Census population data
-
-library(data.table)
 
 #vaplongDT <- as.data.table(vaplong)
 
@@ -312,8 +312,6 @@ for(i in 1:length(struc)){
   eval(parse(text=paste0("sd0",1+i,"<- sd0", 1+i,"[,1:collength]")))
 }
 
-library(plyr)
-library(stringr)
 
 cleanSDdata <- function(df){
   myregexp <- "[[:digit:]]+"
@@ -423,7 +421,7 @@ rm(collength, i, struc, vars)
 # This is the only correct way to measure the share of each MCD that is in the 
 # school district
 # Data comes from DOR records
-sdprop <- ddply(vptemp, .(doacode, year), summarize, "eqvtot"=sum(eqv,na.rm=T))
+sdprop <- ddply(vptemp, .(doacode, year), summarise, "eqvtot"=sum(eqv,na.rm=T))
 vptemp <- merge(vptemp, sdprop, by=c("doacode", "year"))
 vptemp$share <- vptemp$eqv / vptemp$eqvtot
 
@@ -459,7 +457,7 @@ VAP_dist <- as.data.frame(VAP_dist)
 
 #toosmall <- subset(VAP_dist, VAP < 300 & distid!=3976)
 #toobig <- subset(VAP_dist, VAP <e 200)
-library(eeptools)
+
 
 mylag <- function(df){
   lag1 <- eeptools:::lag_data(df, group = "distid", 
@@ -741,7 +739,7 @@ rm(annlchg.tmp, tmp, sdprop,  annlchg)
 
 setwd("../Data/Raw Files/Election Data")
 source("dataclean.R")
-setwd("../../../MasterText")
+
 
 names(distvotes02)
 
@@ -809,20 +807,19 @@ district_vote_panel <- rbind(district_vote_panel, distvotes12)
 ##
 ################################################################################
 
-setwd("../Data/Raw Files/Election Data")
-
-
-
-source("dataclean.R")
-setwd("../../../MasterText")
-
-
+# setwd("../Data/Raw Files/Election Data")
+# 
+# 
+# 
+# source("dataclean.R")
+# setwd("../../../MasterText")
+# 
+# 
 
 ###################################################################################
 # Interpolate district population
 ##################################################################################
 
-library(data.table)
 dvp <- as.data.table(district_vote_panel)
 
 
@@ -939,111 +936,4 @@ rm(dvp2, prespref11, sd11, test, i, j, mynames, wisc)
 # save(tmp2, file="VotingPopulationAndPartisanship.rda")
 # 
 
-################################################################################
 
-################################################################################
-
-################################################################################
-# Erratta
-################################################################################
-# LinInterp <- function(x, includeLast = NULL){
-#   n <- length(x)
-#   if(missing(includeLast)){
-#     includeLast <- FALSE
-#   }
-#   if(includeLast == TRUE){
-#     chg <- (x[n] - x[1]) / n
-#     y <- x[1] + (chg * n)
-#     
-#   } else if(includeLast == FALSE){
-#     chg <- (x[n-1] - x[1]) / n-1
-#     y <- x[1] + (chg * n-1)
-#     
-#   }
-#   
-#   return(y)
-# }
-
-
-
-# 
-# 
-# 
-# 
-# #################################
-# # Focus on lags 2
-# 
-# annlchg.tmp <- annlchg[annlchg$VAP_flag_rollup > 1 & !is.na(annlchg$VAP_flag_rollup), ]
-# annlchg <- annlchg[annlchg$VAP_flag_rollup < 2, ]
-# 
-# annlchg.tmp$VAP <- apply(annlchg.tmp[,c(7,9,11)], 1, psych::geometric.mean)
-# 
-# annlchg <- rbind(annlchg, annlchg.tmp)
-# annlchg <- mylag(annlchg[, c(1, 2, 3, 4, 5, 6)])
-# 
-# 
-# annlchg$VAP_chg <- (annlchg$VAP - annlchg$VAP.lag1) / annlchg$VAP.lag1
-# annlchg$VAP_chg2 <- (annlchg$VAP - annlchg$VAP.lag2) / annlchg$VAP.lag2
-# annlchg$VAP_chg3 <- (annlchg$VAP - annlchg$VAP.lag3) / annlchg$VAP.lag3
-# 
-# annlchg$VAP_flag1 <- ifelse(annlchg$VAP_chg > .15 | annlchg$VAP_chg < -.15, 1, 0)
-# annlchg$VAP_flag1[is.na(annlchg$VAP_flag1)] <- 0
-# annlchg$VAP_flag2 <- ifelse(annlchg$VAP_chg2 > .15 | annlchg$VAP_chg2 < -.15, 1, 0)
-# annlchg$VAP_flag2[is.na(annlchg$VAP_flag2)] <- 0
-# annlchg$VAP_flag3 <- ifelse(annlchg$VAP_chg3 > .15 | annlchg$VAP_chg3 < -.15, 1, 0)
-# annlchg$VAP_flag3[is.na(annlchg$VAP_flag3)] <- 0
-# 
-# annlchg$VAP_flag_rollup <- annlchg$VAP_flag1 + annlchg$VAP_flag2 + annlchg$VAP_flag3
-# table(annlchg$VAP_flag_rollup)
-# 
-# #################################
-# # Focus on lags 1
-# 
-# annlchg.tmp <- annlchg[annlchg$VAP_flag_rollup > 0 & !is.na(annlchg$VAP_flag_rollup), ]
-# annlchg <- annlchg[annlchg$VAP_flag_rollup < 1, ]
-# 
-# annlchg.tmp$VAP <- apply(annlchg.tmp[,c(7,9,11)], 1, psych::geometric.mean)
-# 
-# annlchg <- rbind(annlchg, annlchg.tmp)
-# annlchg <- mylag(annlchg[, c(1, 2, 3, 4, 5, 6)])
-# 
-# annlchg$VAP_chg <- (annlchg$VAP - annlchg$VAP.lag1) / annlchg$VAP.lag1
-# annlchg$VAP_chg2 <- (annlchg$VAP - annlchg$VAP.lag2) / annlchg$VAP.lag2
-# annlchg$VAP_chg3 <- (annlchg$VAP - annlchg$VAP.lag3) / annlchg$VAP.lag3
-# 
-# annlchg$VAP_flag1 <- ifelse(annlchg$VAP_chg > .15 | annlchg$VAP_chg < -.15, 1, 0)
-# annlchg$VAP_flag1[is.na(annlchg$VAP_flag1)] <- 0
-# annlchg$VAP_flag2 <- ifelse(annlchg$VAP_chg2 > .15 | annlchg$VAP_chg2 < -.15, 1, 0)
-# annlchg$VAP_flag2[is.na(annlchg$VAP_flag2)] <- 0
-# annlchg$VAP_flag3 <- ifelse(annlchg$VAP_chg3 > .15 | annlchg$VAP_chg3 < -.15, 1, 0)
-# annlchg$VAP_flag3[is.na(annlchg$VAP_flag3)] <- 0
-# 
-# annlchg$VAP_flag_rollup <- annlchg$VAP_flag1 + annlchg$VAP_flag2 + annlchg$VAP_flag3
-# table(annlchg$VAP_flag_rollup)
-# 
-# 
-# 
-# 
-
-
-
-# 
-# VAPwide[, 4] <- apply(VAPwide[,c(2, 3, 4)], 1, function(x) tryCatch(LinInterp(x), error = 
-#                                                                       function(e) NA))
-# 
-# VAPwide[, 4] <- apply(VAPwide[,c(2, 3, 4)], 1, psych::geometric.mean)
-# VAPwide[, 5] <- apply(VAPwide[,c(2, 3, 4, 5)], 1, psych::geometric.mean)
-# VAPwide[, 6] <- apply(VAPwide[,c(2, 3, 4, 5, 6)], 1, psych::geometric.mean)
-# VAPwide[, 7] <- apply(VAPwide[,c(4, 5, 6, 7)], 1, psych::geometric.mean)
-# VAPwide[, 8] <- apply(VAPwide[,c(4, 5, 6, 7, 8)], 1, psych::geometric.mean)
-# VAPwide[, 9] <- apply(VAPwide[,c(5, 6, 7, 8, 9)], 1, psych::geometric.mean)
-# VAPwide[, 10] <- apply(VAPwide[,c(5, 6, 7, 8, 9, 10)], 1, psych::geometric.mean)
-# VAPwide[, 11] <- apply(VAPwide[,c(6, 7, 8, 9, 10, 11)], 1, psych::geometric.mean)
-# VAPwide[, 12] <- apply(VAPwide[,c(7, 8, 9, 10, 11, 12)], 1, psych::geometric.mean)
-# 
-# VAPchk <- reshape(VAPwide, direction="long")
-# 
-# names(VAPchk) <- c("distid", "year", "VAP")
-## Smooth only flags
-
-#annlchg <- mylag(VAPchk)

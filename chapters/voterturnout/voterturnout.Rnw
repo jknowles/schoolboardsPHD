@@ -9,18 +9,20 @@ opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE,
 
 setwd("../../")
 source("data/dataAssemble.R")
-source("data/dataMerge.R")
-library(plyr)
-library(eeptools)
+#source("data/dataMerge.R")
 library(scales)
 library(xtable)
+library(eeptools)
+
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
+load("data/cache/DataMergeVAP.rda")
 load("data/cache/AnalyticalSampleFeb2014.rda")
 
 distAttr <- newdat[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attempts", 
                          "cum_attptsD", "enrollment", "white_count", "TotalPopulation", 
-                         "PopWhiteAlone")]
-rm(newdata)
+                         "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o", 
+                       "PerBachelorOrAbove", "OOH_share", "millrate")]
+rm(newdat)
 
 distAttr$per_white_students <- distAttr$white_count / distAttr$enrollment
 distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation
@@ -30,9 +32,7 @@ distAttr$TotalPopulation <- NULL
 
 iNum <- function(x) prettyNum(x, big.mark = ",", digits = 3)
 iPer <- function(x){paste0(prettyNum(x, big.mark = ",", digits = 1),"\\%")}
-# gpclibPermit()
-#setwd("../../../MasterText")
-#elec <- read.csv("data/electionpartisanshippanel.csv")
+
 @
 
 
@@ -537,7 +537,7 @@ races.tmp$voters <- races.tmp$votes / races.tmp$nwins
 races.tmp$turnout <- races.tmp$voters/races.tmp$VAP_adj
 ## Convert to district average somehow
 
-dist_turn <- ddply(races.tmp, .(distid, year), summarize, 
+dist_turn <- ddply(races.tmp, .(distid, year), summarise, 
               ncand = sum(ncand), nrealcand = sum(nrealcand), 
               nwins = sum(nwins), ninc = sum(ninc), 
               nminor = sum(nminor), votes = sum(votes), 
@@ -566,7 +566,7 @@ races.tmp <- races.tmp[!is.na(races.tmp$distid),]
 
 # collapse to the district level
 
-dist.tmp <- ddply(races.tmp, .(distid, year), summarize, 
+dist.tmp <- ddply(races.tmp, .(distid, year), summarise, 
               ncand = sum(ncand), nrealcand = sum(nrealcand), 
               nwins = sum(nwins), ninc = sum(ninc), 
               nminor = sum(nminor), votes = sum(votes), 
@@ -593,6 +593,9 @@ dist_turn <- merge(dist_turn, govTurn, by = c("distid", "year"), all.x=TRUE)
 dist_turn$VAP_adj <- as.numeric(dist_turn$VAP_adj)
 dist_turn$voters <- dist_turn$votes / dist_turn$nwins
 dist_turn$turnout <- dist_turn$voters / dist_turn$VAP_adj
+# Fall turnout 
+dist_turn$fallTurnout <- (dist_turn$topGovTurnoutPrior + dist_turn$topPresTurnoutPrior) / 2
+dist_turn$fallTwoPartyShareDem <- (dist_turn$govTwoPartyShareDem + dist_turn$presTwoPartyShareDem) /2
 
 rm(dist_turn1, dist_turn2, races.tmp, row_counts)
 @
@@ -600,10 +603,6 @@ rm(dist_turn1, dist_turn2, races.tmp, row_counts)
 
 
 <<turnoutComparison, echo=FALSE, fig.cap="Comparison of Fall and Spring Turnout in Wisconsin Elections">>=
-# Fall turnout 
-dist_turn$fallTurnout <- (dist_turn$topGovTurnoutPrior + dist_turn$topPresTurnoutPrior) / 2
-dist_turn$fallTwoPartyShareDem <- (dist_turn$govTwoPartyShareDem + dist_turn$presTwoPartyShareDem) /2
-
 
 qplot(fallTurnout, turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.95,])) + facet_wrap(~year) + 
   geom_smooth(se = TRUE, method = "lm") + theme_dpi() + 
@@ -699,12 +698,12 @@ qplot(turnoutLag2, turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.9 & d
 % Turnout and group membership
 
 <<unionInf, echo=FALSE, fig.cap="Turnout in School Board Elections based on School Staff Share">>=
-plotdf <- merge(dist_turn, distAttr, by = c("distid", "year"))
-plotdf$teachShareofVoters <- round(plotdf$fte_teachers,0) / plotdf$votersLag2
-plotdf$teachShareofVoters[!is.finite(plotdf$teachShareofVoters)] <- 0
+dist_turn <- merge(dist_turn, distAttr, by = c("distid", "year"))
+dist_turn$teachShareofVoters <- round(dist_turn$fte_teachers,0) / dist_turn$votersLag2
+dist_turn$teachShareofVoters[!is.finite(dist_turn$teachShareofVoters)] <- 0
 
 qplot(teachShareofVoters, turnout, 
-      data = na.omit(plotdf[plotdf$year > 2004 & plotdf$turnout < 0.9 & plotdf$teachShareofVoters >0 ,])) + 
+      data = na.omit(dist_turn[dist_turn$year > 2004 & dist_turn$turnout < 0.9 & dist_turn$teachShareofVoters >0 ,])) + 
   geom_smooth(method="rlm") + theme_dpi() +
   facet_wrap(~year)+ 
   scale_x_log10(label = percent) + 
@@ -743,17 +742,17 @@ plotdf2$closeRace[plotdf2$winmargin2 < .15] <- 1
 
 errors <- subset(plotdf2, winmargin < 0)
 
-plot.tmp <- ddply(plotdf2, .(distid, year), summarize, 
+plot.tmp <- ddply(plotdf2, .(distid, year), summarise, 
                   races = length(distid), 
                   closeRaces = sum(closeRace))
 
 
-plotdf <- merge(plotdf, plot.tmp, all.x=TRUE)
+dist_turn <- merge(dist_turn, plot.tmp, all.x=TRUE)
 rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
 
-plotdf$CLOSE <- factor(ifelse(plotdf$closeRaces >0, "Competitive", "Not Competitive"))
+dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
 
-qplot(turnout, data = na.omit(plotdf[plotdf$turnout < 0.95,]), fill = CLOSE, 
+qplot(turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.95,]), fill = CLOSE, 
       color = I("gray90")) +  
   theme_dpi() + 
   facet_wrap(~CLOSE, ncol = 1) +
@@ -821,7 +820,7 @@ might estimate they possess based on the number of votes cast in previous electi
 The relationship shown in Figure \ref{fig:unionInf} is not what theory would expect. 
 Here a higher teacher share of the prior school board turnout is associated with depressed turnout rates, 
 instead of elevated turnout. The average correlation across years is 
-\Sexpr{iNum(cor(plotdf$teachShareofVoters, plotdf$turnout, use = "pairwise.complete.obs"))}. 
+\Sexpr{iNum(cor(dist_turn$teachShareofVoters, dist_turn$turnout, use = "pairwise.complete.obs"))}. 
 I will pursue this finding further with statistical models, 
 but it is worth noting that there may be limits on the impact social groups can have 
 on driving up turnout before they capture the electorate and thus reduce competitiveness 
@@ -995,7 +994,81 @@ Thus $\tau$ should be negative.  %Add detail here
 
 \section{Results}
 
+\subsection{Autocorrelated Turnout}
 
+<<model1, results ='asis'>>=
+# detach("package:plyr", unload=TRUE)
+library(sandwich)
+library(rms)
+library(apsrtable)
+
+moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adj", "distid", 
+                        "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI")]
+moddat <- na.omit(moddat)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+
+dd <<- datadist(moddat)
+options(datadist="dd")
+
+dumbRLM1 <- ols(turnout ~ turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all + 
+                  per65o + PerBachelorOrAbove + OOH_share + log(PCI), 
+              data = moddat, x = TRUE, y = TRUE)
+
+dumbRLM1$se <- sqrt(diag(vcov(robcov(dumbRLM1, cluster = moddat$distid))))
+
+
+dumbRLM1.2 <- ols(turnout ~ turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all + 
+                    per65o + PerBachelorOrAbove + OOH_share + log(PCI) +
+                    factor(year),
+              data = moddat, x= TRUE, y = TRUE)
+
+dumbRLM1.2$se <- sqrt(diag(vcov(robcov(dumbRLM1.2, cluster = moddat$distid))))
+
+
+dumbRLM2 <- ols(turnout ~ turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all +
+                   per65o + PerBachelorOrAbove + OOH_share + log(PCI) +
+                  factor(distid), 
+              data = moddat, x = TRUE, y = TRUE)
+
+dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
+
+
+
+apsrtableSummary.rms <<- function(x) {
+  s <- summary.lm(x)
+  newCoef <- coef(s)
+  ## which columns have z scores? (two of them in robust case)
+  zcols <- grep("value",colnames(newCoef))
+  newCoef[,zcols] <- pt(abs(newCoef[,zcols]),df=s$df[2], lower.tail=FALSE)
+  colnames(newCoef)[zcols] <- "Pr(z)"
+  s$coefficients <- newCoef
+  ## put the robust se in $se so that notefunction works automatically
+  ## the se checker will overwrite [,4] with pt, but this doesn't matter
+  ## because the last column Pr(z) is used by apsrstars() anyway
+  ## and the se are pulled from $se.
+  if("orig.var"%in% objects(x)==TRUE) {
+    s$se <- sqrt(diag(x$var))
+  }
+  return(s)
+}
+
+apsrtable(dumbRLM1, dumbRLM1.2, dumbRLM2, se="robust", label="tab:lagmods", 
+          model.names=c("Simple RLM", "RLM + Year FE", "RLM + District FE"), 
+          caption = "Models of Lagged Turnout in School Board Elections",
+          notes = list(se.note, stars.note, "Year and district fixed effects omitted."),
+          omitcoef=list("distid", 
+                        expression(grep("distid", coefnames, value=TRUE)), 
+                        "year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          Sweave=FALSE)
+
+@
+
+Turnout appears to be very highly correlated as shown in Table \ref{tab:lagmods}. 
+
+We should also fit some better models. 
 
 \section{Conclusion}
 

@@ -3,18 +3,13 @@
 # Combine them
 ################################################################################
 
-library(data.table)
-
 #source("data/dataAssemble.R")
 #load("data/cache/VotingPopulation.rda")
-
+load("data/cache/DataMergeVAP.rda")
 VAP_dist <- as.data.frame(VAP_dist)
 dvp$totpop <- NULL
-
 MACROpart <- merge(VAP_dist, dvp, by=c("distid", "year"))
-
-rm(dvp, VAP_dist, cw, vaplong, vptemp)
-
+rm(VAP_dist, dvp)
 
 load("data/cache/AnalyticalSampleFeb2014.rda")
 FINANCE <- newdat; rm(newdat)

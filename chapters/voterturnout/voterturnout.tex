@@ -578,7 +578,7 @@ of turnout, Figure \ref{fig:turnoutAutocorrelation} shows a consistently high
 positive correlation between lagged and current turnout, averaging 
 0.349.
 \footnote{For a single year lag, the corresponding correlation is 
-0.31 and the 
+0.311 and the 
 year to year pattern is largely similar.} A robust linear model is used to show 
 the smoothed relationship between lagged and current turnout. Of note is the pattern 
 shift in both 2005 and 2011 where the correlation is more pronounced and turnout 
@@ -773,7 +773,47 @@ Thus $\tau$ should be negative.  %Add detail here
 
 \section{Results}
 
+\subsection{Autocorrelated Turnout}
 
+\begin{table}[!ht]
+\caption{Models of Lagged Turnout in School Board Elections}
+\label{tab:lagmods} 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
+ %                  & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
+Intercept          & -0.72 ^*          & -0.17             & -0.78            \\ 
+                   & (0.17)            & (0.17)            & (0.83)           \\ 
+turnoutLag2        & 0.26 ^*           & 0.27 ^*           & -0.01            \\ 
+                   & (0.05)            & (0.05)            & (0.04)           \\ 
+fallTurnout        & 0.12 ^*           & 0.16 ^*           & 0.11             \\ 
+                   & (0.05)            & (0.05)            & (0.07)           \\ 
+VAP\_adj          & -0.02 ^*          & -0.02 ^*          & -0.24 ^*         \\ 
+                   & (0.00)            & (0.00)            & (0.07)           \\ 
+per\_white\_all  & -0.05             & -0.03             & 0.29             \\ 
+                   & (0.04)            & (0.04)            & (0.41)           \\ 
+per65o             & 0.29 ^*           & 0.27 ^*           & 1.07 ^*          \\ 
+                   & (0.11)            & (0.11)            & (0.47)           \\ 
+PerBachelorOrAbove & -0.09             & 0.00              & -0.17            \\ 
+                   & (0.07)            & (0.07)            & (0.27)           \\ 
+OOH\_share        & -0.02             & -0.02             & 0.16             \\ 
+                   & (0.03)            & (0.03)            & (0.19)           \\ 
+PCI                & 0.10 ^*           & 0.04 ^*           & 0.25 ^*          \\ 
+                   & (0.02)            & (0.02)            & (0.03)            \\
+ $N$                & 2390              & 2390              & 2390             \\ 
+$R^2$              & 0.22              & 0.36              & 0.43             \\ 
+adj. $R^2$         & 0.22              & 0.35              & 0.35             \\ 
+Resid. sd          & 0.09              & 0.08              & 0.08              \\ \hline
+ \multicolumn{4}{l}{\footnotesize{Robust standard errors in parentheses}}\\
+\multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}} 
+\end{tabular} 
+ \end{table}
+
+
+Turnout appears to be very highly correlated as shown in Table \ref{tab:lagmods}. 
+
+We should also fit some better models. 
 
 \section{Conclusion}
 
