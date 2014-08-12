@@ -451,9 +451,8 @@ to vote.
 %% Among incumbents and candidates?
 
 
-\section{Data and Methods}
-
-\subsection{Data}
+\section{Data}
+\label{sec:turnData}
 
 %% Standard data writeup here
 
@@ -650,8 +649,25 @@ competing explanations that may themselves by highly correlated or confound
 one another. 
 
 \clearpage
-\subsection{Methods}
 
+\subsection{Control Variables}
+
+In addition to the variables of interest shown above, it is necessary to include 
+some common demographic control variables. Political scientists have long established 
+the strong relationship between certain demographic characteristics and voter 
+turnout in partisan elections. % CITENEEDED
+In order to understand the effect of other variables on turnout, it is desirable to 
+remove as many other explanations as possible given the availability of data and 
+the ability to generate valid estimates. Fortunately, using US census data, an 
+abundance of data is available on the population of Wisconsin school districts. 
+
+% Describe per_white_all, per65o, PerBachelorOrAbove, OOH_share, PCI
+% also possibly millrate?
+
+
+
+\clearpage
+\section{Methods}
 
 This paper has two main methodological approaches to evaluating theories of voter 
 turnout in school board elections. The first follows on several empirical studies 
@@ -671,7 +687,6 @@ along one dimension and the relative fiscal performance along the other, ceteris
 paribus we would expect that incumbents are at an advantage (and turnout is lower) 
 when fiscal performance is strong. To measure fiscal performance we use the share 
 of the revenue limit a district is spending.
-
 
 \subsection{Evaluating Theories in Non-Partisan Local Elections}
 
@@ -734,9 +749,6 @@ RefWorks:218,RefWorks:320}.
 \[(5) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta S_{t} 
 + \gamma P_{t} + \psi Ce_{t} + \epsilon \] \\
 
-For all of the above equations to be estimated both panel and pooled estimators 
-will have to be explored. 
-
 \subsection{The Impact of Salience and Information on Voter Turnout}
 
 While the equations above can prove useful for providing evidence of various theories 
@@ -771,49 +783,113 @@ participation will increase as predicted by \citep{RefWorks:243}--voters seeing
 dissonance between their preferences and board policy are more likely to vote. 
 Thus $\tau$ should be negative.  %Add detail here
 
+\subsection{Model Specifications}
+
+Voter turnout is driven by many forces. Aside from the exogenous shock provided 
+by Scott Walker's election and the passage of Act 10, the ability to test the 
+causal impact of any factor on school board elections is limited. In my first 
+set of models I look for evidence that the explanations described in Table \ref{turnoutH} 
+are supported in the data available on Wisconsin school boards. In each case, 
+I start with a specification that pools observations across years and districts and 
+estimates the impact of the key independent variable and a few key demographic 
+control variables described in Section \ref{sec:turnData}. 
+
+Due to the presence of outliers exhibited in the figures in \ref{sec:turnData} my 
+initial models will represent penalized regressions estimated using the \texttt{ols} 
+function in the \texttt{rms} package for R \citep{cran, rms}. Instead of estimating 
+$\beta$ as $(X'X)^{-1} X'Y$, a user specified penalty factor P is included 
+to adjust $\beta$ and estimate it as $(X'X + P)^{-1} X'Y$. 
+
+%Demonstrate outliers
+% Talk about penalized maximum likelhood
+% Talk about the problem of overfit with fixed effects in large amount
+% Talk about mixed effect regression 
+% Bayesian and tobit regression options
+% Triangulating 
+
+
 \section{Results}
 
 \subsection{Autocorrelated Turnout}
 
+The initial pooled linear regression is shown in Table \ref{tab:lagmods} as the 
+first column. This model includes no adjustments for clustering to the standard 
+errors. It is included here to demonstrate the need for specification testing 
+in the Wisconsin dataset due to the ragged panel structure of the data. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-simpleModel} \caption[Regression Diagnostics for A Simple Multiple Regression]{Regression Diagnostics for A Simple Multiple Regression\label{fig:simpleModel}}
+\end{figure}
+
+
+\end{knitrout}
+
+Figure \ref{fig:simpleModel} shows regression diagnostics for this simple multiple 
+regression. The key result here is that there are a number of high leverage 
+observations that appear to be extreme outliers. Additionally, the upper left 
+quadrant of Figure \ref{fig:simpleModel} suggests the presence of some level of 
+heteroskedacticity in the results, a likely result of the clustering and repeated 
+observation features of the dataset. 
+
 \begin{table}[!ht]
 \caption{Models of Lagged Turnout in School Board Elections}
 \label{tab:lagmods} 
-\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
 \hline 
-  & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
- %                  & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
-Intercept          & -0.72 ^*          & -0.17             & -0.78            \\ 
-                   & (0.17)            & (0.17)            & (0.83)           \\ 
-turnoutLag2        & 0.26 ^*           & 0.27 ^*           & -0.01            \\ 
-                   & (0.05)            & (0.05)            & (0.04)           \\ 
-fallTurnout        & 0.12 ^*           & 0.16 ^*           & 0.11             \\ 
-                   & (0.05)            & (0.05)            & (0.07)           \\ 
-VAP\_adj          & -0.02 ^*          & -0.02 ^*          & -0.24 ^*         \\ 
-                   & (0.00)            & (0.00)            & (0.07)           \\ 
-per\_white\_all  & -0.05             & -0.03             & 0.29             \\ 
-                   & (0.04)            & (0.04)            & (0.41)           \\ 
-per65o             & 0.29 ^*           & 0.27 ^*           & 1.07 ^*          \\ 
-                   & (0.11)            & (0.11)            & (0.47)           \\ 
-PerBachelorOrAbove & -0.09             & 0.00              & -0.17            \\ 
-                   & (0.07)            & (0.07)            & (0.27)           \\ 
-OOH\_share        & -0.02             & -0.02             & 0.16             \\ 
-                   & (0.03)            & (0.03)            & (0.19)           \\ 
-PCI                & 0.10 ^*           & 0.04 ^*           & 0.25 ^*          \\ 
-                   & (0.02)            & (0.02)            & (0.03)            \\
- $N$                & 2390              & 2390              & 2390             \\ 
-$R^2$              & 0.22              & 0.36              & 0.43             \\ 
-adj. $R^2$         & 0.22              & 0.35              & 0.35             \\ 
-Resid. sd          & 0.09              & 0.08              & 0.08              \\ \hline
- \multicolumn{4}{l}{\footnotesize{Robust standard errors in parentheses}}\\
-\multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}} 
+  & \multicolumn{ 1 }{ c }{ Naive OLS } & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
+ %                  & Naive OLS         & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
+(Intercept)        & -72.08 ^*         &                   &                   &                  \\ 
+                   & (14.11)           &                   &                   &                  \\ 
+turnoutLag2        & 26.30 ^*          & 26.30 ^*          & 27.06 ^*          & -1.32            \\ 
+                   & (2.13)            & (4.67)            & (4.59)            & (4.46)           \\ 
+fallTurnout        & 12.00 ^*          & 12.00 ^*          & 15.83 ^*          & 10.95            \\ 
+                   & (3.01)            & (4.82)            & (4.93)            & (6.72)           \\ 
+VAP\_adj          & -2.04 ^*          & -2.04 ^*          & -2.02 ^*          & -23.92 ^*        \\ 
+                   & (0.21)            & (0.29)            & (0.28)            & (6.64)           \\ 
+per\_white\_all  & -5.39 ^*          & -5.39             & -3.24             & 28.98            \\ 
+                   & (2.64)            & (3.66)            & (3.87)            & (40.77)          \\ 
+per65o             & 29.04 ^*          & 29.04 ^*          & 27.25 ^*          & 107.16 ^*        \\ 
+                   & (6.14)            & (10.88)           & (10.87)           & (46.88)          \\ 
+PerBachelorOrAbove & -8.66             & -8.66             & 0.47              & -17.42           \\ 
+                   & (5.64)            & (7.26)            & (7.21)            & (27.48)          \\ 
+OOH\_share        & -2.37             & -2.37             & -1.66             & 15.69            \\ 
+                   & (2.13)            & (3.18)            & (3.08)            & (19.13)          \\ 
+PCI                & 9.79 ^*           & 9.79 ^*           & 3.64 ^*           & 25.13 ^*         \\ 
+                   & (1.48)            & (1.81)            & (1.73)            & (3.38)           \\ 
+Intercept          &                   & -72.08 ^*         & -17.18            & -77.79           \\ 
+                   &                   & (16.95)           & (16.79)           & (82.75)           \\
+ $N$                & 2390              & 2390              & 2390              & 2390             \\ 
+$R^2$              & 0.22              & 0.22              & 0.36              & 0.43             \\ 
+adj. $R^2$         & 0.22              & 0.22              & 0.35              & 0.35             \\ 
+Resid. sd          & 8.99              & 8.99              & 8.18              & 8.20              \\ \hline
+ \multicolumn{5}{l}{\footnotesize{Standard errors clustered at the school district except in model 1.}}\\
+\multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
 \end{tabular} 
  \end{table}
 
 
 Turnout appears to be very highly correlated as shown in Table \ref{tab:lagmods}. 
+Model 1 represents a standard pooled regression with clustered standard errors. 
+The key independent variable is twice lagged turnout for school board elections, which 
+represents our test of habit forming in school board elections. Control variables 
+included are some standard demographic predictors of voter turnout including per 
+capita income, education level, percent of population over 65, percent of population 
+that is white. Additionally, a school district specific control, the share of residents 
+in owner-occupied housing is included to reflect the tight coupling between school boards 
+and property owning. 
 
-We should also fit some better models. 
+Using twice-lagged school board turnout. Results are not substantively different 
+when I estimate using single lagged school board turnout, as shown in Table \ref{tab:lagmods2}. 
+
+
+
+
+
+We should also fit some better models. Partial pooling models can be fit in R 
+using the \texttt{lme4} package \citep{lme4, gelhill}. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -824,40 +900,40 @@ We should also fit some better models.
 ##     per65o + PerBachelorOrAbove + OOH_share + log(PCI) + (1 |      distid)
 ##    Data: moddat
 ## 
-## REML criterion at convergence: -4755
+## REML criterion at convergence: 17155
 ## 
 ## Scaled residuals: 
 ##    Min     1Q Median     3Q    Max 
-## -4.398 -0.598 -0.117  0.489  7.987 
+## -4.390 -0.597 -0.114  0.489  7.923 
 ## 
 ## Random effects:
 ##  Groups   Name        Variance Std.Dev.
-##  distid   (Intercept) 0.00135  0.0368  
-##  Residual             0.00699  0.0836  
+##  distid   (Intercept) 12.8     3.58    
+##  Residual             69.9     8.36    
 ## Number of obs: 2390, groups:  distid, 309
 ## 
 ## Fixed effects:
 ##                    Estimate Std. Error t value
-## (Intercept)        -1.01945    0.18149   -5.62
-## turnoutLag2         0.11958    0.02202    5.43
-## fallTurnout         0.10920    0.03996    2.73
-## log(VAP_adj)       -0.02575    0.00299   -8.62
-## per_white_all      -0.07334    0.03811   -1.92
-## per65o              0.38103    0.08903    4.28
-## PerBachelorOrAbove -0.11935    0.07586   -1.57
-## OOH_share          -0.01640    0.03092   -0.53
-## log(PCI)            0.13537    0.01897    7.14
+## (Intercept)         -253.88      43.67   -5.81
+## turnoutLag2           11.86       2.20    5.39
+## fallTurnout           10.93       3.95    2.76
+## log(VAP_adj)         -23.86       2.57   -9.30
+## per_white_all         -7.09       3.75   -1.89
+## per65o                39.00       8.73    4.47
+## PerBachelorOrAbove   -10.98       7.44   -1.48
+## OOH_share             -1.40       3.03   -0.46
+## log(PCI)             137.11      19.26    7.12
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr) trntL2 fllTrn l(VAP_ pr_wh_ per65o PrBcOA OOH_sh
-## turnoutLag2 -0.086                                                 
-## fallTurnout  0.112 -0.057                                          
-## log(VAP_dj) -0.278  0.219  0.080                                   
-## per_whit_ll -0.088  0.005 -0.131  0.076                            
-## per65o       0.123 -0.075 -0.046  0.133 -0.223                     
-## PrBchlrOrAb  0.625 -0.061 -0.432 -0.282  0.144  0.240              
-## OOH_share    0.156  0.020 -0.127  0.128 -0.354  0.630  0.192       
-## log(PCI)    -0.960  0.046 -0.182  0.092 -0.051 -0.236 -0.612 -0.244
+## turnoutLag2 -0.079                                                 
+## fallTurnout  0.153 -0.058                                          
+## log(VAP_dj) -0.231  0.231  0.073                                   
+## per_whit_ll  0.005  0.001 -0.132  0.057                            
+## per65o       0.177 -0.079 -0.048  0.116 -0.226                     
+## PrBchlrOrAb  0.629 -0.062 -0.432 -0.274  0.158  0.243              
+## OOH_share    0.194  0.019 -0.130  0.117 -0.356  0.628  0.193       
+## log(PCI)    -0.986  0.046 -0.187  0.089 -0.065 -0.230 -0.609 -0.238
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -964,3 +1040,47 @@ Competitiveness does matter.
 An interesting proposition here is considering whether or not voters in low-salience 
 and low-turnout school board elections are a subset of the voters in higher salience 
 and higher turnout elections \citep{Cho2008}
+
+\section{Appendix}
+
+Sensitivity checks and further table analysis. 
+
+Single lagged turnout:
+
+\begin{table}[!ht]
+\caption{Models of Lagged Turnout (1x) in School Board Elections}
+\label{tab:lagmods2} 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Naive OLS } & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
+ %                  & Naive OLS         & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
+(Intercept)        & -58.64 ^*         &                   &                   &                  \\ 
+                   & (14.16)           &                   &                   &                  \\ 
+turnoutLag1        & 18.04 ^*          & 17.30 ^*          & 26.49 ^*          & -14.71 ^*        \\ 
+                   & (1.93)            & (2.75)            & (2.94)            & (3.25)           \\ 
+fallTurnout        & 10.95 ^*          & 10.97 ^*          & 13.47 ^*          & 10.77            \\ 
+                   & (3.04)            & (5.23)            & (4.91)            & (7.62)           \\ 
+VAP\_adj          & -2.27 ^*          & -21.14 ^*         & -18.70 ^*         & -201.63 ^*       \\ 
+                   & (0.21)            & (2.85)            & (2.56)            & (65.64)          \\ 
+per\_white\_all  & -5.22             & -5.06             & -2.88             & 29.89            \\ 
+                   & (2.68)            & (3.83)            & (3.58)            & (42.22)          \\ 
+per65o             & 32.23 ^*          & 33.47 ^*          & 28.51 ^*          & 116.59 ^*        \\ 
+                   & (6.16)            & (11.77)           & (10.69)           & (50.66)          \\ 
+PerBachelorOrAbove & -4.15             & -3.70             & 2.14              & -14.92           \\ 
+                   & (5.64)            & (7.12)            & (6.49)            & (30.27)          \\ 
+OOH\_share        & -1.97             & -1.73             & -0.99             & -0.51            \\ 
+                   & (2.13)            & (3.34)            & (2.94)            & (21.08)          \\ 
+PCI                & 8.70 ^*           & 89.94 ^*          & 36.56 ^*          & 258.80 ^*        \\ 
+                   & (1.49)            & (17.95)           & (16.87)           & (37.84)          \\ 
+Intercept          &                   & -153.44 ^*        & -43.24            & -182.73          \\ 
+                   &                   & (40.12)           & (38.49)           & (165.33)          \\
+ $N$                & 2483              & 2483              & 2483              & 2483             \\ 
+$R^2$              & 0.20              & 0.20              & 0.36              & 0.44             \\ 
+adj. $R^2$         & 0.20              & 0.20              & 0.35              & 0.36             \\ 
+Resid. sd          & 9.18              & 9.15              & 8.23              & 8.16              \\ \hline
+ \multicolumn{5}{l}{\footnotesize{Standard errors clustered at the school district.}}\\
+\multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
+\end{tabular} 
+ \end{table}
+

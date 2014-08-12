@@ -482,9 +482,8 @@ to vote.
 %% Among incumbents and candidates?
 
 
-\section{Data and Methods}
-
-\subsection{Data}
+\section{Data}
+\label{sec:turnData}
 
 %% Standard data writeup here
 
@@ -871,8 +870,25 @@ competing explanations that may themselves by highly correlated or confound
 one another. 
 
 \clearpage
-\subsection{Methods}
 
+\subsection{Control Variables}
+
+In addition to the variables of interest shown above, it is necessary to include 
+some common demographic control variables. Political scientists have long established 
+the strong relationship between certain demographic characteristics and voter 
+turnout in partisan elections. % CITENEEDED
+In order to understand the effect of other variables on turnout, it is desirable to 
+remove as many other explanations as possible given the availability of data and 
+the ability to generate valid estimates. Fortunately, using US census data, an 
+abundance of data is available on the population of Wisconsin school districts. 
+
+% Describe per_white_all, per65o, PerBachelorOrAbove, OOH_share, PCI
+% also possibly millrate?
+
+
+
+\clearpage
+\section{Methods}
 
 This paper has two main methodological approaches to evaluating theories of voter 
 turnout in school board elections. The first follows on several empirical studies 
@@ -892,7 +908,6 @@ along one dimension and the relative fiscal performance along the other, ceteris
 paribus we would expect that incumbents are at an advantage (and turnout is lower) 
 when fiscal performance is strong. To measure fiscal performance we use the share 
 of the revenue limit a district is spending.
-
 
 \subsection{Evaluating Theories in Non-Partisan Local Elections}
 
@@ -955,9 +970,6 @@ RefWorks:218,RefWorks:320}.
 \[(5) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta S_{t} 
 + \gamma P_{t} + \psi Ce_{t} + \epsilon \] \\
 
-For all of the above equations to be estimated both panel and pooled estimators 
-will have to be explored. 
-
 \subsection{The Impact of Salience and Information on Voter Turnout}
 
 While the equations above can prove useful for providing evidence of various theories 
@@ -992,9 +1004,73 @@ participation will increase as predicted by \citep{RefWorks:243}--voters seeing
 dissonance between their preferences and board policy are more likely to vote. 
 Thus $\tau$ should be negative.  %Add detail here
 
+\subsection{Model Specifications}
+
+Voter turnout is driven by many forces. Aside from the exogenous shock provided 
+by Scott Walker's election and the passage of Act 10, the ability to test the 
+causal impact of any factor on school board elections is limited. In my first 
+set of models I look for evidence that the explanations described in Table \ref{turnoutH} 
+are supported in the data available on Wisconsin school boards. In each case, 
+I start with a specification that pools observations across years and districts and 
+estimates the impact of the key independent variable and a few key demographic 
+control variables described in Section \ref{sec:turnData}. 
+
+Due to the presence of outliers exhibited in the figures in \ref{sec:turnData} my 
+initial models will represent penalized regressions estimated using the \texttt{ols} 
+function in the \texttt{rms} package for R \citep{cran, rms}. Instead of estimating 
+$\beta$ as $(X'X)^{-1} X'Y$, a user specified penalty factor P is included 
+to adjust $\beta$ and estimate it as $(X'X + P)^{-1} X'Y$. 
+
+%Demonstrate outliers
+% Talk about penalized maximum likelhood
+% Talk about the problem of overfit with fixed effects in large amount
+% Talk about mixed effect regression 
+% Bayesian and tobit regression options
+% Triangulating 
+
+
 \section{Results}
 
 \subsection{Autocorrelated Turnout}
+
+The initial pooled linear regression is shown in Table \ref{tab:lagmods} as the 
+first column. This model includes no adjustments for clustering to the standard 
+errors. It is included here to demonstrate the need for specification testing 
+in the Wisconsin dataset due to the ragged panel structure of the data. 
+
+<<simpleModel, fig.cap="Regression Diagnostics for A Simple Multiple Regression", fig.height=9>>=
+
+moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", 
+                        "fallTurnout", "VAP_adj", "distid", 
+                        "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI")]
+#moddat <- na.omit(moddat)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat$turnout <- moddat$turnout * 100
+# moddat$turnoutLag2 <- moddat$turnoutLag2 * 100
+# moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
+# moddat$per_white_all <- moddat$per_white_all * 100
+# moddat$per65o <- moddat$per65o * 100
+# moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
+# moddat$OOH_share <- moddat$OOH_share * 100
+# moddat$fallTurnout <- moddat$fallTurnout * 100
+moddat$VAP_adj <- log(moddat$VAP_adj)
+moddat$PCI <- log(moddat$PCI)
+
+naive1 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all + 
+                       per65o + PerBachelorOrAbove + OOH_share + PCI,
+             data = moddat)
+
+autoplot(naive1)
+@
+
+Figure \ref{fig:simpleModel} shows regression diagnostics for this simple multiple 
+regression. The key result here is that there are a number of high leverage 
+observations that appear to be extreme outliers. Additionally, the upper left 
+quadrant of Figure \ref{fig:simpleModel} suggests the presence of some level of 
+heteroskedacticity in the results, a likely result of the clustering and repeated 
+observation features of the dataset. 
 
 <<model1, results ='asis'>>=
 # detach("package:plyr", unload=TRUE)
@@ -1002,33 +1078,26 @@ library(sandwich)
 library(rms)
 library(apsrtable)
 
-moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adj", "distid", 
-                        "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI")]
-moddat <- na.omit(moddat)
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-
 dd <<- datadist(moddat)
 options(datadist="dd")
 
-dumbRLM1 <- ols(turnout ~ turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all + 
-                  per65o + PerBachelorOrAbove + OOH_share + log(PCI), 
+dumbRLM1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all + 
+                  per65o + PerBachelorOrAbove + OOH_share + PCI, 
               data = moddat, x = TRUE, y = TRUE)
 
 dumbRLM1$se <- sqrt(diag(vcov(robcov(dumbRLM1, cluster = moddat$distid))))
 
 
-dumbRLM1.2 <- ols(turnout ~ turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all + 
-                    per65o + PerBachelorOrAbove + OOH_share + log(PCI) +
+dumbRLM1.2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all + 
+                    per65o + PerBachelorOrAbove + OOH_share + PCI +
                     factor(year),
               data = moddat, x= TRUE, y = TRUE)
 
 dumbRLM1.2$se <- sqrt(diag(vcov(robcov(dumbRLM1.2, cluster = moddat$distid))))
 
 
-dumbRLM2 <- ols(turnout ~ turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all +
-                   per65o + PerBachelorOrAbove + OOH_share + log(PCI) +
+dumbRLM2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all +
+                   per65o + PerBachelorOrAbove + OOH_share + PCI +
                   factor(distid), 
               data = moddat, x = TRUE, y = TRUE)
 
@@ -1054,10 +1123,11 @@ apsrtableSummary.rms <<- function(x) {
   return(s)
 }
 
-apsrtable(dumbRLM1, dumbRLM1.2, dumbRLM2, se="robust", label="tab:lagmods", 
-          model.names=c("Simple RLM", "RLM + Year FE", "RLM + District FE"), 
+apsrtable(naive1, dumbRLM1, dumbRLM1.2, dumbRLM2, se="robust", label="tab:lagmods", 
+          model.names=c("Naive OLS", "Simple RLM", "RLM + Year FE", "RLM + District FE"), 
           caption = "Models of Lagged Turnout in School Board Elections",
-          notes = list(se.note, stars.note, "Year and district fixed effects omitted."),
+          notes = list("Standard errors clustered at the school district except in model 1.", 
+                       stars.note, "Year and district fixed effects omitted."),
           omitcoef=list("distid", 
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
@@ -1067,8 +1137,75 @@ apsrtable(dumbRLM1, dumbRLM1.2, dumbRLM2, se="robust", label="tab:lagmods",
 @
 
 Turnout appears to be very highly correlated as shown in Table \ref{tab:lagmods}. 
+Model 1 represents a standard pooled regression with clustered standard errors. 
+The key independent variable is twice lagged turnout for school board elections, which 
+represents our test of habit forming in school board elections. Control variables 
+included are some standard demographic predictors of voter turnout including per 
+capita income, education level, percent of population over 65, percent of population 
+that is white. Additionally, a school district specific control, the share of residents 
+in owner-occupied housing is included to reflect the tight coupling between school boards 
+and property owning. 
 
-We should also fit some better models. 
+Using twice-lagged school board turnout. Results are not substantively different 
+when I estimate using single lagged school board turnout, as shown in Table \ref{tab:lagmods2}. 
+
+
+<<model1robustness>>=
+# dumbRLM2 <- ols(turnout ~ turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all +
+#                    per65o + PerBachelorOrAbove + OOH_share + log(PCI) +
+#                   factor(distid), 
+#               data = moddat, x = TRUE, y = TRUE)
+# 
+# pentrace(dumbRLM2, penalty = list(simple = 1:8))
+# 
+# dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
+
+naive2 <- lm(turnout ~ turnoutLag1 + fallTurnout + VAP_adj + per_white_all + 
+                       per65o + PerBachelorOrAbove + OOH_share + PCI,
+             data = moddat)
+
+turn21 <- ols(turnout ~ turnoutLag1 + fallTurnout + log(VAP_adj) + per_white_all + 
+                  per65o + PerBachelorOrAbove + OOH_share + log(PCI), 
+              data = moddat, x = TRUE, y = TRUE)
+
+turn21$se <- sqrt(diag(vcov(robcov(turn21, cluster = moddat$distid))))
+
+
+turn22 <- ols(turnout ~ turnoutLag1 + fallTurnout + log(VAP_adj) + per_white_all + 
+                    per65o + PerBachelorOrAbove + OOH_share + log(PCI) +
+                    factor(year),
+              data = moddat, x= TRUE, y = TRUE)
+
+turn22$se <- sqrt(diag(vcov(robcov(turn22, cluster = moddat$distid))))
+
+
+turn23 <- ols(turnout ~ turnoutLag1 + fallTurnout + log(VAP_adj) + per_white_all +
+                   per65o + PerBachelorOrAbove + OOH_share + log(PCI) +
+                  factor(distid), 
+              data = moddat, x = TRUE, y = TRUE)
+
+# pentrace(turn23, penalty = list(simple=c(0.25, 0.5, 0.75, 1, 2))) # unpenalized fit needed 
+  # to trace and identify proper penalty value
+
+turn23$se <- sqrt(diag(vcov(robcov(turn23, cluster = moddat$distid))))
+
+
+appA1 <- apsrtable(naive2, turn21, turn22, turn23, se="robust", label="tab:lagmods2", 
+          model.names=c("Naive OLS","Simple RLM", "RLM + Year FE", "RLM + District FE"), 
+          caption = "Models of Lagged Turnout (1x) in School Board Elections",
+          notes = list("Standard errors clustered at the school district.", 
+                       stars.note, "Year and district fixed effects omitted."),
+          omitcoef=list("distid", 
+                        expression(grep("distid", coefnames, value=TRUE)), 
+                        "year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          Sweave=FALSE)
+
+@
+
+
+We should also fit some better models. Partial pooling models can be fit in R 
+using the \texttt{lme4} package \citep{lme4, gelhill}. 
 
 <<model2, results ='markup'>>=
 library(lme4)
@@ -1133,8 +1270,9 @@ mixedMod1 <- lmer(turnout ~ turnoutLag2 + fallTurnout + log(VAP_adj) + per_white
 # #     c(beta =getME(., "beta"), sigma = s, sig01 = unname(s * getME(., "theta"))) }
 # # boo01 <- bootMer(mixedMod1, mySumm, nsim = 500) 
 # # bCI.1 <- boot.ci(boo01, index=2, type=c("norm", "basic", "perc"))# beta
-# library(papeR)
-# toLatex(prettify(summary(mixedMod1)))
+# library(stargazer)
+# stargazer(mixedMod1, title = "Partial Pooling Model of Lagged Turnout", style = "apsr", 
+#             label = "tab:meTurnout")
 
 summary(mixedMod1)
 @
@@ -1219,3 +1357,14 @@ summary(mixedMod2)
 An interesting proposition here is considering whether or not voters in low-salience 
 and low-turnout school board elections are a subset of the voters in higher salience 
 and higher turnout elections \citep{Cho2008}
+
+\section{Appendix}
+
+Sensitivity checks and further table analysis. 
+
+Single lagged turnout:
+
+<<appA1, results='asis'>>=
+appA1
+
+@
