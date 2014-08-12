@@ -815,6 +815,150 @@ Turnout appears to be very highly correlated as shown in Table \ref{tab:lagmods}
 
 We should also fit some better models. 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: 
+## turnout ~ turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all +  
+##     per65o + PerBachelorOrAbove + OOH_share + log(PCI) + (1 |      distid)
+##    Data: moddat
+## 
+## REML criterion at convergence: -4755
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -4.398 -0.598 -0.117  0.489  7.987 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  distid   (Intercept) 0.00135  0.0368  
+##  Residual             0.00699  0.0836  
+## Number of obs: 2390, groups:  distid, 309
+## 
+## Fixed effects:
+##                    Estimate Std. Error t value
+## (Intercept)        -1.01945    0.18149   -5.62
+## turnoutLag2         0.11958    0.02202    5.43
+## fallTurnout         0.10920    0.03996    2.73
+## log(VAP_adj)       -0.02575    0.00299   -8.62
+## per_white_all      -0.07334    0.03811   -1.92
+## per65o              0.38103    0.08903    4.28
+## PerBachelorOrAbove -0.11935    0.07586   -1.57
+## OOH_share          -0.01640    0.03092   -0.53
+## log(PCI)            0.13537    0.01897    7.14
+## 
+## Correlation of Fixed Effects:
+##             (Intr) trntL2 fllTrn l(VAP_ pr_wh_ per65o PrBcOA OOH_sh
+## turnoutLag2 -0.086                                                 
+## fallTurnout  0.112 -0.057                                          
+## log(VAP_dj) -0.278  0.219  0.080                                   
+## per_whit_ll -0.088  0.005 -0.131  0.076                            
+## per65o       0.123 -0.075 -0.046  0.133 -0.223                     
+## PrBchlrOrAb  0.625 -0.061 -0.432 -0.282  0.144  0.240              
+## OOH_share    0.156  0.020 -0.127  0.128 -0.354  0.630  0.192       
+## log(PCI)    -0.960  0.046 -0.182  0.092 -0.051 -0.236 -0.612 -0.244
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Problems abound. 
+
+\subsection{Electorate Size and Margin of Victory}
+
+\begin{table}[!ht]
+\caption{Models of Competitiveness and Turnout in School Board Elections}
+\label{tab:closemods} 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
+ %                     & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
+Intercept             & -0.68 ^*          & -0.13             & -0.58            \\ 
+                      & (0.20)            & (0.21)            & (0.80)           \\ 
+CLOSE=Not Competitive & -0.05 ^*          & -0.05 ^*          & -0.05 ^*         \\ 
+                      & (0.00)            & (0.00)            & (0.00)           \\ 
+VAP\_adj             & -0.03 ^*          & -0.03 ^*          & -0.24 ^*         \\ 
+                      & (0.00)            & (0.00)            & (0.07)           \\ 
+per\_white\_all     & -0.04             & -0.04             & 0.06             \\ 
+                      & (0.04)            & (0.05)            & (0.38)           \\ 
+per65o                & 0.38 ^*           & 0.35 ^*           & 1.15 ^*          \\ 
+                      & (0.15)            & (0.14)            & (0.44)           \\ 
+PerBachelorOrAbove    & 0.08              & 0.04              & -0.12            \\ 
+                      & (0.08)            & (0.09)            & (0.26)           \\ 
+OOH\_share           & -0.02             & -0.03             & 0.19             \\ 
+                      & (0.04)            & (0.04)            & (0.18)           \\ 
+PCI                   & 0.12 ^*           & 0.05 ^*           & 0.25 ^*          \\ 
+                      & (0.02)            & (0.02)            & (0.03)           \\ 
+fallTurnout           &                   & 0.18 ^*           & 0.12             \\ 
+                      &                   & (0.06)            & (0.07)           \\ 
+turnoutLag2           &                   &                   & 0.00             \\ 
+                      &                   &                   & (0.04)            \\
+ $N$                   & 2390              & 2390              & 2390             \\ 
+$R^2$                 & 0.21              & 0.36              & 0.47             \\ 
+adj. $R^2$            & 0.21              & 0.36              & 0.39             \\ 
+Resid. sd             & 0.09              & 0.08              & 0.08              \\ \hline
+ \multicolumn{4}{l}{\footnotesize{Robust standard errors in parentheses}}\\
+\multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}} 
+\end{tabular} 
+ \end{table}
+
+
+Competitiveness does matter. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: turnout ~ CLOSE + turnoutLag2 + fallTurnout + log(VAP_adj) +  
+##     per_white_all + per65o + PerBachelorOrAbove + OOH_share +  
+##     log(PCI) + (1 | distid)
+##    Data: moddat
+## 
+## REML criterion at convergence: -4899
+## 
+## Scaled residuals: 
+##    Min     1Q Median     3Q    Max 
+## -4.435 -0.597 -0.112  0.486  8.268 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  distid   (Intercept) 0.00130  0.0360  
+##  Residual             0.00655  0.0809  
+## Number of obs: 2390, groups:  distid, 309
+## 
+## Fixed effects:
+##                      Estimate Std. Error t value
+## (Intercept)          -1.04153    0.17644   -5.90
+## CLOSENot Competitive -0.04740    0.00377  -12.59
+## turnoutLag2           0.12333    0.02133    5.78
+## fallTurnout           0.10131    0.03887    2.61
+## log(VAP_adj)         -0.03126    0.00294  -10.62
+## per_white_all        -0.07197    0.03715   -1.94
+## per65o                0.37553    0.08677    4.33
+## PerBachelorOrAbove   -0.11824    0.07383   -1.60
+## OOH_share            -0.01765    0.03014   -0.59
+## log(PCI)              0.14550    0.01845    7.89
+## 
+## Correlation of Fixed Effects:
+##             (Intr) CLOSEC trntL2 fllTrn l(VAP_ pr_wh_ per65o PrBcOA OOH_sh
+## CLOSENtCmpt  0.007                                                        
+## turnoutLag2 -0.087 -0.021                                                 
+## fallTurnout  0.112  0.015 -0.057                                          
+## log(VAP_dj) -0.274  0.147  0.212  0.081                                   
+## per_whit_ll -0.089 -0.004  0.004 -0.131  0.075                            
+## per65o       0.124  0.007 -0.075 -0.045  0.133 -0.223                     
+## PrBchlrOrAb  0.624 -0.002 -0.061 -0.432 -0.279  0.143  0.241              
+## OOH_share    0.156  0.004  0.019 -0.127  0.128 -0.354  0.630  0.192       
+## log(PCI)    -0.959 -0.041  0.047 -0.182  0.084 -0.050 -0.237 -0.611 -0.244
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Unionization}
+
+\subsection{Exogenous Shocks}
+
 \section{Conclusion}
 
 An interesting proposition here is considering whether or not voters in low-salience 
