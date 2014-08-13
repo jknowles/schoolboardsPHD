@@ -887,7 +887,7 @@ abundance of data is available on the population of Wisconsin school districts.
 library(GGally)
 
 ggpairs(na.omit(dist_turn[dist_turn$turnout < 0.95 & dist_turn$year == 2012,]), 
-        columns = c(25, 41, 44:46, 49), 
+        columns = c(25, 41:43, 46), 
         lower = list(continuous = "smooth"), 
         upper = list(continuous = 'cor'), 
         title = "Pairs Plot of Key Control Variables")
@@ -1332,27 +1332,40 @@ moddat <- na.omit(moddat)
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat$turnout <- moddat$turnout * 100
+# moddat$turnoutLag2 <- moddat$turnoutLag2 * 100
+# moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
+# moddat$per_white_all <- moddat$per_white_all * 100
+# moddat$per65o <- moddat$per65o * 100
+# moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
+# moddat$OOH_share <- moddat$OOH_share * 100
+# moddat$fallTurnout <- moddat$fallTurnout * 100
+moddat$VAP_adj <- log(moddat$VAP_adj)
+moddat$PCI <- log(moddat$PCI)
 
 dd <<- datadist(moddat)
 options(datadist="dd")
 
-closeRLM <- ols(turnout ~ CLOSE + log(VAP_adj) + per_white_all + 
-                  per65o + PerBachelorOrAbove + OOH_share + log(PCI), 
+closeRLM <- ols(turnout ~ CLOSE + VAP_adj + per_white_all + 
+                  per65o + PerBachelorOrAbove + OOH_share + PCI, 
               data = moddat, x = TRUE, y = TRUE)
 
 closeRLM$se <- sqrt(diag(vcov(robcov(closeRLM, cluster = moddat$distid))))
 
 
-closeRLM2 <- ols(turnout ~ CLOSE + fallTurnout + log(VAP_adj) + per_white_all + 
-                    per65o + PerBachelorOrAbove + OOH_share + log(PCI) +
+closeRLM2 <- ols(turnout ~ CLOSE + fallTurnout + VAP_adj + per_white_all + 
+                    per65o + PerBachelorOrAbove + OOH_share + PCI +
                     factor(year),
               data = moddat, x= TRUE, y = TRUE)
 
 closeRLM2$se <- sqrt(diag(vcov(robcov(closeRLM2, cluster = moddat$distid))))
 
 
-closeRLM3 <- ols(turnout ~ CLOSE + turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all +
-                   per65o + PerBachelorOrAbove + OOH_share + log(PCI) +
+closeRLM3 <- ols(turnout ~ CLOSE + turnoutLag2 + fallTurnout + VAP_adj + per_white_all +
+                   per65o + PerBachelorOrAbove + OOH_share + PCI +
                   factor(distid), 
               data = moddat, x = TRUE, y = TRUE)
 
@@ -1381,16 +1394,56 @@ apsrtable(closeRLM, closeRLM2, closeRLM3, se="robust", label="tab:closemods",
 
 Competitiveness does matter. 
 
-<<model4, results='markup'>>=
-mixedMod2 <- lmer(turnout ~ CLOSE + turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all +
-                   per65o + PerBachelorOrAbove + OOH_share + log(PCI) +
+<<model4, results='asis'>>=
+mixedMod2 <- lmer(turnout ~ CLOSE + fallTurnout + VAP_adj + per_white_all +
+                   per65o + PerBachelorOrAbove + OOH_share + PCI +
                   (1|distid), 
               data = moddat, REML = TRUE)
 
-summary(mixedMod2)
+# summary(mixedMod2)
+stargazer(mixedMod2, title = "Partial Pooling Model of Competitiveness", style = "apsr", 
+            label = "tab:meClose")
+
 @
 
 \subsection{Unionization}
+
+<<mixedInfMod>>=
+moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adj", "distid", 
+                        "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI", 
+                        "CLOSE", "teachShareofVoters")]
+
+moddat <- na.omit(moddat)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat$turnout <- moddat$turnout * 100
+# moddat$turnoutLag2 <- moddat$turnoutLag2 * 100
+# moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
+# moddat$per_white_all <- moddat$per_white_all * 100
+# moddat$per65o <- moddat$per65o * 100
+# moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
+# moddat$OOH_share <- moddat$OOH_share * 100
+# moddat$fallTurnout <- moddat$fallTurnout * 100
+moddat$VAP_adj <- log(moddat$VAP_adj)
+moddat$PCI <- log(moddat$PCI)
+
+dd <<- datadist(moddat)
+options(datadist="dd")
+
+mixedMod3 <- lmer(turnout ~ teachShareofVoters + fallTurnout + 
+                    VAP_adj + per_white_all +
+                   per65o + PerBachelorOrAbove + OOH_share + PCI +
+                  (1|distid), 
+              data = moddat, REML = TRUE)
+
+# summary(mixedMod3)
+stargazer(mixedMod3, title = "Partial Pooling Model of Staff Influence", style = "apsr", 
+            label = "tab:meInf")
+@
 
 \subsection{Exogenous Shocks}
 
@@ -1398,7 +1451,7 @@ summary(mixedMod2)
 
 An interesting proposition here is considering whether or not voters in low-salience 
 and low-turnout school board elections are a subset of the voters in higher salience 
-and higher turnout elections \citep{Cho2008}
+and higher turnout elections \citep{Cho2008}.
 
 \section{Appendix}
 

@@ -932,7 +932,7 @@ clustered structure of the district terms.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Aug 12, 2014 - 2:09:11 PM
+% Date and time: Tue, Aug 12, 2014 - 9:58:02 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Lagged Turnout} 
   \label{tab:meTurnout} 
@@ -979,30 +979,30 @@ Problems abound.
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
  %                     & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
-Intercept             & -0.68 ^*          & -0.13             & -0.58            \\ 
-                      & (0.20)            & (0.21)            & (0.80)           \\ 
-CLOSE=Not Competitive & -0.05 ^*          & -0.05 ^*          & -0.05 ^*         \\ 
-                      & (0.00)            & (0.00)            & (0.00)           \\ 
-VAP\_adj             & -0.03 ^*          & -0.03 ^*          & -0.24 ^*         \\ 
-                      & (0.00)            & (0.00)            & (0.07)           \\ 
-per\_white\_all     & -0.04             & -0.04             & 0.06             \\ 
-                      & (0.04)            & (0.05)            & (0.38)           \\ 
-per65o                & 0.38 ^*           & 0.35 ^*           & 1.15 ^*          \\ 
-                      & (0.15)            & (0.14)            & (0.44)           \\ 
-PerBachelorOrAbove    & 0.08              & 0.04              & -0.12            \\ 
-                      & (0.08)            & (0.09)            & (0.26)           \\ 
-OOH\_share           & -0.02             & -0.03             & 0.19             \\ 
-                      & (0.04)            & (0.04)            & (0.18)           \\ 
-PCI                   & 0.12 ^*           & 0.05 ^*           & 0.25 ^*          \\ 
-                      & (0.02)            & (0.02)            & (0.03)           \\ 
-fallTurnout           &                   & 0.18 ^*           & 0.12             \\ 
-                      &                   & (0.06)            & (0.07)           \\ 
-turnoutLag2           &                   &                   & 0.00             \\ 
-                      &                   &                   & (0.04)            \\
+Intercept             & -67.62 ^*         & -12.97            & -57.82           \\ 
+                      & (19.98)           & (20.78)           & (80.23)          \\ 
+CLOSE=Not Competitive & -4.79 ^*          & -5.00 ^*          & -4.65 ^*         \\ 
+                      & (0.45)            & (0.42)            & (0.43)           \\ 
+VAP\_adj             & -3.49 ^*          & -3.41 ^*          & -24.14 ^*        \\ 
+                      & (0.40)            & (0.38)            & (6.78)           \\ 
+per\_white\_all     & -3.72             & -3.69             & 6.19             \\ 
+                      & (4.43)            & (4.63)            & (38.43)          \\ 
+per65o                & 38.07 ^*          & 35.13 ^*          & 114.74 ^*        \\ 
+                      & (14.98)           & (14.33)           & (44.40)          \\ 
+PerBachelorOrAbove    & 7.64              & 3.60              & -11.91           \\ 
+                      & (7.78)            & (8.86)            & (26.20)          \\ 
+OOH\_share           & -2.37             & -3.00             & 18.53            \\ 
+                      & (4.10)            & (4.05)            & (17.97)          \\ 
+PCI                   & 11.55 ^*          & 4.96 ^*           & 25.12 ^*         \\ 
+                      & (2.13)            & (2.13)            & (3.20)           \\ 
+fallTurnout           &                   & 17.78 ^*          & 12.42            \\ 
+                      &                   & (6.39)            & (6.56)           \\ 
+turnoutLag2           &                   &                   & 0.47             \\ 
+                      &                   &                   & (4.33)            \\
  $N$                   & 2390              & 2390              & 2390             \\ 
 $R^2$                 & 0.21              & 0.36              & 0.47             \\ 
 adj. $R^2$            & 0.21              & 0.36              & 0.39             \\ 
-Resid. sd             & 0.09              & 0.08              & 0.08              \\ \hline
+Resid. sd             & 9.03              & 8.15              & 7.94              \\ \hline
  \multicolumn{4}{l}{\footnotesize{Robust standard errors in parentheses}}\\
 \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}} 
@@ -1012,56 +1012,88 @@ Resid. sd             & 0.09              & 0.08              & 0.08            
 
 Competitiveness does matter. 
 
+
+% Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Tue, Aug 12, 2014 - 9:58:04 PM
+\begin{table}[!htbp] \centering 
+  \caption{Partial Pooling Model of Competitiveness} 
+  \label{tab:meClose} 
+\begin{tabular}{@{\extracolsep{5pt}}lc} 
+\\[-1.8ex]\hline \\[-1.8ex] 
+\\[-1.8ex] & turnout \\ 
+\hline \\[-1.8ex] 
+ CLOSENot Competitive & $-$4.686$^{***}$ \\ 
+  & (0.377) \\ 
+  fallTurnout & 10.790$^{***}$ \\ 
+  & (4.152) \\ 
+  VAP\_adj & $-$3.502$^{***}$ \\ 
+  & (0.319) \\ 
+  per\_white\_all & $-$7.843$^{*}$ \\ 
+  & (4.116) \\ 
+  per65o & 43.090$^{***}$ \\ 
+  & (9.566) \\ 
+  PerBachelorOrAbove & $-$10.830 \\ 
+  & (7.957) \\ 
+  OOH\_share & $-$1.644 \\ 
+  & (3.333) \\ 
+  PCI & 15.090$^{***}$ \\ 
+  & (1.950) \\ 
+  Constant & $-$105.200$^{***}$ \\ 
+  & (18.640) \\ 
+ N & 2,390 \\ 
+Log Likelihood & $-$8,526.000 \\ 
+AIC & 17,073.000 \\ 
+BIC & 17,137.000 \\ 
+\hline \\[-1.8ex] 
+\multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
+\end{tabular} 
+\end{table} 
+
+
+\subsection{Unionization}
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{verbatim}
-## Linear mixed model fit by REML ['lmerMod']
-## Formula: turnout ~ CLOSE + turnoutLag2 + fallTurnout + log(VAP_adj) +  
-##     per_white_all + per65o + PerBachelorOrAbove + OOH_share +  
-##     log(PCI) + (1 | distid)
-##    Data: moddat
 ## 
-## REML criterion at convergence: -4899
-## 
-## Scaled residuals: 
-##    Min     1Q Median     3Q    Max 
-## -4.435 -0.597 -0.112  0.486  8.268 
-## 
-## Random effects:
-##  Groups   Name        Variance Std.Dev.
-##  distid   (Intercept) 0.00130  0.0360  
-##  Residual             0.00655  0.0809  
-## Number of obs: 2390, groups:  distid, 309
-## 
-## Fixed effects:
-##                      Estimate Std. Error t value
-## (Intercept)          -1.04153    0.17644   -5.90
-## CLOSENot Competitive -0.04740    0.00377  -12.59
-## turnoutLag2           0.12333    0.02133    5.78
-## fallTurnout           0.10131    0.03887    2.61
-## log(VAP_adj)         -0.03126    0.00294  -10.62
-## per_white_all        -0.07197    0.03715   -1.94
-## per65o                0.37553    0.08677    4.33
-## PerBachelorOrAbove   -0.11824    0.07383   -1.60
-## OOH_share            -0.01765    0.03014   -0.59
-## log(PCI)              0.14550    0.01845    7.89
-## 
-## Correlation of Fixed Effects:
-##             (Intr) CLOSEC trntL2 fllTrn l(VAP_ pr_wh_ per65o PrBcOA OOH_sh
-## CLOSENtCmpt  0.007                                                        
-## turnoutLag2 -0.087 -0.021                                                 
-## fallTurnout  0.112  0.015 -0.057                                          
-## log(VAP_dj) -0.274  0.147  0.212  0.081                                   
-## per_whit_ll -0.089 -0.004  0.004 -0.131  0.075                            
-## per65o       0.124  0.007 -0.075 -0.045  0.133 -0.223                     
-## PrBchlrOrAb  0.624 -0.002 -0.061 -0.432 -0.279  0.143  0.241              
-## OOH_share    0.156  0.004  0.019 -0.127  0.128 -0.354  0.630  0.192       
-## log(PCI)    -0.959 -0.041  0.047 -0.182  0.084 -0.050 -0.237 -0.611 -0.244
+## % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+## % Date and time: Tue, Aug 12, 2014 - 9:58:04 PM
+## \begin{table}[!htbp] \centering 
+##   \caption{Partial Pooling Model of Staff Influence} 
+##   \label{tab:meInf} 
+## \begin{tabular}{@{\extracolsep{5pt}}lc} 
+## \\[-1.8ex]\hline \\[-1.8ex] 
+## \\[-1.8ex] & turnout \\ 
+## \hline \\[-1.8ex] 
+##  teachShareofVoters & $-$5.614$^{**}$ \\ 
+##   & (2.189) \\ 
+##   fallTurnout & 11.430$^{***}$ \\ 
+##   & (4.201) \\ 
+##   VAP\_adj & $-$2.969$^{***}$ \\ 
+##   & (0.316) \\ 
+##   per\_white\_all & $-$9.722$^{**}$ \\ 
+##   & (4.188) \\ 
+##   per65o & 40.340$^{***}$ \\ 
+##   & (9.629) \\ 
+##   PerBachelorOrAbove & $-$10.520 \\ 
+##   & (8.024) \\ 
+##   OOH\_share & $-$1.513 \\ 
+##   & (3.336) \\ 
+##   PCI & 13.760$^{***}$ \\ 
+##   & (1.978) \\ 
+##   Constant & $-$96.780$^{***}$ \\ 
+##   & (18.960) \\ 
+##  N & 2,390 \\ 
+## Log Likelihood & $-$8,596.000 \\ 
+## AIC & 17,213.000 \\ 
+## BIC & 17,277.000 \\ 
+## \hline \\[-1.8ex] 
+## \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
+## \end{tabular} 
+## \end{table}
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-
-\subsection{Unionization}
 
 \subsection{Exogenous Shocks}
 
@@ -1069,7 +1101,7 @@ Competitiveness does matter.
 
 An interesting proposition here is considering whether or not voters in low-salience 
 and low-turnout school board elections are a subset of the voters in higher salience 
-and higher turnout elections \citep{Cho2008}
+and higher turnout elections \citep{Cho2008}.
 
 \section{Appendix}
 
