@@ -10,6 +10,7 @@ opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE,
                warning=FALSE, echo=FALSE, dev='pdf')
 
 setwd("../../")
+library(eeptools)
 source("data/dataAssemble.R")
 load("data/cache/DataMergeVAP.rda")
 source("data/cleanandprep_CANDIDACY.R")
@@ -20,49 +21,15 @@ SAMPSIZE <- length(unique(SBELEC$distid))
 
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
-library(eeptools); library(gridExtra)
+library(gridExtra)
 library(ROCR); library(lme4)
 library(arm)
 library(coefplot)
 library(scales); 
 library(stargazer)
 
-SBELEC$contested <- ifelse(SBELEC$candidates > SBELEC$winners, 1, 0)
-SBELEC$contested2 <- ifelse((SBELEC$candidates - SBELEC$minorcand) > SBELEC$winners, 1, 0)
-# Ratio
-SBELEC$contested3 <-  (SBELEC$candidates - SBELEC$minorcand) / SBELEC$winners
-# Check data issue with - values
-SBELEC$contested3 <- ifelse(SBELEC$contested3 > -.01, SBELEC$contested3, 1)
-SBELEC$contested3 <- ifelse(is.finite(SBELEC$contested3), SBELEC$contested3, 0)
-
-
-walkerrecall <- subset(FULLDAT, year == 2011, 
-                       select=c("distid", "secrepshare", "sectot", "VAP_adj"))
-
-walkerrecall$RECALLturnout <-  walkerrecall$sectot / walkerrecall$VAP_adj 
-
-walkerrecall$VAP_adj <- NULL
-names(walkerrecall) <- c("distid", "walkersupport", "recallvotes", "recallturnout")
-
-SBELEC <- merge(SBELEC, walkerrecall, by = c("distid"), all.x=TRUE)
-rm(walkerrecall)
-
-SBELEC$primary2 <- ifelse(SBELEC$primary == "None", "None", "Primary")
-SBELEC$politicaldivide <- abs(SBELEC$toprepshare - .5)
-SBELEC$log_politicaldivide <- log(SBELEC$politicaldivide)
-
-asinh_trans <- function(){
-   trans_new(name = 'asinh', transform = function(x) asinh(x * 2), 
-            inverse = function(x) sinh(x)/2)
-}
-
-
 @
 
-% 3 modeling strategies
-%% model binomial by district, contested or not
-%% model beta by district, # of contested out of # of races
-%% model nested, races in districts
 
 \section{Introduction}
 
@@ -546,34 +513,6 @@ policy decisions. Of particular interest is understanding which of these factors
 for the sample observed and over the time period of observation, are the most 
 predictive of the emergence of contested school board seats. 
 
-<<causaldataclean, echo=FALSE, results='hide'>>=
-SBELEC$treatment <- 0
-SBELEC$treatment[SBELEC$year == 2011] <- 1
-SBELEC$treatment[SBELEC$year == 2012] <- 1
-SBELEC$walkerdivide <- abs(SBELEC$walkersupport - .5)
-
-# Create lags
-SBELEC$total_wins <- SBELEC$wins; SBELEC$wins <- NULL
-
-SBELEC$total_attempts <- ifelse(is.na(SBELEC$total_attempts), 0, 
-                                 SBELEC$total_attempts)
-
-
-lagvars <- c("contested", "contested2", "contested3", "primary2", "totalvotes", 
-             "VAP", "attemptsD", "total_attempts", "total_wins")
-
-SBELEC <- lag_data(SBELEC, group = "distid", time = "year", periods = c(1), 
-                 values = lagvars)
-
-
-SBELEC$time <- SBELEC$year - 2010
-SBELEC$winshare.lag1 <- SBELEC$total_wins.lag1/ SBELEC$total_attempts.lag1
-
-SBELEC$winshare.lag1 <- ifelse(is.na(SBELEC$winshare.lag1), 0, SBELEC$winshare.lag1)
-
-@
-
-
 <<modelcomparisonD>>=
 
 ## Tax model -- voters are driven by tax concdrns
@@ -777,6 +716,13 @@ nullmermod <- glmer(contested2 ~  log(dv_r) +
 Here is some text about the within district variation. 
 
 Not sure which specification to use yet. 
+
+% 3 modeling strategies
+%% model binomial by district, contested or not
+%% model beta by district, # of contested out of # of races
+%% model nested, races in districts
+
+
 
 
 \clearpage
