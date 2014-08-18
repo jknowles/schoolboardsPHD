@@ -1320,7 +1320,14 @@ stargazer(mixedMod1, title = "Partial Pooling Model of Lagged Turnout", style = 
 # summary(mixedMod1)
 @
 
-Problems abound. 
+The mixed effect model in Table \ref{tab:meTurnout} confirms largely what was 
+found in the models in Table \ref{tab:lagmods2} -- prior turnout and fall turnout 
+are highly predictive of current turnout. This suggests that voters in school board 
+elections are indeed habit forming. 
+
+<<ranefplot1>>=
+dotplot(ranef(mixedMod1, postVar=TRUE))
+@
 
 \subsection{Electorate Size and Margin of Victory}
 
