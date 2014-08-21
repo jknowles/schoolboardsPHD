@@ -1082,6 +1082,7 @@ naive1 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all +
              data = moddat)
 
 autoplot(naive1)
+
 @
 
 Figure \ref{fig:simpleModel} shows regression diagnostics for this simple multiple 
@@ -1091,18 +1092,33 @@ quadrant of Figure \ref{fig:simpleModel} suggests the presence of some level of
 heteroskedacticity in the results, a likely result of the clustering and repeated 
 observation features of the dataset. The upper right quadrant shows the QQ plot 
 for this regression model which demonstrates that the model deviates from normality 
-quite substantially. To combat this issue, I adopt the strategies outlined in 
+quite substantially. I investigate this further by looking for extreme outliers 
+in the turnout variable. 
+
+<<outlierdetect, results='hide'>>=
+centr <- mean(moddat$turnout)
+stddev <- sd(moddat$turnout)
+moddat$outflag <- (moddat$turnout - centr) / stddev
+@
+
+There are \Sexpr{table(moddat$outflag>5)[[2]]} cases where 
+the value of the dependent variable is more than five standard deviations above 
+the group average. This is less than half of 1\% of the observations and is unlikely 
+to be influential, however, it is also likely that such deviations are due to 
+measurement error either in the VAP denominator or in the aggregation of district 
+board election vote counts themselves. I opt to remove these cases in the analyses 
+that follow. In addition, I adopt the strategies outlined in 
 Subsection \ref{subsec:spec} - year fixed effects, district fixed effects, and 
-clustered standard errors. The results for these 
-alternative specifications are displayed alongside the initial model in Table 
-\ref{tab:lagmods}. 
+clustered standard errors to provide a more robust view of the effects in school 
+board turnout. The results for these alternative specifications are displayed 
+alongside the initial model in Table \ref{tab:lagmods}. 
 
 <<model1, results ='asis'>>=
 # detach("package:plyr", unload=TRUE)
 library(sandwich)
 library(rms)
 library(apsrtable)
-
+moddat <- moddat[moddat$outflag <= 5,]
 dd <<- datadist(moddat)
 options(datadist="dd")
 
@@ -1115,8 +1131,7 @@ dumbRLM1$se <- sqrt(diag(vcov(robcov(dumbRLM1, cluster = moddat$distid))))
 
 dumbRLM1.2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all + 
                     per65o + PerBachelorOrAbove + OOH_share + PCI + districtwide +
-                    contest + factor(year),
-              data = moddat, x= TRUE, y = TRUE)
+                    contest + factor(year), data = moddat, x= TRUE, y = TRUE)
 
 dumbRLM1.2$se <- sqrt(diag(vcov(robcov(dumbRLM1.2, cluster = moddat$distid))))
 
@@ -1329,7 +1344,7 @@ are predictive of current turnout. This suggests that voters in school board
 elections are indeed habit forming. 
 
 <<ranefplot1>>=
-dotplot(ranef(mixedMod1, postVar=TRUE))
+# dotplot(ranef(mixedMod1, postVar=TRUE))
 @
 
 \subsection{Electorate Size and Margin of Victory}
@@ -1349,7 +1364,6 @@ then this becomes more problematic.
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adj", "distid", 
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI", 
                         "CLOSE", "districtwide", "contest")]
-
 moddat <- na.omit(moddat)
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
@@ -1368,6 +1382,10 @@ moddat$districtwide <- factor(moddat$districtwide)
 # moddat$fallTurnout <- moddat$fallTurnout * 100
 moddat$VAP_adj <- log(moddat$VAP_adj)
 moddat$PCI <- log(moddat$PCI)
+centr <- mean(moddat$turnout)
+stddev <- sd(moddat$turnout)
+moddat$outflag <- (moddat$turnout - centr) / stddev
+moddat <- moddat[moddat$outflag <= 5,]
 
 dd <<- datadist(moddat)
 options(datadist="dd")
@@ -1395,9 +1413,16 @@ closeRLM3 <- ols(turnout ~ CLOSE + VAP_adj + per_white_all +
 
 closeRLM3$se <- sqrt(diag(vcov(robcov(closeRLM3, cluster = moddat$distid))))
 
+closeRLM4 <- ols(turnout ~ CLOSE + VAP_adj + CLOSE*VAP_adj + per_white_all +
+                   per65o + PerBachelorOrAbove + OOH_share + PCI + districtwide +
+                  contest + factor(year), 
+              data = moddat, x = TRUE, y = TRUE)
 
-apsrtable(closeRLM, closeRLM2, closeRLM3, se="robust", label="tab:closemods", 
-          model.names=c("Simple RLM", "RLM + Year FE", "RLM + District FE"), 
+closeRLM4$se <- sqrt(diag(vcov(robcov(closeRLM4, cluster = moddat$distid))))
+
+
+apsrtable(closeRLM, closeRLM2, closeRLM3, closeRLM4, se="robust", label="tab:closemods", 
+          model.names=c("Simple RLM", "RLM + Year FE", "RLM + District FE", "Interact + Year FE"), 
           caption = "Models of Competitiveness and Turnout in School Board Elections",
           notes = list(se.note, stars.note, "Year and district fixed effects omitted."),
           omitcoef=list("distid", 
@@ -1422,7 +1447,7 @@ problems from Table \ref{tab:lagmods} appaers in Table \ref{tab:closemods}. Agai
 I turn to partial pooling to resolve this issue. 
 
 <<model4, results='asis'>>=
-mixedMod2 <- lmer(turnout ~ CLOSE + VAP_adj + per_white_all +
+mixedMod2 <- lmer(turnout ~ CLOSE + VAP_adj + CLOSE*VAP_adj + per_white_all +
                    per65o + PerBachelorOrAbove + OOH_share + PCI + districtwide +
                     contest + (1|distid), 
               data = moddat, REML = TRUE)
@@ -1443,7 +1468,7 @@ To test the argument that voter turnout may be influenced by the share of the
 electorate that is made up of unionized teachers, I combine features from the 
 previous models in an attempt to find evidence of such an effect.  
 
-<<model4, results ='asis'>>=
+<<model5, results ='asis'>>=
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adj", "distid", 
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI", 
                         "CLOSE", "teachShareofVoters", "districtwide", "contest")]
@@ -1466,6 +1491,10 @@ moddat$turnout <- moddat$turnout * 100
 # moddat$fallTurnout <- moddat$fallTurnout * 100
 moddat$VAP_adj <- log(moddat$VAP_adj)
 moddat$PCI <- log(moddat$PCI)
+centr <- mean(moddat$turnout)
+stddev <- sd(moddat$turnout)
+moddat$outflag <- (moddat$turnout - centr) / stddev
+moddat <- moddat[moddat$outflag <=5,]
 
 dd <<- datadist(moddat)
 options(datadist="dd")
@@ -1535,11 +1564,73 @@ The effect is the same in the partially pooled mode.
 
 \subsection{Exogenous Shocks}
 
+Using the election of Governor Walker and passage of Act 10 as an exogenous shock that 
+increased the relevance and power of school boards, the following models seek to 
+test the causal impact on turnout. 
+
+<<walkerDummy>>=
+## Grab Walker recall results
+load("data/cache/WalkerRecall.rda")
+
+## Bolt them on
+distvotes12r <- distvotes12r[, -2]
+distvotes12r$GovTwoPartyShareDem <- distvotes12r$GOVDEM / (distvotes12r$GOVDEM + distvotes12r$GOVREP)
+
+names(distvotes12r) <- paste(names(distvotes12r), "recall", sep ="_")
+
+dist_turn <- merge(dist_turn, distvotes12r, by.x = "distid", 
+                   by.y = "distid_recall")
+
+dist_turn
+
+moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adj", "distid", 
+                        "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI", 
+                        "CLOSE", "districtwide", "contest", "GovTwoPartyShareDem_recall",
+                        "teachShareofVoters")]
+
+moddat <- na.omit(moddat)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat$turnout <- moddat$turnout * 100
+moddat$districtwide <- factor(moddat$districtwide)
+# moddat$turnoutLag2 <- moddat$turnoutLag2 * 100
+# moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
+# moddat$per_white_all <- moddat$per_white_all * 100
+# moddat$per65o <- moddat$per65o * 100
+# moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
+# moddat$OOH_share <- moddat$OOH_share * 100
+# moddat$fallTurnout <- moddat$fallTurnout * 100
+moddat$VAP_adj <- log(moddat$VAP_adj)
+moddat$PCI <- log(moddat$PCI)
+centr <- mean(moddat$turnout)
+stddev <- sd(moddat$turnout)
+moddat$outflag <- (moddat$turnout - centr) / stddev
+moddat <- moddat[moddat$outflag <= 5,]
+
+dd <<- datadist(moddat)
+options(datadist="dd")
+
+
+@
+
+\subsection{Review}
+
+% Table of all final pooled models
+% Discuss ultimate results
+
 \section{Conclusion}
 
 An interesting proposition here is considering whether or not voters in low-salience 
 and low-turnout school board elections are a subset of the voters in higher salience 
 and higher turnout elections \citep{Cho2008}.
+
+- Voters appear to be habit forming
+- Election closeness matters, but more work to do
+- Union participation downplays turnout
 
 \section{Appendix}
 
@@ -1550,4 +1641,58 @@ Single lagged turnout:
 <<appA1, results='asis'>>=
 appA1
 
+
+@
+
+
+<<datasources, results='hide', eval=FALSE>>=
+
+################################################################################
+# Recall 2012
+################################################################################
+
+recall12 <- read.csv("Ward Election Data/2012/Spring 2012/JuneRecallFinal.csv")
+
+
+recall12<-recall12[-grep("Totals", recall12$muni), ]
+
+recall12 <- mcd_process(recall12)
+
+# customizations
+
+recall12$muniname3 <- gsub("COMBINED", "", recall12$muniname3)
+recall12$muniname3 <- gsub("FIREHOUSE", "", recall12$muniname3)
+recall12$muniname3 <- gsub("TOWNHALL", "", recall12$muniname3)
+recall12$muniname3[recall12$muniname3 == "EDSONS"] <- "EDSON"
+recall12$muniname3[recall12$muniname3 == "TRENTONS"] <- "TRENTON"
+recall12$muniname3[recall12$muniname3 == "GLENDALEE"] <- "GLENDALE"
+recall12$muniname3[recall12$muniname3 == "LAGRANGEAAA"] <- "LAGRANGE"
+recall12$muniname3[recall12$muniname3 == "LAGRANGEBBB"] <- "LAGRANGE"
+recall12$muniname3[recall12$muniname3 == "LOCKS"] <- "COMBINEDLOCKS"
+recall12$muniname3[recall12$muniname3 == "BRILLIONS"] <- "BRILLION"
+
+
+
+merge12<-merge(recall12,cw,by.x=c("muniname3","mcdType","county"),
+                 by.y=c("name","mcdType","countyname"),all.x=TRUE)
+
+length(merge12$dorCode[is.na(merge12$dorCode)])
+
+#head(bigtest12.2[is.na(bigtest12.2$dorCode),],25)
+merge12<-merge(merge12,sd12,by.x="dorCode",by.y="municode")
+rm(recall12,sd12)
+
+merge12$votes <- cleanvotes(merge12$votes)
+merge12$rep <- cleanvotes(merge12$rep)
+merge12$dem <- cleanvotes(merge12$dem)
+merge12$ind <- cleanvotes(merge12$ind)
+merge12$scatter <- cleanvotes(merge12$scatter)
+
+
+distvotes12r<-ddply(merge12,.(distid),summarise,year="2012","RECTOT"=sum(votes*share,na.rm=T),
+                   "GOVDEM"=sum(dem*share,na.rm=T), "GOVREP" = sum(rep * share, na.rm=T), 
+                    "GOVIND" = sum(ind * share, na.rm=T), "GOVSCATT" = sum(scatter* share, na.rm=T))
+rm(merge12)
+
+save(distvotes12r, file = "../../../MasterText/data/cache/WalkerRecall.rda")
 @
