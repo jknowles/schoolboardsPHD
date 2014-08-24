@@ -914,8 +914,7 @@ Resid. sd              & 8.43              & 7.98              & 7.09           
  \end{table}
 
 
-Prior turnout appears to be a substantively important predictor in Table \ref{tab:lagmods}.
-\footnote{Using twice-lagged school board turnout. Results are not substantively different 
+Prior turnout appears to be a substantively important predictor in Table \ref{tab:lagmods}.\footnote{Using twice-lagged school board turnout. Results are not substantively different 
 when I estimate using single lagged school board turnout, as shown in Table \ref{tab:lagmods2}.} 
 Model 1 represents a standard pooled regression with clustered standard errors to 
 correct for the violation of the IID assumptions of OLS. The key independent variable is 
@@ -955,7 +954,7 @@ clustered structure of the district terms.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Thu, Aug 21, 2014 - 11:00:35 AM
+% Date and time: Sun, Aug 24, 2014 - 5:02:56 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Lagged Turnout} 
   \label{tab:meTurnout} 
@@ -1066,7 +1065,7 @@ I turn to partial pooling to resolve this issue.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Thu, Aug 21, 2014 - 11:00:37 AM
+% Date and time: Sun, Aug 24, 2014 - 5:02:58 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Competitiveness} 
   \label{tab:meClose} 
@@ -1109,7 +1108,7 @@ BIC & 16,677.000 \\
 
 
 The results in Table \ref{tab:meClose} mirror those found in columns 1 and 2 of Table 
-\ref{tab:closemod}. This provides evidence in support of the argument that school board 
+\ref{tab:closemods}. This provides evidence in support of the argument that school board 
 election voters are more active in smaller electorates and in competitive races. 
 
 \subsection{Unionization}
@@ -1119,8 +1118,8 @@ electorate that is made up of unionized teachers, I combine features from the
 previous models in an attempt to find evidence of such an effect.  
 
 \begin{table}[!ht]
-\caption{Models of Competitiveness and Turnout in School Board Elections}
-\label{tab:teacmods} 
+\caption{Models of Unionization and Turnout in School Board Elections}
+\label{tab:teachmods} 
 \begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
@@ -1163,121 +1162,62 @@ Resid. sd              & 8.10              & 7.24              & 7.33           
 Table \ref{tab:teachmods} shows that there is some evidence to support that teacher 
 share of the electorate has an effect on the turnout. 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-## 
-## % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-## % Date and time: Thu, Aug 21, 2014 - 11:00:39 AM
-## \begin{table}[!htbp] \centering 
-##   \caption{Partial Pooling Model of Staff Influence} 
-##   \label{tab:meInf} 
-## \begin{tabular}{@{\extracolsep{5pt}}lc} 
-## \\[-1.8ex]\hline \\[-1.8ex] 
-## \\[-1.8ex] & turnout \\ 
-## \hline \\[-1.8ex] 
-##  teachShareofVoters & $-$6.561$^{***}$ \\ 
-##   & (1.948) \\ 
-##   fallTurnout & 10.280$^{***}$ \\ 
-##   & (3.619) \\ 
-##   VAP\_adj & $-$3.104$^{***}$ \\ 
-##   & (0.270) \\ 
-##   per\_white\_all & $-$9.358$^{***}$ \\ 
-##   & (3.546) \\ 
-##   per65o & 30.030$^{***}$ \\ 
-##   & (8.180) \\ 
-##   PerBachelorOrAbove & $-$10.160 \\ 
-##   & (6.930) \\ 
-##   OOH\_share & $-$3.033 \\ 
-##   & (2.829) \\ 
-##   PCI & 13.430$^{***}$ \\ 
-##   & (1.733) \\ 
-##   districtwide1 & 0.717 \\ 
-##   & (0.598) \\ 
-##   contestOpen Contested & $-$0.531 \\ 
-##   & (0.532) \\ 
-##   contestUncontested & $-$5.155$^{***}$ \\ 
-##   & (0.358) \\ 
-##   Constant & $-$87.590$^{***}$ \\ 
-##   & (16.640) \\ 
-##  N & 2,380 \\ 
-## Log Likelihood & $-$8,275.000 \\ 
-## AIC & 16,578.000 \\ 
-## BIC & 16,659.000 \\ 
-## \hline \\[-1.8ex] 
-## \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
-## \end{tabular} 
-## \end{table}
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+
+% Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Sun, Aug 24, 2014 - 5:03:00 PM
+\begin{table}[!htbp] \centering 
+  \caption{Partial Pooling Model of Staff Influence} 
+  \label{tab:meInf} 
+\begin{tabular}{@{\extracolsep{5pt}}lc} 
+\\[-1.8ex]\hline \\[-1.8ex] 
+\\[-1.8ex] & turnout \\ 
+\hline \\[-1.8ex] 
+ teachShareofVoters & $-$6.561$^{***}$ \\ 
+  & (1.948) \\ 
+  fallTurnout & 10.280$^{***}$ \\ 
+  & (3.619) \\ 
+  VAP\_adj & $-$3.104$^{***}$ \\ 
+  & (0.270) \\ 
+  per\_white\_all & $-$9.358$^{***}$ \\ 
+  & (3.546) \\ 
+  per65o & 30.030$^{***}$ \\ 
+  & (8.180) \\ 
+  PerBachelorOrAbove & $-$10.160 \\ 
+  & (6.930) \\ 
+  OOH\_share & $-$3.033 \\ 
+  & (2.829) \\ 
+  PCI & 13.430$^{***}$ \\ 
+  & (1.733) \\ 
+  districtwide1 & 0.717 \\ 
+  & (0.598) \\ 
+  contestOpen Contested & $-$0.531 \\ 
+  & (0.532) \\ 
+  contestUncontested & $-$5.155$^{***}$ \\ 
+  & (0.358) \\ 
+  Constant & $-$87.590$^{***}$ \\ 
+  & (16.640) \\ 
+ N & 2,380 \\ 
+Log Likelihood & $-$8,275.000 \\ 
+AIC & 16,578.000 \\ 
+BIC & 16,659.000 \\ 
+\hline \\[-1.8ex] 
+\multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
+\end{tabular} 
+\end{table} 
+
 
 The effect is the same in the partially pooled mode. 
 
+
+
 \subsection{Exogenous Shocks}
 
-\section{Conclusion}
+Using the election of Governor Walker and passage of Act 10 as an exogenous shock that 
+increased the relevance and power of school boards, the following models seek to 
+test the causal impact on turnout. 
 
-An interesting proposition here is considering whether or not voters in low-salience 
-and low-turnout school board elections are a subset of the voters in higher salience 
-and higher turnout elections \citep{Cho2008}.
 
-- Voters appear to be habit forming
-- Election closeness matters, but more work to do
-- Union participation downplays turnout
 
-\section{Appendix}
 
-Sensitivity checks and further table analysis. 
 
-Single lagged turnout:
-
-\begin{table}[!ht]
-\caption{Models of Lagged Turnout (1x) in School Board Elections}
-\label{tab:lagmods2} 
-\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
-\hline 
-  & \multicolumn{ 1 }{ c }{ Naive OLS } & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
- %                      & Naive OLS         & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
-(Intercept)            & -53.60 ^*         &                   &                   &                  \\ 
-                       & (12.70)           &                   &                   &                  \\ 
-turnoutLag1            & 17.09 ^*          & 17.09 ^*          & 25.29 ^*          & -9.63 ^*         \\ 
-                       & (1.72)            & (2.56)            & (2.66)            & (2.16)           \\ 
-fallTurnout            & 7.80 ^*           & 7.80 ^*           & 9.76 ^*           & 12.98            \\ 
-                       & (2.71)            & (3.66)            & (3.31)            & (6.82)           \\ 
-VAP\_adj              & -2.53 ^*          & -2.53 ^*          & -2.29 ^*          & -24.68 ^*        \\ 
-                       & (0.19)            & (0.25)            & (0.23)            & (6.19)           \\ 
-per\_white\_all      & -4.90 ^*          & -4.90             & -2.85             & 16.21            \\ 
-                       & (2.38)            & (3.76)            & (3.49)            & (37.09)          \\ 
-per65o                 & 22.48 ^*          & 22.48 ^*          & 19.08 ^*          & 70.57            \\ 
-                       & (5.51)            & (9.80)            & (8.94)            & (40.69)          \\ 
-PerBachelorOrAbove     & -2.90             & -2.90             & 3.24              & -3.04            \\ 
-                       & (5.03)            & (5.84)            & (5.35)            & (27.56)          \\ 
-OOH\_share            & -2.72             & -2.72             & -1.80             & -6.82            \\ 
-                       & (1.90)            & (3.00)            & (2.66)            & (18.89)          \\ 
-PCI                    & 8.97 ^*           & 8.97 ^*           & 4.22 ^*           & 25.43 ^*         \\ 
-                       & (1.34)            & (1.75)            & (1.57)            & (3.42)           \\ 
-districtwide1          & 0.33              &                   &                   &                  \\ 
-                       & (0.44)            &                   &                   &                  \\ 
-contestOpen Contested  & -0.67             &                   &                   &                  \\ 
-                       & (0.53)            &                   &                   &                  \\ 
-contestUncontested     & -5.11 ^*          &                   &                   &                  \\ 
-                       & (0.36)            &                   &                   &                  \\ 
-Intercept              &                   & -53.60 ^*         & -15.75            & -42.52           \\ 
-                       &                   & (16.38)           & (15.11)           & (78.13)          \\ 
-districtwide=1         &                   & 0.33              & 0.37              & 2.65 ^*          \\ 
-                       &                   & (0.52)            & (0.46)            & (1.05)           \\ 
-contest=Open Contested &                   & -0.67             & 0.14              & -0.01            \\ 
-                       &                   & (0.54)            & (0.54)            & (0.54)           \\ 
-contest=Uncontested    &                   & -5.11 ^*          & -4.81 ^*          & -4.99 ^*         \\ 
-                       &                   & (0.36)            & (0.32)            & (0.38)            \\
- $N$                    & 2473              & 2473              & 2473              & 2473             \\ 
-$R^2$                  & 0.25              & 0.25              & 0.42              & 0.46             \\ 
-adj. $R^2$             & 0.25              & 0.25              & 0.42              & 0.38             \\ 
-Resid. sd              & 8.12              & 8.12              & 7.13              & 7.34              \\ \hline
- \multicolumn{5}{l}{\footnotesize{Standard errors clustered at the school district.}}\\
-\multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
-\end{tabular} 
- \end{table}
 

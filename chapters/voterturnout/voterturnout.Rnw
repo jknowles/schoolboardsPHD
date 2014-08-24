@@ -1176,8 +1176,7 @@ apsrtable(naive1, dumbRLM1, dumbRLM1.2, dumbRLM2, se="robust", label="tab:lagmod
 
 @
 
-Prior turnout appears to be a substantively important predictor in Table \ref{tab:lagmods}.
-\footnote{Using twice-lagged school board turnout. Results are not substantively different 
+Prior turnout appears to be a substantively important predictor in Table \ref{tab:lagmods}.\footnote{Using twice-lagged school board turnout. Results are not substantively different 
 when I estimate using single lagged school board turnout, as shown in Table \ref{tab:lagmods2}.} 
 Model 1 represents a standard pooled regression with clustered standard errors to 
 correct for the violation of the IID assumptions of OLS. The key independent variable is 
@@ -1459,7 +1458,7 @@ stargazer(mixedMod2, title = "Partial Pooling Model of Competitiveness", style =
 @
 
 The results in Table \ref{tab:meClose} mirror those found in columns 1 and 2 of Table 
-\ref{tab:closemod}. This provides evidence in support of the argument that school board 
+\ref{tab:closemods}. This provides evidence in support of the argument that school board 
 election voters are more active in smaller electorates and in competitive races. 
 
 \subsection{Unionization}
@@ -1525,9 +1524,11 @@ teachRLM3 <- ols(turnout ~ teachShareofVoters + fallTurnout +
 teachRLM3$se <- sqrt(diag(vcov(robcov(teachRLM3, cluster = moddat$distid))))
 
 
-apsrtable(teachRLM, teachRLM2, teachRLM3, se="robust", label="tab:teacmods", 
+
+
+apsrtable(teachRLM, teachRLM2, teachRLM3, se="robust", label="tab:teachmods", 
           model.names=c("Simple RLM", "RLM + Year FE", "RLM + District FE"), 
-          caption = "Models of Competitiveness and Turnout in School Board Elections",
+          caption = "Models of Unionization and Turnout in School Board Elections",
           notes = list(se.note, stars.note, "Year and district fixed effects omitted."),
           omitcoef=list("distid", 
                         expression(grep("distid", coefnames, value=TRUE)), 
@@ -1548,7 +1549,7 @@ apsrtable(teachRLM, teachRLM2, teachRLM3, se="robust", label="tab:teacmods",
 Table \ref{tab:teachmods} shows that there is some evidence to support that teacher 
 share of the electorate has an effect on the turnout. 
 
-<<mixedInfMod>>=
+<<mixedInfMod, results='asis'>>=
 mixedMod3 <- lmer(turnout ~ teachShareofVoters + fallTurnout + 
                     VAP_adj + per_white_all +
                    per65o + PerBachelorOrAbove + OOH_share + PCI + districtwide +
@@ -1575,7 +1576,7 @@ Using the election of Governor Walker and passage of Act 10 as an exogenous shoc
 increased the relevance and power of school boards, the following models seek to 
 test the causal impact on turnout. 
 
-<<walkerDummy>>=
+<<walkerDummy, results='asis'>>=
 ## Grab Walker recall results
 load("data/cache/WalkerRecall.rda")
 
@@ -1592,13 +1593,38 @@ load("data/cache/WERC.rda")
 
 names(wercDatTeachers) <- paste(names(wercDatTeachers), "werc", sep = "_")
 
-dist_turn <- merge(dist_turn, wercDatTeachers, by.x = "distid", by.y = "distid_werc")
+dist_turn <- merge(dist_turn, wercDatTeachers, by.x = "distid", by.y = "distid_werc", 
+                   all.x = TRUE)
+
+NAzero <- function(x){
+  x <- as.numeric(x)
+  x[is.na(x)] <- 0 
+  return(x)
+}
+
+dist_turn$WERC_elec <- ifelse(is.na(dist_turn$eligvoters_werc), 0, 1)
+dist_turn$eligvoters_werc <- NAzero(dist_turn$eligvoters_werc)
+dist_turn$voters_werc <- NAzero(dist_turn$voters_werc)
+dist_turn$turnout_overall_werc <- NAzero(dist_turn$turnout_overall_werc)
+dist_turn$tries_werc <- NAzero(dist_turn$tries_werc)
+dist_turn$wins_werc <- NAzero(dist_turn$wins_werc)
+dist_turn$loss_werc <- NAzero(dist_turn$loss_werc)
+dist_turn$yes_votes_tot_werc <- NAzero(dist_turn$yes_votes_tot_werc)
+dist_turn$no_votes_tot_werc <- NAzero(dist_turn$no_votes_tot_werc)
+dist_turn$abst_votes_tot_werc <- NAzero(dist_turn$abst_votes_tot_werc)
+dist_turn$yes_votes_avg_werc <- NAzero(dist_turn$yes_votes_avg_werc)
+dist_turn$no_votes_avg_werc <- NAzero(dist_turn$no_votes_avg_werc)
+dist_turn$abst_votes_avg_werc <- NAzero(dist_turn$abst_votes_avg_werc)
+dist_turn$best_margin_werc <- NAzero(dist_turn$best_margin_werc)
+dist_turn$worst_margin_werc <- NAzero(dist_turn$worst_margin_werc)
+
+# Clean up no data
 
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adj", "distid", 
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI", 
                         "CLOSE", "districtwide", "contest", "GovTwoPartyShareDem_recall",
                         "teachShareofVoters", "turnout_overall_werc", "eligvoters_werc", 
-                        "loss_werc", "worst_margin_werc")]
+                        "loss_werc", "worst_margin_werc", "WERC_elec")]
 
 moddat <- na.omit(moddat)
 moddat <- moddat[moddat$year > 2008,]
@@ -1635,28 +1661,36 @@ options(datadist="dd")
 causal1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
                districtwide + contest + RecallPolarization*treatment + 
-               turnout_overall_werc + treatment, 
+               treatment + turnout_overall_werc, 
               data = moddat, x = TRUE, y = TRUE)
 
 causal1$se <- sqrt(diag(vcov(robcov(causal1, cluster = moddat$distid))))
 
+apsrtable(causal1, se = "robust", label="tab:causmod1", 
+          model.names=c("Naive Causal Model"), 
+          caption = "Model of Causal Impact of Act 10 on School Board Elections",
+          Sweave=FALSE)
 
-
-
-zed1 <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
-               districtwide + contest + RecallPolarization*treatment + 
-               turnout_overall_werc + (1|distid), 
-             data = moddat)
+# 
+# zed1 <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all + 
+#                per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
+#                districtwide + contest + RecallPolarization*treatment + 
+#                treatment + turnout_overall_werc + (1|distid), 
+#              data = moddat)
 
 @
+
+Table \ref{tab:causmod1} shows good things. 
+
+\clearpage
+
 
 \subsection{Review}
 
 % Table of all final pooled models
 % Discuss ultimate results
 
-\section{Conclusion}
+\section{Discussion}
 
 An interesting proposition here is considering whether or not voters in low-salience 
 and low-turnout school board elections are a subset of the voters in higher salience 
