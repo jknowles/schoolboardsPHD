@@ -954,7 +954,7 @@ clustered structure of the district terms.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Sun, Aug 24, 2014 - 5:02:56 PM
+% Date and time: Sun, Aug 24, 2014 - 5:11:03 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Lagged Turnout} 
   \label{tab:meTurnout} 
@@ -1065,7 +1065,7 @@ I turn to partial pooling to resolve this issue.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Sun, Aug 24, 2014 - 5:02:58 PM
+% Date and time: Sun, Aug 24, 2014 - 5:11:05 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Competitiveness} 
   \label{tab:meClose} 
@@ -1164,7 +1164,7 @@ share of the electorate has an effect on the turnout.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Sun, Aug 24, 2014 - 5:03:00 PM
+% Date and time: Sun, Aug 24, 2014 - 5:11:07 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Staff Influence} 
   \label{tab:meInf} 
@@ -1206,7 +1206,7 @@ BIC & 16,659.000 \\
 \end{table} 
 
 
-The effect is the same in the partially pooled mode. 
+The effect is the same in the partially pooled model. 
 
 
 
@@ -1216,7 +1216,131 @@ Using the election of Governor Walker and passage of Act 10 as an exogenous shoc
 increased the relevance and power of school boards, the following models seek to 
 test the causal impact on turnout. 
 
+\begin{table}[!ht]
+\caption{Model of Causal Impact of Act 10 on School Board Elections}
+\label{tab:causmod1} 
+\begin{tabular}{ l D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Naive Causal Model } \\ \hline
+ %                              & Naive Causal Model\\ 
+Intercept                      & 5.80              \\ 
+                               & (23.15)           \\ 
+turnoutLag2                    & 29.44 ^*          \\ 
+                               & (5.30)            \\ 
+fallTurnout                    & 9.99 ^*           \\ 
+                               & (4.42)            \\ 
+VAP\_adj                      & -2.78 ^*          \\ 
+                               & (0.29)            \\ 
+per\_white\_all              & 0.36              \\ 
+                               & (3.93)            \\ 
+per65o                         & 8.69              \\ 
+                               & (9.55)            \\ 
+PerBachelorOrAbove             & 9.15              \\ 
+                               & (6.53)            \\ 
+OOH\_share                    & -2.48             \\ 
+                               & (3.00)            \\ 
+PCI                            & 2.46              \\ 
+                               & (2.48)            \\ 
+CLOSE=Not Competitive          & -2.22 ^*          \\ 
+                               & (0.73)            \\ 
+districtwide=1                 & -0.47             \\ 
+                               & (0.53)            \\ 
+contest=Open Contested         & -1.58             \\ 
+                               & (1.05)            \\ 
+contest=Uncontested            & -3.94 ^*          \\ 
+                               & (0.65)            \\ 
+RecallPolarization             & -7.66 ^*          \\ 
+                               & (3.89)            \\ 
+treatment                      & 5.46 ^*           \\ 
+                               & (0.79)            \\ 
+turnout\_overall\_werc       & 0.84              \\ 
+                               & (0.62)            \\ 
+RecallPolarization * treatment & 27.88 ^*          \\ 
+                               & (5.63)             \\
+ $N$                            & 1168              \\ 
+$R^2$                          & 0.43              \\ 
+adj. $R^2$                     & 0.43              \\ 
+Resid. sd                      & 7.77               \\ \hline
+ \multicolumn{2}{l}{\footnotesize{Robust standard errors in parentheses}}\\
+\multicolumn{2}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+\end{tabular} 
+ \end{table}
 
+
+Table \ref{tab:causmod1} shows good things. 
+
+\clearpage
+
+
+\subsection{Review}
+
+% Table of all final pooled models
+% Discuss ultimate results
+
+\section{Discussion}
+
+An interesting proposition here is considering whether or not voters in low-salience 
+and low-turnout school board elections are a subset of the voters in higher salience 
+and higher turnout elections \citep{Cho2008}.
+
+- Voters appear to be habit forming
+- Election closeness matters, but more work to do
+- Union participation downplays turnout
+
+\section{Appendix}
+
+Sensitivity checks and further table analysis. 
+
+Single lagged turnout:
+
+\begin{table}[!ht]
+\caption{Models of Lagged Turnout (1x) in School Board Elections}
+\label{tab:lagmods2} 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Naive OLS } & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
+ %                      & Naive OLS         & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
+(Intercept)            & -53.60 ^*         &                   &                   &                  \\ 
+                       & (12.70)           &                   &                   &                  \\ 
+turnoutLag1            & 17.09 ^*          & 17.09 ^*          & 25.29 ^*          & -9.63 ^*         \\ 
+                       & (1.72)            & (2.56)            & (2.66)            & (2.16)           \\ 
+fallTurnout            & 7.80 ^*           & 7.80 ^*           & 9.76 ^*           & 12.98            \\ 
+                       & (2.71)            & (3.66)            & (3.31)            & (6.82)           \\ 
+VAP\_adj              & -2.53 ^*          & -2.53 ^*          & -2.29 ^*          & -24.68 ^*        \\ 
+                       & (0.19)            & (0.25)            & (0.23)            & (6.19)           \\ 
+per\_white\_all      & -4.90 ^*          & -4.90             & -2.85             & 16.21            \\ 
+                       & (2.38)            & (3.76)            & (3.49)            & (37.09)          \\ 
+per65o                 & 22.48 ^*          & 22.48 ^*          & 19.08 ^*          & 70.57            \\ 
+                       & (5.51)            & (9.80)            & (8.94)            & (40.69)          \\ 
+PerBachelorOrAbove     & -2.90             & -2.90             & 3.24              & -3.04            \\ 
+                       & (5.03)            & (5.84)            & (5.35)            & (27.56)          \\ 
+OOH\_share            & -2.72             & -2.72             & -1.80             & -6.82            \\ 
+                       & (1.90)            & (3.00)            & (2.66)            & (18.89)          \\ 
+PCI                    & 8.97 ^*           & 8.97 ^*           & 4.22 ^*           & 25.43 ^*         \\ 
+                       & (1.34)            & (1.75)            & (1.57)            & (3.42)           \\ 
+districtwide1          & 0.33              &                   &                   &                  \\ 
+                       & (0.44)            &                   &                   &                  \\ 
+contestOpen Contested  & -0.67             &                   &                   &                  \\ 
+                       & (0.53)            &                   &                   &                  \\ 
+contestUncontested     & -5.11 ^*          &                   &                   &                  \\ 
+                       & (0.36)            &                   &                   &                  \\ 
+Intercept              &                   & -53.60 ^*         & -15.75            & -42.52           \\ 
+                       &                   & (16.38)           & (15.11)           & (78.13)          \\ 
+districtwide=1         &                   & 0.33              & 0.37              & 2.65 ^*          \\ 
+                       &                   & (0.52)            & (0.46)            & (1.05)           \\ 
+contest=Open Contested &                   & -0.67             & 0.14              & -0.01            \\ 
+                       &                   & (0.54)            & (0.54)            & (0.54)           \\ 
+contest=Uncontested    &                   & -5.11 ^*          & -4.81 ^*          & -4.99 ^*         \\ 
+                       &                   & (0.36)            & (0.32)            & (0.38)            \\
+ $N$                    & 2473              & 2473              & 2473              & 2473             \\ 
+$R^2$                  & 0.25              & 0.25              & 0.42              & 0.46             \\ 
+adj. $R^2$             & 0.25              & 0.25              & 0.42              & 0.38             \\ 
+Resid. sd              & 8.12              & 8.12              & 7.13              & 7.34              \\ \hline
+ \multicolumn{5}{l}{\footnotesize{Standard errors clustered at the school district.}}\\
+\multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
+\end{tabular} 
+ \end{table}
 
 
 

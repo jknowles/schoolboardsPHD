@@ -1561,7 +1561,7 @@ stargazer(mixedMod3, title = "Partial Pooling Model of Staff Influence", style =
             label = "tab:meInf")
 @
 
-The effect is the same in the partially pooled mode. 
+The effect is the same in the partially pooled model. 
 
 <<cleanup, echo=FALSE,results='hide'>>=
 rm(dist.tmp, dat, cand, VAP_dist, distAttr, dvp, errors, govTurn, presTurn, races, 
@@ -1576,9 +1576,10 @@ Using the election of Governor Walker and passage of Act 10 as an exogenous shoc
 increased the relevance and power of school boards, the following models seek to 
 test the causal impact on turnout. 
 
-<<walkerDummy, results='asis'>>=
+<<walkerDummy, results='asis', echo = FALSE>>=
 ## Grab Walker recall results
-load("data/cache/WalkerRecall.rda")
+
+load("../../data/cache/WalkerRecall.rda")
 
 ## Bolt them on
 distvotes12r <- distvotes12r[, -2]
@@ -1589,7 +1590,7 @@ names(distvotes12r) <- paste(names(distvotes12r), "recall", sep ="_")
 dist_turn <- merge(dist_turn, distvotes12r, by.x = "distid", 
                    by.y = "distid_recall")
 
-load("data/cache/WERC.rda")
+load("../../data/cache/WERC.rda")
 
 names(wercDatTeachers) <- paste(names(wercDatTeachers), "werc", sep = "_")
 
