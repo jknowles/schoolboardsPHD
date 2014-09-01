@@ -1580,10 +1580,11 @@ test the causal impact on turnout.
 ## Grab Walker recall results
 
 load("../../data/cache/WalkerRecall.rda")
-
+# load("data/cache/WalkerRecall.rda")
 ## Bolt them on
 distvotes12r <- distvotes12r[, -2]
-distvotes12r$GovTwoPartyShareDem <- distvotes12r$GOVDEM / (distvotes12r$GOVDEM + distvotes12r$GOVREP)
+distvotes12r$GovTwoPartyShareDem <- distvotes12r$GOVDEM / (distvotes12r$GOVDEM + 
+                                                             distvotes12r$GOVREP)
 
 names(distvotes12r) <- paste(names(distvotes12r), "recall", sep ="_")
 
@@ -1591,7 +1592,7 @@ dist_turn <- merge(dist_turn, distvotes12r, by.x = "distid",
                    by.y = "distid_recall")
 
 load("../../data/cache/WERC.rda")
-
+# load("data/cache/WERC.rda")
 names(wercDatTeachers) <- paste(names(wercDatTeachers), "werc", sep = "_")
 
 dist_turn <- merge(dist_turn, wercDatTeachers, by.x = "distid", by.y = "distid_werc", 
@@ -1619,7 +1620,20 @@ dist_turn$abst_votes_avg_werc <- NAzero(dist_turn$abst_votes_avg_werc)
 dist_turn$best_margin_werc <- NAzero(dist_turn$best_margin_werc)
 dist_turn$worst_margin_werc <- NAzero(dist_turn$worst_margin_werc)
 
-# Clean up no data
+load("../../data/cache/springElectionVotes.rda")
+# load("data/cache/springElectionVotes.rda")
+springVotes$votesTopTicketSpring <- springVotes$VotesCast
+springVotes$VotesCast <- NULL
+dist_turn <- merge(dist_turn, springVotes[, c(1, 2, 5)], 
+                   by = c("distid", "year"))
+
+dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
+
+diagno <- dist_turn[, c("distid", "year", "turnout", "VAP_adj", "fallTurnout", 
+                        "RECTOT_recall", "votesTopTicketSpring",
+                        "topTicketTurnoutSpring")]
+
+
 
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adj", "distid", 
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI", 
