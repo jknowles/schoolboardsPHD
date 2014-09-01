@@ -1629,17 +1629,12 @@ dist_turn <- merge(dist_turn, springVotes[, c(1, 2, 5)],
 
 dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
 
-diagno <- dist_turn[, c("distid", "year", "turnout", "VAP_adj", "fallTurnout", 
-                        "RECTOT_recall", "votesTopTicketSpring",
-                        "topTicketTurnoutSpring")]
-
-
-
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adj", "distid", 
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI", 
                         "CLOSE", "districtwide", "contest", "GovTwoPartyShareDem_recall",
                         "teachShareofVoters", "turnout_overall_werc", "eligvoters_werc", 
-                        "loss_werc", "worst_margin_werc", "WERC_elec")]
+                        "loss_werc", "worst_margin_werc", "WERC_elec", 
+                        "topTicketTurnoutSpring")]
 
 moddat <- na.omit(moddat)
 moddat <- moddat[moddat$year > 2008,]
@@ -1681,8 +1676,18 @@ causal1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all +
 
 causal1$se <- sqrt(diag(vcov(robcov(causal1, cluster = moddat$distid))))
 
-apsrtable(causal1, se = "robust", label="tab:causmod1", 
-          model.names=c("Naive Causal Model"), 
+causal2 <- ols(turnout ~ turnoutLag2 + fallTurnout + topTicketTurnoutSpring + 
+                 VAP_adj + per_white_all + 
+               per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
+               districtwide + contest + RecallPolarization*treatment + 
+               treatment + turnout_overall_werc, 
+              data = moddat, x = TRUE, y = TRUE)
+
+causal2$se <- sqrt(diag(vcov(robcov(causal2, cluster = moddat$distid))))
+
+
+apsrtable(causal1, causal2, se = "robust", label="tab:causmod1", 
+          model.names=c("Naive Causal Model", "Overvote Model"), 
           caption = "Model of Causal Impact of Act 10 on School Board Elections",
           Sweave=FALSE)
 
