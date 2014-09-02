@@ -863,7 +863,7 @@ dist_turn <- dist_turn[!duplicated(dist_turn), ]
 rm(dist_turn.tmp, springVotes.tmp)
 
 plotdat <- subset(dist_turn, select = c("turnout", "topTicketTurnoutSpring", 
-                                        "ImputedFlag", "year"))
+                                        "ImputedFlag", "year", "distid"))
 plotdat$ImputedFlag[is.na(plotdat$ImputedFlag)] <- "Observed"
 plotdat <- na.omit(plotdat)
 centr <- mean(plotdat$turnout)
@@ -879,12 +879,19 @@ plotdat <- plotdat[plotdat$outflag <= 5,]
 plotdat$ImputedFlag <- defac(plotdat$ImputedFlag)
 plotdat$ImputedFlag[plotdat$ImputedFlag == "Imputed2010"] <- "Imputed"
 plotdat$ImputedFlag[plotdat$ImputedFlag == "Observed2010"] <- "Observed"
+plotdat$ImputedFlag <- factor(plotdat$ImputedFlag, levels = c("Imputed", "Observed"))
+plotdat$ImputedFlag <- relevel(plotdat$ImputedFlag, ref = "Imputed")
+# levels(plotdat$ImputedFlag) <- c("Observed", "Imputed")
+plotdat <- plotdat[!duplicated(plotdat[, c(4, 5)]),]
 
-qplot(topTicketTurnoutSpring, turnout, data = plotdat) + 
+mypal <- c("Imputed" = "red", "Observed" = "black")
+
+qplot(topTicketTurnoutSpring, turnout, data = plotdat, color = ImputedFlag) + 
   geom_abline(slope = 1, intercept = 0, linetype = 2) + theme_dpi() + 
+  scale_color_manual(name = "Imputed", values = mypal) + 
   facet_wrap(~year) + scale_y_continuous("School Board Turnout", label = percent) + 
   scale_x_continuous("Top Ticket Turnout", label = percent) + 
-  geom_smooth(method = 'rlm', aes(group = 1), se = FALSE, size = I(1.1))
+  stat_smooth(method = 'rlm', aes(group = 1), se = FALSE, size = 1.1, color = I("blue")) 
 
 @
 
@@ -924,7 +931,7 @@ yearStats <- ddply(plotdat, .(year, ImputedFlag), summarize,
                    sbturnout = mean(turnout), 
                    springturn = mean(topTicketTurnoutSpring))
 yearStats$undervote_per <- yearStats[, 4] / (yearStats[, 3] + yearStats[, 4])
-
+yearStats$overvote_per <- 1 - yearStats$undervote_per
 @
 
 % Number of times a district overvotes
