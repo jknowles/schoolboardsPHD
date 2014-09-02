@@ -836,7 +836,7 @@ an election every spring:
   \item 2007 - State Supreme Court Race
   \item 2008 - State Supreme Court Race * (alternative presidential primary)
   \item 2009 - State Superintendent of Public Instruction
-  \item 2010 - None. Wisconsin Circuit Courts in Majority of Jurisdictions
+  \item 2010 - None. Wisconsin Appeals Courts (3 of 4)
   \item 2011 - State Supreme Court Race
   \item 2012 - Presidential Preference Primary
 \end{itemize}
@@ -851,6 +851,16 @@ dist_turn <- merge(dist_turn, springVotes,
                    by = c("distid", "year"), all.x = TRUE)
 
 dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
+
+springVotes.tmp <- springVotes[springVotes$year == 2020, ]
+springVotes.tmp$year <- 2010
+dist_turn.tmp <- merge(dist_turn[, 1:25], springVotes.tmp, 
+                   by = c("distid", "year"))
+dist_turn.tmp$topTicketTurnoutSpring <- dist_turn.tmp$votesTopTicketSpring / dist_turn.tmp$VAP_adj
+
+dist_turn <- rbind(dist_turn, dist_turn.tmp)
+dist_turn <- dist_turn[!duplicated(dist_turn), ]
+rm(dist_turn.tmp, springVotes.tmp)
 
 plotdat <- subset(dist_turn, select = c("turnout", "topTicketTurnoutSpring", 
                                         "ImputedFlag", "year"))
@@ -903,8 +913,17 @@ and school board turnout.
 %TODO: citation for topticket races
 
 <<undervotetab>>=
-dist_turn$vote_diff <- dist_turn$topTicketTurnoutSpring - dist_turn$turnout
-# drop outliers
+plotdat$vote_diff <- plotdat$topTicketTurnoutSpring - plotdat$turnout
+
+length(plotdat$vote_diff[plotdat$vote_diff < 0]) / nrow(plotdat)
+length(plotdat$vote_diff[plotdat$vote_diff > 0]) / nrow(plotdat)
+
+yearStats <- ddply(plotdat, .(year, ImputedFlag), summarize, 
+                   overvote = length(vote_diff[vote_diff < 0]), 
+                   undervote = length(vote_diff[vote_diff > 0]), 
+                   sbturnout = mean(turnout), 
+                   springturn = mean(topTicketTurnoutSpring))
+yearStats$undervote_per <- yearStats[, 4] / (yearStats[, 3] + yearStats[, 4])
 
 @
 
