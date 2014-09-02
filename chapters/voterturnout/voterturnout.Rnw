@@ -1570,7 +1570,10 @@ rm(dist.tmp, dat, cand, VAP_dist, distAttr, dvp, errors, govTurn, presTurn, race
    naive1, naive2, mixedMod1, mixedMod2, mixedMod3)
 @
 
+\subsection{Under and Over Vote}
 
+Another dependent variable to look at is school board vote independent of turnout 
+higher up the ticket. 
 
 \subsection{Exogenous Shocks}
 
@@ -1629,14 +1632,13 @@ springVotes$VotesCast <- NULL
 dist_turn <- merge(dist_turn, springVotes[, c(1, 2, 5)], 
                    by = c("distid", "year"))
 
-dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
-
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adj", "distid", 
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "PCI", 
                         "CLOSE", "districtwide", "contest", "GovTwoPartyShareDem_recall",
                         "teachShareofVoters", "turnout_overall_werc", "eligvoters_werc", 
                         "loss_werc", "worst_margin_werc", "WERC_elec", 
                         "topTicketTurnoutSpring")]
+
 
 moddat <- na.omit(moddat)
 moddat <- moddat[moddat$year > 2008,]

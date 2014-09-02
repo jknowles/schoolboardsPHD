@@ -825,7 +825,41 @@ It is difficult to draw conclusions about school board voter turnout separate
 from the lower turnout more generally associated with non-partisan offices and 
 Wisconsin's spring non-partisan election specifically. One way to approach this 
 is to look at the undervote for school board office relative to the top ticket 
-race in spring elections. 
+race in spring elections. In the period under study, the top ticket statewide in the 
+spring elections was varied. 
+
+
+<<undervoting>>=
+load("../../data/cache/springElectionVotes.rda")
+# load("data/cache/springElectionVotes.rda")
+springVotes$votesTopTicketSpring <- springVotes$VotesCast
+springVotes$VotesCast <- NULL
+dist_turn <- merge(dist_turn, springVotes, 
+                   by = c("distid", "year"))
+
+dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
+
+plotdat <- subset(dist_turn, select = c("turnout", "topTicketTurnoutSpring", 
+                                        "ImputedFlag", "year"))
+plotdat$ImputedFlag[is.na(plotdat$ImputedFlag)] <- "Observed"
+plotdat <- na.omit(plotdat)
+centr <- mean(plotdat$turnout)
+stddev <- sd(plotdat$turnout)
+plotdat$outflag <- (plotdat$turnout - centr) / stddev
+plotdat <- plotdat[plotdat$outflag <= 5,]
+
+qplot(topTicketTurnoutSpring, turnout, data = plotdat, shape = ImputedFlag, 
+      color = factor(year)) + 
+  geom_abline(slope = 1, intercept = 0, linetype = 2) + theme_dpi()
+
+
+qplot(topTicketTurnoutSpring, turnout, data = plotdat, shape = ImputedFlag, 
+      color = factor(year)) + 
+  geom_abline(slope = 1, intercept = 0, linetype = 2) + theme_dpi() + 
+  facet_wrap(~year)
+
+@
+
 
 \section{Putting School Board Elections in Context}
 
