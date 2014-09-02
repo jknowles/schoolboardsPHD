@@ -18,8 +18,8 @@ library(scales)
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
-iNum <- function(x){prettyNum(as.character(x), big.mark = ",", digits = 3)}
-iPer <- function(x){paste0(prettyNum(as.character(x), big.mark = ",", digits = 1),"\\%")}
+iNum <- function(x){as.character(prettyNum(x, big.mark = ",", digits = 3))}
+iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", digits = 3)),"\\%")}
 # gpclibPermit()
 #setwd("../../../MasterText")
 #elec <- read.csv("data/electionpartisanshippanel.csv")
@@ -819,23 +819,36 @@ qplot(year, turnout, data = dist_turn[dist_turn$turnout < 0.75 & !is.na(dist_tur
 
 \clearpage
 
-\subsection{Undervote}
+\subsection{Undervote and Overvote}
 
 It is difficult to draw conclusions about school board voter turnout separate 
 from the lower turnout more generally associated with non-partisan offices and 
 Wisconsin's spring non-partisan election specifically. One way to approach this 
 is to look at the undervote for school board office relative to the top ticket 
-race in spring elections. In the period under study, the top ticket statewide in the 
-spring elections was varied. 
+race in those spring elections. For the 2007-2012 period, I estimate the top ticket 
+turnout in each school district. Importantly, in this period, several different 
+office types were the top ticket due to the pattern of statewide office terms 
+in Wisconsin. These consist of primarily state supreme court races, but as there 
+seven justices elected to ten-year terms, the state supreme court does not have 
+an election every spring: 
+
+\begin{itemize}
+  \item 2007 - State Supreme Court Race
+  \item 2008 - State Supreme Court Race * (alternative presidential primary)
+  \item 2009 - State Superintendent of Public Instruction
+  \item 2010 - None. Wisconsin Circuit Courts in Majority of Jurisdictions
+  \item 2011 - State Supreme Court Race
+  \item 2012 - Presidential Preference Primary
+\end{itemize}
 
 
-<<undervoting>>=
+<<undervoting, fig.cap="Spring Turnout For Top Ticket and School Board Compared">>=
 load("../../data/cache/springElectionVotes.rda")
 # load("data/cache/springElectionVotes.rda")
 springVotes$votesTopTicketSpring <- springVotes$VotesCast
 springVotes$VotesCast <- NULL
 dist_turn <- merge(dist_turn, springVotes, 
-                   by = c("distid", "year"))
+                   by = c("distid", "year"), all.x = TRUE)
 
 dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
 
@@ -848,18 +861,57 @@ stddev <- sd(plotdat$turnout)
 plotdat$outflag <- (plotdat$turnout - centr) / stddev
 plotdat <- plotdat[plotdat$outflag <= 5,]
 
-qplot(topTicketTurnoutSpring, turnout, data = plotdat, shape = ImputedFlag, 
-      color = factor(year)) + 
-  geom_abline(slope = 1, intercept = 0, linetype = 2) + theme_dpi()
+# qplot(topTicketTurnoutSpring, turnout, data = plotdat, shape = ImputedFlag, 
+#       color = factor(year)) + 
+#   geom_abline(slope = 1, intercept = 0, linetype = 2) + theme_dpi()
+# 
 
+plotdat$ImputedFlag <- defac(plotdat$ImputedFlag)
+plotdat$ImputedFlag[plotdat$ImputedFlag == "Imputed2010"] <- "Imputed"
+plotdat$ImputedFlag[plotdat$ImputedFlag == "Observed2010"] <- "Observed"
 
-qplot(topTicketTurnoutSpring, turnout, data = plotdat, shape = ImputedFlag, 
-      color = factor(year)) + 
+qplot(topTicketTurnoutSpring, turnout, data = plotdat) + 
   geom_abline(slope = 1, intercept = 0, linetype = 2) + theme_dpi() + 
-  facet_wrap(~year)
+  facet_wrap(~year) + scale_y_continuous("School Board Turnout", label = percent) + 
+  scale_x_continuous("Top Ticket Turnout", label = percent) + 
+  geom_smooth(method = 'rlm', aes(group = 1), se = FALSE, size = I(1.1))
 
 @
 
+If top ticket races drive voter turnout, then examining the degree to which school 
+board turnout leads or lags top ticket races may provide some insight into the 
+political activity in school board races independent of such races. To do this, 
+I apply the same method described in Section \ref{subsec:turnout} to estimate school district 
+level voter turnout, instead using records from spring election MCD votes. This 
+method poses a few different complications when applied to the spring election. 
+First, spring election records provided by the Wisconsin GAB use inconsistent 
+reporting units depending on the top ticket of the race. This means that first 
+the reporting units must be aggregated into MCDs correctly, before MCDs can be 
+assigned to school districts. Second, in the spring of 2010 there was no statewide 
+top ticket -- instead \Sexpr{iPer((length(springVotes$ImputedFlag[springVotes$ImputedFlag=="Observed2010" & springVotes$year == 2010])/length(springVotes$year[springVotes$year==2010]))*100)} of jurisdictions 
+had a top ticket race of Wisconsin Circuit Court judges. The other jurisdictions 
+had only local elections on the ballot. To avoid losing these observations, I impute 
+the 2010 estimated turnout as if the top ticket was a state supreme court race or 
+election for state superintendent.\footnote{Imputation was done using model averaging 
+of three k-nearest-neighbor models using votes cast in other spring elections as the 
+primary predictors.} I expect the majority of Wisconsin districts to exhibit an 
+undervote in school board elections relative to these top ticket races. 
+
+Figure \ref{fig:undervoting} shows the relationship between top ticket turnout 
+and school board turnout. 
+
+%TODO: citation for topticket races
+
+<<undervotetab>>=
+dist_turn$vote_diff <- dist_turn$topTicketTurnoutSpring - dist_turn$turnout
+# drop outliers
+
+@
+
+% Number of times a district overvotes
+% Overvvote size
+% Percentage of overvotes overall
+% Percentage of undervote overall
 
 \section{Putting School Board Elections in Context}
 
