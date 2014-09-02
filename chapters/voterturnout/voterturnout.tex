@@ -954,7 +954,7 @@ clustered structure of the district terms.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Sun, Aug 24, 2014 - 5:11:03 PM
+% Date and time: Tue, Sep 02, 2014 - 4:05:03 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Lagged Turnout} 
   \label{tab:meTurnout} 
@@ -1065,7 +1065,7 @@ I turn to partial pooling to resolve this issue.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Sun, Aug 24, 2014 - 5:11:05 PM
+% Date and time: Tue, Sep 02, 2014 - 4:05:05 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Competitiveness} 
   \label{tab:meClose} 
@@ -1164,7 +1164,7 @@ share of the electorate has an effect on the turnout.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Sun, Aug 24, 2014 - 5:11:07 PM
+% Date and time: Tue, Sep 02, 2014 - 4:05:07 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Staff Influence} 
   \label{tab:meInf} 
@@ -1210,6 +1210,11 @@ The effect is the same in the partially pooled model.
 
 
 
+\subsection{Under and Over Vote}
+
+Another dependent variable to look at is school board vote independent of turnout 
+higher up the ticket. 
+
 \subsection{Exogenous Shocks}
 
 Using the election of Governor Walker and passage of Act 10 as an exogenous shock that 
@@ -1219,50 +1224,52 @@ test the causal impact on turnout.
 \begin{table}[!ht]
 \caption{Model of Causal Impact of Act 10 on School Board Elections}
 \label{tab:causmod1} 
-\begin{tabular}{ l D{.}{.}{2} } 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2} } 
 \hline 
-  & \multicolumn{ 1 }{ c }{ Naive Causal Model } \\ \hline
- %                              & Naive Causal Model\\ 
-Intercept                      & 5.80              \\ 
-                               & (23.15)           \\ 
-turnoutLag2                    & 29.44 ^*          \\ 
-                               & (5.30)            \\ 
-fallTurnout                    & 9.99 ^*           \\ 
-                               & (4.42)            \\ 
-VAP\_adj                      & -2.78 ^*          \\ 
-                               & (0.29)            \\ 
-per\_white\_all              & 0.36              \\ 
-                               & (3.93)            \\ 
-per65o                         & 8.69              \\ 
-                               & (9.55)            \\ 
-PerBachelorOrAbove             & 9.15              \\ 
-                               & (6.53)            \\ 
-OOH\_share                    & -2.48             \\ 
-                               & (3.00)            \\ 
-PCI                            & 2.46              \\ 
-                               & (2.48)            \\ 
-CLOSE=Not Competitive          & -2.22 ^*          \\ 
-                               & (0.73)            \\ 
-districtwide=1                 & -0.47             \\ 
-                               & (0.53)            \\ 
-contest=Open Contested         & -1.58             \\ 
-                               & (1.05)            \\ 
-contest=Uncontested            & -3.94 ^*          \\ 
-                               & (0.65)            \\ 
-RecallPolarization             & -7.66 ^*          \\ 
-                               & (3.89)            \\ 
-treatment                      & 5.46 ^*           \\ 
-                               & (0.79)            \\ 
-turnout\_overall\_werc       & 0.84              \\ 
-                               & (0.62)            \\ 
-RecallPolarization * treatment & 27.88 ^*          \\ 
-                               & (5.63)             \\
- $N$                            & 1168              \\ 
-$R^2$                          & 0.43              \\ 
-adj. $R^2$                     & 0.43              \\ 
-Resid. sd                      & 7.77               \\ \hline
- \multicolumn{2}{l}{\footnotesize{Robust standard errors in parentheses}}\\
-\multicolumn{2}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+  & \multicolumn{ 1 }{ c }{ Naive Causal Model } & \multicolumn{ 1 }{ c }{ Overvote Model } \\ \hline
+ %                              & Naive Causal Model & Overvote Model    \\ 
+Intercept                      & 5.80               & -2.80             \\ 
+                               & (23.15)            & (20.30)           \\ 
+turnoutLag2                    & 29.44 ^*           & 19.61 ^*          \\ 
+                               & (5.30)             & (5.17)            \\ 
+fallTurnout                    & 9.99 ^*            & -5.34             \\ 
+                               & (4.42)             & (3.67)            \\ 
+VAP\_adj                      & -2.78 ^*           & -2.25 ^*          \\ 
+                               & (0.29)             & (0.27)            \\ 
+per\_white\_all              & 0.36               & -0.16             \\ 
+                               & (3.93)             & (2.88)            \\ 
+per65o                         & 8.69               & -13.34            \\ 
+                               & (9.55)             & (8.89)            \\ 
+PerBachelorOrAbove             & 9.15               & 3.68              \\ 
+                               & (6.53)             & (6.39)            \\ 
+OOH\_share                    & -2.48              & -4.13             \\ 
+                               & (3.00)             & (2.81)            \\ 
+PCI                            & 2.46               & 3.32              \\ 
+                               & (2.48)             & (2.18)            \\ 
+CLOSE=Not Competitive          & -2.22 ^*           & -2.52 ^*          \\ 
+                               & (0.73)             & (0.60)            \\ 
+districtwide=1                 & -0.47              & -0.29             \\ 
+                               & (0.53)             & (0.47)            \\ 
+contest=Open Contested         & -1.58              & -1.59             \\ 
+                               & (1.05)             & (0.84)            \\ 
+contest=Uncontested            & -3.94 ^*           & -2.68 ^*          \\ 
+                               & (0.65)             & (0.53)            \\ 
+RecallPolarization             & -7.66 ^*           & -2.47             \\ 
+                               & (3.89)             & (3.15)            \\ 
+treatment                      & 5.46 ^*            & -1.13             \\ 
+                               & (0.79)             & (0.68)            \\ 
+turnout\_overall\_werc       & 0.84               & 0.93              \\ 
+                               & (0.62)             & (0.60)            \\ 
+RecallPolarization * treatment & 27.88 ^*           & 12.60 ^*          \\ 
+                               & (5.63)             & (4.11)            \\ 
+topTicketTurnoutSpring         &                    & 65.03 ^*          \\ 
+                               &                    & (2.88)             \\
+ $N$                            & 1168               & 1168              \\ 
+$R^2$                          & 0.43               & 0.64              \\ 
+adj. $R^2$                     & 0.43               & 0.64              \\ 
+Resid. sd                      & 7.77               & 6.17               \\ \hline
+ \multicolumn{3}{l}{\footnotesize{Robust standard errors in parentheses}}\\
+\multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
  \end{table}
 

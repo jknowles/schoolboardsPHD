@@ -18,8 +18,10 @@ library(scales)
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
-iNum <- function(x){as.character(prettyNum(x, big.mark = ",", digits = 3))}
+iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
+                                           digits = 3)}
 iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", digits = 3)),"\\%")}
+iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", digits = 3)),"%")}
 # gpclibPermit()
 #setwd("../../../MasterText")
 #elec <- read.csv("data/electionpartisanshippanel.csv")
@@ -919,7 +921,7 @@ and school board turnout.
 
 %TODO: citation for topticket races
 
-<<undervotetab>>=
+<<undervotetab, results='asis', echo=FALSE>>=
 plotdat$vote_diff <- plotdat$topTicketTurnoutSpring - plotdat$turnout
 
 length(plotdat$vote_diff[plotdat$vote_diff < 0]) / nrow(plotdat)
@@ -932,12 +934,30 @@ yearStats <- ddply(plotdat, .(year, ImputedFlag), summarize,
                    springturn = mean(topTicketTurnoutSpring))
 yearStats$undervote_per <- yearStats[, 4] / (yearStats[, 3] + yearStats[, 4])
 yearStats$overvote_per <- 1 - yearStats$undervote_per
+
+
+names(yearStats) <- c("Year", "Impute?", "Districts Overvoting", "Districts Undervoting", 
+                   "Avg.SB Turnout", "Avg.Top Turnout", 
+                   "% Districts Undervote", "% Districts Overvote")
+yearStats[, 5] <- iPer2(yearStats[,5]*100)
+yearStats[, 6] <- iPer2(yearStats[,6]*100)
+yearStats[, 7] <- iPer2(yearStats[,7]*100)
+yearStats[, 8] <- iPer2(yearStats[,8]*100)
+
+
+yearStats <- xtable(yearStats, label="tab:undervotestats", 
+             caption = "Overvote and Undervote in Spring Elections." )
+align(yearStats) <- c('p{.15in}','p{.15in}','p{.3in}',  'p{.5in}','p{.5in}','p{.5in}','p{.5in}',
+                   'p{.5in}','p{.5in}')
+
+print(yearStats, 
+      include.rownames = FALSE, 
+      format.args = list(big.mark = ",", decimal.mark = "."), 
+      size = "footnotesize")
+
 @
 
-% Number of times a district overvotes
-% Overvvote size
-% Percentage of overvotes overall
-% Percentage of undervote overall
+
 
 \section{Putting School Board Elections in Context}
 

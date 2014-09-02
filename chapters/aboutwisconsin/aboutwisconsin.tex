@@ -165,7 +165,7 @@ special elections. Table \ref{tab:electype} shows the number of races of each ty
 for the period between 2007 and 2012.
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Mon Aug 11 00:22:29 2014
+% Tue Sep 02 15:58:19 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
@@ -269,17 +269,17 @@ list to infer their incumbency status.
 
 
 
-In general elections, 57.525\% 
+In general elections, 57.5\% 
 of all races featured at least one incumbent. However, a more important figure is 
 identifying how many races featured at least one serious challenger against an incumbent. 
-72.225\% of Wisconsin school board general elections featured 
+72.2\% of Wisconsin school board general elections featured 
 this pattern of contestation. In order to qualify as a serious challenger, a candidate 
 needed to garner at least 30 votes -- which represents 1.0438 
 of the votes cast in the median school board race. This represents a conservative 
 estimate, because in some cases a write-in candidate may garner 30 votes. % elaborate
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Mon Aug 11 00:22:29 2014
+% Tue Sep 02 15:58:19 2014
 \begin{table}[ht]
 \centering
 {\small
@@ -465,7 +465,7 @@ of votes cast and voter turnout statewide to the statewide estimates derived by
 rebuilding voter data at the district level. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Mon Aug 11 00:22:29 2014
+% Tue Sep 02 15:58:20 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
@@ -516,7 +516,7 @@ where a school board seat is chosen district wide. Figure \ref{fig:turnoutgraph}
 shows that district wide school board races feature an average turnout below 25\%. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Mon Aug 11 00:22:30 2014
+% Tue Sep 02 15:58:21 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
@@ -579,13 +579,89 @@ available.
 
 \clearpage
 
-\subsection{Undervote}
+\subsection{Undervote and Overvote}
 
 It is difficult to draw conclusions about school board voter turnout separate 
 from the lower turnout more generally associated with non-partisan offices and 
 Wisconsin's spring non-partisan election specifically. One way to approach this 
 is to look at the undervote for school board office relative to the top ticket 
-race in spring elections. 
+race in those spring elections. For the 2007-2012 period, I estimate the top ticket 
+turnout in each school district. Importantly, in this period, several different 
+office types were the top ticket due to the pattern of statewide office terms 
+in Wisconsin. These consist of primarily state supreme court races, but as there 
+seven justices elected to ten-year terms, the state supreme court does not have 
+an election every spring: 
+
+\begin{itemize}
+  \item 2007 - State Supreme Court Race
+  \item 2008 - State Supreme Court Race * (alternative presidential primary)
+  \item 2009 - State Superintendent of Public Instruction
+  \item 2010 - None. Wisconsin Appeals Courts (3 of 4)
+  \item 2011 - State Supreme Court Race
+  \item 2012 - Presidential Preference Primary
+\end{itemize}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-undervoting} \caption[Spring Turnout For Top Ticket and School Board Compared]{Spring Turnout For Top Ticket and School Board Compared\label{fig:undervoting}}
+\end{figure}
+
+
+\end{knitrout}
+
+If top ticket races drive voter turnout, then examining the degree to which school 
+board turnout leads or lags top ticket races may provide some insight into the 
+political activity in school board races independent of such races. To do this, 
+I apply the same method described in Section \ref{subsec:turnout} to estimate school district 
+level voter turnout, instead using records from spring election MCD votes. This 
+method poses a few different complications when applied to the spring election. 
+First, spring election records provided by the Wisconsin GAB use inconsistent 
+reporting units depending on the top ticket of the race. This means that first 
+the reporting units must be aggregated into MCDs correctly, before MCDs can be 
+assigned to school districts. Second, in the spring of 2010 there was no statewide 
+top ticket -- instead 66.5\% of jurisdictions 
+had a top ticket race of Wisconsin Circuit Court judges. The other jurisdictions 
+had only local elections on the ballot. To avoid losing these observations, I impute 
+the 2010 estimated turnout as if the top ticket was a state supreme court race or 
+election for state superintendent.\footnote{Imputation was done using model averaging 
+of three k-nearest-neighbor models using votes cast in other spring elections as the 
+primary predictors.} I expect the majority of Wisconsin districts to exhibit an 
+undervote in school board elections relative to these top ticket races. 
+
+Figure \ref{fig:undervoting} shows the relationship between top ticket turnout 
+and school board turnout. 
+
+%TODO: citation for topticket races
+
+[1] 0.1892
+[1] 0.8102
+% latex table generated in R 3.1.0 by xtable 1.7-3 package
+% Tue Sep 02 15:58:29 2014
+\begin{table}[ht]
+\centering
+{\footnotesize
+\begin{tabular}{p{.15in}p{.3in}p{.5in}p{.5in}p{.5in}p{.5in}p{.5in}p{.5in}}
+  \hline
+Year & Impute? & Districts Overvoting & Districts Undervoting & Avg.SB Turnout & Avg.Top Turnout & \% Districts Undervote & \% Districts Overvote \\ 
+  \hline
+2007 & Observed &  48 & 246 & 18.7\% & 21.9\% & 83.7\% & 16.3\% \\ 
+  2008 & Observed &  52 & 243 & 17.1\% & 19.7\% & 82.4\% & 17.6\% \\ 
+  2009 & Observed &  47 & 247 & 17.8\% & 20.8\% & 84\% & 16\% \\ 
+  2010 & Imputed &  27 &  69 & 11.5\% & 15.9\% & 71.9\% & 28.1\% \\ 
+  2010 & Observed &  90 & 108 & 14.3\% & 13.4\% & 54.5\% & 45.5\% \\ 
+  2011 & Observed &  30 & 268 & 27.6\% & 35.2\% & 89.9\% & 10.1\% \\ 
+  2012 & Observed &  42 & 258 & 21.2\% & 25.9\% & 86\% & 14\% \\ 
+   \hline
+\end{tabular}
+}
+\caption{Overvote and Undervote in Spring Elections.} 
+\label{tab:undervotestats}
+\end{table}
+
+
+
 
 \section{Putting School Board Elections in Context}
 
@@ -642,7 +718,7 @@ size, wealth, performance, and student and household demographics.
 [1] "Total deviations: 99"
 [1] "Check districts: 70|105|147|2450|203|231|245|434|2240|665|700|903|910|1029|1120|1246|1421|1309|1491|1499|1631|1659|1687|1890|1939|2009|2420|2443|2523|2527|2604|2611|2632|2639|2446|2702|1376|2800|2891|3150|3171|3276|3304|3325|3409|3434|3479|3549|3459|3619|3633|3668|3934|3941|3948|616|4067|4144|4228|4235|4151|4270|4515|4557|4578|4627|4634|4686|4820|3122|4963|5068|5124|5278|5355|5467|5586|5593|5614|5642|3510|5780|5810|5817|5901|5985|6113|6083|6118|6181|6216|6237|6244|6384|6426|6470|6482|6615|6713"
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Mon Aug 11 00:22:46 2014
+% Tue Sep 02 15:58:44 2014
 \begin{table}[ht]
 \centering
 {\scriptsize
@@ -714,7 +790,7 @@ residents. Contrast this with \ref{tab:big5} where the student population is 200
 300 times larger than the smallest districts. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Mon Aug 11 00:22:46 2014
+% Tue Sep 02 15:58:44 2014
 \begin{table}[ht]
 \centering
 {\scriptsize
@@ -746,7 +822,7 @@ Total Population & 711.00 & 677.09 & 512.92 & 529.94 & 354.00 & 677.53 \\
 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Mon Aug 11 00:22:46 2014
+% Tue Sep 02 15:58:44 2014
 \begin{table}[ht]
 \centering
 {\scriptsize
