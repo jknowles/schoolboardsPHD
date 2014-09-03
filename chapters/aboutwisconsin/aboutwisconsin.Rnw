@@ -822,6 +822,7 @@ qplot(year, turnout, data = dist_turn[dist_turn$turnout < 0.75 & !is.na(dist_tur
 \clearpage
 
 \subsection{Undervote and Overvote}
+\label{subsec:undervote}
 
 It is difficult to draw conclusions about school board voter turnout separate 
 from the lower turnout more generally associated with non-partisan offices and 
