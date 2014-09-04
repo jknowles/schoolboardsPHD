@@ -1346,8 +1346,10 @@ mixedMod1b <- lmer(turnout ~ turnoutLag2 + turnoutLag2 * VAP_adj +  fallTurnout 
 # # boo01 <- bootMer(mixedMod1, mySumm, nsim = 500) 
 # # bCI.1 <- boot.ci(boo01, index=2, type=c("norm", "basic", "perc"))# beta
 library(stargazer)
+
+tabnote <- "Model includes both year and district random effects modeled as intercepts."
 stargazer(mixedMod1b, title = "Partial Pooling Model of Lagged Turnout", style = "apsr", 
-            label = "tab:meTurnout")
+            label = "tab:meTurnout", notes = tabnote)
 
 # summary(mixedMod1)
 @
@@ -1357,9 +1359,7 @@ found in the models in Table \ref{tab:lagmods2} -- prior turnout and fall turnou
 are predictive of current turnout. This suggests that voters in school board 
 elections are indeed habit forming. 
 
-<<ranefplot1>>=
-# dotplot(ranef(mixedMod1, postVar=TRUE))
-@
+
 
 <<laggedTurnSens, results='hide'>>=
 library(RLRsim)
@@ -1377,6 +1377,13 @@ exactRLRT(m.slope, mixedMod1b, m0)
 
 @
 
+The proper model of the random effects is important. Using the \texttt{RLRsim} package 
+in R, I test the specification of the random effects using an exact Likelihood 
+ratio test and an exact restricted Likelihood ratio test \cite{RLRsim}. 
+
+<<ranefplot1>>=
+# dotplot(ranef(mixedMod1, postVar=TRUE))
+@
 
 \subsection{Electorate Size and Margin of Victory}
 
