@@ -1366,7 +1366,8 @@ library(RLRsim)
 m0 <- lm(turnout ~ turnoutLag2 + turnoutLag2 * VAP_adj +  fallTurnout + 
                     VAP_adj + per_white_all +
                    per65o + PerBachelorOrAbove + OOH_share + 
-                   PCI + districtwide +  contest, data = moddat) # fit the null model
+                   PCI + districtwide +  contest, 
+         data = moddat) # fit the null model
 
 exactLRT(m = refitML(mixedMod1), m0 = m0)
 
@@ -1378,8 +1379,15 @@ exactRLRT(m.slope, mixedMod1b, m0)
 @
 
 The proper model of the random effects is important. Using the \texttt{RLRsim} package 
-in R, I test the specification of the random effects using an exact Likelihood 
-ratio test and an exact restricted Likelihood ratio test \cite{RLRsim}. 
+in R, I test the specification of the random effects using an exact likelihood 
+ratio test and an exact restricted likelihood ratio test \cite{RLRsim}. The first 
+test is used to examine whether the random effects are the appropriate specification. 
+The restricted likelihood ratio test is used to compare two nested models with 
+different random effect specifications to determine the appropriate specification. 
+In this case, a model with random effects for district and year was compared against 
+a model with random effects only for district. In both cases, the additional 
+random effect terms significantly improve model fit and in Table \ref{tab:meTurnout} 
+this final model is what is shown. 
 
 <<ranefplot1>>=
 # dotplot(ranef(mixedMod1, postVar=TRUE))
