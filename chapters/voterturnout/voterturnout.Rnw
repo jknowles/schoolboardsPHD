@@ -1191,8 +1191,7 @@ Model 1 represents a standard pooled regression with clustered standard errors t
 correct for the violation of the IID assumptions of OLS. The key independent variable is 
 twice lagged turnout for school board elections, which represents our test of habit 
 forming in school board elections. %RESULTS OF ONCE LAGGED AVAILALE IN APPENDIX 
-Control variables 
-included are some standard demographic predictors of voter turnout including per 
+Control variables included are some standard demographic predictors of voter turnout including per 
 capita income, education level, percent of population over 65, percent of population 
 that is white. Additionally, a school district specific control, the share of residents 
 in owner-occupied housing is included to reflect the tight coupling between school boards 
@@ -1278,58 +1277,7 @@ appA1 <- apsrtable(naive2, turn21, turn22, turn23, se="robust", label="tab:lagmo
 
 <<model2, results ='asis'>>=
 library(lme4)
-# 
-# apsrtableSummary.merMod <- function (object, ...) {
-#   obj <- summary(object)
-#   fcoef <- coef(obj)
-#   out <- list()
-#   useScale <- obj$useScale
-#   corF <- vcov(object)@factors$correlation
-#   coefs <- cbind(fcoef[, 1:2])
-#   if (length (fcoef) > 0){
-#       if (obj$useScale == FALSE) {
-#         coefs <- coefs[, 1:2, drop = FALSE]
-#         out$z.value <- coefs[, 1]/coefs[, 2]
-#         out$p.value <- 2 * pnorm(abs(out$z.value), lower = FALSE)
-#         coefs <- cbind(coefs,
-#                        `z value` = out$z.value,
-#                        `Pr(>|z|)` = out$p.value)
-#       }
-#       else {
-#         out$t.value <- coefs[, 1]/coefs[, 2]
-#         coefs <- cbind(coefs, `t value` = out$t.value)
-#       }
-#     dimnames(coefs)[[2]][1:2] <- c("coef.est", "coef.se")
-# #       if(detail){
-# #         pfround (coefs, digits)
-# #       }
-# #       else{
-# #         pfround(coefs[,1:2], digits)
-# #     }
-#   }
-#   out$coef <- coefs[,"coef.est"]
-#   out$se <- coefs[,"coef.se"]
-# #   vc <- as.matrix(VarCorr(object, digits))
-# #   vc[,1] <-
-# #   print (vc[,c(1:2,4:ncol(vc))], quote=FALSE)
-# 
-#   out$ngrps <- lapply(object@flist, function(x) length(levels(x)))
-#   ## Model fit statistics.
-#   ll <- logLik(object)[1]
-#   deviance <- deviance(object)
-#   AIC <- AIC(object)
-#   BIC <- BIC(object)
-#   N <- as.numeric(length(obj$residuals))
-#   G <- as.numeric(obj$ngrps)
-#   sumstat <- c(logLik = ll, deviance = deviance, AIC = AIC,
-#                BIC = BIC, N = N, Groups = G)
-# 
-#   ## Return model summary.
-#   list(coef = obj$coefficients, sumstat = sumstat,
-#        contrasts = attr(model.matrix(object), "contrasts"),
-#        xlevels = NULL, call = object@call)
-# }
-# 
+
 mixedMod1 <- lmer(turnout ~ turnoutLag2 + turnoutLag2 * VAP_adj +  fallTurnout + 
                     VAP_adj + per_white_all +
                    per65o + PerBachelorOrAbove + OOH_share + 
@@ -1354,12 +1302,6 @@ stargazer(mixedMod1b, title = "Partial Pooling Model of Lagged Turnout", style =
 # summary(mixedMod1)
 @
 
-The mixed effect model in Table \ref{tab:meTurnout} confirms largely what was 
-found in the models in Table \ref{tab:lagmods2} -- prior turnout and fall turnout 
-are predictive of current turnout. This suggests that voters in school board 
-elections are indeed habit forming. 
-
-
 
 <<laggedTurnSens, results='hide'>>=
 library(RLRsim)
@@ -1369,7 +1311,7 @@ m0 <- lm(turnout ~ turnoutLag2 + turnoutLag2 * VAP_adj +  fallTurnout +
                    PCI + districtwide +  contest, 
          data = moddat) # fit the null model
 
-exactLRT(m = refitML(mixedMod1), m0 = m0)
+exactLRT(m = mixedMod1, m0 = m0)
 
 # Test for year specific slopes
 m.slope <- update(mixedMod1b, . ~ . - (1|year))
@@ -1389,8 +1331,15 @@ a model with random effects only for district. In both cases, the additional
 random effect terms significantly improve model fit and in Table \ref{tab:meTurnout} 
 this final model is what is shown. 
 
-<<ranefplot1>>=
-# dotplot(ranef(mixedMod1, postVar=TRUE))
+The mixed effect model in Table \ref{tab:meTurnout} confirms largely what was 
+found in the models in Table \ref{tab:lagmods2} -- prior turnout and fall turnout 
+are predictive of current turnout. This suggests that voters in school board 
+elections are indeed habit forming. 
+
+
+<<coefficients1>>=
+#library(coefplot)
+#coefplot(mixedMod1b, intercept = FALSE) + theme_dpi()
 @
 
 \subsection{Electorate Size and Margin of Victory}
@@ -1736,17 +1685,23 @@ m.slope <- update(undvote1, . ~ . - (1|year))
 m0 <- update(undvote1, . ~ . - (1|distid))
 exactRLRT(m.slope, undvote1, m0)
 
-
+stargazer(undvote1, title = "Partial Pooling Model of School Board Undervote", 
+          style = "apsr", 
+            label = "tab:meInf")
 
 @
+
+Let's do some interpretation of the undervote. 
 
 \subsection{Exogenous Shocks}
 
 Using the election of Governor Walker and passage of Act 10 as an exogenous shock that 
 increased the relevance and power of school boards, the following models seek to 
-test the causal impact on turnout. 
+test the causal impact on turnout. In Figure \ref{fig:walkerplot} I examine the 
+relationship between partisan polarization and turnout before and after the passage 
+of Act 10. 
 
-<<walkerDummy, results='asis', echo = FALSE>>=
+<<walkerDataPrep, results='asis', echo = FALSE>>=
 ## Grab Walker recall results
 
 load("../../data/cache/WalkerRecall.rda")
@@ -1801,7 +1756,7 @@ moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_ad
                         "CLOSE", "districtwide", "contest", "GovTwoPartyShareDem_recall",
                         "teachShareofVoters", "turnout_overall_werc", "eligvoters_werc", 
                         "loss_werc", "worst_margin_werc", "WERC_elec", 
-                        "topTicketTurnoutSpring")]
+                        "topTicketTurnoutSpring", "turnoutDiff")]
 
 moddat <- na.omit(moddat)
 moddat <- moddat[moddat$year > 2008,]
@@ -1834,7 +1789,22 @@ moddat$RecallPolarization <- abs(moddat$GovTwoPartyShareDem_recall - 0.5)
 dd <<- datadist(moddat)
 options(datadist="dd")
 
+@
 
+<<walkerplot, fig.cap="Polarization and Turnout Before and After Act 10">>=
+qplot(RecallPolarization, turnout/100, data = moddat) + geom_smooth(method = "lm") + 
+  facet_wrap(~year) + scale_x_continuous(label = percent) + 
+  scale_y_continuous(label = percent) +
+  theme_dpi()
+
+# qplot(RecallPolarization, turnoutDiff, data = moddat) + geom_smooth(method = "lm") + 
+#   facet_wrap(~year) + scale_x_continuous(label = percent) + 
+#   scale_y_continuous(label = percent) +
+#   theme_dpi()
+@
+
+
+<<walkerOLSmod>>=
 causal1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
                districtwide + contest + RecallPolarization*treatment + 
@@ -1869,14 +1839,40 @@ apsrtable(causal1, causal2, se = "robust", label="tab:causmod1",
 
 Table \ref{tab:causmod1} shows good things. 
 
+<<walkerPartialPool, results='asis', echo = FALSE>>=
+mixedModCaus <- lmer(turnout ~ turnoutLag2 + fallTurnout + topTicketTurnoutSpring + 
+                 VAP_adj + per_white_all + 
+               per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
+               districtwide + contest + RecallPolarization*treatment + 
+               treatment + turnout_overall_werc + (1|distid) + (1|year), 
+              data = moddat)
+
+mixedModCaus2 <- lmer(turnoutDiff*100 ~ turnoutLag2 + fallTurnout +  
+                 VAP_adj + per_white_all + 
+               per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
+               districtwide + contest + RecallPolarization*treatment + 
+               treatment + turnout_overall_werc + (1|distid) + (1|year), 
+              data = moddat)
+
+stargazer(mixedModCaus, title = "Partial Pooling Model of Post-Election Polarization", 
+          style = "apsr", 
+            label = "tab:meInf")
+
+
+@
 \clearpage
 
+% Can't say it is only due to school board elections, but phenomenon does show up 
+% in school board elections. 
 
 \subsection{Review}
 
-% Table of all final pooled models
-% Discuss ultimate results
+Table \ref{tab:modReview} reviews the major findings. 
 
+<<ReviewTab, results='asis'>>=
+stargazer(mixedMod1b, mixedMod2b, mixedMod3b, mixedModCaus, style = "apsr", 
+          label = "tab:modReview")
+@
 \section{Discussion}
 
 An interesting proposition here is considering whether or not voters in low-salience 
