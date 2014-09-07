@@ -922,8 +922,7 @@ Model 1 represents a standard pooled regression with clustered standard errors t
 correct for the violation of the IID assumptions of OLS. The key independent variable is 
 twice lagged turnout for school board elections, which represents our test of habit 
 forming in school board elections. %RESULTS OF ONCE LAGGED AVAILALE IN APPENDIX 
-Control variables 
-included are some standard demographic predictors of voter turnout including per 
+Control variables included are some standard demographic predictors of voter turnout including per 
 capita income, education level, percent of population over 65, percent of population 
 that is white. Additionally, a school district specific control, the share of residents 
 in owner-occupied housing is included to reflect the tight coupling between school boards 
@@ -956,7 +955,7 @@ clustered structure of the district terms.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Sep 02, 2014 - 9:54:31 PM
+% Date and time: Sun, Sep 07, 2014 - 2:58:49 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Lagged Turnout} 
   \label{tab:meTurnout} 
@@ -964,11 +963,11 @@ clustered structure of the district terms.
 \\[-1.8ex]\hline \\[-1.8ex] 
 \\[-1.8ex] & turnout \\ 
 \hline \\[-1.8ex] 
- turnoutLag2 & 34.616$^{***}$ \\ 
-  & (13.431) \\ 
+ turnoutLag2 & 34.620$^{***}$ \\ 
+  & (13.430) \\ 
   VAP\_adj & $-$2.321$^{***}$ \\ 
-  & (0.378) \\ 
-  fallTurnout & 17.632$^{***}$ \\ 
+  & (0.379) \\ 
+  fallTurnout & 17.630$^{***}$ \\ 
   & (3.497) \\ 
   per\_white\_all & $-$3.456 \\ 
   & (3.349) \\ 
@@ -991,21 +990,34 @@ clustered structure of the district terms.
   Constant & $-$16.900 \\ 
   & (19.340) \\ 
  N & 2,380 \\ 
-Log Likelihood & $-$7,965.084 \\ 
-AIC & 15,962.170 \\ 
-BIC & 16,054.570 \\ 
+Log Likelihood & $-$7,965.000 \\ 
+AIC & 15,962.000 \\ 
+BIC & 16,055.000 \\ 
 \hline \\[-1.8ex] 
 \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
+\multicolumn{2}{l}{Model includes both year and district random effects modeled as intercepts.} \\ 
 \end{tabular} 
 \end{table} 
 
+
+
+
+
+The proper model of the random effects is important. Using the \texttt{RLRsim} package 
+in R, I test the specification of the random effects using an exact likelihood 
+ratio test and an exact restricted likelihood ratio test \cite{RLRsim}. The first 
+test is used to examine whether the random effects are the appropriate specification. 
+The restricted likelihood ratio test is used to compare two nested models with 
+different random effect specifications to determine the appropriate specification. 
+In this case, a model with random effects for district and year was compared against 
+a model with random effects only for district. In both cases, the additional 
+random effect terms significantly improve model fit and in Table \ref{tab:meTurnout} 
+this final model is what is shown. 
 
 The mixed effect model in Table \ref{tab:meTurnout} confirms largely what was 
 found in the models in Table \ref{tab:lagmods2} -- prior turnout and fall turnout 
 are predictive of current turnout. This suggests that voters in school board 
 elections are indeed habit forming. 
-
-
 
 
 
@@ -1072,7 +1084,7 @@ I turn to partial pooling to resolve this issue.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Sep 02, 2014 - 9:54:40 PM
+% Date and time: Sun, Sep 07, 2014 - 2:58:55 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Competitiveness} 
   \label{tab:meClose} 
@@ -1086,9 +1098,9 @@ I turn to partial pooling to resolve this issue.
   & (0.322) \\ 
   per\_white\_all & $-$1.537 \\ 
   & (3.596) \\ 
-  per65o & 34.538$^{***}$ \\ 
+  per65o & 34.540$^{***}$ \\ 
   & (8.258) \\ 
-  PerBachelorOrAbove & 16.271$^{**}$ \\ 
+  PerBachelorOrAbove & 16.270$^{**}$ \\ 
   & (6.817) \\ 
   OOH\_share & 0.401 \\ 
   & (2.858) \\ 
@@ -1102,12 +1114,12 @@ I turn to partial pooling to resolve this issue.
   & (0.445) \\ 
   CLOSENot Competitive:VAP\_adj & 0.320 \\ 
   & (0.301) \\ 
-  Constant & $-$14.869 \\ 
-  & (20.576) \\ 
+  Constant & $-$14.870 \\ 
+  & (20.580) \\ 
  N & 2,380 \\ 
-Log Likelihood & $-$7,979.894 \\ 
-AIC & 15,989.790 \\ 
-BIC & 16,076.410 \\ 
+Log Likelihood & $-$7,980.000 \\ 
+AIC & 15,990.000 \\ 
+BIC & 16,076.000 \\ 
 \hline \\[-1.8ex] 
 \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
 \end{tabular} 
@@ -1126,14 +1138,14 @@ election voters are more active in smaller electorates and in competitive races.
 ## 	10000 simulated values)
 ## 
 ## data:  
-## LRT = 167.1083, p-value < 2.2e-16
+## LRT = 167.1, p-value < 2.2e-16
 ## 
 ## 	simulated finite sample distribution of RLRT.
 ## 	
 ## 	(p-value based on 10000 simulated values)
 ## 
 ## data:  
-## RLRT = 298.345, p-value < 2.2e-16
+## RLRT = 298.3, p-value < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1191,7 +1203,7 @@ share of the electorate has an effect on the turnout.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Sep 02, 2014 - 9:54:49 PM
+% Date and time: Sun, Sep 07, 2014 - 2:59:02 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Staff Influence} 
   \label{tab:meInf} 
@@ -1201,13 +1213,13 @@ share of the electorate has an effect on the turnout.
 \hline \\[-1.8ex] 
  teachShareofVoters & $-$3.240$^{*}$ \\ 
   & (1.749) \\ 
-  fallTurnout & 18.828$^{***}$ \\ 
+  fallTurnout & 18.830$^{***}$ \\ 
   & (3.611) \\ 
   VAP\_adj & $-$3.104$^{***}$ \\ 
   & (0.268) \\ 
   per\_white\_all & $-$5.277 \\ 
   & (3.568) \\ 
-  per65o & 30.132$^{***}$ \\ 
+  per65o & 30.130$^{***}$ \\ 
   & (8.079) \\ 
   PerBachelorOrAbove & 0.320 \\ 
   & (7.339) \\ 
@@ -1222,11 +1234,11 @@ share of the electorate has an effect on the turnout.
   contestUncontested & $-$5.077$^{***}$ \\ 
   & (0.315) \\ 
   Constant & $-$8.077 \\ 
-  & (20.106) \\ 
+  & (20.110) \\ 
  N & 2,380 \\ 
-Log Likelihood & $-$7,972.306 \\ 
-AIC & 15,974.610 \\ 
-BIC & 16,061.230 \\ 
+Log Likelihood & $-$7,972.000 \\ 
+AIC & 15,975.000 \\ 
+BIC & 16,061.000 \\ 
 \hline \\[-1.8ex] 
 \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
 \end{tabular} 
@@ -1243,14 +1255,14 @@ The effect is the same in the partially pooled model.
 ## 	10000 simulated values)
 ## 
 ## data:  
-## LRT = 119.1076, p-value < 2.2e-16
+## LRT = 119.1, p-value < 2.2e-16
 ## 
 ## 	simulated finite sample distribution of RLRT.
 ## 	
 ## 	(p-value based on 10000 simulated values)
 ## 
 ## data:  
-## RLRT = 238.0752, p-value < 2.2e-16
+## RLRT = 238.1, p-value < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1276,79 +1288,260 @@ also be observed in the undervote measure.
 ## 	(p-value based on 10000 simulated values)
 ## 
 ## data:  
-## RLRT = 199.6523, p-value < 2.2e-16
+## RLRT = 199.7, p-value < 2.2e-16
+## 
+## % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+## % Date and time: Sun, Sep 07, 2014 - 2:59:11 PM
+## \begin{table}[!htbp] \centering 
+##   \caption{Partial Pooling Model of School Board Undervote} 
+##   \label{tab:meInf} 
+## \begin{tabular}{@{\extracolsep{5pt}}lc} 
+## \\[-1.8ex]\hline \\[-1.8ex] 
+## \\[-1.8ex] & turnoutDiff \\ 
+## \hline \\[-1.8ex] 
+##  turnoutLag2 & $-$10.420$^{***}$ \\ 
+##   & (2.023) \\ 
+##   VAP\_adj & 1.919$^{***}$ \\ 
+##   & (0.253) \\ 
+##   per\_white\_all & 2.890 \\ 
+##   & (3.247) \\ 
+##   per65o & 11.750 \\ 
+##   & (7.353) \\ 
+##   PerBachelorOrAbove & 6.874 \\ 
+##   & (6.007) \\ 
+##   OOH\_share & 5.335$^{**}$ \\ 
+##   & (2.541) \\ 
+##   PCI & $-$2.699 \\ 
+##   & (1.923) \\ 
+##   CLOSENot Competitive & 1.813$^{***}$ \\ 
+##   & (0.416) \\ 
+##   contestOpen Contested & 0.597 \\ 
+##   & (0.546) \\ 
+##   contestUncontested & 2.208$^{***}$ \\ 
+##   & (0.412) \\ 
+##   teachShareofVoters & $-$3.331$^{*}$ \\ 
+##   & (1.869) \\ 
+##   Constant & 5.456 \\ 
+##   & (18.570) \\ 
+##  N & 1,695 \\ 
+## Log Likelihood & $-$5,325.000 \\ 
+## AIC & 10,680.000 \\ 
+## BIC & 10,761.000 \\ 
+## \hline \\[-1.8ex] 
+## \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
+## \end{tabular} 
+## \end{table}
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+
+Let's do some interpretation of the undervote. 
 
 \subsection{Exogenous Shocks}
 
 Using the election of Governor Walker and passage of Act 10 as an exogenous shock that 
 increased the relevance and power of school boards, the following models seek to 
-test the causal impact on turnout. 
+test the causal impact on turnout. In Figure \ref{fig:walkerplot} I examine the 
+relationship between partisan polarization and turnout before and after the passage 
+of Act 10. 
 
-\begin{table}[!ht]
-\caption{Model of Causal Impact of Act 10 on School Board Elections}
-\label{tab:causmod1} 
-\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2} } 
-\hline 
-  & \multicolumn{ 1 }{ c }{ Naive Causal Model } & \multicolumn{ 1 }{ c }{ Overvote Model } \\ \hline
- %                              & Naive Causal Model & Overvote Model    \\ 
-Intercept                      & 5.80               & -2.80             \\ 
-                               & (23.15)            & (20.30)           \\ 
-turnoutLag2                    & 29.44 ^*           & 19.61 ^*          \\ 
-                               & (5.30)             & (5.17)            \\ 
-fallTurnout                    & 9.99 ^*            & -5.34             \\ 
-                               & (4.42)             & (3.67)            \\ 
-VAP\_adj                      & -2.78 ^*           & -2.25 ^*          \\ 
-                               & (0.29)             & (0.27)            \\ 
-per\_white\_all              & 0.36               & -0.16             \\ 
-                               & (3.93)             & (2.88)            \\ 
-per65o                         & 8.69               & -13.34            \\ 
-                               & (9.55)             & (8.89)            \\ 
-PerBachelorOrAbove             & 9.15               & 3.68              \\ 
-                               & (6.53)             & (6.39)            \\ 
-OOH\_share                    & -2.48              & -4.13             \\ 
-                               & (3.00)             & (2.81)            \\ 
-PCI                            & 2.46               & 3.32              \\ 
-                               & (2.48)             & (2.18)            \\ 
-CLOSE=Not Competitive          & -2.22 ^*           & -2.52 ^*          \\ 
-                               & (0.73)             & (0.60)            \\ 
-districtwide=1                 & -0.47              & -0.29             \\ 
-                               & (0.53)             & (0.47)            \\ 
-contest=Open Contested         & -1.58              & -1.59             \\ 
-                               & (1.05)             & (0.84)            \\ 
-contest=Uncontested            & -3.94 ^*           & -2.68 ^*          \\ 
-                               & (0.65)             & (0.53)            \\ 
-RecallPolarization             & -7.66 ^*           & -2.47             \\ 
-                               & (3.89)             & (3.15)            \\ 
-treatment                      & 5.46 ^*            & -1.13             \\ 
-                               & (0.79)             & (0.68)            \\ 
-turnout\_overall\_werc       & 0.84               & 0.93              \\ 
-                               & (0.62)             & (0.60)            \\ 
-RecallPolarization * treatment & 27.88 ^*           & 12.60 ^*          \\ 
-                               & (5.63)             & (4.11)            \\ 
-topTicketTurnoutSpring         &                    & 65.03 ^*          \\ 
-                               &                    & (2.88)             \\
- $N$                            & 1168               & 1168              \\ 
-$R^2$                          & 0.43               & 0.64              \\ 
-adj. $R^2$                     & 0.43               & 0.64              \\ 
-Resid. sd                      & 7.77               & 6.17               \\ \hline
- \multicolumn{3}{l}{\footnotesize{Robust standard errors in parentheses}}\\
-\multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
-\end{tabular} 
- \end{table}
 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-walkerplot} \caption[Polarization and Turnout Before and After Act 10]{Polarization and Turnout Before and After Act 10\label{fig:walkerplot}}
+\end{figure}
+
+
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## \begin{table}[!ht]
+## \caption{Model of Causal Impact of Act 10 on School Board Elections}
+## \label{tab:causmod1} 
+## \begin{tabular}{ l D{.}{.}{2}D{.}{.}{2} } 
+## \hline 
+##   & \multicolumn{ 1 }{ c }{ Naive Causal Model } & \multicolumn{ 1 }{ c }{ Overvote Model } \\ \hline
+##  %                              & Naive Causal Model & Overvote Model    \\ 
+## Intercept                      & 5.80               & -2.80             \\ 
+##                                & (23.15)            & (20.30)           \\ 
+## turnoutLag2                    & 29.44 ^*           & 19.61 ^*          \\ 
+##                                & (5.30)             & (5.17)            \\ 
+## fallTurnout                    & 9.99 ^*            & -5.34             \\ 
+##                                & (4.42)             & (3.67)            \\ 
+## VAP\_adj                      & -2.78 ^*           & -2.25 ^*          \\ 
+##                                & (0.29)             & (0.27)            \\ 
+## per\_white\_all              & 0.36               & -0.16             \\ 
+##                                & (3.93)             & (2.88)            \\ 
+## per65o                         & 8.69               & -13.34            \\ 
+##                                & (9.55)             & (8.89)            \\ 
+## PerBachelorOrAbove             & 9.15               & 3.68              \\ 
+##                                & (6.53)             & (6.39)            \\ 
+## OOH\_share                    & -2.48              & -4.13             \\ 
+##                                & (3.00)             & (2.81)            \\ 
+## PCI                            & 2.46               & 3.32              \\ 
+##                                & (2.48)             & (2.18)            \\ 
+## CLOSE=Not Competitive          & -2.22 ^*           & -2.52 ^*          \\ 
+##                                & (0.73)             & (0.60)            \\ 
+## districtwide=1                 & -0.47              & -0.29             \\ 
+##                                & (0.53)             & (0.47)            \\ 
+## contest=Open Contested         & -1.58              & -1.59             \\ 
+##                                & (1.05)             & (0.84)            \\ 
+## contest=Uncontested            & -3.94 ^*           & -2.68 ^*          \\ 
+##                                & (0.65)             & (0.53)            \\ 
+## RecallPolarization             & -7.66 ^*           & -2.47             \\ 
+##                                & (3.89)             & (3.15)            \\ 
+## treatment                      & 5.46 ^*            & -1.13             \\ 
+##                                & (0.79)             & (0.68)            \\ 
+## turnout\_overall\_werc       & 0.84               & 0.93              \\ 
+##                                & (0.62)             & (0.60)            \\ 
+## RecallPolarization * treatment & 27.88 ^*           & 12.60 ^*          \\ 
+##                                & (5.63)             & (4.11)            \\ 
+## topTicketTurnoutSpring         &                    & 65.03 ^*          \\ 
+##                                &                    & (2.88)             \\
+##  $N$                            & 1168               & 1168              \\ 
+## $R^2$                          & 0.43               & 0.64              \\ 
+## adj. $R^2$                     & 0.43               & 0.64              \\ 
+## Resid. sd                      & 7.77               & 6.17               \\ \hline
+##  \multicolumn{3}{l}{\footnotesize{Robust standard errors in parentheses}}\\
+## \multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+## \end{tabular} 
+##  \end{table}
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 Table \ref{tab:causmod1} shows good things. 
 
+
+% Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Sun, Sep 07, 2014 - 2:59:13 PM
+\begin{table}[!htbp] \centering 
+  \caption{Partial Pooling Model of Post-Election Polarization} 
+  \label{tab:meInf} 
+\begin{tabular}{@{\extracolsep{5pt}}lc} 
+\\[-1.8ex]\hline \\[-1.8ex] 
+\\[-1.8ex] & turnout \\ 
+\hline \\[-1.8ex] 
+ turnoutLag2 & 7.752$^{***}$ \\ 
+  & (2.344) \\ 
+  fallTurnout & $-$4.706 \\ 
+  & (4.115) \\ 
+  topTicketTurnoutSpring & 68.670$^{***}$ \\ 
+  & (2.344) \\ 
+  VAP\_adj & $-$2.647$^{***}$ \\ 
+  & (0.281) \\ 
+  per\_white\_all & $-$0.767 \\ 
+  & (3.496) \\ 
+  per65o & $-$12.060 \\ 
+  & (7.969) \\ 
+  PerBachelorOrAbove & 3.505 \\ 
+  & (7.486) \\ 
+  OOH\_share & $-$4.075 \\ 
+  & (2.801) \\ 
+  PCI & 3.439 \\ 
+  & (2.153) \\ 
+  CLOSENot Competitive & $-$2.494$^{***}$ \\ 
+  & (0.540) \\ 
+  districtwide1 & 0.103 \\ 
+  & (0.624) \\ 
+  contestOpen Contested & $-$1.663$^{**}$ \\ 
+  & (0.718) \\ 
+  contestUncontested & $-$2.798$^{***}$ \\ 
+  & (0.537) \\ 
+  RecallPolarization & $-$1.761 \\ 
+  & (4.002) \\ 
+  treatment & $-$1.655$^{**}$ \\ 
+  & (0.659) \\ 
+  turnout\_overall\_werc & 1.093 \\ 
+  & (0.673) \\ 
+  RecallPolarization:treatment & 10.890$^{***}$ \\ 
+  & (4.035) \\ 
+  Constant & 0.506 \\ 
+  & (20.500) \\ 
+ N & 1,168 \\ 
+Log Likelihood & $-$3,718.000 \\ 
+AIC & 7,478.000 \\ 
+BIC & 7,584.000 \\ 
+\hline \\[-1.8ex] 
+\multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
+\end{tabular} 
+\end{table} 
+
 \clearpage
 
+% Can't say it is only due to school board elections, but phenomenon does show up 
+% in school board elections. 
 
 \subsection{Review}
 
-% Table of all final pooled models
-% Discuss ultimate results
+Table \ref{tab:modReview} reviews the major findings. 
+
+
+% Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Sun, Sep 07, 2014 - 2:59:16 PM
+\begin{table}[!htbp] \centering 
+  \caption{} 
+  \label{tab:modReview} 
+\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+\\[-1.8ex]\hline \\[-1.8ex] 
+\\[-1.8ex] & \multicolumn{4}{c}{turnout} \\ 
+\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
+\hline \\[-1.8ex] 
+ turnoutLag2 & 34.620$^{***}$ &  &  & 7.752$^{***}$ \\ 
+  & (13.430) &  &  & (2.344) \\ 
+  CLOSENot Competitive &  & $-$4.868$^{*}$ &  & $-$2.494$^{***}$ \\ 
+  &  & (2.676) &  & (0.540) \\ 
+  teachShareofVoters &  &  & $-$3.240$^{*}$ &  \\ 
+  &  &  & (1.749) &  \\ 
+  VAP\_adj & $-$2.321$^{***}$ & $-$3.479$^{***}$ & $-$3.104$^{***}$ & $-$2.647$^{***}$ \\ 
+  & (0.379) & (0.322) & (0.268) & (0.281) \\ 
+  fallTurnout & 17.630$^{***}$ &  & 18.830$^{***}$ & $-$4.706 \\ 
+  & (3.497) &  & (3.611) & (4.115) \\ 
+  topTicketTurnoutSpring &  &  &  & 68.670$^{***}$ \\ 
+  &  &  &  & (2.344) \\ 
+  per\_white\_all & $-$3.456 & $-$1.537 & $-$5.277 & $-$0.767 \\ 
+  & (3.349) & (3.596) & (3.568) & (3.496) \\ 
+  per65o & 31.300$^{***}$ & 34.540$^{***}$ & 30.130$^{***}$ & $-$12.060 \\ 
+  & (7.723) & (8.258) & (8.079) & (7.969) \\ 
+  PerBachelorOrAbove & 0.502 & 16.270$^{**}$ & 0.320 & 3.505 \\ 
+  & (7.037) & (6.817) & (7.339) & (7.486) \\ 
+  OOH\_share & $-$1.322 & 0.401 & $-$1.851 & $-$4.075 \\ 
+  & (2.684) & (2.858) & (2.805) & (2.801) \\ 
+  PCI & 4.310$^{**}$ & 5.793$^{***}$ & 4.391$^{**}$ & 3.439 \\ 
+  & (2.010) & (2.138) & (2.100) & (2.153) \\ 
+  districtwide1 & 1.029$^{*}$ & 1.062$^{*}$ & 1.052$^{*}$ & 0.103 \\ 
+  & (0.546) & (0.573) & (0.564) & (0.624) \\ 
+  contestOpen Contested & $-$0.331 & $-$0.039 & $-$0.269 & $-$1.663$^{**}$ \\ 
+  & (0.507) & (0.506) & (0.506) & (0.718) \\ 
+  contestUncontested & $-$5.086$^{***}$ & $-$3.572$^{***}$ & $-$5.077$^{***}$ & $-$2.798$^{***}$ \\ 
+  & (0.315) & (0.445) & (0.315) & (0.537) \\ 
+  turnoutLag2:VAP\_adj & $-$3.387$^{**}$ &  &  &  \\ 
+  & (1.616) &  &  &  \\ 
+  CLOSENot Competitive:VAP\_adj &  & 0.320 &  &  \\ 
+  &  & (0.301) &  &  \\ 
+  RecallPolarization &  &  &  & $-$1.761 \\ 
+  &  &  &  & (4.002) \\ 
+  treatment &  &  &  & $-$1.655$^{**}$ \\ 
+  &  &  &  & (0.659) \\ 
+  turnout\_overall\_werc &  &  &  & 1.093 \\ 
+  &  &  &  & (0.673) \\ 
+  RecallPolarization:treatment &  &  &  & 10.890$^{***}$ \\ 
+  &  &  &  & (4.035) \\ 
+  Constant & $-$16.900 & $-$14.870 & $-$8.077 & 0.506 \\ 
+  & (19.340) & (20.580) & (20.110) & (20.500) \\ 
+ N & 2,380 & 2,380 & 2,380 & 1,168 \\ 
+Log Likelihood & $-$7,965.000 & $-$7,980.000 & $-$7,972.000 & $-$3,718.000 \\ 
+AIC & 15,962.000 & 15,990.000 & 15,975.000 & 7,478.000 \\ 
+BIC & 16,055.000 & 16,076.000 & 16,061.000 & 7,584.000 \\ 
+\hline \\[-1.8ex] 
+\multicolumn{5}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
+\end{tabular} 
+\end{table} 
 
 \section{Discussion}
 
