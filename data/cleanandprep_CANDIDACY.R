@@ -54,7 +54,20 @@ SBELEC$primary[SBELEC$contested == 1] <- "Contested"
 SBELEC$contested <- NULL
 SBELEC$electiontype <- NULL
 
-FINANCE <- FINANCE[, c(1:93, 110:263)]
+FINANCE <- FINANCE[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attempts", 
+                      "cum_attptsD", "enrollment", "white_count", "TotalPopulation", 
+                      "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o",
+                      "levy_chg", "Population18O", "ref_share", "median_income",
+                      "PerBachelorOrAbove", "OOH_share", "millrate", "locale2", 
+                      "balance_member_lag", "member_lag", "millrate_lag", "overlevy_ind_lag", 
+                      "underlevy_ind_lag", "millrate_delta", "member_delta", 
+                      "average_salary", "average_fringe", "avg_total_exp", 
+                      "total_attempts")]
+
+
+FINANCE$per_white_students <- FINANCE$white_count / FINANCE$enrollment
+FINANCE$per_white_all <- FINANCE$PopWhiteAlone / FINANCE$TotalPopulation
+
 FULLDAT <- merge(MACROpart, FINANCE, by = c("distid", "year"))
 
 
@@ -64,6 +77,20 @@ FULLDAT$sample[FULLDAT$distid %in% unique(SBELEC$distid)] <- 1
 
 SBELEC <- merge(SBELEC, MACROpart, by = c("distid", "year"), all.x=TRUE)
 rm(MACROpart)
+
+presTurn$presTwoPartyVote <- presTurn$presDemVotes + presTurn$presRepVotes
+presTurn$presTwoPartyShareDem <- presTurn$presDemVotes / presTurn$presTwoPartyVote
+
+govTurn$govTwoPartyVote <- govTurn$govDemVotes + govTurn$govRepVotes
+govTurn$govTwoPartyShareDem <- govTurn$govDemVotes / govTurn$govTwoPartyVote
+
+
+# turnout over the prior presidential election
+SBELEC <- merge(SBELEC, presTurn, by = c("distid", "year"), all.x=TRUE)
+SBELEC <- merge(SBELEC, govTurn, by = c("distid", "year"), all.x=TRUE)
+
+SBELEC$fallTurnout <- (SBELEC$topGovTurnoutPrior + SBELEC$topPresTurnoutPrior) / 2
+SBELEC$fallTwoPartyShareDem <- (SBELEC$govTwoPartyShareDem + SBELEC$presTwoPartyShareDem) /2
 
 SBELEC <- merge(SBELEC, FINANCE, by = c("distid", "year"), all.x=TRUE)
 rm(FINANCE, metadata)
@@ -93,25 +120,43 @@ SBELEC$contested3 <- ifelse(SBELEC$contested3 > -.01, SBELEC$contested3, 1)
 SBELEC$contested3 <- ifelse(is.finite(SBELEC$contested3), SBELEC$contested3, 0)
 
 
-walkerrecall <- subset(FULLDAT, year == 2011, 
-                       select=c("distid", "secrepshare", "sectot", "VAP_adj"))
 
-walkerrecall$RECALLturnout <-  walkerrecall$sectot / walkerrecall$VAP_adj 
+# Walker recall
+load("data/cache/WalkerRecall.rda")
 
-walkerrecall$VAP_adj <- NULL
-names(walkerrecall) <- c("distid", "walkersupport", "recallvotes", "recallturnout")
 
-SBELEC <- merge(SBELEC, walkerrecall, by = c("distid"), all.x=TRUE)
-rm(walkerrecall)
+distvotes12r <- merge(distvotes12r, SBELEC[, c(1,2, 14)], 
+                      by = c("distid", "year"), all.x = TRUE)
+
+distvotes12r <- distvotes12r[, -2]
+distvotes12r$GovTwoPartyShareDem <- distvotes12r$GOVDEM / (distvotes12r$GOVDEM + 
+                                                             distvotes12r$GOVREP)
+
+distvotes12r$GovTurnout <- distvotes12r$RECTOT / distvotes12r$VAP_adj 
+
+
+names(distvotes12r) <- paste(names(distvotes12r), "recall", sep ="_")
+
+SBELEC <- merge(SBELEC, distvotes12r, by.x = "distid", 
+                   by.y = "distid_recall")
+
+
+rm(distvotes12r)
 
 SBELEC$primary2 <- ifelse(SBELEC$primary == "None", "None", "Primary")
 SBELEC$politicaldivide <- abs(SBELEC$toprepshare - .5)
 SBELEC$log_politicaldivide <- log(SBELEC$politicaldivide)
 
+SBELEC$RecallPolarization <- abs(SBELEC$GovTwoPartyShareDem_recall - 0.5)
+
 asinh_trans <- function(){
   trans_new(name = 'asinh', transform = function(x) asinh(x * 2), 
             inverse = function(x) sinh(x)/2)
 }
+
+####################
+# WTF
+###################
 
 load("data/cache/DataMergeVAP.rda")
 load("data/cache/AnalyticalSampleFeb2014.rda")
@@ -124,6 +169,8 @@ distAttr <- newdat[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attem
                        "perwhite", "levy_chg", "ref_share", "balance_member_lag", 
                        "avg_salary", "average_fringe", "avg_total_exp", 
                        "dv_r", "member_delta", "total_attempts")]
+
+
 
 #winshare_lag1, attemptsD_lag1
 
@@ -296,54 +343,55 @@ dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Co
 SBELEC$treatment <- 0
 SBELEC$treatment[SBELEC$year == 2011] <- 1
 SBELEC$treatment[SBELEC$year == 2012] <- 1
-SBELEC$walkerdivide <- abs(SBELEC$walkersupport - .5)
 
 # Create lags
-SBELEC$total_wins <- SBELEC$wins; SBELEC$wins <- NULL
+# SBELEC$total_wins <- SBELEC$wins; SBELEC$wins <- NULL
 
-SBELEC$total_attempts <- ifelse(is.na(SBELEC$total_attempts), 0, 
-                                SBELEC$total_attempts)
+# SBELEC$total_attempts <- ifelse(is.na(SBELEC$total_attempts), 0, 
+#                                 SBELEC$total_attempts)
 
-
-lagvars <- c("contested", "contested2", "contested3", "primary2", "totalvotes", 
-             "VAP", "attemptsD", "total_attempts", "total_wins")
-
-SBELEC <- lag_data(SBELEC, group = "distid", time = "year", periods = c(1), 
-                   values = lagvars)
-
-
-SBELEC$time <- SBELEC$year - 2010
-SBELEC$winshare.lag1 <- SBELEC$total_wins.lag1/ SBELEC$total_attempts.lag1
-
-SBELEC$winshare.lag1 <- ifelse(is.na(SBELEC$winshare.lag1), 0, SBELEC$winshare.lag1)
-
-
-############################################################
-# District administrators
-# ############################################################
-# # 
-# da0212<-read.csv('cache/districtadmin0211.csv',colClasses='character')
-# da0212[,1]<-as.numeric(da0212[,1])
-# da0212[,2]<-as.factor(da0212[,2])
-# da0212[,3]<-as.factor(da0212[,3])
-# da0212[,31]<-as.factor(da0212[,31])
 # 
-# da0212$district<-as.character(da0212$district)
-# da0212$district<-as.numeric(da0212$district)
-# da0212$year<-as.character(da0212$year)
-# da0212$year<-as.numeric(da0212$year)
+# lagvars <- c("contested", "contested2", "contested3", "primary2", "totalvotes", 
+#              "VAP", "attemptsD", "total_attempts", "total_wins")
 # 
-# sub<-subset(da0212,select=c('year','district','contact_name','district_name'))
+# SBELEC <- lag_data(SBELEC, group = "distid", time = "year", periods = c(1), 
+#                    values = lagvars)
 # 
-# admintenure<-ddply(sub,.(contact_name,district,district_name),summarise,start=min(year,na.rm=T),
-#                    end=max(year,na.rm=T),.progress='text')
 # 
-# admintenure$turnover <- 0 
-# admintenure$turnover[admintenure$start > 2002] <- 1
+# SBELEC$time <- SBELEC$year - 2010
+# SBELEC$winshare.lag1 <- SBELEC$total_wins.lag1/ SBELEC$total_attempts.lag1
 # 
-# adminsperdistrict<-ddply(admintenure,.(district),summarise,change=length(start))
-# 
+# SBELEC$winshare.lag1 <- ifelse(is.na(SBELEC$winshare.lag1), 0, SBELEC$winshare.lag1)
 
 
+SBELEC$fyear <- factor(SBELEC$year)
 
-rm(da0212,sub)
+
+lg  <- function(x) c(NA, x[1:length(x)-1])
+lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
+
+SBELEC$year <- as.numeric(SBELEC$year)
+SBELEC.tmp <- SBELEC[, c("distid", "year", "fallTurnout", "fallTwoPartyShareDem", 
+                         "contested", "contested2", "contested3")]
+
+SBELEC.tmp <- SBELEC.tmp[order(SBELEC.tmp$distid, SBELEC.tmp$year),]
+
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, fallTurnoutLag1:= lg(fallTurnout), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, fallTurnoutLag2:= lg2(fallTurnout), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, fallTwoPartyShareDemLag1:= lg(fallTwoPartyShareDem), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, fallTwoPartyShareDemLag2:= lg2(fallTwoPartyShareDem), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, contestedLag1:= lg(contested), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, contestedLag2:= lg2(contested), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, contested2Lag1:= lg(contested2), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, contested2Lag2:= lg2(contested2), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, contested3Lag1:= lg(contested3), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, contested3Lag2:= lg2(contested3), by = "distid"]
+SBELEC.tmp$fallTurnout <- NULL
+SBELEC.tmp$fallTwoPartyShareDem <- NULL
+SBELEC.tmp$contested <- NULL
+SBELEC.tmp$contested2 <- NULL
+SBELEC.tmp$contested3 <- NULL
+
+SBELEC.tmp <- as.data.frame(SBELEC.tmp)
+SBELEC <- merge(SBELEC, SBELEC.tmp)
+rm(SBELEC.tmp)

@@ -12,7 +12,6 @@ opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE,
 setwd("../../")
 library(eeptools)
 source("data/dataAssemble.R")
-load("data/cache/DataMergeVAP.rda")
 source("data/cleanandprep_CANDIDACY.R")
 
 SAMPSIZE <- length(unique(SBELEC$distid))
@@ -520,10 +519,10 @@ predictive of the emergence of contested school board seats.
 ## Policy model -- teacher salary and benefits? 
 
 tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
-                    perwhite + levy_chg + log(Population18O) + 
+                    per_white_all + levy_chg + log(Population18O) + 
                    ref_share +
                    balance_member_lag +  median_income + fyear, 
-                 data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
+                 data=SBELEC[!is.na(SBELEC$contested2Lag1), ], 
                  family=binomial("logit"))
 
 #summary(tax_model)
@@ -531,7 +530,7 @@ tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
 
 poli_model <- glm(contested2 ~ contested2.lag1 + primary2.lag1 +
                     cum_attptsD + perwhite + Per65over + log_politicaldivide +
-                   winshare.lag1 + attemptsD.lag1 +  toprepshare +
+                    attemptsD.lag1 +  toprepshare +
                     PerBachelorOrAbove +
                     median_income + log(Population18O) + fyear, 
                  data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 

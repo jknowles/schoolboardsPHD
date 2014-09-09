@@ -5,14 +5,98 @@
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
 #setwd("../../../Data/Raw Files/Election Data")
 #setwd("../Data/Raw Files/Election Data")
-# source("dataclean.R")
-# source("mappingfunctions.R")
-# source("k8uhs.R")
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
                fig.path="../../phd_figs/chap5-",
                warning=FALSE, echo=FALSE, dev='pdf')
 
+setwd("../../")
+source("data/dataAssemble.R")
+#source("data/dataMerge.R")
+library(scales)
+library(xtable)
+library(eeptools)
 
+options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
+load("data/cache/DataMergeVAP.rda")
+load("data/cache/AnalyticalSampleFeb2014.rda")
+
+distAttr <- newdat[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attempts", 
+                         "cum_attptsD", "enrollment", "white_count", "TotalPopulation", 
+                         "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o", 
+                       "PerBachelorOrAbove", "OOH_share", "millrate")]
+rm(newdat)
+
+distAttr$per_white_students <- distAttr$white_count / distAttr$enrollment
+distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation
+distAttr$white_count <- NULL
+distAttr$PopWhiteAlone <- NULL
+distAttr$TotalPopulation <- NULL
+
+da0212 <- read.csv("data/cache/districtadmin0211.csv", colClasses="character")
+da0212[,1]<-as.factor(da0212[,1])
+da0212[,2]<-as.factor(da0212[,2])
+da0212[,3]<-as.factor(da0212[,3])
+da0212[,31]<-as.factor(da0212[,31])
+
+da0212$district<-as.character(da0212$district)
+da0212$district<-as.numeric(da0212$district)
+da0212$year<-as.character(da0212$year)
+da0212$year<-as.numeric(da0212$year)
+da0212$contact_name[da0212$contact_name == "Michael J Salkowsi"] <- "Michael Salkowski"
+da0212$contact_name[da0212$contact_name == "Michael J Salkowsi"] <- "Michael Salkowski"
+da0212$contact_name[da0212$contact_name == "Michael J Davis"] <- "Michael Davis"
+da0212$contact_name[da0212$contact_name == "Richard Wasson"] <- "Dick Wasson"
+da0212$contact_name[da0212$contact_name == "Frances B Smith"] <- "Frances Smith"
+da0212$contact_name[da0212$contact_name == "Daniel A Nerad"] <- "Daniel Nerad"
+da0212$contact_name[da0212$contact_name == "John D Foster"] <- "John Foster"
+da0212$contact_name[da0212$contact_name == "Phillip Ertl"] <- "Phil Ertl"
+da0212$contact_name[da0212$contact_name == "Dr Phillip J Ertl"] <- "Phil Ertl"
+da0212$contact_name[da0212$contact_name == "Phillip J Ertl"] <- "Phil Ertl"
+da0212$contact_name[da0212$contact_name == "Kenneth V Brittingham"] <- "Kenneth Brittingham"
+da0212$contact_name[da0212$contact_name == "Douglas E Potter"] <- "Doug Potter"
+da0212$contact_name[da0212$contact_name == "William I Pfalzgraf"] <- "William Pfalzgraf"
+da0212$contact_name[da0212$contact_name == "Michael J Davis"] <- "Michael Davis"
+da0212$contact_name[da0212$contact_name == "Michael A Davis"] <- "Michael Davis"
+da0212$contact_name[da0212$contact_name == "Matthew W Gibson"] <- "Matt Gibson"
+da0212$contact_name[da0212$contact_name == "Paul M Schley"] <- "Paul Schley"
+da0212$contact_name[da0212$contact_name == "Stephen S Smith"] <- "Stephen Smith"
+da0212$contact_name[da0212$contact_name == "Jeffrey A Klaisner"] <- "Jeff Klaisner"
+da0212$contact_name[da0212$contact_name == "Rachel L Schultz"] <- "Rachel Schultz"
+da0212$contact_name[da0212$contact_name == "Rachel W Schultz"] <- "Rachel Schultz"
+da0212$contact_name[da0212$contact_name == "Terry Mifred"] <- "Terry Milfred"
+da0212$contact_name[da0212$contact_name == "George F Steffen"] <- "George Steffen"
+da0212$contact_name[da0212$contact_name == "Scott G Peterson"] <- "Scott Peterson"
+da0212$contact_name[da0212$contact_name == "Dr Crystal Ritzenthaler"] <- "Crystal Ritzenthaler"
+da0212$contact_name[da0212$contact_name == "Mr Kim K Eparvier"] <- "Kim K Eparvier"
+da0212$contact_name[da0212$contact_name == "Kristine A Gilmore"] <- "Kristine Gilmore"
+da0212$contact_name[da0212$contact_name == "Chris L VanderHeyden"] <- "Chris VanderHeyden"
+da0212$contact_name[da0212$contact_name == "Timothy M Baneck"] <- "Tim Baneck"
+da0212$contact_name[da0212$contact_name == "Steven LaVallee"] <- "Steve LaVallee"
+da0212$contact_name[da0212$contact_name == "Kenneth S Rogers"] <- "Kenneth Rogers"
+da0212$contact_name[da0212$contact_name == "Kenneth S Rogers"] <- "Kenneth Rogers"
+
+
+sub <- subset(da0212,select=c('year','district','contact_name','district_name'))
+sub.tmp <- sub
+sub.tmp$year <- sub.tmp$year - 1
+sub.tmp <- sub.tmp[sub.tmp$year > 2001, c(1:3)]
+names(sub.tmp) <- c("year", "district", "contact_lag")
+
+sub <- sub[order(sub$district, sub$year),]
+sub.tmp <- sub.tmp[order(sub.tmp$district, sub.tmp$year),]
+sub <- merge(sub, sub.tmp)
+sub$flag <- ifelse(sub$contact_name == sub$contact_lag, 0, 1)
+
+
+admintenure<-ddply(sub,.(contact_name,district,district_name),summarise,start=min(year,na.rm=T),
+         end=max(year,na.rm=T),.progress='text')
+
+adminsperdistrict<-ddply(admintenure,.(district),summarise,change=length(start))
+
+rm(da0212,sub)
+
+iNum <- function(x) prettyNum(x, big.mark = ",", digits = 3)
+iPer <- function(x){paste0(prettyNum(x, big.mark = ",", digits = 1),"\\%")}
 
 @
 
@@ -103,7 +187,8 @@ combines the political conditions in school districts and the changes resulting
 \subsection{Methods}
 
 There are three measures of school board policy output that can be examined:
-1) union contract policy, 2) spending override attempts, 3) changes in student outcomes. 
+1) union contract policy, 2) replacement of a superintendent, 
+3) spending override attempts, and 4) changes in student outcomes. 
 For each of these measures, we build on the work from Chapters \ref{chap:turnout} and \ref{chap:candidacy}
 to estimate the following equation:
 
@@ -116,6 +201,16 @@ to estimate the following equation:
 
 
 \section{Results}
+
+\subsection{Union Contract}
+
+\subsection{Superintendent Turnover}
+
+\subsection{Revenue Limit Override}
+
+\subsection{Change in Student Outcomes}
+
+
 
 
 \section{Conclusion}

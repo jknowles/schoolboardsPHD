@@ -1770,7 +1770,7 @@ dist_turn$no_votes_avg_werc <- NAzero(dist_turn$no_votes_avg_werc)
 dist_turn$abst_votes_avg_werc <- NAzero(dist_turn$abst_votes_avg_werc)
 dist_turn$best_margin_werc <- NAzero(dist_turn$best_margin_werc)
 dist_turn$worst_margin_werc <- NAzero(dist_turn$worst_margin_werc)
-
+dist_turn$GovTurnout_recall <- dist_turn$RECTOT_recall / dist_turn$VAP_adj 
 # load("../../data/cache/springElectionVotes.rda")
 # # load("data/cache/springElectionVotes.rda")
 # springVotes$votesTopTicketSpring <- springVotes$VotesCast
@@ -1782,7 +1782,7 @@ moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_ad
                         "CLOSE", "districtwide", "contest", "GovTwoPartyShareDem_recall",
                         "teachShareofVoters", "turnout_overall_werc", "eligvoters_werc", 
                         "loss_werc", "worst_margin_werc", "WERC_elec", 
-                        "topTicketTurnoutSpring", "turnoutDiff")]
+                        "topTicketTurnoutSpring", "turnoutDiff", "GovTurnout_recall")]
 
 moddat <- na.omit(moddat)
 moddat <- moddat[moddat$year > 2008,]
