@@ -1462,7 +1462,7 @@ The results in Table \ref{tab:meClose} mirror those found in columns 1 and 2 of 
 \ref{tab:closemods}. This provides evidence in support of the argument that school board 
 election voters are more active in smaller electorates and in competitive races. 
 
-<<closeModSens>>=
+<<closeModSens,results='hide'>>=
 m0 <- lm(turnout ~ CLOSE + VAP_adj + CLOSE*VAP_adj + per_white_all +
                    per65o + PerBachelorOrAbove + OOH_share + PCI + districtwide +
                     contest, data = moddat) # fit the null model
@@ -1585,7 +1585,7 @@ stargazer(mixedMod3b, title = "Partial Pooling Model of Staff Influence", style 
 
 The effect is the same in the partially pooled model. 
 
-<<mixedInfmodSens>>=
+<<mixedInfmodSen, results='hide'>>=
 m0 <- lm(turnout ~ teachShareofVoters + fallTurnout + 
                     VAP_adj + per_white_all +
                    per65o + PerBachelorOrAbove + OOH_share + PCI + districtwide +
@@ -1614,9 +1614,21 @@ of undervote is variable across districts across years. Next, I explore whether
 any of the models above explain the difference between top ticket turnout and 
 school board turnout. As much as undervote coincides with political relevance of
 the school board race to the electorate, the relationships observed above should 
-also be observed in the undervote measure. 
+also be observed in the measure of undervote. 
 
-<<>>=
+Undervote has another advantage. As we saw in Section \ref{subsec:turnout}, turnout 
+rose in 2011 due to the heightened interest in the state supreme court election 
+between David Prosser and Joanne Kloppenburg. This makes it hard to attribute 
+heightened school board voter turnout year to year to school boards when 
+the turnout for the top ticket race changes year to year. The estimated difference in 
+school board turnout to top ticket turnout can be one way to measure the political 
+interest of voters in school boards. A disadvantage of this measure is that 
+school board is not the only down-ticket race and undervote does not measure 
+voter interest as many voters do not abstain. 
+
+%CITATIONS
+
+<<undervotetabs, results='asis'>>=
 load("../../data/cache/springElectionVotes.rda")
 # load("data/cache/springElectionVotes.rda")
 springVotes$votesTopTicketSpring <- springVotes$VotesCast
@@ -1664,11 +1676,11 @@ moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
 dd <<- datadist(moddat)
 options(datadist="dd")
 
-undvote1 <- lmer(turnoutDiff ~ turnoutLag2 + VAP_adj + per_white_all + 
+undvote1 <- lmer(turnoutDiff ~ turnoutLag2 * VAP_adj + per_white_all + 
                    per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
                    contest + teachShareofVoters + (1|year) + (1|distid),
                    data = moddat)
-undvote2 <- lmer(turnoutDiff ~ turnoutLag2 + VAP_adj + per_white_all + 
+undvote2 <- lmer(turnoutDiff ~ turnoutLag2 * VAP_adj + per_white_all + 
                    per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
                    contest + teachShareofVoters + (1|distid),
                    data = moddat)
@@ -1677,12 +1689,12 @@ m0 <- lm(turnoutDiff ~ turnoutLag2 + VAP_adj + per_white_all +
                    per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
                    contest + teachShareofVoters , data = moddat) # fit the null model
 
-REtest1 <- exactLRT(m = refitML(undvote2), m0 = m0)
-
-# Test for year specific slopes
-m.slope <- update(undvote1, . ~ . - (1|year))
-m0 <- update(undvote1, . ~ . - (1|distid))
-exactRLRT(m.slope, undvote1, m0)
+# REtest1 <- exactLRT(m = refitML(undvote2), m0 = m0)
+# 
+# # Test for year specific slopes
+# m.slope <- update(undvote1, . ~ . - (1|year))
+# m0 <- update(undvote1, . ~ . - (1|distid))
+# exactRLRT(m.slope, undvote1, m0)
 
 stargazer(undvote1, title = "Partial Pooling Model of School Board Undervote", 
           style = "apsr", 
@@ -1692,13 +1704,20 @@ stargazer(undvote1, title = "Partial Pooling Model of School Board Undervote",
 
 Let's do some interpretation of the undervote. 
 
+\clearpage
 \subsection{Exogenous Shocks}
 
 Using the election of Governor Walker and passage of Act 10 as an exogenous shock that 
 increased the relevance and power of school boards, the following models seek to 
 test the causal impact on turnout. In Figure \ref{fig:walkerplot} I examine the 
 relationship between partisan polarization and turnout before and after the passage 
-of Act 10. 
+of Act 10. To test this relationship I restrict the sample to the two spring 
+elections prior to the passage of Act 10 -- 2009 and 2010 -- and the two elections 
+immediately after the passage of Act 10 -- 2011 and 2012. I code these latter 
+years with a dummy variable indicating they are in the post-Act 10 era. The key 
+theoretical contribution is that the polarization of the electorate should matter 
+more after the passage of Act 10, when party lines for education issues became 
+clear. 
 
 <<walkerDataPrep, results='asis', echo = FALSE>>=
 ## Grab Walker recall results
@@ -1803,7 +1822,7 @@ qplot(RecallPolarization, turnout/100, data = moddat) + geom_smooth(method = "lm
 @
 
 
-<<walkerOLSmod>>=
+<<walkerOLSmod, results='asis'>>=
 causal1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
                districtwide + contest + RecallPolarization*treatment + 
@@ -1846,7 +1865,7 @@ mixedModCaus <- lmer(turnout ~ turnoutLag2 + fallTurnout + topTicketTurnoutSprin
                treatment + turnout_overall_werc + (1|distid) + (1|year), 
               data = moddat)
 
-mixedModCaus2 <- lmer(turnoutDiff*100 ~ turnoutLag2 + fallTurnout +  
+mixedModCaus2 <- lmer(turnoutDiff*100 ~ turnoutLag2 + fallTurnout +  topTicketTurnoutSpring
                  VAP_adj + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
                districtwide + contest + RecallPolarization*treatment + 
@@ -1872,11 +1891,31 @@ Table \ref{tab:modReview} reviews the major findings.
 stargazer(mixedMod1b, mixedMod2b, mixedMod3b, mixedModCaus, style = "apsr", 
           label = "tab:modReview")
 @
+
 \section{Discussion}
 
 An interesting proposition here is considering whether or not voters in low-salience 
 and low-turnout school board elections are a subset of the voters in higher salience 
 and higher turnout elections \citep{Cho2008}.
+
+Table \ref{tab:lagmods} and \ref{tab:meTurnout} both provide strong evidence that 
+in Wisconsin spring elections voters are habit forming. The electorate in these 
+elections is smaller and highly autocorrelated. As the electorate size increases, 
+the less prior turnout matters. This is exactly in line with the theoretical 
+expectation that smaller electorates are more habit forming than larger electorates. 
+Though school boards are experiencing much less voter turnout, they appear to be 
+behaving within the expectations of other electorates.
+
+Table \ref{tab:closemods} and \ref{tab:meClose} competitive races matter for turnout in school board elections as well. 
+Uncontested races have lower voter turnout than races with contestation. Little 
+difference exists between races for open seats and races featuring an incumbent. 
+Competitiveness matters as well, with races where a non-competitive candidate is 
+running seeing voter turnout depressed as well. (substantive interpretation). 
+
+A school board specific effects were explored in Table \ref{tab:teachmods} and 
+\ref{tab:meInf}. In this, the larger the teacher share of voters in the district, 
+the lower the voter turnout. This is in line with the theory of regulatory capture -- 
+the nomination process being strongly controlled by the teacher union. 
 
 - Voters appear to be habit forming
 - Election closeness matters, but more work to do
