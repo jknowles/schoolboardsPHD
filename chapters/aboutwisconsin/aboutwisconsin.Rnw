@@ -69,7 +69,7 @@ which examine how well theories of political engagement explain candidate emerge
 voter turnout, and policy shifts in school board elections. 
 
 \section{Background and Legal Basis of Wisconsin School District Elections}
-
+\label{sec:wiscolaw}
 This project represents the first attempt to comprehensively study the patterns 
 in school board elections across an entire state over multiple years. Before 
 examining the patterns that emerge both within and between school districts, 
@@ -126,9 +126,6 @@ metrics of electoral activity at the school board level. Importantly, because th
 data was collected for several years in each district, time-variant trends can be 
 evaluated and explored. 
 
-
-\section{Studying Wisconsin School Board Elections}
-\label{sec:wiscolaw}
 In Wisconsin, school boards are the official holder of all school district elections. 
 This means that official school board election records are maintained solely by 
 school districts themselves and gathering school board election results in Wisconsin 
@@ -196,13 +193,18 @@ board races. \Sexpr{iNum(table(rowSums(continuity) >5)[[2]])} districts had
 a race in each year between 2007 and 2012, while \Sexpr{iNum(table(rowSums(continuity) >5)[[1]])} 
 did not. 
 
-\subsection{Comparing School Districts}
+\section{The Diversity of Wisconsin School districts}
 
 The authority given to school districts in Wisconsin to determine their own electoral 
 rules and structure make Wisconsin a useful case in exploring the variation in 
-school board electoral participation across contexts. In addition to the contextual 
-variation across school districts, Wisconsin school districts also vary widely in 
-size, wealth, performance, and student and household demographics. 
+school board electoral participation across contexts. In addition to the legal 
+variation in electoral rules across school districts, Wisconsin school districts 
+also vary widely in size, wealth, performance, and student and household demographics. In order to 
+explore this diversity and to demonstrate the representativeness of the school 
+districts that responded to the request for records, I now explore several aspects 
+of Wisconsin school districts. 
+
+\subsection{Comparing the Sample to the Population}
 
 <<samplecomparisonsPREP, results='hide'>>=
 rm(list=ls())
@@ -228,7 +230,7 @@ selectVars <- c("TOTPOP", "member", "econ_disadv_per",
 rnames <- c("Total Population", "Students", 
             "% FRL", "Millrate", "Republican Share", "Share Bachelor +", "White %","Average Salary", 
             "Average Fringe", "Median Income", "Owner Occupied Share", 
-            "Lagged Acct. Balance per Member", "Teacher-Pupil Ratio", "Property Value per Member")
+            "Lagged Acct. Balance per Member", "Teacher-Pupil Ratio", "Property Value per Member ($100k)")
 
 a <- round(t(aggregate(mysub[, selectVars], 
                   by = list(sample = mysub$sample), mean, na.rm=TRUE)), digits=2)
@@ -239,10 +241,12 @@ a <- as.data.frame(a); names(a) <- c("Non-Sample (Mean)", "Sample (Mean)")
 b <- as.data.frame(b); names(b) <- c("Non-Sample (SD)", "Sample (SD)")
 
 ab <- as.data.frame(cbind(a[,2], b[,2], a[,1], b[,1]))
-ab[3, ] <- ab[4, ] *100
-ab[5, ] <- ab[6, ] *100
-ab[7, ] <- ab[7, ] *100
-ab[8, ] <- ab[8, ] *100
+ab[2, ] <- round(ab[2,])
+ab[3, ] <- round(ab[3,])
+ab[4, ] <- round(ab[4, ] *100)
+ab[6, ] <- round(ab[6, ] *100)
+ab[7, ] <- round(ab[7, ] *100)
+ab[8, ] <- round(ab[8, ] *100)
 ab[12, ] <- ab[12, ] *100
 ab[11, ] <- ab[11, ] * 10000
 ab[13, ] <- ab[13, ] * 1000
@@ -252,9 +256,9 @@ row.names(ab) <- c("Var", rnames)
 
 <<samplecomparisons, results='asis'>>=
 sampleStats <- xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
-             from the 2011-2012 school year." )
+             from the 2011-2012 school year.", digits = 0)
 
-align(sampleStats) <- c('p{1.5in}','p{1.1in}','p{1.1in}','p{1.1in}','p{1.1in}')
+align(sampleStats) <- c('p{1.5in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}')
 
 print(sampleStats, 
       format.args = list(big.mark=",", decimal.mark = "."), 
@@ -273,35 +277,41 @@ economic disadvantage as measured by eligibility for free and reduced price lunc
 similar proportions of minority students in their schools. 
 Their communities have similar levels of income, owner occupied housing, and levels 
 of education. Teacher salary and fringe benefit rates are also nearly identical, as 
-is the teacher-pupil ratio. 
+is the teacher-pupil ratio.\footnote{2012 was selected as an exemplar year, but 
+the pattern holds for all available years from 2007-2012, which comprise the focus 
+of this study.} 
 
 The biggest discrepancy is that sample districts tend to be larger on average than 
 out-of-sample districts in terms of student membership. This is no surprise as the largest 
 Wisconsin school districts publish their election results online, making them among 
-the easiest to obtain. The sample districts tend to have slightly smaller account balances or 
+the easiest to obtain. This makes my coverage of the largest five Wisconsin school 
+districts perfect, while my coverage of the smallest Wisconsin school districts 
+is lower. The sample districts tend to have slightly smaller account balances or 
 district savings accounts on a per pupil basis which is likely related to their larger size. 
 Finally, sample districts tend to have less property value per member, or taxable 
 assets to raise revenue from, owing to the slightly higher populations of sample 
-districts and the inclusion of all urban areas. 
+districts and the inclusion of all urban areas. All of these differences, however, 
+are within one standard deviation of the mean from one another and do not represent 
+a significant deviation either statistically or substantively. 
 
-Similar tables are available for other years, but show the same general pattern. 
-Thus, while the current sample does not include all of the school districts in the 
-state of Wisconsin, it is safe to say that such school districts are representative 
-of the diversity of Wisconsin public school districts at large. 
-
-\subsection{School District Diversity}
+\subsection{The Bigs and the Smalls}
 
 Wisconsin, like other states with independent school districts, has a great diversity 
 in school district size, demographic make up, and structure. To illustrate the wide 
-array of organizations that school boards in Wisconsin govern, I present tables 
-describing the five largest and five smallest school districts in Wisconsin and how 
-they compare on a number of observable characteristics. These tables are intended 
+array of organizations that school boards in Wisconsin govern, I present Tables 
+\ref{tab:small5} and \ref{tab:big5} describing the five smallest and five largest 
+school districts in Wisconsin and how 
+they compare on the variables above in Table \ref{tab:samplecomp}. These tables are intended 
 to illustrate the range of organizational contexts that govern public K-12 education 
 in Wisconsin and to illustrate the diversity of jurisdictions within which school 
 board members are contesting elections. Table \ref{tab:small5} shows that the smallest 
 school districts in Wisconsin have fewer than 100 students and fewer than 1,000 
-residents. Contrast this with \ref{tab:big5} where the student population is 200 to 
-300 times larger than the smallest districts. 
+residents. Smaller districts also tend to be much higher percentage Republican, 
+less low-income, whiter, and have less disparity between the average teacher 
+salary and the median income in the community. Contrast this with Table \ref{tab:big5} 
+where the student population is 200 to 300 times larger than the smallest districts, 
+the electorate is much more Democratic, student poverty is higher, and teacher 
+salaries and median incomes are more divergent. 
 
 <<small5, results='asis'>>=
 tmp.mat <- head(mysub[order(mysub$member), c("legal_name", selectVars)], 5)
@@ -318,7 +328,7 @@ small5[10, ] <- small5[10, ] * 10000
 small5[12, ] <- small5[12, ] * 1000
 
 small5x <-xtable(small5, label="tab:small5", caption = "Some attributes of Wisconsin's 5 smallest school districts. Data 
-             from the 2011-2012 school year." )
+             from the 2011-2012 school year.", digits = 0)
 
 align(small5x) <- c('p{1.25in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}', 'p{.8in}')
 
@@ -342,7 +352,7 @@ big5[10, ] <- big5[10, ] * 10000
 big5[12, ] <- big5[12, ] * 1000
 
 big5x <- xtable(big5, label="tab:big5", caption = "Some attributes of Wisconsin's 5 largest school districts. Data 
-             from the 2011-2012 school year." )
+             from the 2011-2012 school year.", digits = 0)
 
 align(big5x) <-  c('p{1.25in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}', 'p{.8in}')
 
@@ -351,10 +361,11 @@ print(big5x,
 
 @
 
-% Bottom 5 districts
-
-Contrast this to legislative districts, which are designed to be homogenous in 
-terms of size. 
+The larger districts shown in Table \ref{tab:big5} are representative of the 
+kind of local governments that political scientists have typically studied -- 
+large urban centers. This study will include such districts, but also include over 
+290 smaller jurisdictions which are more representative of the vast majority of 
+school board offices and school board elections across the country. 
 
 <<reloadworkspace, results='hide'>>=
 rm(list=ls())

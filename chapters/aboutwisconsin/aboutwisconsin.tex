@@ -48,7 +48,7 @@ which examine how well theories of political engagement explain candidate emerge
 voter turnout, and policy shifts in school board elections. 
 
 \section{Background and Legal Basis of Wisconsin School District Elections}
-
+\label{sec:wiscolaw}
 This project represents the first attempt to comprehensively study the patterns 
 in school board elections across an entire state over multiple years. Before 
 examining the patterns that emerge both within and between school districts, 
@@ -105,9 +105,6 @@ metrics of electoral activity at the school board level. Importantly, because th
 data was collected for several years in each district, time-variant trends can be 
 evaluated and explored. 
 
-
-\section{Studying Wisconsin School Board Elections}
-\label{sec:wiscolaw}
 In Wisconsin, school boards are the official holder of all school district elections. 
 This means that official school board election records are maintained solely by 
 school districts themselves and gathering school board election results in Wisconsin 
@@ -165,39 +162,44 @@ board races. 283 districts had
 a race in each year between 2007 and 2012, while 29 
 did not. 
 
-\subsection{Comparing School Districts}
+\section{The Diversity of Wisconsin School districts}
 
 The authority given to school districts in Wisconsin to determine their own electoral 
 rules and structure make Wisconsin a useful case in exploring the variation in 
-school board electoral participation across contexts. In addition to the contextual 
-variation across school districts, Wisconsin school districts also vary widely in 
-size, wealth, performance, and student and household demographics. 
+school board electoral participation across contexts. In addition to the legal 
+variation in electoral rules across school districts, Wisconsin school districts 
+also vary widely in size, wealth, performance, and student and household demographics. In order to 
+explore this diversity and to demonstrate the representativeness of the school 
+districts that responded to the request for records, I now explore several aspects 
+of Wisconsin school districts. 
+
+\subsection{Comparing the Sample to the Population}
 
 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 09 15:09:55 2014
+% Tue Sep 09 15:55:28 2014
 \begin{table}[ht]
 \centering
 {\scriptsize
-\begin{tabular}{p{1.5in}p{1.1in}p{1.1in}p{1.1in}p{1.1in}}
+\begin{tabular}{p{1.5in}p{.8in}p{.8in}p{.8in}p{.8in}}
   \hline
  & Sample (mean) & Sample (SD) & Out of Sample (mean) & Out of Sample (SD) \\ 
   \hline
-Total Population & 16,656.19 & 39,772.93 & 8,033.60 & 8,584.09 \\ 
-  Students & 36.00 & 15.00 & 39.00 & 16.00 \\ 
-  \% FRL & 0.36 & 0.15 & 0.39 & 0.16 \\ 
-  Millrate & 51.00 & 11.00 & 51.00 & 10.00 \\ 
-  Republican Share & 0.51 & 0.11 & 0.51 & 0.10 \\ 
-  Share Bachelor + & 16.00 & 7.00 & 15.00 & 7.00 \\ 
-  White \% & 94.00 & 8.00 & 95.00 & 5.00 \\ 
-  Average Salary & 52,289.31 & 6,042.46 & 50,646.52 & 6,380.42 \\ 
-  Average Fringe & 28,330.30 & 3,684.69 & 28,185.24 & 3,485.79 \\ 
-  Median Income & 33,800.00 & 8,900.00 & 32,700.00 & 8,600.00 \\ 
-  Owner Occupied Share & 67.00 & 13.00 & 65.00 & 15.00 \\ 
-  Lagged Acct. Balance per Member & 4,870.00 & 3,380.00 & 6,540.00 & 4,240.00 \\ 
-  Teacher-Pupil Ratio & 14.30 & 2.03 & 13.49 & 2.34 \\ 
-  Property Value per Member & 104.70 & 232.57 & 127.02 & 193.54 \\ 
+Total Population & 16,656 & 39,773 & 8,034 & 8,584 \\ 
+  Students & 2,483 & 5,639 & 1,239 & 1,294 \\ 
+  \% FRL & 36 & 15 & 39 & 16 \\ 
+  Millrate & 10 & 2 & 9 & 3 \\ 
+  Republican Share & 51 & 11 & 51 & 10 \\ 
+  Share Bachelor + & 16 & 7 & 15 & 7 \\ 
+  White \% & 94 & 8 & 95 & 5 \\ 
+  Average Salary & 52,289 & 6,042 & 50,647 & 6,380 \\ 
+  Average Fringe & 28,330 & 3,685 & 28,185 & 3,486 \\ 
+  Median Income & 33,800 & 8,900 & 32,700 & 8,600 \\ 
+  Owner Occupied Share & 67 & 13 & 65 & 15 \\ 
+  Lagged Acct. Balance per Member & 4,870 & 3,380 & 6,540 & 4,240 \\ 
+  Teacher-Pupil Ratio & 14 & 2 & 13 & 2 \\ 
+  Property Value per Member (\$100k) & 105 & 233 & 127 & 194 \\ 
    \hline
 \end{tabular}
 }
@@ -217,38 +219,44 @@ economic disadvantage as measured by eligibility for free and reduced price lunc
 similar proportions of minority students in their schools. 
 Their communities have similar levels of income, owner occupied housing, and levels 
 of education. Teacher salary and fringe benefit rates are also nearly identical, as 
-is the teacher-pupil ratio. 
+is the teacher-pupil ratio.\footnote{2012 was selected as an exemplar year, but 
+the pattern holds for all available years from 2007-2012, which comprise the focus 
+of this study.} 
 
 The biggest discrepancy is that sample districts tend to be larger on average than 
 out-of-sample districts in terms of student membership. This is no surprise as the largest 
 Wisconsin school districts publish their election results online, making them among 
-the easiest to obtain. The sample districts tend to have slightly smaller account balances or 
+the easiest to obtain. This makes my coverage of the largest five Wisconsin school 
+districts perfect, while my coverage of the smallest Wisconsin school districts 
+is lower. The sample districts tend to have slightly smaller account balances or 
 district savings accounts on a per pupil basis which is likely related to their larger size. 
 Finally, sample districts tend to have less property value per member, or taxable 
 assets to raise revenue from, owing to the slightly higher populations of sample 
-districts and the inclusion of all urban areas. 
+districts and the inclusion of all urban areas. All of these differences, however, 
+are within one standard deviation of the mean from one another and do not represent 
+a significant deviation either statistically or substantively. 
 
-Similar tables are available for other years, but show the same general pattern. 
-Thus, while the current sample does not include all of the school districts in the 
-state of Wisconsin, it is safe to say that such school districts are representative 
-of the diversity of Wisconsin public school districts at large. 
-
-\subsection{School District Diversity}
+\subsection{The Bigs and the Smalls}
 
 Wisconsin, like other states with independent school districts, has a great diversity 
 in school district size, demographic make up, and structure. To illustrate the wide 
-array of organizations that school boards in Wisconsin govern, I present tables 
-describing the five largest and five smallest school districts in Wisconsin and how 
-they compare on a number of observable characteristics. These tables are intended 
+array of organizations that school boards in Wisconsin govern, I present Tables 
+\ref{tab:small5} and \ref{tab:big5} describing the five smallest and five largest 
+school districts in Wisconsin and how 
+they compare on the variables above in Table \ref{tab:samplecomp}. These tables are intended 
 to illustrate the range of organizational contexts that govern public K-12 education 
 in Wisconsin and to illustrate the diversity of jurisdictions within which school 
 board members are contesting elections. Table \ref{tab:small5} shows that the smallest 
 school districts in Wisconsin have fewer than 100 students and fewer than 1,000 
-residents. Contrast this with \ref{tab:big5} where the student population is 200 to 
-300 times larger than the smallest districts. 
+residents. Smaller districts also tend to be much higher percentage Republican, 
+less low-income, whiter, and have less disparity between the average teacher 
+salary and the median income in the community. Contrast this with Table \ref{tab:big5} 
+where the student population is 200 to 300 times larger than the smallest districts, 
+the electorate is much more Democratic, student poverty is higher, and teacher 
+salaries and median incomes are more divergent. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 09 15:09:55 2014
+% Tue Sep 09 15:55:28 2014
 \begin{table}[ht]
 \centering
 {\scriptsize
@@ -256,20 +264,20 @@ residents. Contrast this with \ref{tab:big5} where the student population is 200
   \hline
  & WASHINGTON & NORWAY J7 & HERMAN \#22 & RUBICON J6 & LINN J4 \\ 
   \hline
-Total Population & 711.00 & 677.09 & 512.92 & 529.94 & 354.00 \\ 
-  Students & 75.00 & 86.00 & 92.00 & 95.00 & 114.00 \\ 
-  \% FRL & 31.25 & 29.73 & 36.08 & 25.53 & 47.79 \\ 
-  Millrate & 3.56 & 7.54 & 8.04 & 7.05 & 3.71 \\ 
-  Republican Share & 53.56 & 70.24 & 81.34 & 76.59 & 62.42 \\ 
-  Share Bachelor + & 22.62 & 15.61 & 7.67 & 19.59 & 20.89 \\ 
-  White \% & 98.30 & 98.14 & 97.13 & 99.98 & 96.86 \\ 
-  Average Salary & 48,835.22 & 47,757.11 & 52,274.89 & 50,189.11 & 39,788.78 \\ 
-  Average Fringe & 29,755.00 & 31,640.00 & 33,970.67 & 29,434.78 & 25,964.33 \\ 
-  Median Income & 26,180.00 & 39,420.00 & 34,660.00 & 39,480.00 & 32,490.00 \\ 
-  Owner Occupied Share & 43.97 & 91.00 & 75.41 & 90.48 & 51.47 \\ 
-  Lagged Acct. Balance per Member & 6,140.57 & 16,018.99 & 1,453.14 & 10,302.38 & 15,572.62 \\ 
-  Teacher-Pupil Ratio & 6.99 & 9.21 & 13.99 & 11.97 & 9.86 \\ 
-  Property Value per Member & 431.74 & 190.72 & 147.65 & 187.45 & 690.01 \\ 
+Total Population & 711 & 677 & 513 & 530 & 354 \\ 
+  Students & 75 & 86 & 92 & 95 & 114 \\ 
+  \% FRL & 31 & 30 & 36 & 26 & 48 \\ 
+  Millrate & 4 & 8 & 8 & 7 & 4 \\ 
+  Republican Share & 54 & 70 & 81 & 77 & 62 \\ 
+  Share Bachelor + & 23 & 16 & 8 & 20 & 21 \\ 
+  White \% & 98 & 98 & 97 & 100 & 97 \\ 
+  Average Salary & 48,835 & 47,757 & 52,275 & 50,189 & 39,789 \\ 
+  Average Fringe & 29,755 & 31,640 & 33,971 & 29,435 & 25,964 \\ 
+  Median Income & 26,180 & 39,420 & 34,660 & 39,480 & 32,490 \\ 
+  Owner Occupied Share & 44 & 91 & 75 & 90 & 51 \\ 
+  Lagged Acct. Balance per Member & 6,141 & 16,019 & 1,453 & 10,302 & 15,573 \\ 
+  Teacher-Pupil Ratio & 7 & 9 & 14 & 12 & 10 \\ 
+  Property Value per Member (\$100k) & 432 & 191 & 148 & 187 & 690 \\ 
    \hline
 \end{tabular}
 }
@@ -280,7 +288,7 @@ Total Population & 711.00 & 677.09 & 512.92 & 529.94 & 354.00 \\
 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 09 15:09:55 2014
+% Tue Sep 09 15:55:28 2014
 \begin{table}[ht]
 \centering
 {\scriptsize
@@ -288,20 +296,20 @@ Total Population & 711.00 & 677.09 & 512.92 & 529.94 & 354.00 \\
   \hline
  & MILWAUKEE & MADISON METROPOLITAN & KENOSHA & RACINE UNIFIED & RACINE \\ 
   \hline
-Total Population & 595,425.00 & 234,799.36 & 123,147.19 & 139,251.00 & 139,251.00 \\ 
-  Students & 84,422.00 & 25,714.00 & 23,006.00 & 21,608.00 & 21,608.00 \\ 
-  \% FRL & 83.53 & 49.29 & 49.01 & 61.98 & 61.98 \\ 
-  Millrate & 11.51 & 11.14 & 11.02 & 8.94 & 8.94 \\ 
-  Republican Share & 19.72 & 20.31 & 38.68 & 40.29 & 40.29 \\ 
-  Share Bachelor + & 15.62 & 27.36 & 16.94 & 15.33 & 15.33 \\ 
-  White \% & 44.57 & 77.48 & 79.68 & 72.92 & 72.92 \\ 
-  Average Salary & 59,247.67 & 53,705.33 & 59,334.33 & 56,552.78 & 56,552.78 \\ 
-  Average Fringe & 37,422.78 & 24,222.33 & 34,304.22 & 30,301.00 & 30,301.00 \\ 
-  Median Income & 22,810.00 & 35,420.00 & 28,280.00 & 28,820.00 & 28,820.00 \\ 
-  Owner Occupied Share & 44.69 & 46.11 & 56.51 & 62.85 & 62.85 \\ 
-  Lagged Acct. Balance per Member & 1,758.56 & 2,949.02 & 2,009.93 & 1,690.75 & 1,690.75 \\ 
-  Teacher-Pupil Ratio & 19.97 & 14.00 & 15.23 & 15.01 & 15.01 \\ 
-  Property Value per Member & 33.09 & 87.49 & 39.97 & 44.04 & 44.04 \\ 
+Total Population & 595,425 & 234,799 & 123,147 & 139,251 & 139,251 \\ 
+  Students & 84,422 & 25,714 & 23,006 & 21,608 & 21,608 \\ 
+  \% FRL & 84 & 49 & 49 & 62 & 62 \\ 
+  Millrate & 12 & 11 & 11 & 9 & 9 \\ 
+  Republican Share & 20 & 20 & 39 & 40 & 40 \\ 
+  Share Bachelor + & 16 & 27 & 17 & 15 & 15 \\ 
+  White \% & 45 & 77 & 80 & 73 & 73 \\ 
+  Average Salary & 59,248 & 53,705 & 59,334 & 56,553 & 56,553 \\ 
+  Average Fringe & 37,423 & 24,222 & 34,304 & 30,301 & 30,301 \\ 
+  Median Income & 22,810 & 35,420 & 28,280 & 28,820 & 28,820 \\ 
+  Owner Occupied Share & 45 & 46 & 57 & 63 & 63 \\ 
+  Lagged Acct. Balance per Member & 1,759 & 2,949 & 2,010 & 1,691 & 1,691 \\ 
+  Teacher-Pupil Ratio & 20 & 14 & 15 & 15 & 15 \\ 
+  Property Value per Member (\$100k) & 33 & 87 & 40 & 44 & 44 \\ 
    \hline
 \end{tabular}
 }
@@ -311,12 +319,16 @@ Total Population & 595,425.00 & 234,799.36 & 123,147.19 & 139,251.00 & 139,251.0
 \end{table}
 
 
-% Bottom 5 districts
+The larger districts shown in Table \ref{tab:big5} are representative of the 
+kind of local governments that political scientists have typically studied -- 
+large urban centers. This study will include such districts, but also include over 
+290 smaller jurisdictions which are more representative of the vast majority of 
+school board offices and school board elections across the country. 
 
-Contrast this to legislative districts, which are designed to be homogenous in 
-terms of size. 
 
 
+
+\clearpage
 
 \subsection{General Elections, Primaries, and Special Elections}
 
@@ -350,7 +362,7 @@ special elections. Table \ref{tab:electype} shows the number of races of each ty
 for the period between 2007 and 2012.
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 09 15:10:01 2014
+% Tue Sep 09 15:55:34 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
@@ -471,7 +483,7 @@ candidates that appeared on the ballot received fewer than 30 votes -- even in t
 smallest jurisdiction.}
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 09 15:10:01 2014
+% Tue Sep 09 15:55:34 2014
 \begin{table}[ht]
 \centering
 {\small
@@ -662,7 +674,7 @@ of votes cast and voter turnout statewide to the statewide estimates derived by
 rebuilding voter data at the district level. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 09 15:10:01 2014
+% Tue Sep 09 15:55:35 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
@@ -714,7 +726,7 @@ where a school board seat is chosen district wide. Figure \ref{fig:turnoutgraph}
 shows that district wide school board races feature an average turnout below 25\%. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 09 15:10:02 2014
+% Tue Sep 09 15:55:35 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
@@ -849,7 +861,7 @@ and school board turnout.
 %TODO: citation for topticket races
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 09 15:10:10 2014
+% Tue Sep 09 15:55:44 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
