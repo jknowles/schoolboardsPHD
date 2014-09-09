@@ -653,8 +653,8 @@ names(table2) <- c("Year", "District Wide Races", "Districts with District Wide"
 
 table2 <- xtable(table2, label="tab:yearsample", 
              caption = "Comparing sample size for district wide vs. apportioned school board races." )
-align(table2) <- c('p{.3in}','p{.3in}',  'p{.8in}','p{.5in}','p{.5in}','p{.5in}',
-                   'p{.5in}','p{.5in}')
+align(table2) <- c('p{.2in}','p{.5in}',  'p{.5in}','p{.15in}','p{.5in}','p{.5in}',
+                   'p{.5in}','p{.15in}')
 
 print(table2, 
       include.rownames = FALSE, 
@@ -821,13 +821,13 @@ qplot(year, turnout, data = dist_turn[dist_turn$turnout < 0.75 & !is.na(dist_tur
 
 \clearpage
 
-\subsection{Undervote and Overvote}
+\subsection{Rolloff}
 \label{subsec:undervote}
 
 It is difficult to draw conclusions about school board voter turnout separate 
 from the lower turnout more generally associated with non-partisan offices and 
 Wisconsin's spring non-partisan election specifically. One way to approach this 
-is to look at the undervote for school board office relative to the top ticket 
+is to look at the rolloff for school board office relative to the top ticket 
 race in those spring elections. For the 2007-2012 period, I estimate the top ticket 
 turnout in each school district. Importantly, in this period, several different 
 office types were the top ticket due to the pattern of statewide office terms 
@@ -835,14 +835,14 @@ in Wisconsin. These consist of primarily state supreme court races, but as there
 seven justices elected to ten-year terms, the state supreme court does not have 
 an election every spring: 
 
-\begin{itemize}
+\begin{myitemize}
   \item 2007 - State Supreme Court Race
   \item 2008 - State Supreme Court Race * (alternative presidential primary)
   \item 2009 - State Superintendent of Public Instruction
   \item 2010 - None. Wisconsin Appeals Courts (3 of 4)
   \item 2011 - State Supreme Court Race
   \item 2012 - Presidential Preference Primary
-\end{itemize}
+\end{myitemize}
 
 
 <<undervoting, fig.cap="Spring Turnout For Top Ticket and School Board Compared">>=
@@ -900,7 +900,14 @@ qplot(topTicketTurnoutSpring, turnout, data = plotdat, color = ImputedFlag) +
 
 If top ticket races drive voter turnout, then examining the degree to which school 
 board turnout leads or lags top ticket races may provide some insight into the 
-political activity in school board races independent of such races. To do this, 
+political activity in school board races independent of such races. Voter rolloff 
+after the top ticket arises for a number of reasons including ballot design, 
+lack of information, and the complexity of choices facing the voter in a given 
+election \citep{wattenberg00}. In the non-partisan context of judicial elections, 
+there is evidence that rolloff is lessened in competitive races where information 
+is increased \citep{streb09}. 
+% CITATIONS
+To do this, 
 I apply the same method described in Section \ref{subsec:turnout} to estimate school district 
 level voter turnout, instead using records from spring election MCD votes. This 
 method poses a few different complications when applied to the spring election. 
@@ -924,9 +931,9 @@ and school board turnout.
 
 <<undervotetab, results='asis', echo=FALSE>>=
 plotdat$vote_diff <- plotdat$topTicketTurnoutSpring - plotdat$turnout
-
-length(plotdat$vote_diff[plotdat$vote_diff < 0]) / nrow(plotdat)
-length(plotdat$vote_diff[plotdat$vote_diff > 0]) / nrow(plotdat)
+# 
+# length(plotdat$vote_diff[plotdat$vote_diff < 0]) / nrow(plotdat)
+# length(plotdat$vote_diff[plotdat$vote_diff > 0]) / nrow(plotdat)
 
 yearStats <- ddply(plotdat, .(year, ImputedFlag), summarize, 
                    overvote = length(vote_diff[vote_diff < 0]), 
@@ -948,8 +955,8 @@ yearStats[, 8] <- iPer2(yearStats[,8]*100)
 
 yearStats <- xtable(yearStats, label="tab:undervotestats", 
              caption = "Overvote and Undervote in Spring Elections." )
-align(yearStats) <- c('p{.15in}','p{.15in}','p{.3in}',  'p{.5in}','p{.5in}','p{.5in}','p{.5in}',
-                   'p{.5in}','p{.5in}')
+align(yearStats) <- c('p{.15in}','p{.25in}','p{.15in}', 'p{.3in}','p{.4in}','p{.4in}','p{.6in}',
+                   'p{.6in}','p{.6in}')
 
 print(yearStats, 
       include.rownames = FALSE, 
@@ -968,7 +975,7 @@ school board electoral participation across contexts. In addition to the context
 variation across school districts, Wisconsin school districts also vary widely in 
 size, wealth, performance, and student and household demographics. 
 
-<<samplecomparisons, results='asis'>>=
+<<samplecomparisonsPREP, results='hide'>>=
 rm(list=ls())
 setwd("../../")
 source("data/dataAssemble.R")
@@ -1012,10 +1019,17 @@ ab[11, ] <- ab[11, ] * 10000
 ab[13, ] <- ab[13, ] * 1000
 names(ab) <- c("Sample (mean)", "Sample (SD)", "Out of Sample (mean)", "Out of Sample (SD)")
 row.names(ab) <- c("Var", rnames)
+@
 
-print(xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
-             from the 2011-2012 school year." ), 
-      format.args = list(big.mark=","), include.rownames=TRUE, size="scriptsize")
+<<samplecomparisons, results='asis'>>=
+sampleStats <- xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
+             from the 2011-2012 school year." )
+
+align(sampleStats) <- c('p{1.5in}','p{1.1in}','p{1.1in}','p{1.1in}','p{1.1in}')
+
+print(sampleStats, 
+      format.args = list(big.mark=",", decimal.mark = "."), 
+      include.rownames=TRUE, size="scriptsize")
 
 rm(a, b, ab)
 @
@@ -1061,7 +1075,7 @@ residents. Contrast this with \ref{tab:big5} where the student population is 200
 300 times larger than the smallest districts. 
 
 <<small5, results='asis'>>=
-tmp.mat <- head(mysub[order(mysub$member), c("legal_name", selectVars)])
+tmp.mat <- head(mysub[order(mysub$member), c("legal_name", selectVars)], 5)
 row.names(tmp.mat) <- tmp.mat[,1]
 tmp.mat <- tmp.mat[,-1]
 small5 <- as.data.frame(t(tmp.mat))
@@ -1073,14 +1087,19 @@ small5[7, ] <- small5[7, ] * 100
 small5[11, ] <- small5[11, ] *100
 small5[10, ] <- small5[10, ] * 10000
 small5[12, ] <- small5[12, ] * 1000
-print(xtable(small5, label="tab:small5", caption = "Some attributes of Wisconsin's 5 smallest school districts. Data 
-             from the 2011-2012 school year." ), 
+
+small5x <-xtable(small5, label="tab:small5", caption = "Some attributes of Wisconsin's 5 smallest school districts. Data 
+             from the 2011-2012 school year." )
+
+align(small5x) <- c('p{1.25in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}', 'p{.8in}')
+
+print(small5x, 
       format.args = list(big.mark=","), include.rownames=TRUE, size="scriptsize")
 rm(small5)
 @
 
 <<big5, results='asis'>>=
-tmp.mat <- head(mysub[order(-mysub$member), c("legal_name", selectVars)])
+tmp.mat <- head(mysub[order(-mysub$member), c("legal_name", selectVars)], 5)
 row.names(tmp.mat) <- tmp.mat[,1]
 tmp.mat <- tmp.mat[,-1]
 big5 <- as.data.frame(t(tmp.mat))
@@ -1092,8 +1111,13 @@ big5[7, ] <- big5[7, ] * 100
 big5[11, ] <- big5[11, ] *100
 big5[10, ] <- big5[10, ] * 10000
 big5[12, ] <- big5[12, ] * 1000
-print(xtable(big5, label="tab:big5", caption = "Some attributes of Wisconsin's 5 largest school districts. Data 
-             from the 2011-2012 school year." ), 
+
+big5x <- xtable(big5, label="tab:big5", caption = "Some attributes of Wisconsin's 5 largest school districts. Data 
+             from the 2011-2012 school year." )
+
+align(big5x) <-  c('p{1.25in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}', 'p{.8in}')
+
+print(big5x, 
       format.args = list(big.mark=","), include.rownames=TRUE, size="scriptsize")
 
 @

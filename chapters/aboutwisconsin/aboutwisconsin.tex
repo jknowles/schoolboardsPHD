@@ -165,7 +165,7 @@ special elections. Table \ref{tab:electype} shows the number of races of each ty
 for the period between 2007 and 2012.
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 02 21:50:12 2014
+% Tue Sep 09 12:53:41 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
@@ -274,12 +274,12 @@ of all races featured at least one incumbent. However, a more important figure i
 identifying how many races featured at least one serious challenger against an incumbent. 
 72.2\% of Wisconsin school board general elections featured 
 this pattern of contestation. In order to qualify as a serious challenger, a candidate 
-needed to garner at least 30 votes -- which represents 1.0438413 
+needed to garner at least 30 votes -- which represents 1.0438 
 of the votes cast in the median school board race. This represents a conservative 
 estimate, because in some cases a write-in candidate may garner 30 votes. % elaborate
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 02 21:50:12 2014
+% Tue Sep 09 12:53:41 2014
 \begin{table}[ht]
 \centering
 {\small
@@ -465,7 +465,7 @@ of votes cast and voter turnout statewide to the statewide estimates derived by
 rebuilding voter data at the district level. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 02 21:50:13 2014
+% Tue Sep 09 12:53:42 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
@@ -516,11 +516,11 @@ where a school board seat is chosen district wide. Figure \ref{fig:turnoutgraph}
 shows that district wide school board races feature an average turnout below 25\%. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 02 21:50:13 2014
+% Tue Sep 09 12:53:43 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
-\begin{tabular}{p{.3in}p{.8in}p{.5in}p{.5in}p{.5in}p{.5in}p{.5in}}
+\begin{tabular}{p{.5in}p{.5in}p{.15in}p{.5in}p{.5in}p{.5in}p{.15in}}
   \hline
 Year & District Wide Races & Districts with District Wide & All SB Races & All Districts with Records & Districts without District Wide & Non-district Wide Races \\ 
   \hline
@@ -579,13 +579,13 @@ available.
 
 \clearpage
 
-\subsection{Undervote and Overvote}
+\subsection{Rolloff}
 \label{subsec:undervote}
 
 It is difficult to draw conclusions about school board voter turnout separate 
 from the lower turnout more generally associated with non-partisan offices and 
 Wisconsin's spring non-partisan election specifically. One way to approach this 
-is to look at the undervote for school board office relative to the top ticket 
+is to look at the rolloff for school board office relative to the top ticket 
 race in those spring elections. For the 2007-2012 period, I estimate the top ticket 
 turnout in each school district. Importantly, in this period, several different 
 office types were the top ticket due to the pattern of statewide office terms 
@@ -593,14 +593,14 @@ in Wisconsin. These consist of primarily state supreme court races, but as there
 seven justices elected to ten-year terms, the state supreme court does not have 
 an election every spring: 
 
-\begin{itemize}
+\begin{myitemize}
   \item 2007 - State Supreme Court Race
   \item 2008 - State Supreme Court Race * (alternative presidential primary)
   \item 2009 - State Superintendent of Public Instruction
   \item 2010 - None. Wisconsin Appeals Courts (3 of 4)
   \item 2011 - State Supreme Court Race
   \item 2012 - Presidential Preference Primary
-\end{itemize}
+\end{myitemize}
 
 
 \begin{knitrout}
@@ -614,7 +614,14 @@ an election every spring:
 
 If top ticket races drive voter turnout, then examining the degree to which school 
 board turnout leads or lags top ticket races may provide some insight into the 
-political activity in school board races independent of such races. To do this, 
+political activity in school board races independent of such races. Voter rolloff 
+after the top ticket arises for a number of reasons including ballot design, 
+lack of information, and the complexity of choices facing the voter in a given 
+election \citep{wattenberg00}. In the non-partisan context of judicial elections, 
+there is evidence that rolloff is lessened in competitive races where information 
+is increased \citep{streb09}. 
+% CITATIONS
+To do this, 
 I apply the same method described in Section \ref{subsec:turnout} to estimate school district 
 level voter turnout, instead using records from spring election MCD votes. This 
 method poses a few different complications when applied to the spring election. 
@@ -636,14 +643,12 @@ and school board turnout.
 
 %TODO: citation for topticket races
 
-[1] 0.1891892
-[1] 0.8102477
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 02 21:50:22 2014
+% Tue Sep 09 12:53:51 2014
 \begin{table}[ht]
 \centering
 {\footnotesize
-\begin{tabular}{p{.15in}p{.3in}p{.5in}p{.5in}p{.5in}p{.5in}p{.5in}p{.5in}}
+\begin{tabular}{p{.25in}p{.15in}p{.3in}p{.4in}p{.4in}p{.6in}p{.6in}p{.6in}}
   \hline
 Year & Impute? & Districts Overvoting & Districts Undervoting & Avg.SB Turnout & Avg.Top Turnout & \% Districts Undervote & \% Districts Overvote \\ 
   \hline
@@ -672,58 +677,14 @@ school board electoral participation across contexts. In addition to the context
 variation across school districts, Wisconsin school districts also vary widely in 
 size, wealth, performance, and student and household demographics. 
 
-[1] "No missing district IDs"
-[1] "No missing Race IDs"
-[1] "1 spurious rows removed."
-[1] "0 observations missing years"
-[1] "Check districts: "
-[1] "48 observations with year > 2012"
-[1] "46 observations with year < 2002"
-[1] "0 observations missing electiontype"
-[1] "Check districts: "
-[1] "0 observations with improper election type"
-[1] "0 observations missing candidate id"
-[1] "Check districts: "
-[1] "2162 observations of scatter votes"
-[1] "0 votes cast for candidates with no ID and not scatter"
-[1] "Candidates identified: 6140"
-[1] "Here are the top 10 most occurring candidates: "
-[1] "Number of non-scatter candidates"
-[1] "163 observations with less than 2 votes"
-[1] "22 observations with NA votes"
-[1] "Check districts: 63|3304|3696|3899|4067|6713"
-[1] "20 observations with greater than 50,000 votes"
-[1] "0 observations with invalid winner codes."
-[1] " district id with invalid winner codes."
-[1] "0 observations with missing winner codes."
-[1] "Check districts: "
-[1] "0 observations with invalid incumbent codes."
-[1] " district id with invalid incumbent codes."
-[1] "0 observations with missing incumbent codes."
-[1] "Check districts: "
-[1] "0 observations with invalid repeater codes."
-[1] " district id with invalid repeater codes."
-[1] "0 observations with missing repeater codes."
-[1] "Check districts: "
-[1] "0 observations with invalid minor codes."
-[1] " district id with invalid minor codes."
-[1] "0 observations with missing minor codes."
-[1] "0 observations with invalid minor codes."
-[1] "Check districts: "
-[1] "Check districts: "
-[1] "Total records: 13177"
-[1] "Records without some missing data: 13052"
-[1] "1% records with some missigness"
-[1] "3 races with no winners in a race."
-[1] "Check districts: 2646|3549|3459"
-[1] "Total deviations: 99"
-[1] "Check districts: 70|105|147|2450|203|231|245|434|2240|665|700|903|910|1029|1120|1246|1421|1309|1491|1499|1631|1659|1687|1890|1939|2009|2420|2443|2523|2527|2604|2611|2632|2639|2446|2702|1376|2800|2891|3150|3171|3276|3304|3325|3409|3434|3479|3549|3459|3619|3633|3668|3934|3941|3948|616|4067|4144|4228|4235|4151|4270|4515|4557|4578|4627|4634|4686|4820|3122|4963|5068|5124|5278|5355|5467|5586|5593|5614|5642|3510|5780|5810|5817|5901|5985|6113|6083|6118|6181|6216|6237|6244|6384|6426|6470|6482|6615|6713"
+
+
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 02 21:50:34 2014
+% Tue Sep 09 12:54:08 2014
 \begin{table}[ht]
 \centering
 {\scriptsize
-\begin{tabular}{rrrrr}
+\begin{tabular}{p{1.5in}p{1.1in}p{1.1in}p{1.1in}p{1.1in}}
   \hline
  & Sample (mean) & Sample (SD) & Out of Sample (mean) & Out of Sample (SD) \\ 
   \hline
@@ -791,28 +752,28 @@ residents. Contrast this with \ref{tab:big5} where the student population is 200
 300 times larger than the smallest districts. 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 02 21:50:34 2014
+% Tue Sep 09 12:54:08 2014
 \begin{table}[ht]
 \centering
 {\scriptsize
-\begin{tabular}{rrrrrrr}
+\begin{tabular}{p{1.25in}p{.8in}p{.8in}p{.8in}p{.8in}p{.8in}}
   \hline
- & WASHINGTON & NORWAY J7 & HERMAN \#22 & RUBICON J6 & LINN J4 & GENEVA J4 \\ 
+ & WASHINGTON & NORWAY J7 & HERMAN \#22 & RUBICON J6 & LINN J4 \\ 
   \hline
-Total Population & 711.00 & 677.09 & 512.92 & 529.94 & 354.00 & 677.53 \\ 
-  Students & 75.00 & 86.00 & 92.00 & 95.00 & 114.00 & 115.00 \\ 
-  \% FRL & 31.25 & 29.73 & 36.08 & 25.53 & 47.79 & 0.51 \\ 
-  Millrate & 3.56 & 7.54 & 8.04 & 7.05 & 3.71 & 3.21 \\ 
-  Republican Share & 53.56 & 70.24 & 81.34 & 76.59 & 62.42 & 60.76 \\ 
-  Share Bachelor + & 22.62 & 15.61 & 7.67 & 19.59 & 20.89 & 27.54 \\ 
-  White \% & 98.30 & 98.14 & 97.13 & 99.98 & 96.86 & 92.01 \\ 
-  Average Salary & 48,835.22 & 47,757.11 & 52,274.89 & 50,189.11 & 39,788.78 & 48,949.11 \\ 
-  Average Fringe & 29,755.00 & 31,640.00 & 33,970.67 & 29,434.78 & 25,964.33 & 29,884.89 \\ 
-  Median Income & 26,180.00 & 39,420.00 & 34,660.00 & 39,480.00 & 32,490.00 & 28,070.00 \\ 
-  Owner Occupied Share & 43.97 & 91.00 & 75.41 & 90.48 & 51.47 & 64.35 \\ 
-  Lagged Acct. Balance per Member & 6,140.57 & 16,018.99 & 1,453.14 & 10,302.38 & 15,572.62 & 9,451.22 \\ 
-  Teacher-Pupil Ratio & 6.99 & 9.21 & 13.99 & 11.97 & 9.86 & 15.10 \\ 
-  Property Value per Member & 431.74 & 190.72 & 147.65 & 187.45 & 690.01 & 737.71 \\ 
+Total Population & 711.00 & 677.09 & 512.92 & 529.94 & 354.00 \\ 
+  Students & 75.00 & 86.00 & 92.00 & 95.00 & 114.00 \\ 
+  \% FRL & 31.25 & 29.73 & 36.08 & 25.53 & 47.79 \\ 
+  Millrate & 3.56 & 7.54 & 8.04 & 7.05 & 3.71 \\ 
+  Republican Share & 53.56 & 70.24 & 81.34 & 76.59 & 62.42 \\ 
+  Share Bachelor + & 22.62 & 15.61 & 7.67 & 19.59 & 20.89 \\ 
+  White \% & 98.30 & 98.14 & 97.13 & 99.98 & 96.86 \\ 
+  Average Salary & 48,835.22 & 47,757.11 & 52,274.89 & 50,189.11 & 39,788.78 \\ 
+  Average Fringe & 29,755.00 & 31,640.00 & 33,970.67 & 29,434.78 & 25,964.33 \\ 
+  Median Income & 26,180.00 & 39,420.00 & 34,660.00 & 39,480.00 & 32,490.00 \\ 
+  Owner Occupied Share & 43.97 & 91.00 & 75.41 & 90.48 & 51.47 \\ 
+  Lagged Acct. Balance per Member & 6,140.57 & 16,018.99 & 1,453.14 & 10,302.38 & 15,572.62 \\ 
+  Teacher-Pupil Ratio & 6.99 & 9.21 & 13.99 & 11.97 & 9.86 \\ 
+  Property Value per Member & 431.74 & 190.72 & 147.65 & 187.45 & 690.01 \\ 
    \hline
 \end{tabular}
 }
@@ -823,28 +784,28 @@ Total Population & 711.00 & 677.09 & 512.92 & 529.94 & 354.00 & 677.53 \\
 
 
 % latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 02 21:50:34 2014
+% Tue Sep 09 12:54:08 2014
 \begin{table}[ht]
 \centering
 {\scriptsize
-\begin{tabular}{rrrrrrr}
+\begin{tabular}{p{1.25in}p{.8in}p{.8in}p{.8in}p{.8in}p{.8in}}
   \hline
- & MILWAUKEE & MADISON METROPOLITAN & KENOSHA & RACINE UNIFIED & RACINE & GREEN BAY AREA PUBLIC \\ 
+ & MILWAUKEE & MADISON METROPOLITAN & KENOSHA & RACINE UNIFIED & RACINE \\ 
   \hline
-Total Population & 595,425.00 & 234,799.36 & 123,147.19 & 139,251.00 & 139,251.00 & 136,224.77 \\ 
-  Students & 84,422.00 & 25,714.00 & 23,006.00 & 21,608.00 & 21,608.00 & 20,732.00 \\ 
-  \% FRL & 83.53 & 49.29 & 49.01 & 61.98 & 61.98 & 52.13 \\ 
-  Millrate & 11.51 & 11.14 & 11.02 & 8.94 & 8.94 & 10.02 \\ 
-  Republican Share & 19.72 & 20.31 & 38.68 & 40.29 & 40.29 & 44.46 \\ 
-  Share Bachelor + & 15.62 & 27.36 & 16.94 & 15.33 & 15.33 & 17.24 \\ 
-  White \% & 44.57 & 77.48 & 79.68 & 72.92 & 72.92 & 79.59 \\ 
-  Average Salary & 59,247.67 & 53,705.33 & 59,334.33 & 56,552.78 & 56,552.78 & 54,298.44 \\ 
-  Average Fringe & 37,422.78 & 24,222.33 & 34,304.22 & 30,301.00 & 30,301.00 & 29,353.44 \\ 
-  Median Income & 22,810.00 & 35,420.00 & 28,280.00 & 28,820.00 & 28,820.00 & 29,420.00 \\ 
-  Owner Occupied Share & 44.69 & 46.11 & 56.51 & 62.85 & 62.85 & 57.93 \\ 
-  Lagged Acct. Balance per Member & 1,758.56 & 2,949.02 & 2,009.93 & 1,690.75 & 1,690.75 & 3,377.11 \\ 
-  Teacher-Pupil Ratio & 19.97 & 14.00 & 15.23 & 15.01 & 15.01 & 14.71 \\ 
-  Property Value per Member & 33.09 & 87.49 & 39.97 & 44.04 & 44.04 & 39.53 \\ 
+Total Population & 595,425.00 & 234,799.36 & 123,147.19 & 139,251.00 & 139,251.00 \\ 
+  Students & 84,422.00 & 25,714.00 & 23,006.00 & 21,608.00 & 21,608.00 \\ 
+  \% FRL & 83.53 & 49.29 & 49.01 & 61.98 & 61.98 \\ 
+  Millrate & 11.51 & 11.14 & 11.02 & 8.94 & 8.94 \\ 
+  Republican Share & 19.72 & 20.31 & 38.68 & 40.29 & 40.29 \\ 
+  Share Bachelor + & 15.62 & 27.36 & 16.94 & 15.33 & 15.33 \\ 
+  White \% & 44.57 & 77.48 & 79.68 & 72.92 & 72.92 \\ 
+  Average Salary & 59,247.67 & 53,705.33 & 59,334.33 & 56,552.78 & 56,552.78 \\ 
+  Average Fringe & 37,422.78 & 24,222.33 & 34,304.22 & 30,301.00 & 30,301.00 \\ 
+  Median Income & 22,810.00 & 35,420.00 & 28,280.00 & 28,820.00 & 28,820.00 \\ 
+  Owner Occupied Share & 44.69 & 46.11 & 56.51 & 62.85 & 62.85 \\ 
+  Lagged Acct. Balance per Member & 1,758.56 & 2,949.02 & 2,009.93 & 1,690.75 & 1,690.75 \\ 
+  Teacher-Pupil Ratio & 19.97 & 14.00 & 15.23 & 15.01 & 15.01 \\ 
+  Property Value per Member & 33.09 & 87.49 & 39.97 & 44.04 & 44.04 \\ 
    \hline
 \end{tabular}
 }

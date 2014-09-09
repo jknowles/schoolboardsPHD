@@ -231,6 +231,15 @@ candidates can do when nearly 75\% of survey respondents report spending less th
 \$1,000 on their last campaign, and in small districts over 95\% of candidates 
 reported spending less than \$1,000 on their campaign.\citep{RefWorks:322}}
 
+\citet{anzia11} finds that off-cycle elections confer greater benefits to organized 
+interest groups than larger on-cycle elections. Teacher unions have a greater 
+advantage in low turnout low information off-cycle elections and therefore can 
+use this advantage to influence school board members to provide higher salaries 
+than among boards elected with a broader on-cycle electorate \citep{anzia11}. This 
+falls in line with the work of \citet{RefWorks:207,RefWorks:218} that organized 
+interest groups like teacher unions play an outsized role in off-cycle low turnout 
+school board elections. 
+
 \subsection{The Role of Information}
 An important addition to this theoretical base came by adding the influence of 
 limited voter information to voter turnout \citep{Matsusaka}. Voters' uncertainty 
@@ -325,7 +334,6 @@ election, though their benefit is more immediate and obvious.}
 
 Low-salience and low-participation elections thus can be democratic, if there is 
 evidence that they are punctuated by periods of electoral activity when needed. 
-
 
 
 \section{School Boards and Voter Turnout}
@@ -1606,11 +1614,11 @@ rm(dist.tmp, dat, cand, VAP_dist, distAttr, dvp, errors, govTurn, presTurn, race
    naive1, naive2, mixedMod1, mixedMod2, mixedMod3)
 @
 
-\subsection{Under and Over Vote}
+\subsection{School Board Vote Roll Off}
 
 Another dependent variable to look at is school board vote independent of turnout 
 higher up the ticket. As we saw in Section \ref{subsec:undervote}, the extent 
-of undervote is variable across districts across years. Next, I explore whether 
+of undervote is variable across districts across years. I explore whether 
 any of the models above explain the difference between top ticket turnout and 
 school board turnout. As much as undervote coincides with political relevance of
 the school board race to the electorate, the relationships observed above should 
@@ -1865,8 +1873,8 @@ mixedModCaus <- lmer(turnout ~ turnoutLag2 + fallTurnout + topTicketTurnoutSprin
                treatment + turnout_overall_werc + (1|distid) + (1|year), 
               data = moddat)
 
-mixedModCaus2 <- lmer(turnoutDiff*100 ~ turnoutLag2 + fallTurnout +  topTicketTurnoutSpring
-                 VAP_adj + per_white_all + 
+mixedModCaus2 <- lmer(turnoutDiff*100 ~ turnoutLag2 + fallTurnout +  
+                        topTicketTurnoutSpring + VAP_adj + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
                districtwide + contest + RecallPolarization*treatment + 
                treatment + turnout_overall_werc + (1|distid) + (1|year), 
