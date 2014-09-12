@@ -528,20 +528,20 @@ tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
 #summary(tax_model)
 #sigma1 <- sum(residuals(tax_model, type = "pearson")^2) / df.residual(tax_model)
 
-poli_model <- glm(contested2 ~ contested2.lag1 + primary2.lag1 +
-                    cum_attptsD + perwhite + Per65over + log_politicaldivide +
-                    attemptsD.lag1 +  toprepshare +
+poli_model <- glm(contested2 ~ contested2Lag1 + primary2Lag1 +
+                    cum_attptsD + per_white_all + per65o + log_politicaldivide +
+                     fallTwoPartyShareDem +fallTurnout+
                     PerBachelorOrAbove +
                     median_income + log(Population18O) + fyear, 
-                 data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
+                 data=SBELEC[!is.na(SBELEC$contested2Lag1), ], 
                  family=binomial("logit"))
 
 #summary(poli_model)
-
-poly_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
+SBELEC$average_fringe[SBELEC$average_fringe==0] <- 0.1
+poly_model <- glm(contested2 ~ log(avg_salary) + log(average_fringe) + 
                     avg_total_exp + log(Population18O) + 
                     median_income +member_delta + total_attempts + fyear, 
-                   data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
+                   data=SBELEC[!is.na(SBELEC$avg_salary), ], 
                   family = binomial("logit"))
 
 #summary(poly_model)
@@ -760,16 +760,16 @@ SBELEC$pres_primary <- ifelse(SBELEC$year == 2008, 1, 0)
 SBELEC$pres_primary <- ifelse(SBELEC$year == 2012, 1, SBELEC$pres_primary)
 
 
-trtmnt_model <- bayesglm(contested2 ~  millrate + contested2.lag1 +
-                      walkerdivide + recallturnout +  pres_primary + 
-                       log(Population18O) + treatment + distidF, 
-                 data=SBELEC[SBELEC$year >= 2008 & SBELEC$year < 2013, ], 
+trtmnt_model <- bayesglm(contested2 ~  millrate_delta + contested2Lag2 +
+                      RecallPolarization*treatment + GovTurnout_recall +  
+                       log(Population18O) + treatment, 
+                 data=SBELEC[SBELEC$year >= 2010 & SBELEC$year < 2013, ], 
                  family="binomial")
 
 simple_model <- bayesglm(contested2 ~  millrate + contested2.lag1 +
                       walkerdivide + recallturnout +  pres_primary +
                        log(Population18O) + time + I(time^2), 
-                 data=SBELEC[SBELEC$year >= 2008 & SBELEC$year < 2013, ], 
+                 data=SBELEC[SBELEC$year >= 2009 & SBELEC$year < 2013, ], 
                  family="binomial")
 
 summary(simple_model)

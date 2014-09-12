@@ -61,7 +61,7 @@ FINANCE <- FINANCE[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attem
                       "PerBachelorOrAbove", "OOH_share", "millrate", "locale2", 
                       "balance_member_lag", "member_lag", "millrate_lag", "overlevy_ind_lag", 
                       "underlevy_ind_lag", "millrate_delta", "member_delta", 
-                      "average_salary", "average_fringe", "avg_total_exp", 
+                      "avg_salary", "average_fringe", "avg_total_exp", 
                       "total_attempts")]
 
 
@@ -372,7 +372,7 @@ lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
 
 SBELEC$year <- as.numeric(SBELEC$year)
 SBELEC.tmp <- SBELEC[, c("distid", "year", "fallTurnout", "fallTwoPartyShareDem", 
-                         "contested", "contested2", "contested3")]
+                         "contested", "contested2", "contested3", "primary2")]
 
 SBELEC.tmp <- SBELEC.tmp[order(SBELEC.tmp$distid, SBELEC.tmp$year),]
 
@@ -386,12 +386,14 @@ SBELEC.tmp <- as.data.table(SBELEC.tmp)[, contested2Lag1:= lg(contested2), by = 
 SBELEC.tmp <- as.data.table(SBELEC.tmp)[, contested2Lag2:= lg2(contested2), by = "distid"]
 SBELEC.tmp <- as.data.table(SBELEC.tmp)[, contested3Lag1:= lg(contested3), by = "distid"]
 SBELEC.tmp <- as.data.table(SBELEC.tmp)[, contested3Lag2:= lg2(contested3), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, primary2Lag1:= lg(primary2), by = "distid"]
+SBELEC.tmp <- as.data.table(SBELEC.tmp)[, primary2Lag2:= lg2(primary2), by = "distid"]
 SBELEC.tmp$fallTurnout <- NULL
 SBELEC.tmp$fallTwoPartyShareDem <- NULL
 SBELEC.tmp$contested <- NULL
 SBELEC.tmp$contested2 <- NULL
 SBELEC.tmp$contested3 <- NULL
-
+SBELEC.tmp$primary2 <- NULL
 SBELEC.tmp <- as.data.frame(SBELEC.tmp)
 SBELEC <- merge(SBELEC, SBELEC.tmp)
 rm(SBELEC.tmp)
