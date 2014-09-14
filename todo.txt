@@ -1,5 +1,20 @@
 # TO-DO
 
+* Get data out of DPI
+  - Teacher salary and ratios
+  - - Number of teachers
+  - private school enrollment
+  - open and close private schools
+  - open and close public schools
+ - Teacher salary
+ - Teacher experience
+  * Add achievement data
+   - Proficiency by year
+  * Add school district demographics from DPI
+   - % minority
+   - % FRL
+  * Add superintendent turnover
+   - Lagged and regular
 * Recall turnout in voter turnout models
 * Revise cleanandprep_candidacy.R
 * Fix models in candidacy.rnw
@@ -26,13 +41,13 @@ X * Update APSRtable for partial pooling(PR submitted)
   - Clean up data and drop unused variables
 * Check if incumbency was backfilled (incumbents in first year of data by district?)
   * Back fill incumbency by using the master candidate roster if Vanessa did not do this
-* Set up meeting with David Canon -- outline some questions for this meeting 
-    - Should the turnout paper be split into two papers? 1 evaluating rat-choice 
+* Set up meeting with David Canon -- outline some questions for this meeting
+    - Should the turnout paper be split into two papers? 1 evaluating rat-choice
       models of turnout, the other looking at causal impact of information?
-    - Should the candidacy paper be the 3rd chapter then? 
+    - Should the candidacy paper be the 3rd chapter then?
     - 4th chapter will be student outcomes, do I need a chapter on policy concerns?
-    - Do I need a chapter or do I need partisanship? 
-    - Each section has the ability to re-do some congressional level analyses with 
+    - Do I need a chapter or do I need partisanship?
+    - Each section has the ability to re-do some congressional level analyses with
       school board data, and then leverage the exogenous shock... how should this fit?
 * Make table of Wisconsin election dates by law
    * Spring General = First Tuesday in April
@@ -59,7 +74,7 @@ http://gab.wi.gov/elections-voting/2014/spring
 # Data cleaning
 #########################
 * Check winners counts for sanity by calculating board size and comparing to number of winners
-* Flag races with all winners 
+* Flag races with all winners
 * Backfill incumbency using snapshot of board size
 * Get board size into the dataset, compare with winner lists
 * Look at Door County school districts using data received from County Clerk
@@ -71,4 +86,4 @@ http://gab.wi.gov/elections-voting/2014/spring
 
 Check Incumbency
 Waterloo district
-Williams Bay 
+Williams Bay

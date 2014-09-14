@@ -514,6 +514,42 @@ predictive of the emergence of contested school board seats.
 
 <<modelcomparisonD>>=
 
+moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest",
+                        "fallTurnout", "VAP_adj", "distid", "districtwide",
+                        "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", 
+                        "PCI", "contest")]
+#moddat <- na.omit(moddat)
+# Filter out extreme values
+moddat <- subset(moddat, turnout < 0.95,)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat$turnout <- moddat$turnout * 100
+moddat$districtwide <- factor(moddat$districtwide)
+# moddat$turnoutLag2 <- moddat$turnoutLag2 * 100
+# moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
+# moddat$per_white_all <- moddat$per_white_all * 100
+# moddat$per65o <- moddat$per65o * 100
+# moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
+# moddat$OOH_share <- moddat$OOH_share * 100
+# moddat$fallTurnout <- moddat$fallTurnout * 100
+moddat$VAP_adj <- log(moddat$VAP_adj)
+moddat$PCI <- log(moddat$PCI)
+centr <- mean(moddat$turnout)
+stddev <- sd(moddat$turnout)
+moddat$outflag <- (moddat$turnout - centr) / stddev
+library(sandwich)
+library(rms)
+library(apsrtable)
+moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
+dd <<- datadist(moddat)
+options(datadist="dd")
+
+dumbRLMbest <- ols(turnout ~ turnoutLag2 + turnoutLag2 * VAP_adj + 
+                     fallTurnout + VAP_adj + per_white_all + 
+                    per65o + PerBachelorOrAbove + OOH_share + PCI + districtwide +
+                    contest + factor(year), data = moddat, x= TRUE, y = TRUE)
+
 ## Tax model -- voters are driven by tax concdrns
 ## Politics model -- voters are driven by political ideology
 ## Policy model -- teacher salary and benefits? 

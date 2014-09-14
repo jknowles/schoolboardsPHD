@@ -168,7 +168,10 @@ distAttr <- newdat[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attem
                        "cum_attptsD", "millrate", "overlevy_ind_lag", 
                        "perwhite", "levy_chg", "ref_share", "balance_member_lag", 
                        "avg_salary", "average_fringe", "avg_total_exp", 
-                       "dv_r", "member_delta", "total_attempts")]
+                       "dv_r", "member_delta", "total_attempts", 
+                       "median_income", "locale2", "member_lag", 
+                       "millrate_lag", "overlevy_ind_lag", 
+                       "underlevy_ind_lag", "millrate_delta", "total_attempts")]
 
 
 
@@ -338,6 +341,9 @@ dist_turn <- merge(dist_turn, plot.tmp, all.x=TRUE)
 rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
 
 dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
+dist_turn$contest <- "Uncontested"
+dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Contested"
+dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc ==0] <- "Open Contested"
 
 
 SBELEC$treatment <- 0
