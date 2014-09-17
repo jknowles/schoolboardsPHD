@@ -211,7 +211,7 @@ rm(list=ls())
 setwd("../../")
 source("data/dataAssemble.R")
 # load("data/cache/DataMergeVAP.rda")
-source("data/cleanandprep_CANDIDACY.R")
+source("data/cleanandprep_ABOUTWISCO.R")
 
 
 SAMPSIZE <- length(unique(SBELEC$distid))
