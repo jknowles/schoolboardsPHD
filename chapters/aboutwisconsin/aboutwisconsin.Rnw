@@ -171,7 +171,8 @@ plotdf <- ddply(races, .(distid), summarize, years = length(unique(year)),
 qplot(races, data = plotdf) + theme_dpi() + 
   geom_vline(xintercept = median(plotdf$races), color = I('red')) + 
   labs(x = "Number of School Board Races", y = "Count of Districts", 
-       title = "Number of Race Records Provided by Each District")
+       title = "Number of Race Records Provided by Each District") + 
+  coord_cartesian(ylim = c(0,100), xlim= c(0,40))
 @
 
 
@@ -223,7 +224,7 @@ SAMPSIZE <- length(unique(SBELEC$distid))
 mysub <- FULLDAT[FULLDAT$year == 2012, ]
 
 selectVars <- c("TOTPOP", "member", "econ_disadv_per", 
-                "millrate", "toprepshare", "PerBachelorOrAbove", "perwhite","avg_salary", "average_fringe", 
+                "millrate", "toprepshare", "PerBachelorOrAbove", "per_white_all","avg_salary", "average_fringe", 
                 "median_income", "OOH_share", "balance_member_lag", "teacherpupil_ratio", 
                 "eqv_member")
 
@@ -423,7 +424,8 @@ tabledf <- subset(races, year > 2006 & year < 2013)
 tabledf$electype2 <- ifelse(tabledf$electiontype == 1, "General", 
                             ifelse(tabledf$electiontype == 2, "Primary", "Special"))
 print(xtable(table(tabledf$year, tabledf$electype2), label="tab:electype", 
-             caption = "Number of records for general, primary, and special school board elections 2007-2012."), include.rownames=TRUE)
+             caption = "Number of records for general, primary, and special school board elections 2007-2012."), 
+      include.rownames=TRUE)
 @
 
 In all, \Sexpr{iNum(length(unique(races$distid[races$electiontype == 2])))} districts 

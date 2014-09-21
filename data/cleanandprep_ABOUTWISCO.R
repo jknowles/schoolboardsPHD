@@ -54,7 +54,7 @@ SBELEC$primary[SBELEC$contested == 1] <- "Contested"
 SBELEC$contested <- NULL
 SBELEC$electiontype <- NULL
 
-FINANCE <- FINANCE[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attempts", 
+FINANCE <- FINANCE[, unique(c("distid", "year", "fte_teachers", "ref_attp_flag", "attempts", 
                       "cum_attptsD", "enrollment", "white_count", "TotalPopulation", 
                       "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o",
                       "levy_chg", "Population18O", "ref_share", "median_income",
@@ -62,7 +62,8 @@ FINANCE <- FINANCE[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attem
                       "balance_member_lag", "member_lag", "millrate_lag", "overlevy_ind_lag", 
                       "underlevy_ind_lag", "millrate_delta", "member_delta", 
                       "avg_salary", "average_fringe", "avg_total_exp", 
-                      "total_attempts")]
+                      "total_attempts", "member", "econ_disadv_per",  "teacherpupil_ratio", 
+                      "eqv_member"))]
 
 
 FINANCE$per_white_students <- FINANCE$white_count / FINANCE$enrollment
