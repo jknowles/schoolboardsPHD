@@ -458,7 +458,10 @@ recall process in this small jurisdiction had overlapping responsibilities and a
 of conflicts of interest arose as a result -- leading to appeals to the Wisconsin 
 Governmental Accountability Board.  
 \footnote{For a full account of this 
-particular case, see the Peshtigo Times article online \url{http://www.peshtigotimes.net/?id=12617}}
+particular case, see the Peshtigo Times article online \url{http://www.peshtigotimes.net/?id=12617}} 
+In general, school board elections have fewer primary and special elections than 
+their legislative counterparts. This leads to the biggest question in the school 
+board literature from Chapter \ref{chap:intro}. 
 
 \subsection{Contestation: Frequency and Context}
 
@@ -466,7 +469,7 @@ The biggest question in the school board literature seems to be -- are school
 board elections contested, and if so, when \citep{RefWorks:344, RefWorks:336, RefWorks:340}? 
 While Chapter \ref{chap:candidacy} 
 will explore when candidates emerge for school board elections, this section will 
-first look at how often elections are contested, and how this varies compared to 
+provide a descriptive look at how often elections are contested, and how this varies compared to 
 other elected bodies. 
 
 Unlike studies of congressional or state legislative races, where the barriers to 
@@ -503,10 +506,8 @@ look to other explanations.
 %TODO: Explain why this is so and how the current study contributes to this
 
 To explore candidate participation, let's consider the pool of school board races between 
-2002 and 2012 for which records were successfully obtained. Of the \Sexpr{iNum(nrow(races))}, \Sexpr{iNum(nrow(races[races$electiontype == 1,]))} 
-were general elections, which I focus on here.\footnote{Another \Sexpr{iNum(nrow(races[races$electiontype == 2,]))} 
-were primary elections, and the remaining \Sexpr{iNum(nrow(races[races$electiontype == 3, ]))} 
-were special or recall elections.} Of these general election races, 
+2002 and 2012 for which records were successfully obtained. Of the \Sexpr{iNum(nrow(races))}, I focus on the \Sexpr{iNum(nrow(races[races$electiontype == 1,]))} 
+general elections. Of these general election races, 
 \Sexpr{iNum(nrow(races[races$electiontype == 1 & races$nrealcand > 1,]))} feature 
 two or more candidates who either were on the ballot or garnered more than 10 votes.\footnote{
 It is not uncommon in school board races for a write-in candidate to garner well over 10 votes. Thus, candidates not appearing on the ballot but receiving over 10 votes are included in the 
@@ -530,30 +531,61 @@ and year of service for school board members in Wisconsin. Candidates appearing 
 in the early years of a school district's election records were cross referenced against this 
 list to infer their incumbency status. 
 
+<<challeng1, echo=FALSE, results='hide'>>=
+nrow(races[races$ninc > 0 & races$electiontype == 1,])
+nrow(races[races$ninc > 1 & races$electiontype == 1,])
+contested <- nrow(races[races$nrealcand > races$nwins & 
+                          races$nwins > 0 & races$electiontype == 1, ])
+contestedSer <- nrow(races[(races$nrealcand - races$nminor) > races$nwins & 
+                          races$nwins > 0 & races$electiontype == 1 , ])
+base <- nrow(races[races$electiontype == 1,])
+@
+
+% More candidates than seats
+
+A basic requirement for voters to express a choice is to have multiple options to 
+choose from. In order to assess this I first identify the number of races where 
+there are more candidates on the ballot than winners. This is a nominal measure 
+of the level of choice that voters are presented with. \Sexpr{iPer(contested/base*100)} 
+of races feature at least one more candidate than the number of winners. However, 
+while this represents the number of candidates appearing on the ballot, it does 
+not provide an indication of the seriousness of the challenge. Merely having a 
+multiple candidates is not the same as having a contested election. Political scientists 
+focus on serious candidates and quality challengers. Measuring challenger quality 
+in elections is difficult in any case, but particularly difficult in non-partisan 
+off-cycle elections like school boards \citep{oliver12}. In particular in Wisconsin 
+school board races, candidates may appear on the ballot but not garner even 20 votes. Other times, local election records did not distinguish between candidates who declared officially and any 
+candidate who received votes. Thus, the \Sexpr{iper(contested/base*100)} figure 
+is certainly an overestimate. In lieu of a better measure, I restrict challengers 
+only to candidates that garner at least 20 votes -- which represents \Sexpr{iPer(20/median(races$votes[races$electiontype==1], na.rm=TRUE)*100)} of the votes cast in the median school board race. 
+This represents arguably a conservative estimate, because in some cases a write-in candidate may garner 20 votes and in larger jurisdictions 20 votes are easier to come by than in smaller jurisdictions. Once I filter out all cases where a candidate received fewer than 20 votes, the level of contestation is \Sexpr{iper(contestedSer/base*100)} of general election races. 
+
+% Challenger and incumbent
 <<incumb1, echo=FALSE, results='hide'>>=
 nrow(races[races$ninc > 0 & races$electiontype == 1,])
 nrow(races[races$ninc > 1 & races$electiontype == 1,])
 contested <- nrow(races[races$nrealcand > races$ninc & 
                           races$ninc > 0 & races$electiontype == 1, ])
+contestedSer <- nrow(races[(races$nrealcand - races$nminor) > races$ninc & 
+                          races$ninc > 0 & races$electiontype == 1 , ])
 base <- nrow(races[races$electiontype == 1,])
 @
-
-In general elections, \Sexpr{iPer(nrow(races[races$ninc > 0 & races$electiontype == 1,])/base)*100)} of all races featured at least one incumbent. However, a more important figure is 
+Another important type of contestation is how often incumbents are challenged. Incumbent 
+defeat is important to normative conceptions of the functioning of democracy. %TODO:citation 
+In general elections, \Sexpr{iPer((nrow(races[races$ninc > 0 & races$electiontype == 1,])/base)*100)} of all races featured at least one incumbent. However, a more important figure is 
 identifying how many races featured at least one challenger against an incumbent. 
 \Sexpr{iPer(contested/base*100)} of Wisconsin school board general elections featured 
-this pattern of contestation. However, merely having a challenger is not the same 
-as having a contested election. Political scientists focus on serious candidates and 
-quality challengers. Measuring challenger quality in elections is difficult 
-in any case, but particularly difficult in non-partisan off-cycle elections like 
-school boards \citep{oliver12}. %TODO: Check citation here.
-In lieu of a better measure, I include all candidates that garner at least 20 votes -- which represents \Sexpr{iPer(20/median(races$votes[races$electiontype==1], na.rm=TRUE)/2*100)} 
-of the votes cast in the median school board race, or appears on the ballot by 
-filing the proper nomination papers. This represents arguably a conservative 
-estimate, because in some cases a write-in candidate may garner 20 votes and in 
-larger jurisdictions 20 votes are easier to come by than in smaller jurisdictions.
-\footnote{Some evidence to support the selection of 20 votes is that very few 
+this pattern of contestation.  %TODO: Check citation here.
+Only \Sexpr{iPer(contestedSer/base*100)} of races featured challengers that received more than 20 votes. \footnote{Some evidence to support the selection of 20 votes is that very few 
 candidates that appeared on the ballot received fewer than 20 votes -- even in the 
 smallest jurisdictions.} %TODO: Find evidence and count of this. 
+
+Table \ref{tab:incumbentContest} shows the patterns of contestation in Wisconsin 
+elections for the period from 2007-2012 for the approximately 400 races in each 
+year. Two trends that appear are the decrease in uncontested incumbents running 
+and contested open seats. Instead, there has been an increase in races featuring 
+an open and uncontested seat. Chapter \ref{chap:candidacy} will investigate this 
+more thoroughly.
 
 <<incumbtable, echo=FALSE, results='asis'>>=
 
@@ -567,9 +599,11 @@ races.tmp$contest[races.tmp$nrealcand > races.tmp$nwins & races.tmp$ninc ==0] <-
 
 
 table.tmp <- table(races.tmp$year, races.tmp$contest)
-
-table.tmp <- xtable(t(table.tmp), digits = 0, label = "tab:incumbentContest", 
-                    caption = "Races featuring a serious challenge to an incumbent 2007-2012.")
+table.tmp <- prop.table(table.tmp, margin = 1) * 100
+table.tmp <- apply(table.tmp, MARGIN = 2, FUN=iPer2)
+row.names(table.tmp) <- 2007:2012
+table.tmp <- xtable(t(table.tmp), label = "tab:incumbentContest", 
+                    caption = "Races featuring a challenge to an incumbent 2007-2012.")
 
 print(table.tmp, include.rownames=TRUE, size = "small")
 
@@ -580,8 +614,7 @@ print(table.tmp, include.rownames=TRUE, size = "small")
 In comparison to school board races, legislative races at both the state and federal 
 level have much higher rates of contestation. In 2012, 10 out of 435 U.S. House 
 races were uncontested, and none of the 33 U.S. Senate races were uncontested. 
-While these races 
-are considerably more attractive to candidates due to the career and financial 
+While these races are considerably more attractive to candidates due to the career and financial 
 opportunities they represent, they are also more difficult to qualify for and 
 labor intensive to compete in. State legislative races also exhibit high level 
 of contestation. Taking Wisconsin as an example, in 2012 only 26 of 99 seats in the 
@@ -602,13 +635,13 @@ and no benefits \citep{RefWorks:321,RefWorks:322}.
 
 % Some more discussion here
 
-% Serious challengers
+\subsubsection{Close Races}
 
-In Table \ref{tab:incumbentContest} we see that school board elections featuring an 
-incumbent are contested more often than we might think. However, Table \ref{tab:incumbentContest} 
-represents an overestimate of contestation by using a generous definition of a serious 
-contest. Another way to look at this is to look at the differential vote share between 
-winners and losers. 
+In Table \ref{tab:incumbentContest} we see that school board elections are contested more often than the literature from Chapter \ref{chap:intro} would lead us to believe. However, 
+Table \ref{tab:incumbentContest} represents an overestimate of contestation by 
+using a generous definition of a serious contest. Another way to look at this is 
+to look at the differential vote share between winners and losers and count the 
+number of close races that have occurred in Wisconsin.  
 
 <<votemargin1, eval = FALSE>>=
 cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
@@ -642,7 +675,7 @@ on the ballot. As we saw above, this is a much smaller subset of all races than
 the corresponding restriction would be for state or federal legislative offices. 
 I restrict the sample to the 
 \Sexpr{iPer(nrow(plotdf[plotdf$cand > plotdf$winners,])/nrow(plotdf) * 100)} of 
-general election races that features more candidates than winners. These races 
+general election races that feature more candidates than winners. These races 
 are most commonly for one, two, or three seats simultaneously. These multi-member 
 districts pose a challenge in calculating the win margin and making comparisons 
 across races with differing expected pluralities. 
@@ -655,12 +688,12 @@ across races with differing expected pluralities.
 \begin{small}
 \caption{Methods of Calculating Vote Margin}
 \label{tab:votemargin}
-\begin{tabular}{| p{.1\textwidth} | p{.325\textwidth} | p{.325\textwidth}| p{.325\textwidth}|}
+\begin{tabular}{| p{.15\textwidth} | p{.45\textwidth} | p{.225\textwidth}| p{.225\textwidth}|}
 \hline
 \textbf{Name}  & \textbf{Method} & \textbf{Pros} & \textbf{Cons} \\ \hline
-Share by Each  & Sum of Vote Share of Winners - Sum of Vote Share of Losers & Clean & Biased by Lopsided races \\ \hline
+Share by Each  & Sum of Vote Share of Winners - Sum of Vote Share of Losers & Clean & Biased by lopsided races \\ \hline
 Two-Means & Mean of Winners, Mean of Losers vote share & Easy to calcualte & Biased by lopsided races   \\ \hline
-Maximum Value & Calculate distance winners capture from maximum & Normalized & Not intuitie \\ \hline
+Maximum Value & Calculate distance winners capture from maximum & Normalized & Not intuitive \\ \hline
 \end{tabular}
 \end{small}
 \end{center}
