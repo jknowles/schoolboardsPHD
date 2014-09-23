@@ -374,8 +374,10 @@ school board offices and school board elections across the country \citep{oliver
 rm(list=ls())
 setwd("../../")
 source("data/dataAssemble.R")
+source("data/cleanandprep_ABOUTWISCO.R")
+# 
 # source("data/dataMerge.R")
-load("data/cache/DataMergeVAP.rda")
+# load("data/cache/DataMergeVAP.rda")
 
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
@@ -555,10 +557,10 @@ focus on serious candidates and quality challengers. Measuring challenger qualit
 in elections is difficult in any case, but particularly difficult in non-partisan 
 off-cycle elections like school boards \citep{oliver12}. In particular in Wisconsin 
 school board races, candidates may appear on the ballot but not garner even 20 votes. Other times, local election records did not distinguish between candidates who declared officially and any 
-candidate who received votes. Thus, the \Sexpr{iper(contested/base*100)} figure 
+candidate who received votes. Thus, the \Sexpr{iPer(contested/base*100)} figure 
 is certainly an overestimate. In lieu of a better measure, I restrict challengers 
 only to candidates that garner at least 20 votes -- which represents \Sexpr{iPer(20/median(races$votes[races$electiontype==1], na.rm=TRUE)*100)} of the votes cast in the median school board race. 
-This represents arguably a conservative estimate, because in some cases a write-in candidate may garner 20 votes and in larger jurisdictions 20 votes are easier to come by than in smaller jurisdictions. Once I filter out all cases where a candidate received fewer than 20 votes, the level of contestation is \Sexpr{iper(contestedSer/base*100)} of general election races. 
+This represents arguably a conservative estimate, because in some cases a write-in candidate may garner 20 votes and in larger jurisdictions 20 votes are easier to come by than in smaller jurisdictions. Once I filter out all cases where a candidate received fewer than 20 votes, the level of contestation is \Sexpr{iPer(contestedSer/base*100)} of general election races. 
 
 % Challenger and incumbent
 <<incumb1, echo=FALSE, results='hide'>>=
@@ -643,7 +645,7 @@ using a generous definition of a serious contest. Another way to look at this is
 to look at the differential vote share between winners and losers and count the 
 number of close races that have occurred in Wisconsin.  
 
-<<votemargin1, eval = FALSE>>=
+<<votemargin1>>=
 cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
 votes.tmp <- merge(cand.tmp, as.data.frame(races)[races$nwins >0, c("raceid2", "votes", 
                                                                     "districtwide", "ninc",
@@ -656,17 +658,22 @@ votes.tmp$vote_share[is.na(votes.tmp$vote_share)] <- 0
 plotdf <- as.data.table(votes.tmp)[, list(cand = length(winner), 
                                           winners = sum(winner),
                                           votescast = sum(votes.cand, na.rm=TRUE),
+                                          winnerVotes = sum(votes.cand[winner == 1], na.rm=TRUE),
                                           winshare = sum(vote_share[winner ==1], na.rm=TRUE),
+                                          totalvoteshare = sum(vote_share, na.rm=TRUE),
     winmargin = sum(vote_share[winner == 1], na.rm=TRUE) - sum(vote_share[winner == 0], na.rm=TRUE),
-    winmargin2 = mean(vote_share[winner==1], na.rm=TRUE) - mean(vote_share[winner == 0]), na.rm=TRUE), 
+    winmargin2 = mean(vote_share[winner==1], na.rm=TRUE) - mean(vote_share[winner == 0], na.rm=TRUE)), 
                                    by = c("raceid2")]
 plotdf$winmargin3 <- plotdf$winshare - (1/plotdf$cand * plotdf$winners)
 plotdf$winmargin3[plotdf$cand == plotdf$winners] <- .5
 
 errors <- subset(plotdf, winmargin < 0)
+plotdf <- as.data.frame(plotdf)
 #plotdf <- reshape(plotdf, direction = "wide", timevar = "winner", idvar = c("distid", "year", "raceid"))
 
 # hist(plotdf$winmargin3[plotdf$winners < plotdf$cand & !is.na(plotdf$votescast) & plotdf$votescast > 100])
+iNum <- function(x){prettyNum(x, big.mark = ",", small.mark = ".", 
+                                           digits = 0)}
 @
 
 For an analysis of the intensity of competitiveness in school board races, we turn 
@@ -678,22 +685,22 @@ I restrict the sample to the
 general election races that feature more candidates than winners. These races 
 are most commonly for one, two, or three seats simultaneously. These multi-member 
 districts pose a challenge in calculating the win margin and making comparisons 
-across races with differing expected pluralities. 
-
-%TODO: Table explaining the vote margin methods
+across races with differing expected pluralities. Table \ref{tab:votemargincalc} 
+describes the ways of dealing with this in calculating the margin of victory 
+in school board races. 
 
 
 \begin{table}[h!]
 \begin{center}
 \begin{small}
 \caption{Methods of Calculating Vote Margin}
-\label{tab:votemargin}
-\begin{tabular}{| p{.15\textwidth} | p{.45\textwidth} | p{.225\textwidth}| p{.225\textwidth}|}
+\label{tab:votemargincalc}
+\begin{tabular}{| p{.2\textwidth} | p{.45\textwidth} | p{.175\textwidth}| p{.175\textwidth}|}
 \hline
 \textbf{Name}  & \textbf{Method} & \textbf{Pros} & \textbf{Cons} \\ \hline
-Share by Each  & Sum of Vote Share of Winners - Sum of Vote Share of Losers & Clean & Biased by lopsided races \\ \hline
-Two-Means & Mean of Winners, Mean of Losers vote share & Easy to calcualte & Biased by lopsided races   \\ \hline
-Maximum Value & Calculate distance winners capture from maximum & Normalized & Not intuitive \\ \hline
+Share by Each  & $\sum \frac{votes_{iw}}{votes_{total}} - \sum \frac{votes_{il}}{votes_{total}}$ & Clean & Biased by lopsided races \\ \hline
+Two-Means & $\frac{\sum \frac{votes_{iw}}{votes_{total}}}{n_{winners}} - \frac{\sum \frac{votes_{il}}{votes_{total}}}{n_{losers}}$ & Biased by lopsided races   \\ \hline
+Maximum Value & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$ & Normalized & Not intuitive \\ \hline
 \end{tabular}
 \end{small}
 \end{center}
@@ -718,7 +725,8 @@ this equates to a 10\% margin of victory, even though each candidate has only wo
 on average 23.3\% of the vote in this race as compared to 35\% of the vote in the 
 prior race. 
 
-This final method has some limitations. First, school board race vote share measures 
+This final method is the best because it normalizes across the number of winners 
+per race, but it has some limitations. First, school board race vote share measures 
 are more heavily influenced by the presence of write-in candidates than state or 
 federal legislative districts. This is because the average school board race has 
 only \Sexpr{iNum(mean(plotdf$votescast, na.rm=TRUE))} votes cast and the median 
@@ -732,38 +740,58 @@ negative win margin from the expected total.
 
 %TODO: Find an example for the above
 
-\subsubsection{Scattered Votes}
+<<winmarginplots, echo=FALSE, fig.cap="Win Margin in Competitive School Board Races.">>=
+plotdf <- merge(plotdf, races, by = "raceid2", all.x=TRUE)
+plotdf <- plotdf[plotdf$winmargin3 > -.1, ]
+qplot(year, winmargin3, 
+      data = plotdf[plotdf$cand > plotdf$winners & 
+                      plotdf$year > 2006 & plotdf$year < 2013,], 
+      geom = 'boxplot') + theme_dpi() + 
+  labs(y = "Maximum Value Method", x = "Year", title = "Distribution of Margin of 
+       Victory in Contested School Board Races") + scale_y_continuous(label = percent) + 
+  geom_hline(yintercept = 0, color = I("red"), linetype = 2) +
+  geom_hline(yintercept = 0.05, color = I("blue"), linetype = 3)
+@
 
-One adjustment to deal with this concern is to subtract out votes for write-in 
-candidates where possible. This is not always possible because voting records do not 
-always indicate in which school board race the scattered votes were cast. In most 
-cases, school board election clerks record candidates getting very few votes -- 
-less than 10 -- together into a single category of votes called "scatter". Though 
-these votes are largely inconsequential in federal and state legislative races, 
-in non-partisan local races with low vote counts they can make a significant 
-impact on measures of turnout, win share, and contestation. Of the \Sexpr{iNum(nrow(dat))} 
-candidate-races of data on school board elections in Wisconsin, \Sexpr{iNum(nrow(dat[dat$candidateid == 99, ]))} 
-were scatter votes. 
+Figure \ref{fig:winmarginplots} shows that contested school board races do not tend 
+to be that close. On average, fewer than 25\% of the contested races have a win 
+margin of less than 5 percentage points as indicated by the blue line. The average race sees the 
+winners securing about 10 percentage points more votes than the losers. Thus, while 
+school board races may have some level of contestation, the intensity of that 
+contestation is called into doubt. 
 
-Votes were labeled scatter in the Wisconsin data set for two reasons: first, all 
-candidates receiving fewer than 10 votes in a single race were compiled together 
-into a scatter category. This decision was put in place to reduce the data 
-collection burden that already involved hand coding 
-\Sexpr{iNum(nrow(dat[dat$candidateid != 99,]))} 
-candidate-race records. Including the "long-tail" of write-in votes, protest votes, 
-and spurious candidates would have added substantial burden to the data collection 
-process. 
-
-Second, some jurisdictions reported their votes with a "scatter" category for 
-reporting in newspapers, to county election officials, 
-or for local reporting. In these cases, the threshold for a candidate being labeled 
-in the "scatter" category is unknown, however, for 
-\Sexpr{iNum(nrow(dat[dat$candidateid == 99 & dat$votes > 20,]))} 
-races it exceeds the threshold of 20 votes for label as a minor candidate, and for 
-\Sexpr{iNum(nrow(dat[dat$candidateid == 99 & dat$votes > 200,]))} 
-it exceeds 200. In these cases, it is important to consider how these votes should 
-be included in further analysis -- should they be subtracted from the total votes 
-in the district or should they be further collapsed into a category? 
+% \subsubsection{Scattered Votes}
+% 
+% One adjustment to deal with this concern is to subtract out votes for write-in 
+% candidates where possible. This is not always possible because voting records do not 
+% always indicate in which school board race the scattered votes were cast. In most 
+% cases, school board election clerks record candidates getting very few votes -- 
+% less than 10 -- together into a single category of votes called "scatter". Though 
+% these votes are largely inconsequential in federal and state legislative races, 
+% in non-partisan local races with low vote counts they can make a significant 
+% impact on measures of turnout, win share, and contestation. Of the \Sexpr{iNum(nrow(dat))} 
+% candidate-races of data on school board elections in Wisconsin, \Sexpr{iNum(nrow(dat[dat$candidateid == 99, ]))} 
+% were scatter votes. 
+% 
+% Votes were labeled scatter in the Wisconsin data set for two reasons: first, all 
+% candidates receiving fewer than 10 votes in a single race were compiled together 
+% into a scatter category. This decision was put in place to reduce the data 
+% collection burden that already involved hand coding 
+% \Sexpr{iNum(nrow(dat[dat$candidateid != 99,]))} 
+% candidate-race records. Including the "long-tail" of write-in votes, protest votes, 
+% and spurious candidates would have added substantial burden to the data collection 
+% process. 
+% 
+% Second, some jurisdictions reported their votes with a "scatter" category for 
+% reporting in newspapers, to county election officials, 
+% or for local reporting. In these cases, the threshold for a candidate being labeled 
+% in the "scatter" category is unknown, however, for 
+% \Sexpr{iNum(nrow(dat[dat$candidateid == 99 & dat$votes > 20,]))} 
+% races it exceeds the threshold of 20 votes for label as a minor candidate, and for 
+% \Sexpr{iNum(nrow(dat[dat$candidateid == 99 & dat$votes > 200,]))} 
+% it exceeds 200. In these cases, it is important to consider how these votes should 
+% be included in further analysis -- should they be subtracted from the total votes 
+% in the district or should they be further collapsed into a category? 
 
 %TODO: What should be done with these votes?
 

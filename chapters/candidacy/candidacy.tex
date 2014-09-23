@@ -29,7 +29,7 @@ histories of over 300 Wisconsin school districts from 2002-2012 I will investiga
 empirical support for these theories. In particular, the panel nature of the 
 data set allows me to test competing claims about the role that salient policy and 
 political factors play in the emergence of candidates for school 
-boards. Additionally, as mentioned in Chapter \ref{chap:theoryreview}, Wisconsin provides a 
+boards. Additionally, as mentioned in Chapter \ref{chap:intro}, Wisconsin provides a 
 strong test of the policy linkages between levels of government. Leveraging what is 
 arguably an exogenous shock in the form of Act 10 in 2011, we can evaluate changes 
 in the level of contestation in school board elections. Finally, this chapter will
@@ -41,11 +41,11 @@ in a full model of school district political activity outlined in Figure \ref{mo
 I organize the political science literature into three broad schools of thought 
 regarding candidate emergence. They are:
 
-\begin{itemize}
+\begin{myitemize}
 \item Strategic Candidates
 \item Political Psychology
 \item Policy Preferences
-\end{itemize}
+\end{myitemize}
 
 In addition to these broad theoretical treatments of candidacy, I review the sparse 
 literature that has focused explicitly on local elections such as municipal, county, 
@@ -464,246 +464,15 @@ predictive of the emergence of contested school board seats.
 
 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
-
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-rocplot1} \caption[ROC Curves for 4 Models of Election Contestation in Wisconsin School Boards]{ROC Curves for 4 Models of Election Contestation in Wisconsin School Boards\label{fig:rocplot1}}
-\end{figure}
-
-
-\end{knitrout}
-
-When understanding model fit for binomial outcomes, the receiver operating characteristic, or ROC, provides a standard metric for performance \citep{hanley, vivo, zwieg}. 
-Of particular value is the area-under-the-curve. This metric tells us how well a 
-model performances across the range of thresholds. As we are modeling a discrete 
-event -- whether or not a challenger emerges in a school district board election -- 
-it makes most sense to judge model fit using a measure of how well the model 
-accurately classifies elections into types -- contested and uncontested. 
-
-In Figure \ref{fig:rocplot1} it is clear that policy and tax variables have less 
-explanatory power than politics and the full model. The x-axis represents the 
-false-alarm rate, or uncontested elections that would be classified as contested 
-elections. The y-axis represents the true contested elections that would be 
-correctly classified. Our politics model and our uber model both exhibit superior 
-performance for a lower rate of false-alarms than the policy or tax measures. 
-
-This is not evidence that taxation and compensation policy do not matter to school 
-districts or in determining board elections. The goal here is to simply compare 
-the explanatory power of different classes of descriptive predictors available 
-statewide over time for all school districts in order to understand which, if any, 
-macro-level measures that are publicly reported provide strong evidence of a 
-school district having a contested election. 
-
-A table of likelihood ratio tests shows the same result:
-
-% latex table generated in R 3.1.0 by xtable 1.7-3 package
-% Tue Sep 09 15:56:03 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{lrrrrr}
-  \hline
- & Resid. Df & Resid. Dev & Df & Deviance & Pr($>$Chi) \\ 
-  \hline
-1 & 3365 & 4341.65 &  &  &  \\ 
-  2 & 3366 & 4340.27 & -1 & 1.38 &  \\ 
-  3 & 3362 & 4218.07 & 4 & 122.21 & 0.0000 \\ 
-  4 & 3352 & 4196.40 & 10 & 21.66 & 0.0169 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-This provides some evidence that school district elections are driven by political 
-factors -- both local and cross-district -- more so than the measures of financial 
-and policy concern that we have available at a statewide level. As the task is to 
-explain school district elections using consistent and statewide available data, 
-it appears that measures of political climate in the school district are particularly 
-well suited to the task. 
-
-Model tables
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
-
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-modelsplot} \caption[Comparing Coefficients for the 4 Models of School Board Election Contestation]{Comparing Coefficients for the 4 Models of School Board Election Contestation\label{fig:modelsplot}}
-\end{figure}
-
-
-\end{knitrout}
-
-Figure \ref{fig:modelsplot} shows the coefficients and their standard errors 
-plotted for the four models.\footnote{Graph made using the excellent \texttt{coefplot} package for R along with \texttt{theme\_dpi} theme for \texttt{ggplot2} provided 
-in the \texttt{eeptools} package \citep{eeptools, coefplot, gg}.} The scale is 
-exaggerated around 0 to allow for presentation of smaller coefficient sizes and 
-to be able to distinguish them from 0. 
-
-From this we can see that the comprehensive model provides point estimates very 
-close to the estimates in the corresponding topic models. We can also see that 
-most of the effects are very low - the coefficients reported here are logistic 
-coefficients - with a few pointed exceptions. 
-
-Let's look at within district variability. We can do this by fitting partial pooling 
-models using a random-intercept framework of \citet{gelhill} using the \texttt{lme4} 
-package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
-trends within districts and separate between and within district variance. 
-
-The model estimated follows the form:
-
-\begin{align*} 
-\Pr_{CE_{tj}} &= \alpha_{tj} + \beta X_{tj} + \gamma_{j} + \epsilon   \\ 
-\gamma_{j} &=  \alpha_{j} + \zeta Z_{j}
-\end{align*}
-
-Here the $\gamma_{j}$ terms represent independent intercepts for each school 
-district as predicted by $Z_{j}$, a vector of school district characteristics 
-that are time invariant. $X_{tj}$ is a vector of time variant school district - 
-election cycle characteristics, some of which may be lagged. In the mixed-effect 
-framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
-is explained by the linear combination of $\alpha$ and $\zeta$. 
-
-
-
-Here is some text about the within district variation. 
-
-Not sure which specification to use yet. 
-
-% 3 modeling strategies
-%% model binomial by district, contested or not
-%% model beta by district, # of contested out of # of races
-%% model nested, races in districts
 
 
 
 
-\clearpage
-\subsection{Causal}
-
-To test the effect of the passage of Act 10 on participation in school board elections, 
-we fit a simple longitudinal model of school districts. In this model, school district 
-elections are treated as repeated measures, nested within the school districts 
-themselves. Using this repeated measures framework allows us to estimate cross 
-district and within district effects. Act 10 represented a statewide intervention 
-in the relative power of school boards in Wisconsin by giving school boards much 
-more authority and control over the compensation of teachers and staff, and by 
-dramatically restricting the ability of the districts' employees to bargain over 
-wages, working conditions, and benefits. This shift in power, in essence, raised 
-the stakes for school board elections substantially and should have increased the 
-overall contestation of school board elections. 
-
-To evaluate this, a series of models of school board election contestation over 
-time are fit to attempt to detect changes in contestation levels relative to the 
-levels of contestation observed in school districts prior to the passage of 
-Act 10. If levels of contestation increase after the introduction of Act 10, even 
-after controlling for the factors that influenced this above, it would be strong 
-evidence that the statewide policy lever pulled by Act 10 did spur a response 
-from candidates in terms of increasing the attractiveness of school board seats. 
 
 
 
 
-\section{Conclusions}
-
-School board elections are not marked by much contestation. 
 
 
-\section{Tables}
-
-
-% Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Sep 09, 2014 - 3:56:05 PM
-\begin{table}[!htbp] \centering 
-  \caption{Comparing 4 Models of Contestation in School Board Elections} 
-  \label{tab:descrmodels} 
-\scriptsize 
-\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-5} 
-\\[-1.8ex] & \multicolumn{4}{c}{contested2} \\ 
- & Taxation Model & Politics Model & Policy Model & Overall Model \\ 
-\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
-\hline \\[-1.8ex] 
- millrate & 0.048$^{**}$ &  &  & 0.030 \\ 
-  & (0.020) &  &  & (0.023) \\ 
-  & & & & \\ 
- contested2.lag1 &  & 0.768$^{***}$ &  & 0.755$^{***}$ \\ 
-  &  & (0.076) &  & (0.077) \\ 
-  & & & & \\ 
- primary2.lag1Primary &  & 0.370$^{**}$ &  & 0.341$^{*}$ \\ 
-  &  & (0.181) &  & (0.182) \\ 
-  & & & & \\ 
- cum\_attptsD & 0.023 & 0.027$^{*}$ &  & 0.021 \\ 
-  & (0.014) & (0.015) &  & (0.016) \\ 
-  & & & & \\ 
- overlevy\_ind\_lag & 0.192$^{*}$ &  &  & 0.182$^{*}$ \\ 
-  & (0.100) &  &  & (0.103) \\ 
-  & & & & \\ 
- perwhite & 1.413$^{**}$ & 1.198$^{**}$ &  & 1.059 \\ 
-  & (0.585) & (0.606) &  & (0.674) \\ 
-  & & & & \\ 
- levy\_chg & $-$0.002 &  &  & $-$0.001 \\ 
-  & (0.003) &  &  & (0.003) \\ 
-  & & & & \\ 
- Per65over &  & 1.402 &  & 2.343$^{*}$ \\ 
-  &  & (1.076) &  & (1.258) \\ 
-  & & & & \\ 
- log\_politicaldivide &  & $-$0.032 &  & $-$0.040 \\ 
-  &  & (0.035) &  & (0.035) \\ 
-  & & & & \\ 
- winshare.lag1 &  & 0.100 &  & 0.024 \\ 
-  &  & (0.284) &  & (0.285) \\ 
-  & & & & \\ 
- attemptsD.lag1 &  & 0.044 &  & 0.043 \\ 
-  &  & (0.090) &  & (0.091) \\ 
-  & & & & \\ 
- toprepshare &  & $-$1.280$^{***}$ &  & $-$0.980$^{*}$ \\ 
-  &  & (0.470) &  & (0.513) \\ 
-  & & & & \\ 
- PerBachelorOrAbove &  & $-$2.886$^{***}$ &  & $-$2.761$^{***}$ \\ 
-  &  & (0.963) &  & (0.999) \\ 
-  & & & & \\ 
- log(dv\_r) &  &  & $-$2.090$^{**}$ & $-$2.657$^{***}$ \\ 
-  &  &  & (0.831) & (0.896) \\ 
-  & & & & \\ 
- avg\_salary &  &  & $-$0.00001 & 0.00001 \\ 
-  &  &  & (0.00001) & (0.00001) \\ 
-  & & & & \\ 
- average\_fringe &  &  & $-$0.00003$^{**}$ & $-$0.00002 \\ 
-  &  &  & (0.00001) & (0.00001) \\ 
-  & & & & \\ 
- avg\_total\_exp &  &  & 0.013 & $-$0.005 \\ 
-  &  &  & (0.018) & (0.019) \\ 
-  & & & & \\ 
- log(Population18O) & 0.540$^{***}$ & 0.497$^{***}$ & 0.542$^{***}$ & 0.466$^{***}$ \\ 
-  & (0.044) & (0.046) & (0.051) & (0.058) \\ 
-  & & & & \\ 
- ref\_share & $-$0.129 &  &  &  \\ 
-  & (0.397) &  &  &  \\ 
-  & & & & \\ 
- balance\_member\_lag & $-$0.007 &  &  & $-$0.009 \\ 
-  & (0.015) &  &  & (0.016) \\ 
-  & & & & \\ 
- median\_income & $-$0.300$^{***}$ & 0.012 & $-$0.174$^{***}$ & 0.035 \\ 
-  & (0.055) & (0.091) & (0.056) & (0.094) \\ 
-  & & & & \\ 
- member\_delta &  &  & $-$0.394 & $-$0.292 \\ 
-  &  &  & (1.350) & (1.433) \\ 
-  & & & & \\ 
- total\_attempts &  &  & 0.074$^{***}$ & 0.047$^{**}$ \\ 
-  &  &  & (0.021) & (0.023) \\ 
-  & & & & \\ 
- Constant & $-$5.033$^{***}$ & $-$4.739$^{***}$ & 6.465$^{*}$ & 7.108$^{*}$ \\ 
-  & (0.868) & (0.747) & (3.822) & (4.083) \\ 
-  & & & & \\ 
-\hline \\[-1.8ex] 
-Observations & 3,384 & 3,384 & 3,384 & 3,384 \\ 
-Log Likelihood & $-$2,171.000 & $-$2,109.000 & $-$2,170.000 & $-$2,098.000 \\ 
-Akaike Inf. Crit. & 4,380.000 & 4,262.000 & 4,376.000 & 4,260.000 \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{table} 
 
 
