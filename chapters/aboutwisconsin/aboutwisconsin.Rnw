@@ -699,7 +699,7 @@ in school board races.
 \hline
 \textbf{Name}  & \textbf{Method} & \textbf{Pros} & \textbf{Cons} \\ \hline
 Share by Each  & $\sum \frac{votes_{iw}}{votes_{total}} - \sum \frac{votes_{il}}{votes_{total}}$ & Clean & Biased by lopsided races \\ \hline
-Two-Means & $\frac{\sum \frac{votes_{iw}}{votes_{total}}}{n_{winners}} - \frac{\sum \frac{votes_{il}}{votes_{total}}}{n_{losers}}$ & Biased by lopsided races   \\ \hline
+Two-Means & $\frac{\sum \frac{votes_{iw}}{votes_{total}}}{n_{winners}} - \frac{\sum \frac{votes_{il}}{votes_{total}}}{n_{losers}}$ & Intuitive & Biased by lopsided races   \\ \hline
 Maximum Value & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$ & Normalized & Not intuitive \\ \hline
 \end{tabular}
 \end{small}
@@ -828,7 +828,10 @@ drop from the presidential election and non-partisan local elections experience 
 further fifteen point drop. This would mean Wisconsin should see 55\% turnout in 
 gubernatiroal races and 40\% turnout in local elections. Numbers on typical school 
 board election turnout are not available in the literature, so it is difficult to 
-assess the degree Wisconsin's off-cycle races differ from other national races. 
+assess the degree Wisconsin's off-cycle races differ from other races nationally. 
+In this section I will describe the approaches to estimating turnout in Wisconsin 
+school board elections and the comparison of school board turnout to other 
+electoral participation. 
 
 A first concern with estimating turnout is finding the proper denominator. 
 For the analysis here I elect to use Voting Age Population (VAP) as the measure for 
@@ -919,8 +922,8 @@ rm(years, turnoutOf, vapOf, turnoutPerOf, turnoutEst, vapEst, turnoutPerEst,
 
 table1 <- xtable(table1, digits =0, label="tab:turnoutEst", 
              caption = "Comparing estimates of voter turnout derived from MCD estimates to official GAB turnout records." )
-align(table1) <- c('p{.3in}','p{.3in}',  'p{.4in}','p{.4in}','p{.5in}','p{.5in}',
-                   'p{.4in}','p{.4in}')
+align(table1) <- c('p{.3in}','p{.55in}',  'p{.55in}','p{.55in}','p{.55in}','p{.55in}',
+                   'p{.55in}','p{.55in}')
 
 print(table1, 
       include.rownames = FALSE, 
@@ -1007,15 +1010,15 @@ table2 <- merge(out1, out2)
 rm(out1, out2)
 table2$difference <- table2[, 5] - table2[, 3]
 table2$difference2 <- table2[, 4] - table2[, 2]
-names(table2) <- c("Year", "District Wide Races", "Districts with District Wide", 
-                   "All SB Races", "All Districts with Records", 
-                   "Districts without District Wide", "Non-district Wide Races")
+names(table2) <- c("Year", "Districtwide Races", "Districts with Districtwide", 
+                   "All Board Races", "Total Districts", 
+                   "Districts without Districtwide", "Non-districwide Races")
 
 
 table2 <- xtable(table2, label="tab:yearsample", 
              caption = "Comparing sample size for district wide vs. apportioned school board races." )
-align(table2) <- c('p{.2in}','p{.5in}',  'p{1in}','p{1in}','p{.75in}','p{.75in}',
-                   'p{.75in}','p{.75in}')
+align(table2) <- c('p{.2in}','p{.5in}',  'p{.8in}','p{.8in}','p{.8in}','p{.8in}',
+                   'p{.8in}','p{..8in}')
 
 print(table2, 
       include.rownames = FALSE, 
@@ -1324,8 +1327,8 @@ yearStats[, 8] <- iPer2(yearStats[,8]*100)
 
 yearStats <- xtable(yearStats, label="tab:undervotestats", 
              caption = "Overvote and Undervote in Spring Elections." )
-align(yearStats) <- c('p{.15in}','p{.35in}','p{.2in}', 'p{.3in}','p{.4in}','p{.4in}','p{.4in}',
-                   'p{.4in}','p{.4in}')
+align(yearStats) <- c('p{.15in}','p{.55in}','p{.5in}', 'p{.5in}','p{.8in}','p{.8in}','p{.8in}',
+                   'p{.8in}','p{.8in}')
 
 print(yearStats, 
       include.rownames = FALSE, 
