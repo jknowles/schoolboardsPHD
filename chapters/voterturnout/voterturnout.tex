@@ -560,7 +560,7 @@ that voters are more likely to turnout than in larger school board races. Figure
 between electorate size and school board election turnout across the years of data 
 available in Wisconsin. As voting age population increases, Wisconsin school board 
 elections have lower turnout with a correlation of 
--0.134. 
+-0.136. 
 This conforms with the predictions of game-theoretic approaches which state that 
 in a small electorate a voter can expect their vote to matter more in the outcome and 
 thus increase the potential benefits associated with voting
@@ -583,7 +583,7 @@ Figure \ref{fig:turnoutAutocorrelation} explores how habit forming turnout may b
 in spring elections in school districts \citep{Plutzer2002}. Using a two-year lag 
 of turnout, Figure \ref{fig:turnoutAutocorrelation} shows a consistently high 
 positive correlation between lagged and current turnout, averaging 
-0.349.
+0.348.
 \footnote{For a single year lag, the corresponding correlation is 
 0.311 and the 
 year to year pattern is largely similar.} A robust linear model is used to show 
@@ -593,7 +593,7 @@ appears to be inflated. Figure \ref{fig:turnoutComparison} looks at this further
 yet by showing the relationship between the average of the turnout in the prior two 
 fall elections for Governor and President compared to the current school board turnout. 
 These correlate positively as well at a level of 
-0.188. 
+0.14. 
 
 With a reduced electorate, school board elections are an interesting case to study 
 the role substantial interest groups can play in an election. \citet{Fowler2005} 
@@ -639,7 +639,7 @@ partisan unity and turnout. Figure \ref{fig:partisan2} shows the linear relation
 between higher partisan unity and turnout. In most years there is almost no relationship, 
 but in 2011 and 2012 there appears to be an uptick in school board turnout associated 
 with more strongly partisan school districts. The correlation is 
-0.134. 
+0.136. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
@@ -879,44 +879,44 @@ alongside the initial model in Table \ref{tab:lagmods}.
 \hline 
   & \multicolumn{ 1 }{ c }{ Naive OLS } & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ Interaction } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
  %                       & Naive OLS         & Simple RLM        & RLM + Year FE     & Interaction       & RLM + District FE\\ 
-(Intercept)             & -66.00 ^*         &                   &                   &                   &                  \\ 
-                        & (13.34)           &                   &                   &                   &                  \\ 
-turnoutLag2             & 23.97 ^*          & 21.28 ^*          & 22.42 ^*          & 48.12 ^*          & -1.39            \\ 
-                        & (2.02)            & (3.08)            & (3.08)            & (22.27)           & (2.62)           \\ 
-fallTurnout             & 9.70 ^*           & 9.66 ^*           & 12.94 ^*          & 13.00 ^*          & 14.01 ^*         \\ 
-                        & (2.83)            & (3.84)            & (3.80)            & (3.75)            & (6.44)           \\ 
-VAP\_adj               & -2.62 ^*          & -2.40 ^*          & -2.38 ^*          & -1.86 ^*          & -25.51 ^*        \\ 
-                        & (0.20)            & (0.24)            & (0.23)            & (0.46)            & (5.91)           \\ 
-per\_white\_all       & -5.45 ^*          & -5.11             & -3.14             & -2.86             & 14.64            \\ 
-                        & (2.48)            & (3.50)            & (3.63)            & (3.50)            & (36.95)          \\ 
-per65o                  & 26.26 ^*          & 22.35 ^*          & 21.36 ^*          & 23.21 ^*          & 65.12            \\ 
-                        & (5.77)            & (9.87)            & (9.85)            & (9.90)            & (38.98)          \\ 
-PerBachelorOrAbove      & -3.55             & -6.73             & 2.20              & 2.18              & -2.72            \\ 
-                        & (5.32)            & (5.72)            & (5.73)            & (5.73)            & (25.08)          \\ 
-OOH\_share             & -2.87             & -3.53             & -2.67             & -2.14             & 8.91             \\ 
-                        & (2.00)            & (2.97)            & (2.86)            & (2.85)            & (16.33)          \\ 
-PCI                     & 10.10 ^*          & 10.04 ^*          & 4.41 ^*           & 4.37 ^*           & 25.06 ^*         \\ 
-                        & (1.40)            & (1.77)            & (1.63)            & (1.64)            & (3.20)           \\ 
-districtwide1           & 0.30              &                   &                   &                   &                  \\ 
+(Intercept)             & -70.96 ^*         &                   &                   &                   &                  \\ 
+                        & (13.33)           &                   &                   &                   &                  \\ 
+turnoutLag2             & 24.20 ^*          & 21.49 ^*          & 22.45 ^*          & 48.13 ^*          & -1.64            \\ 
+                        & (2.04)            & (3.09)            & (3.05)            & (22.04)           & (2.65)           \\ 
+fallTurnout             & 0.67              & 0.33              & 7.71 ^*           & 7.82 ^*           & 1.88             \\ 
+                        & (2.22)            & (2.53)            & (2.83)            & (2.80)            & (2.46)           \\ 
+VAP\_adj               & -2.71 ^*          & -2.50 ^*          & -2.43 ^*          & -1.91 ^*          & -25.01 ^*        \\ 
+                        & (0.20)            & (0.24)            & (0.23)            & (0.46)            & (5.93)           \\ 
+per\_white\_all       & -4.13             & -3.74             & -2.15             & -1.83             & 16.93            \\ 
+                        & (2.51)            & (3.60)            & (3.67)            & (3.53)            & (35.42)          \\ 
+per65o                  & 27.23 ^*          & 23.27 ^*          & 22.09 ^*          & 23.95 ^*          & 68.59            \\ 
+                        & (5.80)            & (9.88)            & (9.80)            & (9.87)            & (39.95)          \\ 
+PerBachelorOrAbove      & 4.21              & 1.28              & 7.54              & 7.51              & 5.93             \\ 
+                        & (5.17)            & (5.43)            & (5.37)            & (5.38)            & (24.39)          \\ 
+OOH\_share             & -2.43             & -3.02             & -2.56             & -2.03             & 11.61            \\ 
+                        & (2.01)            & (2.99)            & (2.82)            & (2.81)            & (16.60)          \\ 
+PCI                     & 10.95 ^*          & 10.91 ^*          & 4.77 ^*           & 4.72 ^*           & 26.36 ^*         \\ 
+                        & (1.39)            & (1.78)            & (1.62)            & (1.64)            & (3.16)           \\ 
+districtwide1           & 0.33              &                   &                   &                   &                  \\ 
                         & (0.47)            &                   &                   &                   &                  \\ 
-contestOpen Contested   & -0.70             &                   &                   &                   &                  \\ 
+contestOpen Contested   & -0.76             &                   &                   &                   &                  \\ 
                         & (0.58)            &                   &                   &                   &                  \\ 
-contestUncontested      & -5.30 ^*          &                   &                   &                   &                  \\ 
+contestUncontested      & -5.32 ^*          &                   &                   &                   &                  \\ 
                         & (0.38)            &                   &                   &                   &                  \\ 
-Intercept               &                   & -65.88 ^*         & -16.10            & -20.97            & -43.48           \\ 
-                        &                   & (16.41)           & (15.71)           & (15.51)           & (75.76)          \\ 
-districtwide=1          &                   & 0.25              & 0.27              & 0.27              & 2.43 ^*          \\ 
-                        &                   & (0.53)            & (0.53)            & (0.53)            & (1.03)           \\ 
-contest=Open Contested  &                   & -0.80             & -0.39             & -0.38             & -0.21            \\ 
+Intercept               &                   & -70.84 ^*         & -17.98            & -22.80            & -59.61           \\ 
+                        &                   & (16.75)           & (15.63)           & (15.58)           & (71.05)          \\ 
+districtwide=1          &                   & 0.29              & 0.32              & 0.32              & 2.47 ^*          \\ 
+                        &                   & (0.53)            & (0.52)            & (0.52)            & (1.03)           \\ 
+contest=Open Contested  &                   & -0.86             & -0.40             & -0.39             & -0.27            \\ 
                         &                   & (0.58)            & (0.60)            & (0.60)            & (0.57)           \\ 
-contest=Uncontested     &                   & -5.10 ^*          & -5.00 ^*          & -5.00 ^*          & -5.03 ^*         \\ 
-                        &                   & (0.36)            & (0.33)            & (0.33)            & (0.38)           \\ 
+contest=Uncontested     &                   & -5.12 ^*          & -5.00 ^*          & -5.00 ^*          & -5.02 ^*         \\ 
+                        &                   & (0.37)            & (0.33)            & (0.33)            & (0.38)           \\ 
 turnoutLag2 * VAP\_adj &                   &                   &                   & -3.13             &                  \\ 
-                        &                   &                   &                   & (2.55)            &                   \\
- $N$                     & 2388              & 2380              & 2380              & 2380              & 2380             \\ 
-$R^2$                   & 0.28              & 0.26              & 0.42              & 0.42              & 0.45             \\ 
+                        &                   &                   &                   & (2.51)            &                   \\
+ $N$                     & 2384              & 2376              & 2376              & 2376              & 2376             \\ 
+$R^2$                   & 0.27              & 0.25              & 0.41              & 0.42              & 0.46             \\ 
 adj. $R^2$              & 0.27              & 0.25              & 0.41              & 0.41              & 0.37             \\ 
-Resid. sd               & 8.43              & 7.98              & 7.09              & 7.09              & 7.33              \\ \hline
+Resid. sd               & 8.44              & 8.00              & 7.10              & 7.09              & 7.33              \\ \hline
  \multicolumn{6}{l}{\footnotesize{Standard errors clustered at the school district except in model 1.}}\\
 \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{6}{l}{\footnotesize{Year and district fixed effects omitted.}} 
@@ -963,7 +963,7 @@ clustered structure of the district terms.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Sep 23, 2014 - 2:17:26 PM
+% Date and time: Sun, Sep 28, 2014 - 4:32:51 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Lagged Turnout} 
   \label{tab:meTurnout} 
@@ -971,36 +971,36 @@ clustered structure of the district terms.
 \\[-1.8ex]\hline \\[-1.8ex] 
 \\[-1.8ex] & turnout \\ 
 \hline \\[-1.8ex] 
- turnoutLag2 & 34.620$^{***}$ \\ 
-  & (13.430) \\ 
-  VAP\_adj & $-$2.321$^{***}$ \\ 
+ turnoutLag2 & 34.460$^{**}$ \\ 
+  & (13.460) \\ 
+  VAP\_adj & $-$2.404$^{***}$ \\ 
   & (0.379) \\ 
-  fallTurnout & 17.630$^{***}$ \\ 
-  & (3.497) \\ 
-  per\_white\_all & $-$3.456 \\ 
-  & (3.349) \\ 
-  per65o & 31.300$^{***}$ \\ 
-  & (7.723) \\ 
-  PerBachelorOrAbove & 0.502 \\ 
-  & (7.037) \\ 
-  OOH\_share & $-$1.322 \\ 
-  & (2.684) \\ 
-  PCI & 4.310$^{**}$ \\ 
-  & (2.010) \\ 
-  districtwide1 & 1.029$^{*}$ \\ 
+  fallTurnout & 7.158$^{***}$ \\ 
+  & (2.505) \\ 
+  per\_white\_all & $-$2.004 \\ 
+  & (3.338) \\ 
+  per65o & 33.210$^{***}$ \\ 
+  & (7.718) \\ 
+  PerBachelorOrAbove & 10.710 \\ 
+  & (6.653) \\ 
+  OOH\_share & $-$0.471 \\ 
+  & (2.671) \\ 
+  PCI & 4.928$^{**}$ \\ 
+  & (2.004) \\ 
+  districtwide1 & 1.048$^{*}$ \\ 
   & (0.546) \\ 
-  contestOpen Contested & $-$0.331 \\ 
-  & (0.507) \\ 
-  contestUncontested & $-$5.086$^{***}$ \\ 
+  contestOpen Contested & $-$0.351 \\ 
+  & (0.508) \\ 
+  contestUncontested & $-$5.077$^{***}$ \\ 
   & (0.315) \\ 
-  turnoutLag2:VAP\_adj & $-$3.387$^{**}$ \\ 
-  & (1.616) \\ 
-  Constant & $-$16.900 \\ 
-  & (19.340) \\ 
- N & 2,380 \\ 
-Log Likelihood & $-$7,965.000 \\ 
-AIC & 15,962.000 \\ 
-BIC & 16,055.000 \\ 
+  turnoutLag2:VAP\_adj & $-$3.351$^{**}$ \\ 
+  & (1.619) \\ 
+  Constant & $-$19.460 \\ 
+  & (19.310) \\ 
+ N & 2,376 \\ 
+Log Likelihood & $-$7,955.000 \\ 
+AIC & 15,943.000 \\ 
+BIC & 16,035.000 \\ 
 \hline \\[-1.8ex] 
 \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
 \multicolumn{2}{l}{Model includes both year and district random effects modeled as intercepts.} \\ 
@@ -1050,34 +1050,34 @@ then this becomes more problematic.
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } & \multicolumn{ 1 }{ c }{ Interact + Year FE } \\ \hline
  %                                 & Simple RLM         & RLM + Year FE      & RLM + District FE  & Interact + Year FE\\ 
-Intercept                         & -63.18 ^*          & -21.42             & -77.24             & -21.93            \\ 
-                                  & (19.14)            & (20.23)            & (74.01)            & (20.16)           \\ 
-CLOSE=Not Competitive             & -1.45 ^*           & -2.16 ^*           & -1.42 ^*           & -1.14             \\ 
-                                  & (0.55)             & (0.51)             & (0.51)             & (3.68)            \\ 
-VAP\_adj                         & -3.14 ^*           & -3.21 ^*           & -21.68 ^*          & -3.15 ^*          \\ 
-                                  & (0.31)             & (0.30)             & (5.59)             & (0.36)            \\ 
-per\_white\_all                 & -3.99              & -1.69              & 14.20              & -1.65             \\ 
-                                  & (4.45)             & (4.57)             & (37.14)            & (4.58)            \\ 
-per65o                            & 29.29 ^*           & 29.26 ^*           & 77.23              & 29.35 ^*          \\ 
-                                  & (11.79)            & (11.87)            & (39.42)            & (11.85)           \\ 
-PerBachelorOrAbove                & 5.50               & 15.92 ^*           & 7.15               & 15.97 ^*          \\ 
-                                  & (6.24)             & (6.44)             & (24.68)            & (6.45)            \\ 
-OOH\_share                       & -2.99              & -1.90              & 10.86              & -1.88             \\ 
-                                  & (3.71)             & (3.64)             & (16.66)            & (3.63)            \\ 
-PCI                               & 11.00 ^*           & 6.33 ^*            & 25.30 ^*           & 6.31 ^*           \\ 
-                                  & (2.00)             & (2.09)             & (3.16)             & (2.10)            \\ 
-districtwide=1                    & 0.24               & 0.23               & 2.38 ^*            & 0.22              \\ 
+Intercept                         & -62.88 ^*          & -20.10             & -63.20             & -20.51            \\ 
+                                  & (18.98)            & (20.00)            & (70.26)            & (19.95)           \\ 
+CLOSE=Not Competitive             & -1.49 ^*           & -2.20 ^*           & -1.45 ^*           & -1.39             \\ 
+                                  & (0.55)             & (0.51)             & (0.51)             & (3.71)            \\ 
+VAP\_adj                         & -3.18 ^*           & -3.24 ^*           & -24.18 ^*          & -3.19 ^*          \\ 
+                                  & (0.31)             & (0.31)             & (5.86)             & (0.37)            \\ 
+per\_white\_all                 & -3.93              & -1.61              & 14.71              & -1.58             \\ 
+                                  & (4.59)             & (4.73)             & (34.79)            & (4.76)            \\ 
+per65o                            & 29.52 ^*           & 29.50 ^*           & 72.85              & 29.58 ^*          \\ 
+                                  & (11.69)            & (11.81)            & (39.45)            & (11.79)           \\ 
+PerBachelorOrAbove                & 5.87               & 16.52 ^*           & 7.37               & 16.56 ^*          \\ 
+                                  & (6.16)             & (6.36)             & (23.96)            & (6.38)            \\ 
+OOH\_share                       & -3.30              & -2.20              & 12.22              & -2.18             \\ 
+                                  & (3.68)             & (3.62)             & (16.50)            & (3.61)            \\ 
+PCI                               & 11.00 ^*           & 6.22 ^*            & 26.15 ^*           & 6.21 ^*           \\ 
+                                  & (1.97)             & (2.06)             & (3.08)             & (2.06)            \\ 
+districtwide=1                    & 0.25               & 0.24               & 2.38 ^*            & 0.24              \\ 
                                   & (0.66)             & (0.66)             & (1.04)             & (0.66)            \\ 
-contest=Open Contested            & -0.53              & 0.21               & -0.18              & 0.21              \\ 
+contest=Open Contested            & -0.55              & 0.19               & -0.20              & 0.19              \\ 
                                   & (0.58)             & (0.59)             & (0.57)             & (0.59)            \\ 
-contest=Uncontested               & -4.13 ^*           & -3.47 ^*           & -4.03 ^*           & -3.47 ^*          \\ 
-                                  & (0.49)             & (0.45)             & (0.47)             & (0.45)            \\ 
-CLOSE=Not Competitive * VAP\_adj &                    &                    &                    & -0.12             \\ 
+contest=Uncontested               & -4.09 ^*           & -3.42 ^*           & -4.01 ^*           & -3.43 ^*          \\ 
+                                  & (0.49)             & (0.45)             & (0.48)             & (0.45)            \\ 
+CLOSE=Not Competitive * VAP\_adj &                    &                    &                    & -0.09             \\ 
                                   &                    &                    &                    & (0.40)             \\
- $N$                               & 2380               & 2380               & 2380               & 2380              \\ 
-$R^2$                             & 0.22               & 0.37               & 0.46               & 0.37              \\ 
-adj. $R^2$                        & 0.21               & 0.37               & 0.37               & 0.37              \\ 
-Resid. sd                         & 8.19               & 7.35               & 7.33               & 7.35               \\ \hline
+ $N$                               & 2376               & 2376               & 2376               & 2376              \\ 
+$R^2$                             & 0.22               & 0.38               & 0.46               & 0.38              \\ 
+adj. $R^2$                        & 0.22               & 0.37               & 0.37               & 0.37              \\ 
+Resid. sd                         & 8.18               & 7.33               & 7.31               & 7.33               \\ \hline
  \multicolumn{5}{l}{\footnotesize{Robust standard errors in parentheses}}\\
 \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
@@ -1092,7 +1092,7 @@ I turn to partial pooling to resolve this issue.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Sep 23, 2014 - 2:17:33 PM
+% Date and time: Sun, Sep 28, 2014 - 4:32:58 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Competitiveness} 
   \label{tab:meClose} 
@@ -1100,34 +1100,34 @@ I turn to partial pooling to resolve this issue.
 \\[-1.8ex]\hline \\[-1.8ex] 
 \\[-1.8ex] & turnout \\ 
 \hline \\[-1.8ex] 
- CLOSENot Competitive & $-$4.868$^{*}$ \\ 
-  & (2.676) \\ 
-  VAP\_adj & $-$3.479$^{***}$ \\ 
-  & (0.322) \\ 
-  per\_white\_all & $-$1.537 \\ 
-  & (3.596) \\ 
-  per65o & 34.540$^{***}$ \\ 
-  & (8.258) \\ 
-  PerBachelorOrAbove & 16.270$^{**}$ \\ 
-  & (6.817) \\ 
-  OOH\_share & 0.401 \\ 
-  & (2.858) \\ 
-  PCI & 5.793$^{***}$ \\ 
-  & (2.138) \\ 
-  districtwide1 & 1.062$^{*}$ \\ 
-  & (0.573) \\ 
-  contestOpen Contested & $-$0.039 \\ 
-  & (0.506) \\ 
-  contestUncontested & $-$3.572$^{***}$ \\ 
-  & (0.445) \\ 
-  CLOSENot Competitive:VAP\_adj & 0.320 \\ 
-  & (0.301) \\ 
-  Constant & $-$14.870 \\ 
-  & (20.580) \\ 
- N & 2,380 \\ 
-Log Likelihood & $-$7,980.000 \\ 
-AIC & 15,990.000 \\ 
-BIC & 16,076.000 \\ 
+ CLOSENot Competitive & $-$5.280$^{**}$ \\ 
+  & (2.670) \\ 
+  VAP\_adj & $-$3.523$^{***}$ \\ 
+  & (0.321) \\ 
+  per\_white\_all & $-$1.715 \\ 
+  & (3.602) \\ 
+  per65o & 35.160$^{***}$ \\ 
+  & (8.256) \\ 
+  PerBachelorOrAbove & 16.930$^{**}$ \\ 
+  & (6.806) \\ 
+  OOH\_share & 0.205 \\ 
+  & (2.857) \\ 
+  PCI & 5.685$^{***}$ \\ 
+  & (2.137) \\ 
+  districtwide1 & 1.047$^{*}$ \\ 
+  & (0.572) \\ 
+  contestOpen Contested & $-$0.064 \\ 
+  & (0.505) \\ 
+  contestUncontested & $-$3.516$^{***}$ \\ 
+  & (0.444) \\ 
+  CLOSENot Competitive:VAP\_adj & 0.360 \\ 
+  & (0.300) \\ 
+  Constant & $-$13.260 \\ 
+  & (20.560) \\ 
+ N & 2,376 \\ 
+Log Likelihood & $-$7,960.000 \\ 
+AIC & 15,950.000 \\ 
+BIC & 16,036.000 \\ 
 \hline \\[-1.8ex] 
 \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
 \end{tabular} 
@@ -1153,34 +1153,34 @@ previous models in an attempt to find evidence of such an effect.
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
  %                      & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
-Intercept              & -48.32 ^*         & -4.87             & -42.04           \\ 
-                       & (17.68)           & (18.42)           & (75.48)          \\ 
-teachShareofVoters     & -13.66 ^*         & -12.94 ^*         & -0.59            \\ 
-                       & (2.27)            & (2.30)            & (1.94)           \\ 
-fallTurnout            & 11.58 ^*          & 15.20 ^*          & 14.01 ^*         \\ 
-                       & (4.25)            & (4.31)            & (6.42)           \\ 
-VAP\_adj              & -3.05 ^*          & -3.05 ^*          & -25.74 ^*        \\ 
-                       & (0.29)            & (0.29)            & (5.91)           \\ 
-per\_white\_all      & -10.21 ^*         & -8.35 ^*          & 13.76            \\ 
-                       & (3.60)            & (3.75)            & (36.54)          \\ 
-per65o                 & 21.93             & 21.68             & 64.81            \\ 
-                       & (11.21)           & (11.41)           & (38.79)          \\ 
-PerBachelorOrAbove     & -4.44             & 2.95              & -1.94            \\ 
-                       & (6.55)            & (6.75)            & (24.73)          \\ 
-OOH\_share            & -3.62             & -2.95             & 9.15             \\ 
-                       & (3.39)            & (3.38)            & (16.27)          \\ 
-PCI                    & 9.73 ^*           & 4.76 ^*           & 25.16 ^*         \\ 
-                       & (1.93)            & (1.94)            & (3.20)           \\ 
-districtwide=1         & 0.13              & 0.17              & 2.42 ^*          \\ 
-                       & (0.63)            & (0.63)            & (1.04)           \\ 
-contest=Open Contested & -0.53             & -0.10             & -0.22            \\ 
+Intercept              & -54.26 ^*         & -6.99             & -58.52           \\ 
+                       & (17.97)           & (18.34)           & (70.74)          \\ 
+teachShareofVoters     & -13.25 ^*         & -12.61 ^*         & -0.24            \\ 
+                       & (2.28)            & (2.27)            & (2.02)           \\ 
+fallTurnout            & 2.18              & 9.47 ^*           & 1.65             \\ 
+                       & (2.65)            & (3.11)            & (2.43)           \\ 
+VAP\_adj              & -3.15 ^*          & -3.11 ^*          & -25.22 ^*        \\ 
+                       & (0.30)            & (0.29)            & (5.93)           \\ 
+per\_white\_all      & -8.69 ^*          & -7.15             & 16.33            \\ 
+                       & (3.68)            & (3.77)            & (35.17)          \\ 
+per65o                 & 23.23 ^*          & 22.72 ^*          & 68.43            \\ 
+                       & (11.30)           & (11.44)           & (39.77)          \\ 
+PerBachelorOrAbove     & 3.67              & 8.95              & 6.64             \\ 
+                       & (6.21)            & (6.34)            & (24.07)          \\ 
+OOH\_share            & -3.13             & -2.80             & 11.86            \\ 
+                       & (3.40)            & (3.34)            & (16.56)          \\ 
+PCI                    & 10.67 ^*          & 5.13 ^*           & 26.45 ^*         \\ 
+                       & (1.94)            & (1.93)            & (3.15)           \\ 
+districtwide=1         & 0.17              & 0.22              & 2.47 ^*          \\ 
+                       & (0.63)            & (0.63)            & (1.03)           \\ 
+contest=Open Contested & -0.60             & -0.11             & -0.28            \\ 
                        & (0.57)            & (0.59)            & (0.57)           \\ 
-contest=Uncontested    & -5.12 ^*          & -5.01 ^*          & -5.04 ^*         \\ 
+contest=Uncontested    & -5.14 ^*          & -5.00 ^*          & -5.04 ^*         \\ 
                        & (0.37)            & (0.34)            & (0.38)            \\
- $N$                    & 2380              & 2380              & 2380             \\ 
-$R^2$                  & 0.24              & 0.39              & 0.45             \\ 
-adj. $R^2$             & 0.23              & 0.39              & 0.37             \\ 
-Resid. sd              & 8.10              & 7.24              & 7.33              \\ \hline
+ $N$                    & 2376              & 2376              & 2376             \\ 
+$R^2$                  & 0.23              & 0.39              & 0.46             \\ 
+adj. $R^2$             & 0.23              & 0.38              & 0.37             \\ 
+Resid. sd              & 8.12              & 7.26              & 7.33              \\ \hline
  \multicolumn{4}{l}{\footnotesize{Robust standard errors in parentheses}}\\
 \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}} 
@@ -1193,7 +1193,7 @@ share of the electorate has an effect on the turnout.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Sep 23, 2014 - 2:17:40 PM
+% Date and time: Sun, Sep 28, 2014 - 4:33:04 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Staff Influence} 
   \label{tab:meInf} 
@@ -1201,34 +1201,34 @@ share of the electorate has an effect on the turnout.
 \\[-1.8ex]\hline \\[-1.8ex] 
 \\[-1.8ex] & turnout \\ 
 \hline \\[-1.8ex] 
- teachShareofVoters & $-$3.240$^{*}$ \\ 
-  & (1.749) \\ 
-  fallTurnout & 18.830$^{***}$ \\ 
-  & (3.611) \\ 
-  VAP\_adj & $-$3.104$^{***}$ \\ 
+ teachShareofVoters & $-$3.035$^{*}$ \\ 
+  & (1.758) \\ 
+  fallTurnout & 7.351$^{***}$ \\ 
+  & (2.540) \\ 
+  VAP\_adj & $-$3.188$^{***}$ \\ 
   & (0.268) \\ 
-  per\_white\_all & $-$5.277 \\ 
-  & (3.568) \\ 
-  per65o & 30.130$^{***}$ \\ 
-  & (8.079) \\ 
-  PerBachelorOrAbove & 0.320 \\ 
-  & (7.339) \\ 
-  OOH\_share & $-$1.851 \\ 
-  & (2.805) \\ 
-  PCI & 4.391$^{**}$ \\ 
-  & (2.100) \\ 
-  districtwide1 & 1.052$^{*}$ \\ 
+  per\_white\_all & $-$3.689 \\ 
+  & (3.561) \\ 
+  per65o & 32.470$^{***}$ \\ 
+  & (8.093) \\ 
+  PerBachelorOrAbove & 11.480$^{*}$ \\ 
+  & (6.943) \\ 
+  OOH\_share & $-$0.846 \\ 
+  & (2.798) \\ 
+  PCI & 5.065$^{**}$ \\ 
+  & (2.099) \\ 
+  districtwide1 & 1.081$^{*}$ \\ 
   & (0.564) \\ 
-  contestOpen Contested & $-$0.269 \\ 
-  & (0.506) \\ 
-  contestUncontested & $-$5.077$^{***}$ \\ 
+  contestOpen Contested & $-$0.284 \\ 
+  & (0.507) \\ 
+  contestUncontested & $-$5.064$^{***}$ \\ 
   & (0.315) \\ 
-  Constant & $-$8.077 \\ 
-  & (20.110) \\ 
- N & 2,380 \\ 
-Log Likelihood & $-$7,972.000 \\ 
-AIC & 15,975.000 \\ 
-BIC & 16,061.000 \\ 
+  Constant & $-$10.990 \\ 
+  & (20.130) \\ 
+ N & 2,376 \\ 
+Log Likelihood & $-$7,963.000 \\ 
+AIC & 15,956.000 \\ 
+BIC & 16,043.000 \\ 
 \hline \\[-1.8ex] 
 \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
 \end{tabular} 
@@ -1265,7 +1265,7 @@ voter interest as many voters do not abstain.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Sep 23, 2014 - 2:17:45 PM
+% Date and time: Sun, Sep 28, 2014 - 4:33:10 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of School Board Undervote} 
   \label{tab:meInf} 
@@ -1273,36 +1273,36 @@ voter interest as many voters do not abstain.
 \\[-1.8ex]\hline \\[-1.8ex] 
 \\[-1.8ex] & turnoutDiff \\ 
 \hline \\[-1.8ex] 
- turnoutLag2 & $-$55.370$^{***}$ \\ 
-  & (12.400) \\ 
-  VAP\_adj & 0.994$^{***}$ \\ 
-  & (0.351) \\ 
-  per\_white\_all & 2.858 \\ 
-  & (3.166) \\ 
-  per65o & 9.441 \\ 
-  & (7.200) \\ 
-  PerBachelorOrAbove & 6.922 \\ 
-  & (5.861) \\ 
-  OOH\_share & 4.396$^{*}$ \\ 
-  & (2.491) \\ 
-  PCI & $-$2.564 \\ 
-  & (1.876) \\ 
-  CLOSENot Competitive & 1.827$^{***}$ \\ 
-  & (0.416) \\ 
-  contestOpen Contested & 0.551 \\ 
-  & (0.546) \\ 
-  contestUncontested & 2.171$^{***}$ \\ 
+ turnoutLag2 & $-$55.790$^{***}$ \\ 
+  & (12.440) \\ 
+  VAP\_adj & 0.977$^{***}$ \\ 
+  & (0.352) \\ 
+  per\_white\_all & 2.692 \\ 
+  & (3.180) \\ 
+  per65o & 10.070 \\ 
+  & (7.222) \\ 
+  PerBachelorOrAbove & 7.403 \\ 
+  & (5.870) \\ 
+  OOH\_share & 4.442$^{*}$ \\ 
+  & (2.498) \\ 
+  PCI & $-$2.812 \\ 
+  & (1.881) \\ 
+  CLOSENot Competitive & 1.819$^{***}$ \\ 
+  & (0.415) \\ 
+  contestOpen Contested & 0.556 \\ 
+  & (0.545) \\ 
+  contestUncontested & 2.151$^{***}$ \\ 
   & (0.411) \\ 
-  teachShareofVoters & $-$1.954 \\ 
-  & (1.904) \\ 
-  turnoutLag2:VAP\_adj & 5.546$^{***}$ \\ 
-  & (1.521) \\ 
-  Constant & 12.590 \\ 
-  & (18.210) \\ 
- N & 1,695 \\ 
-Log Likelihood & $-$5,317.000 \\ 
-AIC & 10,666.000 \\ 
-BIC & 10,753.000 \\ 
+  teachShareofVoters & $-$1.768 \\ 
+  & (1.905) \\ 
+  turnoutLag2:VAP\_adj & 5.599$^{***}$ \\ 
+  & (1.525) \\ 
+  Constant & 15.200 \\ 
+  & (18.250) \\ 
+ N & 1,691 \\ 
+Log Likelihood & $-$5,301.000 \\ 
+AIC & 10,635.000 \\ 
+BIC & 10,722.000 \\ 
 \hline \\[-1.8ex] 
 \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
 \end{tabular} 
@@ -1345,46 +1345,46 @@ clear.
 \hline 
   & \multicolumn{ 1 }{ c }{ Naive Causal Model } & \multicolumn{ 1 }{ c }{ Overvote Model } \\ \hline
  %                              & Naive Causal Model & Overvote Model    \\ 
-Intercept                      & 5.80               & -2.80             \\ 
-                               & (23.15)            & (20.30)           \\ 
-turnoutLag2                    & 29.44 ^*           & 19.61 ^*          \\ 
-                               & (5.30)             & (5.17)            \\ 
-fallTurnout                    & 9.99 ^*            & -5.34             \\ 
-                               & (4.42)             & (3.67)            \\ 
-VAP\_adj                      & -2.78 ^*           & -2.25 ^*          \\ 
-                               & (0.29)             & (0.27)            \\ 
-per\_white\_all              & 0.36               & -0.16             \\ 
-                               & (3.93)             & (2.88)            \\ 
-per65o                         & 8.69               & -13.34            \\ 
-                               & (9.55)             & (8.89)            \\ 
-PerBachelorOrAbove             & 9.15               & 3.68              \\ 
-                               & (6.53)             & (6.39)            \\ 
-OOH\_share                    & -2.48              & -4.13             \\ 
-                               & (3.00)             & (2.81)            \\ 
-PCI                            & 2.46               & 3.32              \\ 
-                               & (2.48)             & (2.18)            \\ 
-CLOSE=Not Competitive          & -2.22 ^*           & -2.52 ^*          \\ 
+Intercept                      & 0.57               & -3.51             \\ 
+                               & (22.97)            & (19.71)           \\ 
+turnoutLag2                    & 27.82 ^*           & 20.12 ^*          \\ 
+                               & (5.44)             & (5.26)            \\ 
+fallTurnout                    & 11.75 ^*           & -4.67             \\ 
+                               & (3.02)             & (2.56)            \\ 
+VAP\_adj                      & -2.83 ^*           & -2.24 ^*          \\ 
+                               & (0.30)             & (0.27)            \\ 
+per\_white\_all              & 0.34               & -0.11             \\ 
+                               & (4.15)             & (2.96)            \\ 
+per65o                         & 8.82               & -14.46            \\ 
+                               & (9.59)             & (8.93)            \\ 
+PerBachelorOrAbove             & 7.98               & 2.10              \\ 
+                               & (6.02)             & (5.87)            \\ 
+OOH\_share                    & -3.59              & -4.41             \\ 
+                               & (2.97)             & (2.79)            \\ 
+PCI                            & 3.01               & 3.38              \\ 
+                               & (2.44)             & (2.10)            \\ 
+CLOSE=Not Competitive          & -2.35 ^*           & -2.47 ^*          \\ 
                                & (0.73)             & (0.60)            \\ 
-districtwide=1                 & -0.47              & -0.29             \\ 
+districtwide=1                 & -0.38              & -0.30             \\ 
                                & (0.53)             & (0.47)            \\ 
-contest=Open Contested         & -1.58              & -1.59             \\ 
-                               & (1.05)             & (0.84)            \\ 
-contest=Uncontested            & -3.94 ^*           & -2.68 ^*          \\ 
+contest=Open Contested         & -1.64              & -1.62             \\ 
+                               & (1.03)             & (0.83)            \\ 
+contest=Uncontested            & -3.82 ^*           & -2.68 ^*          \\ 
                                & (0.65)             & (0.53)            \\ 
-RecallPolarization             & -7.66 ^*           & -2.47             \\ 
-                               & (3.89)             & (3.15)            \\ 
-treatment                      & 5.46 ^*            & -1.13             \\ 
-                               & (0.79)             & (0.68)            \\ 
-turnout\_overall\_werc       & 0.84               & 0.93              \\ 
+RecallPolarization             & -8.00 ^*           & -2.74             \\ 
+                               & (3.87)             & (3.06)            \\ 
+treatment                      & 6.18 ^*            & -1.41 ^*          \\ 
+                               & (0.84)             & (0.69)            \\ 
+turnout\_overall\_werc       & 0.88               & 0.95              \\ 
                                & (0.62)             & (0.60)            \\ 
-RecallPolarization * treatment & 27.88 ^*           & 12.60 ^*          \\ 
-                               & (5.63)             & (4.11)            \\ 
-topTicketTurnoutSpring         &                    & 65.03 ^*          \\ 
-                               &                    & (2.88)             \\
- $N$                            & 1168               & 1168              \\ 
-$R^2$                          & 0.43               & 0.64              \\ 
-adj. $R^2$                     & 0.43               & 0.64              \\ 
-Resid. sd                      & 7.77               & 6.17               \\ \hline
+RecallPolarization * treatment & 26.71 ^*           & 12.72 ^*          \\ 
+                               & (5.81)             & (4.14)            \\ 
+topTicketTurnoutSpring         &                    & 65.54 ^*          \\ 
+                               &                    & (2.82)             \\
+ $N$                            & 1164               & 1164              \\ 
+$R^2$                          & 0.44               & 0.64              \\ 
+adj. $R^2$                     & 0.44               & 0.64              \\ 
+Resid. sd                      & 7.70               & 6.16               \\ \hline
  \multicolumn{3}{l}{\footnotesize{Robust standard errors in parentheses}}\\
 \multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
@@ -1395,7 +1395,7 @@ Table \ref{tab:causmod1} shows good things.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Sep 23, 2014 - 2:17:47 PM
+% Date and time: Sun, Sep 28, 2014 - 4:33:11 PM
 \begin{table}[!htbp] \centering 
   \caption{Partial Pooling Model of Post-Election Polarization} 
   \label{tab:meInf} 
@@ -1403,46 +1403,46 @@ Table \ref{tab:causmod1} shows good things.
 \\[-1.8ex]\hline \\[-1.8ex] 
 \\[-1.8ex] & turnout \\ 
 \hline \\[-1.8ex] 
- turnoutLag2 & 7.752$^{***}$ \\ 
-  & (2.344) \\ 
-  fallTurnout & $-$4.706 \\ 
-  & (4.115) \\ 
-  topTicketTurnoutSpring & 68.670$^{***}$ \\ 
-  & (2.344) \\ 
-  VAP\_adj & $-$2.647$^{***}$ \\ 
+ turnoutLag2 & 8.155$^{***}$ \\ 
+  & (2.375) \\ 
+  fallTurnout & $-$2.637 \\ 
+  & (2.296) \\ 
+  topTicketTurnoutSpring & 69.020$^{***}$ \\ 
+  & (2.426) \\ 
+  VAP\_adj & $-$2.633$^{***}$ \\ 
   & (0.281) \\ 
-  per\_white\_all & $-$0.767 \\ 
-  & (3.496) \\ 
-  per65o & $-$12.060 \\ 
-  & (7.969) \\ 
-  PerBachelorOrAbove & 3.505 \\ 
-  & (7.486) \\ 
-  OOH\_share & $-$4.075 \\ 
-  & (2.801) \\ 
-  PCI & 3.439 \\ 
-  & (2.153) \\ 
-  CLOSENot Competitive & $-$2.494$^{***}$ \\ 
-  & (0.540) \\ 
-  districtwide1 & 0.103 \\ 
-  & (0.624) \\ 
-  contestOpen Contested & $-$1.663$^{**}$ \\ 
-  & (0.718) \\ 
-  contestUncontested & $-$2.798$^{***}$ \\ 
-  & (0.537) \\ 
-  RecallPolarization & $-$1.761 \\ 
-  & (4.002) \\ 
-  treatment & $-$1.655$^{**}$ \\ 
-  & (0.659) \\ 
-  turnout\_overall\_werc & 1.093 \\ 
-  & (0.673) \\ 
-  RecallPolarization:treatment & 10.890$^{***}$ \\ 
-  & (4.035) \\ 
-  Constant & 0.506 \\ 
-  & (20.500) \\ 
- N & 1,168 \\ 
-Log Likelihood & $-$3,718.000 \\ 
-AIC & 7,478.000 \\ 
-BIC & 7,584.000 \\ 
+  per\_white\_all & $-$0.875 \\ 
+  & (3.475) \\ 
+  per65o & $-$12.950 \\ 
+  & (7.994) \\ 
+  PerBachelorOrAbove & 0.959 \\ 
+  & (6.753) \\ 
+  OOH\_share & $-$4.379 \\ 
+  & (2.794) \\ 
+  PCI & 3.402 \\ 
+  & (2.134) \\ 
+  CLOSENot Competitive & $-$2.474$^{***}$ \\ 
+  & (0.539) \\ 
+  districtwide1 & 0.082 \\ 
+  & (0.623) \\ 
+  contestOpen Contested & $-$1.704$^{**}$ \\ 
+  & (0.717) \\ 
+  contestUncontested & $-$2.775$^{***}$ \\ 
+  & (0.536) \\ 
+  RecallPolarization & $-$2.301 \\ 
+  & (3.931) \\ 
+  treatment & $-$1.782$^{***}$ \\ 
+  & (0.691) \\ 
+  turnout\_overall\_werc & 1.098 \\ 
+  & (0.672) \\ 
+  RecallPolarization:treatment & 10.780$^{***}$ \\ 
+  & (4.043) \\ 
+  Constant & 0.167 \\ 
+  & (20.400) \\ 
+ N & 1,164 \\ 
+Log Likelihood & $-$3,704.000 \\ 
+AIC & 7,450.000 \\ 
+BIC & 7,556.000 \\ 
 \hline \\[-1.8ex] 
 \multicolumn{2}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
 \end{tabular} 
@@ -1459,7 +1459,7 @@ Table \ref{tab:modReview} reviews the major findings.
 
 
 % Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Sep 23, 2014 - 2:17:51 PM
+% Date and time: Sun, Sep 28, 2014 - 4:33:16 PM
 \begin{table}[!htbp] \centering 
   \caption{} 
   \label{tab:modReview} 
@@ -1468,52 +1468,52 @@ Table \ref{tab:modReview} reviews the major findings.
 \\[-1.8ex] & \multicolumn{4}{c}{turnout} \\ 
 \\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
 \hline \\[-1.8ex] 
- turnoutLag2 & 34.620$^{***}$ &  &  & 7.752$^{***}$ \\ 
-  & (13.430) &  &  & (2.344) \\ 
-  CLOSENot Competitive &  & $-$4.868$^{*}$ &  & $-$2.494$^{***}$ \\ 
-  &  & (2.676) &  & (0.540) \\ 
-  teachShareofVoters &  &  & $-$3.240$^{*}$ &  \\ 
-  &  &  & (1.749) &  \\ 
-  VAP\_adj & $-$2.321$^{***}$ & $-$3.479$^{***}$ & $-$3.104$^{***}$ & $-$2.647$^{***}$ \\ 
-  & (0.379) & (0.322) & (0.268) & (0.281) \\ 
-  fallTurnout & 17.630$^{***}$ &  & 18.830$^{***}$ & $-$4.706 \\ 
-  & (3.497) &  & (3.611) & (4.115) \\ 
-  topTicketTurnoutSpring &  &  &  & 68.670$^{***}$ \\ 
-  &  &  &  & (2.344) \\ 
-  per\_white\_all & $-$3.456 & $-$1.537 & $-$5.277 & $-$0.767 \\ 
-  & (3.349) & (3.596) & (3.568) & (3.496) \\ 
-  per65o & 31.300$^{***}$ & 34.540$^{***}$ & 30.130$^{***}$ & $-$12.060 \\ 
-  & (7.723) & (8.258) & (8.079) & (7.969) \\ 
-  PerBachelorOrAbove & 0.502 & 16.270$^{**}$ & 0.320 & 3.505 \\ 
-  & (7.037) & (6.817) & (7.339) & (7.486) \\ 
-  OOH\_share & $-$1.322 & 0.401 & $-$1.851 & $-$4.075 \\ 
-  & (2.684) & (2.858) & (2.805) & (2.801) \\ 
-  PCI & 4.310$^{**}$ & 5.793$^{***}$ & 4.391$^{**}$ & 3.439 \\ 
-  & (2.010) & (2.138) & (2.100) & (2.153) \\ 
-  districtwide1 & 1.029$^{*}$ & 1.062$^{*}$ & 1.052$^{*}$ & 0.103 \\ 
-  & (0.546) & (0.573) & (0.564) & (0.624) \\ 
-  contestOpen Contested & $-$0.331 & $-$0.039 & $-$0.269 & $-$1.663$^{**}$ \\ 
-  & (0.507) & (0.506) & (0.506) & (0.718) \\ 
-  contestUncontested & $-$5.086$^{***}$ & $-$3.572$^{***}$ & $-$5.077$^{***}$ & $-$2.798$^{***}$ \\ 
-  & (0.315) & (0.445) & (0.315) & (0.537) \\ 
-  turnoutLag2:VAP\_adj & $-$3.387$^{**}$ &  &  &  \\ 
-  & (1.616) &  &  &  \\ 
-  CLOSENot Competitive:VAP\_adj &  & 0.320 &  &  \\ 
-  &  & (0.301) &  &  \\ 
-  RecallPolarization &  &  &  & $-$1.761 \\ 
-  &  &  &  & (4.002) \\ 
-  treatment &  &  &  & $-$1.655$^{**}$ \\ 
-  &  &  &  & (0.659) \\ 
-  turnout\_overall\_werc &  &  &  & 1.093 \\ 
-  &  &  &  & (0.673) \\ 
-  RecallPolarization:treatment &  &  &  & 10.890$^{***}$ \\ 
-  &  &  &  & (4.035) \\ 
-  Constant & $-$16.900 & $-$14.870 & $-$8.077 & 0.506 \\ 
-  & (19.340) & (20.580) & (20.110) & (20.500) \\ 
- N & 2,380 & 2,380 & 2,380 & 1,168 \\ 
-Log Likelihood & $-$7,965.000 & $-$7,980.000 & $-$7,972.000 & $-$3,718.000 \\ 
-AIC & 15,962.000 & 15,990.000 & 15,975.000 & 7,478.000 \\ 
-BIC & 16,055.000 & 16,076.000 & 16,061.000 & 7,584.000 \\ 
+ turnoutLag2 & 34.460$^{**}$ &  &  & 8.155$^{***}$ \\ 
+  & (13.460) &  &  & (2.375) \\ 
+  CLOSENot Competitive &  & $-$5.280$^{**}$ &  & $-$2.474$^{***}$ \\ 
+  &  & (2.670) &  & (0.539) \\ 
+  teachShareofVoters &  &  & $-$3.035$^{*}$ &  \\ 
+  &  &  & (1.758) &  \\ 
+  VAP\_adj & $-$2.404$^{***}$ & $-$3.523$^{***}$ & $-$3.188$^{***}$ & $-$2.633$^{***}$ \\ 
+  & (0.379) & (0.321) & (0.268) & (0.281) \\ 
+  fallTurnout & 7.158$^{***}$ &  & 7.351$^{***}$ & $-$2.637 \\ 
+  & (2.505) &  & (2.540) & (2.296) \\ 
+  topTicketTurnoutSpring &  &  &  & 69.020$^{***}$ \\ 
+  &  &  &  & (2.426) \\ 
+  per\_white\_all & $-$2.004 & $-$1.715 & $-$3.689 & $-$0.875 \\ 
+  & (3.338) & (3.602) & (3.561) & (3.475) \\ 
+  per65o & 33.210$^{***}$ & 35.160$^{***}$ & 32.470$^{***}$ & $-$12.950 \\ 
+  & (7.718) & (8.256) & (8.093) & (7.994) \\ 
+  PerBachelorOrAbove & 10.710 & 16.930$^{**}$ & 11.480$^{*}$ & 0.959 \\ 
+  & (6.653) & (6.806) & (6.943) & (6.753) \\ 
+  OOH\_share & $-$0.471 & 0.205 & $-$0.846 & $-$4.379 \\ 
+  & (2.671) & (2.857) & (2.798) & (2.794) \\ 
+  PCI & 4.928$^{**}$ & 5.685$^{***}$ & 5.065$^{**}$ & 3.402 \\ 
+  & (2.004) & (2.137) & (2.099) & (2.134) \\ 
+  districtwide1 & 1.048$^{*}$ & 1.047$^{*}$ & 1.081$^{*}$ & 0.082 \\ 
+  & (0.546) & (0.572) & (0.564) & (0.623) \\ 
+  contestOpen Contested & $-$0.351 & $-$0.064 & $-$0.284 & $-$1.704$^{**}$ \\ 
+  & (0.508) & (0.505) & (0.507) & (0.717) \\ 
+  contestUncontested & $-$5.077$^{***}$ & $-$3.516$^{***}$ & $-$5.064$^{***}$ & $-$2.775$^{***}$ \\ 
+  & (0.315) & (0.444) & (0.315) & (0.536) \\ 
+  turnoutLag2:VAP\_adj & $-$3.351$^{**}$ &  &  &  \\ 
+  & (1.619) &  &  &  \\ 
+  CLOSENot Competitive:VAP\_adj &  & 0.360 &  &  \\ 
+  &  & (0.300) &  &  \\ 
+  RecallPolarization &  &  &  & $-$2.301 \\ 
+  &  &  &  & (3.931) \\ 
+  treatment &  &  &  & $-$1.782$^{***}$ \\ 
+  &  &  &  & (0.691) \\ 
+  turnout\_overall\_werc &  &  &  & 1.098 \\ 
+  &  &  &  & (0.672) \\ 
+  RecallPolarization:treatment &  &  &  & 10.780$^{***}$ \\ 
+  &  &  &  & (4.043) \\ 
+  Constant & $-$19.460 & $-$13.260 & $-$10.990 & 0.167 \\ 
+  & (19.310) & (20.560) & (20.130) & (20.400) \\ 
+ N & 2,376 & 2,376 & 2,376 & 1,164 \\ 
+Log Likelihood & $-$7,955.000 & $-$7,960.000 & $-$7,963.000 & $-$3,704.000 \\ 
+AIC & 15,943.000 & 15,950.000 & 15,956.000 & 7,450.000 \\ 
+BIC & 16,035.000 & 16,036.000 & 16,043.000 & 7,556.000 \\ 
 \hline \\[-1.8ex] 
 \multicolumn{5}{l}{$^{*}$p $<$ .1; $^{**}$p $<$ .05; $^{***}$p $<$ .01} \\ 
 \end{tabular} 
@@ -1562,42 +1562,42 @@ Single lagged turnout:
 \hline 
   & \multicolumn{ 1 }{ c }{ Naive OLS } & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
  %                      & Naive OLS         & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
-(Intercept)            & -53.60 ^*         &                   &                   &                  \\ 
-                       & (12.70)           &                   &                   &                  \\ 
-turnoutLag1            & 17.09 ^*          & 17.09 ^*          & 25.29 ^*          & -9.63 ^*         \\ 
-                       & (1.72)            & (2.56)            & (2.66)            & (2.16)           \\ 
-fallTurnout            & 7.80 ^*           & 7.80 ^*           & 9.76 ^*           & 12.98            \\ 
-                       & (2.71)            & (3.66)            & (3.31)            & (6.82)           \\ 
-VAP\_adj              & -2.53 ^*          & -2.53 ^*          & -2.29 ^*          & -24.68 ^*        \\ 
-                       & (0.19)            & (0.25)            & (0.23)            & (6.19)           \\ 
-per\_white\_all      & -4.90 ^*          & -4.90             & -2.85             & 16.21            \\ 
-                       & (2.38)            & (3.76)            & (3.49)            & (37.09)          \\ 
-per65o                 & 22.48 ^*          & 22.48 ^*          & 19.08 ^*          & 70.57            \\ 
-                       & (5.51)            & (9.80)            & (8.94)            & (40.69)          \\ 
-PerBachelorOrAbove     & -2.90             & -2.90             & 3.24              & -3.04            \\ 
-                       & (5.03)            & (5.84)            & (5.35)            & (27.56)          \\ 
-OOH\_share            & -2.72             & -2.72             & -1.80             & -6.82            \\ 
-                       & (1.90)            & (3.00)            & (2.66)            & (18.89)          \\ 
-PCI                    & 8.97 ^*           & 8.97 ^*           & 4.22 ^*           & 25.43 ^*         \\ 
-                       & (1.34)            & (1.75)            & (1.57)            & (3.42)           \\ 
-districtwide1          & 0.33              &                   &                   &                  \\ 
+(Intercept)            & -57.67 ^*         &                   &                   &                  \\ 
+                       & (12.66)           &                   &                   &                  \\ 
+turnoutLag1            & 17.96 ^*          & 17.96 ^*          & 25.64 ^*          & -9.50 ^*         \\ 
+                       & (1.71)            & (2.46)            & (2.62)            & (2.24)           \\ 
+fallTurnout            & 4.22 ^*           & 4.22              & 6.20 ^*           & -2.53            \\ 
+                       & (2.11)            & (2.33)            & (2.67)            & (2.67)           \\ 
+VAP\_adj              & -2.55 ^*          & -2.55 ^*          & -2.32 ^*          & -22.71 ^*        \\ 
+                       & (0.19)            & (0.26)            & (0.23)            & (6.09)           \\ 
+per\_white\_all      & -4.45             & -4.45             & -2.18             & 20.38            \\ 
+                       & (2.39)            & (3.80)            & (3.54)            & (36.16)          \\ 
+per65o                 & 22.83 ^*          & 22.83 ^*          & 19.62 ^*          & 74.01            \\ 
+                       & (5.53)            & (9.62)            & (8.80)            & (41.43)          \\ 
+PerBachelorOrAbove     & -0.08             & -0.08             & 7.00              & 6.29             \\ 
+                       & (4.91)            & (5.35)            & (4.99)            & (26.57)          \\ 
+OOH\_share            & -2.70             & -2.70             & -1.71             & -4.01            \\ 
+                       & (1.90)            & (2.98)            & (2.64)            & (19.22)          \\ 
+PCI                    & 9.52 ^*           & 9.52 ^*           & 4.43 ^*           & 25.98 ^*         \\ 
+                       & (1.33)            & (1.70)            & (1.56)            & (3.38)           \\ 
+districtwide1          & 0.36              &                   &                   &                  \\ 
                        & (0.44)            &                   &                   &                  \\ 
-contestOpen Contested  & -0.67             &                   &                   &                  \\ 
+contestOpen Contested  & -0.74             &                   &                   &                  \\ 
                        & (0.53)            &                   &                   &                  \\ 
 contestUncontested     & -5.11 ^*          &                   &                   &                  \\ 
                        & (0.36)            &                   &                   &                  \\ 
-Intercept              &                   & -53.60 ^*         & -15.75            & -42.52           \\ 
-                       &                   & (16.38)           & (15.11)           & (78.13)          \\ 
-districtwide=1         &                   & 0.33              & 0.37              & 2.65 ^*          \\ 
-                       &                   & (0.52)            & (0.46)            & (1.05)           \\ 
-contest=Open Contested &                   & -0.67             & 0.14              & -0.01            \\ 
+Intercept              &                   & -57.67 ^*         & -16.88            & -64.17           \\ 
+                       &                   & (16.16)           & (14.96)           & (73.07)          \\ 
+districtwide=1         &                   & 0.36              & 0.41              & 2.67 ^*          \\ 
+                       &                   & (0.51)            & (0.45)            & (1.04)           \\ 
+contest=Open Contested &                   & -0.74             & 0.12              & -0.10            \\ 
                        &                   & (0.54)            & (0.54)            & (0.54)           \\ 
-contest=Uncontested    &                   & -5.11 ^*          & -4.81 ^*          & -4.99 ^*         \\ 
+contest=Uncontested    &                   & -5.11 ^*          & -4.80 ^*          & -4.99 ^*         \\ 
                        &                   & (0.36)            & (0.32)            & (0.38)            \\
- $N$                    & 2473              & 2473              & 2473              & 2473             \\ 
-$R^2$                  & 0.25              & 0.25              & 0.42              & 0.46             \\ 
-adj. $R^2$             & 0.25              & 0.25              & 0.42              & 0.38             \\ 
-Resid. sd              & 8.12              & 8.12              & 7.13              & 7.34              \\ \hline
+ $N$                    & 2469              & 2469              & 2469              & 2469             \\ 
+$R^2$                  & 0.25              & 0.25              & 0.42              & 0.47             \\ 
+adj. $R^2$             & 0.25              & 0.25              & 0.42              & 0.39             \\ 
+Resid. sd              & 8.12              & 8.12              & 7.13              & 7.33              \\ \hline
  \multicolumn{5}{l}{\footnotesize{Standard errors clustered at the school district.}}\\
 \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 

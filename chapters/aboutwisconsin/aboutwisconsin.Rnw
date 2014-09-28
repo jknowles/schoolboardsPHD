@@ -26,8 +26,6 @@ iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", digits = 3
 
 @
 
-
-
 \section{The Wisconsin Case}
 
 As noted in Chapter \ref{chap:intro}, this dissertation focuses on the case of a 
@@ -1018,7 +1016,7 @@ names(table2) <- c("Year", "Districtwide Races", "Districts with Districtwide",
 table2 <- xtable(table2, label="tab:yearsample", 
              caption = "Comparing sample size for district wide vs. apportioned school board races." )
 align(table2) <- c('p{.2in}','p{.5in}',  'p{.8in}','p{.8in}','p{.8in}','p{.8in}',
-                   'p{.8in}','p{..8in}')
+                   'p{.8in}','p{.8in}')
 
 print(table2, 
       include.rownames = FALSE, 
@@ -1209,7 +1207,7 @@ an election every spring:
 
 \begin{myitemize}
   \item 2007 - State Supreme Court Race
-  \item 2008 - State Supreme Court Race * (alternative presidential primary)
+  \item 2008 - State Supreme Court Race and presidential primary
   \item 2009 - State Superintendent of Public Instruction
   \item 2010 - None. Wisconsin Appeals Courts (3 of 4)
   \item 2011 - State Supreme Court Race
@@ -1238,6 +1236,7 @@ dist_turn <- dist_turn[!duplicated(dist_turn), ]
 rm(dist_turn.tmp, springVotes.tmp)
 
 plotdat <- subset(dist_turn, select = c("turnout", "topTicketTurnoutSpring", 
+                                        "districtwide",
                                         "ImputedFlag", "year", "distid"))
 plotdat$ImputedFlag[is.na(plotdat$ImputedFlag)] <- "Observed"
 plotdat <- na.omit(plotdat)
@@ -1257,16 +1256,17 @@ plotdat$ImputedFlag[plotdat$ImputedFlag == "Observed2010"] <- "Observed"
 plotdat$ImputedFlag <- factor(plotdat$ImputedFlag, levels = c("Imputed", "Observed"))
 plotdat$ImputedFlag <- relevel(plotdat$ImputedFlag, ref = "Imputed")
 # levels(plotdat$ImputedFlag) <- c("Observed", "Imputed")
-plotdat <- plotdat[!duplicated(plotdat[, c(4, 5)]),]
+plotdat <- plotdat[!duplicated(plotdat[, c(5, 6)]),]
 
 mypal <- c("Imputed" = "red", "Observed" = "black")
 
 qplot(topTicketTurnoutSpring, turnout, data = plotdat, color = ImputedFlag) + 
   geom_abline(slope = 1, intercept = 0, linetype = 2) + theme_dpi() + 
-  scale_color_manual(name = "Imputed", values = mypal) + 
+  scale_color_manual(name = "Imputation", values = mypal) + 
   facet_wrap(~year) + scale_y_continuous("School Board Turnout", label = percent) + 
   scale_x_continuous("Top Ticket Turnout", label = percent) + 
-  stat_smooth(method = 'rlm', aes(group = 1), se = FALSE, size = 1.1, color = I("blue")) 
+  stat_smooth(method = 'rlm', aes(group = 1), se = FALSE, size = 1.1, color = I("blue")) + 
+  theme(legend.position = c(0.08, 0.36))
 
 @
 
@@ -1288,7 +1288,7 @@ means that first the reporting units must be aggregated into MCDs correctly, bef
 MCDs can be assigned to school districts. Second, in the spring of 2010 there was no 
 statewide top ticket -- instead 
 \Sexpr{iPer((length(springVotes$ImputedFlag[springVotes$ImputedFlag=="Observed2010" & springVotes$year == 2010])/length(springVotes$year[springVotes$year==2010]))*100)} of jurisdictions 
-had a top ticket race of Wisconsin Circuit Court judges. The other jurisdictions 
+had a top ticket race of Wisconsin Appeals Court judges. The other jurisdictions 
 had only local elections on the ballot. To avoid losing these observations, I impute 
 the 2010 estimated turnout as if the top ticket was a state supreme court race or 
 election for state superintendent.\footnote{Imputation was done using model averaging 
@@ -1297,12 +1297,24 @@ primary predictors.} I expect the majority of Wisconsin districts to exhibit an
 undervote in school board elections relative to these top ticket races. 
 
 Figure \ref{fig:undervoting} shows the relationship between top ticket turnout 
-and school board turnout. 
-
-%TODO: citation for topticket races
+and school board turnout. Imputed cases are shown in red to make them distinct. The 
+dashed line represents a 1:1 relationship between turnout for the top ticket on the 
+X axis and turnout for the school board race(s) on the Y axis. The solid line represents 
+the line of best fit, which has a slope and intercept less than the dashed line 
+in all years except for in the 2010 year where the top ticket turnout was estimated. 
+Interestingly, roll off is fairly small in all years, except for in 2011 where 
+top ticket turnout was substantially elevated. This provides some evidence that the 
+new voters attracted to the spring race in 2011 were not as motivated by school board elections 
+as the electorate in previous spring elections. This relationship will be explored 
+further in subsequent chapters. 
+Table \ref{tab:undervotestats} shows the annual trends in Wisconsin from 2007 through 
+2012 for districts where school board races received more or fewer votes than the 
+top ticket candidate. 
 
 <<undervotetab, results='asis', echo=FALSE>>=
 plotdat$vote_diff <- plotdat$topTicketTurnoutSpring - plotdat$turnout
+OVbase <- length(plotdat$turnout[plotdat$turnout > plotdat$topTicketTurnoutSpring])
+OVdistwide <- sum(plotdat$districtwide[plotdat$turnout > plotdat$topTicketTurnoutSpring])
 # 
 # length(plotdat$vote_diff[plotdat$vote_diff < 0]) / nrow(plotdat)
 # length(plotdat$vote_diff[plotdat$vote_diff > 0]) / nrow(plotdat)
@@ -1337,7 +1349,16 @@ print(yearStats,
 
 @
 
+Some caveats include that school districts where there is no district wide seat 
+elected may have multiple jurisdictions counting in their turnout numbers. Of 
+the \Sexpr{length(plotdat$turnout[plotdat$turnout > plotdat$topTicketTurnoutSpring])} 
+elections where this occurs, only \Sexpr{iPer(((OVbase - OVdistwide) / OVbase)*100)} 
+of these elections were in jurisdictions where the school board seat was not 
+district wide. This over vote is also fairly consistent across the years. 
 
+<<eval=FALSE, echo=FALSE>>=
+hist(table(plotdat$distid, plotdat$turnout>plotdat$topTicketTurnoutSpring)[,2])
+@
 
 \clearpage
 

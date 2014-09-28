@@ -228,7 +228,7 @@ dist_turn <- ddply(races.tmp, .(distid, year), summarise,
                    ncand = sum(ncand), nrealcand = sum(nrealcand), 
                    nwins = sum(nwins), ninc = sum(ninc), 
                    nminor = sum(nminor), votes = sum(votes), 
-                   VAP_adj = statamode(VAP_adj), 
+                   VAP_adj = VAP_adj[!is.na(VAP_adj)][1], 
                    nraces = length(distid))
 
 dist_turn$districtwide <- 1
@@ -257,7 +257,7 @@ dist.tmp <- ddply(races.tmp, .(distid, year), summarise,
                   ncand = sum(ncand), nrealcand = sum(nrealcand), 
                   nwins = sum(nwins), ninc = sum(ninc), 
                   nminor = sum(nminor), votes = sum(votes), 
-                  VAP_adj = statamode(VAP_adj), 
+                  VAP_adj = VAP_adj[!is.na(VAP_adj)][1], 
                   nraces = length(distid))
 
 dist.tmp$districtwide <- 0
