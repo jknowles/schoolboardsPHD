@@ -328,37 +328,67 @@ and if the number of non-minor candidates is greater than the number of victors.
 
 
 <<candidatedescriptives4, echo=FALSE, fig.cap="Districts with contested school board elections under two different measures of candidate contestation.">>=
-#aggregate(SBELEC$candidates, by=list(SBELEC$year), function(x) sum(x) / length(x))
-
-# a <- table(SBELEC$contested, SBELEC$year)
-# rownames(a) <- c("Uncontested", "Contested")
-# print(xtable(a[, 3:13]), include.rownames=TRUE)
-
-# Now toss out minor candidates
+library(scales)
+dist_turn$contest <- "Uncontested"
+dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Contested"
+dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc ==0] <- "Open Contested"
 
 # 
-# rownames(a) <- c("Uncontested", "Contested")
-# print(xtable(a[, 3:13]), include.rownames=TRUE)
+races$contested <- 0
+races$contested[races$nrealcand > races$nwins & 
+                          races$nwins > 0 & races$electiontype == 1] <- 1
+races$contestedSer <- 0
+races$contestedSer[(races$nrealcand - races$nminor) > races$nwins & 
+                          races$nwins > 0 & races$electiontype == 1] <- 1
+#  incumbents challenged
+races$contestedInc <- 0
+races$contestedInc[races$nrealcand > races$ninc & 
+                          races$ninc > 0 & races$electiontype == 1] <- 1
+races$contestedSerInc <- 0
+races$contestedSerInc[(races$nrealcand - races$nminor) > races$ninc & 
+                          races$ninc > 0 & races$electiontype == 1] <- 1
+# 
 
-a <- table(SBELEC$contested2, SBELEC$year)
+
+a <- table(races$contestedSer, races$year)
+a.tmp <- prop.table(a, margin = 2) 
 a <- t(a)
+a.tmp <- t(a.tmp)
 a <- as.data.frame(a)
+a.tmp <- as.data.frame(a.tmp)
 a$Var1 <- as.numeric(as.character(a$Var1))
+a.tmp$Var1 <- as.numeric(as.character(a.tmp$Var1))
 
 p1 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Districts", title = "Excluding Minor Candidates", 
        fill = "Contested") + theme_bw()
 
+p1 <- qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013,], 
+            geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
+  labs(x= "Year", y = "Percent of Races", title = "Excluding Minor Candidates", 
+       fill = "Contested") + theme_bw() + scale_y_continuous(label = percent)
 
-a <- table(SBELEC$contested, SBELEC$year)
+
+a <- table(races$contested, races$year)
+a.tmp <- prop.table(a, margin = 2) 
 a <- t(a)
+a.tmp <- t(a.tmp)
 a <- as.data.frame(a)
+a.tmp <- as.data.frame(a.tmp)
 a$Var1 <- as.numeric(as.character(a$Var1))
+a.tmp$Var1 <- as.numeric(as.character(a.tmp$Var1))
 
 
 p2 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
-  labs(x= "Year", y = "Districts", title = "Including Minor Candidates", 
+  labs(x= "Year", y = "Races", title = "Including Minor Candidates", 
        fill = "Contested")+ theme_bw()
+
+p2 <- qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013,], 
+            geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
+  labs(x= "Year", y = "Percent of Races", title = "Including Minor Candidates", 
+       fill = "Contested") + theme_bw() + scale_y_continuous(label = percent)
+
+
 grid.arrange(p1, p2, main = "Comparing School Board Contestation Measures")
 @
 
@@ -380,10 +410,15 @@ differentiate between districts with wide spread contestation and those with
 simply a single contested seat -- perhaps adding some additional information. 
 
 <<perseatcontests,  echo=FALSE, fig.cap="Serious candidates per open seat by school year in Wisconsin school districts over time.">>=
-qplot(fyear, contested3, data=SBELEC[!is.na(SBELEC$fyear),], geom='boxplot') + 
+
+races$candPerSeat <- races$nrealcand / races$nwins
+
+qplot(factor(year), candPerSeat, 
+      data=races[races$year > 2001 & races$year < 2013,], geom='boxplot') + 
   theme_bw() + 
   labs(x="Year", y="Candidates per Open Seat", 
-       title = "Candidates Per Open Seat on Wisconsin School Boards")
+       title = "Candidates Per Open Seat on Wisconsin School Boards") + 
+  geom_hline(yintercept = 2, linetype = I(2), color = I("blue"))
 
 
 @

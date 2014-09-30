@@ -10,20 +10,14 @@ load("data/cache/fullDataSep2014.rda") # school finance project data
 distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopulation",
                        "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o", 
                        "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
-                       "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "VAP_adj", 
+                       "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER",
                        "balance_lag", "member", "member_delta", "millrate_delta")]
-rm(newdat)
+rm(tmp)
 
 distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation
 distAttr$white_count <- NULL
 distAttr$PopWhiteAlone <- NULL
 distAttr$TotalPopulation <- NULL
-
-#interpolate dvp
-
-
-## reshape school district by year
-
 
 # How to calculate total votes in elections with multiple winners...
 
@@ -124,11 +118,6 @@ dist_turn$fallTwoPartyShareDem <- (dist_turn$govTwoPartyShareDem + dist_turn$pre
 rm(dist_turn1, dist_turn2, races.tmp, row_counts)
 
 
-dist_turn$contest <- "Uncontested"
-dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Contested"
-dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc ==0] <- "Open Contested"
-
-
 lg  <- function(x) c(NA, x[1:length(x)-1])
 lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
 
@@ -147,8 +136,6 @@ dist_turn.tmp <- as.data.frame(dist_turn.tmp)
 dist_turn <- merge(dist_turn, dist_turn.tmp)
 rm(dist_turn.tmp)
 dist_turn <- merge(dist_turn, distAttr, by = c("distid", "year"))
-dist_turn$teachShareofVoters <- round(dist_turn$fte_teachers,0) / dist_turn$votersLag2
-dist_turn$teachShareofVoters[!is.finite(dist_turn$teachShareofVoters)] <- 0
 
 cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
 votes.tmp <- merge(cand.tmp, as.data.frame(races)[races$nwins >0, c("raceid2", "votes", 
@@ -186,4 +173,17 @@ rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
 
 dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
 
+rm(govTurn, presTurn, dvp, errors, dist.tmp, distAttr)
+
 source("data/cleanandprep_DPIADMIN.R")
+
+dist_turn$DISTID <- FORMATdistid(dist_turn$distid)
+
+dist_turn <- merge(dist_turn, ADMIN, by.x = c("DISTID", "year"), 
+                   by.y =c("DISTID", "YEAR"))
+
+dist_turn$teachShareofVoters <- round(dist_turn$FTE_TEACH,0) / round(dist_turn$VAP_adj,0)
+
+rm(ADMIN)
+
+
