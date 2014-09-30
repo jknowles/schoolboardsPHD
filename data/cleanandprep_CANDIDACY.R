@@ -5,17 +5,15 @@
 
 # source("data/dataAssemble.R")
 load("data/cache/DataMergeVAP.rda")
-load("data/cache/AnalyticalSampleFeb2014.rda")
-load("data/cache/KnowlesDissData092014.rda")
+load("data/cache/fullDataSep2014.rda") # school finance project data
 
-
-distAttr <- newdat[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attempts", 
-                       "cum_attptsD", "enrollment", "white_count", "TotalPopulation", 
+distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopulation",
                        "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o", 
-                       "PerBachelorOrAbove", "OOH_share", "millrate")]
+                       "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
+                       "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "VAP_adj", 
+                       "balance_lag", "member", "member_delta", "millrate_delta")]
 rm(newdat)
 
-distAttr$per_white_students <- distAttr$white_count / distAttr$enrollment
 distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation
 distAttr$white_count <- NULL
 distAttr$PopWhiteAlone <- NULL
@@ -187,3 +185,5 @@ dist_turn <- merge(dist_turn, plot.tmp, all.x=TRUE)
 rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
 
 dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
+
+source("data/cleanandprep_DPIADMIN.R")

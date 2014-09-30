@@ -47,8 +47,13 @@ keepVars <- c("ADW_KEY", "YEAR", "SCHOOL_YEAR", "DISTID", "N_PUB_SCHLS", "N_PVT_
 
 histEnroll <- histEnroll[, keepVars]
 
+histEnroll.tmp <- histEnroll[histEnroll$YEAR == 2011,]
+histEnroll.tmp$YEAR <- 2012
+histEnroll.tmp$SCHOOL_YEAR <- "2011-12"
 
+histEnroll <- rbind(histEnroll, histEnroll.tmp)
 
+rm(histEnroll.tmp)
 
 NEWSUP <- SupTurnover[, c("DISTID", "YEAR", "SCHOOL_YEAR", "CHANGE_IND_1", 
                           "CHANGE_IND_2")]
@@ -66,9 +71,34 @@ OverAmounts$refInPlace <- apply(OverAmounts[, 3:8], 1,
 OverAmounts <- OverAmounts[, c(1, 2, 9)]
 
 load("data/cache/overrideRefs.rda")
+rm(ReferendaVotes)
+
+FORMATdistid <- function(x){
+  if(class(x) != "character"){
+    x <- as.character(x)
+  }
+  nchars <- sapply(x, nchar)
+  x[nchars ==3] <- paste0("0", x[nchars==3])
+  x[nchars ==2] <- paste0("00", x[nchars==2])
+  x[nchars ==1] <- paste0("000", x[nchars==1])
+  return(x)
+}
+
+yearVotes$DISTID <- FORMATdistid(yearVotes$DISTRICT_NMBR)
+
+refIndicators <- merge(OverAmounts, yearVotes[, -1], by.x = c("DISTID", "YEAR"), 
+                       by.y = c("DISTID", "FISCAL_YEAR"), all.x=TRUE)
+
+refIndicators[is.na(refIndicators)] <- 0
+
+rm(OverAmounts, yearVotes)
 
 
-
-
-
+ADMIN <- merge(Staffing, NEWSUP, by = c("DISTID", "YEAR", "SCHOOL_YEAR"), all.x = TRUE)
+ADMIN <- merge(ADMIN, histEnroll, by = c("ADW_KEY", "YEAR", "SCHOOL_YEAR", "DISTID"), 
+               all.x=TRUE)
+rm(NEWSUP, histEnroll, Staffing)
+ADMIN <- merge(ADMIN, refIndicators, by = c("YEAR", "DISTID"), 
+               all.x=TRUE)
+rm(refIndicators, keepVars, keys)
 
