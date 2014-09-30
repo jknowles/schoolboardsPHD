@@ -2,27 +2,27 @@
 
 * Identify cases where no ballot/election occcurred vs. no record available
 * Check DPI data
-  - Teacher salary medians and quantiles adjusted by FTE are wrong, need denominator fix
-  - Administrator salary is not adjusting because of lack of FTE info
-  - All staff data cannot be adjusted, lack of FTE data
-  - Numeric to date in Referenda Votes to merge up with election dates for school board
-  - Where is enrollment data? Needs to be included too... 
-  - Check out who is included in salary calculations, break in 2003-2004 reporting
+ X - Teacher salary medians and quantiles adjusted by FTE are wrong, need denominator fix
+ X - Administrator salary is not adjusting because of lack of FTE info
+ X - All staff data cannot be adjusted, lack of FTE data
+ X - Numeric to date in Referenda Votes to merge up with election dates for school board
+ X - Where is enrollment data? Needs to be included too... 
+ X - Check out who is included in salary calculations, break in 2003-2004 reporting
 * Get data out of DPI
-  - Teacher salary and ratios
-  - - Number of teachers
-  - private school enrollment
-  - open and close private schools
-  - open and close public schools
- - Teacher salary
- - Teacher experience
+ X  - Teacher salary and ratios
+  X - - Number of teachers
+  X - private school enrollment
+  X - open and close private schools
+  X - open and close public schools
+ X - Teacher salary
+ X - Teacher experience
   * Add achievement data
    - Proficiency by year
   * Add school district demographics from DPI
-   - % minority
+  X - % minority
    - % FRL
   * Add superintendent turnover
-   - Lagged and regular
+  X - Lagged and regular
 * Recall turnout in voter turnout models
 * Revise cleanandprep_candidacy.R
 * Fix models in candidacy.rnw

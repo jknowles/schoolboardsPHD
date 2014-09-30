@@ -690,7 +690,7 @@ in school board races.
 
 \begin{table}[h!]
 \begin{center}
-\begin{small}
+\begin{footnotesize}
 \caption{Methods of Calculating Vote Margin}
 \label{tab:votemargincalc}
 \begin{tabular}{| p{.2\textwidth} | p{.45\textwidth} | p{.175\textwidth}| p{.175\textwidth}|}
@@ -700,7 +700,7 @@ Share by Each  & $\sum \frac{votes_{iw}}{votes_{total}} - \sum \frac{votes_{il}}
 Two-Means & $\frac{\sum \frac{votes_{iw}}{votes_{total}}}{n_{winners}} - \frac{\sum \frac{votes_{il}}{votes_{total}}}{n_{losers}}$ & Intuitive & Biased by lopsided races   \\ \hline
 Maximum Value & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$ & Normalized & Not intuitive \\ \hline
 \end{tabular}
-\end{small}
+\end{footnotesize}
 \end{center}
 \end{table}
 
@@ -1339,8 +1339,8 @@ yearStats[, 8] <- iPer2(yearStats[,8]*100)
 
 yearStats <- xtable(yearStats, label="tab:undervotestats", 
              caption = "Overvote and Undervote in Spring Elections." )
-align(yearStats) <- c('p{.15in}','p{.55in}','p{.5in}', 'p{.5in}','p{.8in}','p{.8in}','p{.8in}',
-                   'p{.8in}','p{.8in}')
+align(yearStats) <- c('p{.15in}','p{.5in}','p{.5in}', 'p{.5in}','p{.6in}','p{.6in}','p{.6in}',
+                   'p{.6in}','p{.6in}')
 
 print(yearStats, 
       include.rownames = FALSE, 

@@ -512,6 +512,11 @@ policy decisions. Of particular interest is understanding which of these factors
 for the sample observed and over the time period of observation, are the most 
 predictive of the emergence of contested school board seats. 
 
+% 3 modeling strategies
+%% model binomial by district, contested or not
+%% model beta by district, # of contested out of # of races
+%% model nested, races in districts
+
 <<modelcomparisonD>>=
 
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest",
@@ -752,10 +757,7 @@ Here is some text about the within district variation.
 
 Not sure which specification to use yet. 
 
-% 3 modeling strategies
-%% model binomial by district, contested or not
-%% model beta by district, # of contested out of # of races
-%% model nested, races in districts
+
 
 
 
