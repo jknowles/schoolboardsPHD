@@ -10,8 +10,13 @@ load("data/cache/fullDataSep2014.rda") # school finance project data
 distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopulation",
                        "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o", 
                        "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
-                       "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER",
-                       "balance_lag", "member", "member_delta", "millrate_delta")]
+                       "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "eqv_member", 
+                       "balance_lag", "member", "member_delta", "millrate_delta", 
+                    "locale2", "member_lag")]
+
+distAttr$balance_member_lag <- distAttr$balance_lag / distAttr$member
+distAttr$member_delta_per <- distAttr$member_delta / distAttr$member_lag
+
 rm(tmp)
 
 distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation

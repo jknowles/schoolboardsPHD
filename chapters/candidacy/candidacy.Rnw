@@ -14,19 +14,13 @@ library(eeptools)
 source("data/dataAssemble.R")
 source("data/cleanandprep_CANDIDACY.R")
 
-SAMPSIZE <- length(unique(SBELEC$distid))
 # load data
 # print descriptives
 
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 library(gridExtra)
-library(ROCR); library(lme4)
-library(arm)
-library(coefplot)
-library(scales); 
-library(stargazer)
-
+library(scales)
 @
 
 
@@ -580,10 +574,12 @@ moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest
 dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
 dist_turn$median_incomeLOG <- log(dist_turn$median_income) 
 dist_turn$ADJ_MEDIAN_FRINGE_TEACH[dist_turn$ADJ_MEDIAN_FRINGE_TEACH == 0] <- 1
+dist_turn$ADJ_MEDIAN_FRINGE_TEACHlog <- log(dist_turn$ADJ_MEDIAN_FRINGE_TEACH)
 
 mod1 <- glm(contest1 ~ VAP_adjLOG + NEW_SUP + turnoutLag1 +fallTwoPartyShareDem +
-              PerBachelorOrAbove + OOH_share + median_incomeLOG + ADMIN_SHARE + 
-              per65o + log(ADJ_MEDIAN_FRINGE_TEACH) +
+              PerBachelorOrAbove + 
+              OOH_share + median_incomeLOG + ADMIN_SHARE + 
+              per65o + ADJ_MEDIAN_FRINGE_TEACHlog +
               NonWhitePublicPupilPer + overrideQues + millrate*NonSDMill + 
               overridePass + debtPass + SUP_TURNOVER_PRIOR_YEAR, 
             data = dist_turn, family = "binomial")
