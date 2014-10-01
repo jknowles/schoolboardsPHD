@@ -552,12 +552,49 @@ predictive of the emergence of contested school board seats.
 %% model beta by district, # of contested out of # of races
 %% model nested, races in districts
 
-<<modelcomparisonD>>=
+<<buildingDV>>=
+dist_turn$contest1 <- "Uncontested"
+dist_turn$contest1[dist_turn$nrealcand > dist_turn$nwins] <- "Contested"
+dist_turn$contest2 <- "Uncontested"
+dist_turn$contest2[(dist_turn$nrealcand - dist_turn$nminor) > dist_turn$nwins] <- "Contested"
+dist_turn$contest2 <- factor(dist_turn$contest2)
+dist_turn$contest1 <- factor(dist_turn$contest1)
+confusion.glm <- function(data, model) {
+  prediction <- ifelse(predict(model, data, type='response') > 0.5, TRUE, FALSE)
+  confusion  <- table(prediction, as.logical(model$y))
+  confusion  <- cbind(confusion, c(1 - confusion[1,1]/(confusion[1,1]+confusion[2,1]), 1 - confusion[2,2]/(confusion[2,2]+confusion[1,2])))
+  confusion  <- as.data.frame(confusion)
+  names(confusion) <- c('FALSE', 'TRUE', 'class.error')
+  confusion
+}
 
-moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest",
+@
+
+<<modelcomparisonD>>=
+moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest1",
+                        "contest2", 
                         "fallTurnout", "VAP_adj", "distid", "districtwide",
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", 
                         "PCI", "contest")]
+
+dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
+dist_turn$median_incomeLOG <- log(dist_turn$median_income) 
+dist_turn$ADJ_MEDIAN_FRINGE_TEACH[dist_turn$ADJ_MEDIAN_FRINGE_TEACH == 0] <- 1
+
+mod1 <- glm(contest1 ~ VAP_adjLOG + NEW_SUP + turnoutLag1 +fallTwoPartyShareDem +
+              PerBachelorOrAbove + OOH_share + median_incomeLOG + ADMIN_SHARE + 
+              per65o + log(ADJ_MEDIAN_FRINGE_TEACH) +
+              NonWhitePublicPupilPer + overrideQues + millrate*NonSDMill + 
+              overridePass + debtPass + SUP_TURNOVER_PRIOR_YEAR, 
+            data = dist_turn, family = "binomial")
+summary(mod1)
+
+confusion.glm(mod1$model, mod1)
+
+confusion.glm(dist_turn, glm(factor(contest2) ~ log(VAP_adj) + NEW_SUP + turnoutLag1 +fallTwoPartyShareDem +
+              PerBachelorOrAbove + OOH_share + log(median_income) + ADMIN_SHARE + 
+              NonWhitePublicPupilPer + overrideQues + millrate*NonSDMill, 
+            data = dist_turn, family = "binomial"))
 #moddat <- na.omit(moddat)
 # Filter out extreme values
 moddat <- subset(moddat, turnout < 0.95,)
@@ -585,10 +622,7 @@ moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
 dd <<- datadist(moddat)
 options(datadist="dd")
 
-dumbRLMbest <- ols(turnout ~ turnoutLag2 + turnoutLag2 * VAP_adj + 
-                     fallTurnout + VAP_adj + per_white_all + 
-                    per65o + PerBachelorOrAbove + OOH_share + PCI + districtwide +
-                    contest + factor(year), data = moddat, x= TRUE, y = TRUE)
+
 
 ## Tax model -- voters are driven by tax concdrns
 ## Politics model -- voters are driven by political ideology

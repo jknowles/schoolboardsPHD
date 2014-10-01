@@ -2,28 +2,13 @@
 
 * Upgrade to using School Finance data from latest paper (09/2014)
 * Identify cases where no ballot/election occcurred vs. no record available
-* Check DPI data
- X - Teacher salary medians and quantiles adjusted by FTE are wrong, need denominator fix
- X - Administrator salary is not adjusting because of lack of FTE info
- X - All staff data cannot be adjusted, lack of FTE data
- X - Numeric to date in Referenda Votes to merge up with election dates for school board
- X - Where is enrollment data? Needs to be included too... 
- X - Check out who is included in salary calculations, break in 2003-2004 reporting
-* Get data out of DPI
- X  - Teacher salary and ratios
-  X - - Number of teachers
-  X - private school enrollment
-  X - open and close private schools
-  X - open and close public schools
- X - Teacher salary
- X - Teacher experience
+* CHeck DPI data
+ - Superintendent turnover and lagged superintendent turnover do not make sense
   * Add achievement data
    - Proficiency by year
   * Add school district demographics from DPI
   X - % minority
    - % FRL
-  * Add superintendent turnover
-  X - Lagged and regular
 * Recall turnout in voter turnout models
 * Revise cleanandprep_candidacy.R
 * Fix models in candidacy.rnw
