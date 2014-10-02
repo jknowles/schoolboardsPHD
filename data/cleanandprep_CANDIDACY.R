@@ -12,7 +12,7 @@ distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopula
                        "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
                        "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "eqv_member", 
                        "balance_lag", "member", "member_delta", "millrate_delta", 
-                    "locale2", "member_lag")]
+                    "locale2", "member_lag", "ref_share")]
 
 distAttr$balance_member_lag <- distAttr$balance_lag / distAttr$member
 distAttr$member_delta_per <- distAttr$member_delta / distAttr$member_lag

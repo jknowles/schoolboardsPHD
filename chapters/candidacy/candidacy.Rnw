@@ -562,14 +562,6 @@ confusion.glm <- function(data, model) {
   confusion
 }
 
-@
-
-<<modelcomparisonD>>=
-moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest1",
-                        "contest2", "balance_member_lag", 
-                        "fallTurnout", "VAP_adj", "distid", "districtwide",
-                        "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", 
-                        "PCI", "contest")]
 
 dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
 dist_turn$median_incomeLOG <- log(dist_turn$median_income) 
@@ -579,15 +571,126 @@ dist_turn$ADJ_MEDIAN_SALARY_TEACHlog <- log(dist_turn$ADJ_MEDIAN_SALARY_TEACH)
 dist_turn$partyDivision <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
 dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
 
+@
+
+<<demogModel>>=
+moddat <- dist_turn[, c("contest2", "contest1", "distid","year", 
+                        "balance_member_lag", 
+                        "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
+                        "districtwide",
+                        "OOH_share", "median_incomeLOG", "per65o", 
+                        "NonWhitePublicPupilPer", "NonPublicPupilPer", 
+                        "teachShareofVoters", "locale2", 
+                        "member_delta_per")]
+
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
+moddat$per_white_all <- moddat$per_white_all * 100
+moddat$OOH_share <- moddat$OOH_share * 100
+moddat$per65o <- moddat$per65o * 100
+moddat$per65o <- moddat$per65o * 100
+moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
+moddat$member_delta_per <- moddat$member_delta_per * 100
+moddat$districtwide <- factor(moddat$districtwide)
+library(sandwich)
+library(rms)
+library(apsrtable)
+moddat <- na.omit(moddat)
+dd <<- datadist(moddat)
+options(datadist="dd")
+
 demogModel <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per, 
-                  data = dist_turn, family = "binomial")
+                  data = moddat, family = "binomial")
 
+confusion.glm(demogModel$model, demogModel)
+
+
+
+dumbRLM1 <- lrm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+                    OOH_share + median_incomeLOG + per65o + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    teachShareofVoters + locale2 + member_delta_per,
+                data = moddat, x = TRUE, y = TRUE)
+
+dumbRLM1$se <- sqrt(diag(vcov(robcov(dumbRLM1, cluster = moddat$distid))))
+
+
+dumbRLM1.2 <- lrm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+                    OOH_share + median_incomeLOG + per65o + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    teachShareofVoters + locale2 + member_delta_per + 
+                    factor(year), data = moddat, x= TRUE, y = TRUE)
+
+dumbRLM1.2$se <- sqrt(diag(vcov(robcov(dumbRLM1.2, cluster = moddat$distid))))
+
+
+dumbRLMbest <- lrm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+                    OOH_share + median_incomeLOG + per65o + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    teachShareofVoters + locale2 + member_delta_per + 
+                    factor(year) + factor(districtwide), 
+                   data = moddat, x= TRUE, y = TRUE)
+
+dumbRLMbest$se <- sqrt(diag(vcov(robcov(dumbRLMbest, cluster = moddat$distid))))
+
+
+dumbRLM2 <- lrm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+                    OOH_share + median_incomeLOG + per65o + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    teachShareofVoters + locale2 + member_delta_per + 
+                    factor(distid), 
+              data = moddat, x = TRUE, y = TRUE)
+
+dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
+
+
+
+apsrtableSummary.rms <<- function(x) {
+  s <- summary.lm(x)
+  newCoef <- coef(s)
+  ## which columns have z scores? (two of them in robust case)
+  zcols <- grep("value",colnames(newCoef))
+  newCoef[,zcols] <- pt(abs(newCoef[,zcols]),df=s$df[2], lower.tail=FALSE)
+  colnames(newCoef)[zcols] <- "Pr(z)"
+  s$coefficients <- newCoef
+  ## put the robust se in $se so that notefunction works automatically
+  ## the se checker will overwrite [,4] with pt, but this doesn't matter
+  ## because the last column Pr(z) is used by apsrstars() anyway
+  ## and the se are pulled from $se.
+  if("orig.var"%in% objects(x)==TRUE) {
+    s$se <- sqrt(diag(x$var))
+  }
+  return(s)
+}
+
+apsrtable(dumbRLM1, dumbRLM1.2, dumbRLMbest, se="robust", 
+          label="tab:lagmods", 
+          model.names=c("Naive OLS", "Simple RLM", "RLM + Year FE", "Interaction", 
+                        "RLM + District FE"), 
+          caption = "Models of Lagged Turnout in School Board Elections",
+          notes = list("Standard errors clustered at the school district except in model 1.", 
+                       stars.note, "Year and district fixed effects omitted."),
+          omitcoef=list("distid", 
+                        expression(grep("distid", coefnames, value=TRUE)), 
+                        "year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          Sweave=FALSE, float = "sidewaystable")
+
+
+@
+
+
+<<modelcomparisonD>>=
 fiscalModel <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
-                     ADJ_MEDIAN_SALARY_TEACHlog + millrate_delta, 
+                     ADJ_MEDIAN_SALARY_TEACHlog + millrate_delta + 
+                     DEBT_ATTEMPT_CUMUL93 + eqv_member + 
+                     OVERRIDE_ATTEMPT_CUMUL93, 
                    data = dist_turn, family = 'binomial')
 
 politicModel <- glm(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
@@ -600,12 +703,12 @@ mod1 <- glm(contest2 ~ VAP_adjLOG + NEW_SUP + turnoutLag1 +partyDivision +
               PerBachelorOrAbove + per_white_all+
               OOH_share + median_incomeLOG + ADMIN_SHARE + 
               per65o + ADJ_MEDIAN_SALARY_TEACHlog + refInPlace+
-              NonWhitePublicPupilPer *per_white_all+ overrideQues + millrate*NonSDMill + 
+              NonWhitePublicPupilPer *per_white_all+ overrideQues +
+              millrate*NonSDMill + 
               overridePass + debtPass, 
             data = dist_turn, family = "binomial")
 summary(mod1)
 
-confusion.glm(mod1$model, mod1)
 
 confusion.glm(dist_turn, glm(factor(contest2) ~ log(VAP_adj) + NEW_SUP + turnoutLag1 +fallTwoPartyShareDem +
               PerBachelorOrAbove + OOH_share + log(median_income) + ADMIN_SHARE + 
@@ -613,32 +716,6 @@ confusion.glm(dist_turn, glm(factor(contest2) ~ log(VAP_adj) + NEW_SUP + turnout
             data = dist_turn, family = "binomial"))
 #moddat <- na.omit(moddat)
 # Filter out extreme values
-moddat <- subset(moddat, turnout < 0.95,)
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-moddat$turnout <- moddat$turnout * 100
-moddat$districtwide <- factor(moddat$districtwide)
-# moddat$turnoutLag2 <- moddat$turnoutLag2 * 100
-# moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
-# moddat$per_white_all <- moddat$per_white_all * 100
-# moddat$per65o <- moddat$per65o * 100
-# moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
-# moddat$OOH_share <- moddat$OOH_share * 100
-# moddat$fallTurnout <- moddat$fallTurnout * 100
-moddat$VAP_adj <- log(moddat$VAP_adj)
-moddat$PCI <- log(moddat$PCI)
-centr <- mean(moddat$turnout)
-stddev <- sd(moddat$turnout)
-moddat$outflag <- (moddat$turnout - centr) / stddev
-library(sandwich)
-library(rms)
-library(apsrtable)
-moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
-dd <<- datadist(moddat)
-options(datadist="dd")
-
-
 
 ## Tax model -- voters are driven by tax concdrns
 ## Politics model -- voters are driven by political ideology
