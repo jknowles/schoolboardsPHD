@@ -55,11 +55,11 @@ histEnroll <- rbind(histEnroll, histEnroll.tmp)
 
 rm(histEnroll.tmp)
 
-NEWSUP <- SupTurnover[, c("DISTID", "YEAR", "SCHOOL_YEAR", "CHANGE_IND_1", 
-                          "CHANGE_IND_2")]
+NEWSUP <- SupTurnover[, c("ADW_KEY", "YEAR", "CHANGE_IND1", 
+                          "CHANGE_IND2", "LocExp", "NSups")]
 
-names(NEWSUP) <- c("DISTID", "YEAR", "SCHOOL_YEAR", "NEW_SUP", 
-                   "SUP_TURNOVER_PRIOR_YEAR")
+names(NEWSUP) <- c("ADW_KEY", "YEAR", "NEW_SUP", 
+                   "SUP_TURNOVER_PRIOR_YEAR", "SUP_EXPERIENCE", "SUP_COUNT")
 rm(SupTurnover)
 Staffing$ADMIN_SHARE <- Staffing$SALARY_TOTAL_ADMIN / Staffing$SALARY_TOTAL_ALL
 Staffing$TEACH_SHARE <- Staffing$SALARY_TOTAL_TEACH / Staffing$SALARY_TOTAL_ALL
@@ -94,7 +94,7 @@ refIndicators[is.na(refIndicators)] <- 0
 rm(OverAmounts, yearVotes)
 
 
-ADMIN <- merge(Staffing, NEWSUP, by = c("DISTID", "YEAR", "SCHOOL_YEAR"), all.x = TRUE)
+ADMIN <- merge(Staffing, NEWSUP, by = c("ADW_KEY", "YEAR"), all.x = TRUE)
 ADMIN <- merge(ADMIN, histEnroll, by = c("ADW_KEY", "YEAR", "SCHOOL_YEAR", "DISTID"), 
                all.x=TRUE)
 rm(NEWSUP, histEnroll, Staffing)
@@ -102,3 +102,23 @@ ADMIN <- merge(ADMIN, refIndicators, by = c("YEAR", "DISTID"),
                all.x=TRUE)
 rm(refIndicators, keepVars, keys)
 
+# Clean vars
+
+ADMIN$debtPass <- ifelse(ADMIN$debtPass >= 1, 1, 0)
+ADMIN$debtQues <- ifelse(ADMIN$debtQues >= 1, 1, 0)
+ADMIN$overridePass <- ifelse(ADMIN$overridePass >= 1, 1, 0)
+ADMIN$overrideQues <- ifelse(ADMIN$overrideQues >= 1, 1, 0)
+
+RefIndicators$OVERRIDE_ATTEMPT_CUMUL93 <- RefIndicators$NONRECUR_ATTEMPT_CUMUL93 + 
+  RefIndicators$RECUR_ATTEMPT_CUMUL93
+RefIndicators$OVERRIDE_PASS_CUMUL93 <- RefIndicators$NONRECUR_PASS_CUMUL93 + 
+  RefIndicators$RECUR_PASS_CUMUL93
+
+RefIndicators <- RefIndicators[, c("DISTID", "YEAR", "SCHOOL_YEAR", 
+                                   "DEBT_ATTEMPT_CUMUL93",
+                                   "DEBT_PASS_CUMUL93", 
+                                   "OVERRIDE_ATTEMPT_CUMUL93", 
+                                   "OVERRIDE_PASS_CUMUL93")]
+
+ADMIN <- merge(ADMIN, RefIndicators, by = c("DISTID", "YEAR", "SCHOOL_YEAR"))
+rm(RefIndicators)

@@ -566,7 +566,7 @@ confusion.glm <- function(data, model) {
 
 <<modelcomparisonD>>=
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest1",
-                        "contest2", 
+                        "contest2", "balance_member_lag", 
                         "fallTurnout", "VAP_adj", "distid", "districtwide",
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", 
                         "PCI", "contest")]
@@ -575,13 +575,33 @@ dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
 dist_turn$median_incomeLOG <- log(dist_turn$median_income) 
 dist_turn$ADJ_MEDIAN_FRINGE_TEACH[dist_turn$ADJ_MEDIAN_FRINGE_TEACH == 0] <- 1
 dist_turn$ADJ_MEDIAN_FRINGE_TEACHlog <- log(dist_turn$ADJ_MEDIAN_FRINGE_TEACH)
+dist_turn$ADJ_MEDIAN_SALARY_TEACHlog <- log(dist_turn$ADJ_MEDIAN_SALARY_TEACH)
+dist_turn$partyDivision <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
+dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
 
-mod1 <- glm(contest1 ~ VAP_adjLOG + NEW_SUP + turnoutLag1 +fallTwoPartyShareDem +
-              PerBachelorOrAbove + 
+demogModel <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+                    OOH_share + median_incomeLOG + per65o + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    teachShareofVoters + locale2 + member_delta_per, 
+                  data = dist_turn, family = "binomial")
+
+fiscalModel <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+                     overridePass + debtPass + refInPlace + median_incomeLOG + 
+                     ADJ_MEDIAN_SALARY_TEACHlog + millrate_delta, 
+                   data = dist_turn, family = 'binomial')
+
+politicModel <- glm(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
+                      overrideQues +  debtPass + debtQues + 
+                      SUP_TURNOVER_PRIOR_YEAR +
+                      median_incomeLOG + fallTurnout + overrideYesPer, 
+                    data = dist_turn, family = "binomial")
+
+mod1 <- glm(contest2 ~ VAP_adjLOG + NEW_SUP + turnoutLag1 +partyDivision +
+              PerBachelorOrAbove + per_white_all+
               OOH_share + median_incomeLOG + ADMIN_SHARE + 
-              per65o + ADJ_MEDIAN_FRINGE_TEACHlog +
-              NonWhitePublicPupilPer + overrideQues + millrate*NonSDMill + 
-              overridePass + debtPass + SUP_TURNOVER_PRIOR_YEAR, 
+              per65o + ADJ_MEDIAN_SALARY_TEACHlog + refInPlace+
+              NonWhitePublicPupilPer *per_white_all+ overrideQues + millrate*NonSDMill + 
+              overridePass + debtPass, 
             data = dist_turn, family = "binomial")
 summary(mod1)
 
