@@ -541,6 +541,11 @@ policy decisions. Of particular interest is understanding which of these factors
 for the sample observed and over the time period of observation, are the most 
 predictive of the emergence of contested school board seats. 
 
+\subsubsection{Demographics}
+
+Let's look at the demographics of districts and how they affect the likelihood 
+of a challenge. 
+
 % 3 modeling strategies
 %% model binomial by district, contested or not
 %% model beta by district, # of contested out of # of races
@@ -573,7 +578,7 @@ dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
 
 @
 
-<<demogModel>>=
+<<demogModel, results='asis'>>=
 moddat <- dist_turn[, c("contest2", "contest1", "distid","year", 
                         "balance_member_lag", 
                         "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
@@ -589,7 +594,6 @@ moddat$year <- factor(moddat$year)
 moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
 moddat$per_white_all <- moddat$per_white_all * 100
 moddat$OOH_share <- moddat$OOH_share * 100
-moddat$per65o <- moddat$per65o * 100
 moddat$per65o <- moddat$per65o * 100
 moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
 moddat$member_delta_per <- moddat$member_delta_per * 100
@@ -609,46 +613,31 @@ demogModel <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all +
 
 confusion.glm(demogModel$model, demogModel)
 
-
-
-dumbRLM1 <- lrm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
-                    OOH_share + median_incomeLOG + per65o + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    teachShareofVoters + locale2 + member_delta_per,
-                data = moddat, x = TRUE, y = TRUE)
-
-dumbRLM1$se <- sqrt(diag(vcov(robcov(dumbRLM1, cluster = moddat$distid))))
-
-
-dumbRLM1.2 <- lrm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+demogModel2 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
-                    factor(year), data = moddat, x= TRUE, y = TRUE)
+                     factor(year) + factor(districtwide), 
+                  data = moddat, family = "binomial")
 
-dumbRLM1.2$se <- sqrt(diag(vcov(robcov(dumbRLM1.2, cluster = moddat$distid))))
-
-
-dumbRLMbest <- lrm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+demogModel3 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
-                    factor(year) + factor(districtwide), 
-                   data = moddat, x= TRUE, y = TRUE)
-
-dumbRLMbest$se <- sqrt(diag(vcov(robcov(dumbRLMbest, cluster = moddat$distid))))
+                     distid, 
+                  data = moddat, family = "binomial")
 
 
-dumbRLM2 <- lrm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
-                    OOH_share + median_incomeLOG + per65o + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    teachShareofVoters + locale2 + member_delta_per + 
-                    factor(distid), 
-              data = moddat, x = TRUE, y = TRUE)
+# dumbRLMbest <- lrm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+#                     OOH_share + median_incomeLOG + per65o + 
+#                     NonWhitePublicPupilPer + NonPublicPupilPer + 
+#                     teachShareofVoters + locale2 + member_delta_per + 
+#                     factor(year) + factor(districtwide), 
+#                    data = moddat, x= TRUE, y = TRUE)
+# 
+# dumbRLMbest$se <- sqrt(diag(vcov(robcov(dumbRLMbest, cluster = moddat$distid))))
 
 dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
-
-
 
 apsrtableSummary.rms <<- function(x) {
   s <- summary.lm(x)
@@ -668,13 +657,11 @@ apsrtableSummary.rms <<- function(x) {
   return(s)
 }
 
-apsrtable(dumbRLM1, dumbRLM1.2, dumbRLMbest, se="robust", 
-          label="tab:lagmods", 
-          model.names=c("Naive OLS", "Simple RLM", "RLM + Year FE", "Interaction", 
-                        "RLM + District FE"), 
-          caption = "Models of Lagged Turnout in School Board Elections",
-          notes = list("Standard errors clustered at the school district except in model 1.", 
-                       stars.note, "Year and district fixed effects omitted."),
+apsrtable(demogModel, demogModel2, demogModel3,
+          label="tab:demogmods", 
+          model.names=c("Simple Demog.", "Demog + Year FE", 
+                        "Demog + District FE"), 
+          caption = "Models of Contestation in School Board Elections",
           omitcoef=list("distid", 
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
@@ -685,14 +672,112 @@ apsrtable(dumbRLM1, dumbRLM1.2, dumbRLMbest, se="robust",
 @
 
 
-<<modelcomparisonD>>=
+Some text. Do I put lagged contestation in?
+
+We need to consider a partially pooled model. 
+
+<<partialPooldemog>>=
+library(lme4)
+library(blme)
+
+demogModelPP <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+                    OOH_share + median_incomeLOG + per65o + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    teachShareofVoters + locale2 + member_delta_per + 
+                     (1|year), 
+                  data = moddat, family = binomial, 
+                  cov.prior = wishart)
+
+
+demogModelPP2 <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + 
+                          per_white_all + 
+                    OOH_share + median_incomeLOG + per65o + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    teachShareofVoters + locale2 + member_delta_per + 
+                     (1|distid), 
+                  data = moddat, family = binomial, 
+                  cov.prior = wishart)
+
+
+@
+
+\subsubsection{Fiscal}
+
+One of the highest profile activities of a school district is fiscal management. 
+Does fiscal health of a district predict the run for office? 
+
+
+<<fiscalMod>>=
+dist_turn$teachSalDiff <- dist_turn$ADJ_MEDIAN_SALARY_TEACHlog - 
+  dist_turn$median_incomeLOG
+
+moddat <- dist_turn[, c("contest2", "contest1", "distid","year", 
+                        "balance_member_lag", 
+                        "millrate", "VAP_adjLOG", "NonSDMill", 
+                        "districtwide",
+                        "overridePass", "median_incomeLOG", "debtPass", 
+                        "millrate_delta", "refInPlace", 
+                        "DEBT_ATTEMPT_CUMUL93", "eqv_member", 
+                        "OVERRIDE_ATTEMPT_CUMUL93", "ADJ_MEDIAN_SALARY_TEACHlog",
+                        "member_delta_per", "teachSalDiff")]
+
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
+moddat$per_white_all <- moddat$per_white_all * 100
+moddat$OOH_share <- moddat$OOH_share * 100
+moddat$per65o <- moddat$per65o * 100
+moddat$per65o <- moddat$per65o * 100
+moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
+moddat$member_delta_per <- moddat$member_delta_per * 100
+moddat$districtwide <- factor(moddat$districtwide)
+moddat <- na.omit(moddat)
+dd <<- datadist(moddat)
+options(datadist="dd")
+
+
 fiscalModel <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
-                     ADJ_MEDIAN_SALARY_TEACHlog + millrate_delta + 
-                     DEBT_ATTEMPT_CUMUL93 + eqv_member + 
+                     millrate_delta + VAP_adjLOG + 
+                     DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
                      OVERRIDE_ATTEMPT_CUMUL93, 
-                   data = dist_turn, family = 'binomial')
+                   data = moddat, family = 'binomial')
 
+
+@
+
+Some text
+
+<<fiscalModPP>>=
+fiscalModelPP <- bglmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+                     overridePass + debtPass + refInPlace + median_incomeLOG + 
+                     millrate_delta + VAP_adjLOG + 
+                     DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
+                     OVERRIDE_ATTEMPT_CUMUL93 + (1|year), 
+                   data = moddat, family = 'binomial', 
+                   cov.prior = wishart)
+
+fiscalModelPP2 <- bglmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+                     overridePass + debtPass + refInPlace + median_incomeLOG + 
+                     millrate_delta + VAP_adjLOG + 
+                     DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
+                     OVERRIDE_ATTEMPT_CUMUL93 + (1|distid), 
+                   data = moddat, family = 'binomial', 
+                   cov.prior = wishart)
+
+fiscalModelPP3 <- bglmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+                     overridePass + debtPass + refInPlace + median_incomeLOG + 
+                     millrate_delta + VAP_adjLOG + 
+                     DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
+                     OVERRIDE_ATTEMPT_CUMUL93 + (1|distid) + (1|year), 
+                   data = moddat, family = 'binomial', 
+                   cov.prior = wishart)
+
+
+@
+
+<<modelcomparisonD, eval=FALSE>>=
 politicModel <- glm(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
                       overrideQues +  debtPass + debtQues + 
                       SUP_TURNOVER_PRIOR_YEAR +
