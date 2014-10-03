@@ -728,7 +728,6 @@ moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
 moddat$per_white_all <- moddat$per_white_all * 100
 moddat$OOH_share <- moddat$OOH_share * 100
 moddat$per65o <- moddat$per65o * 100
-moddat$per65o <- moddat$per65o * 100
 moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
 moddat$member_delta_per <- moddat$member_delta_per * 100
 moddat$districtwide <- factor(moddat$districtwide)
@@ -744,6 +743,30 @@ fiscalModel <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill +
                      OVERRIDE_ATTEMPT_CUMUL93, 
                    data = moddat, family = 'binomial')
 
+fiscalModel2 <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+                     overridePass + debtPass + refInPlace + median_incomeLOG + 
+                     millrate_delta + VAP_adjLOG + 
+                     DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
+                     OVERRIDE_ATTEMPT_CUMUL93 + year, 
+                   data = moddat, family = 'binomial')
+                   
+fiscalModel3 <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+                     overridePass + debtPass + refInPlace + median_incomeLOG + 
+                     millrate_delta + VAP_adjLOG + 
+                     DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
+                     OVERRIDE_ATTEMPT_CUMUL93 + distid, 
+                   data = moddat, family = 'binomial')
+
+apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
+          label="tab:fiscalgmods", 
+          model.names=c("Simple Fiscal", "Fiscal + Year FE", 
+                        "Fiscal + District FE"), 
+          caption = "Fiscal Models of Contestation in School Board Elections",
+          omitcoef=list("distid", 
+                        expression(grep("distid", coefnames, value=TRUE)), 
+                        "year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          Sweave=FALSE, float = "sidewaystable")
 
 @
 
@@ -777,13 +800,92 @@ fiscalModelPP3 <- bglmer(contest2 ~ balance_member_lag + millrate * NonSDMill +
 
 @
 
-<<modelcomparisonD, eval=FALSE>>=
+<<politicMod, results = 'asis'>>=
+dist_turn$teachSalDiff <- dist_turn$ADJ_MEDIAN_SALARY_TEACHlog - 
+  dist_turn$median_incomeLOG
+
+moddat <- dist_turn[, c("contest2", "NEW_SUP", "distid","year", 
+                        "turnoutLag1", 
+                        "partyDivision", "VAP_adjLOG", "overrideQues", 
+                        "districtwide", "debtQues", "overrideYesPer",
+                        "overridePass", "median_incomeLOG", "debtPass", 
+                        "fallTurnout", "SUP_TURNOVER_PRIOR_YEAR", 
+                        "DEBT_ATTEMPT_CUMUL93",  
+                        "OVERRIDE_ATTEMPT_CUMUL93", "ADJ_MEDIAN_SALARY_TEACHlog",
+                        "SUP_TURNOVER_PRIOR_YEAR", "teachSalDiff")]
+
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat$districtwide <- factor(moddat$districtwide)
+moddat <- na.omit(moddat)
+dd <<- datadist(moddat)
+options(datadist="dd")
+                        
 politicModel <- glm(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
                       overrideQues +  debtPass + debtQues + 
                       SUP_TURNOVER_PRIOR_YEAR +
                       median_incomeLOG + fallTurnout + overrideYesPer, 
                     data = dist_turn, family = "binomial")
 
+politicModel2 <- glm(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
+                      overrideQues +  debtPass + debtQues + 
+                      SUP_TURNOVER_PRIOR_YEAR +
+                      median_incomeLOG + fallTurnout + overrideYesPer + 
+                      year, 
+                    data = dist_turn, family = "binomial")
+                    
+politicModel3 <- glm(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
+                      overrideQues +  debtPass + debtQues + 
+                      SUP_TURNOVER_PRIOR_YEAR +
+                      median_incomeLOG + fallTurnout + overrideYesPer + 
+                      distid, 
+                    data = dist_turn, family = "binomial")
+
+
+apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
+          label="tab:fiscalgmods", 
+          model.names=c("Simple Politic", "Politic + Year FE", 
+                        "Politic + District FE"), 
+          caption = "Politic Models of Contestation in School Board Elections",
+          omitcoef=list("distid", 
+                        expression(grep("distid", coefnames, value=TRUE)), 
+                        "year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          Sweave=FALSE, float = "sidewaystable")
+          
+@
+
+Some text. 
+
+
+<<politicModPP>>=
+politicModelPP <- bglmer(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
+                      overrideQues +  debtPass + debtQues + 
+                      SUP_TURNOVER_PRIOR_YEAR +
+                      median_incomeLOG + fallTurnout + overrideYesPer + (1|year), 
+                   data = moddat, family = 'binomial', 
+                   cov.prior = wishart)
+
+politicModelPP2 <- bglmer(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
+                      overrideQues +  debtPass + debtQues + 
+                      SUP_TURNOVER_PRIOR_YEAR +
+                      median_incomeLOG + fallTurnout + overrideYesPer + (1|distid), 
+                   data = moddat, family = 'binomial', 
+                   cov.prior = wishart)
+
+politicModelPP3 <- bglmer(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
+                      overrideQues +  debtPass + debtQues + 
+                      SUP_TURNOVER_PRIOR_YEAR +
+                      median_incomeLOG + fallTurnout + overrideYesPer + (1|distid) + (1|year), 
+                   data = moddat, family = 'binomial', 
+                   cov.prior = wishart)
+
+
+@
+
+
+<<erratta>>=
 mod1 <- glm(contest2 ~ VAP_adjLOG + NEW_SUP + turnoutLag1 +partyDivision +
               PerBachelorOrAbove + per_white_all+
               OOH_share + median_incomeLOG + ADMIN_SHARE + 
