@@ -623,7 +623,8 @@ moddat <- na.omit(moddat)
 demogModel <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    teachShareofVoters + locale2 + member_delta_per, 
+                    teachShareofVoters + locale2 + member_delta_per + 
+                    districtwide, 
                   data = moddat, family = "binomial")
 
 # confusion.glm(demogModel$model, demogModel)
@@ -632,20 +633,21 @@ demogModel2 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all +
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
-                     factor(year) + factor(districtwide), 
+                    districtwide + factor(year), 
                   data = moddat, family = "binomial")
 
 demogModel3 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
-                     distid, 
+                     districtwide + distid, 
                   data = moddat, family = "binomial")
 
 # 
 # dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
 
-apsrtable(demogModel, demogModel2, demogModel3, se = "vcov", float = "sidewaystable",
+apsrtable(demogModel, demogModel2, demogModel3, se = "vcov", 
+          float = "sidewaystable",
           label="tab:demogmods", 
           model.names=c("Simple Demog.", "Demog + Year FE", 
                         "Demog + District FE"), 
@@ -669,43 +671,71 @@ We need to consider a partially pooled model.
 <<partialPooldemog, results='asis'>>=
 library(lme4)
 library(blme)
+library(optimx)
+ctrl <- glmerControl(optimizer = "optimx", optCtrl = list(method = "nlminb", 
+                                                          maxit = 4000))
+library(arm)
+moddat$NonWhitePublicPupilPer <- rescale(moddat$NonWhitePublicPupilPer)
+moddat$VAP_adjLOG <- rescale(moddat$VAP_adjLOG)
+moddat$per_white_all <- rescale(moddat$per_white_all)
+moddat$per65o <- rescale(moddat$per65o)
+moddat$PerBachelorOrAbove <- rescale(moddat$PerBachelorOrAbove)
+moddat$OOH_share <- rescale(moddat$OOH_share)
+moddat$median_incomeLOG <- rescale(moddat$median_incomeLOG)
+moddat$NonPublicPupilPer <- rescale(moddat$NonPublicPupilPer)
+moddat$teachShareofVoters <- rescale(moddat$teachShareofVoters)
+moddat$member_delta_per <- rescale(moddat$member_delta_per)
 
-demogModelPP <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
-                    OOH_share + median_incomeLOG + per65o + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    teachShareofVoters + locale2 + member_delta_per + 
-                     (1|year), 
-                  data = moddat, family = binomial, 
-                  cov.prior = wishart)
-
-
-demogModelPP2 <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + 
-                          per_white_all + 
+demogModelPP1 <- glmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
                      (1|distid), 
-                  data = moddat, family = binomial, 
-                  cov.prior = wishart)
+                    data = moddat, family = binomial, 
+                  control = ctrl)
 
-demogModelPP3 <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + 
-                          per_white_all + 
+demogModelPP2 <- glmer(contest1 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
-                    (1|year) + (1|distid), 
-                  data = moddat, family = binomial, 
-                  cov.prior = wishart)
+                     (1|distid), 
+                  data = moddat, family = binomial, control = ctrl)
 
-class(demogModelPP) <- "merMod"
-class(demogModelPP2) <- "merMod"
-class(demogModelPP3) <- "merMod"
+# 
+# demogModelPP <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+#                     OOH_share + median_incomeLOG + per65o + 
+#                     NonWhitePublicPupilPer + NonPublicPupilPer + 
+#                     teachShareofVoters + locale2 + member_delta_per + 
+#                      (1|distid), 
+#                   data = moddat, family = binomial, 
+#                   cov.prior = wishart)
 
 
-apsrtable(demogModelPP, demogModelPP2, demogModelPP3,
-          model.names = c("Demog + Year Eff.", 
-                          "Demog + District Eff.", 
-                          "Demog + Year + District Eff."),
+# demogModelPP2 <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + 
+#                           per_white_all + 
+#                     OOH_share + median_incomeLOG + per65o + 
+#                     NonWhitePublicPupilPer + NonPublicPupilPer + 
+#                     teachShareofVoters + locale2 + member_delta_per + 
+#                      (1|distid), 
+#                   data = moddat, family = binomial, 
+#                   cov.prior = wishart)
+# 
+# demogModelPP3 <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + 
+#                           per_white_all + 
+#                     OOH_share + median_incomeLOG + per65o + 
+#                     NonWhitePublicPupilPer + NonPublicPupilPer + 
+#                     teachShareofVoters + locale2 + member_delta_per + 
+#                     (1|year) + (1|distid), 
+#                   data = moddat, family = binomial, 
+#                   cov.prior = wishart)
+# 
+# class(demogModelPP) <- "merMod"
+# class(demogModelPP2) <- "merMod"
+# class(demogModelPP3) <- "merMod"
+
+apsrtable(demogModelPP1, demogModelPP2,
+          model.names = c("No Minor Candidates", 
+                          "Minor Candidates Included"),
           caption = "Partial Pooling Model of Demographics on Turnout",
           label = "tab:meDemog", Sweave=FALSE, float = "sidewaystable", 
           notes = list("Group level intercepts are not shown.", 

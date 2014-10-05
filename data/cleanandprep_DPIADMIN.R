@@ -33,6 +33,13 @@ keepVars <- c("ADW_KEY", "YEAR", "SCHOOL_YEAR", "DISTID", "TOTAL_POSITIONS_ALL",
 
 Staffing <- Staffing[, keepVars]
 
+#Patch MPS data
+if(histEnroll$TOT_COUNT[histEnroll$YEAR == 2008 & histEnroll$DISTID == 3619] > 170000){
+  histEnroll$TOT_COUNT[histEnroll$YEAR == 2008] <- histEnroll$TOT_COUNT[histEnroll$YEAR == 2008] /2
+  histEnroll$MAL_COUNT[histEnroll$YEAR == 2008] <- histEnroll$MAL_COUNT[histEnroll$YEAR == 2008] /2
+  histEnroll$FEM_COUNT[histEnroll$YEAR == 2008] <- histEnroll$FEM_COUNT[histEnroll$YEAR == 2008] /2
+}
+
 histEnroll$NonWhitePublicPupilPer <- ((histEnroll$TOT_COUNT - histEnroll$W_COUNT) / histEnroll$TOT_COUNT)*100
 histEnroll$NonPublicPupilPer <- (((histEnroll$TOT_COUNT + histEnroll$TOTAL_COUNT_PVT) -histEnroll$TOT_COUNT) / (histEnroll$TOT_COUNT + histEnroll$TOTAL_COUNT_PVT))*100
 histEnroll$BlackPublicPupilPer <- (histEnroll$B_COUNT / histEnroll$TOT_COUNT)
@@ -40,20 +47,45 @@ histEnroll$HispPublicPupilPer <- (histEnroll$H_COUNT / histEnroll$TOT_COUNT)
 histEnroll$AsianPublicPupilPer <- (histEnroll$A_COUNT / histEnroll$TOT_COUNT)
 histEnroll$AmerIndPublicPupilPer <- (histEnroll$I_COUNT / histEnroll$TOT_COUNT)
 
+
 keepVars <- c("ADW_KEY", "YEAR", "SCHOOL_YEAR", "DISTID", "N_PUB_SCHLS", "N_PVT_SCHLS", 
               "TOT_COUNT", "TOTAL_COUNT_PVT", "NonWhitePublicPupilPer", 
               "NonPublicPupilPer", "BlackPublicPupilPer", "HispPublicPupilPer", 
               "AsianPublicPupilPer", "AmerIndPublicPupilPer")
 
 histEnroll <- histEnroll[, keepVars]
-
 histEnroll.tmp <- histEnroll[histEnroll$YEAR == 2011,]
 histEnroll.tmp$YEAR <- 2012
 histEnroll.tmp$SCHOOL_YEAR <- "2011-12"
-
 histEnroll <- rbind(histEnroll, histEnroll.tmp)
-
 rm(histEnroll.tmp)
+
+histEnroll <- histEnroll[order(histEnroll$ADW_KEY, histEnroll$YEAR),]
+lg  <- function(x) c(NA, x[1:length(x)-1])
+lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
+histEnroll <- as.data.table(histEnroll)[, enrollLag:= lg(TOT_COUNT), by = "ADW_KEY"]
+histEnroll$enrollDelta <- histEnroll$TOT_COUNT - histEnroll$enrollLag
+histEnroll <- as.data.table(histEnroll)[, enrollLagPVT:= lg(TOTAL_COUNT_PVT), by = "ADW_KEY"]
+histEnroll$enrollDeltaPvt <- histEnroll$TOTAL_COUNT_PVT - histEnroll$enrollLagPVT
+
+
+# Interpolate enrollment
+for(i in unique(histEnroll$DISTID)){
+  histEnroll$TOT_COUNT[histEnroll$YEAR == 2012 & histEnroll$DISTID == i] <- 
+    (histEnroll$TOT_COUNT[histEnroll$YEAR == 2011 & histEnroll$DISTID == i] + 
+        mean(histEnroll$enrollDelta[(histEnroll$YEAR > 2000 & histEnroll$YEAR < 2012) & histEnroll$DISTID == i], na.rm=TRUE))
+  histEnroll$TOTAL_COUNT_PVT[histEnroll$YEAR == 2012 & histEnroll$DISTID == i] <- 
+    (histEnroll$TOTAL_COUNT_PVT[histEnroll$YEAR == 2011 & histEnroll$DISTID == i] + 
+       mean(histEnroll$enrollDeltaPvt[(histEnroll$YEAR > 2000 & histEnroll$YEAR < 2012) & histEnroll$TOTAL_COUNT_PVT > 1 &  histEnroll$DISTID == i], na.rm=TRUE))
+}
+
+histEnroll$enrollDeltaPub <- histEnroll$enrollDelta
+histEnroll$enrollDelta <- NULL
+histEnroll$enrollLag <- NULL
+histEnroll$enrollDeltaPvt <- histEnroll$enrollDeltaPvt
+histEnroll$enrollLagPVT <- NULL
+histEnroll$TOT_COUNT <- round(histEnroll$TOT_COUNT)
+histEnroll$TOTAL_COUNT_PVT <- round(histEnroll$TOTAL_COUNT_PVT)
 
 NEWSUP <- SupTurnover[, c("ADW_KEY", "YEAR", "CHANGE_IND1", 
                           "CHANGE_IND2", "LocExp", "NSups")]
