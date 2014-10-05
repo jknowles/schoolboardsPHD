@@ -1,29 +1,22 @@
 # TO-DO
-
 * Upgrade to using School Finance data from latest paper (09/2014)
-* Get data on superintendent tenure
 * Identify cases where no ballot/election occcurred vs. no record available
-* CHeck DPI data
+* Check DPI data
  - Superintendent turnover and lagged superintendent turnover do not make sense
   * Add achievement data
    - Proficiency by year
   * Add school district demographics from DPI
   X - % minority
    - % FRL
-* Recall turnout in voter turnout models
 * Revise cleanandprep_candidacy.R
 * Fix models in candidacy.rnw
-* Get 2012 and 2013 and 2014 superintendents list
 * Add citations on rolloff and undervote
 * Non-partisan election citations
-* Superintendent turnover and school board defeat
 * School board contract extension and school board turnover?
 * Test scores and school board action
-* Specification tests for mixed effect models using year and district random effects
 * Update autoplot to na.omit after fortify
 * Finalized draft of chapter 2
 * Fix eeptools plots
-X * Update APSRtable for partial pooling(PR submitted)
 * Describe partial pooling vs. fixed effect methods in methods section
 * Methods section in candidacy and interpretation
 * Update the bibliography to be Chicago and not McBride
@@ -44,24 +37,13 @@ X * Update APSRtable for partial pooling(PR submitted)
     - Do I need a chapter or do I need partisanship?
     - Each section has the ability to re-do some congressional level analyses with
       school board data, and then leverage the exogenous shock... how should this fit?
-* Make table of Wisconsin election dates by law
-   * Spring General = First Tuesday in April
-   * Spring Primary = Third Tuesday in February
-   * Fall General   = First Tuesday in November
-   * Fall Primary   = 2nd Tuesday in August
 http://gab.wi.gov/elections-voting/2014/fall
 http://gab.wi.gov/elections-voting/2014/spring
-* Add teacher data to dataset
- - Number of teachers
- - Teacher salary
- - Teacher experience
 * Add achievement data
  - Proficiency by year
 * Add school district demographics from DPI
- - % minority
+ X - % minority
  - % FRL
-* Add superintendent turnover
- - Lagged and regular
 * Calculate incumbency rates and incumbency defeat rates by district
 * Update research log
 
@@ -78,7 +60,6 @@ http://gab.wi.gov/elections-voting/2014/spring
 ############################
 # Districts to clean up
 ###########################
-
 Check Incumbency
 Waterloo district
 Williams Bay

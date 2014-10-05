@@ -19,7 +19,7 @@ library(gridExtra)
 library(scales)
 
 library(devtools)
-install_github("jknowles/apsrtable", subdir = "pkg")
+install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
 library(apsrtable)
 @
 
@@ -645,18 +645,18 @@ demogModel3 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all +
 # 
 # dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
 
-apsrtable(demogModel, demogModel2, demogModel3, se = "vcov",
+apsrtable(demogModel, demogModel2, demogModel3, se = "vcov", float = "sidewaystable",
           label="tab:demogmods", 
           model.names=c("Simple Demog.", "Demog + Year FE", 
                         "Demog + District FE"), 
           caption = "Models of Contestation in School Board Elections",
+          notes = list(stars.note, 
+                       "Year and district fixed effects omitted."),
           omitcoef=list("distid", 
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
-          Sweave=FALSE, float = "sidewaystable", 
-          notes = list(stars.note, 
-                       "Year and district fixed effects omitted."))
+          Sweave=FALSE, digits = 3)
 
 
 @
@@ -709,20 +709,25 @@ apsrtable(demogModelPP, demogModelPP2, demogModelPP3,
           caption = "Partial Pooling Model of Demographics on Turnout",
           label = "tab:meDemog", Sweave=FALSE, float = "sidewaystable", 
           notes = list("Group level intercepts are not shown.", 
-                       stars.note))
+                       stars.note), 
+          digits = 3)
 
 @
 
 Table \ref{tab:meDemog} shows the results of a mixed effect model. 
 
 
-<<modTestDemog, results='hide'>>=
+<<modTestDemog, results='hide', eval=FALSE>>=
 library(pbkrtest)
 library(doParallel)
 cl <- makePSOCKcluster(3)
 
-PBmodcomp(demogModelPP3, demogModelPP, nsim = 33, 
+modTestDemog1 <- PBmodcomp(demogModelPP3, demogModelPP, nsim = 200, 
           cl = cl)
+
+modTestDemog2 <- PBmodcomp(demogModelPP3, demogModelPP2, nsim = 200, 
+          cl = cl)
+
 
 stopCluster(cl)
 
@@ -792,7 +797,8 @@ apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
                         expression(grep("year", coefnames, value = TRUE))), 
           Sweave=FALSE, float = "sidewaystable", 
           notes = list(stars.note, 
-                       "Year and district fixed effects omitted.")))
+                       "Year and district fixed effects omitted."), 
+          digits = 3)
 
 @
 
@@ -834,7 +840,20 @@ apsrtable(fiscalModelPP, fiscalModelPP2, fiscalModelPP3,
           caption = "Partial Pooling Model of Fiscal on Turnout",
          label = "tab:meFiscal", Sweave=FALSE, float = "sidewaystable", 
           notes = list("Group level intercepts are not shown.", 
-                       stars.note)))
+                       stars.note), digits = 3 )
+@
+
+<<modTestFiscal, results='hide', eval=FALSE>>=
+cl <- makePSOCKcluster(3)
+
+modTestFiscal1 <- PBmodcomp(fiscalModelPP3, fiscalModelPP, nsim = 200, 
+          cl = cl)
+
+modTestFiscal2 <- PBmodcomp(fiscalModelPP3, fiscalModelPP2, nsim = 200, 
+          cl = cl)
+
+
+stopCluster(cl)
 @
 
 Politics models
@@ -892,7 +911,8 @@ apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
                         expression(grep("year", coefnames, value = TRUE))), 
            Sweave=FALSE, float = "sidewaystable", 
           notes = list(stars.note, 
-                       "Year and district fixed effects omitted."))
+                       "Year and district fixed effects omitted."), 
+          digits = 3)
 @
 
 Some text. 
@@ -932,7 +952,22 @@ apsrtable(politicModelPP, politicModelPP2, politicModelPP3,
           caption = "Partial Pooling Model of Fiscal on Turnout",
           label = "tab:mePolitics", Sweave=FALSE, float = "sidewaystable", 
           notes = list("Group level intercepts are not shown.", 
-                       stars.note)))
+                       stars.note), 
+          digits = 3)
+@
+
+
+<<modTestPolitic, results='hide', eval=FALSE>>=
+cl <- makePSOCKcluster(3)
+
+modTestPolitic1 <- PBmodcomp(politicModelPP3, politicModelPP, nsim = 200, 
+          cl = cl)
+
+modTestPolitic2 <- PBmodcomp(politicModelPP3, politicModelPP2, nsim = 200, 
+          cl = cl)
+
+
+stopCluster(cl)
 @
 
 
