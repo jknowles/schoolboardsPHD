@@ -5,12 +5,17 @@
 
 source("data/dataAssemble.R")
 load("data/cache/DataMergeVAP.rda")
-load("data/cache/AnalyticalSampleFeb2014.rda")
+load("data/cache/fullDataSep2014.rda")
 
-distAttr <- newdat[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attempts", 
-                       "cum_attptsD", "enrollment", "white_count", "TotalPopulation", 
-                       "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o", 
-                       "PerBachelorOrAbove", "OOH_share", "millrate")]
+
+distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopulation",
+                    "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o", 
+                    "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
+                    "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "eqv_member", 
+                    "total_levy", "genaid", 
+                    "balance_lag", "member", "member_delta", "millrate_delta", 
+                    "locale2", "member_lag", "ref_share")]
+
 rm(newdat)
 
 distAttr$per_white_students <- distAttr$white_count / distAttr$enrollment
@@ -186,3 +191,13 @@ rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
 
 dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
 
+source("data/cleanandprep_DPIADMIN.R")
+
+dist_turn$DISTID <- FORMATdistid(dist_turn$distid)
+
+dist_turn <- merge(dist_turn, ADMIN, by.x = c("DISTID", "year"), 
+                   by.y =c("DISTID", "YEAR"))
+
+dist_turn$teachShareofVoters <- round(dist_turn$FTE_TEACH,0) / round(dist_turn$VAP_adj,0)
+
+rm(ADMIN)

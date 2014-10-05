@@ -215,10 +215,10 @@ All three of these traditions leave something to be desired in the context of
 school board elections. The present study does not have the ability to delve into the 
 ambition and psychology of candidates for school board elections, though quality 
 descriptive work has been done exploring the political and personal backgrounds of 
-school board members as reviewed in Chapter \ref{chap:theoryreview} 
+school board members as reviewed in Chapter \ref{chap:intro} 
 \citep{RefWorks:321, RefWorks:322, RefWorks:333}. However, 
 this chapter will explore the evidence of strategic timing and policy change as 
-motivations of school board candidate emergence. As discussed in Chapter \ref{chap:theoryreview}, the four theories 
+motivations of school board candidate emergence. As discussed in Chapter \ref{chap:intro}, the four theories 
 of school board election contestation all seek to explain the general pattern of 
 quiet uncontested elections punctuated by incumbent defeat and sharp increases 
 in turnout. This chapter will first explore the extent to which this stylized 
@@ -405,7 +405,7 @@ To do this we will fit three models plus an overall model:
 Fiscal   & revenue limit, tax rate, median income, referenda & If the model is explanatory, fiscal forces may motivate candidates\\ \hline
 Politics & Lagged contestation, lagged primary, cumulative debt referenda, political division, lagged referendum & Political activity \\ \hline
 %Fiscal Revolt & \citet{RefWorks:297,RefWorks:271} & Union membership as share of electorate drives up turnout \\ \hline
-Policy & teacher compensation, referenda attempts & Unsure \\ \hline \hline
+Policy & teacher compensation, referenda attempts & Unsure \\ \hline 
 Controls & District population, white \%,  median income & To control for differences in contexts \\ \hline
 \end{tabular}
 \end{small}
@@ -603,7 +603,7 @@ Does fiscal health of a district predict the run for office?
 
 \begin{sidewaystable}[!ht]
 \caption{Fiscal Models of Contestation in School Board Elections}
-\label{tab:fiscalgmods} 
+\label{tab:fiscalmods} 
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple Fiscal } & \multicolumn{ 1 }{ c }{ Fiscal + Year FE } & \multicolumn{ 1 }{ c }{ Fiscal + District FE } \\ \hline
@@ -710,45 +710,37 @@ Politics models
 
 \begin{sidewaystable}[!ht]
 \caption{Politic Models of Contestation in School Board Elections}
-\label{tab:fiscalgmods} 
+\label{tab:politicmods} 
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple Politic } & \multicolumn{ 1 }{ c }{ Politic + Year FE } & \multicolumn{ 1 }{ c }{ Politic + District FE } \\ \hline
- %                            & Simple Politic        & Politic + Year FE     & Politic + District FE\\ 
-(Intercept)                  & -16.240 ^*            & -15.494 ^*            & -56.069 ^*           \\ 
-                             & (4.041)               & (4.588)               & (20.413)             \\ 
-balance\_member\_lag       & 0.000                 & 0.000                 & 0.000                \\ 
-                             & (0.000)               & (0.000)               & (0.000)              \\ 
-millrate                     & -0.047                & -0.031                & -0.082               \\ 
-                             & (0.099)               & (0.100)               & (0.223)              \\ 
-NonSDMill                    & -0.039                & 0.002                 & 2.624                \\ 
-                             & (0.820)               & (0.827)               & (1.884)              \\ 
-overridePass                 & -0.075                & -0.064                & -0.037               \\ 
-                             & (0.178)               & (0.179)               & (0.214)              \\ 
-debtPass                     & 0.116                 & 0.125                 & -0.024               \\ 
-                             & (0.187)               & (0.188)               & (0.222)              \\ 
-refInPlace                   & 0.162                 & 0.137                 & 0.298                \\ 
-                             & (0.100)               & (0.101)               & (0.200)              \\ 
-median\_incomeLOG           & 1.979 ^*              & 1.873 ^*              & 4.239 ^*             \\ 
-                             & (0.387)               & (0.444)               & (1.592)              \\ 
-millrate\_delta             & -0.061                & -0.058                & 0.001                \\ 
-                             & (0.056)               & (0.063)               & (0.073)              \\ 
-VAP\_adjLOG                 & -0.472 ^*             & -0.455 ^*             & 0.921                \\ 
-                             & (0.052)               & (0.055)               & (1.603)              \\ 
-DEBT\_ATTEMPT\_CUMUL93     & -0.037 ^*             & -0.039 ^*             & 0.049                \\ 
-                             & (0.016)               & (0.016)               & (0.076)              \\ 
-eqv\_member                 & 0.000 ^*              & 0.000 ^*              & 0.000 ^*             \\ 
-                             & (0.000)               & (0.000)               & (0.000)              \\ 
-teachSalDiff                 & 1.134 ^*              & 0.951 ^*              & 0.562                \\ 
-                             & (0.356)               & (0.435)               & (0.760)              \\ 
-OVERRIDE\_ATTEMPT\_CUMUL93 & -0.005                & -0.003                & -0.109               \\ 
-                             & (0.021)               & (0.021)               & (0.081)              \\ 
-millrate:NonSDMill           & 0.041                 & 0.040                 & -0.049               \\ 
-                             & (0.089)               & (0.090)               & (0.187)               \\
- $N$                          & 2777                  & 2777                  & 2777                 \\ 
-AIC                          & 3503.716              & 3512.399              & 3427.993             \\ 
-BIC                          & 3859.464              & 4081.596              & 10993.558            \\ 
-$\log L$                    & -1691.858             & -1660.200             & -437.996              \\ \hline
+ %                             & Simple Politic        & Politic + Year FE     & Politic + District FE\\ 
+(Intercept)                   & -3.505                & -62.384               & -36.441 ^*           \\ 
+                              & (2.100)               & (33.617)              & (15.793)             \\ 
+NEW\_SUP                     & 0.050                 & 0.048                 & 0.178                \\ 
+                              & (0.151)               & (0.151)               & (0.182)              \\ 
+turnoutLag1                   & -0.222                & -0.283                & -0.286               \\ 
+                              & (0.412)               & (0.414)               & (0.647)              \\ 
+partyDivision                 & 1.380                 & 1.301                 & 2.150                \\ 
+                              & (0.712)               & (0.715)               & (2.179)              \\ 
+overrideQues                  & -0.804 ^*             & -0.783 ^*             & -0.991 ^*            \\ 
+                              & (0.284)               & (0.284)               & (0.366)              \\ 
+debtPass                      & 0.364                 & 0.362                 & 0.417                \\ 
+                              & (0.281)               & (0.281)               & (0.360)              \\ 
+debtQues                      & -0.366                & -0.363                & -0.351               \\ 
+                              & (0.225)               & (0.225)               & (0.307)              \\ 
+SUP\_TURNOVER\_PRIOR\_YEAR & -0.107                & -0.104                & -0.093               \\ 
+                              & (0.120)               & (0.120)               & (0.152)              \\ 
+median\_incomeLOG            & 0.406                 & 0.384                 & 3.349 ^*             \\ 
+                              & (0.218)               & (0.219)               & (1.481)              \\ 
+fallTurnout                   & -0.215                & -0.123                & 0.151                \\ 
+                              & (0.523)               & (0.528)               & (1.003)              \\ 
+overrideYesPer                & 2.862 ^*              & 2.788 ^*              & 2.814                \\ 
+                              & (1.315)               & (1.315)               & (1.647)               \\
+ $N$                           & 2464                  & 2464                  & 2464                 \\ 
+AIC                           & 3218.063              & 3216.984              & 3021.188             \\ 
+BIC                           & 3473.683              & 3495.842              & 10341.210            \\ 
+$\log L$                     & -1565.032             & -1560.492             & -250.594              \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}} 
 \end{tabular} 
@@ -884,6 +876,126 @@ Act 10. If levels of contestation increase after the introduction of Act 10, eve
 after controlling for the factors that influenced this above, it would be strong 
 evidence that the statewide policy lever pulled by Act 10 did spur a response 
 from candidates in terms of increasing the attractiveness of school board seats. 
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-walkerplot1} \caption[Polarization and Turnout Before and After Act 10]{Polarization and Turnout Before and After Act 10\label{fig:walkerplot1}}
+\end{figure}
+
+\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-walkerplot2} \caption[Polarization and Turnout Before and After Act 10]{Polarization and Turnout Before and After Act 10\label{fig:walkerplot2}}
+\end{figure}
+
+
+\end{knitrout}
+
+
+\begin{table}[!ht]
+\caption{Model of Causal Impact of Act 10 on School Board Candidacy}
+\label{tab:causmod1} 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Naive Causal Model } & \multicolumn{ 1 }{ c }{ Overvote Model } \\ \hline
+ %                            & Naive Causal Model & Overvote Model    \\ 
+(Intercept)                  & 4.97               & 4.87              \\ 
+                             & (4.79)             & (4.84)            \\ 
+turnoutLag1                  & -0.01              & -0.01             \\ 
+                             & (0.01)             & (0.01)            \\ 
+VAP\_adjLOG                 & -0.57 ^*           & -0.64 ^*          \\ 
+                             & (0.07)             & (0.08)            \\ 
+per\_white\_all            & -0.01              & -0.01             \\ 
+                             & (0.01)             & (0.01)            \\ 
+per65o                       & -0.01              & 0.00              \\ 
+                             & (0.02)             & (0.02)            \\ 
+PerBachelorOrAbove           & 0.03 ^*            & 0.04 ^*           \\ 
+                             & (0.01)             & (0.01)            \\ 
+OOH\_share                  & -0.01              & -0.01             \\ 
+                             & (0.01)             & (0.01)            \\ 
+median\_incomeLOG           & 0.18               & 0.24              \\ 
+                             & (0.54)             & (0.55)            \\ 
+districtwide1                & -0.52 ^*           & -0.52 ^*          \\ 
+                             & (0.17)             & (0.17)            \\ 
+RecallPolarization           & -0.00              & -0.00             \\ 
+                             & (0.01)             & (0.01)            \\ 
+treatment                    & -0.00              & 0.30              \\ 
+                             & (0.24)             & (0.25)            \\ 
+turnout\_overall\_werc     & 0.00               & 0.00              \\ 
+                             & (0.00)             & (0.00)            \\ 
+RecallPolarization:treatment & 0.00               & 0.01              \\ 
+                             & (0.02)             & (0.02)            \\ 
+topTicketTurnoutSpring       &                    & -0.03 ^*          \\ 
+                             &                    & (0.01)             \\
+ $N$                          & 1171               & 1171              \\ 
+AIC                          & 1567.67            & 1555.07           \\ 
+BIC                          & 1831.09            & 1838.75           \\ 
+$\log L$                    & -731.84            & -721.54            \\ \hline
+ \multicolumn{3}{l}{\footnotesize{Standard errors in parentheses}}\\
+\multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+\end{tabular} 
+ \end{table}
+
+
+Table \ref{tab:causmod1} shows good things. 
+
+\begin{table}[!ht]
+\caption{Partial Pooled Model of Causal Impact of Act 10 on School Board Candidacy}
+\label{tab:causME} 
+\begin{tabular}{ l D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Naive Causal Model } \\ \hline
+ %                            & Naive Causal Model\\ 
+(Intercept)                  & 0.81 ^*           \\ 
+                             & (0.22)            \\ 
+turnoutLag1                  & -0.19             \\ 
+                             & (0.16)            \\ 
+VAP\_adjLOG                 & -1.15 ^*          \\ 
+                             & (0.20)            \\ 
+per\_white\_all            & -0.21             \\ 
+                             & (0.24)            \\ 
+per65o                       & -0.04             \\ 
+                             & (0.24)            \\ 
+PerBachelorOrAbove           & 0.24              \\ 
+                             & (0.27)            \\ 
+OOH\_share                  & -0.16             \\ 
+                             & (0.27)            \\ 
+median\_incomeLOG           & 0.34              \\ 
+                             & (0.38)            \\ 
+districtwide1                & -0.10             \\ 
+                             & (0.23)            \\ 
+RecallPolarization           & 0.09              \\ 
+                             & (0.23)            \\ 
+treatment                    & 0.09              \\ 
+                             & (0.14)            \\ 
+turnout\_overall\_werc     & 0.10              \\ 
+                             & (0.17)            \\ 
+RecallPolarization:treatment & -0.12             \\ 
+                             & (0.28)             \\
+ $N$                          & 1171              \\ 
+AIC                          & 1461.18           \\ 
+N Groups                     & 304               \\ 
+Group Names                  & distid            \\ 
+Group:distid Effs.           & (Intercept)       \\ 
+Group:distid Var.            & 0.86              \\ 
+Sigma                        & 1                  \\ \hline
+ \multicolumn{2}{l}{\footnotesize{Standard errors in parentheses}}\\
+\multicolumn{2}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+\end{tabular} 
+ \end{table}
+
+\clearpage
+
+% Can't say it is only due to school board elections, but phenomenon does show up 
+% in school board elections. 
+
+\subsection{Review}
+
+Table \ref{tab:modReview} reviews the major findings. 
+
+
 
 
 

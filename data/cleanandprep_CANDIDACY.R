@@ -8,7 +8,7 @@ load("data/cache/DataMergeVAP.rda")
 load("data/cache/fullDataSep2014.rda") # school finance project data
 
 distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopulation",
-                       "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o", 
+                       "PopWhiteAlone", "total_levy", "genaid", "per65o", 
                        "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
                        "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "eqv_member", 
                        "balance_lag", "member", "member_delta", "millrate_delta", 

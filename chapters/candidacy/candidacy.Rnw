@@ -233,10 +233,10 @@ All three of these traditions leave something to be desired in the context of
 school board elections. The present study does not have the ability to delve into the 
 ambition and psychology of candidates for school board elections, though quality 
 descriptive work has been done exploring the political and personal backgrounds of 
-school board members as reviewed in Chapter \ref{chap:theoryreview} 
+school board members as reviewed in Chapter \ref{chap:intro} 
 \citep{RefWorks:321, RefWorks:322, RefWorks:333}. However, 
 this chapter will explore the evidence of strategic timing and policy change as 
-motivations of school board candidate emergence. As discussed in Chapter \ref{chap:theoryreview}, the four theories 
+motivations of school board candidate emergence. As discussed in Chapter \ref{chap:intro}, the four theories 
 of school board election contestation all seek to explain the general pattern of 
 quiet uncontested elections punctuated by incumbent defeat and sharp increases 
 in turnout. This chapter will first explore the extent to which this stylized 
@@ -484,7 +484,7 @@ To do this we will fit three models plus an overall model:
 Fiscal   & revenue limit, tax rate, median income, referenda & If the model is explanatory, fiscal forces may motivate candidates\\ \hline
 Politics & Lagged contestation, lagged primary, cumulative debt referenda, political division, lagged referendum & Political activity \\ \hline
 %Fiscal Revolt & \citet{RefWorks:297,RefWorks:271} & Union membership as share of electorate drives up turnout \\ \hline
-Policy & teacher compensation, referenda attempts & Unsure \\ \hline \hline
+Policy & teacher compensation, referenda attempts & Unsure \\ \hline 
 Controls & District population, white \%,  median income & To control for differences in contexts \\ \hline
 \end{tabular}
 \end{small}
@@ -787,7 +787,7 @@ fiscalModel3 <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill +
                    data = moddat, family = 'binomial')
 
 apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
-          label="tab:fiscalgmods", 
+          label="tab:fiscalmods", 
           model.names=c("Simple Fiscal", "Fiscal + Year FE", 
                         "Fiscal + District FE"), 
           caption = "Fiscal Models of Contestation in School Board Elections",
@@ -900,8 +900,8 @@ politicModel3 <- glm(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision +
                     data = dist_turn, family = "binomial")
 
 
-apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
-          label="tab:fiscalgmods", 
+apsrtable(politicModel, politicModel2, politicModel3,
+          label="tab:politicmods", 
           model.names=c("Simple Politic", "Politic + Year FE", 
                         "Politic + District FE"), 
           caption = "Politic Models of Contestation in School Board Elections",
@@ -1161,6 +1161,204 @@ Act 10. If levels of contestation increase after the introduction of Act 10, eve
 after controlling for the factors that influenced this above, it would be strong 
 evidence that the statewide policy lever pulled by Act 10 did spur a response 
 from candidates in terms of increasing the attractiveness of school board seats. 
+
+<<walkerDataPrep, results='asis', echo = FALSE>>=
+load("../../data/cache/springElectionVotes.rda")
+# load("data/cache/springElectionVotes.rda")
+springVotes$votesTopTicketSpring <- springVotes$VotesCast
+springVotes$VotesCast <- NULL
+dist_turn <- merge(dist_turn, springVotes, 
+                   by = c("distid", "year"), all.x = TRUE)
+
+dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
+dist_turn$turnoutDiff <- dist_turn$topTicketTurnoutSpring - dist_turn$turnout
+## Grab Walker recall results
+load("../../data/cache/WalkerRecall.rda")
+# load("data/cache/WalkerRecall.rda")
+## Bolt them on
+distvotes12r <- distvotes12r[, -2]
+distvotes12r$GovTwoPartyShareDem <- distvotes12r$GOVDEM / (distvotes12r$GOVDEM + 
+                                                             distvotes12r$GOVREP)
+
+names(distvotes12r) <- paste(names(distvotes12r), "recall", sep ="_")
+
+dist_turn <- merge(dist_turn, distvotes12r, by.x = "distid", 
+                   by.y = "distid_recall")
+
+load("../../data/cache/WERC.rda")
+# load("data/cache/WERC.rda")
+names(wercDatTeachers) <- paste(names(wercDatTeachers), "werc", sep = "_")
+
+dist_turn <- merge(dist_turn, wercDatTeachers, by.x = "distid", by.y = "distid_werc", 
+                   all.x = TRUE)
+
+NAzero <- function(x){
+  x <- as.numeric(x)
+  x[is.na(x)] <- 0 
+  return(x)
+}
+
+dist_turn$WERC_elec <- ifelse(is.na(dist_turn$eligvoters_werc), 0, 1)
+dist_turn$eligvoters_werc <- NAzero(dist_turn$eligvoters_werc)
+dist_turn$voters_werc <- NAzero(dist_turn$voters_werc)
+dist_turn$turnout_overall_werc <- NAzero(dist_turn$turnout_overall_werc)
+dist_turn$tries_werc <- NAzero(dist_turn$tries_werc)
+dist_turn$wins_werc <- NAzero(dist_turn$wins_werc)
+dist_turn$loss_werc <- NAzero(dist_turn$loss_werc)
+dist_turn$yes_votes_tot_werc <- NAzero(dist_turn$yes_votes_tot_werc)
+dist_turn$no_votes_tot_werc <- NAzero(dist_turn$no_votes_tot_werc)
+dist_turn$abst_votes_tot_werc <- NAzero(dist_turn$abst_votes_tot_werc)
+dist_turn$yes_votes_avg_werc <- NAzero(dist_turn$yes_votes_avg_werc)
+dist_turn$no_votes_avg_werc <- NAzero(dist_turn$no_votes_avg_werc)
+dist_turn$abst_votes_avg_werc <- NAzero(dist_turn$abst_votes_avg_werc)
+dist_turn$best_margin_werc <- NAzero(dist_turn$best_margin_werc)
+dist_turn$worst_margin_werc <- NAzero(dist_turn$worst_margin_werc)
+dist_turn$GovTurnout_recall <- dist_turn$RECTOT_recall / dist_turn$VAP_adj 
+
+
+moddat <- dist_turn[, c("contest2", "contest1", "distid","year", 
+                        "balance_member_lag", "turnout",
+                        "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
+                        "districtwide", "turnoutLag1", "topTicketTurnoutSpring",
+                        "OOH_share", "median_incomeLOG", "per65o", 
+                        "NonWhitePublicPupilPer", "NonPublicPupilPer", 
+                        "teachShareofVoters", "locale2", 
+                        "member_delta_per", "GovTwoPartyShareDem_recall",
+                        "turnout_overall_werc", "districtwide",
+                        "eligvoters_werc", 
+                        "loss_werc", "worst_margin_werc", "WERC_elec", 
+                        "GovTurnout_recall")]
+
+moddat <- na.omit(moddat)
+moddat <- moddat[moddat$year > 2008,]
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$treatment <- ifelse(moddat$year > 2010, 1, 0)
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
+moddat$districtwide <- factor(moddat$districtwide)
+moddat$per_white_all <- moddat$per_white_all * 100
+moddat$per65o <- moddat$per65o * 100
+moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
+moddat$OOH_share <- moddat$OOH_share * 100
+# moddat$fallTurnout <- moddat$fallTurnout * 100
+moddat$RecallPolarization <- abs(moddat$GovTwoPartyShareDem_recall - 0.5)
+moddat$RecallPolarization <- moddat$RecallPolarization * 100
+moddat$turnout_overall_werc <- moddat$turnout_overall_werc * 100
+moddat$topTicketTurnoutSpring <- moddat$topTicketTurnoutSpring * 100
+moddat$turnout <- moddat$turnout * 100
+moddat$GovTurnout_recall <- moddat$GovTurnout_recall * 100
+moddat$GovTwoPartyShareDem_recall <- moddat$GovTwoPartyShareDem_recall *100
+moddat$member_delta_per <- moddat$member_delta_per * 100
+@
+
+<<walkerplot, fig.cap="Polarization and Turnout Before and After Act 10">>=
+qplot(contest1, RecallPolarization, data = moddat, geom = 'boxplot') + 
+  facet_wrap(~year) +
+  scale_y_continuous(label = percent) +
+  theme_dpi()
+
+qplot(turnout, RecallPolarization, data = moddat[moddat$turnout < 0.8,], color = contest1) + 
+  facet_wrap(~year) + geom_smooth(method = 'lm') +
+  scale_y_continuous(label = percent) +
+  theme_dpi()
+
+
+# qplot(RecallPolarization, turnoutDiff, data = moddat) + geom_smooth(method = "lm") + 
+#   facet_wrap(~year) + scale_x_continuous(label = percent) + 
+#   scale_y_continuous(label = percent) +
+#   theme_dpi()
+@
+
+
+<<walkerGLM, results='asis'>>=
+causal1 <- glm(contest1 ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
+               districtwide + RecallPolarization*treatment + 
+               treatment + turnout_overall_werc, 
+              data = moddat, family = 'binomial')
+
+causal2 <- glm(contest1 ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+                 topTicketTurnoutSpring +
+               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
+               districtwide + RecallPolarization*treatment + 
+               treatment + turnout_overall_werc, 
+              data = moddat, family = 'binomial')
+
+# causal3 <- glm(contest2 ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+#                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
+#                districtwide + RecallPolarization*treatment + 
+#                treatment + turnout_overall_werc + distid, 
+#               data = moddat, family = 'binomial')
+# 
+
+
+apsrtable(causal1, causal2, se = "vcov", label="tab:causmod1", 
+          model.names=c("Naive Causal Model", "Overvote Model"), 
+          caption = "Model of Causal Impact of Act 10 on School Board Candidacy",
+          Sweave=FALSE)
+
+# 
+# zed1 <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adj + per_white_all + 
+#                per65o + PerBachelorOrAbove + OOH_share + PCI + CLOSE + 
+#                districtwide + contest + RecallPolarization*treatment + 
+#                treatment + turnout_overall_werc + (1|distid), 
+#              data = moddat)
+
+@
+
+Table \ref{tab:causmod1} shows good things. 
+
+<<walkerPartialPool, results='asis', echo = FALSE>>=
+library(optimx)
+ctrl <- glmerControl(optimizer = "optimx", optCtrl = list(method = "nlminb", 
+                                                          maxit = 4000))
+library(arm)
+moddat$turnoutLag1 <- rescale(moddat$turnoutLag1)
+moddat$VAP_adjLOG <- rescale(moddat$VAP_adjLOG)
+moddat$per_white_all <- rescale(moddat$per_white_all)
+moddat$per65o <- rescale(moddat$per65o)
+moddat$PerBachelorOrAbove <- rescale(moddat$PerBachelorOrAbove)
+moddat$OOH_share <- rescale(moddat$OOH_share)
+moddat$median_incomeLOG <- rescale(moddat$median_incomeLOG)
+moddat$RecallPolarization <- rescale(moddat$RecallPolarization)
+moddat$topTicketTurnoutSpring <- rescale(moddat$topTicketTurnoutSpring)
+moddat$turnout_overall_werc <- rescale(moddat$turnout_overall_werc)
+
+mixedModCaus <- glmer(contest2 ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
+               districtwide + RecallPolarization*treatment + turnout_overall_werc +
+               treatment + (1|distid), 
+              data = moddat, family = 'binomial', control = ctrl)
+
+mixedModCaus2 <- glmer(contest2 ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+                        topTicketTurnoutSpring +
+               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
+               districtwide + RecallPolarization*treatment + 
+               treatment + turnout_overall_werc + (1|distid), 
+              data = moddat, family = 'binomial', control = ctrl)
+
+apsrtable(mixedModCaus, se = "vcov", label="tab:causME", 
+          model.names=c("Naive Causal Model"), 
+          caption = "Partial Pooled Model of Causal Impact of Act 10 on School Board Candidacy",
+          Sweave=FALSE)
+
+
+@
+\clearpage
+
+% Can't say it is only due to school board elections, but phenomenon does show up 
+% in school board elections. 
+
+\subsection{Review}
+
+Table \ref{tab:modReview} reviews the major findings. 
+
+<<ReviewTab, results='asis', eval=FALSE>>=
+# stargazer(mixedMod1b, mixedMod2b, mixedMod3b, mixedModCaus, style = "apsr", 
+#           label = "tab:modReview")
+@
 
 
 <<candidatedescriptives3, eval=FALSE, echo=FALSE>>=
