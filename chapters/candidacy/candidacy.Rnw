@@ -645,24 +645,6 @@ demogModel3 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all +
 # 
 # dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
 
-apsrtableSummary.rms <<- function(x) {
-  s <- summary.lm(x)
-  newCoef <- coef(s)
-  ## which columns have z scores? (two of them in robust case)
-  zcols <- grep("value",colnames(newCoef))
-  newCoef[,zcols] <- pt(abs(newCoef[,zcols]),df=s$df[2], lower.tail=FALSE)
-  colnames(newCoef)[zcols] <- "Pr(z)"
-  s$coefficients <- newCoef
-  ## put the robust se in $se so that notefunction works automatically
-  ## the se checker will overwrite [,4] with pt, but this doesn't matter
-  ## because the last column Pr(z) is used by apsrstars() anyway
-  ## and the se are pulled from $se.
-  if("orig.var"%in% objects(x)==TRUE) {
-    s$se <- sqrt(diag(x$var))
-  }
-  return(s)
-}
-
 apsrtable(demogModel, demogModel2, demogModel3, se = "vcov",
           label="tab:demogmods", 
           model.names=c("Simple Demog.", "Demog + Year FE", 
@@ -672,7 +654,9 @@ apsrtable(demogModel, demogModel2, demogModel3, se = "vcov",
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
-          Sweave=FALSE, float = "sidewaystable")
+          Sweave=FALSE, float = "sidewaystable", 
+          notes = list(stars.note, 
+                       "Year and district fixed effects omitted."))
 
 
 @
@@ -717,16 +701,33 @@ class(demogModelPP) <- "merMod"
 class(demogModelPP2) <- "merMod"
 class(demogModelPP3) <- "merMod"
 
+
 apsrtable(demogModelPP, demogModelPP2, demogModelPP3,
           model.names = c("Demog + Year Eff.", 
                           "Demog + District Eff.", 
                           "Demog + Year + District Eff."),
           caption = "Partial Pooling Model of Demographics on Turnout",
-          Sweave = FALSE, label = "tab:meDemog")
+          label = "tab:meDemog", Sweave=FALSE, float = "sidewaystable", 
+          notes = list("Group level intercepts are not shown.", 
+                       stars.note))
 
 @
 
 Table \ref{tab:meDemog} shows the results of a mixed effect model. 
+
+
+<<modTestDemog, results='hide'>>=
+library(pbkrtest)
+library(doParallel)
+cl <- makePSOCKcluster(3)
+
+PBmodcomp(demogModelPP3, demogModelPP, nsim = 33, 
+          cl = cl)
+
+stopCluster(cl)
+
+
+@
 
 \subsubsection{Fiscal}
 
@@ -734,7 +735,7 @@ One of the highest profile activities of a school district is fiscal management.
 Does fiscal health of a district predict the run for office? 
 
 
-<<fiscalMod>>=
+<<fiscalMod, results='asis'>>=
 dist_turn$teachSalDiff <- dist_turn$ADJ_MEDIAN_SALARY_TEACHlog - 
   dist_turn$median_incomeLOG
 
@@ -789,7 +790,9 @@ apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
-          Sweave=FALSE, float = "sidewaystable")
+          Sweave=FALSE, float = "sidewaystable", 
+          notes = list(stars.note, 
+                       "Year and district fixed effects omitted.")))
 
 @
 
@@ -829,8 +832,14 @@ apsrtable(fiscalModelPP, fiscalModelPP2, fiscalModelPP3,
                           "Fiscal + District Eff.", 
                           "Fiscal + Year + District Eff."),
           caption = "Partial Pooling Model of Fiscal on Turnout",
-          Sweave = FALSE, label = "tab:meFiscal")
+         label = "tab:meFiscal", Sweave=FALSE, float = "sidewaystable", 
+          notes = list("Group level intercepts are not shown.", 
+                       stars.note)))
 @
+
+Politics models
+
+\clearpage
 
 <<politicMod, results = 'asis'>>=
 moddat <- dist_turn[, c("contest2", "NEW_SUP", "distid","year", 
@@ -881,8 +890,9 @@ apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
-          Sweave=FALSE, float = "sidewaystable")
-          
+           Sweave=FALSE, float = "sidewaystable", 
+          notes = list(stars.note, 
+                       "Year and district fixed effects omitted."))
 @
 
 Some text. 
@@ -920,7 +930,9 @@ apsrtable(politicModelPP, politicModelPP2, politicModelPP3,
                           "Politics + District Eff.", 
                           "Politics + Year + District Eff."),
           caption = "Partial Pooling Model of Fiscal on Turnout",
-          Sweave = FALSE, label = "tab:mePolitics")
+          label = "tab:mePolitics", Sweave=FALSE, float = "sidewaystable", 
+          notes = list("Group level intercepts are not shown.", 
+                       stars.note)))
 @
 
 
