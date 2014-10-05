@@ -1125,6 +1125,8 @@ alongside the initial model in Table \ref{tab:lagmods}.
 # detach("package:plyr", unload=TRUE)
 library(sandwich)
 library(rms)
+library(devtools)
+install_github("jknowles/apsrtable", ref = "dev", subdir = "pkg")
 library(apsrtable)
 moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
 dd <<- datadist(moddat)
@@ -1184,7 +1186,8 @@ apsrtable(naive1, dumbRLM1, dumbRLM1.2, dumbRLMbest, dumbRLM2, se="robust",
                         "RLM + District FE"), 
           caption = "Models of Lagged Turnout in School Board Elections",
           notes = list("Standard errors clustered at the school district except in model 1.", 
-                       stars.note, "Year and district fixed effects omitted."),
+                       stars.note, 
+                       "Year and district fixed effects omitted."),
           omitcoef=list("distid", 
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 

@@ -71,7 +71,7 @@ OverAmounts$refInPlace <- apply(OverAmounts[, 3:8], 1,
 OverAmounts <- OverAmounts[, c(1, 2, 9)]
 
 load("data/cache/overrideRefs.rda")
-rm(ReferendaVotes)
+# rm(ReferendaVotes)
 
 FORMATdistid <- function(x){
   if(class(x) != "character"){

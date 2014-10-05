@@ -13,14 +13,14 @@ setwd("../../")
 library(eeptools)
 source("data/dataAssemble.R")
 source("data/cleanandprep_CANDIDACY.R")
-
-# load data
-# print descriptives
-
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 library(gridExtra)
 library(scales)
+
+library(devtools)
+install_github("jknowles/apsrtable", subdir = "pkg")
+library(apsrtable)
 @
 
 
@@ -498,6 +498,24 @@ referenda outcomes, share of students in public education,  and school and
 district staff, teacher, and administrative salaries. This section will be much 
 improved!
 
+Let's look at within district variability. We can do this by fitting partial pooling 
+models using a random-intercept framework of \citet{gelhill} using the \texttt{lme4} 
+package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
+trends within districts and separate between and within district variance. 
+
+The model estimated follows the form:
+
+\begin{align*} 
+\Pr_{CE_{tj}} &= \alpha_{tj} + \beta X_{tj} + \gamma_{j} + \epsilon   \\ 
+\gamma_{j} &=  \alpha_{j} + \zeta Z_{j}
+\end{align*}
+
+Here the $\gamma_{j}$ terms represent independent intercepts for each school 
+district as predicted by $Z_{j}$, a vector of school district characteristics 
+that are time invariant. $X_{tj}$ is a vector of time variant school district - 
+election cycle characteristics, some of which may be lagged. In the mixed-effect 
+framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
+is explained by the linear combination of $\alpha$ and $\zeta$. 
 
 \subsection{Methods: Causal}
 
@@ -598,12 +616,9 @@ moddat$per65o <- moddat$per65o * 100
 moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
 moddat$member_delta_per <- moddat$member_delta_per * 100
 moddat$districtwide <- factor(moddat$districtwide)
-library(sandwich)
-library(rms)
-library(apsrtable)
 moddat <- na.omit(moddat)
-dd <<- datadist(moddat)
-options(datadist="dd")
+# dd <<- datadist(moddat)
+# options(datadist="dd")
 
 demogModel <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
@@ -611,7 +626,7 @@ demogModel <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all +
                     teachShareofVoters + locale2 + member_delta_per, 
                   data = moddat, family = "binomial")
 
-confusion.glm(demogModel$model, demogModel)
+# confusion.glm(demogModel$model, demogModel)
 
 demogModel2 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
@@ -627,17 +642,8 @@ demogModel3 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all +
                      distid, 
                   data = moddat, family = "binomial")
 
-
-# dumbRLMbest <- lrm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
-#                     OOH_share + median_incomeLOG + per65o + 
-#                     NonWhitePublicPupilPer + NonPublicPupilPer + 
-#                     teachShareofVoters + locale2 + member_delta_per + 
-#                     factor(year) + factor(districtwide), 
-#                    data = moddat, x= TRUE, y = TRUE)
 # 
-# dumbRLMbest$se <- sqrt(diag(vcov(robcov(dumbRLMbest, cluster = moddat$distid))))
-
-dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
+# dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
 
 apsrtableSummary.rms <<- function(x) {
   s <- summary.lm(x)
@@ -657,7 +663,7 @@ apsrtableSummary.rms <<- function(x) {
   return(s)
 }
 
-apsrtable(demogModel, demogModel2, demogModel3,
+apsrtable(demogModel, demogModel2, demogModel3, se = "vcov",
           label="tab:demogmods", 
           model.names=c("Simple Demog.", "Demog + Year FE", 
                         "Demog + District FE"), 
@@ -676,7 +682,7 @@ Some text. Do I put lagged contestation in?
 
 We need to consider a partially pooled model. 
 
-<<partialPooldemog>>=
+<<partialPooldemog, results='asis'>>=
 library(lme4)
 library(blme)
 
@@ -698,8 +704,29 @@ demogModelPP2 <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove +
                   data = moddat, family = binomial, 
                   cov.prior = wishart)
 
+demogModelPP3 <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + 
+                          per_white_all + 
+                    OOH_share + median_incomeLOG + per65o + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    teachShareofVoters + locale2 + member_delta_per + 
+                    (1|year) + (1|distid), 
+                  data = moddat, family = binomial, 
+                  cov.prior = wishart)
+
+class(demogModelPP) <- "merMod"
+class(demogModelPP2) <- "merMod"
+class(demogModelPP3) <- "merMod"
+
+apsrtable(demogModelPP, demogModelPP2, demogModelPP3,
+          model.names = c("Demog + Year Eff.", 
+                          "Demog + District Eff.", 
+                          "Demog + Year + District Eff."),
+          caption = "Partial Pooling Model of Demographics on Turnout",
+          Sweave = FALSE, label = "tab:meDemog")
 
 @
+
+Table \ref{tab:meDemog} shows the results of a mixed effect model. 
 
 \subsubsection{Fiscal}
 
@@ -714,7 +741,7 @@ dist_turn$teachSalDiff <- dist_turn$ADJ_MEDIAN_SALARY_TEACHlog -
 moddat <- dist_turn[, c("contest2", "contest1", "distid","year", 
                         "balance_member_lag", 
                         "millrate", "VAP_adjLOG", "NonSDMill", 
-                        "districtwide",
+                        "districtwide", "OOH_share",
                         "overridePass", "median_incomeLOG", "debtPass", 
                         "millrate_delta", "refInPlace", 
                         "DEBT_ATTEMPT_CUMUL93", "eqv_member", 
@@ -724,16 +751,12 @@ moddat <- dist_turn[, c("contest2", "contest1", "distid","year",
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
-moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
-moddat$per_white_all <- moddat$per_white_all * 100
 moddat$OOH_share <- moddat$OOH_share * 100
-moddat$per65o <- moddat$per65o * 100
-moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
 moddat$member_delta_per <- moddat$member_delta_per * 100
 moddat$districtwide <- factor(moddat$districtwide)
 moddat <- na.omit(moddat)
-dd <<- datadist(moddat)
-options(datadist="dd")
+# dd <<- datadist(moddat)
+# options(datadist="dd")
 
 
 fiscalModel <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill + 
@@ -772,7 +795,7 @@ apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
 
 Some text
 
-<<fiscalModPP>>=
+<<fiscalModPP, results='asis'>>=
 fiscalModelPP <- bglmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
@@ -797,13 +820,19 @@ fiscalModelPP3 <- bglmer(contest2 ~ balance_member_lag + millrate * NonSDMill +
                    data = moddat, family = 'binomial', 
                    cov.prior = wishart)
 
+class(fiscalModelPP) <- "merMod"
+class(fiscalModelPP2) <- "merMod"
+class(fiscalModelPP3) <- "merMod"
 
+apsrtable(fiscalModelPP, fiscalModelPP2, fiscalModelPP3,
+          model.names = c("Fiscal + Year Eff.", 
+                          "Fiscal + District Eff.", 
+                          "Fiscal + Year + District Eff."),
+          caption = "Partial Pooling Model of Fiscal on Turnout",
+          Sweave = FALSE, label = "tab:meFiscal")
 @
 
 <<politicMod, results = 'asis'>>=
-dist_turn$teachSalDiff <- dist_turn$ADJ_MEDIAN_SALARY_TEACHlog - 
-  dist_turn$median_incomeLOG
-
 moddat <- dist_turn[, c("contest2", "NEW_SUP", "distid","year", 
                         "turnoutLag1", 
                         "partyDivision", "VAP_adjLOG", "overrideQues", 
@@ -819,8 +848,8 @@ moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
 moddat$districtwide <- factor(moddat$districtwide)
 moddat <- na.omit(moddat)
-dd <<- datadist(moddat)
-options(datadist="dd")
+# dd <<- datadist(moddat)
+# options(datadist="dd")
                         
 politicModel <- glm(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
                       overrideQues +  debtPass + debtQues + 
@@ -859,7 +888,7 @@ apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
 Some text. 
 
 
-<<politicModPP>>=
+<<politicModPP, results = 'asis'>>=
 politicModelPP <- bglmer(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
                       overrideQues +  debtPass + debtQues + 
                       SUP_TURNOVER_PRIOR_YEAR +
@@ -882,10 +911,20 @@ politicModelPP3 <- bglmer(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision +
                    cov.prior = wishart)
 
 
+class(politicModelPP) <- "merMod"
+class(politicModelPP2) <- "merMod"
+class(politicModelPP3) <- "merMod"
+
+apsrtable(politicModelPP, politicModelPP2, politicModelPP3,
+          model.names = c("Politics + Year Eff.", 
+                          "Politics + District Eff.", 
+                          "Politics + Year + District Eff."),
+          caption = "Partial Pooling Model of Fiscal on Turnout",
+          Sweave = FALSE, label = "tab:mePolitics")
 @
 
 
-<<erratta>>=
+<<erratta, eval=FALSE>>=
 mod1 <- glm(contest2 ~ VAP_adjLOG + NEW_SUP + turnoutLag1 +partyDivision +
               PerBachelorOrAbove + per_white_all+
               OOH_share + median_incomeLOG + ADMIN_SHARE + 
@@ -969,7 +1008,7 @@ roc <- rbind(roc, roc3); rm(roc3)
 roc <- rbind(roc, roc4); rm(roc4)
 @
 
-<<rocplot1, echo=FALSE, fig.cap="ROC Curves for 4 Models of Election Contestation in Wisconsin School Boards", fig.keep='last'>>=
+<<rocplot1, echo=FALSE, eval = FALSE, fig.cap="ROC Curves for 4 Models of Election Contestation in Wisconsin School Boards", fig.keep='last'>>=
 ggplot(roc) + geom_smooth(aes(x = fpr, y = tpr, color=mod), 
                           se=FALSE,size= I(1.1)) + 
    geom_abline(intercept = 0, slope = 1, colour = "gray") + 
@@ -1004,7 +1043,7 @@ school district having a contested election.
 
 A table of likelihood ratio tests shows the same result:
 
-<<anovatable1, results='asis'>>=
+<<anovatable1, results='asis', eval=FALSE>>=
 print(xtable(anova(tax_model, poly_model, poli_model, uber_model, test="LRT")), 
       include.rownames=TRUE)
 @
@@ -1018,7 +1057,7 @@ well suited to the task.
 
 Model tables
 
-<<modelsplot, fig.cap="Comparing Coefficients for the 4 Models of School Board Election Contestation", fig.height=9>>=
+<<modelsplot, eval = FALSE, fig.cap="Comparing Coefficients for the 4 Models of School Board Election Contestation", fig.height=9>>=
 
 plotcoefs = c("total_attempts", "avg_total_exp", "log(politicaldivide)", 
           "Per65over", "average_fringe", "avg_salary", "log(dv_r)", 
@@ -1048,68 +1087,10 @@ close to the estimates in the corresponding topic models. We can also see that
 most of the effects are very low - the coefficients reported here are logistic 
 coefficients - with a few pointed exceptions. 
 
-Let's look at within district variability. We can do this by fitting partial pooling 
-models using a random-intercept framework of \citet{gelhill} using the \texttt{lme4} 
-package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
-trends within districts and separate between and within district variance. 
-
-The model estimated follows the form:
-
-\begin{align*} 
-\Pr_{CE_{tj}} &= \alpha_{tj} + \beta X_{tj} + \gamma_{j} + \epsilon   \\ 
-\gamma_{j} &=  \alpha_{j} + \zeta Z_{j}
-\end{align*}
-
-Here the $\gamma_{j}$ terms represent independent intercepts for each school 
-district as predicted by $Z_{j}$, a vector of school district characteristics 
-that are time invariant. $X_{tj}$ is a vector of time variant school district - 
-election cycle characteristics, some of which may be lagged. In the mixed-effect 
-framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
-is explained by the linear combination of $\alpha$ and $\zeta$. 
-
-<<descrmixedeff, eval=FALSE>>=
-
-# Alternative is to model number of cnadidates as poisson
-# 
-# SBELEC$candidatesDV <- SBELEC$candidates - SBELEC$minorcand - SBELEC$winners
-# SBELEC$candidatesDV <- ifelse(SBELEC$candidatesDV > -1, SBELEC$candidatesDV, 0)
-# # Investigate why negative numbers come up here
-
-library(lme4)
-
-SBELEC$distidF <- factor(SBELEC$distid)
-mermod1 <- glmer(contested2 ~  log(dv_r) +   
-    avg_total_exp + log(Population18O) +  median_income + 
-      cum_attptsD + attemptsD +
-    perwhite +  log_politicaldivide + 
-    millrate + overlevy_ind_lag +  
-     fyear + (1 + log_politicaldivide|distidF), 
-                 data=SBELEC[SBELEC$year > 2004, ], family="binomial")
-
-nullmermod <- glmer(contested2 ~  log(dv_r) +   
-    avg_total_exp + log(Population18O) +  median_income + 
-      cum_attptsD + attemptsD +
-    perwhite +  log_politicaldivide + 
-    millrate + overlevy_ind_lag +  
-     fyear + (1|distidF), 
-                 data=SBELEC[SBELEC$year > 2004, ], family="binomial")
-
-
-# summary(mermod1)
-# rr1 <- ranef(mermod1, condVar=TRUE)
-# 
-# confint(mermod1, method="Wald")
-#dotplot(ranef(mermod1, condVar=TRUE))
-@
 
 Here is some text about the within district variation. 
 
 Not sure which specification to use yet. 
-
-
-
-
-
 
 \clearpage
 \subsection{Causal}
@@ -1203,15 +1184,3 @@ dotplot(ranef(simple_lmer, condVar=TRUE))
 \section{Conclusions}
 
 School board elections are not marked by much contestation. 
-
-
-\section{Tables}
-
-<<modeltables, results='asis'>>=
-stargazer(tax_model, poli_model, poly_model, uber_model, 
-          omit = "fyear", font.size="scriptsize", label = "tab:descrmodels", 
-          title = "Comparing 4 Models of Contestation in School Board Elections", 
-          column.labels = c("Taxation Model", "Politics Model", "Policy Model", 
-                            "Overall Model"))
-@
-
