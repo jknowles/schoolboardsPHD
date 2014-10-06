@@ -643,14 +643,21 @@ demogModel3 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all +
                      districtwide + distid, 
                   data = moddat, family = "binomial")
 
+demogModel4 <- glm(contest1 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+                    OOH_share + median_incomeLOG + per65o + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    teachShareofVoters + locale2 + member_delta_per + 
+                     districtwide + distid, 
+                  data = moddat, family = "binomial")
+
 # 
 # dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
 
-apsrtable(demogModel, demogModel2, demogModel3, se = "vcov", 
+apsrtable(demogModel2, demogModel3, demogModel4, se = "vcov", 
           float = "sidewaystable",
           label="tab:demogmods", 
-          model.names=c("Simple Demog.", "Demog + Year FE", 
-                        "Demog + District FE"), 
+          model.names=c("Simple Demog.", "Demog Non Minor Cand", 
+                        "Demog Minor Cand"), 
           caption = "Models of Contestation in School Board Elections",
           notes = list(stars.note, 
                        "Year and district fixed effects omitted."),
@@ -807,14 +814,14 @@ fiscalModel2 <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill +
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
                      OVERRIDE_ATTEMPT_CUMUL93 + year, 
-                   data = moddat, family = 'binomial')
+                   data = moddat, family = 'binomial', control = ctrl)
                    
 fiscalModel3 <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
                      OVERRIDE_ATTEMPT_CUMUL93 + distid, 
-                   data = moddat, family = 'binomial')
+                   data = moddat, family = 'binomial', control = ctrl)
 
 apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
           label="tab:fiscalmods", 
@@ -835,34 +842,43 @@ apsrtable(fiscalModel, fiscalModel2, fiscalModel3,
 Some text
 
 <<fiscalModPP, results='asis'>>=
-fiscalModelPP <- bglmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+ctrl <- glmerControl(optimizer = "optimx", optCtrl = list(method = "nlminb", 
+                                                          maxit = 4000))
+
+moddat$balance_member_lag <- rescale(moddat$balance_member_lag)
+moddat$millrate <- rescale(moddat$millrate)
+moddat$NonSDMill <- rescale(moddat$NonSDMill)
+moddat$median_incomeLOG <- rescale(moddat$median_incomeLOG)
+moddat$millrate_delta <- rescale(moddat$millrate_delta)
+moddat$VAP_adjLOG <- rescale(moddat$VAP_adjLOG)
+moddat$eqv_member <- rescale(moddat$eqv_member)
+moddat$teachSalDiff <- rescale(moddat$teachSalDiff)
+
+fiscalModelPP <- glmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
                      OVERRIDE_ATTEMPT_CUMUL93 + (1|year), 
-                   data = moddat, family = 'binomial', 
-                   cov.prior = wishart)
+                   data = moddat, family = 'binomial', control = ctrl)
 
-fiscalModelPP2 <- bglmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+fiscalModelPP2 <- glmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
                      OVERRIDE_ATTEMPT_CUMUL93 + (1|distid), 
-                   data = moddat, family = 'binomial', 
-                   cov.prior = wishart)
+                   data = moddat, family = 'binomial', control = ctrl)
 
-fiscalModelPP3 <- bglmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+fiscalModelPP3 <- glmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
                      OVERRIDE_ATTEMPT_CUMUL93 + (1|distid) + (1|year), 
-                   data = moddat, family = 'binomial', 
-                   cov.prior = wishart)
+                   data = moddat, family = 'binomial', control = ctrl)
 
-class(fiscalModelPP) <- "merMod"
-class(fiscalModelPP2) <- "merMod"
-class(fiscalModelPP3) <- "merMod"
-
+# class(fiscalModelPP) <- "merMod"
+# class(fiscalModelPP2) <- "merMod"
+# class(fiscalModelPP3) <- "merMod"
+ 
 apsrtable(fiscalModelPP, fiscalModelPP2, fiscalModelPP3,
           model.names = c("Fiscal + Year Eff.", 
                           "Fiscal + District Eff.", 
