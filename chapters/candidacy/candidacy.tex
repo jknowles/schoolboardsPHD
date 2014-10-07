@@ -497,40 +497,40 @@ of a challenge.
 \label{tab:demogmods} 
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
-  & \multicolumn{ 1 }{ c }{ Simple Demog. } & \multicolumn{ 1 }{ c }{ Demog + Year FE } & \multicolumn{ 1 }{ c }{ Demog + District FE } \\ \hline
- %                      & Simple Demog.       & Demog + Year FE     & Demog + District FE\\ 
-(Intercept)            & -1.063              & -0.547              & -43.332            \\ 
-                       & (3.563)             & (3.601)             & (23.757)           \\ 
-VAP\_adjLOG           & -0.611 ^*           & -0.596 ^*           & 0.557              \\ 
-                       & (0.079)             & (0.079)             & (1.609)            \\ 
-PerBachelorOrAbove     & 0.007               & 0.004               & 0.142 ^*           \\ 
-                       & (0.010)             & (0.010)             & (0.058)            \\ 
-per\_white\_all      & 0.011               & 0.002               & 0.030              \\ 
-                       & (0.018)             & (0.019)             & (0.097)            \\ 
-OOH\_share            & -0.009              & -0.012 ^*           & 0.008              \\ 
-                       & (0.006)             & (0.006)             & (0.046)            \\ 
-median\_incomeLOG     & 0.672               & 0.711               & 2.912 ^*           \\ 
-                       & (0.370)             & (0.376)             & (1.336)            \\ 
-per65o                 & -0.026              & -0.030              & 0.003              \\ 
-                       & (0.015)             & (0.015)             & (0.094)            \\ 
-NonWhitePublicPupilPer & 0.011               & 0.003               & 0.031              \\ 
-                       & (0.012)             & (0.013)             & (0.033)            \\ 
-NonPublicPupilPer      & 0.015 ^*            & 0.017 ^*            & 0.045              \\ 
-                       & (0.005)             & (0.006)             & (0.032)            \\ 
-teachShareofVoters     & -0.026              & 0.009               & 0.213              \\ 
-                       & (0.109)             & (0.111)             & (0.327)            \\ 
-locale2exurb           & -0.111              & -0.136              & -2.818             \\ 
-                       & (0.248)             & (0.249)             & (3.034)            \\ 
-locale2rural           & -0.260              & -0.281              & -3.380             \\ 
-                       & (0.238)             & (0.239)             & (3.016)            \\ 
-member\_delta\_per   & 0.014               & 0.014               & 0.020              \\ 
-                       & (0.016)             & (0.016)             & (0.020)            \\ 
-districtwide1          & -0.111              & -0.101              & 0.306              \\ 
-                       & (0.111)             & (0.111)             & (0.302)             \\
- $N$                    & 2777                & 2777                & 2777               \\ 
-AIC                    & 3520.846            & 3525.568            & 3428.284           \\ 
-BIC                    & 3852.877            & 4071.048            & 10946.417          \\ 
-$\log L$              & -1704.423           & -1670.784           & -446.142            \\ \hline
+  & \multicolumn{ 1 }{ c }{ Simple Demog. } & \multicolumn{ 1 }{ c }{ Demog Non Minor Cand } & \multicolumn{ 1 }{ c }{ Demog Minor Cand } \\ \hline
+ %                      & Simple Demog.        & Demog Non Minor Cand & Demog Minor Cand    \\ 
+(Intercept)            & 0.809 ^*             & -1.725               & -4.771              \\ 
+                       & (0.286)              & (3.539)              & (3.329)             \\ 
+VAP\_adjLOG           & -1.215 ^*            & 1.134                & 2.640               \\ 
+                       & (0.162)              & (3.276)              & (3.075)             \\ 
+PerBachelorOrAbove     & 0.056                & 1.883 ^*             & 0.922               \\ 
+                       & (0.134)              & (0.774)              & (0.693)             \\ 
+per\_white\_all      & 0.026                & 0.460                & -1.014              \\ 
+                       & (0.288)              & (1.487)              & (1.446)             \\ 
+OOH\_share            & -0.295 ^*            & 0.204                & 1.826               \\ 
+                       & (0.143)              & (1.141)              & (1.030)             \\ 
+median\_incomeLOG     & 0.344                & 1.410 ^*             & 0.625               \\ 
+                       & (0.182)              & (0.647)              & (0.588)             \\ 
+per65o                 & -0.244               & 0.027                & -0.953              \\ 
+                       & (0.125)              & (0.762)              & (0.695)             \\ 
+NonWhitePublicPupilPer & 0.064                & 0.718                & 1.060               \\ 
+                       & (0.293)              & (0.773)              & (0.725)             \\ 
+NonPublicPupilPer      & 0.325 ^*             & 0.860                & 0.473               \\ 
+                       & (0.107)              & (0.622)              & (0.474)             \\ 
+teachShareofVoters     & 0.012                & 0.269                & 0.470               \\ 
+                       & (0.140)              & (0.413)              & (0.380)             \\ 
+locale2exurb           & -0.136               & -2.818               & 1.269               \\ 
+                       & (0.249)              & (3.034)              & (2.860)             \\ 
+locale2rural           & -0.281               & -3.380               & 0.757               \\ 
+                       & (0.239)              & (3.016)              & (2.857)             \\ 
+member\_delta\_per   & 0.081                & 0.111                & 0.012               \\ 
+                       & (0.091)              & (0.116)              & (0.105)             \\ 
+districtwide1          & -0.101               & 0.306                & 0.374               \\ 
+                       & (0.111)              & (0.302)              & (0.270)              \\
+ $N$                    & 2777                 & 2777                 & 2777                \\ 
+AIC                    & 3525.568             & 3428.284             & 3673.289            \\ 
+BIC                    & 4071.048             & 10946.417            & 11191.422           \\ 
+$\log L$              & -1670.784            & -446.142             & -568.645             \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}} 
 \end{tabular} 
@@ -583,12 +583,19 @@ Group:distid Effs.        & (Intercept)               & (Intercept)             
 Group:distid Var.         & 0.797                     & 0.692                    \\ 
 Sigma                     & 1                         & 1                         \\ \hline
  \multicolumn{3}{l}{\footnotesize{Group level intercepts are not shown.}}\\
-\multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+\multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{3}{l}{\footnotesize{All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations.}} 
 \end{tabular} 
  \end{sidewaystable}
 
 
-Table \ref{tab:meDemog} shows the results of a mixed effect model. 
+Table \ref{tab:meDemog} shows the results of a mixed effect model.\footnote{To test the 
+proper specification of the random effects terms, the parametric bootstrap of the 
+likelihood ratio test was used to compare the mixed models. It showed that district 
+effects alone improved model fit and no additional gain was made by including a 
+random effect for years \citep{pbkrtest}. This was implemented in R using the 
+\texttt{pbkrtest} package. Results and script available upon request. } 
 
 
 
@@ -606,42 +613,44 @@ Does fiscal health of a district predict the run for office?
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple Fiscal } & \multicolumn{ 1 }{ c }{ Fiscal + Year FE } & \multicolumn{ 1 }{ c }{ Fiscal + District FE } \\ \hline
  %                            & Simple Fiscal        & Fiscal + Year FE     & Fiscal + District FE\\ 
-(Intercept)                  & -16.240 ^*           & -15.494 ^*           & -56.069 ^*          \\ 
-                             & (4.041)              & (4.588)              & (20.413)            \\ 
-balance\_member\_lag       & 0.000                & 0.000                & 0.000               \\ 
-                             & (0.000)              & (0.000)              & (0.000)             \\ 
-millrate                     & -0.047               & -0.031               & -0.082              \\ 
-                             & (0.099)              & (0.100)              & (0.223)             \\ 
-NonSDMill                    & -0.039               & 0.002                & 2.624               \\ 
-                             & (0.820)              & (0.827)              & (1.884)             \\ 
+(Intercept)                  & 0.668 ^*             & 0.650 ^*             & -1.992              \\ 
+                             & (0.076)              & (0.159)              & (1.602)             \\ 
+balance\_member\_lag       & 0.053                & 0.150                & 0.066               \\ 
+                             & (0.095)              & (0.106)              & (0.200)             \\ 
+millrate                     & -0.016               & 0.047                & -0.546              \\ 
+                             & (0.116)              & (0.122)              & (0.298)             \\ 
+NonSDMill                    & 0.165                & 0.183                & 1.118 ^*            \\ 
+                             & (0.098)              & (0.100)              & (0.374)             \\ 
 overridePass                 & -0.075               & -0.064               & -0.037              \\ 
                              & (0.178)              & (0.179)              & (0.214)             \\ 
 debtPass                     & 0.116                & 0.125                & -0.024              \\ 
                              & (0.187)              & (0.188)              & (0.222)             \\ 
 refInPlace                   & 0.162                & 0.137                & 0.298               \\ 
                              & (0.100)              & (0.101)              & (0.200)             \\ 
-median\_incomeLOG           & 1.979 ^*             & 1.873 ^*             & 4.239 ^*            \\ 
-                             & (0.387)              & (0.444)              & (1.592)             \\ 
-millrate\_delta             & -0.061               & -0.058               & 0.001               \\ 
-                             & (0.056)              & (0.063)              & (0.073)             \\ 
-VAP\_adjLOG                 & -0.472 ^*            & -0.455 ^*            & 0.921               \\ 
-                             & (0.052)              & (0.055)              & (1.603)             \\ 
+median\_incomeLOG           & 0.958 ^*             & 0.907 ^*             & 2.052 ^*            \\ 
+                             & (0.187)              & (0.215)              & (0.771)             \\ 
+millrate\_delta             & -0.094               & -0.090               & 0.002               \\ 
+                             & (0.087)              & (0.098)              & (0.112)             \\ 
+VAP\_adjLOG                 & -0.961 ^*            & -0.927 ^*            & 1.876               \\ 
+                             & (0.106)              & (0.113)              & (3.264)             \\ 
 DEBT\_ATTEMPT\_CUMUL93     & -0.037 ^*            & -0.039 ^*            & 0.049               \\ 
                              & (0.016)              & (0.016)              & (0.076)             \\ 
-eqv\_member                 & 0.000 ^*             & 0.000 ^*             & 0.000 ^*            \\ 
-                             & (0.000)              & (0.000)              & (0.000)             \\ 
-teachSalDiff                 & 1.134 ^*             & 0.951 ^*             & 0.562               \\ 
-                             & (0.356)              & (0.435)              & (0.760)             \\ 
+eqv\_member                 & 0.354 ^*             & 0.373 ^*             & 1.136 ^*            \\ 
+                             & (0.175)              & (0.178)              & (0.528)             \\ 
+teachSalDiff                 & 0.570 ^*             & 0.478 ^*             & 0.282               \\ 
+                             & (0.179)              & (0.219)              & (0.382)             \\ 
 OVERRIDE\_ATTEMPT\_CUMUL93 & -0.005               & -0.003               & -0.109              \\ 
                              & (0.021)              & (0.021)              & (0.081)             \\ 
-millrate:NonSDMill           & 0.041                & 0.040                & -0.049              \\ 
-                             & (0.089)              & (0.090)              & (0.187)              \\
+millrate:NonSDMill           & 0.084                & 0.083                & -0.102              \\ 
+                             & (0.185)              & (0.187)              & (0.389)              \\
  $N$                          & 2777                 & 2777                 & 2777                \\ 
 AIC                          & 3503.716             & 3512.399             & 3427.993            \\ 
 BIC                          & 3859.464             & 4081.596             & 10993.558           \\ 
 $\log L$                    & -1691.858            & -1660.200            & -437.996             \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}} 
+\multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}}\\
+\multicolumn{4}{l}{\footnotesize{All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations.}} 
 \end{tabular} 
  \end{sidewaystable}
 
@@ -653,56 +662,60 @@ Some text
 \label{tab:meFiscal} 
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
-  & \multicolumn{ 1 }{ c }{ Fiscal + Year Eff. } & \multicolumn{ 1 }{ c }{ Fiscal + District Eff. } & \multicolumn{ 1 }{ c }{ Fiscal + Year + District Eff. } \\ \hline
- %                             & Fiscal + Year Eff.            & Fiscal + District Eff.        & Fiscal + Year + District Eff.\\ 
-(Intercept)                   & -15.998 ^*                    & -15.511 ^*                    & -13.781 ^*                   \\ 
-                              & (4.181)                       & (5.318)                       & (5.585)                      \\ 
-balance\_member\_lag        & 0.000                         & 0.000                         & 0.000                        \\ 
-                              & (0.000)                       & (0.000)                       & (0.000)                      \\ 
-millrate                      & -0.030                        & -0.044                        & -0.002                       \\ 
-                              & (0.100)                       & (0.129)                       & (0.129)                      \\ 
-NonSDMill                     & 0.078                         & 0.429                         & 0.647                        \\ 
-                              & (0.822)                       & (1.059)                       & (1.059)                      \\ 
-overridePass                  & -0.072                        & -0.085                        & -0.070                       \\ 
-                              & (0.178)                       & (0.190)                       & (0.190)                      \\ 
-debtPass                      & 0.116                         & 0.090                         & 0.093                        \\ 
-                              & (0.187)                       & (0.198)                       & (0.198)                      \\ 
-refInPlace                    & 0.156                         & 0.203                         & 0.196                        \\ 
-                              & (0.100)                       & (0.130)                       & (0.130)                      \\ 
-median\_incomeLOG            & 1.935 ^*                      & 1.936 ^*                      & 1.714 ^*                     \\ 
-                              & (0.400)                       & (0.505)                       & (0.530)                      \\ 
-millrate\_delta              & -0.059                        & -0.044                        & -0.041                       \\ 
-                              & (0.058)                       & (0.060)                       & (0.063)                      \\ 
-VAP\_adjLOG                  & -0.468 ^*                     & -0.527 ^*                     & -0.497 ^*                    \\ 
-                              & (0.053)                       & (0.077)                       & (0.078)                      \\ 
-DEBT\_ATTEMPT\_CUMUL93      & -0.037 ^*                     & -0.031                        & -0.034                       \\ 
-                              & (0.016)                       & (0.024)                       & (0.024)                      \\ 
-eqv\_member                  & 0.000 ^*                      & 0.000                         & 0.000 ^*                     \\ 
-                              & (0.000)                       & (0.000)                       & (0.000)                      \\ 
-teachSalDiff                  & 1.079 ^*                      & 1.026 ^*                      & 0.811                        \\ 
-                              & (0.375)                       & (0.446)                       & (0.483)                      \\ 
-OVERRIDE\_ATTEMPT\_CUMUL93  & -0.005                        & -0.012                        & -0.012                       \\ 
-                              & (0.021)                       & (0.031)                       & (0.031)                      \\ 
-millrate:NonSDMill            & 0.029                         & 0.015                         & -0.011                       \\ 
-                              & (0.089)                       & (0.114)                       & (0.114)                       \\
- $N$                           & 2777                          & 2777                          & 2777                         \\ 
-AIC                           & 3507.138                      & 3413.286                      & 3416.961                     \\ 
-N Groups                      & 10                            & 305                           & 305 | 10                     \\ 
-Group Names                   & year                          & distid                        & distid | year                \\ 
-Group:year Effs.              & (Intercept)                   &                               & (Intercept)                  \\ 
-Group:year Var.               & 0.095                         &                               & 0.119                        \\ 
-Sigma                         & 1                             & 1                             & 1                            \\ 
-Group:distid Effs.            &                               & (Intercept)                   & (Intercept)                  \\ 
-Group:distid Var.             &                               & 0.799                         & 0.795                         \\ \hline
+  & \multicolumn{ 1 }{ c }{ Fiscal + Year Eff. } & \multicolumn{ 1 }{ c }{ Fiscal + District Eff. } & \multicolumn{ 1 }{ c }{ Fiscal NonMinor Dist Eff. } \\ \hline
+ %                            & Fiscal + Year Eff.        & Fiscal + District Eff.    & Fiscal NonMinor Dist Eff.\\ 
+(Intercept)                  & 0.668 ^*                  & 0.722 ^*                  & -0.108                   \\ 
+                             & (0.076)                   & (0.114)                   & (0.104)                  \\ 
+balance\_member\_lag       & 0.053                     & 0.028                     & -0.044                   \\ 
+                             & (0.095)                   & (0.123)                   & (0.115)                  \\ 
+millrate                     & -0.016                    & -0.101                    & -0.098                   \\ 
+                             & (0.116)                   & (0.157)                   & (0.144)                  \\ 
+NonSDMill                    & 0.165                     & 0.286 ^*                  & 0.095                    \\ 
+                             & (0.098)                   & (0.144)                   & (0.131)                  \\ 
+overridePass                 & -0.075                    & -0.077                    & -0.249                   \\ 
+                             & (0.178)                   & (0.193)                   & (0.185)                  \\ 
+debtPass                     & 0.116                     & 0.077                     & -0.175                   \\ 
+                             & (0.187)                   & (0.201)                   & (0.198)                  \\ 
+refInPlace                   & 0.162                     & 0.201                     & 0.038                    \\ 
+                             & (0.100)                   & (0.132)                   & (0.123)                  \\ 
+median\_incomeLOG           & 0.958 ^*                  & 0.992 ^*                  & 0.669 ^*                 \\ 
+                             & (0.187)                   & (0.246)                   & (0.225)                  \\ 
+millrate\_delta             & -0.094                    & -0.077                    & 0.051                    \\ 
+                             & (0.087)                   & (0.095)                   & (0.099)                  \\ 
+VAP\_adjLOG                 & -0.961 ^*                 & -1.085 ^*                 & -0.991 ^*                \\ 
+                             & (0.106)                   & (0.157)                   & (0.145)                  \\ 
+DEBT\_ATTEMPT\_CUMUL93     & -0.037 ^*                 & -0.031                    & -0.011                   \\ 
+                             & (0.016)                   & (0.024)                   & (0.023)                  \\ 
+eqv\_member                 & 0.354 ^*                  & 0.397                     & 0.437 ^*                 \\ 
+                             & (0.175)                   & (0.213)                   & (0.160)                  \\ 
+teachSalDiff                 & 0.570 ^*                  & 0.559 ^*                  & 0.426 ^*                 \\ 
+                             & (0.179)                   & (0.226)                   & (0.211)                  \\ 
+OVERRIDE\_ATTEMPT\_CUMUL93 & -0.005                    & -0.014                    & -0.022                   \\ 
+                             & (0.021)                   & (0.032)                   & (0.030)                  \\ 
+millrate:NonSDMill           & 0.084                     & 0.033                     &                          \\ 
+                             & (0.185)                   & (0.239)                   &                          \\ 
+millrate:millrate\_delta    &                           &                           & 0.140                    \\ 
+                             &                           &                           & (0.174)                   \\
+ $N$                          & 2777                      & 2777                      & 2777                     \\ 
+AIC                          & 3505.716                  & 3413.193                  & 3627.857                 \\ 
+N Groups                     & 10                        & 305                       & 305                      \\ 
+Group Names                  & year                      & distid                    & distid                   \\ 
+Group:year Effs.             & (Intercept)               &                           &                          \\ 
+Group:year Var.              & 0                         &                           &                          \\ 
+Sigma                        & 1                         & 1                         & 1                        \\ 
+Group:distid Effs.           &                           & (Intercept)               & (Intercept)              \\ 
+Group:distid Var.            &                           & 0.787                     & 0.693                     \\ \hline
  \multicolumn{4}{l}{\footnotesize{Group level intercepts are not shown.}}\\
-\multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+\multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{4}{l}{\footnotesize{All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations.}} 
 \end{tabular} 
  \end{sidewaystable}
 
 
 
 
-Politics models
+\subsubsection{Politics}
 
 \clearpage
 
@@ -712,34 +725,40 @@ Politics models
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple Politic } & \multicolumn{ 1 }{ c }{ Politic + Year FE } & \multicolumn{ 1 }{ c }{ Politic + District FE } \\ \hline
- %                             & Simple Politic        & Politic + Year FE     & Politic + District FE\\ 
-(Intercept)                   & -3.505                & -62.384               & -36.441 ^*           \\ 
-                              & (2.100)               & (33.617)              & (15.793)             \\ 
-NEW\_SUP                     & 0.050                 & 0.048                 & 0.178                \\ 
-                              & (0.151)               & (0.151)               & (0.182)              \\ 
-turnoutLag1                   & -0.222                & -0.283                & -0.286               \\ 
-                              & (0.412)               & (0.414)               & (0.647)              \\ 
-partyDivision                 & 1.380                 & 1.301                 & 2.150                \\ 
-                              & (0.712)               & (0.715)               & (2.179)              \\ 
-overrideQues                  & -0.804 ^*             & -0.783 ^*             & -0.991 ^*            \\ 
-                              & (0.284)               & (0.284)               & (0.366)              \\ 
-debtPass                      & 0.364                 & 0.362                 & 0.417                \\ 
-                              & (0.281)               & (0.281)               & (0.360)              \\ 
-debtQues                      & -0.366                & -0.363                & -0.351               \\ 
-                              & (0.225)               & (0.225)               & (0.307)              \\ 
-SUP\_TURNOVER\_PRIOR\_YEAR & -0.107                & -0.104                & -0.093               \\ 
-                              & (0.120)               & (0.120)               & (0.152)              \\ 
-median\_incomeLOG            & 0.406                 & 0.384                 & 3.349 ^*             \\ 
-                              & (0.218)               & (0.219)               & (1.481)              \\ 
-fallTurnout                   & -0.215                & -0.123                & 0.151                \\ 
-                              & (0.523)               & (0.528)               & (1.003)              \\ 
-overrideYesPer                & 2.862 ^*              & 2.788 ^*              & 2.814                \\ 
-                              & (1.315)               & (1.315)               & (1.647)               \\
- $N$                           & 2464                  & 2464                  & 2464                 \\ 
-AIC                           & 3218.063              & 3216.984              & 3021.188             \\ 
-BIC                           & 3473.683              & 3495.842              & 10341.210            \\ 
-$\log L$                     & -1565.032             & -1560.492             & -250.594              \\ \hline
+ %                                                   & Simple Politic        & Politic + Year FE     & Politic + District FE\\ 
+(Intercept)                                         & 0.987 ^*              & 0.748 ^*              & -1.811               \\ 
+                                                    & (0.081)               & (0.159)               & (0.966)              \\ 
+SUP\_TURNOVER\_PRIOR\_YEAR                       & -0.080                & -0.068                & -0.004               \\ 
+                                                    & (0.094)               & (0.095)               & (0.124)              \\ 
+turnoutLag1                                         & -0.091                & -0.142                & -0.045               \\ 
+                                                    & (0.087)               & (0.096)               & (0.137)              \\ 
+partyDivision                                       & 0.162                 & 0.170                 & 0.264                \\ 
+                                                    & (0.095)               & (0.096)               & (0.286)              \\ 
+overrideQues                                        & -0.850 ^*             & -0.807 ^*             & -0.963 ^*            \\ 
+                                                    & (0.290)               & (0.292)               & (0.367)              \\ 
+debtQues                                            & 0.055                 & 0.066                 & -0.130               \\ 
+                                                    & (0.156)               & (0.157)               & (0.206)              \\ 
+DEBT\_ATTEMPT\_CUMUL93                            & -0.098 ^*             & -0.101 ^*             & 0.091                \\ 
+                                                    & (0.016)               & (0.016)               & (0.089)              \\ 
+OVERRIDE\_ATTEMPT\_CUMUL93                        & 0.005                 & -0.001                & -0.094               \\ 
+                                                    & (0.020)               & (0.020)               & (0.092)              \\ 
+ADJ\_MEDIAN\_SALARY\_TEACHlog                    & -0.052                & -0.204 ^*             & 0.298                \\ 
+                                                    & (0.091)               & (0.104)               & (0.211)              \\ 
+median\_incomeLOG                                  & 0.316 ^*              & 0.330 ^*              & 1.643 ^*             \\ 
+                                                    & (0.109)               & (0.112)               & (0.722)              \\ 
+fallTurnout                                         & 0.028                 & 0.041                 & 0.040                \\ 
+                                                    & (0.109)               & (0.122)               & (0.210)              \\ 
+overrideYesPer                                      & 2.822 ^*              & 2.691 ^*              & 2.859                \\ 
+                                                    & (1.320)               & (1.328)               & (1.650)              \\ 
+ADJ\_MEDIAN\_SALARY\_TEACHlog:median\_incomeLOG & -0.067                & -0.036                & -0.310               \\ 
+                                                    & (0.184)               & (0.185)               & (0.377)               \\
+ $N$                                                 & 2464                  & 2464                  & 2464                 \\ 
+AIC                                                 & 3182.153              & 3181.386              & 3022.822             \\ 
+BIC                                                 & 3484.249              & 3669.387              & 10389.320            \\ 
+$\log L$                                           & -1539.076             & -1506.693             & -243.411              \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{4}{l}{\footnotesize{All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations.}}\\
 \multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}} 
 \end{tabular} 
  \end{sidewaystable}
@@ -754,44 +773,54 @@ Some text.
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Politics + Year Eff. } & \multicolumn{ 1 }{ c }{ Politics + District Eff. } & \multicolumn{ 1 }{ c }{ Politics + Year + District Eff. } \\ \hline
- %                               & Politics + Year Eff.            & Politics + District Eff.        & Politics + Year + District Eff.\\ 
-(Intercept)                     & -3.542                          & -4.774                          & -4.464                         \\ 
-                                & (2.117)                         & (3.448)                         & (3.531)                        \\ 
-NEW\_SUP                       & 0.041                           & 0.121                           & 0.081                          \\ 
-                                & (0.151)                         & (0.163)                         & (0.163)                        \\ 
-turnoutLag1                     & -0.248                          & -0.298                          & -0.449                         \\ 
-                                & (0.427)                         & (0.512)                         & (0.539)                        \\ 
-partyDivision                   & 1.394                           & 1.805                           & 1.984                          \\ 
-                                & (0.716)                         & (1.098)                         & (1.118)                        \\ 
-overrideQues                    & -0.801 ^*                       & -0.887 ^*                       & -0.869 ^*                      \\ 
-                                & (0.285)                         & (0.319)                         & (0.321)                        \\ 
-debtPass                        & 0.366                           & 0.401                           & 0.515                          \\ 
-                                & (0.282)                         & (0.313)                         & (0.315)                        \\ 
-debtQues                        & -0.367                          & -0.360                          & -0.412                         \\ 
-                                & (0.225)                         & (0.259)                         & (0.261)                        \\ 
-SUP\_TURNOVER\_PRIOR\_YEAR   & -0.100                          & -0.101                          & -0.064                         \\ 
-                                & (0.120)                         & (0.134)                         & (0.134)                        \\ 
-median\_incomeLOG              & 0.413                           & 0.535                           & 0.506                          \\ 
-                                & (0.220)                         & (0.351)                         & (0.361)                        \\ 
-fallTurnout                     & -0.262                          & -0.158                          & -0.176                         \\ 
-                                & (0.545)                         & (0.704)                         & (0.761)                        \\ 
-overrideYesPer                  & 2.837 ^*                        & 2.765                           & 2.624                          \\ 
-                                & (1.318)                         & (1.461)                         & (1.469)                         \\
- $N$                             & 2464                            & 2464                            & 2464                           \\ 
-AIC                             & 3220.976                        & 3054.158                        & 3056.248                       \\ 
-N Groups                        & 9                               & 305                             & 305 | 9                        \\ 
-Group Names                     & year                            & distid                          & distid | year                  \\ 
-Group:year Effs.                & (Intercept)                     &                                 & (Intercept)                    \\ 
-Group:year Var.                 & 0.113                           &                                 & 0.148                          \\ 
-Sigma                           & 1                               & 1                               & 1                              \\ 
-Group:distid Effs.              &                                 & (Intercept)                     & (Intercept)                    \\ 
-Group:distid Var.               &                                 & 1.025                           & 1.048                           \\ \hline
+ %                                                   & Politics + Year Eff.            & Politics + District Eff.        & Politics + Year + District Eff.\\ 
+(Intercept)                                         & 0.987 ^*                        & 1.125 ^*                        & 0.205                          \\ 
+                                                    & (0.090)                         & (0.129)                         & (0.116)                        \\ 
+SUP\_TURNOVER\_PRIOR\_YEAR                       & -0.076                          & -0.042                          & 0.027                          \\ 
+                                                    & (0.094)                         & (0.109)                         & (0.103)                        \\ 
+turnoutLag1                                         & -0.110                          & -0.069                          & 0.062                          \\ 
+                                                    & (0.092)                         & (0.108)                         & (0.102)                        \\ 
+partyDivision                                       & 0.165                           & 0.210                           & 0.182                          \\ 
+                                                    & (0.096)                         & (0.143)                         & (0.132)                        \\ 
+overrideQues                                        & -0.835 ^*                       & -0.926 ^*                       & -0.560                         \\ 
+                                                    & (0.291)                         & (0.326)                         & (0.317)                        \\ 
+debtQues                                            & 0.059                           & 0.019                           & -0.158                         \\ 
+                                                    & (0.156)                         & (0.177)                         & (0.174)                        \\ 
+DEBT\_ATTEMPT\_CUMUL93                            & -0.099 ^*                       & -0.101 ^*                       & -0.074 ^*                      \\ 
+                                                    & (0.016)                         & (0.027)                         & (0.025)                        \\ 
+OVERRIDE\_ATTEMPT\_CUMUL93                        & 0.003                           & -0.002                          & -0.022                         \\ 
+                                                    & (0.020)                         & (0.033)                         & (0.031)                        \\ 
+ADJ\_MEDIAN\_SALARY\_TEACHlog                    & -0.105                          & 0.053                           & 0.001                          \\ 
+                                                    & (0.105)                         & (0.126)                         & (0.117)                        \\ 
+median\_incomeLOG                                  & 0.321 ^*                        & 0.369 ^*                        & 0.148                          \\ 
+                                                    & (0.110)                         & (0.171)                         & (0.156)                        \\ 
+fallTurnout                                         & 0.031                           & 0.022                           & 0.109                          \\ 
+                                                    & (0.114)                         & (0.146)                         & (0.136)                        \\ 
+overrideYesPer                                      & 2.776 ^*                        & 2.810                           & 0.851                          \\ 
+                                                    & (1.323)                         & (1.475)                         & (1.383)                        \\ 
+ADJ\_MEDIAN\_SALARY\_TEACHlog:median\_incomeLOG & -0.055                          & -0.167                          & -0.261                         \\ 
+                                                    & (0.184)                         & (0.248)                         & (0.227)                         \\
+ $N$                                                 & 2464                            & 2464                            & 2464                           \\ 
+AIC                                                 & 3182.908                        & 3044.575                        & 3269.424                       \\ 
+N Groups                                            & 9                               & 305                             & 305                            \\ 
+Group Names                                         & year                            & distid                          & distid                         \\ 
+Group:year Effs.                                    & (Intercept)                     &                                 &                                \\ 
+Group:year Var.                                     & 0.113                           &                                 &                                \\ 
+Sigma                                               & 1                               & 1                               & 1                              \\ 
+Group:distid Effs.                                  &                                 & (Intercept)                     & (Intercept)                    \\ 
+Group:distid Var.                                   &                                 & 0.959                           & 0.851                           \\ \hline
  \multicolumn{4}{l}{\footnotesize{Group level intercepts are not shown.}}\\
+\multicolumn{4}{l}{\footnotesize{All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations.}}\\
 \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
  \end{sidewaystable}
 
 
+
+
+
+\subsubsection{Comparisons}
 
 
 
