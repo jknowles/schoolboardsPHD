@@ -7,12 +7,20 @@
 load("data/cache/DataMergeVAP.rda")
 load("data/cache/fullDataSep2014.rda") # school finance project data
 
+tmp$ADMIN_SHARE_COMP <- (tmp$SALARY_TOTAL_ADMIN + tmp$FRINGE_TOTAL_ADMIN) / 
+                                (tmp$FRINGE_TOTAL_ALL + tmp$SALARY_TOTAL_ALL)
+tmp$ADMIN_SHARE_FTE <- (tmp$FTE_ADMIN / tmp$FTE_ALL)
+
 distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopulation",
                        "PopWhiteAlone", "total_levy", "genaid", "per65o", 
                        "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
                        "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "eqv_member", 
                        "balance_lag", "member", "member_delta", "millrate_delta", 
-                    "locale2", "member_lag", "ref_share")]
+                    "locale2", "member_lag", "ref_share", 
+                    "total_cat_aids_member",  
+                    "tax_price", "totalincome_count", "eqv_total", 
+                    "econ_disadv_per", "ADMIN_SHARE_COMP", 
+                    "ADMIN_SHARE_FTE", "TOTAL_PEOPLE_ADMIN")]
 
 distAttr$balance_member_lag <- distAttr$balance_lag / distAttr$member
 distAttr$member_delta_per <- distAttr$member_delta / distAttr$member_lag
@@ -204,6 +212,11 @@ dist_turn$ADJ_MEDIAN_FRINGE_TEACHlog <- log(dist_turn$ADJ_MEDIAN_FRINGE_TEACH)
 dist_turn$ADJ_MEDIAN_SALARY_TEACHlog <- log(dist_turn$ADJ_MEDIAN_SALARY_TEACH)
 dist_turn$partyDivision <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
 dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
+dist_turn$incumRun <- ifelse(dist_turn$ninc > 0, 1, 0)
+dist_turn$incumShare <- dist_turn$ninc / (dist_turn$nrealcand)
+
+dist_turn$teachSalDiff <- dist_turn$ADJ_MEDIAN_SALARY_TEACHlog - 
+  dist_turn$median_incomeLOG
 
 dist_turn <- as.data.table(dist_turn)[, contestMinorLag:= lg(contestMinor), by = "distid"]
 dist_turn <- as.data.table(dist_turn)[, contestSerLag:= lg(contestSer), by = "distid"]
