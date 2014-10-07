@@ -191,4 +191,25 @@ dist_turn$teachShareofVoters <- round(dist_turn$FTE_TEACH,0) / round(dist_turn$V
 
 rm(ADMIN)
 
+# habit
+dist_turn$contestMinor <- 0
+dist_turn$contestMinor[dist_turn$nrealcand > dist_turn$nwins] <- 1
+dist_turn$contestSer <- 0
+dist_turn$contestSer[(dist_turn$nrealcand - dist_turn$nminor) > dist_turn$nwins] <- 1
+
+dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
+dist_turn$median_incomeLOG <- log(dist_turn$median_income) 
+dist_turn$ADJ_MEDIAN_FRINGE_TEACH[dist_turn$ADJ_MEDIAN_FRINGE_TEACH == 0] <- 1
+dist_turn$ADJ_MEDIAN_FRINGE_TEACHlog <- log(dist_turn$ADJ_MEDIAN_FRINGE_TEACH)
+dist_turn$ADJ_MEDIAN_SALARY_TEACHlog <- log(dist_turn$ADJ_MEDIAN_SALARY_TEACH)
+dist_turn$partyDivision <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
+dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
+
+dist_turn <- as.data.table(dist_turn)[, contestMinorLag:= lg(contestMinor), by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, contestSerLag:= lg(contestSer), by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, contestMinorLag2:= lg2(contestMinor), by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, contestSerLag2:= lg2(contestSer), by = "distid"]
+
+dist_turn <- as.data.frame(dist_turn)
+
 

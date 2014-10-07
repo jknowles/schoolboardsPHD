@@ -569,35 +569,9 @@ of a challenge.
 %% model beta by district, # of contested out of # of races
 %% model nested, races in districts
 
-<<buildingDV>>=
-dist_turn$contest1 <- "Uncontested"
-dist_turn$contest1[dist_turn$nrealcand > dist_turn$nwins] <- "Contested"
-dist_turn$contest2 <- "Uncontested"
-dist_turn$contest2[(dist_turn$nrealcand - dist_turn$nminor) > dist_turn$nwins] <- "Contested"
-dist_turn$contest2 <- factor(dist_turn$contest2)
-dist_turn$contest1 <- factor(dist_turn$contest1)
-confusion.glm <- function(data, model) {
-  prediction <- ifelse(predict(model, data, type='response') > 0.5, TRUE, FALSE)
-  confusion  <- table(prediction, as.logical(model$y))
-  confusion  <- cbind(confusion, c(1 - confusion[1,1]/(confusion[1,1]+confusion[2,1]), 1 - confusion[2,2]/(confusion[2,2]+confusion[1,2])))
-  confusion  <- as.data.frame(confusion)
-  names(confusion) <- c('FALSE', 'TRUE', 'class.error')
-  confusion
-}
-
-
-dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
-dist_turn$median_incomeLOG <- log(dist_turn$median_income) 
-dist_turn$ADJ_MEDIAN_FRINGE_TEACH[dist_turn$ADJ_MEDIAN_FRINGE_TEACH == 0] <- 1
-dist_turn$ADJ_MEDIAN_FRINGE_TEACHlog <- log(dist_turn$ADJ_MEDIAN_FRINGE_TEACH)
-dist_turn$ADJ_MEDIAN_SALARY_TEACHlog <- log(dist_turn$ADJ_MEDIAN_SALARY_TEACH)
-dist_turn$partyDivision <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
-dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
-
-@
 
 <<demogModel, results='asis'>>=
-moddat <- dist_turn[, c("contest2", "contest1", "distid","year", 
+moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
                         "balance_member_lag", 
                         "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
                         "districtwide",
@@ -630,7 +604,7 @@ moddat$NonPublicPupilPer <- rescale(moddat$NonPublicPupilPer)
 moddat$teachShareofVoters <- rescale(moddat$teachShareofVoters)
 moddat$member_delta_per <- rescale(moddat$member_delta_per)
 
-demogModel <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+demogModel <- glm(contestSer ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
@@ -639,21 +613,21 @@ demogModel <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all +
 
 # confusion.glm(demogModel$model, demogModel)
 
-demogModel2 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+demogModel2 <- glm(contestSer ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
                     districtwide + factor(year), 
                   data = moddat, family = "binomial")
 
-demogModel3 <- glm(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+demogModel3 <- glm(contestSer ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
                      districtwide + distid, 
                   data = moddat, family = "binomial")
 
-demogModel4 <- glm(contest1 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+demogModel4 <- glm(contestMinor ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
@@ -692,7 +666,7 @@ library(optimx)
 ctrl <- glmerControl(optimizer = "optimx", optCtrl = list(method = "nlminb", 
                                                           maxit = 4000))
 
-demogModelPP1 <- glmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+demogModelPP1 <- glmer(contestSer ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
@@ -700,7 +674,7 @@ demogModelPP1 <- glmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_al
                     data = moddat, family = binomial, 
                   control = ctrl)
 
-demogModelPP2 <- glmer(contest1 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+demogModelPP2 <- glmer(contestMinor ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
                     OOH_share + median_incomeLOG + per65o + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
                     teachShareofVoters + locale2 + member_delta_per + 
@@ -708,7 +682,7 @@ demogModelPP2 <- glmer(contest1 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_al
                   data = moddat, family = binomial, control = ctrl)
 
 # 
-# demogModelPP <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
+# demogModelPP <- bglmer(contestSer ~ VAP_adjLOG + PerBachelorOrAbove + per_white_all + 
 #                     OOH_share + median_incomeLOG + per65o + 
 #                     NonWhitePublicPupilPer + NonPublicPupilPer + 
 #                     teachShareofVoters + locale2 + member_delta_per + 
@@ -717,7 +691,7 @@ demogModelPP2 <- glmer(contest1 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_al
 #                   cov.prior = wishart)
 
 
-# demogModelPP2 <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + 
+# demogModelPP2 <- bglmer(contestSer ~ VAP_adjLOG + PerBachelorOrAbove + 
 #                           per_white_all + 
 #                     OOH_share + median_incomeLOG + per65o + 
 #                     NonWhitePublicPupilPer + NonPublicPupilPer + 
@@ -726,7 +700,7 @@ demogModelPP2 <- glmer(contest1 ~ VAP_adjLOG + PerBachelorOrAbove + per_white_al
 #                   data = moddat, family = binomial, 
 #                   cov.prior = wishart)
 # 
-# demogModelPP3 <- bglmer(contest2 ~ VAP_adjLOG + PerBachelorOrAbove + 
+# demogModelPP3 <- bglmer(contestSer ~ VAP_adjLOG + PerBachelorOrAbove + 
 #                           per_white_all + 
 #                     OOH_share + median_incomeLOG + per65o + 
 #                     NonWhitePublicPupilPer + NonPublicPupilPer + 
@@ -760,23 +734,6 @@ random effect for years \citep{pbkrtest}. This was implemented in R using the
 \texttt{pbkrtest} package. Results and script available upon request. } 
 
 
-<<modTestDemog, results='hide', eval=FALSE>>=
-library(pbkrtest)
-library(doParallel)
-cl <- makePSOCKcluster(3)
-
-modTestDemog1 <- PBmodcomp(demogModelPP3, demogModelPP, nsim = 200, 
-          cl = cl)
-
-modTestDemog2 <- PBmodcomp(demogModelPP3, demogModelPP2, nsim = 200, 
-          cl = cl)
-
-
-stopCluster(cl)
-
-
-@
-
 \subsubsection{Fiscal}
 
 One of the highest profile activities of a school district is fiscal management. 
@@ -787,8 +744,8 @@ Does fiscal health of a district predict the run for office?
 dist_turn$teachSalDiff <- dist_turn$ADJ_MEDIAN_SALARY_TEACHlog - 
   dist_turn$median_incomeLOG
 
-moddat <- dist_turn[, c("contest2", "contest1", "distid","year", 
-                        "balance_member_lag", 
+moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
+                        "balance_member_lag",
                         "millrate", "VAP_adjLOG", "NonSDMill", 
                         "districtwide", "OOH_share",
                         "overridePass", "median_incomeLOG", "debtPass", 
@@ -803,7 +760,7 @@ moddat$year <- factor(moddat$year)
 moddat$OOH_share <- moddat$OOH_share * 100
 moddat$member_delta_per <- moddat$member_delta_per * 100
 moddat$districtwide <- factor(moddat$districtwide)
-moddat <- na.omit(moddat)
+# moddat <- na.omit(moddat)
 # Rescale
 moddat$balance_member_lag <- rescale(moddat$balance_member_lag)
 moddat$millrate <- rescale(moddat$millrate)
@@ -814,21 +771,21 @@ moddat$VAP_adjLOG <- rescale(moddat$VAP_adjLOG)
 moddat$eqv_member <- rescale(moddat$eqv_member)
 moddat$teachSalDiff <- rescale(moddat$teachSalDiff)
 
-fiscalModel <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+fiscalModel <- glm(contestSer ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
                      OVERRIDE_ATTEMPT_CUMUL93, 
                    data = moddat, family = 'binomial')
 
-fiscalModel2 <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+fiscalModel2 <- glm(contestSer ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
                      OVERRIDE_ATTEMPT_CUMUL93 + year, 
                    data = moddat, family = 'binomial')
                    
-fiscalModel3 <- glm(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+fiscalModel3 <- glm(contestSer ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
@@ -859,21 +816,21 @@ ctrl <- glmerControl(optimizer = "optimx", optCtrl = list(method = "nlminb",
                                                           maxit = 4000))
 
 
-fiscalModelPP <- glmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+fiscalModelPP <- glmer(contestSer ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
                      OVERRIDE_ATTEMPT_CUMUL93 + (1|year), 
-                   data = moddat, family = 'binomial', control = ctrl)
+                   data = moddat, family = 'binomial')
 
-fiscalModelPP2 <- glmer(contest2 ~ balance_member_lag + millrate * NonSDMill + 
+fiscalModelPP2 <- glmer(contestSer ~ balance_member_lag + millrate * NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
                      OVERRIDE_ATTEMPT_CUMUL93 + (1|distid), 
                    data = moddat, family = 'binomial', control = ctrl)
 
-fiscalModelPP3 <- glmer(contest1 ~ balance_member_lag + millrate *millrate_delta +  NonSDMill + 
+fiscalModelPP3 <- glmer(contestMinor ~ balance_member_lag + millrate *millrate_delta +  NonSDMill + 
                      overridePass + debtPass + refInPlace + median_incomeLOG + 
                      millrate_delta + VAP_adjLOG + 
                      DEBT_ATTEMPT_CUMUL93 + eqv_member + teachSalDiff +
@@ -894,31 +851,20 @@ apsrtable(fiscalModelPP, fiscalModelPP2, fiscalModelPP3,
                        stars.note, rescalenote), digits = 3 )
 @
 
-<<modTestFiscal, results='hide', eval=FALSE>>=
-cl <- makePSOCKcluster(3)
 
-modTestFiscal1 <- PBmodcomp(fiscalModelPP3, fiscalModelPP, nsim = 200, 
-          cl = cl)
-
-modTestFiscal2 <- PBmodcomp(fiscalModelPP3, fiscalModelPP2, nsim = 200, 
-          cl = cl)
-
-
-stopCluster(cl)
-@
 
 \subsubsection{Politics}
 
 \clearpage
 
 <<politicMod, results = 'asis'>>=
-moddat <- dist_turn[, c("contest2", "NEW_SUP", "distid","year", 
-                        "turnoutLag1", 
+moddat <- dist_turn[, c("contestSer", "NEW_SUP", "distid","year", 
+                        "turnoutLag1",  "contestSerLag2", "contestMinorLag2",
                         "partyDivision", "VAP_adjLOG", "overrideQues", 
                         "districtwide", "debtQues", "overrideYesPer",
                         "overridePass", "median_incomeLOG", "debtPass", 
                         "fallTurnout", "SUP_TURNOVER_PRIOR_YEAR", 
-                        "DEBT_ATTEMPT_CUMUL93", "contest1", 
+                        "DEBT_ATTEMPT_CUMUL93", "contestMinor", 
                         "OVERRIDE_ATTEMPT_CUMUL93", "ADJ_MEDIAN_SALARY_TEACHlog",
                         "SUP_TURNOVER_PRIOR_YEAR", "teachSalDiff")]
 
@@ -933,33 +879,38 @@ moddat$partyDivision <- rescale(moddat$partyDivision)
 moddat$median_incomeLOG <- rescale(moddat$median_incomeLOG)                        
 moddat$fallTurnout <- rescale(moddat$fallTurnout)                        
 moddat$ADJ_MEDIAN_SALARY_TEACHlog <- rescale(moddat$ADJ_MEDIAN_SALARY_TEACHlog)  
+moddat$OVERRIDE_ATTEMPT_CUMUL93 <- rescale(moddat$OVERRIDE_ATTEMPT_CUMUL93)
+moddat$DEBT_ATTEMPT_CUMUL93 <- rescale(moddat$DEBT_ATTEMPT_CUMUL93)
 
-politicModel <- glm(contest2 ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
-                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + 
+politicModel <- glm(contestSer ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
+                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 +  contestSerLag2 +
                        OVERRIDE_ATTEMPT_CUMUL93 + ADJ_MEDIAN_SALARY_TEACHlog *
                       median_incomeLOG + fallTurnout + overrideYesPer, 
                     data = moddat, family = "binomial")
 
-politicModel2 <- glm(contest2 ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
-                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + 
+politicModel2 <- glm(contestSer ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
+                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + contestSerLag2 +
                        OVERRIDE_ATTEMPT_CUMUL93 + ADJ_MEDIAN_SALARY_TEACHlog *
                       median_incomeLOG + fallTurnout + overrideYesPer + 
                       year, 
                     data = moddat, family = "binomial")
                     
-politicModel3 <- glm(contest2 ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
-                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + 
+politicModel3 <- glm(contestSer ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
+                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + contestSerLag2 +
                        OVERRIDE_ATTEMPT_CUMUL93 + ADJ_MEDIAN_SALARY_TEACHlog *
                       median_incomeLOG + fallTurnout + overrideYesPer + 
                       distid, 
                     data = moddat, family = "binomial")
 
-politicModel4 <- glm(contest1 ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
-                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + 
+politicModel4 <- glm(contestMinor ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
+                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + contestSerLag2+
                        OVERRIDE_ATTEMPT_CUMUL93 + ADJ_MEDIAN_SALARY_TEACHlog *
                       median_incomeLOG + fallTurnout + overrideYesPer + 
                       distid, 
                     data = moddat, family = "binomial")
+
+nullModelFE <- glm(contestSer ~ 1 + distid, data = moddat, family = 'binomial')
+nullModel <- glm(contestSer ~ 1, data = moddat, family = 'binomial')
 
 apsrtable(politicModel, politicModel2, politicModel3,
           label="tab:politicmods", 
@@ -980,28 +931,29 @@ Some text.
 
 
 <<politicModPP, results = 'asis'>>=
-politicModelPP <- glmer(contest2 ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
-                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + 
-                       OVERRIDE_ATTEMPT_CUMUL93 + ADJ_MEDIAN_SALARY_TEACHlog *
-                      median_incomeLOG + fallTurnout + overrideYesPer + (1|year), 
-                   data = moddat, family = 'binomial', control = ctrl)
+# politicModelPP <- glmer(contestSer ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
+#                       overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + contestSerLag2 +
+#                        OVERRIDE_ATTEMPT_CUMUL93 + ADJ_MEDIAN_SALARY_TEACHlog *
+#                       median_incomeLOG + fallTurnout + overrideYesPer + (1|year), 
+#                    data = moddat, family = 'binomial', control = ctrl)
 
-politicModelPP2 <- glmer(contest2 ~SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
-                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + 
-                       OVERRIDE_ATTEMPT_CUMUL93 + ADJ_MEDIAN_SALARY_TEACHlog *
-                      median_incomeLOG + fallTurnout + overrideYesPer + (1|distid), 
-                   data = moddat, family = 'binomial', control = ctrl)
-
-
-politicModelPP3 <- glmer(contest1 ~SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
-                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 + 
+politicModelPP2 <- glmer(contestSer ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
+                      overrideQues + debtQues + DEBT_ATTEMPT_CUMUL93 +  contestSerLag2 +
                        OVERRIDE_ATTEMPT_CUMUL93 + ADJ_MEDIAN_SALARY_TEACHlog *
                       median_incomeLOG + fallTurnout + overrideYesPer + (1|distid), 
                    data = moddat, family = 'binomial', control = ctrl)
 
 
+politicModelPP3 <- glmer(contestMinor ~ SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + partyDivision + 
+                      overrideQues +   debtQues + DEBT_ATTEMPT_CUMUL93 +  contestSerLag2 +
+                       OVERRIDE_ATTEMPT_CUMUL93 + ADJ_MEDIAN_SALARY_TEACHlog *
+                      median_incomeLOG + fallTurnout + overrideYesPer + (1|distid), 
+                   data = moddat, family = 'binomial', control = ctrl)
 
-# politicModelPP3 <- bglmer(contest2 ~ NEW_SUP + turnoutLag1 + partyDivision + 
+nullModelPP <- glmer(contestSer ~ 1 + (1|distid), 
+                   data = moddat, family = 'binomial', control = ctrl)
+
+# politicModelPP3 <- bglmer(contestSer ~ NEW_SUP + turnoutLag1 + partyDivision + 
 #                       overrideQues +  debtPass + debtQues + 
 #                       SUP_TURNOVER_PRIOR_YEAR +
 #                       median_incomeLOG + fallTurnout + overrideYesPer + (1|distid) + (1|year), 
@@ -1012,102 +964,47 @@ politicModelPP3 <- glmer(contest1 ~SUP_TURNOVER_PRIOR_YEAR + turnoutLag1 + party
 # class(politicModelPP2) <- "merMod"
 # class(politicModelPP3) <- "merMod"
 
-apsrtable(politicModelPP, politicModelPP2, politicModelPP3,
-          model.names = c("Politics + Year Eff.", 
-                          "Politics + District Eff.", 
-                          "Politics + Year + District Eff."),
-          caption = "Partial Pooling Model of Fiscal on Turnout",
+apsrtable(politicModelPP2, politicModelPP3,
+          model.names = c("Serious Contest", 
+                          "Minor Contest"),
+          caption = "Partial Pooling Model of Politics on Turnout",
           label = "tab:mePolitics", Sweave=FALSE, float = "sidewaystable", 
           notes = list("Group level intercepts are not shown.", rescalenote,
                        stars.note), 
           digits = 3)
-@
 
-
-<<modTestPolitic, results='hide', eval=FALSE>>=
-cl <- makePSOCKcluster(3)
-
-modTestPolitic1 <- PBmodcomp(politicModelPP3, politicModelPP, nsim = 200, 
-          cl = cl)
-
-modTestPolitic2 <- PBmodcomp(politicModelPP3, politicModelPP2, nsim = 200, 
-          cl = cl)
-
-
-stopCluster(cl)
 @
 
 \subsubsection{Comparisons}
 
-
-
+But which model is better? 
 
 <<erratta, eval=FALSE>>=
-mod1 <- glm(contest2 ~ VAP_adjLOG + NEW_SUP + turnoutLag1 +partyDivision +
-              PerBachelorOrAbove + per_white_all+
-              OOH_share + median_incomeLOG + ADMIN_SHARE + 
-              per65o + ADJ_MEDIAN_SALARY_TEACHlog + refInPlace+
-              NonWhitePublicPupilPer *per_white_all+ overrideQues +
-              millrate*NonSDMill + 
-              overridePass + debtPass, 
-            data = dist_turn, family = "binomial")
-summary(mod1)
+library(ROCR)
 
-
-confusion.glm(dist_turn, glm(factor(contest2) ~ log(VAP_adj) + NEW_SUP + turnoutLag1 +fallTwoPartyShareDem +
-              PerBachelorOrAbove + OOH_share + log(median_income) + ADMIN_SHARE + 
-              NonWhitePublicPupilPer + overrideQues + millrate*NonSDMill, 
-            data = dist_turn, family = "binomial"))
-#moddat <- na.omit(moddat)
-# Filter out extreme values
-
-## Tax model -- voters are driven by tax concdrns
-## Politics model -- voters are driven by political ideology
-## Policy model -- teacher salary and benefits? 
-
-tax_model <- glm(contested2 ~  millrate + cum_attptsD + overlevy_ind_lag +
-                    per_white_all + levy_chg + log(Population18O) + 
-                   ref_share +
-                   balance_member_lag +  median_income + fyear, 
-                 data=SBELEC[!is.na(SBELEC$contested2Lag1), ], 
-                 family=binomial("logit"))
-
-#summary(tax_model)
-#sigma1 <- sum(residuals(tax_model, type = "pearson")^2) / df.residual(tax_model)
-
-poli_model <- glm(contested2 ~ contested2Lag1 + primary2Lag1 +
-                    cum_attptsD + per_white_all + per65o + log_politicaldivide +
-                     fallTwoPartyShareDem +fallTurnout+
-                    PerBachelorOrAbove +
-                    median_income + log(Population18O) + fyear, 
-                 data=SBELEC[!is.na(SBELEC$contested2Lag1), ], 
-                 family=binomial("logit"))
-
-#summary(poli_model)
-SBELEC$average_fringe[SBELEC$average_fringe==0] <- 0.1
-poly_model <- glm(contested2 ~ log(avg_salary) + log(average_fringe) + 
-                    avg_total_exp + log(Population18O) + 
-                    median_income +member_delta + total_attempts + fyear, 
-                   data=SBELEC[!is.na(SBELEC$avg_salary), ], 
-                  family = binomial("logit"))
-
-#summary(poly_model)
-
-uber_model <- glm(contested2 ~ log(dv_r) + avg_salary + average_fringe + 
-                    avg_total_exp + log(Population18O) + contested2.lag1 +
-                    median_income +member_delta + total_attempts + 
-                    primary2.lag1 + cum_attptsD + perwhite + Per65over + 
-                   attemptsD.lag1 + log_politicaldivide + PerBachelorOrAbove +
-                    millrate + overlevy_ind_lag + toprepshare +
-                    winshare.lag1 +
-                    levy_chg + balance_member_lag + fyear, 
-                   data=SBELEC[!is.na(SBELEC$contested2.lag1), ], 
-                  family = binomial("logit"))
-                   
+confusionMatrixTmp <- function(data, model) {
+  prediction <- ifelse(predict(model, data, type='response') > 0.5, TRUE, FALSE)
+    if(class(model)[1] %in% c("lmerMod", "glmerMod")){
+        confusion  <- table(prediction, as.logical(model@frame[, 1]))
+  } else{
+  confusion  <- table(prediction, as.logical(model$y))
+  }
+  confusion  <-   confusion  <- cbind(confusion, 
+      c(1 - confusion[1,1]/(confusion[1,1]+ 
+                              confusion[2,1]), 
+        1 - confusion[2,2]/(confusion[2,2]+confusion[1,2])))
+  confusion  <- as.data.frame(confusion)
+  names(confusion) <- c('FALSE', 'TRUE', 'class.error')
+  confusion
+}
 
 makeROCdf <- function(model, name){
   predicted <- predict(model)
-  prob <- prediction(predicted, model$model$contested2)
+  if(class(model)[1] %in% c("lmerMod", "glmerMod")){
+    prob <- prediction(predicted, model@frame[, 1])
+  } else{
+    prob <- prediction(predicted, model$model[, 1])
+  }
   tprfpr <- performance(prob, "tpr", "fpr")
   tpr <- unlist(slot(tprfpr, "y.values"))
   fpr <- unlist(slot(tprfpr, "x.values"))
@@ -1116,10 +1013,18 @@ makeROCdf <- function(model, name){
   return(roc)
 }
 
-roc <- makeROCdf(tax_model, "tax")
-roc2 <- makeROCdf(poli_model, "politics")
-roc3 <- makeROCdf(poly_model, "policy")
-roc4 <- makeROCdf(uber_model, "uber")
+
+roc <- makeROCdf(demogModelPP2, "demog")
+roc2 <- makeROCdf(politicModelPP2, "politics")
+roc3 <- makeROCdf(fiscalModelPP2, "fiscal")
+roc4 <- makeROCdf(nullModel, "null")
+
+roc <- makeROCdf(demogModel2, "demog")
+roc2 <- makeROCdf(politicModel2, "politics")
+roc3 <- makeROCdf(fiscalModel2, "fiscal")
+roc4 <- makeROCdf(nullModel, "null")
+
+
 
 roc <- rbind(roc, roc2); rm(roc2)
 roc <- rbind(roc, roc3); rm(roc3)
@@ -1127,8 +1032,11 @@ roc <- rbind(roc, roc4); rm(roc4)
 @
 
 <<rocplot1, echo=FALSE, eval = FALSE, fig.cap="ROC Curves for 4 Models of Election Contestation in Wisconsin School Boards", fig.keep='last'>>=
-ggplot(roc) + geom_smooth(aes(x = fpr, y = tpr, color=mod), 
-                          se=FALSE,size= I(1.1)) + 
+ggplot(roc) + 
+#   geom_smooth(aes(x = fpr, y = tpr, color=mod), 
+#                           se=FALSE,size= I(1.1)) + 
+  geom_line(aes(x = fpr, y = tpr, color=mod), 
+                          size= I(1.1)) +
    geom_abline(intercept = 0, slope = 1, colour = "gray") + 
    ylab("Sensitivity") + 
    xlab("1 - Specificity") + 
@@ -1287,7 +1195,7 @@ dist_turn$worst_margin_werc <- NAzero(dist_turn$worst_margin_werc)
 dist_turn$GovTurnout_recall <- dist_turn$RECTOT_recall / dist_turn$VAP_adj 
 
 
-moddat <- dist_turn[, c("contest2", "contest1", "distid","year", 
+moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
                         "balance_member_lag", "turnout",
                         "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
                         "districtwide", "turnoutLag1", "topTicketTurnoutSpring",
@@ -1325,12 +1233,12 @@ moddat$member_delta_per <- moddat$member_delta_per * 100
 @
 
 <<walkerplot, fig.cap="Polarization and Turnout Before and After Act 10">>=
-qplot(contest1, RecallPolarization, data = moddat, geom = 'boxplot') + 
+qplot(contestMinor, RecallPolarization, data = moddat, geom = 'boxplot') + 
   facet_wrap(~year) +
   scale_y_continuous(label = percent) +
   theme_dpi()
 
-qplot(turnout, RecallPolarization, data = moddat[moddat$turnout < 0.8,], color = contest1) + 
+qplot(turnout, RecallPolarization, data = moddat[moddat$turnout < 0.8,], color = contestMinor) + 
   facet_wrap(~year) + geom_smooth(method = 'lm') +
   scale_y_continuous(label = percent) +
   theme_dpi()
@@ -1344,20 +1252,20 @@ qplot(turnout, RecallPolarization, data = moddat[moddat$turnout < 0.8,], color =
 
 
 <<walkerGLM, results='asis'>>=
-causal1 <- glm(contest1 ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+causal1 <- glm(contestMinor ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
                districtwide + RecallPolarization*treatment + 
                treatment + turnout_overall_werc, 
               data = moddat, family = 'binomial')
 
-causal2 <- glm(contest1 ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+causal2 <- glm(contestMinor ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
                  topTicketTurnoutSpring +
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
                districtwide + RecallPolarization*treatment + 
                treatment + turnout_overall_werc, 
               data = moddat, family = 'binomial')
 
-# causal3 <- glm(contest2 ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+# causal3 <- glm(contestSer ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
 #                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
 #                districtwide + RecallPolarization*treatment + 
 #                treatment + turnout_overall_werc + distid, 
@@ -1397,13 +1305,13 @@ moddat$RecallPolarization <- rescale(moddat$RecallPolarization)
 moddat$topTicketTurnoutSpring <- rescale(moddat$topTicketTurnoutSpring)
 moddat$turnout_overall_werc <- rescale(moddat$turnout_overall_werc)
 
-mixedModCaus <- glmer(contest2 ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+mixedModCaus <- glmer(contestSer ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
                districtwide + RecallPolarization*treatment + turnout_overall_werc +
                treatment + (1|distid), 
               data = moddat, family = 'binomial', control = ctrl)
 
-mixedModCaus2 <- glmer(contest2 ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+mixedModCaus2 <- glmer(contestSer ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
                         topTicketTurnoutSpring +
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
                districtwide + RecallPolarization*treatment + 
@@ -1500,3 +1408,56 @@ dotplot(ranef(simple_lmer, condVar=TRUE))
 \section{Conclusions}
 
 School board elections are not marked by much contestation. 
+
+\section{Technical Appendix}
+
+Computing is fun. 
+
+\subsection{Model Specification Tests}
+
+
+
+<<modTestDemog, results='hide', eval=FALSE, cache=TRUE>>=
+library(pbkrtest)
+library(doParallel)
+cl <- makePSOCKcluster(3)
+
+modTestDemog1 <- PBmodcomp(demogModelPP3, demogModelPP, nsim = 200, 
+          cl = cl)
+
+modTestDemog2 <- PBmodcomp(demogModelPP3, demogModelPP2, nsim = 200, 
+          cl = cl)
+
+
+stopCluster(cl)
+
+
+@
+
+
+<<modTestFiscal, results='hide', eval=FALSE>>=
+cl <- makePSOCKcluster(3)
+
+modTestFiscal1 <- PBmodcomp(fiscalModelPP3, fiscalModelPP, nsim = 200, 
+          cl = cl)
+
+modTestFiscal2 <- PBmodcomp(fiscalModelPP3, fiscalModelPP2, nsim = 200, 
+          cl = cl)
+
+
+stopCluster(cl)
+@
+
+<<modTestPolitic, results='hide', eval=FALSE>>=
+cl <- makePSOCKcluster(3)
+
+modTestPolitic1 <- PBmodcomp(politicModelPP3, politicModelPP, nsim = 200, 
+          cl = cl)
+
+modTestPolitic2 <- PBmodcomp(politicModelPP3, politicModelPP2, nsim = 200, 
+          cl = cl)
+
+
+stopCluster(cl)
+@
+
