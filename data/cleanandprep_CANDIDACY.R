@@ -15,16 +15,15 @@ distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopula
                        "PopWhiteAlone", "total_levy", "genaid", "per65o", 
                        "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
                        "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "eqv_member", 
-                       "balance_lag", "member", "member_delta", "millrate_delta", 
-                    "locale2", "member_lag", "ref_share", 
+                       "balance_lag", "member_datayear", "member_delta", "millrate_delta", 
+                    "locale2", "member_datayear_lag", "ref_share", 
                     "total_cat_aids_member",  
                     "tax_price", "totalincome_count", "eqv_total", 
                     "econ_disadv_per", "ADMIN_SHARE_COMP", 
                     "ADMIN_SHARE_FTE", "TOTAL_PEOPLE_ADMIN")]
 
-distAttr$balance_member_lag <- distAttr$balance_lag / distAttr$member
-distAttr$member_delta_per <- distAttr$member_delta / distAttr$member_lag
-
+distAttr$balance_member_lag <- distAttr$balance_lag / distAttr$member_datayear
+distAttr$member_delta_per <- distAttr$member_delta / distAttr$member_datayear
 rm(tmp)
 
 distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation
@@ -224,5 +223,3 @@ dist_turn <- as.data.table(dist_turn)[, contestMinorLag2:= lg2(contestMinor), by
 dist_turn <- as.data.table(dist_turn)[, contestSerLag2:= lg2(contestSer), by = "distid"]
 
 dist_turn <- as.data.frame(dist_turn)
-
-

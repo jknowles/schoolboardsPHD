@@ -152,5 +152,42 @@ RefIndicators <- RefIndicators[, c("DISTID", "YEAR", "SCHOOL_YEAR",
                                    "OVERRIDE_ATTEMPT_CUMUL93", 
                                    "OVERRIDE_PASS_CUMUL93")]
 
-ADMIN <- merge(ADMIN, RefIndicators, by = c("DISTID", "YEAR", "SCHOOL_YEAR"))
+ADMIN <- merge(ADMIN, RefIndicators, by = c("DISTID", "YEAR", "SCHOOL_YEAR"), all.x=TRUE)
 rm(RefIndicators)
+ADMIN$ADW_KEY <- NULL
+compCost$ADW_KEY <- NULL
+compRev$ADW_KEY <- NULL
+compCost$SCHID <- NULL
+compRev$SCHID <- NULL
+compCost$AGENCY_KEY_EDSTIX <- NULL
+compRev$AGENCY_KEY_EDSTIX <- NULL
+compRev$MEMBERSHIP <- NULL
+
+compFunds <- merge(compCost, compRev, by = c("DISTID", "YEAR", "SCHOOL_YEAR"))
+rm(compCost, compRev)
+
+ADMIN <- merge(ADMIN, compFunds, by = c("DISTID", "YEAR", "SCHOOL_YEAR"), all.x=TRUE)
+sparsity <- subset(sparsity, select = c("DISTID", "AREA_SQ_MILES"))
+
+ADMIN <- merge(ADMIN, sparsity, by = c("DISTID"))
+
+# Clean up WSAS
+
+WSAS <- subset(WSAS, select = c("DISTID", "YEAR", "SCHOOL_YEAR", "PUPIL_TESTED_COUNT", 
+                                "READ_PROFADV_PER", "MATH_PROFADV_PER", "KCE_TESTED_COUNT_M", 
+                                "KCE_TESTED_COUNT_R"))
+
+ADMIN <- merge(ADMIN, WSAS, by = c("DISTID", "YEAR", "SCHOOL_YEAR"), all.x = TRUE)
+
+rm(WSAS, compFunds, sparsity)
+
+zeroNA <- function(x){
+  x[is.na(x)] <- 0
+  return(x)
+}
+
+ADMIN[, 55] <- zeroNA(ADMIN[, 55])
+ADMIN[, 56] <- zeroNA(ADMIN[, 56])
+ADMIN[, 57] <- zeroNA(ADMIN[, 57])
+ADMIN[, 58] <- zeroNA(ADMIN[, 58])
+

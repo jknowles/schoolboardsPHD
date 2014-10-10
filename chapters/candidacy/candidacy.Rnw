@@ -687,6 +687,9 @@ biggerModM <- glmer(contestMinor ~ VAP_adjLOG + PerBachelorOrAbove + per_white_a
                      NEW_SUP + overrideYesPer + overrideQues  + 
                      (1|distid), data = moddat, family = "binomial", 
                    control = ctrl)
+
+biggerMod2 <- update(biggerMod, . ~ . - incumShare)
+
 rescalenote <- "All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations."
 
