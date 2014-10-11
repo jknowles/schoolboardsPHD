@@ -190,4 +190,4 @@ ADMIN[, 55] <- zeroNA(ADMIN[, 55])
 ADMIN[, 56] <- zeroNA(ADMIN[, 56])
 ADMIN[, 57] <- zeroNA(ADMIN[, 57])
 ADMIN[, 58] <- zeroNA(ADMIN[, 58])
-
+ADMIN$NonPublicPupilPer <- zeroNA(ADMIN$NonPublicPupilPer)

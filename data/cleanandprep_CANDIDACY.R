@@ -17,7 +17,7 @@ distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopula
                        "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "eqv_member", 
                        "balance_lag", "member_datayear", "member_delta", "millrate_delta", 
                     "locale2", "member_datayear_lag", "ref_share", 
-                    "total_cat_aids_member",  
+                    "total_cat_aids_member",  "eqv_adj_tifout",
                     "tax_price", "totalincome_count", "eqv_total", 
                     "econ_disadv_per", "ADMIN_SHARE_COMP", 
                     "ADMIN_SHARE_FTE", "TOTAL_PEOPLE_ADMIN")]
@@ -223,3 +223,4 @@ dist_turn <- as.data.table(dist_turn)[, contestMinorLag2:= lg2(contestMinor), by
 dist_turn <- as.data.table(dist_turn)[, contestSerLag2:= lg2(contestSer), by = "distid"]
 
 dist_turn <- as.data.frame(dist_turn)
+dist_turn$refInPlace <- zeroNA(dist_turn$refInPlace)

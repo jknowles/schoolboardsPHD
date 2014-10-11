@@ -251,6 +251,35 @@ dist_turn$ADMIN_SHARE_COMP <- (dist_turn$SALARY_TOTAL_ADMIN + dist_turn$FRINGE_T
   (dist_turn$FRINGE_TOTAL_ALL + dist_turn$SALARY_TOTAL_ALL)
 dist_turn$ADMIN_SHARE_FTE <- (dist_turn$FTE_ADMIN / dist_turn$FTE_ALL)
 
+# habit
+dist_turn$contestMinor <- 0
+dist_turn$contestMinor[dist_turn$nrealcand > dist_turn$nwins] <- 1
+dist_turn$contestSer <- 0
+dist_turn$contestSer[(dist_turn$nrealcand - dist_turn$nminor) > dist_turn$nwins] <- 1
+
+# log of dollar variables
+dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
+dist_turn$median_incomeLOG <- log(dist_turn$median_income) 
+dist_turn$balance_member_lagLOG <- ifelse(dist_turn$balance_member_lag > 0, log(dist_turn$balance_member_lag), 0) 
+dist_turn$eqv_adj_tifoutLOG <- log(dist_turn$eqv_adj_tifout) 
+dist_turn$ADJ_MEDIAN_FRINGE_TEACH[dist_turn$ADJ_MEDIAN_FRINGE_TEACH == 0] <- 1
+dist_turn$ADJ_MEDIAN_FRINGE_TEACHlog <- log(dist_turn$ADJ_MEDIAN_FRINGE_TEACH)
+dist_turn$ADJ_MEDIAN_SALARY_TEACHlog <- log(dist_turn$ADJ_MEDIAN_SALARY_TEACH)
+dist_turn$partyDivision <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
+dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
+dist_turn$incumRun <- ifelse(dist_turn$ninc > 0, 1, 0)
+dist_turn$incumShare <- dist_turn$ninc / (dist_turn$nrealcand)
+
+dist_turn$teachSalDiff <- dist_turn$ADJ_MEDIAN_SALARY_TEACHlog - 
+  dist_turn$median_incomeLOG
+
+dist_turn <- as.data.table(dist_turn)[, contestMinorLag:= lg(contestMinor), by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, contestSerLag:= lg(contestSer), by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, contestMinorLag2:= lg2(contestMinor), by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, contestSerLag2:= lg2(contestSer), by = "distid"]
+
+dist_turn <- as.data.frame(dist_turn)
+
 # load("../../data/cache/springElectionVotes.rda")
 # # load("data/cache/springElectionVotes.rda")
 # springVotes$votesTopTicketSpring <- springVotes$VotesCast

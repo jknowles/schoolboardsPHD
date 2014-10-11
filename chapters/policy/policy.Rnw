@@ -104,13 +104,12 @@ summary(glm(incsDefeated ~ READ_PROFADV_PER_LAG, data = dist_turn))
 
 <<zedzed>>=
 moddat <- dist_turn[, c("distid","year", 
-                        "balance_member_lag", "incumRun", "incumShare",
+                        "balance_member_lag", "incumShare",
                         "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
                         "districtwide",  
                         "ADMIN_SHARE_COMP", "ADMIN_SHARE_FTE", "econ_disadv_per", 
-                        "tax_price", "eqv_total", "totalincome_count", 
-                        "total_cat_aids_member", "contestSerLag", 
-                        "contestMinorLag",
+                        "tax_price", "eqv_adj_tifoutLOG", "totalincome_count", 
+                        "total_cat_aids_member", "eqv_adj_tifout",
                         "OOH_share", "median_incomeLOG", "per65o", 
                         "NonWhitePublicPupilPer", "NonPublicPupilPer", 
                         "teachShareofVoters", "locale2", 
@@ -118,56 +117,44 @@ moddat <- dist_turn[, c("distid","year",
                         "debtQues", "overrideYesPer",
                         "overridePass",  "debtPass", 
                         "fallTurnout", "SUP_TURNOVER_PRIOR_YEAR", 
-                        "DEBT_ATTEMPT_CUMUL93", "contestMinor", 
-                        "OVERRIDE_ATTEMPT_CUMUL93", "ADJ_MEDIAN_SALARY_TEACHlog",
+                        "DEBT_ATTEMPT_CUMUL93", "balance_member_lagLOG",
+                        "OVERRIDE_ATTEMPT_CUMUL93", 
                         "SUP_TURNOVER_PRIOR_YEAR", "teachSalDiff", "NEW_SUP", 
-                        "turnoutLag2", "partyDivision", "balance_member_lag",
+                        "turnoutLag2", "partyDivision", 
                         "millrate", "NonSDMill", "refInPlace", "millrate_delta",
                         "fallTwoPartyShareDem")]
 
-moddat$eqv_taxfiler <- moddat$eqv_total / moddat$totalincome_count
+# rescale all continuous variables
+moddat$year <- factor(moddat$year)
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
+moddat$districtwide <- factor(moddat$districtwide)
+moddat$NEW_SUP <- factor(moddat$NEW_SUP)
+moddat$SUP_TURNOVER_PRIOR_YEAR <- factor(moddat$SUP_TURNOVER_PRIOR_YEAR)
+moddat$debtPass <- factor(moddat$debtPass)
+moddat$overridePass <- factor(moddat$overridePass)
+moddat$debtQues <- factor(moddat$debtQues)
+moddat$overrideQues <- factor(moddat$overrideQues)
+moddat$eqv_taxfiler <- moddat$eqv_adj_tifout / moddat$totalincome_count
 moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
 moddat$per_white_all <- moddat$per_white_all * 100
 moddat$OOH_share <- moddat$OOH_share * 100
 moddat$per65o <- moddat$per65o * 100
 moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
 moddat$member_delta_per <- moddat$member_delta_per * 100
-moddat$districtwide <- factor(moddat$districtwide)
-moddat <- na.omit(moddat)
+
 # Rescale
 library(arm)
-moddat$NonWhitePublicPupilPer <- rescale(moddat$NonWhitePublicPupilPer)
-moddat$VAP_adjLOG <- rescale(moddat$VAP_adjLOG)
-moddat$per_white_all <- rescale(moddat$per_white_all)
-moddat$per65o <- rescale(moddat$per65o)
-moddat$PerBachelorOrAbove <- rescale(moddat$PerBachelorOrAbove)
-moddat$OOH_share <- rescale(moddat$OOH_share)
-moddat$median_incomeLOG <- rescale(moddat$median_incomeLOG)
-moddat$NonPublicPupilPer <- rescale(moddat$NonPublicPupilPer)
-moddat$teachShareofVoters <- rescale(moddat$teachShareofVoters)
-moddat$ADMIN_SHARE_COMP <- rescale(moddat$ADMIN_SHARE_COMP)
-moddat$ADMIN_SHARE_FTE <- rescale(moddat$ADMIN_SHARE_FTE)
-moddat$econ_disadv_per <- rescale(moddat$econ_disadv_per)
-moddat$tax_price <- rescale(moddat$tax_price)
-moddat$eqv_taxfiler <- rescale(log(moddat$eqv_taxfiler))
-moddat$totalincome_count <- rescale(moddat$totalincome_count)
-moddat$fallTurnout <- rescale(moddat$fallTurnout)
-moddat$DEBT_ATTEMPT_CUMUL93 <- rescale(moddat$DEBT_ATTEMPT_CUMUL93)
-moddat$OVERRIDE_ATTEMPT_CUMUL93 <- rescale(moddat$OVERRIDE_ATTEMPT_CUMUL93)
-moddat$teachSalDiff <- rescale(moddat$teachSalDiff)
-moddat$turnoutLag2 <- rescale(moddat$turnoutLag2)
-moddat$partyDivision <- rescale(moddat$partyDivision)
-moddat$fallTwoPartyShareDem <- rescale(moddat$fallTwoPartyShareDem)
-moddat$balance_member_lag <- rescale(moddat$balance_member_lag)
-moddat$NonSDMill <- rescale(moddat$NonSDMill)
-moddat$millrate <- rescale(moddat$millrate)
-moddat$NonSDMill <- rescale(moddat$NonSDMill)
-moddat$millrate_delta <- rescale(moddat$millrate_delta)
-moddat$overrideYesPer <- rescale(moddat$overrideYesPer)
-moddat$incumShare <- rescale(moddat$incumShare)
+
+nums <- sapply(moddat, is.numeric)
+
+for(i in unique(moddat$year)){
+  moddat[moddat$year == i, nums] <- 
+    apply(moddat[moddat$year == i, nums], 2, rescale)
+}
+
+# moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 
 library(lme4)
 library(blme)
