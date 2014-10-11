@@ -430,3 +430,4 @@ races$distid <- as.character(lapply(tmp, "[[", 1))
 races$year <- as.character(lapply(tmp, "[[", 2))
 races$raceid <- as.character(lapply(tmp, "[[", 3))
 races$electiontype <- as.character(lapply(tmp, "[[", 4))
+

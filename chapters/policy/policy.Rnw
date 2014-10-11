@@ -10,12 +10,19 @@ opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE,
                warning=FALSE, echo=FALSE, dev='pdf')
 
 setwd("../../")
+library(eeptools)
 source("data/cleanandprep_POLICY.R")
 library(scales)
 library(xtable)
-library(eeptools)
 
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
+
+iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
+                                           digits = 3)}
+iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
+                                                  digits = 3)),"\\%")}
+iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
+                                                   digits = 3)),"%")}
 @
 
 \section{Introduction}
@@ -44,10 +51,32 @@ election.
 % Board turnover writ large = change
 % Incumbent defeat should change things
 
+
 <<incdefeat>>=
+incDefeat <- ddply(dat[dat$electiontype == 1,], 
+                   .(distid, year), 
+                   summarise, 
+                   incsDefeated = sum(incumbent[winner == 0]), 
+                   incsTotal = sum(incumbent), 
+                   winnersTotal = sum(winner))
 
+# incumbents defeated can exceed number of winners, especially when races 
+# consolidate
 
+fw  <- function(x) c(x[2:length(x)], NA)
+# lg  <- function(x) c(NA, x[2:length(x)])
 
+dist_turn <- merge(dist_turn, incDefeat, by = c("distid", "year")) 
+library(data.table)
+dist_turn <- dist_turn[order(dist_turn$distid, dist_turn$year),]
+dist_turn <- as.data.table(dist_turn)[, NEW_SUP_FW:= fw(NEW_SUP), by = "distid"]
+dist_turn <- as.data.frame(dist_turn)
+
+# head(dist_turn[, c("distid", "year", "NEW_SUP", "NEW_SUP_FW")], 25)
+@
+
+<<newsup>>=
+summary(glm(NEW_SUP_FW ~ incsDefeated, data = dist_turn, family = 'binomial'))
 @
 
 \section{School Boards and Policy Change}
@@ -57,7 +86,7 @@ three areas - 1) superintendent turnover as policy change, 2) setting tax levies
 3) making direct policy changes about social issues, and 4) changes resulting in 
 student outcomes. 
 
-Much of the work referred to in Chapter \ref{chap:theoryreview} dealt with the impact 
+Much of the work referred to in Chapter \ref{chap:intro} dealt with the impact 
 of school boards on policy change. In fact, both the dissatisfaction theory and the 
 public choice theories of school board politics include superintendent turnover 
 as key evidence \citep{RefWorks:297,RefWorks:271, RefWorks:351, RefWorks:339,RefWorks:340,RefWorks:243}. 
