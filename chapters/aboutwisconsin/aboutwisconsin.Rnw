@@ -823,6 +823,38 @@ contestation is called into doubt.
 % merit special consideration. Unfortunately, write-in candidates are often not 
 % noted in election returns explicitly in Wisconsin school board elections. 
 
+\subsection{Incumbent Defeat}
+
+As we saw in Chapter \ref{chap:intro}, incumbent defeat is an important concept 
+in the school board literature \citep{RefWorks:311,RefWorks:264}. Incumbent defeat has been shown to be 
+difficult to measure in the school board election literature due to a lack of 
+available records and the fact that most prior studies have relied on surveys of 
+current and former school board members. Using self-reports and lists of current 
+and past members of school board members does not provide a reliable way to distinguish 
+between political and apolitical forms of turnover \citep{RefWorks:311}. Using 
+incumbent electoral feat is not a perfect measure, because it does not capture 
+cases where an incumbent finds it not worth it to run for office. 
+
+<<incDefeat>>=
+incDefeat <- ddply(dat[dat$electiontype == 1 & dat$year > 2006 & dat$year < 2013,], 
+                   .(distid, year), 
+                   summarise, 
+                   incsDefeated = sum(incumbent[winner == 0]), 
+                   incsTotal = sum(incumbent), 
+                   winnersTotal = sum(winner))
+
+table.tmp <- table(incDefeat$incsDefeated > 0, incDefeat$year)
+table.tmp <- prop.table(table.tmp, margin = 2) * 100
+table.tmp <- apply(table.tmp, MARGIN = 2, FUN=iPer2)
+row.names(table.tmp) <- c("No Incumbent Defeat", "Incumbent Defeat")
+table.tmp <- xtable(table.tmp, label = "tab:incumbentDefeat", 
+                    caption = "Districts featuring an incumbent defeat 2007-2012.")
+
+print(table.tmp, include.rownames=TRUE, size = "small")
+rm(incDefeat)
+@ 
+
+
 \subsection{Voter Turnout}
 \label{subsec:turnout}
 
