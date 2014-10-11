@@ -4,13 +4,20 @@ load("data/cache/DataMergeVAP.rda")
 load("data/cache/fullDataSep2014.rda")
 
 
-distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopulation",
-                    "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o", 
+distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", 
+                    "AdjPopulation",
+                    "PopWhiteAlone", "total_levy", "genaid", "per65o", 
                     "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
                     "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "eqv_member", 
-                    "total_levy", "genaid", 
-                    "balance_lag", "member_aidyear", "member_delta", "millrate_delta", 
-                    "locale2", "member_lag", "ref_share")]
+                    "balance_lag", "member_datayear", "member_delta", 
+                    "millrate_delta", "locale2", "member_datayear_lag", 
+                    "ref_share", "member_aidyear", "total_cat_aids_member",  
+                    "tax_price", "totalincome_count", "eqv_adj_tifout", 
+                    "econ_disadv_per")]
+
+distAttr$balance_member_lag <- distAttr$balance_lag / distAttr$member_datayear
+distAttr$member_delta_per <- distAttr$member_delta / distAttr$member_datayear
+
 
 rm(tmp)
 
@@ -237,6 +244,12 @@ names(distvotes12r) <- paste(names(distvotes12r), "recall", sep ="_")
 dist_turn <- merge(dist_turn, distvotes12r, by.x = "distid", 
                    by.y = "distid_recall")
 dist_turn$GovTurnout_recall <- dist_turn$RECTOT_recall / dist_turn$VAP_adj 
+
+
+
+dist_turn$ADMIN_SHARE_COMP <- (dist_turn$SALARY_TOTAL_ADMIN + dist_turn$FRINGE_TOTAL_ADMIN) / 
+  (dist_turn$FRINGE_TOTAL_ALL + dist_turn$SALARY_TOTAL_ALL)
+dist_turn$ADMIN_SHARE_FTE <- (dist_turn$FTE_ADMIN / dist_turn$FTE_ALL)
 
 # load("../../data/cache/springElectionVotes.rda")
 # # load("data/cache/springElectionVotes.rda")
