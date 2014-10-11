@@ -64,19 +64,40 @@ incDefeat <- ddply(dat[dat$electiontype == 1,],
 # consolidate
 
 fw  <- function(x) c(x[2:length(x)], NA)
+lg  <- function(x) c(NA, x[1:length(x)-1])
 # lg  <- function(x) c(NA, x[2:length(x)])
 
 dist_turn <- merge(dist_turn, incDefeat, by = c("distid", "year")) 
 library(data.table)
 dist_turn <- dist_turn[order(dist_turn$distid, dist_turn$year),]
 dist_turn <- as.data.table(dist_turn)[, NEW_SUP_FW:= fw(NEW_SUP), by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      READ_PROFADV_PER_LAG:= lg(READ_PROFADV_PER),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      MATH_PROFADV_PER:= lg(MATH_PROFADV_PER),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      incsDefeatedLag:= lg(incsDefeated),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      incsTotalLag:= lg(incsTotal),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      winnersTotalLag:= lg(winnersTotal),
+                                      by = "distid"]
+
 dist_turn <- as.data.frame(dist_turn)
 
-# head(dist_turn[, c("distid", "year", "NEW_SUP", "NEW_SUP_FW")], 25)
+# head(dist_turn[, c("distid", "year", "NEW_SUP", 
+#                  "NEW_SUP_FW", "READ_PROFADV_PER", "READ_PROFADV_PER_LAG")], 25)
 @
 
 <<newsup>>=
-summary(glm(NEW_SUP_FW ~ incsDefeated, data = dist_turn, family = 'binomial'))
+summary(glm(NEW_SUP ~ incsDefeatedLag, data = dist_turn, family = 'binomial'))
+summary(glm(millrate ~ incsDefeatedLag, data = dist_turn))
+summary(glm(incsDefeated ~ READ_PROFADV_PER_LAG, data = dist_turn))
+# summary(glm(READ_PROFADV_PER ~ incsDefeated, data = dist_turn))
 @
 
 \section{School Boards and Policy Change}
