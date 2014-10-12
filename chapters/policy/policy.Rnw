@@ -86,6 +86,9 @@ dist_turn <- as.data.table(dist_turn)[,
 dist_turn <- as.data.table(dist_turn)[, 
                                       winnersTotalLag:= lg(winnersTotal),
                                       by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      nrealcandLag:= lg(nrealcand),
+                                      by = "distid"]
 
 dist_turn <- as.data.frame(dist_turn)
 
@@ -94,19 +97,20 @@ dist_turn <- as.data.frame(dist_turn)
 @
 
 <<newsup>>=
-summary(glm(NEW_SUP ~ incsDefeatedLag, data = dist_turn, family = 'binomial'))
-summary(glm(millrate ~ incsDefeatedLag, data = dist_turn))
-summary(glm(incsDefeated ~ READ_PROFADV_PER_LAG, data = dist_turn))
-# summary(glm(READ_PROFADV_PER ~ incsDefeated, data = dist_turn))
+# summary(glm(NEW_SUP ~ incsDefeatedLag, data = dist_turn, family = 'binomial'))
+# summary(glm(millrate ~ incsDefeatedLag, data = dist_turn))
+# summary(glm(incsDefeated ~ READ_PROFADV_PER_LAG, data = dist_turn))
+# # summary(glm(READ_PROFADV_PER ~ incsDefeated, data = dist_turn))
 @
 
 
 
 <<zedzed>>=
 moddat <- dist_turn[, c("distid","year", "incsDefeatedLag", "incsDefeated",
-                        "balance_member_lag", "incumShare",
+                        "balance_member_lag", "incumShare", "nrealcand",
                         "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
-                        "districtwide",  "TCEC", 
+                        "districtwide",  "TEC_MEMBER", "TCEC_MEMBER","TDC_MEMBER",
+                        "PROPERTYTAX_REV_SHARE",
                         "ADMIN_SHARE_COMP", "ADMIN_SHARE_FTE", "econ_disadv_per", 
                         "tax_price", "eqv_adj_tifoutLOG", "totalincome_count", 
                         "total_cat_aids_member", "eqv_adj_tifout",
@@ -171,10 +175,11 @@ ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
 
 
 noDistEff <- glm(incsDefeatedFac ~ VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + 
+                   per_white_all + nrealcand+
                     OOH_share +  per65o + median_incomeLOG + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC +   
+                    ADMIN_SHARE_COMP + TCEC_MEMBER +  
+                   PROPERTYTAX_REV_SHARE +
                     districtwide + econ_disadv_per+ 
                      eqv_taxfiler + READ_PROFADV_PER_LAG + 
                    DEBT_ATTEMPT_CUMUL93 +  
@@ -184,13 +189,18 @@ noDistEff <- glm(incsDefeatedFac ~ VAP_adjLOG + PerBachelorOrAbove +
                  data = moddat, family = "binomial")
 
 
-biggerMod <- glmer(incsDefeatedFac ~ VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all +  OOH_share +  per65o + median_incomeLOG + 
+biggerMod <- glmer(incsDefeatedFac ~  VAP_adjLOG + PerBachelorOrAbove + 
+                   per_white_all + nrealcand+
+                    OOH_share +  per65o + median_incomeLOG + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
-                     TCEC + districtwide + econ_disadv_per+ 
-                  eqv_taxfiler + READ_PROFADV_PER_LAG + 
-                   teachSalDiff + partyDivision + balance_member_lag +  
-                     NEW_SUP + 
+                    ADMIN_SHARE_COMP + TCEC_MEMBER +  
+                   PROPERTYTAX_REV_SHARE +
+                    districtwide + econ_disadv_per+ 
+                     eqv_taxfiler + MATH_PROFADV_PER_LAG + 
+                   DEBT_ATTEMPT_CUMUL93 +  
+                   teachSalDiff + partyDivision + 
+                    balance_member_lag + debtPass + debtQues + 
+                     NEW_SUP + overridePass + overrideQues+ 
                      (1|distid), data = moddat, family = "binomial" , 
                     control = ctrl)
 
@@ -280,9 +290,10 @@ to estimate the following equation:
 
 <<supturn>>=
 moddat <- dist_turn[, c("distid","year", "incsDefeatedLag", "incsDefeated",
-                        "balance_member_lag", "incumShare",
+                        "balance_member_lag", "incumShare", "nrealcandLag",
                         "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
-                        "districtwide",  "TCEC", 
+                        "districtwide",  "TEC_MEMBER", "TCEC_MEMBER","TDC_MEMBER",
+                        "PROPERTYTAX_REV_SHARE",
                         "ADMIN_SHARE_COMP", "ADMIN_SHARE_FTE", "econ_disadv_per", 
                         "tax_price", "eqv_adj_tifoutLOG", "totalincome_count", 
                         "total_cat_aids_member", "eqv_adj_tifout",
@@ -300,6 +311,7 @@ moddat <- dist_turn[, c("distid","year", "incsDefeatedLag", "incsDefeated",
                         "millrate", "NonSDMill", "refInPlace", "millrate_delta",
                         "fallTwoPartyShareDem", 
                         "READ_PROFADV_PER_LAG", "MATH_PROFADV_PER_LAG")]
+
 
 # rescale all continuous variables
 moddat$year <- factor(moddat$year)
@@ -338,12 +350,12 @@ noDistEff <- glm(NEW_SUP ~ VAP_adjLOG + PerBachelorOrAbove +
                    per_white_all + 
                     OOH_share +  per65o + median_incomeLOG + 
                     NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC +   
+                    ADMIN_SHARE_COMP + TCEC_MEMBER + PROPERTYTAX_REV_SHARE +    
                     districtwide + econ_disadv_per+ 
                      eqv_taxfiler + READ_PROFADV_PER_LAG + 
                      teachSalDiff + partyDivision + 
                     balance_member_lag +
-                     incsDefeatedLag, 
+                     incsDefeatedLag + nrealcandLag, 
                  data = moddat, family = "binomial")
 
 
@@ -365,9 +377,42 @@ biggerMod <- glmer(NEW_SUP ~ VAP_adjLOG + PerBachelorOrAbove +
 
 \subsection{Revenue Limit Override}
 
+
+<<Revenue>>=
+
+
+@
+
 \subsection{Change in Student Outcomes}
 
+<<studentScores>>=
 
+noDistEff <- lm(READ_PROFADV_PER ~ VAP_adjLOG + PerBachelorOrAbove + 
+                   per_white_all + 
+                    OOH_share +  per65o + median_incomeLOG + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    ADMIN_SHARE_COMP + TCEC +   
+                    districtwide + econ_disadv_per+ 
+                     eqv_taxfiler +  
+                     teachSalDiff + partyDivision + 
+                    balance_member_lag +
+                     incsDefeatedLag, 
+                 data = moddat, family = "binomial")
+
+
+biggerMod <- glmer(NEW_SUP ~ VAP_adjLOG + PerBachelorOrAbove + 
+                   per_white_all + 
+                    OOH_share +  per65o + median_incomeLOG + 
+                    NonWhitePublicPupilPer + NonPublicPupilPer + 
+                    ADMIN_SHARE_COMP + TCEC +   
+                    districtwide + econ_disadv_per+ 
+                     eqv_taxfiler + READ_PROFADV_PER_LAG + 
+                     teachSalDiff + partyDivision + 
+                    balance_member_lag +
+                     incsDefeatedLag+ 
+                     (1|distid), data = moddat, family = "binomial" , 
+                    control = ctrl)
+@
 
 
 \section{Conclusion}

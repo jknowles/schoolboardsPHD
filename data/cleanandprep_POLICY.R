@@ -280,6 +280,7 @@ dist_turn <- as.data.table(dist_turn)[, contestSerLag2:= lg2(contestSer), by = "
 
 dist_turn <- as.data.frame(dist_turn)
 
+rm(distAttr, distvotes12r, dvp, govTurn, presTurn, wercDatALL, wercDatTeachers)
 # load("../../data/cache/springElectionVotes.rda")
 # # load("data/cache/springElectionVotes.rda")
 # springVotes$votesTopTicketSpring <- springVotes$VotesCast

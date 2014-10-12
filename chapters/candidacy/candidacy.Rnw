@@ -227,6 +227,33 @@ explanations about the motivations of school board candidates
 in a more rigorous way may help shed light on the motivations of the larger pool of 
 candidates. 
 
+\subsection{Local Officials}
+
+A thread of political science has always kept an eye on the application of theories 
+of electoral participation and candidacy in local elections. \citet{oliver} identifies 
+a framework for understanding the variability in electoral participation across 
+governmental units around the concepts of size, scope, and bias. In this framework, 
+the amount and type of political contestation for local offices is shaped by the 
+relative size of the governmental unit, the scope of that unit's policymaking, and 
+the specificity or universality of the benefits and services provided by that unit 
+to the population. Thus, in order to understand the likelihood of new candidates 
+to run for office, we must account for the size of the population from which 
+candidates may be drawn, the variation in the level of services the governmental 
+unit provides, and the degree to which those services are distributed evenly within 
+the community. Wisconsin school districts provide a good test for the size and the 
+bias tests, but almost all school districts are equal in the scope of their 
+policymaking as they are proscribed in state law. 
+
+In doing so, \citet{oliver} focuses on institutional characteristics of local 
+government units and the role they play in encouraging or discouraging political 
+participation. This framework is useful in the present study, which is limited 
+in its information about any individual candidate, but extensive in the information 
+available on the community those candidates are seeking to represent. 
+
+\citet{krebs} provides a model for a study of the effect of incumbency and the 
+participation of candidates in local elections. That study restricts candidates 
+to those receiving 5\% of the vote and includes a measure for the level of competition. 
+
 \subsection{Summary}
 
 All three of these traditions leave something to be desired in the context of 
@@ -243,6 +270,16 @@ in turnout. This chapter will first explore the extent to which this stylized
 representation of school board elections rings true in the Wisconsin case, and second 
 seek to evaluate the explanatory power of these theories in reaching down to the 
 local level and explaining the entry of candidates into school board races.
+
+An important overarching distinction is that most of the previous literature on 
+local elections and school boards treats the individual race between candidates 
+as the atomic unit. This study does not do so for a number of reasons. First, 
+school board races are less frequently head to head contests for a single seat 
+than other common forms of local government such as city council, mayoral, or 
+county board seats. Second, theory suggests that voters have very little information 
+about individual school board members and are much more likely to make any voting 
+decisions about the board as a whole by evaluating district wide conditions instead 
+of features of individual board members \cite{oliver}. 
 
 \section{Data and Methods}
 
@@ -302,7 +339,10 @@ districts in the state.
 
 As shown in table \ref{tab:samplecomp}, there is little difference between schools 
 in and out of the sample. From Chapter \ref{chap:wisco} we saw that the school 
-districts providing records 
+districts providing records did not differ significantly in any key variable 
+from those who did not provide records on observable characteristics. 
+
+
 
 \subsubsection{Dependent Variable}
 
@@ -501,7 +541,8 @@ improved!
 Let's look at within district variability. We can do this by fitting partial pooling 
 models using a random-intercept framework of \citet{gelhill} using the \texttt{lme4} 
 package in R \citep{lme4, cran}. This method will allow us to estimate changes in 
-trends within districts and separate between and within district variance. 
+trends within districts and separate between and within district variance in the 
+probability of a competitive election. 
 
 The model estimated follows the form:
 
@@ -569,7 +610,7 @@ of a challenge.
 %% model beta by district, # of contested out of # of races
 %% model nested, races in districts
 
-<<freshmods>>=
+<<freshmods, results='asis'>>=
 moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
                         "incumRun", "incumShare",
                         "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
@@ -736,10 +777,10 @@ biggerMod2 <- update(biggerMod, . ~ . - incumShare)
 rescalenote <- "All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations."
 
-apsrtable(noDistEff, biggerMod, biggerModM, se = "vcov", 
+apsrtable(noDistEff, biggerMod, biggerMod2, biggerModM, se = "vcov", 
           float = "longtable",
           label="tab:bigmods", 
-          model.names=c("Serious Cand. Lag", "Serious Cand. ME", 
+          model.names=c("Serious Cand. Lag", "Serious Cand. ME", "Serious Cand. ME2"
                         "Minor Cand. ME"), 
           caption = "Models of Contestation in School Board Elections",
           notes = list(stars.note, rescalenote),
@@ -754,6 +795,7 @@ confInts <- confint(bmProf, level = .95)
 
 
 @
+
 \subsubsection{Demographics}
 <<demogModel, results='asis'>>=
 moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
