@@ -835,7 +835,7 @@ between political and apolitical forms of turnover \citep{RefWorks:311}. Using
 incumbent electoral feat is not a perfect measure, because it does not capture 
 cases where an incumbent finds it not worth it to run for office. 
 
-<<incDefeat>>=
+<<incDefeat, results='asis'>>=
 incDefeat <- ddply(dat[dat$electiontype == 1 & dat$year > 2006 & dat$year < 2013,], 
                    .(distid, year), 
                    summarise, 

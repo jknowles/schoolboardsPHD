@@ -142,7 +142,8 @@ ADMIN$overridePass <- ifelse(ADMIN$overridePass >= 1, 1, 0)
 ADMIN$overrideQues <- ifelse(ADMIN$overrideQues >= 1, 1, 0)
 # Calculate override failure
 ADMIN$overrideFail <- ifelse(ADMIN$overrideQues > 0 & ADMIN$overridePass < 1, 1, 0)
-
+ADMIN$debtFail <- ifelse(ADMIN$debtQues > 0 & ADMIN$debtPass < 1, 1, 0)
+ADMIN$elecFail <- ifelse(ADMIN$overrideFail > 0 | ADMIN$debtFail > 0, 1, 0)
 RefIndicators$OVERRIDE_ATTEMPT_CUMUL93 <- RefIndicators$NONRECUR_ATTEMPT_CUMUL93 + 
   RefIndicators$RECUR_ATTEMPT_CUMUL93
 RefIndicators$OVERRIDE_PASS_CUMUL93 <- RefIndicators$NONRECUR_PASS_CUMUL93 + 
