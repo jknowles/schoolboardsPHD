@@ -239,7 +239,7 @@ SAMPSIZE <- length(unique(SBELEC$distid))
 
 mysub <- FULLDAT[FULLDAT$year == 2012, ]
 
-selectVars <- c("TOTPOP", "member", "econ_disadv_per", 
+selectVars <- c("TOTPOP", "member_aidyear", "econ_disadv_per", 
                 "millrate", "toprepshare", "PerBachelorOrAbove", "per_white_all","avg_salary", "average_fringe", 
                 "median_income", "OOH_share", "balance_member_lag", "teacherpupil_ratio", 
                 "eqv_member")

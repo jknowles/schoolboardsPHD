@@ -11,8 +11,8 @@ dvp$totpop <- NULL
 MACROpart <- merge(VAP_dist, dvp, by=c("distid", "year"))
 rm(VAP_dist, dvp)
 
-load("data/cache/AnalyticalSampleFeb2014.rda")
-FINANCE <- newdat; rm(newdat)
+load("data/cache/fullDataSep2014.rda")
+FINANCE <- tmp; rm(tmp)
 
 
 SByear_gen <- as.data.table(dat[dat$electiontype==1,])[, 
@@ -54,19 +54,23 @@ SBELEC$primary[SBELEC$contested == 1] <- "Contested"
 SBELEC$contested <- NULL
 SBELEC$electiontype <- NULL
 
-FINANCE <- FINANCE[, unique(c("distid", "year", "fte_teachers", "ref_attp_flag", "attempts", 
-                      "cum_attptsD", "enrollment", "white_count", "TotalPopulation", 
-                      "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o",
+FINANCE$AVERAGE_FRINGE_teachers <- FINANCE$FRINGE_TOTAL_teachers / FINANCE$FTE_teachers
+FINANCE$balance_member_lag <- FINANCE$balance_lag / FINANCE$member_datayear_lag
+
+FINANCE <- FINANCE[, c("distid", "year", "FTE_teachers", "ref_attp_flag", "questions", 
+                      "nonwhitePupilPercentPublic", "TotalPublicPupilCount", "TotalPopulation", 
+                      "PopWhiteAlone", "total_levy", "genaid", "per65o",
                       "levy_chg", "Population18O", "ref_share", "median_income",
                       "PerBachelorOrAbove", "OOH_share", "millrate", "locale2", 
-                      "balance_member_lag", "member_lag", "millrate_lag", "overlevy_ind_lag", 
-                      "underlevy_ind_lag", "millrate_delta", "member_delta", 
-                      "avg_salary", "average_fringe", "avg_total_exp", 
-                      "total_attempts", "member", "econ_disadv_per",  "teacherpupil_ratio", 
-                      "eqv_member"))]
+                      "balance_member_lag", "member_datayear_lag", "millrate_lag",
+                      "millrate_delta", "member_delta", 
+                      "ADJ_MEDIAN_SALARY_teachers", "AVERAGE_FRINGE_teachers", "EXPER_YRS_WGHT_FTE_teachers", 
+                      "member_datayear", "econ_disadv_per",  "teacherpupil_ratio", 
+                      "eqv_member")]
 
 
-FINANCE$per_white_students <- FINANCE$white_count / FINANCE$enrollment
+FINANCE$per_white_students <- FINANCE$nonwhitePupilPercentPublic
+FINANCE$nonwhitePupilPercentPublic <- NULL
 FINANCE$per_white_all <- FINANCE$PopWhiteAlone / FINANCE$TotalPopulation
 
 FULLDAT <- merge(MACROpart, FINANCE, by = c("distid", "year"))
@@ -160,28 +164,34 @@ asinh_trans <- function(){
 ###################
 
 load("data/cache/DataMergeVAP.rda")
-load("data/cache/AnalyticalSampleFeb2014.rda")
+load("data/cache/fullDataSep2014.rda")
 
-distAttr <- newdat[, c("distid", "year", "fte_teachers", "ref_attp_flag", "attempts", 
-                       "cum_attptsD", "enrollment", "white_count", "TotalPopulation", 
-                       "PopWhiteAlone", "PCI", "total_levy", "genaid", "per65o", 
-                       "PerBachelorOrAbove", "OOH_share", "millrate", 
-                       "cum_attptsD", "millrate", "overlevy_ind_lag", 
-                       "perwhite", "levy_chg", "ref_share", "balance_member_lag", 
-                       "avg_salary", "average_fringe", "avg_total_exp", 
-                       "dv_r", "member_delta", "total_attempts", 
-                       "median_income", "locale2", "member_lag", 
-                       "millrate_lag", "overlevy_ind_lag", 
-                       "underlevy_ind_lag", "millrate_delta", "total_attempts")]
+tmp$AVERAGE_FRINGE_teachers <- tmp$FRINGE_TOTAL_teachers / tmp$FTE_teachers
+tmp$balance_member_lag <- tmp$balance_lag / tmp$member_datayear_lag
+
+distAttr <- tmp[, c("distid", "year", "FTE_teachers", "ref_attp_flag", "questions", 
+                       "nonwhitePupilPercentPublic", "TotalPublicPupilCount", "TotalPopulation", 
+                       "PopWhiteAlone", "total_levy", "genaid", "per65o",
+                       "levy_chg", "Population18O", "ref_share", "median_income",
+                       "PerBachelorOrAbove", "OOH_share", "millrate", "locale2", 
+                       "balance_member_lag", "member_datayear_lag", "millrate_lag",
+                       "millrate_delta", "member_delta", 
+                       "ADJ_MEDIAN_SALARY_teachers", "AVERAGE_FRINGE_teachers", "EXPER_YRS_WGHT_FTE_teachers", 
+                       "member_datayear", "econ_disadv_per",  "teacherpupil_ratio", 
+                       "eqv_member")]
 
 
 
 #winshare_lag1, attemptsD_lag1
 
-rm(newdat)
+rm(tmp)
 
-distAttr$per_white_students <- distAttr$white_count / distAttr$enrollment
+
+distAttr$per_white_students <- distAttr$nonwhitePupilPercentPublic
+distAttr$nonwhitePupilPercentPublic <- NULL
 distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation
+
+
 distAttr$white_count <- NULL
 distAttr$PopWhiteAlone <- NULL
 distAttr$TotalPopulation <- NULL
@@ -305,7 +315,7 @@ dist_turn.tmp$turnout <- NULL
 dist_turn.tmp <- as.data.frame(dist_turn.tmp)
 dist_turn <- merge(dist_turn, dist_turn.tmp)
 rm(dist_turn.tmp)
-dist_turn$teachShareofVoters <- round(dist_turn$fte_teachers,0) / dist_turn$votersLag2
+dist_turn$teachShareofVoters <- round(dist_turn$FTE_teachers,0) / dist_turn$votersLag2
 dist_turn$teachShareofVoters[!is.finite(dist_turn$teachShareofVoters)] <- 0
 cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
 votes.tmp <- merge(cand.tmp, as.data.frame(races)[races$nwins >0, c("raceid2", "votes", 
