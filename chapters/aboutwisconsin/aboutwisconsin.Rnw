@@ -240,8 +240,11 @@ SAMPSIZE <- length(unique(SBELEC$distid))
 mysub <- FULLDAT[FULLDAT$year == 2012, ]
 
 selectVars <- c("TOTPOP", "member_aidyear", "econ_disadv_per", 
-                "millrate", "toprepshare", "PerBachelorOrAbove", "per_white_all","avg_salary", "average_fringe", 
-                "median_income", "OOH_share", "balance_member_lag", "teacherpupil_ratio", 
+                "millrate", "toprepshare", "PerBachelorOrAbove", 
+                "per_white_all","ADJ_MEDIAN_SALARY_teachers", 
+                "AVERAGE_FRINGE_teachers", 
+                "median_income", "OOH_share", "balance_member_lag", 
+                "teacherpupil_ratio", 
                 "eqv_member")
 
 rnames <- c("Total Population", "Membership", 
@@ -331,7 +334,7 @@ the electorate is much more Democratic, student poverty is higher, and teacher
 salaries and median incomes are more divergent. 
 
 <<small5, results='asis'>>=
-tmp.mat <- head(mysub[order(mysub$member), c("legal_name", selectVars)], 5)
+tmp.mat <- head(mysub[order(mysub$member_aidyear), c("legal_name", selectVars)], 5)
 row.names(tmp.mat) <- tmp.mat[,1]
 tmp.mat <- tmp.mat[,-1]
 small5 <- as.data.frame(t(tmp.mat))
@@ -355,7 +358,7 @@ rm(small5)
 @
 
 <<big5, results='asis'>>=
-tmp.mat <- head(mysub[order(-mysub$member), c("legal_name", selectVars)], 5)
+tmp.mat <- head(mysub[order(-mysub$member_aidyear), c("legal_name", selectVars)], 5)
 row.names(tmp.mat) <- tmp.mat[,1]
 tmp.mat <- tmp.mat[,-1]
 big5 <- as.data.frame(t(tmp.mat))
@@ -975,9 +978,6 @@ print(table1,
       include.rownames = FALSE, 
       format.args = list(big.mark = ",", decimal.mark = "."), 
       size = "footnotesize")
-
-
-
 @
 
 As shown in Table \ref{tab:turnoutEst}, the estimation procedure accurately 

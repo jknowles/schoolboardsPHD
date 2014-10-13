@@ -63,7 +63,7 @@ FINANCE <- FINANCE[, c("distid", "year", "FTE_teachers", "ref_attp_flag", "quest
                       "levy_chg", "Population18O", "ref_share", "median_income",
                       "PerBachelorOrAbove", "OOH_share", "millrate", "locale2", 
                       "balance_member_lag", "member_datayear_lag", "millrate_lag",
-                      "millrate_delta", "member_delta", 
+                      "millrate_delta", "member_delta", "member_aidyear",
                       "ADJ_MEDIAN_SALARY_teachers", "AVERAGE_FRINGE_teachers", "EXPER_YRS_WGHT_FTE_teachers", 
                       "member_datayear", "econ_disadv_per",  "teacherpupil_ratio", 
                       "eqv_member")]

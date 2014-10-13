@@ -780,7 +780,8 @@ rescalenote <- "All continuous variables rescaled to center 0
 apsrtable(noDistEff, biggerMod, biggerMod2, biggerModM, se = "vcov", 
           float = "longtable",
           label="tab:bigmods", 
-          model.names=c("Serious Cand. Lag", "Serious Cand. ME", "Serious Cand. ME2"
+          model.names=c("Serious Cand. Lag", "Serious Cand. ME", 
+                        "Serious Cand. ME2",
                         "Minor Cand. ME"), 
           caption = "Models of Contestation in School Board Elections",
           notes = list(stars.note, rescalenote),
