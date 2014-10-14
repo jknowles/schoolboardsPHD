@@ -403,10 +403,14 @@ apsrtable(noDistEff, biggerMod, se = "vcov",
           Sweave=FALSE, digits = 3)
 @
 
+\clearpage
+
 \subsection{Revenue Limit Override}
 
+Some text
+\begin{small}
 
-<<Revenue>>=
+<<Revenue, results='asis'>>=
 moddat <- dist_turn[, c("distid","year", "incsDefeatedLag", "incsDefeated",
                         "balance_member_lag", "incumShare", "nrealcandLag",
                         "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
@@ -496,9 +500,12 @@ apsrtable(noDistEff, biggerMod, se = "vcov",
           Sweave=FALSE, digits = 3)
 
 @
+\end{small}
+\clearpage
 
 \subsection{Change in Student Outcomes}
 
+\begin{tiny}
 <<studentScores, results='asis'>>=
 moddat <- dist_turn[, c("distid","year", "incsDefeatedLag", "incsDefeated",
                         "balance_member_lag", "incumShare", "nrealcandLag",
@@ -615,6 +622,7 @@ apsrtable(noDistEffR, biggerModR, noDistEffM, biggerModM, se = "vcov",
           Sweave=FALSE, digits = 3)
 
 @
+\end{tiny}
 
 \clearpage
 
