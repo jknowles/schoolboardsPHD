@@ -159,6 +159,8 @@ policy change. We can test these different theories directly using an array
 of district-level attributes to predict the emergence of new candidates or the 
 emergence of more candidates than seats (a challenge to the board). 
 
+#### Data
+
 Dependent variables, at the school district - year level:
 
 * Number of candidates > number of seats
@@ -192,7 +194,7 @@ sensitive to demographic conditions, political conditions, financial conditions,
 or policy conditions. In this vein, the available analyses can be grouped into 
 three categories:
 
-Demographics: 
+#### Demographics: 
 
 * Population size
 * Percent bachelor or above
@@ -213,7 +215,7 @@ serve a narrower portion of the population because of the availability of privat
 options, or where the community served by public schools differs demographically 
 from the population candidates are drawn from, school board service may be lower. 
 
-Politics:
+#### Politics:
 
 * Election turnout in previous fall on-cycle election (president or gubernatorial)
 * Two party vote share for Democrat in previous fall election
@@ -228,7 +230,7 @@ partisan preferences of the school board electorate. School boards are expected
 to be non-partisan, but partisan division in a community may lead to more political 
 conflict at all levels of government, including school boards. 
 
-Policy: 
+#### Policy: 
 
 * Superintendent turnover
 * School referenda election attempt
@@ -255,19 +257,214 @@ changes in the district fiscal health as measured by available savings,
 the property wealth of the school district, and finally a diverse array of student 
 performance metrics. 
 
+#### Causal Impact of State Level Policy Shock
 
+While the above analysis cannot provide a true estimate of the causal impact of 
+school district characteristics on the likelihood of candidate emergence, due to 
+concerns such as omitted variable bias, the exogenous nature of the passage of 
+Wisconsin Act 10 does allow for the causal impact of one factor to be evaluated - 
+state level policy shocks. For a number of reasons, the passage of Act 10 and 
+subsequent state level political activity in Wisconsin represents a quasi-experimental 
+framework to explore the role that state level policy shocks can play in local 
+elections: 
 
+* Act 10 changed the powers of school boards substantially
+* Act 10 impacted education policy greatly and the link to education was clear
+* The magnitude of the debate around Act 10 provided a large statewide public information 
+campaign around the impact, informing voters
+* Act 10 mobilized interest groups for and against public employee unions
+* Act 10 affected school districts of all sizes equally (unlike a funding formula change)
+* Act 10 coupled with historic cuts to state school funding provided a statewide discussion 
+about the role of the state and local government in provisioning of public eduction
+
+In addition to the policy shock which took place during 2011, there was an additional 
+feature of this period in Wisconsin that makes it an ideal quasi-experiment. Governor 
+Scott Walker, the face of this public policy, faced election and then a historic 
+recall election on either side of the passage of Act 10 and the cuts to school funding. 
+Both of these elections were characterized by high turnout and provide a window into the 
+views of voters on this policy. 
+
+To take advantage of this, I estimate a longitudinal model of contestation in 
+school boards (candidates > seats) and include dummy variables for the post-Act 10 
+elections interacted with local support for Scott Walker as measured by his vote 
+share during the recall election in June of 2012. As an alternative I could interact 
+the movement in his vote share from the pre Act 10 election to the June 2012 recall 
+as an interaction to see if position shift is more important. 
 
 ## Why Vote for School Board?
 
-In Wisconsin, school board elections are held during the non-partisan spring 
+The puzzle of voting is central to the study of political science, and has sparked 
+much innovation in the field. However, much of this literature has focused on why 
+voters vote in partisan national and statewide elections. As Oliver (2012) illustrates, 
+if it is difficult to understand the rational decision to vote in national elections, 
+it is even more puzzling why voters turnout for non-partisan, low information, off-cycle 
+local races. In Wisconsin, school board elections are held during the non-partisan spring 
 election cycle. This results in a lower voter turnout (noted by others). A 
-key question in the school board literature, much like the broader political 
+key question in the school board literature then, much like the broader political 
 science literature, is why do voters vote, and what does that decision tell 
-us about the electorate and their preferences? While there is not enough data 
-to explore this fully, this chapter seeks to explore some basic theories 
-of voter turnout in Wisconsin school district elections and how well they 
-explain the decision to cast a vote in school board elections. 
+us about the electorate and their preferences?
+
+To explore this, I start with some of the major perspectives on voter turnout: 
+
+* Rational choice
+* Group mobilization
+* Habit and Socialization
+* Information?
+
+#### Rational Choice
+
+To summarize the puzzle posed by Downs (1957) succinctly, why do voters vote when 
+the probability of influencing the election (their vote being decisive) in the 
+direction they want (to promote their policy preferences) is unlikely to ever 
+exceed the costs of voting (getting to the polling place, waiting in line, 
+learning about the candidates, coming to a decision). This simple puzzle has produced 
+decades of rich empirical and theoretical research into the decision to vote. In 
+national or statewide elections featuring hundreds of thousands or millions of voters, 
+the puzzle is particularly acute. 
+
+** R = PB - C + D > 0 **
+
+R is the net expected utility of voting, P is the probability of in
+uencing the election, B is the difference in the expected utility of the policies of the
+two candidates, and C refers to the cost of voting. Riker and Ordeshook
+(1968)'s refined the equation further by adding the D term 
+which was intended to capture the benefit of self-expression associated
+with voting -- either self-expression of candidate preference, or self-expression
+of the utility of voting. 
+
+Enter school board elections. Wisconsin school boards provide an excellent place 
+to prove questions of rational voter turnout because of the variability in the 
+size of their electorates (from a couple of hundred to tens of thousands) and 
+the differences in the level of contestation (discussed in the previous chapters). 
+Prior research has found that local election turnout is driven in part by the 
+size of the electorate (Frandsen 2002) and that one of the curious puzzles of the 
+rational choice framework is that in a strategic game, small electorates should 
+exhibit higher turnout than for national elections given the increased probability 
+of influencing the election. Of course, as Oliver 2012 points out, the lack of 
+partisan cues or other information about the policy motives of candidates for local 
+office increases C along with P and B in the equation. 
+
+#### Group Mobilization 
+
+More recently scholars have looked at the role that group incentive and group 
+mobilization can play in determining voter turnout. Grossman and Helmpan (2001) 
+identify three factors that determine the effectiveness of groups in mobilizing 
+voters: 1) frequency of within group interaction, 2) risk of social isolation 
+incurred by deviating from group references, 3) the ability of group members to 
+monitor one another. This theory draws on Olson 1965). School districts again 
+provide an interesting test case for these theories due to their variation in 
+size, homogeneity (demographics), and mobilization level. While specific measures 
+of group dynamics are not available uniformly for all districts, many proxies 
+are available. 
+
+Evidence of school board elections reflecting the predictions of group mobilization 
+come from studies by Anzia (2011) showing that off-cycle elections lead to greater 
+benefits for teacher compensation, Moe (2011, 2005) that teacher unions play an 
+outsized role in off-cycle elections, and Deckman (2006) that right-wing Christian 
+activists seized school board seats in response to an organized policy motivation. 
+
+#### Socialization
+
+Socialization is a wrinkle on the group mobilization framework suggesting that 
+the act of voting for individuals is itself habit forming (Gerber et al 2003, Plutzer 2002a). 
+Thus, voter turnout across elections should be highly correlated, even without 
+the presence of mobilizing interest groups and even in places with larger electorates. 
+Evidence of serial autocorrelation (year to year consistency in voter turnout rates) 
+in school board elections has been hard to find, but evidence of voter registration 
+for school board being autocorrelated was found by Dunn Jr. (1981). 
+
+#### Information
+
+Voter cost can be decreased by the availability of information about candidates 
+and their policy preferences, reducing the cognitive burden on voters in deciding 
+which candidate best aligns with their own policy preferences. Studies of the 
+impact of information have focused on partisan elections which benefit both from 
+the information conveyed by party identification of candidates, and by the higher 
+volume of campaign advertising which provides voters with information (Aldrich 1993). 
+School board races are markedly lacking in both partisan cues and in advertising -- 
+the vast majority of school board races feature less than $1,000 in advertising 
+spending and the dominant form of local campaigning is still face to face 
+(Hess and Meeks 2011, Oliver 2012). 
+
+#### Rolloff
+
+A key confounding variable in studying downticket races is the evidence that turnout 
+is often driven by upticket races for broader jurisdictions. The evidence of this 
+comes in the form of rolloff, where voters who have already incurred all the physical 
+costs of voting fail to complete an entire ballot due to the cognitive costs of 
+making multiple decisions in multiple races (Wattenberg et al 2000). 
+
+#### Data
+
+Dependent variables, at the school district - year level:
+
+* Voter turnout in school board races (votes cast / voting age population)
+* Voter rolloff between top ticket and school board races (voter turnout top ticket - voter turnout school board)
+
+Independent variables: 
+
+* Population size
+* Percent bachelor or above
+* Percent of population non-white
+* Percent of population over 65
+* Percent of housing that is owner-occupied
+* Median income
+* Percent of students attending non-public schools
+* Percent of public school students non-white
+* Percent of public school students low-income
+* Election turnout in previous fall on-cycle election (president or gubernatorial)
+* Two party vote share for Democrat in previous fall election
+* Partisan polarization in previous fall election
+* School board race is contested
+* School board race features a credible challenger
+* School board race featuring an incumbent
+* Turnout in prior school board race
+* Turnout in school board race two years prior
+* Percent of electorate composed of school district staff
+* Superintendent turnover
+* School referenda election attempt
+* School referenda election success
+* School district fund balance (cash on hand) per student
+* Property value per student (measure of school district taxable value)
+* Many more...
+
+The analysis seeks to explore the impact of demographics, contestation of the seat, 
+historical participation rates, and selectivity of benefits in mobilizing voters 
+to participate in school board elections. 
+
+#### Predictions
+
+* District size should be inversely related to turnout (bigger district, lower turnout)
+* Percent bachelor, higher income, percent 65+, percent white positiviely impact turnout
+* Prior year turnout should be highly predictive of current year turnout
+* Fall turnout should positively predict current turnout
+* Contested elections should positively impact turnout
+* Incumbency should increase turnout with contestation
+* Larger % of teacher union in the electorate should decrease turnout (Moe, capture)
+
+Remaining questions about interaction terms and proper controls. 
+
+#### Rolloff
+
+Predictions for the rolloff from top ticket to school board should be the same?
+
+#### Causal Impact
+
+As in the previous chapter, Act 10 provides a strong test of the impact of voter 
+information on school board elections. Using the recall election results as a measure 
+of community preference for policies like Act 10, we should expect that after 
+the passage of Act 10, the polarization in the community over those issues would 
+lead to increased voter turnout. Thus, to model this impact, I estimate over a 
+4 year period (two years prior and two years post recall) the voter turnout 
+for school board, and include an interaction between a post-recall dummy variable 
+and the partisan polarization of the results of the June 2012 recall election. If 
+the June 2012 recall provided voters with new information about the preferences 
+of their community and their preferences of their school board members, etc., then 
+more polarized communities should see increased turnout in school board elections 
+post-Act 10 in an effort to gain policy control over the new powers granted to s
+school boards. 
+
+What controls?
 
 ## When do School Boards Matter?
 
