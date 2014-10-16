@@ -1106,12 +1106,11 @@ moddat$districtwide <- factor(moddat$districtwide)
 # moddat$OOH_share <- moddat$OOH_share * 100
 # moddat$fallTurnout <- moddat$fallTurnout * 100
 # moddat$VAP_adj <- log(moddat$VAP_adj)
+moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 
-
-naive1 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + per_white_all + 
-                       per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-               districtwide + 
-               contest,
+naive1 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
+               per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
+               median_incomeLOG + districtwide + contest,
              data = moddat)
 
 autoplot(naive1)
@@ -1159,7 +1158,8 @@ options(datadist="dd")
 
 
 
-dumbRLM1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + per_white_all + 
+dumbRLM1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
+                  per_white_all + 
                        per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
                districtwide + 
                contest, data = moddat, x = TRUE, y = TRUE)
@@ -1167,14 +1167,16 @@ dumbRLM1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + per_white_all
 dumbRLM1$se <- sqrt(diag(vcov(robcov(dumbRLM1, cluster = moddat$distid))))
 
 
-dumbRLM1.2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + per_white_all + 
+dumbRLM1.2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
+                    per_white_all + 
                        per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
                districtwide + 
                contest + factor(year), data = moddat, x= TRUE, y = TRUE)
 
 dumbRLM1.2$se <- sqrt(diag(vcov(robcov(dumbRLM1.2, cluster = moddat$distid))))
 
-dumbRLMbest <- ols(turnout ~ turnoutLag2 *VAP_adjLOG + fallTurnout + VAP_adjLOG + per_white_all + 
+dumbRLMbest <- ols(turnout ~ turnoutLag2 *VAP_adjLOG + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq +
+                     per_white_all + 
                        per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
                districtwide + 
                contest + factor(year), data = moddat, x= TRUE, y = TRUE)
@@ -1182,7 +1184,8 @@ dumbRLMbest <- ols(turnout ~ turnoutLag2 *VAP_adjLOG + fallTurnout + VAP_adjLOG 
 dumbRLMbest$se <- sqrt(diag(vcov(robcov(dumbRLMbest, cluster = moddat$distid))))
 
 
-dumbRLM2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + per_white_all + 
+dumbRLM2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
+                  per_white_all + 
                        per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
                districtwide + 
                contest + factor(distid), 
