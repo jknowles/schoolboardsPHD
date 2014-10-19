@@ -29,7 +29,7 @@
 \newcounter {lotpage}
 \newcounter {listofheading}
 
-\newcommand\@thesistitlemedskip{0.25in}
+\newcommand\@thesistitlemedskip{0.2in}
 \newcommand\@thesistitlebigskip{0.6in}
 \newcommand{\degree}[1]{\gdef\@degree{#1}}
 \newcommand{\project}{\gdef\@doctype{A masters project report}}
@@ -47,6 +47,12 @@
 \gdef\@degree{Doctor of Philosophy}    %Default is PhD
 \gdef\@doctype{A dissertation}         %Default is dissertation
 
+\gdef\@defensedate{01/01/2100}% Default is a long time from now.
+\gdef\@committee{
+  Jane Doeverything, Professor, Political Science\\
+  John Dosomethings, Associate Professor, Political Science\\
+}
+
 \gdef\@department{(Political Science)} % Default is Electical Engineering
 
 \renewcommand{\maketitle}{%
@@ -59,19 +65,22 @@
 %-----------------------------------------------------------------------------
     \def\thanks##1{\typeout{Warning: `thanks' deleted from thesis titlepage.}}
     \let\footnotesize\small \let\footnoterule\relax \setcounter{page}{1}
-    \vspace*{0.1in}
     \begin{center}
-      {\textbf{\expandafter\uppercase\expandafter{\@title}}} \\[\@thesistitlebigskip]
+      {\textbf{\expandafter\expandafter{\@title}}} \\[\@thesistitlebigskip]
        by \\[\@thesistitlemedskip]
       \@author \\[\@thesistitlebigskip]
       \@doctype\ submitted in partial fulfillment of \\
       the requirements for the degree of\\[\@thesistitlebigskip]
       \@degree \\[\@thesistitlemedskip]
       \@department \\[\@thesistitlebigskip]
-      at the \\[\@thesistitlebigskip]
-      UNIVERSITY OF WISCONSIN--MADISON\\[\@thesistitlebigskip]
+      at the \\[\@thesistitlemedskip]
+      UNIVERSITY OF WISCONSIN--MADISON\\[\@thesistitlemedskip]
       \@date
     \end{center}
+    \hspace*{-0.7in}Date of final oral examination: \@defensedate \\[\@thesistitlemedskip]
+    \hspace*{-0.7in}The dissertation is approved by the following members of the 
+     Final Oral Committee:\\
+    \@committee
   \end{titlepage}
   \setcounter{footnote}{0}
   \setcounter{page}{1} %title page is NOT counted
