@@ -1193,6 +1193,8 @@ dumbRLM2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq
 
 dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
 
+stars.note <- apsrtable:::stars.note
+se.note <- apsrtable:::se.note
 
 apsrtable(naive1, dumbRLM1, dumbRLM1.2, dumbRLMbest, dumbRLM2, se="robust", 
           label="tab:lagmods", 

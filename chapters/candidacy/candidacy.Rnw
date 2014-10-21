@@ -777,6 +777,8 @@ biggerMod2 <- update(biggerMod, . ~ . - incumShare)
 rescalenote <- "All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations."
 
+stars.note <- apsrtable:::stars.note
+
 apsrtable(noDistEff, biggerMod, biggerMod2, biggerModM, se = "vcov", 
           float = "longtable",
           label="tab:bigmods", 
