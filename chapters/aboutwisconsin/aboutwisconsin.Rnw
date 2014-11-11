@@ -392,9 +392,6 @@ rm(list=ls())
 setwd("../../")
 source("data/dataAssemble.R")
 source("data/cleanandprep_ABOUTWISCO.R")
-# 
-# source("data/dataMerge.R")
-# load("data/cache/DataMergeVAP.rda")
 
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
@@ -436,7 +433,7 @@ instead vacancies are filled by appointment of the remaining members [Wis. Stat 
 
 
 <<electype, results='asis'>>=
-tabledf <- subset(races, year > 2006 & year < 2013)
+tabledf <- subset(races, year > 2004 & year < 2013)
 tabledf$electype2 <- ifelse(tabledf$electiontype == 1, "General", 
                             ifelse(tabledf$electiontype == 2, "Primary", "Special"))
 print(xtable(table(tabledf$year, tabledf$electype2), label="tab:electype", 
@@ -448,9 +445,9 @@ For the entire data set from 2002-2012 there are \Sexpr{iNum(length(races$distid
 general election races,\Sexpr{iNum(length(races$distid[races$electiontype == 2]))} 
 primary election races, and \Sexpr{iNum(length(races$distid[races$electiontype == 3]))}
 special elections. Table \ref{tab:electype} shows the number of races of each type 
-for the period between 2007 and 2012. In all, \Sexpr{iNum(length(unique(races$distid[races$electiontype == 2])))} districts 
+for the period between 2005 and 2012. In all, \Sexpr{iNum(length(unique(races$distid[races$electiontype == 2])))} districts 
 reported a primary, with \Sexpr{iNum(length(unique(tabledf$distid[tabledf$electiontype == 2])))} 
-reporting a primary between 2007 and 2012. Only \Sexpr{iNum(length(unique(tabledf$distid[tabledf$electiontype == 3])))}
+reporting a primary between 2005 and 2012. Only \Sexpr{iNum(length(unique(tabledf$distid[tabledf$electiontype == 3])))}
 district reported a special election during this period, and \Sexpr{iNum(length(unique(tabledf$distid[tabledf$electiontype == 1])))} 
 reported a general election race. 
 
@@ -609,7 +606,7 @@ more thoroughly.
 <<incumbtable, echo=FALSE, results='asis'>>=
 
 # Make a table showing races featuring incumbent challenger by year
-races.tmp <- subset(races, electiontype ==1 & year > 2006 & year <2013)
+races.tmp <- subset(races, electiontype ==1 & year > 2001 & year <2013)
 races.tmp$contest <- "Uncontested"
 races.tmp$contest[races.tmp$nrealcand == races.tmp$nwins & races.tmp$ninc > 0] <- "Open Uncontested"
 races.tmp$contest[races.tmp$nrealcand == races.tmp$nwins & races.tmp$ninc == 0] <- "Incumbent Uncontested"
@@ -620,7 +617,7 @@ races.tmp$contest[races.tmp$nrealcand > races.tmp$nwins & races.tmp$ninc ==0] <-
 table.tmp <- table(races.tmp$year, races.tmp$contest)
 table.tmp <- prop.table(table.tmp, margin = 1) * 100
 table.tmp <- apply(table.tmp, MARGIN = 2, FUN=iPer2)
-row.names(table.tmp) <- 2007:2012
+row.names(table.tmp) <- 2002:2012
 table.tmp <- xtable(t(table.tmp), label = "tab:incumbentContest", 
                     caption = "Races featuring a challenge to an incumbent 2007-2012.")
 
@@ -762,7 +759,7 @@ plotdf <- merge(plotdf, races, by = "raceid2", all.x=TRUE)
 plotdf <- plotdf[plotdf$winmargin3 > -.1, ]
 qplot(year, winmargin3, 
       data = plotdf[plotdf$cand > plotdf$winners & 
-                      plotdf$year > 2006 & plotdf$year < 2013,], 
+                      plotdf$year > 2001 & plotdf$year < 2013,], 
       geom = 'boxplot') + theme_dpi() + 
   labs(y = "Maximum Value Method", x = "Year", title = "Distribution of Margin of 
        Victory in Contested School Board Races") + scale_y_continuous(label = percent) + 
@@ -839,22 +836,54 @@ incumbent electoral feat is not a perfect measure, because it does not capture
 cases where an incumbent finds it not worth it to run for office. 
 
 <<incDefeat, results='asis'>>=
-incDefeat <- ddply(dat[dat$electiontype == 1 & dat$year > 2006 & dat$year < 2013,], 
-                   .(distid, year), 
+incDefeat <- ddply(dat[dat$electiontype == 1 & dat$year > 2001 & dat$year < 2013,], 
+                   .(year), 
                    summarise, 
                    incsDefeated = sum(incumbent[winner == 0]), 
                    incsTotal = sum(incumbent), 
                    winnersTotal = sum(winner))
 
-table.tmp <- table(incDefeat$incsDefeated > 0, incDefeat$year)
-table.tmp <- prop.table(table.tmp, margin = 2) * 100
-table.tmp <- apply(table.tmp, MARGIN = 2, FUN=iPer2)
-row.names(table.tmp) <- c("No Incumbent Defeat", "Incumbent Defeat")
-table.tmp <- xtable(table.tmp, label = "tab:incumbentDefeat", 
-                    caption = "Districts featuring an incumbent defeat 2007-2012.")
+# table.tmp <- table(incDefeat$incsDefeated > 0, incDefeat$year)
+# table.tmp <- prop.table(table.tmp, margin = 2) * 100
+# table.tmp <- apply(table.tmp, MARGIN = 2, FUN=iPer2)
+# row.names(table.tmp) <- c("No Incumbent Defeat", "Incumbent Defeat")
+# table.tmp <- xtable(table.tmp, label = "tab:incumbentDefeat", 
+#                     caption = "Districts featuring an incumbent defeat 2007-2012.")
+# 
+# print(table.tmp, include.rownames=TRUE, size = "small")
 
-print(table.tmp, include.rownames=TRUE, size = "small")
-rm(incDefeat)
+qplot(year, incsDefeated/incsTotal, data = incDefeat, geom = 'bar', stat = 'identity', 
+      fill = I("gray60"), color = I("black")) + theme_dpi() + 
+  scale_x_continuous(breaks = 2002:2012, "Year") + 
+  scale_y_continuous(label = percent, "Percent of SB Races") + 
+  labs(title = "Percentage of Incumbents Defeated 2002-2012 Statewide")+ 
+  coord_cartesian(ylim = c(0, .25)) + 
+  geom_text(aes(label = paste0(round(incsDefeated/incsTotal*100, 1), "%")), 
+            vjust = 1) +
+  theme(axis.ticks.x = element_blank())
+
+incDefeatDist <- ddply(dat[dat$electiontype == 1 & dat$year > 2001 & dat$year < 2013,], 
+                   .(year), 
+                   summarise, 
+                   incsDefeated = sum(incumbent[winner == 0]), 
+                   totalDistricts = length(unique(distid)),
+                   incDefeatDist = length(unique(distid[incumbent==1 & winner == 0])),
+                   incsTotal = sum(incumbent), 
+                   winnersTotal = sum(winner))
+
+qplot(year, incDefeatDist/totalDistricts, data = incDefeatDist, geom = 'bar', 
+      stat = 'identity', 
+      fill = I("gray60"), color = I("black")) + theme_dpi() + 
+  scale_x_continuous(breaks = 2002:2012, "Year") + 
+  scale_y_continuous(label = percent, "Percent of Districts With SB Race") + 
+  labs(title = "Percentage of Districts With Defeated Incumbent 2002-2012") + 
+  coord_cartesian(ylim = c(0, .25)) +
+  geom_text(aes(label = paste0(round(incDefeatDist/totalDistricts*100, 1), "%")), 
+            vjust = 1) +
+  theme(axis.ticks.x = element_blank())
+
+
+rm(incDefeat,incDefeatDist)
 @ 
 
 
@@ -1030,7 +1059,8 @@ races.tmp <- races.tmp[!is.na(races.tmp$distid),]
 races.tmp$voters <- races.tmp$votes / races.tmp$nwins
 races.tmp$turnout <- races.tmp$voters/races.tmp$VAP_adj
 qplot(year, turnout, data = races.tmp, geom = 'boxplot') + 
-  scale_y_continuous(label = percent) + theme_dpi()
+  scale_y_continuous(label = percent) + theme_dpi() + 
+  labs(y = "Voter Turnout", x = "Year", title = "Voter Turnout in School Board Races")
 @
 
 There is one set of cases for which estimating voter turnout is easy - the case 
@@ -1115,7 +1145,8 @@ dist.tmp$VAP_adj <- as.numeric(dist.tmp$VAP_adj)
 dist.tmp$voters <- dist.tmp$votes / dist.tmp$nwins
 dist.tmp$turnout <- dist.tmp$voters / dist.tmp$VAP_adj
 qplot(year, turnout, data = dist.tmp, geom = 'boxplot') + 
-  scale_y_continuous(label = percent) + theme_dpi()
+  scale_y_continuous(label = percent) + theme_dpi() + 
+  labs(y = "Voter Turnout", x = "Year", title = "Voter Turnout in School Board Races")
 
 @
 
@@ -1288,15 +1319,11 @@ plotdat <- subset(dist_turn, select = c("turnout", "topTicketTurnoutSpring",
                                         "ImputedFlag", "year", "distid"))
 plotdat$ImputedFlag[is.na(plotdat$ImputedFlag)] <- "Observed"
 plotdat <- na.omit(plotdat)
+plotdat <- plotdat[is.finite(plotdat$turnout), ]
 centr <- mean(plotdat$turnout)
 stddev <- sd(plotdat$turnout)
 plotdat$outflag <- (plotdat$turnout - centr) / stddev
 plotdat <- plotdat[plotdat$outflag <= 5,]
-
-# qplot(topTicketTurnoutSpring, turnout, data = plotdat, shape = ImputedFlag, 
-#       color = factor(year)) + 
-#   geom_abline(slope = 1, intercept = 0, linetype = 2) + theme_dpi()
-# 
 
 plotdat$ImputedFlag <- defac(plotdat$ImputedFlag)
 plotdat$ImputedFlag[plotdat$ImputedFlag == "Imputed2010"] <- "Imputed"

@@ -288,7 +288,8 @@ dist_turn$recs <- NULL
 dist_turn <- merge(dist_turn, presTurn, by = c("distid", "year"), all.x=TRUE)
 dist_turn <- merge(dist_turn, govTurn, by = c("distid", "year"), all.x=TRUE)
 dist_turn$VAP_adj <- as.numeric(dist_turn$VAP_adj)
-dist_turn$voters <- dist_turn$votes / dist_turn$nwins
+# account for races with 0 winners
+dist_turn$voters <- dist_turn$votes / ifelse(dist_turn$nwins > 0, dist_turn$nwins, mean(dist_turn$nwins))
 dist_turn$turnout <- dist_turn$voters / dist_turn$VAP_adj
 # Fall turnout 
 dist_turn$fallTurnout <- (dist_turn$topGovTurnoutPrior + dist_turn$topPresTurnoutPrior) / 2

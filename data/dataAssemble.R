@@ -26,6 +26,7 @@ for(i in 1:length(struc)){
     rm(tmp)    
   } else if(length(f) < 1){
     message("skip")
+    message(paste(struc[i]))
   }
   rm(f)
 }
@@ -64,6 +65,7 @@ if(length(dat$distid[is.na(dat$distid)]) > 1){
 } else {
   print("No missing district IDs")
 }
+
 
 
 if(length(dat$Race.ID[is.na(dat$raceid)]) > 1){
@@ -430,4 +432,3 @@ races$distid <- as.character(lapply(tmp, "[[", 1))
 races$year <- as.character(lapply(tmp, "[[", 2))
 races$raceid <- as.character(lapply(tmp, "[[", 3))
 races$electiontype <- as.character(lapply(tmp, "[[", 4))
-
