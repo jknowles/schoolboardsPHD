@@ -795,8 +795,6 @@ apsrtable(noDistEff, biggerMod, biggerMod2, biggerModM, se = "vcov",
 <<plotCIs, eval=FALSE>>=
 bmProf <- profile(biggerMod, which = "beta_", devtol = 0.001)
 confInts <- confint(bmProf, level = .95)
-
-
 @
 
 \subsubsection{Demographics}
@@ -1088,7 +1086,7 @@ moddat <- dist_turn[, c("contestSer", "NEW_SUP", "distid","year",
                         "fallTurnout", "SUP_TURNOVER_PRIOR_YEAR", 
                         "DEBT_ATTEMPT_CUMUL93", "contestMinor", 
                         "OVERRIDE_ATTEMPT_CUMUL93", "ADJ_MEDIAN_SALARY_TEACHlog",
-                        "SUP_TURNOVER_PRIOR_YEAR", "teachSalDiff")]
+                        "teachSalDiff")]
 
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)

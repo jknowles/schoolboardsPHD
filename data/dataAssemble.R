@@ -45,8 +45,6 @@ dat$candidateid[dat$candidateid == 0] <- NA
 
 table(dat$year)
 dat$year <- as.numeric(dat$year)
-
-table(dat$distid)
 dat$distid <- as.numeric(dat$distid)
 
 dat$votes <- as.numeric(dat$votes)
@@ -161,6 +159,22 @@ print(paste0(length(dat$winner[is.na(dat$winner)]),
              " observations with missing winner codes."))
 
 print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$winner)]), collapse="|")))
+
+print(paste0(paste0(unique(dat$distid[dat$winner == 1 & (is.na(dat$votes) | dat$votes ==0) & 
+                          !is.na(dat$winner)]), collapse = "|"), 
+             " district id with winners with no votes."))
+
+
+zed <- ddply(dat, .(raceid2), summarise, 
+      distid = distid[1], 
+      winners = sum(winner), 
+      votes = sum(votes, na.rm=TRUE), 
+      candidates = length(distid))
+
+print(paste0("Races with no winner: ", nrow(zed[zed$winners < 1,])))
+
+print(paste0(paste0(unique(zed$distid[zed$winners < 1]), collapse = "|"), 
+      " districts with a race with no winner."))
 
 # Incumbents
 table(dat$incumbent)
