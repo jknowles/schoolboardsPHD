@@ -748,9 +748,28 @@ negative win margin from the expected total.
 
 %TODO: Find an example for the above
 
-<<winmarginplots, echo=FALSE, fig.cap="Win Margin in Competitive School Board Races.">>=
+<<winsandcandidatestable, echo=FALSE, R.options=fig.cap="Distribution of School Board Races by Candidates and Winners.">>=
 plotdf <- merge(plotdf, races, by = "raceid2", all.x=TRUE)
 plotdf <- plotdf[plotdf$winmargin3 > -.1, ]
+
+mytab <- table(plotdf$nrealcand, plotdf$winners)
+
+mytab <- reshape2::melt(mytab)
+mytab$value2 <- mytab$value / sum(mytab$value)
+mytab$value2LABEL <- paste0(round(mytab$value2, 3)*100, "%")
+ggplot(mytab, aes(Var1, Var2)) + geom_tile(aes(fill = value2), color = I('gray80')) + 
+  scale_fill_gradient(low = "white", high = "gray50", guide = "none") + 
+  geom_text(aes(label = value2LABEL)) + 
+  scale_x_continuous(breaks = c(0:max(mytab$Var1))) + 
+  scale_y_continuous(breaks = c(0:max(mytab$Var2))) + theme_bw() + 
+  theme(panel.grid = element_blank()) + 
+  labs(x = "Serious Candidates", y = "Winners", 
+       title = "Distribution of Races by Winners and Candidates")
+
+@
+
+
+<<winmarginplots, echo=FALSE, fig.cap="Win Margin in Competitive School Board Races.">>=
 qplot(year, winmargin3, 
       data = plotdf[plotdf$cand > plotdf$winners & 
                       plotdf$year > 2001 & plotdf$year < 2013,], 
