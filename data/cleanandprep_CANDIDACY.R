@@ -61,6 +61,7 @@ races.tmp <- subset(races.tmp, electiontype == 1)
 # Look at districtwide only
 races.tmp <- subset(races.tmp, districtwide == 1)
 races.tmp <- subset(races.tmp, nrealcand > 0)
+races.tmp <- subset(races.tmp, nwins > 0)
 
 races.tmp <- races.tmp[!is.na(races.tmp$distid),]
 races.tmp$voters <- races.tmp$votes / races.tmp$nwins

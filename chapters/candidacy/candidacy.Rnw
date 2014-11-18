@@ -1429,7 +1429,7 @@ moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year",
                         "GovTurnout_recall")]
 
 moddat <- na.omit(moddat)
-moddat <- moddat[moddat$year > 2008,]
+moddat <- moddat[moddat$year > 2007,]
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$treatment <- ifelse(moddat$year > 2010, 1, 0)
 moddat$distid <- factor(moddat$distid)
@@ -1455,12 +1455,13 @@ moddat$member_delta_per <- moddat$member_delta_per * 100
 <<walkerplot, fig.cap="Polarization and Turnout Before and After Act 10">>=
 qplot(contestMinor, RecallPolarization, data = moddat, geom = 'boxplot') + 
   facet_wrap(~year) +
-  scale_y_continuous(label = percent) +
+  scale_y_continuous() +
   theme_dpi()
 
-qplot(turnout, RecallPolarization, data = moddat[moddat$turnout < 0.8,], color = contestMinor) + 
-  facet_wrap(~year) + geom_smooth(method = 'lm') +
-  scale_y_continuous(label = percent) +
+qplot(RecallPolarization, turnout, data = moddat[moddat$turnout < 80,], 
+      color = factor(contestSer)) + 
+  facet_wrap(~year) + geom_smooth(method = 'lm', aes(group = 1)) +
+  scale_y_continuous() +
   theme_dpi()
 
 

@@ -1,0 +1,41 @@
+\chapter{Assessing the Causal Impact of Policy Shocks}
+\label{chap:walker}
+\chapterstyle{deposit}
+
+<<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
+opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
+               fig.path="../../phd_figs/chap4-",
+               warning=FALSE, echo=FALSE, dev='pdf')
+
+setwd("../../")
+source("data/dataAssemble.R")
+#source("data/dataMerge.R")
+library(scales)
+library(xtable)
+library(eeptools)
+
+options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
+load("data/cache/DataMergeVAP.rda")
+load("data/cache/fullDataSep2014.rda")
+
+
+distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopulation",
+                    "PopWhiteAlone", "median_income", "total_levy", "genaid", "per65o", 
+                    "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
+                    "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "eqv_member", 
+                    "total_levy", "genaid", 
+                    "balance_lag", "member_aidyear", "member_delta", "millrate_delta", 
+                    "locale2", "member_lag", "ref_share")]
+
+source("data/cleanandprep_DPIADMIN.R")
+rm(tmp)
+
+distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation
+distAttr$white_count <- NULL
+distAttr$PopWhiteAlone <- NULL
+distAttr$TotalPopulation <- NULL
+
+iNum <- function(x) prettyNum(x, big.mark = ",", digits = 3)
+iPer <- function(x){paste0(prettyNum(x, big.mark = ",", digits = 1),"\\%")}
+
+@
