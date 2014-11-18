@@ -237,7 +237,7 @@ SAMPSIZE <- length(unique(SBELEC$distid))
 ## Per pupil expenditures
 ## 
 
-mysub <- FULLDAT[FULLDAT$year == 2012, ]
+mysub <- FULLDAT[FULLDAT$year == 2011, ]
 
 selectVars <- c("TOTPOP", "member_aidyear", "econ_disadv_per", 
                 "millrate", "toprepshare", "PerBachelorOrAbove", 
@@ -263,20 +263,18 @@ b <- as.data.frame(b); names(b) <- c("Non-Sample (SD)", "Sample (SD)")
 ab <- as.data.frame(cbind(a[,2], b[,2], a[,1], b[,1]))
 ab[2, ] <- round(ab[2,])
 ab[3, ] <- round(ab[3,])
-ab[4, ] <- round(ab[4, ] *100)
 ab[6, ] <- round(ab[6, ] *100)
 ab[7, ] <- round(ab[7, ] *100)
 ab[8, ] <- round(ab[8, ] *100)
 ab[12, ] <- ab[12, ] *100
-ab[11, ] <- ab[11, ] * 10000
-ab[13, ] <- ab[13, ] * 1000
+ab[15, ] <- ab[15, ] *.00001
 names(ab) <- c("Sample (mean)", "Sample (SD)", "Out of Sample (mean)", "Out of Sample (SD)")
 row.names(ab) <- c("Var", rnames)
 @
 
 <<samplecomparisons, results='asis'>>=
 sampleStats <- xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
-             from the 2011-2012 school year.", digits = 0)
+             from the 2010-2011 school year.", digits = 2)
 
 align(sampleStats) <- c('p{1.5in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}')
 
@@ -339,16 +337,14 @@ row.names(tmp.mat) <- tmp.mat[,1]
 tmp.mat <- tmp.mat[,-1]
 small5 <- as.data.frame(t(tmp.mat))
 row.names(small5) <- rnames
-small5[3, ] <- small5[3, ] * 100
 small5[5, ] <- small5[5, ] * 100
 small5[6, ] <- small5[6, ] * 100
 small5[7, ] <- small5[7, ] * 100
 small5[11, ] <- small5[11, ] *100
-small5[10, ] <- small5[10, ] * 10000
-small5[12, ] <- small5[12, ] * 1000
+small5[14, ] <- small5[14, ] * .00001
 
 small5x <-xtable(small5, label="tab:small5", caption = "Some attributes of Wisconsin's 5 smallest school districts. Data 
-             from the 2011-2012 school year.", digits = 0)
+             from the 2010-2011 school year.", digits = 2)
 
 align(small5x) <- c('p{1.25in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}', 'p{.8in}')
 
@@ -363,16 +359,14 @@ row.names(tmp.mat) <- tmp.mat[,1]
 tmp.mat <- tmp.mat[,-1]
 big5 <- as.data.frame(t(tmp.mat))
 row.names(big5) <- rnames
-big5[3, ] <- big5[3, ] * 100
 big5[5, ] <- big5[5, ] * 100
 big5[6, ] <- big5[6, ] * 100
 big5[7, ] <- big5[7, ] * 100
 big5[11, ] <- big5[11, ] *100
-big5[10, ] <- big5[10, ] * 10000
-big5[12, ] <- big5[12, ] * 1000
+big5[14, ] <- big5[14, ] * .00001
 
 big5x <- xtable(big5, label="tab:big5", caption = "Some attributes of Wisconsin's 5 largest school districts. Data 
-             from the 2011-2012 school year.", digits = 0)
+             from the 2010-2011 school year.", digits = 2)
 
 align(big5x) <-  c('p{1.25in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}', 'p{.8in}')
 
@@ -433,11 +427,11 @@ instead vacancies are filled by appointment of the remaining members [Wis. Stat 
 
 
 <<electype, results='asis'>>=
-tabledf <- subset(races, year > 2004 & year < 2013)
+tabledf <- subset(races, year > 2001 & year < 2013)
 tabledf$electype2 <- ifelse(tabledf$electiontype == 1, "General", 
                             ifelse(tabledf$electiontype == 2, "Primary", "Special"))
 print(xtable(table(tabledf$year, tabledf$electype2), label="tab:electype", 
-             caption = "Number of records for general, primary, and special school board elections 2007-2012."), 
+             caption = "Number of records for general, primary, and special school board elections 2002-2012."), 
       include.rownames=TRUE)
 @
 
@@ -618,8 +612,8 @@ table.tmp <- table(races.tmp$year, races.tmp$contest)
 table.tmp <- prop.table(table.tmp, margin = 1) * 100
 table.tmp <- apply(table.tmp, MARGIN = 2, FUN=iPer2)
 row.names(table.tmp) <- 2002:2012
-table.tmp <- xtable(t(table.tmp), label = "tab:incumbentContest", 
-                    caption = "Races featuring a challenge to an incumbent 2007-2012.")
+table.tmp <- xtable(table.tmp, label = "tab:incumbentContest", 
+                    caption = "Races featuring a challenge to an incumbent 2002-2012.")
 
 print(table.tmp, include.rownames=TRUE, size = "small")
 
