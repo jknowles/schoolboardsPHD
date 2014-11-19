@@ -1,0 +1,304 @@
+\chapter{Assessing the Causal Impact of Policy Shocks}
+\label{chap:walker}
+\chapterstyle{deposit}
+
+
+
+
+\section{Introduction}
+
+\section{Literature Review}
+
+\section{Methods}
+
+\subsection{Causal Inference Using Natural Experiments}
+
+\section{Results}
+
+
+\clearpage
+\subsection{Contestation}
+
+To test the effect of the passage of Act 10 on participation in school board elections, 
+we fit a simple longitudinal model of school districts. In this model, school district 
+elections are treated as repeated measures, nested within the school districts 
+themselves. Using this repeated measures framework allows us to estimate cross 
+district and within district effects. Act 10 represented a statewide intervention 
+in the relative power of school boards in Wisconsin by giving school boards much 
+more authority and control over the compensation of teachers and staff, and by 
+dramatically restricting the ability of the districts' employees to bargain over 
+wages, working conditions, and benefits. This shift in power, in essence, raised 
+the stakes for school board elections substantially and should have increased the 
+overall contestation of school board elections. 
+
+To evaluate this, a series of models of school board election contestation over 
+time are fit to attempt to detect changes in contestation levels relative to the 
+levels of contestation observed in school districts prior to the passage of 
+Act 10. If levels of contestation increase after the introduction of Act 10, even 
+after controlling for the factors that influenced this above, it would be strong 
+evidence that the statewide policy lever pulled by Act 10 did spur a response 
+from candidates in terms of increasing the attractiveness of school board seats. 
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-walkerplot-1} \caption[Polarization and Turnout Before and After Act 10]{Polarization and Turnout Before and After Act 10\label{fig:walkerplot1}}
+\end{figure}
+
+\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-walkerplot-2} \caption[Polarization and Turnout Before and After Act 10]{Polarization and Turnout Before and After Act 10\label{fig:walkerplot2}}
+\end{figure}
+
+
+\end{knitrout}
+
+
+\begin{table}[!ht]
+\caption{Model of Causal Impact of Act 10 on School Board Candidacy}
+\label{tab:causmod1} 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Naive Causal Model } & \multicolumn{ 1 }{ c }{ Overvote Model } \\ \hline
+ %                             & Naive Causal Model & Overvote Model    \\ 
+(Intercept)                   & -0.37 ^*           & -0.37 ^*          \\ 
+                              & (0.13)             & (0.13)            \\ 
+turnoutLag1                   & 0.28 ^*            & 0.20              \\ 
+                              & (0.11)             & (0.11)            \\ 
+VAP\_adjLOG                  & 1.15 ^*            & 1.24 ^*           \\ 
+                              & (0.13)             & (0.13)            \\ 
+per\_white\_all             & 0.05               & 0.04              \\ 
+                              & (0.14)             & (0.14)            \\ 
+per65o                        & 0.11               & -0.05             \\ 
+                              & (0.14)             & (0.14)            \\ 
+PerBachelorOrAbove            & -0.48 ^*           & -0.63 ^*          \\ 
+                              & (0.16)             & (0.17)            \\ 
+OOH\_share                   & 0.17               & 0.13              \\ 
+                              & (0.15)             & (0.16)            \\ 
+median\_incomeLOG            & -0.11              & -0.16             \\ 
+                              & (0.22)             & (0.22)            \\ 
+districtwide1                 & 0.57 ^*            & 0.57 ^*           \\ 
+                              & (0.13)             & (0.14)            \\ 
+RecallPolarization            & -0.10              & -0.11             \\ 
+                              & (0.13)             & (0.13)            \\ 
+treatment1                    & 0.06               & 0.06              \\ 
+                              & (0.10)             & (0.11)            \\ 
+turnout\_overall\_werc      & -0.21 ^*           & -0.21 ^*          \\ 
+                              & (0.10)             & (0.10)            \\ 
+RecallPolarization:treatment1 & 0.14               & 0.02              \\ 
+                              & (0.21)             & (0.22)            \\ 
+topTicketTurnoutSpring        &                    & 0.54 ^*           \\ 
+                              &                    & (0.12)             \\
+ $N$                           & 1747               & 1747              \\ 
+AIC                           & 2324.65            & 2304.20           \\ 
+BIC                           & 2608.86            & 2610.28           \\ 
+$\log L$                     & -1110.32           & -1096.10           \\ \hline
+ \multicolumn{3}{l}{\footnotesize{Standard errors in parentheses}}\\
+\multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+\end{tabular} 
+ \end{table}
+
+
+Table \ref{tab:causmod1} shows good things. 
+
+\begin{table}[!ht]
+\caption{Partial Pooled Model of Causal Impact of Act 10 on School Board Candidacy}
+\label{tab:causME} 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Serious } & \multicolumn{ 1 }{ c }{ Minor } \\ \hline
+ %                             & Serious     & Minor      \\ 
+(Intercept)                   & -0.93 ^*    & -0.33 ^*   \\ 
+                              & (0.18)      & (0.16)     \\ 
+turnoutLag1                   & 0.36 ^*     & 0.13       \\ 
+                              & (0.13)      & (0.13)     \\ 
+VAP\_adjLOG                  & 1.24 ^*     & 1.33 ^*    \\ 
+                              & (0.17)      & (0.16)     \\ 
+per\_white\_all             & 0.10        & 0.04       \\ 
+                              & (0.20)      & (0.18)     \\ 
+per65o                        & 0.02        & -0.04      \\ 
+                              & (0.20)      & (0.18)     \\ 
+PerBachelorOrAbove            & -0.30       & -0.65 ^*   \\ 
+                              & (0.23)      & (0.22)     \\ 
+OOH\_share                   & 0.09        & 0.14       \\ 
+                              & (0.23)      & (0.20)     \\ 
+median\_incomeLOG            & -0.42       & -0.19      \\ 
+                              & (0.32)      & (0.28)     \\ 
+districtwide1                 & 0.18        & 0.55 ^*    \\ 
+                              & (0.19)      & (0.17)     \\ 
+RecallPolarization            & -0.11       & -0.11      \\ 
+                              & (0.18)      & (0.16)     \\ 
+treatment1                    & 0.02        & 0.06       \\ 
+                              & (0.12)      & (0.11)     \\ 
+turnout\_overall\_werc      & -0.12       & -0.23      \\ 
+                              & (0.15)      & (0.13)     \\ 
+RecallPolarization:treatment1 & 0.21        & 0.01       \\ 
+                              & (0.24)      & (0.23)     \\ 
+topTicketTurnoutSpring        &             & 0.61 ^*    \\ 
+                              &             & (0.13)      \\
+ $N$                           & 1747        & 1747       \\ 
+AIC                           & 2131.24     & 2278.53    \\ 
+N Groups                      & 310         & 310        \\ 
+Group Names                   & distid      & distid     \\ 
+Group:distid Effs.            & (Intercept) & (Intercept)\\ 
+Group:distid Var.             & 0.8         & 0.67       \\ 
+Sigma                         & 1           & 1           \\ \hline
+ \multicolumn{3}{l}{\footnotesize{Standard errors in parentheses}}\\
+\multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+\end{tabular} 
+ \end{table}
+
+\clearpage
+
+\subsection{Turnout}
+
+Using the election of Governor Walker and passage of Act 10 as an exogenous shock that 
+increased the relevance and power of school boards, the following models seek to 
+test the causal impact on turnout. In Figure \ref{fig:walkerplot} I examine the 
+relationship between partisan polarization and turnout before and after the passage 
+of Act 10. To test this relationship I restrict the sample to the two spring 
+elections prior to the passage of Act 10 -- 2009 and 2010 -- and the two elections 
+immediately after the passage of Act 10 -- 2011 and 2012. I code these latter 
+years with a dummy variable indicating they are in the post-Act 10 era. The key 
+theoretical contribution is that the polarization of the electorate should matter 
+more after the passage of Act 10, when party lines for education issues became 
+clear. 
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[]
+
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-walkerplotT-1} \caption[Polarization and Turnout Before and After Act 10]{Polarization and Turnout Before and After Act 10\label{fig:walkerplotT}}
+\end{figure}
+
+
+\end{knitrout}
+
+
+\begin{table}[!ht]
+\caption{Model of Causal Impact of Act 10 on School Board Elections}
+\label{tab:causmod1} 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Naive Causal Model } & \multicolumn{ 1 }{ c }{ Overvote Model } \\ \hline
+ %                              & Naive Causal Model & Overvote Model    \\ 
+Intercept                      & -18.36             & -17.56            \\ 
+                               & (15.68)            & (15.49)           \\ 
+turnoutLag2                    & 27.27 ^*           & 18.74 ^*          \\ 
+                               & (3.33)             & (2.98)            \\ 
+fallTurnout                    & 6.64               & -8.23 ^*          \\ 
+                               & (3.86)             & (3.76)            \\ 
+VAP\_adjLOG                   & -2.68 ^*           & -2.16 ^*          \\ 
+                               & (0.28)             & (0.27)            \\ 
+per\_white\_all              & -3.47              & -5.31 ^*          \\ 
+                               & (2.92)             & (2.70)            \\ 
+per65o                         & 22.54 ^*           & -1.19             \\ 
+                               & (8.33)             & (7.36)            \\ 
+PerBachelorOrAbove             & 9.03               & 5.74              \\ 
+                               & (4.94)             & (4.61)            \\ 
+OOH\_share                    & -5.30              & -7.11 ^*          \\ 
+                               & (3.39)             & (3.50)            \\ 
+median\_incomeLOG             & 5.18 ^*            & 5.14 ^*           \\ 
+                               & (1.98)             & (2.04)            \\ 
+CLOSE=Not Competitive          & -1.38 ^*           & -1.64 ^*          \\ 
+                               & (0.60)             & (0.45)            \\ 
+districtwide=1                 & -0.21              & -0.18             \\ 
+                               & (0.54)             & (0.47)            \\ 
+contest=Open Contested         & -0.13              & -0.61             \\ 
+                               & (0.82)             & (0.65)            \\ 
+contest=Uncontested            & -3.40 ^*           & -2.33 ^*          \\ 
+                               & (0.54)             & (0.40)            \\ 
+RecallPolarization             & -3.62              & -2.00             \\ 
+                               & (2.89)             & (2.51)            \\ 
+treatment                      & 4.99 ^*            & -1.02             \\ 
+                               & (0.63)             & (0.54)            \\ 
+turnout\_overall\_werc       & 1.16 ^*            & 1.08 ^*           \\ 
+                               & (0.49)             & (0.46)            \\ 
+RecallPolarization * treatment & 23.12 ^*           & 10.67 ^*          \\ 
+                               & (4.35)             & (3.29)            \\ 
+topTicketTurnoutSpring         &                    & 67.01 ^*          \\ 
+                               &                    & (2.40)             \\
+ $N$                            & 1699               & 1699              \\ 
+$R^2$                          & 0.42               & 0.67              \\ 
+adj. $R^2$                     & 0.41               & 0.67              \\ 
+Resid. sd                      & 7.15               & 5.39               \\ \hline
+ \multicolumn{3}{l}{\footnotesize{Robust standard errors in parentheses}}\\
+\multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+\end{tabular} 
+ \end{table}
+
+
+Table \ref{tab:causmod1} shows good things. 
+
+\begin{table}[!ht]
+\caption{Partial Pooling Model of Post-Election Polarization}
+\label{tab:causModme} 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } \\ \hline
+ %                            & Turnout       & Rolloff      \\ 
+(Intercept)                  & -5.28         & 11.07        \\ 
+                             & (17.51)       & (14.87)      \\ 
+turnoutLag2                  & 9.88 ^*       & -6.16 ^*     \\ 
+                             & (2.15)        & (1.64)       \\ 
+fallTurnout                  & 9.81 ^*       & 4.34         \\ 
+                             & (3.84)        & (3.36)       \\ 
+VAP\_adjLOG                 & -3.30 ^*      & 2.53 ^*      \\ 
+                             & (0.26)        & (0.23)       \\ 
+per\_white\_all            & -4.26         & 6.37         \\ 
+                             & (3.84)        & (3.41)       \\ 
+per65o                       & 33.13 ^*      & -3.15        \\ 
+                             & (7.63)        & (6.86)       \\ 
+PerBachelorOrAbove           & 13.07 ^*      & -3.54        \\ 
+                             & (6.16)        & (5.33)       \\ 
+OOH\_share                  & -3.37         & 6.36 ^*      \\ 
+                             & (2.76)        & (2.46)       \\ 
+median\_incomeLOG           & 4.23 ^*       & -4.68 ^*     \\ 
+                             & (1.98)        & (1.68)       \\ 
+CLOSENot Competitive         & -1.79 ^*      & 1.66 ^*      \\ 
+                             & (0.49)        & (0.37)       \\ 
+districtwide1                & 0.27          & -0.36        \\ 
+                             & (0.57)        & (0.48)       \\ 
+contestOpen Contested        & -0.80         & 0.63         \\ 
+                             & (0.71)        & (0.53)       \\ 
+contestUncontested           & -3.28 ^*      & 2.38 ^*      \\ 
+                             & (0.49)        & (0.37)       \\ 
+RecallPolarization           & -2.65         & 1.70         \\ 
+                             & (3.53)        & (3.11)       \\ 
+treatment                    & 4.74          & 1.45 ^*      \\ 
+                             & (2.77)        & (0.49)       \\ 
+turnout\_overall\_werc     & 1.48 ^*       & -1.28 ^*     \\ 
+                             & (0.62)        & (0.56)       \\ 
+RecallPolarization:treatment & 21.44 ^*      & -8.57 ^*     \\ 
+                             & (4.04)        & (3.05)       \\ 
+topTicketTurnoutSpring       &               & 28.93 ^*     \\ 
+                             &               & (1.74)        \\
+ $N$                          & 1699          & 1699         \\ 
+AIC                          & 11214.57      & 10331.18     \\ 
+N Groups                     & 310 | 6       & 310 | 6      \\ 
+Group Names                  & distid | year & distid | year\\ 
+Group:distid Effs.           & (Intercept)   & (Intercept)  \\ 
+Group:year Effs.             & (Intercept)   & (Intercept)  \\ 
+Group:distid Var.            & 3.04          & 3.07         \\ 
+Group:year Var.              & 3.12          & 0            \\ 
+Sigma                        & 6.143         & 4.595         \\ \hline
+ \multicolumn{3}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
+\multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+\end{tabular} 
+ \end{table}
+
+
+Table \ref{tab:causModme} shows the results here.
+
+\clearpage
+
+\subsection{Incumbent Defeat}
+
+% Can't say it is only due to school board elections, but phenomenon does show up 
+% in school board elections. 
+
+\section{Conclusion}
+

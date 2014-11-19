@@ -558,35 +558,6 @@ election cycle characteristics, some of which may be lagged. In the mixed-effect
 framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
 is explained by the linear combination of $\alpha$ and $\zeta$. 
 
-\subsection{Methods: Causal}
-
-Combining this information with returns from the late spring recall election of 
-the Governor--certain to be a statewide referendum on the Governor's education policies--it is 
-possible using data from all 424 school districts in the state to directly to test 
-whether divided communities see greater participation by challenger candidates than 
-unified communities. This would represent the first comprehensive test of the public 
-choice theory of school board elections and represent the first test of Dissatisfaction 
-Theory across an entire state using actual election results instead of self-reports 
-of school board members and superintendents \citep{RefWorks:243,RefWorks:297}. The 
-empirical model of candidate emergence (CE) would look something like: \\
-
-\[ (2) \hspace{0.25 in}  CE_{t} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
-
-Where $CE_{t}$ represents a measure of the number of candidates greater than one per seat, 
-$\alpha$ is an intercept, $X_{t-1}$ is a vector of lagged covariates such as prior 
-levels of contestation and district size, and $Z_{t}$ is the absolute value of the 
-deviation from 50\% of the vote share for the Governor in a recall election aggregated 
-to the school district from ward level returns.\footnote{Depending on the data and 
-the prevalence of incumbent retirements candidate emergence may need to be measured a 
-number of additional ways. \citet{RefWorks:337} discuss a number of possibilities for 
-turnover that could be adapted to candidate emergence including: Seats available 
-divided by incumbents + challengers minus retired candidates; seats available divided 
-by all candidates; or seats available divided by challengers.} Thus, when $Z_{t} = 0$ 
-the community is completely divided on the Governor. When $Z_{t}=.5$ the community is 
-either united for or against the Governor. Thus, all things equal, we would expect 
-$\gamma$ to have a negative value--as $Z_{t}$ increases, the number of challengers, 
-$Y_{t}$ should decrease because the community is fairly homogeneous and the school 
-board should reflect existing preferences for or against the Governor's reforms. 
 
 \section{Results}
 

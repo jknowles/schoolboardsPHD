@@ -4,55 +4,176 @@
 
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
-               fig.path="../../phd_figs/chap5-",
+               fig.path="../../phd_figs/chap6-",
                warning=FALSE, echo=FALSE, dev='pdf')
 
 setwd("../../")
-source("data/dataAssemble.R")
-#source("data/dataMerge.R")
 library(scales)
 library(xtable)
 library(eeptools)
-
+source("data/cleanandprep_WALKER.R")
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
-load("data/cache/DataMergeVAP.rda")
-load("data/cache/fullDataSep2014.rda")
 
+iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
+                                           digits = 3)}
+iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
+                                                  digits = 3)),"\\%")}
+iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
+                                                   digits = 3)),"%")}
 
-distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", "AdjPopulation",
-                    "PopWhiteAlone", "median_income", "total_levy", "genaid", "per65o", 
-                    "PerBachelorOrAbove", "OOH_share", "millrate", "median_income", 
-                    "COUNTY", "CESA", "ATHLETIC_CONF_NUMBER", "eqv_member", 
-                    "total_levy", "genaid", 
-                    "balance_lag", "member_aidyear", "member_delta", "millrate_delta", 
-                    "locale2", "member_lag", "ref_share")]
-
-source("data/cleanandprep_DPIADMIN.R")
-rm(tmp)
-
-distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation
-distAttr$white_count <- NULL
-distAttr$PopWhiteAlone <- NULL
-distAttr$TotalPopulation <- NULL
-
-iNum <- function(x) prettyNum(x, big.mark = ",", digits = 3)
-iPer <- function(x){paste0(prettyNum(x, big.mark = ",", digits = 1),"\\%")}
-
+library(devtools)
+install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
+library(apsrtable)
+stars.note <- apsrtable:::stars.note
 @
 
 
 \section{Introduction}
 
+While the preveious chapters have explored whether understanding of national and 
+state level electoral activity can explain school board electoral activity, this 
+chapter uses a different approach. I leverage a natural experiment created by 
+the unprecedented policy shock of the passage of Act 10 in Wisconsin following the 
+election of Governor Scott Walker to test whether or not local electoral activity 
+can be influenced directly by state level policy. This question falls into a broader 
+literature unpacking the federalist entanglements of the multi-level system of 
+government in the US. The question of whether a policy shock at a higher level of 
+government can influence electoral activity at lower levels of government is 
+directly relevant to studies of the policy making process and the system of feedback 
+and interaction between policy and electoral activity. 
+
 \section{Literature Review}
+
+
+\subsection{Exogenous State Level Policy Shocks and Voter Turnout}
+
+There is one specific theory about voter turnout that this data can test is the 
+linkage between voter turnout in school board elections and state level policy 
+shocks. While there has recently been more attention on the linkage between 
+national political trends and state level election returns (CITATION NEEDED), these 
+studies have not been extended to the local level. However, the local level provides 
+an interesting level of analysis because local elections are much more diverse than 
+their state level counterparts in terms of the timing, partisanship of office, and 
+structure of the elections. Where it is difficult to disentangle relationships between 
+national legislature and state legislature composition from national trends in 
+partisanship and strategic redistricting (CITATION NEEDED), the diversity of local 
+elections allows more opportunities for exogenous variation to explore the causal 
+transmission of voter preferences at the state level being expressed in local 
+elections. 
+
+Wisconsin from 2010-2012 provides an ideal test case for the transmission of 
+state level political preferences to local non-partisan office. As discussed in 
+Chapter \ref{chap:theoryreview} and illustrated in Figure \ref{fig:wiscotimeline} 
+the election of Scott Walker to Governor and the subsequent passage of Act 10, the 
+2011-13 biennial budget, and the mass protests in Madison, WI, state level politics 
+in Wisconsin became suddenly extremely polarized.\footnote{Perhaps the most salient 
+issue is the requirement under the law that any wage increase greater than a cost 
+of living adjustment pegged to CPI be approved by a district wide referenda - 
+effectively placing a firm ceiling on any salary negotiations2011 Wisconsin Act 10: 
+https://docs.legis.wisconsin.gov/2011/related/acts/10} In addition to the sudden 
+polarization, much of the rhetoric, protest, and contentiousness surrounding 
+the Walker administration was focused squarely on education politics and labor 
+relations - issues that school boards have great local influence over. In fact, 
+Act 10 represented a sweeping expansion of the power of school boards away from 
+local teachers' unions. Thus, the composition of the school board mattered more 
+than ever after Act 10. Importantly, the passage of Act 10 was completely unforeseen 
+by political observers and the public and represent an exogenous shock to the 
+state political system. \footnote{This last point is somewhat disputed by some 
+political observers and Scott Walker himself, but the consensus has been that 
+this was not the case according to the \href{http://www.politifact.com/wisconsin/statements/2011/feb/22/scott-walker/wisconsin-gov-scott-walker-says-he-campaigned-his-/}{Milwaukee Journal Sentinel}.}
+
+This paper leverages the unexpected passage of Act 10 as providing a natural 
+experiment of the effect of state level policy shocks on local level electoral 
+participation. In fact, in this case, the policy shock and surrounding political 
+polarization was directly related to the powers of school boards, a locally 
+elected non-partisan office. Even more interestingly, school board elections are 
+held off-cycle in Wisconsin in the spring on the $2^{nd}$ Tuesday each April. This 
+combination of non-partisan off-cycle elections and a wide and deeply salient policy 
+shock provide an ideal test of whether or not state level policy actions can spur 
+voters in local elections. Specifically, following \citet{Matsusaka}, the state 
+level policy shock should have increased dramatically the information available to 
+voters about school boards, school board members, and the impact of Act 10 on their 
+community. Thus, turnout should have increased above historical levels. 
+If there is no impact on voter turnout in the wake of such a broad expansion of 
+school board power over an issue as polarizing as collective bargaining rights 
+for local employees, we would expect smaller policy shocks to have no effect either. 
+This would represent a rejection of the applicability of information theory to 
+explain turnout in low-salience non-partisan elections. This would also provide 
+evidence in support of dissatisfaction theory - with heightened stakes for board 
+policy preferences.\footnote{One concern might be that the polarization was so 
+extreme and the state so saturated with negative campaigning of all forms that 
+voter turnout was suppressed even in the case of spring school board elections 
+\citep{NegativeCamp1999}.}
+
+\begin{table}[h!]
+\begin{center}
+\begin{small}
+\caption{Theories of Turnout and Expected Evidence: Causal}
+\label{turnoutH2}
+\begin{tabular}{| p{.15\textwidth} | p{.2\textwidth} | p{.6\textwidth} |}
+\hline
+\textbf{Theory}  & \textbf{Citation} & \textbf{Expected Finding} \\ \hline
+Information theory  & \citet{Matsusaka} & Large turnout increases after passage of Act 10\\ \hline
+Dissatisfaction theory & \citet{RefWorks:297,RefWorks:271} & Large turnout increase after Act 10 \\ \hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+This follows along the work of \citet{Lassen2005} who leveraged an exogenous shock 
+of an information campaign in some electoral districts and found that 
+increasing voters' information also produced a sizeable effect on the propensity 
+to vote. 
+
+%% Consider partisan preferences revealed by recall petition -- anecdotal evidence 
+%% that this influenced voters in school board elections
+%% Can a subsample of school districts be chosen to look up recall petition activity 
+%% Among incumbents and candidates?
 
 \section{Methods}
 
 \subsection{Causal Inference Using Natural Experiments}
 
-\section{Results}
+The approach here is to leverage the passage of Act 10 as an exogenous shock which 
+allows us to reasonably assume that differences between the period prior to the shock 
+and after the shock are causally attributable to the shock itself. 
+
+\subsection{Candidacy}
+
+Combining this information with returns from the late spring recall election of 
+the Governor--certain to be a statewide referendum on the Governor's education policies--it is 
+possible using data from all 424 school districts in the state to directly to test 
+whether divided communities see greater participation by challenger candidates than 
+unified communities. This would represent the first comprehensive test of the public 
+choice theory of school board elections and represent the first test of Dissatisfaction 
+Theory across an entire state using actual election results instead of self-reports 
+of school board members and superintendents \citep{RefWorks:243,RefWorks:297}. The 
+empirical model of candidate emergence (CE) would look something like: \\
+
+\[ (2) \hspace{0.25 in}  CE_{t} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
+
+Where $CE_{t}$ represents a measure of the number of candidates greater than one per seat, 
+$\alpha$ is an intercept, $X_{t-1}$ is a vector of lagged covariates such as prior 
+levels of contestation and district size, and $Z_{t}$ is the absolute value of the 
+deviation from 50\% of the vote share for the Governor in a recall election aggregated 
+to the school district from ward level returns.\footnote{Depending on the data and 
+the prevalence of incumbent retirements candidate emergence may need to be measured a 
+number of additional ways. \citet{RefWorks:337} discuss a number of possibilities for 
+turnover that could be adapted to candidate emergence including: Seats available 
+divided by incumbents + challengers minus retired candidates; seats available divided 
+by all candidates; or seats available divided by challengers.} Thus, when $Z_{t} = 0$ 
+the community is completely divided on the Governor. When $Z_{t}=.5$ the community is 
+either united for or against the Governor. Thus, all things equal, we would expect 
+$\gamma$ to have a negative value--as $Z_{t}$ increases, the number of challengers, 
+$Y_{t}$ should decrease because the community is fairly homogeneous and the school 
+board should reflect existing preferences for or against the Governor's reforms. 
 
 
 \clearpage
+\section{Results}
+
+
+
 \subsection{Contestation}
 
 To test the effect of the passage of Act 10 on participation in school board elections, 
@@ -75,60 +196,7 @@ after controlling for the factors that influenced this above, it would be strong
 evidence that the statewide policy lever pulled by Act 10 did spur a response 
 from candidates in terms of increasing the attractiveness of school board seats. 
 
-<<walkerDataPrep, results='asis', echo = FALSE>>=
-load("../../data/cache/springElectionVotes.rda")
-# load("data/cache/springElectionVotes.rda")
-springVotes$votesTopTicketSpring <- springVotes$VotesCast
-springVotes$VotesCast <- NULL
-dist_turn <- merge(dist_turn, springVotes, 
-                   by = c("distid", "year"), all.x = TRUE)
-
-dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
-dist_turn$turnoutDiff <- dist_turn$topTicketTurnoutSpring - dist_turn$turnout
-## Grab Walker recall results
-load("../../data/cache/WalkerRecall.rda")
-# load("data/cache/WalkerRecall.rda")
-## Bolt them on
-distvotes12r <- distvotes12r[, -2]
-distvotes12r$GovTwoPartyShareDem <- distvotes12r$GOVDEM / (distvotes12r$GOVDEM + 
-                                                             distvotes12r$GOVREP)
-
-names(distvotes12r) <- paste(names(distvotes12r), "recall", sep ="_")
-
-dist_turn <- merge(dist_turn, distvotes12r, by.x = "distid", 
-                   by.y = "distid_recall")
-
-load("../../data/cache/WERC.rda")
-# load("data/cache/WERC.rda")
-names(wercDatTeachers) <- paste(names(wercDatTeachers), "werc", sep = "_")
-
-dist_turn <- merge(dist_turn, wercDatTeachers, by.x = "distid", by.y = "distid_werc", 
-                   all.x = TRUE)
-
-NAzero <- function(x){
-  x <- as.numeric(x)
-  x[is.na(x)] <- 0 
-  return(x)
-}
-
-dist_turn$WERC_elec <- ifelse(is.na(dist_turn$eligvoters_werc), 0, 1)
-dist_turn$eligvoters_werc <- NAzero(dist_turn$eligvoters_werc)
-dist_turn$voters_werc <- NAzero(dist_turn$voters_werc)
-dist_turn$turnout_overall_werc <- NAzero(dist_turn$turnout_overall_werc)
-dist_turn$tries_werc <- NAzero(dist_turn$tries_werc)
-dist_turn$wins_werc <- NAzero(dist_turn$wins_werc)
-dist_turn$loss_werc <- NAzero(dist_turn$loss_werc)
-dist_turn$yes_votes_tot_werc <- NAzero(dist_turn$yes_votes_tot_werc)
-dist_turn$no_votes_tot_werc <- NAzero(dist_turn$no_votes_tot_werc)
-dist_turn$abst_votes_tot_werc <- NAzero(dist_turn$abst_votes_tot_werc)
-dist_turn$yes_votes_avg_werc <- NAzero(dist_turn$yes_votes_avg_werc)
-dist_turn$no_votes_avg_werc <- NAzero(dist_turn$no_votes_avg_werc)
-dist_turn$abst_votes_avg_werc <- NAzero(dist_turn$abst_votes_avg_werc)
-dist_turn$best_margin_werc <- NAzero(dist_turn$best_margin_werc)
-dist_turn$worst_margin_werc <- NAzero(dist_turn$worst_margin_werc)
-dist_turn$GovTurnout_recall <- dist_turn$RECTOT_recall / dist_turn$VAP_adj 
-
-
+<<walkerDataPrep1, results='asis', echo = FALSE>>=
 moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
                         "balance_member_lag", "turnout",
                         "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
@@ -137,15 +205,16 @@ moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year",
                         "NonWhitePublicPupilPer", "NonPublicPupilPer", 
                         "teachShareofVoters", "locale2", 
                         "member_delta_per", "GovTwoPartyShareDem_recall",
-                        "turnout_overall_werc", "districtwide",
+                        "turnout_overall_werc",
                         "eligvoters_werc", 
                         "loss_werc", "worst_margin_werc", "WERC_elec", 
                         "GovTurnout_recall")]
 
 moddat <- na.omit(moddat)
-moddat <- moddat[moddat$year > 2007,]
+moddat <- moddat[moddat$year >= 2007,]
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$treatment <- ifelse(moddat$year > 2010, 1, 0)
+moddat$treatment <- factor(moddat$treatment)
 moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -164,6 +233,10 @@ moddat$turnout <- moddat$turnout * 100
 moddat$GovTurnout_recall <- moddat$GovTurnout_recall * 100
 moddat$GovTwoPartyShareDem_recall <- moddat$GovTwoPartyShareDem_recall *100
 moddat$member_delta_per <- moddat$member_delta_per * 100
+moddat$contestSer <- factor(moddat$contestSer)
+moddat$contestMinor <- factor(moddat$contestMinor)
+moddat$districtwide <- factor(moddat$districtwide)
+
 @
 
 <<walkerplot, fig.cap="Polarization and Turnout Before and After Act 10">>=
@@ -187,6 +260,17 @@ qplot(RecallPolarization, turnout, data = moddat[moddat$turnout < 80,],
 
 
 <<walkerGLM, results='asis'>>=
+# Rescale
+library(arm)
+
+nums <- sapply(moddat, is.numeric)
+
+for(i in unique(moddat$year)){
+  moddat[moddat$year == i, nums] <- 
+    apply(moddat[moddat$year == i, nums], 2, rescale)
+}
+# moddat[, nums] <- apply(moddat[, nums], 2, rescale)
+
 causal1 <- glm(contestMinor ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
                districtwide + RecallPolarization*treatment + 
@@ -228,17 +312,6 @@ Table \ref{tab:causmod1} shows good things.
 library(optimx)
 ctrl <- glmerControl(optimizer = "optimx", optCtrl = list(method = "nlminb", 
                                                           maxit = 4000))
-library(arm)
-moddat$turnoutLag1 <- rescale(moddat$turnoutLag1)
-moddat$VAP_adjLOG <- rescale(moddat$VAP_adjLOG)
-moddat$per_white_all <- rescale(moddat$per_white_all)
-moddat$per65o <- rescale(moddat$per65o)
-moddat$PerBachelorOrAbove <- rescale(moddat$PerBachelorOrAbove)
-moddat$OOH_share <- rescale(moddat$OOH_share)
-moddat$median_incomeLOG <- rescale(moddat$median_incomeLOG)
-moddat$RecallPolarization <- rescale(moddat$RecallPolarization)
-moddat$topTicketTurnoutSpring <- rescale(moddat$topTicketTurnoutSpring)
-moddat$turnout_overall_werc <- rescale(moddat$turnout_overall_werc)
 
 mixedModCaus <- glmer(contestSer ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
@@ -246,15 +319,15 @@ mixedModCaus <- glmer(contestSer ~ turnoutLag1 + VAP_adjLOG + per_white_all +
                treatment + (1|distid), 
               data = moddat, family = 'binomial', control = ctrl)
 
-mixedModCaus2 <- glmer(contestSer ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
+mixedModCaus2 <- glmer(contestMinor ~ turnoutLag1 + VAP_adjLOG + per_white_all + 
                         topTicketTurnoutSpring +
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
                districtwide + RecallPolarization*treatment + 
                treatment + turnout_overall_werc + (1|distid), 
               data = moddat, family = 'binomial', control = ctrl)
 
-apsrtable(mixedModCaus, se = "vcov", label="tab:causME", 
-          model.names=c("Naive Causal Model"), 
+apsrtable(mixedModCaus, mixedModCaus2, se = "vcov", label="tab:causME", 
+          model.names=c("Serious", "Minor"), 
           caption = "Partial Pooled Model of Causal Impact of Act 10 on School Board Candidacy",
           Sweave=FALSE)
 
@@ -276,56 +349,9 @@ theoretical contribution is that the polarization of the electorate should matte
 more after the passage of Act 10, when party lines for education issues became 
 clear. 
 
-<<walkerDataPrep, results='asis', echo = FALSE>>=
+<<walkerDataPrep2, results='asis', echo = FALSE>>=
 ## Grab Walker recall results
 
-load("../../data/cache/WalkerRecall.rda")
-# load("data/cache/WalkerRecall.rda")
-## Bolt them on
-distvotes12r <- distvotes12r[, -2]
-distvotes12r$GovTwoPartyShareDem <- distvotes12r$GOVDEM / (distvotes12r$GOVDEM + 
-                                                             distvotes12r$GOVREP)
-
-names(distvotes12r) <- paste(names(distvotes12r), "recall", sep ="_")
-
-dist_turn <- merge(dist_turn, distvotes12r, by.x = "distid", 
-                   by.y = "distid_recall")
-
-load("../../data/cache/WERC.rda")
-# load("data/cache/WERC.rda")
-names(wercDatTeachers) <- paste(names(wercDatTeachers), "werc", sep = "_")
-
-dist_turn <- merge(dist_turn, wercDatTeachers, by.x = "distid", by.y = "distid_werc", 
-                   all.x = TRUE)
-
-NAzero <- function(x){
-  x <- as.numeric(x)
-  x[is.na(x)] <- 0 
-  return(x)
-}
-
-dist_turn$WERC_elec <- ifelse(is.na(dist_turn$eligvoters_werc), 0, 1)
-dist_turn$eligvoters_werc <- NAzero(dist_turn$eligvoters_werc)
-dist_turn$voters_werc <- NAzero(dist_turn$voters_werc)
-dist_turn$turnout_overall_werc <- NAzero(dist_turn$turnout_overall_werc)
-dist_turn$tries_werc <- NAzero(dist_turn$tries_werc)
-dist_turn$wins_werc <- NAzero(dist_turn$wins_werc)
-dist_turn$loss_werc <- NAzero(dist_turn$loss_werc)
-dist_turn$yes_votes_tot_werc <- NAzero(dist_turn$yes_votes_tot_werc)
-dist_turn$no_votes_tot_werc <- NAzero(dist_turn$no_votes_tot_werc)
-dist_turn$abst_votes_tot_werc <- NAzero(dist_turn$abst_votes_tot_werc)
-dist_turn$yes_votes_avg_werc <- NAzero(dist_turn$yes_votes_avg_werc)
-dist_turn$no_votes_avg_werc <- NAzero(dist_turn$no_votes_avg_werc)
-dist_turn$abst_votes_avg_werc <- NAzero(dist_turn$abst_votes_avg_werc)
-dist_turn$best_margin_werc <- NAzero(dist_turn$best_margin_werc)
-dist_turn$worst_margin_werc <- NAzero(dist_turn$worst_margin_werc)
-dist_turn$GovTurnout_recall <- dist_turn$RECTOT_recall / dist_turn$VAP_adj 
-# load("../../data/cache/springElectionVotes.rda")
-# # load("data/cache/springElectionVotes.rda")
-# springVotes$votesTopTicketSpring <- springVotes$VotesCast
-# springVotes$VotesCast <- NULL
-# dist_turn <- merge(dist_turn, springVotes, by = c("distid", "year"))
-# dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_adjLOG", "distid", 
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
                         "CLOSE", "districtwide", "contest", "GovTwoPartyShareDem_recall",
@@ -334,10 +360,9 @@ moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", "VAP_ad
                         "topTicketTurnoutSpring", "turnoutDiff", "GovTurnout_recall")]
 
 moddat <- na.omit(moddat)
-moddat <- moddat[moddat$year > 2008,]
+moddat <- moddat[moddat$year >= 2007,]
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$treatment <- ifelse(moddat$year > 2010, 1, 0)
-
 moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -361,12 +386,13 @@ moddat$outflag <- (moddat$turnout - centr) / stddev
 moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
 moddat$RecallPolarization <- abs(moddat$GovTwoPartyShareDem_recall - 0.5)
 
+library(rms)
 dd <<- datadist(moddat)
 options(datadist="dd")
 
 @
 
-<<walkerplot, fig.cap="Polarization and Turnout Before and After Act 10">>=
+<<walkerplotT, fig.cap="Polarization and Turnout Before and After Act 10">>=
 qplot(RecallPolarization, turnout/100, data = moddat) + geom_smooth(method = "lm") + 
   facet_wrap(~year) + scale_x_continuous(label = percent) + 
   scale_y_continuous(label = percent) +
@@ -379,7 +405,7 @@ qplot(RecallPolarization, turnout/100, data = moddat) + geom_smooth(method = "lm
 @
 
 
-<<walkerOLSmod, results='asis'>>=
+<<walkerOLSmodT, results='asis'>>=
 causal1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + CLOSE + 
                districtwide + contest + RecallPolarization*treatment + 
@@ -414,7 +440,7 @@ apsrtable(causal1, causal2, se = "robust", label="tab:causmod1",
 
 Table \ref{tab:causmod1} shows good things. 
 
-<<walkerPartialPool, results='asis', echo = FALSE>>=
+<<walkerPartialPoolT, results='asis', echo = FALSE>>=
 mixedModCaus <- lmer(turnout ~turnoutLag2 + fallTurnout + VAP_adjLOG + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + CLOSE + 
                districtwide + contest + RecallPolarization*treatment + 
@@ -427,9 +453,10 @@ mixedModCaus2 <- lmer(turnoutDiff*100 ~ turnoutLag2 + fallTurnout + VAP_adjLOG +
                districtwide + contest + RecallPolarization*treatment + 
                treatment + turnout_overall_werc + (1|distid) + (1|year), 
               data = moddat)
+tabnote <- "Model includes both year and district random effects modeled as intercepts."
 
-apsrtable(mixedModCaus, caption = "Partial Pooling Model of Post-Election Polarization",
-          model.names = c("Partial Pooled"),
+apsrtable(mixedModCaus, mixedModCaus2, caption = "Partial Pooling Model of Post-Election Polarization",
+          model.names = c("Turnout", "Rolloff"),
             label = "tab:causModme", notes = list(tabnote, stars.note), 
           Sweave = FALSE)
 @

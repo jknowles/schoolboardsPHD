@@ -18,6 +18,11 @@ setwd("../")
 setwd("policy")
 knit("policy.Rnw", envir=new.env())
 rm(list=ls())
+setwd("../")
+setwd("walker")
+knit("walker.Rnw", envir=new.env())
+rm(list=ls())
+
 setwd("../..")
 
 # Set texenv
