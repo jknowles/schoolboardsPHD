@@ -1206,7 +1206,7 @@ Computing is fun.
 
 \subsection{Model Specification Tests}
 
-<<modTestDemog, results='hide', eval=FALSE>>=
+<<modTestDemog, results='hide', eval=TRUE>>=
 library(pbkrtest)
 library(doParallel)
 cl <- makePSOCKcluster(4)
@@ -1221,7 +1221,7 @@ stopCluster(cl)
 @
 
 
-<<modTestFiscal, results='hide', eval=FALSE>>=
+<<modTestFiscal, results='hide', eval=TRUE>>=
 cl <- makePSOCKcluster(4)
 
 fiscalMM2 <- update(fiscalMM, .~. - (1|distid) - (1|year) + (1|year/distid))
@@ -1238,7 +1238,7 @@ stopCluster(cl)
 @
 
 
-<<modTestPolitic, results='hide', eval=FALSE>>=
+<<modTestPolitic, results='hide', eval=TRUE>>=
 cl <- makePSOCKcluster(4)
 
 
@@ -1256,7 +1256,7 @@ stopCluster(cl)
 @
 
 
-<<modTestPolicy, results='hide', eval=FALSE>>=
+<<modTestPolicy, results='hide', eval=TRUE>>=
 cl <- makePSOCKcluster(4)
 
 
@@ -1273,7 +1273,7 @@ modTestPolicy2 <- PBmodcomp(policyMM2, policyMM3, nsim = 200,
 stopCluster(cl)
 @
 
-<<modTestFull, results='hide', eval=FALSE>>=
+<<modTestFull, results='hide', eval=TRUE>>=
 # cl <- makePSOCKcluster(2)
 # 
 # 
@@ -1290,7 +1290,7 @@ stopCluster(cl)
 # stopCluster(cl)
 @
 
-<<pbtestresults, results='asis', eval=FALSE>>=
+<<pbtestresults, results='asis', eval=TRUE>>=
 #print parametric bootstrap
 printPB <- function(pbobj, names=NULL){
    require(xtable)
@@ -1321,7 +1321,7 @@ printPB(modTestPolicy2, names = nams2)
 
 @
 
-<<pbresults, results='markup', eval=FALSE>>=
+<<pbresults, results='markup', eval=TRUE>>=
 modTestDemog1
 modTestDemog2
 modTestFiscal1
