@@ -326,38 +326,171 @@ from those who did not provide records on observable characteristics.
 
 \subsection{Independent Variables}
 
-Demographic variables (from Oliver): 
-  - Percent white (per\_white\_all)
-  - Median income (median\_income)
-  - Age (per65o)
-  - Size (pop) (VAP\_adjLOG)
-  - OOH share (OOH\_share)
-  - Public Pupils (TOT\_COUNT - TOTAL\_COUNT\_PVT)
-  - Education level (PerBachelorOrAbove)
+With the Wisconsin data, a number of variables are available with which to test 
+the theories outlined above. The first set of variables I include are basic 
+demographic variables to account for the diversity in school districts as 
+jurisdictions. As shown in \citet{oliver} these variables are important to 
+take into consideration when considering the factors that influence candidate 
+participation in local elections. 
 
-Fiscal variables (scope): 
-  - Property tax revenue share (PROPERTYTAX\_REV\_SHARE)
-  - Balance (balance\_member)
-  - Per pupil expenditure (TCEC\_MEMBER, TDC\_MEMBER, TEC\_MEMBER)
-  - Millrate / SDmillrate (NonSDMill, millrate)
+The first of these variables I consider is the voting age population (VAP) of 
+the school district. VAP represents the pool of voters and also of potential 
+candidates for school board in a community. I expect this variable to be 
+positively related to contestation of school board elections. In addition to 
+size, the homogeneity of the community is an important indicator of the level 
+of electoral participation. I consider two types of heterogeneity -- racial and 
+generational. First, I include a measure of the percentage of the adult population 
+in the school district that is white. While Wisconsin is predominantly a white 
+state, I expect racial heterogeneity to be positively associated with more 
+school board contestation. Additionally, prior research has shown that voter 
+(and property tax payer) age is associated with support for local schools. The 
+greater the percentage of elderly in the school district, the more participation 
+I expect to see %TODO: citation for plutzer
+Additionally, given the results of surveys that indicate school board members 
+are more likely to be white and elderly, I expect that the increase in these 
+variables is an increase in supply of potential candidates, and thus should be 
+positively related to board contestation %TODO: find citations \citet{}. 
 
-Political variables ()
-  - Partisanship in fall election (fallTwoPartyShareDem)
-  - incumbent in race (incumRun)
-  - nraces (nraces)
-  - partisan division (partyDivision, avged)
-  - teacher share of voters (teachShareofVoters)
-  
-Policy variables ()
-  - New superintendent (NEW\_SUP)
-  - Math performance (MATH\_PROFADV\_PER)
-  - Reading performance (READ\_PROFADV\_PER)
-  - debt referenda fail (debtFail)
-  - override referenda fail (overrideFail)
-  - override quest (overrideQues)
-  - debt quest (debtQues)
-  - Non public pupils (NonPublicPupilPer)
-  - Admin share of salary (ADMIN\_SHARE)
+The last two demographic variables are measures of tax base in some sense. First, 
+I include a measure of the percentage of housing occupied by owners as a measure 
+of both the permanency of the community (following \citet{oliver}) and the 
+salience of property tax rates -- an important issue for single jurisdiction 
+governments like school boards %TODO: cite berry 
+As an additional control, I include a measure of median household income, but 
+as other studies have noted, this does not exhibit much variation within Wisconsin 
+as it does in other jurisdictions %todo: cite amiel, reschowsky, knowles
+
+Next, I consider variables measuring the scope of the school district relative 
+to other local governments. As \citet{berry} finds stacking of local governments 
+with overlapping taxing jurisdictions divides the attention of voters, I consider 
+whether overlapping fiscal authority might divide the attention of potential 
+candidates and make school boards less attractive. The first variable I consider 
+is what share of its total revenue a school district raises from property taxes. 
+While the intricacies of the Wisconsin school funding formula are beyond the 
+scope of this paper, the result of this formula is that there is much variation 
+in the share of district revenues that are raised by local property owners. 
+I expect the greater the share of revenue from property taxes, the more likely 
+candidates are to participate. However, the share of revenue derived from 
+property tax may not be particularly salient to the voting population, especially 
+not those without school aged children. Due to this, I test an alternate measure 
+which is the share of total property tax revenue that is levied by school 
+districts. This variable should also be positively related to candidacy -- as 
+property tax revenue directed to schools increases as a share of all property 
+tax revenue, individuals should be more motivated to pursue a seat on the school 
+board. % TODO: citation
+Another indicator of the fiscal health of a school district is the available 
+savings, or fund balance, of the school district. I normalize this variable to 
+be a per pupil measure of dollars available in savings to the school district. 
+I expect this variable to be negatively related to candidacy with districts 
+that have more savings having less contestation as a result of lower overall 
+fiscal pressure. A final measure of fiscal health is the level of per pupil 
+spending in the school district. I expect higher spending districts to have 
+higher levels of candidate contestation. %TODO: why
+
+Next, I look to explore the influence of political factors in the emergence of 
+challenges to incumbents. First, I include a variable to control for the 
+different structure of school board elections by controlling for the number of 
+races in each school district. This variable should be positive related with 
+more incumbency challenge as it represents more opportunities for a challenge 
+to emerge when multiple races exist. Next, I test for advantage of incumbency 
+by including a measure of the share of candidates who are incumbents. I expect 
+this variable to be negatively related to challenge as incumbents should deter 
+challengers. %TODO: citation
+
+Next, I explore the impact of both turnout and partisanship in general elections 
+on local elections. I am interested in the role partisan divisions among voters 
+in the school district may play in the off-cycle non-partisan school board 
+election cycle. I include two potential measures of partisanship. First I 
+measure the average two party vote share for Democrats across the immediately 
+previous Gubernatorial and Presidential fall elections. I expect this variable 
+to be unrelated to challengers emerging for school board. Next, I test the 
+partisan polarization of the community by measuring the distance from an even 
+vote share between Republican and Democratic communities by taking the absolute 
+value of the difference between the Democratic vote share and the expected vote 
+share in a perfectly polarized community of 0.5. The greater this difference, the 
+less likely I believe candidate emergence will be due to the homogenous nature 
+of voter preferences in the community. 
+
+As a final measure, I follow the work of citet{moe,anzia} and explore the influence of teachers' unions in elections. Teachers' unions represent the 
+strongest interest group in school board politics. The greater the share of the 
+teaching staff in the voting population, the less likely I expect candidates 
+to emerge. A strong interest group presence on the board should suppress 
+electoral competition. 
+
+A final set of total variables is policy related concerns. These variables 
+explore the idea that candidates may desire to emerge in response to underlying 
+policy changes in the district. %TODO: Not perfect due to timing
+
+First, I assess the impact that a change in superintendent has on school board 
+challengers. Because theory suggests that board turnover often precedes 
+superintendent turnover, I posit that a new superintendent should signal a 
+decrease in candidate challenges to board members %TODO: cite \cite{wu,baratc}. 
+
+Next, I include measures of school district funding referenda. Wisconsin has 
+two common types of school referenda measures -- bond and override referenda. 
+Bond referenda are familiar across the United States as authority for a school 
+district to raise taxes to cover the payments on a loan to build infrastructure 
+such as a new or renovated school building. Override referenda are specific 
+to school funding formulas like Wisconsin and Massachusetts, where schools must 
+operate under a revenue limit unless given explicit authority via an 
+election to exceed that limit with additional property tax revenue. Attempting 
+a bond or override referenda is one of the more high profile actions a school 
+board can take -- asking the public to increase property tax rates in return 
+for improved quality of educational services. As such, I expect failed referenda 
+to precede challenges to school board, and I expect merely offering a referenda 
+to also be related to increased challenges. 
+
+Three other policy indicators are relevant to board challenge. The first is the 
+percentage of school age children in non-public schools. I expect as this 
+percentage increases, competition for school boards will decrease due to a 
+reduced interest among more educated and affluent families attending private 
+schools in shaping the policy of the local school board. I also look at measures 
+of student performance to test whether districts with higher or lower performance 
+are more likely to have candidates emerge. I do not expect a relationship here. 
+Finally, I include a measure of the share of district salaries spent on 
+administrators. All else equal, I expect more administrative school districts 
+to have less board challenges. %TODO: why
+
+These expectations are summarized in Table \ref{tab:candIV}. 
+
+
+
+\begin{center}
+\begin{small}
+\label{tab:candIV}
+\begin{longtable}{| p{.45\textwidth} | p{.12\textwidth} | p{.35\textwidth} |} \hline
+\textbf{Variable}  & \textbf{Expected Sign} & \textbf{Shortname} \\ \hline
+Demographics  &  & \\ \hline 
+Voting Age Population (VAP) & + & VAP \\
+\% white VAP & + & per\_white \\
+\% Over 65 & + & per65O \\
+Median Household Income & + & median\_income \\
+\% Bachelor Degree Over age 25 & + & PerBachelorOrAbove \\
+Public School Pupils & + & PublicPupils \\
+\% Owner Occupied Housing & + & OOH\_share \\ \hline
+Fiscal & & \\ \hline
+Property Tax Share of District Revenue & + & PROPERTYTAX\_REV\_SHARE \\
+District Fund Balance Per Pupil & - & balance\_member \\
+Per Pupil Expenditure & + & TCEC\_MEMBER or TDC\_MEMBER, TEC\_MEMBER \\
+School District Share of Property Tax & + & millrateShare \\ 
+Equalized Property Value Per Pupil & + & eqv\_member \\ \hline
+Political & & \\ \hline
+Number of Board Races & + & nraces \\
+Share of Candidates Who are Incumbents & - & incumShare \\
+Partisanship in Fall Election & None & fallTwoPartyShareDem \\
+Partisan Division in Previous Fall & - & partyDivision \\
+Teacher Share of Voters & - & teachShareofVoters \\ \hline
+Policy & & \\ \hline
+New Superintendent & - & NEW\_SUP \\
+Math and Reading Performance & Null & MATH\_PROFADV\_PER READ\_PROFADV\_PER \\
+Debt Referenda Attempt and Failure & + & debtFail; debtQues \\
+Override Referenda Attempt and Failure & + & overrideQues; overrideFail \\
+Administrator Share of Salary & - & ADMIN\_SHARE \\
+Percentage of Pupils in Non-public schools & - & NonPublicPupilPer \\ \hline
+\caption{Available Variables and Expected Signs}
+\end{longtable}
+\end{small}
+\end{center}
 
 School district data that helps sort this out. 
 
@@ -570,7 +703,7 @@ of a challenge.
 
 
 
-\begin{small}
+\begin{tiny}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Models of Contestation in School Board Elections}
 \label{tab:glmMods}\\ 
@@ -631,9 +764,9 @@ $\log L$                    & -1607.932 & -1335.802 & -1576.736 & -1585.429 & -1
                 and divided by 2 standard deviations.}} 
 \end{longtable} 
 
-\end{small}
+\end{tiny}
 
-\begin{small}
+\begin{tiny}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Mixed Models of Contestation in School Board Elections}
 \label{tab:glmerMods}\\ 
@@ -700,7 +833,7 @@ Sigma                        & 1             & 1             & 1             & 1
 \end{longtable} 
 
 
-\end{small}
+\end{tiny}
 
 
 
@@ -768,7 +901,7 @@ school district having a contested election.
 A table of likelihood ratio tests shows the same result:
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sat Nov 22 18:06:53 2014
+% Sun Nov 23 17:41:12 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrrr}
@@ -807,8 +940,6 @@ well suited to the task.
 
 Here is some text about the within district variation. 
 
-
-
 \section{Conclusions}
 
 School board elections are not marked by much contestation. 
@@ -832,116 +963,6 @@ Computing is fun.
 
 
 
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Nov 23 05:50:31 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrr}
-  \hline
- & stat & df & p.value \\ 
-  \hline
-LRT & 100.45 & 0.00 & 0.00 \\ 
-  PBtest & 100.45 &  & 0.01 \\ 
-   \hline
-\end{tabular}
-\caption{Parametric bootstrap specification test results using 200 simulations. Between district and year effects and districts nested in years.} 
-\end{table}
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Nov 23 05:50:31 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrr}
-  \hline
- & stat & df & p.value \\ 
-  \hline
-LRT & 100.45 & 0.00 & 0.00 \\ 
-  PBtest & 100.45 &  & 0.01 \\ 
-   \hline
-\end{tabular}
-\caption{Parametric bootstrap specification test results using 200 simulations. Between districts nested in years and district effects alone.} 
-\end{table}
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Nov 23 05:50:31 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrr}
-  \hline
- & stat & df & p.value \\ 
-  \hline
-LRT & 100.45 & 0.00 & 0.00 \\ 
-  PBtest & 100.45 &  & 0.01 \\ 
-   \hline
-\end{tabular}
-\caption{Parametric bootstrap specification test results using 200 simulations. Between district and year effects and districts nested in years.} 
-\end{table}
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Nov 23 05:50:31 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrr}
-  \hline
- & stat & df & p.value \\ 
-  \hline
-LRT & 100.45 & 0.00 & 0.00 \\ 
-  PBtest & 100.45 &  & 0.01 \\ 
-   \hline
-\end{tabular}
-\caption{Parametric bootstrap specification test results using 200 simulations. Between districts nested in years and district effects alone.} 
-\end{table}
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Nov 23 05:50:31 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrr}
-  \hline
- & stat & df & p.value \\ 
-  \hline
-LRT & 100.45 & 0.00 & 0.00 \\ 
-  PBtest & 100.45 &  & 0.01 \\ 
-   \hline
-\end{tabular}
-\caption{Parametric bootstrap specification test results using 200 simulations. Between district and year effects and districts nested in years.} 
-\end{table}
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Nov 23 05:50:31 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrr}
-  \hline
- & stat & df & p.value \\ 
-  \hline
-LRT & 100.45 & 0.00 & 0.00 \\ 
-  PBtest & 100.45 &  & 0.01 \\ 
-   \hline
-\end{tabular}
-\caption{Parametric bootstrap specification test results using 200 simulations. Between districts nested in years and district effects alone.} 
-\end{table}
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Nov 23 05:50:31 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrr}
-  \hline
- & stat & df & p.value \\ 
-  \hline
-LRT & 100.45 & 0.00 & 0.00 \\ 
-  PBtest & 100.45 &  & 0.01 \\ 
-   \hline
-\end{tabular}
-\caption{Parametric bootstrap specification test results using 200 simulations. Between district and year effects and districts nested in years.} 
-\end{table}
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Nov 23 05:50:31 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{rrrr}
-  \hline
- & stat & df & p.value \\ 
-  \hline
-LRT & 100.45 & 0.00 & 0.00 \\ 
-  PBtest & 100.45 &  & 0.01 \\ 
-   \hline
-\end{tabular}
-\caption{Parametric bootstrap specification test results using 200 simulations. Between districts nested in years and district effects alone.} 
-\end{table}
+
+
 

@@ -344,38 +344,170 @@ from those who did not provide records on observable characteristics.
 
 \subsection{Independent Variables}
 
-Demographic variables (from Oliver): 
-  - Percent white (per\_white\_all)
-  - Median income (median\_income)
-  - Age (per65o)
-  - Size (pop) (VAP\_adjLOG)
-  - OOH share (OOH\_share)
-  - Public Pupils (TOT\_COUNT - TOTAL\_COUNT\_PVT)
-  - Education level (PerBachelorOrAbove)
+With the Wisconsin data, a number of variables are available with which to test 
+the theories outlined above. The first set of variables I include are basic 
+demographic variables to account for the diversity in school districts as 
+jurisdictions. As shown in \citet{oliver} these variables are important to 
+take into consideration when considering the factors that influence candidate 
+participation in local elections. 
 
-Fiscal variables (scope): 
-  - Property tax revenue share (PROPERTYTAX\_REV\_SHARE)
-  - Balance (balance\_member)
-  - Per pupil expenditure (TCEC\_MEMBER, TDC\_MEMBER, TEC\_MEMBER)
-  - Millrate / SDmillrate (NonSDMill, millrate)
+The first of these variables I consider is the voting age population (VAP) of 
+the school district. VAP represents the pool of voters and also of potential 
+candidates for school board in a community. I expect this variable to be 
+positively related to contestation of school board elections. In addition to 
+size, the homogeneity of the community is an important indicator of the level 
+of electoral participation. I consider two types of heterogeneity -- racial and 
+generational. First, I include a measure of the percentage of the adult population 
+in the school district that is white. While Wisconsin is predominantly a white 
+state, I expect racial heterogeneity to be positively associated with more 
+school board contestation. Additionally, prior research has shown that voter 
+(and property tax payer) age is associated with support for local schools. The 
+greater the percentage of elderly in the school district, the more participation 
+I expect to see %TODO: citation for plutzer
+Additionally, given the results of surveys that indicate school board members 
+are more likely to be white and elderly, I expect that the increase in these 
+variables is an increase in supply of potential candidates, and thus should be 
+positively related to board contestation %TODO: find citations \citet{}. 
 
-Political variables ()
-  - Partisanship in fall election (fallTwoPartyShareDem)
-  - incumbent in race (incumRun)
-  - nraces (nraces)
-  - partisan division (partyDivision, avged)
-  - teacher share of voters (teachShareofVoters)
-  
-Policy variables ()
-  - New superintendent (NEW\_SUP)
-  - Math performance (MATH\_PROFADV\_PER)
-  - Reading performance (READ\_PROFADV\_PER)
-  - debt referenda fail (debtFail)
-  - override referenda fail (overrideFail)
-  - override quest (overrideQues)
-  - debt quest (debtQues)
-  - Non public pupils (NonPublicPupilPer)
-  - Admin share of salary (ADMIN\_SHARE)
+The last two demographic variables are measures of tax base in some sense. First, 
+I include a measure of the percentage of housing occupied by owners as a measure 
+of both the permanency of the community (following \citet{oliver}) and the 
+salience of property tax rates -- an important issue for single jurisdiction 
+governments like school boards %TODO: cite berry 
+As an additional control, I include a measure of median household income, but 
+as other studies have noted, this does not exhibit much variation within Wisconsin 
+as it does in other jurisdictions %todo: cite amiel, reschowsky, knowles
+
+Next, I consider variables measuring the scope of the school district relative 
+to other local governments. As \citet{berry} finds stacking of local governments 
+with overlapping taxing jurisdictions divides the attention of voters, I consider 
+whether overlapping fiscal authority might divide the attention of potential 
+candidates and make school boards less attractive. The first variable I consider 
+is what share of its total revenue a school district raises from property taxes. 
+While the intricacies of the Wisconsin school funding formula are beyond the 
+scope of this paper, the result of this formula is that there is much variation 
+in the share of district revenues that are raised by local property owners. 
+I expect the greater the share of revenue from property taxes, the more likely 
+candidates are to participate. However, the share of revenue derived from 
+property tax may not be particularly salient to the voting population, especially 
+not those without school aged children. Due to this, I test an alternate measure 
+which is the share of total property tax revenue that is levied by school 
+districts. This variable should also be positively related to candidacy -- as 
+property tax revenue directed to schools increases as a share of all property 
+tax revenue, individuals should be more motivated to pursue a seat on the school 
+board. % TODO: citation
+Another indicator of the fiscal health of a school district is the available 
+savings, or fund balance, of the school district. I normalize this variable to 
+be a per pupil measure of dollars available in savings to the school district. 
+I expect this variable to be negatively related to candidacy with districts 
+that have more savings having less contestation as a result of lower overall 
+fiscal pressure. A final measure of fiscal health is the level of per pupil 
+spending in the school district. I expect higher spending districts to have 
+higher levels of candidate contestation. %TODO: why
+
+Next, I look to explore the influence of political factors in the emergence of 
+challenges to incumbents. First, I include a variable to control for the 
+different structure of school board elections by controlling for the number of 
+races in each school district. This variable should be positive related with 
+more incumbency challenge as it represents more opportunities for a challenge 
+to emerge when multiple races exist. Next, I test for advantage of incumbency 
+by including a measure of the share of candidates who are incumbents. I expect 
+this variable to be negatively related to challenge as incumbents should deter 
+challengers. %TODO: citation
+
+Next, I explore the impact of both turnout and partisanship in general elections 
+on local elections. I am interested in the role partisan divisions among voters 
+in the school district may play in the off-cycle non-partisan school board 
+election cycle. I include two potential measures of partisanship. First I 
+measure the average two party vote share for Democrats across the immediately 
+previous Gubernatorial and Presidential fall elections. I expect this variable 
+to be unrelated to challengers emerging for school board. Next, I test the 
+partisan polarization of the community by measuring the distance from an even 
+vote share between Republican and Democratic communities by taking the absolute 
+value of the difference between the Democratic vote share and the expected vote 
+share in a perfectly polarized community of 0.5. The greater this difference, the 
+less likely I believe candidate emergence will be due to the homogenous nature 
+of voter preferences in the community. 
+
+As a final measure, I follow the work of citet{moe,anzia} and explore the influence of teachers' unions in elections. Teachers' unions represent the 
+strongest interest group in school board politics. The greater the share of the 
+teaching staff in the voting population, the less likely I expect candidates 
+to emerge. A strong interest group presence on the board should suppress 
+electoral competition. 
+
+A final set of total variables is policy related concerns. These variables 
+explore the idea that candidates may desire to emerge in response to underlying 
+policy changes in the district. %TODO: Not perfect due to timing
+
+First, I assess the impact that a change in superintendent has on school board 
+challengers. Because theory suggests that board turnover often precedes 
+superintendent turnover, I posit that a new superintendent should signal a 
+decrease in candidate challenges to board members %TODO: cite \cite{wu,baratc}. 
+
+Next, I include measures of school district funding referenda. Wisconsin has 
+two common types of school referenda measures -- bond and override referenda. 
+Bond referenda are familiar across the United States as authority for a school 
+district to raise taxes to cover the payments on a loan to build infrastructure 
+such as a new or renovated school building. Override referenda are specific 
+to school funding formulas like Wisconsin and Massachusetts, where schools must 
+operate under a revenue limit unless given explicit authority via an 
+election to exceed that limit with additional property tax revenue. Attempting 
+a bond or override referenda is one of the more high profile actions a school 
+board can take -- asking the public to increase property tax rates in return 
+for improved quality of educational services. As such, I expect failed referenda 
+to precede challenges to school board, and I expect merely offering a referenda 
+to also be related to increased challenges. 
+
+Three other policy indicators are relevant to board challenge. The first is the 
+percentage of school age children in non-public schools. I expect as this 
+percentage increases, competition for school boards will decrease due to a 
+reduced interest among more educated and affluent families attending private 
+schools in shaping the policy of the local school board. I also look at measures 
+of student performance to test whether districts with higher or lower performance 
+are more likely to have candidates emerge. I do not expect a relationship here. 
+Finally, I include a measure of the share of district salaries spent on 
+administrators. All else equal, I expect more administrative school districts 
+to have less board challenges. %TODO: why
+
+These expectations are summarized in Table \ref{tab:candIV}. 
+
+
+\begin{center}
+\begin{small}
+\label{tab:candIV}
+\begin{longtable}{| p{.45\textwidth} | p{.12\textwidth} | p{.35\textwidth} |} \hline
+\textbf{Variable}  & \textbf{Expected Sign} & \textbf{Shortname} \\ \hline
+Demographics  &  & \\ \hline 
+Voting Age Population (VAP) & + & VAP \\
+\% white VAP & + & per\_white \\
+\% Over 65 & + & per65O \\
+Median Household Income & + & median\_income \\
+\% Bachelor Degree Over age 25 & + & PerBachelorOrAbove \\
+Public School Pupils & + & PublicPupils \\
+\% Owner Occupied Housing & + & OOH\_share \\ \hline
+Fiscal & & \\ \hline
+Property Tax Share of District Revenue & + & PROPERTYTAX\_REV\_SHARE \\
+District Fund Balance Per Pupil & - & balance\_member \\
+Per Pupil Expenditure & + & TCEC\_MEMBER or TDC\_MEMBER, TEC\_MEMBER \\
+School District Share of Property Tax & + & millrateShare \\ 
+Equalized Property Value Per Pupil & + & eqv\_member \\ \hline
+Political & & \\ \hline
+Number of Board Races & + & nraces \\
+Share of Candidates Who are Incumbents & - & incumShare \\
+Partisanship in Fall Election & None & fallTwoPartyShareDem \\
+Partisan Division in Previous Fall & - & partyDivision \\
+Teacher Share of Voters & - & teachShareofVoters \\ \hline
+Policy & & \\ \hline
+New Superintendent & - & NEW\_SUP \\
+Math and Reading Performance & Null & MATH\_PROFADV\_PER READ\_PROFADV\_PER \\
+Debt Referenda Attempt and Failure & + & debtFail; debtQues \\
+Override Referenda Attempt and Failure & + & overrideQues; overrideFail \\
+Administrator Share of Salary & - & ADMIN\_SHARE \\
+Percentage of Pupils in Non-public schools & - & NonPublicPupilPer \\ \hline
+\caption{Available Variables and Expected Signs}
+\end{longtable}
+\end{small}
+\end{center}
 
 School district data that helps sort this out. 
 
@@ -431,7 +563,7 @@ nopanel <- theme(panel.background=element_blank(),
                                axis.text = element_text(colour = "black"))
 @
 
-<<demog1, fig.cap="Correlations of Demographic Variables", fig.height=5, fig.width=5.5>>=
+<<demog1, fig.cap="Correlations of Demographic Variables", fig.height=5, fig.width=6.25>>=
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% demogIdx)], use = "pairwise"), 3)) 
 
@@ -448,7 +580,7 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray40")
   labs(x = "", y = "")
 @
 
-<<fiscal1, fig.cap="Correlations of Fiscal Variables", fig.height=5, fig.width=5.5>>=
+<<fiscal1, fig.cap="Correlations of Fiscal Variables", fig.height=5, fig.width=6.25>>=
 
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% fiscalIdx)], 
@@ -468,7 +600,7 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")
 
 @
 
-<<politic1, fig.cap="Correlations of Political Variables", fig.height=5, fig.width=5.5>>=
+<<politic1, fig.cap="Correlations of Political Variables", fig.height=5, fig.width=6.25>>=
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% politicIdx)], 
               use = "pairwise"), 3)) 
@@ -487,7 +619,7 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")
 @
 
 
-<<policy1, fig.cap="Correlations of Policy Variables", fig.height=5, fig.width=5.5>>=
+<<policy1, fig.cap="Correlations of Policy Variables", fig.height=5, fig.width=6.25>>=
 
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% policyIdx)],  
@@ -792,7 +924,7 @@ get_CL_vcov<-function(model, cluster){
 
 @
 
-\begin{small}
+\begin{tiny}
 <<glmmods, results='asis'>>=
 moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
 
@@ -845,9 +977,9 @@ apsrtable(demogs, politic, fiscal, policy, fullmod, se = "robust",
           Sweave=FALSE, digits = 3)
 
 @
-\end{small}
+\end{tiny}
 
-\begin{small}
+\begin{tiny}
 <<glmermods, results='asis'>>=
 library(optimx)
 
@@ -903,7 +1035,7 @@ apsrtable(demogsMM, politicMM, fiscalMM, policyMM, fullmodMM,
           Sweave=FALSE, digits = 3)
 @
 
-\end{small}
+\end{tiny}
 
 <<plotCIs, eval=FALSE>>=
 bmProf <- profile(biggerMod, which = "beta_", devtol = 0.001)
@@ -999,7 +1131,7 @@ rm(rocList, roc1, roc2, roc3, roc4, roc1.1, roc2.1, roc3.1, roc4.1)
 
 @
 
-<<rocplot1, echo=FALSE, fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards", fig.keep='last', fig.width=5.5, fig.height=5>>=
+<<rocplot1, echo=FALSE, fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards", fig.keep='last', fig.width=6.75, fig.height=5>>=
 
 roc$modType <- paste(roc$mod, roc$type, sep ="-")
 ggplot(roc, aes(x = fpr, y = tpr, group = modType,color = mod, linetype = type)) + 
@@ -1008,7 +1140,8 @@ ggplot(roc, aes(x = fpr, y = tpr, group = modType,color = mod, linetype = type))
    ylab("Sensitivity") + 
    xlab("1 - Specificity") + 
   coord_cartesian(xlim=c(0, 1), ylim=c(0,1)) + theme_bw() + 
-  labs(title = "Comparing Models of Candidate Contestation in School Board Elections", 
+  labs(title = "Comparing Models of Candidate Contestation \n 
+       in School Board Elections", 
        color = "Model")
 
 @
@@ -1063,8 +1196,6 @@ well suited to the task.
 
 Here is some text about the within district variation. 
 
-
-
 \section{Conclusions}
 
 School board elections are not marked by much contestation. 
@@ -1075,7 +1206,7 @@ Computing is fun.
 
 \subsection{Model Specification Tests}
 
-<<modTestDemog, results='hide', eval=TRUE>>=
+<<modTestDemog, results='hide', eval=FALSE>>=
 library(pbkrtest)
 library(doParallel)
 cl <- makePSOCKcluster(4)
@@ -1090,7 +1221,7 @@ stopCluster(cl)
 @
 
 
-<<modTestFiscal, results='hide', eval=TRUE>>=
+<<modTestFiscal, results='hide', eval=FALSE>>=
 cl <- makePSOCKcluster(4)
 
 fiscalMM2 <- update(fiscalMM, .~. - (1|distid) - (1|year) + (1|year/distid))
@@ -1107,7 +1238,7 @@ stopCluster(cl)
 @
 
 
-<<modTestPolitic, results='hide', eval=TRUE>>=
+<<modTestPolitic, results='hide', eval=FALSE>>=
 cl <- makePSOCKcluster(4)
 
 
@@ -1125,7 +1256,7 @@ stopCluster(cl)
 @
 
 
-<<modTestPolicy, results='hide', eval=TRUE>>=
+<<modTestPolicy, results='hide', eval=FALSE>>=
 cl <- makePSOCKcluster(4)
 
 
@@ -1142,7 +1273,7 @@ modTestPolicy2 <- PBmodcomp(policyMM2, policyMM3, nsim = 200,
 stopCluster(cl)
 @
 
-<<modTestFull, results='hide', eval=TRUE>>=
+<<modTestFull, results='hide', eval=FALSE>>=
 # cl <- makePSOCKcluster(2)
 # 
 # 
@@ -1159,7 +1290,7 @@ stopCluster(cl)
 # stopCluster(cl)
 @
 
-<<pbtestresults, results='asis', eval=TRUE>>=
+<<pbtestresults, results='asis', eval=FALSE>>=
 #print parametric bootstrap
 printPB <- function(pbobj, names=NULL){
    require(xtable)
@@ -1168,7 +1299,7 @@ printPB <- function(pbobj, names=NULL){
    }
    mycap <- paste0("Parametric bootstrap specification test results using ", pbobj$samples[[1]], 
                    " simulations. Between ", names[1], " and ", names[2], ".")
-   print(xtable(modTestDemog1$test, caption = mycap), include.rownames=TRUE)
+   print(xtable(pbobj$test, caption = mycap), include.rownames=TRUE)
 }
 
 nams1 <- c("district and year effects", "districts nested in years")
@@ -1181,11 +1312,22 @@ printPB(modTestFiscal1, names = nams1)
 printPB(modTestFiscal2, names = nams2)
 
 printPB(modTestPolitic1, names = nams1)
-printPB(modTestPolitic1, names = nams2)
+printPB(modTestPolitic2, names = nams2)
 
 printPB(modTestPolicy1, names = nams1)
 printPB(modTestPolicy2, names = nams2)
 
 
 
+@
+
+<<pbresults, results='markup', eval=FALSE>>=
+modTestDemog1
+modTestDemog2
+modTestFiscal1
+modTestFiscal2
+modTestPolitic1
+modTestPolitic2
+modTestPolicy1
+modTestPolicy2
 @
