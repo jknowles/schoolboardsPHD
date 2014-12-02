@@ -30,8 +30,8 @@ By all accounts being a school board member is a difficult and thankless job.
 School board meetings frequently occur in the evening to allow parents and 
 community members to participate, and very few school board members are 
 compensated for their work \citep{RefWorks:333, RefWorks:321}. Contrary to popular conceptions, 
-the role of the school board as a stepping stone to further office is by all 
-accounts overstated \citep{RefWorks:321, RefWorks:322}. In fact, the dissatisfaction
+the role of the school board as a stepping stone to further office is 
+overstated \citep{RefWorks:321, RefWorks:322}. In fact, the dissatisfaction
 incumbents have with the position has been a confounding factor in the literature; in 
 comparison to state wide or nationwide offices, non-political turnover due to retirement 
 from the seat is the most common form of exit \citep{RefWorks:311}. 
@@ -47,11 +47,7 @@ histories of over 300 Wisconsin school districts from 2002-2012 I will investiga
 empirical support for these theories. In particular, the panel nature of the 
 data set allows me to test competing claims about the role that salient policy and 
 political factors play in the emergence of candidates for school 
-boards. Additionally, as mentioned in Chapter \ref{chap:intro}, Wisconsin provides a 
-strong test of the policy linkages between levels of government. Leveraging what is 
-arguably an exogenous shock in the form of Act 10 in 2011, we can evaluate changes 
-in the level of contestation in school board elections. Finally, this chapter will
-consider the importance of candidate emergence 
+boards. Finally, this chapter will consider the importance of candidate emergence 
 in a full model of school district political activity outlined in Figure \ref{model}. 
 
 \section{Theories of Candidate Emergence}
@@ -112,7 +108,7 @@ Simply put, strategic view of candidate entry argues that candidates emerge for
 office when they perceive victory to be most likely \citep{schlesinger1}. This includes avoiding 
 running against incumbents or choosing to run against incumbents when they are 
 weak or when redistricting has altered the political conditions in the district 
-\citep{Black72, Black1972}. However, candidates are not merely strategic within 
+\citep{Black1972}. However, candidates are not merely strategic within 
 their individual race, but are also sensitive to macro-level partisan trends.
 \citet{JacobsonBook}'s strategic timing theory argues that high-quality challengers 
 emerge when favorable electoral conditions emerge for their party. For U.S. House election, 
@@ -279,7 +275,7 @@ than other common forms of local government such as city council, mayoral, or
 county board seats. Second, theory suggests that voters have very little information 
 about individual school board members and are much more likely to make any voting 
 decisions about the board as a whole by evaluating district wide conditions instead 
-of features of individual board members \cite{oliver}. 
+of features of individual board members \citep{oliver}. 
 
 \section{Data and Methods}
 
@@ -296,7 +292,7 @@ results from Wisconsin.
 
 This paper utilizes a unique data set of school board election results in the state 
 of Wisconsin from 2002-2012.\footnote{For more details on the collection method, 
-see the Appendix \ref{app:data}}. While previous studies of school board elections have focused 
+see the Appendix \ref{app:data}.} While previous studies of school board elections have focused 
 on nationally representative samples (and been plagued by non-response for smaller 
 districts which constitute the majority of school board members), or statewide 
 samples for a snapshot in time, this data follows in the 
@@ -311,36 +307,18 @@ prior attempt for school board office.
 This database on the electoral outcomes of each school board is accompanied by 
 a broad range of attributes about the school districts they oversee. These include 
 fiscal, academic, demographic, and political measures of the district and the population 
-it serves. A final feature of this data set is that the years of the panel span 
-an important and dramatic policy change for education in Wisconsin - the passage of 
-Wisconsin Act 10 by Wisconsin Governor Scott Walker. While the political fallout 
-over this legislation was nightly news across the nation, the implications of Act 10
-were and continue to be particularly salient for school districts, school boards, 
-and local policy regarding the governance of education in the state. Combined with 
-unprecedented cuts in per-pupil-spending, Act 10 was framed as a set of "tools" 
-to give local officials - elected school boards - the flexibility to reduce their 
-fixed costs by renegotiating employee compensation and benefits with employees now 
-with much weakened labor representation and substantial limits on their bargaining 
-authority. \footnote{Perhaps the most salient 
-issue is the requirement under the law that any wage increase greater than a cost 
-of living adjustment pegged to CPI be approved by a district wide referenda - 
-effectively placing a firm ceiling on any salary negotiations2011 Wisconsin Act 10: 
-https://docs.legis.wisconsin.gov/2011/related/acts/10}
-
+it serves.
 
 In addition to the unique data set on school board election results described in 
-Chapter \ref{chap:wisco}, there exist 
+Chapter \ref{chap:wisco}, there exists 
 a large array of publicly available data about the performance, finances, 
-and demographics of the public school districts in the state. These data are useful 
+and demographics of the public school districts in the state. This data is useful 
 in understanding the impact of local factors on school board election conditions. 
 Importantly, we can use these data elements to identify if the sample of school 
 districts responding to the records request is representative of the school 
-districts in the state. 
-
-As shown in table \ref{tab:samplecomp}, there is little difference between schools 
-in and out of the sample. From Chapter \ref{chap:wisco} we saw that the school 
-districts providing records did not differ significantly in any key variable 
-from those who did not provide records on observable characteristics. 
+districts in the state. From Table \ref{tab:samplecomp} we saw 
+that the school districts providing records did not differ significantly in any 
+key variable from those who did not provide records on observable characteristics. 
 
 \subsection{Independent Variables}
 
@@ -354,32 +332,35 @@ participation in local elections.
 The first of these variables I consider is the voting age population (VAP) of 
 the school district. VAP represents the pool of voters and also of potential 
 candidates for school board in a community. I expect this variable to be 
-positively related to contestation of school board elections. In addition to 
+positively related to contestation of school board elections both because of the 
+larger pool of available candidates, but also the larger scope of influence in 
+larger school districts -- which is more attractive to potential candidates 
+\citep{oliver}. In addition to 
 size, the homogeneity of the community is an important indicator of the level 
 of electoral participation. I consider two types of heterogeneity -- racial and 
 generational. First, I include a measure of the percentage of the adult population 
-in the school district that is white. While Wisconsin is predominantly a white 
+in the school district that is white. While Wisconsin is an overwhelmingly white 
 state, I expect racial heterogeneity to be positively associated with more 
 school board contestation. Additionally, prior research has shown that voter 
 (and property tax payer) age is associated with support for local schools. The 
 greater the percentage of elderly in the school district, the more participation 
-I expect to see %TODO: citation for plutzer
+I expect to see \citep{RefWorks:332}. 
 Additionally, given the results of surveys that indicate school board members 
 are more likely to be white and elderly, I expect that the increase in these 
 variables is an increase in supply of potential candidates, and thus should be 
-positively related to board contestation %TODO: find citations \citet{}. 
+positively related to board contestation \citep{RefWorks:321, RefWorks:322, RefWorks:333}. 
 
 The last two demographic variables are measures of tax base in some sense. First, 
 I include a measure of the percentage of housing occupied by owners as a measure 
 of both the permanency of the community (following \citet{oliver}) and the 
 salience of property tax rates -- an important issue for single jurisdiction 
-governments like school boards %TODO: cite berry 
+governments like school boards \citep{berry2}. 
 As an additional control, I include a measure of median household income, but 
 as other studies have noted, this does not exhibit much variation within Wisconsin 
 as it does in other jurisdictions %todo: cite amiel, reschowsky, knowles
 
 Next, I consider variables measuring the scope of the school district relative 
-to other local governments. As \citet{berry} finds stacking of local governments 
+to other local governments. As \cite{berry2} finds stacking of local governments 
 with overlapping taxing jurisdictions divides the attention of voters, I consider 
 whether overlapping fiscal authority might divide the attention of potential 
 candidates and make school boards less attractive. The first variable I consider 
@@ -395,7 +376,7 @@ which is the share of total property tax revenue that is levied by school
 districts. This variable should also be positively related to candidacy -- as 
 property tax revenue directed to schools increases as a share of all property 
 tax revenue, individuals should be more motivated to pursue a seat on the school 
-board. % TODO: citation
+board \cite{berry2, oliver}.
 Another indicator of the fiscal health of a school district is the available 
 savings, or fund balance, of the school district. I normalize this variable to 
 be a per pupil measure of dollars available in savings to the school district. 
@@ -410,7 +391,7 @@ challenges to incumbents. First, I include a variable to control for the
 different structure of school board elections by controlling for the number of 
 races in each school district. This variable should be positive related with 
 more incumbency challenge as it represents more opportunities for a challenge 
-to emerge when multiple races exist. Next, I test for advantage of incumbency 
+to emerge when multiple races exist. I also test for advantage of incumbency 
 by including a measure of the share of candidates who are incumbents. I expect 
 this variable to be negatively related to challenge as incumbents should deter 
 challengers. %TODO: citation
@@ -421,7 +402,8 @@ in the school district may play in the off-cycle non-partisan school board
 election cycle. I include two potential measures of partisanship. First I 
 measure the average two party vote share for Democrats across the immediately 
 previous Gubernatorial and Presidential fall elections. I expect this variable 
-to be unrelated to challengers emerging for school board. Next, I test the 
+to be unrelated to challengers emerging for school board -- Republican and Democrat 
+leaning communities should exhibit similar levels of local contestation. Next, I test the 
 partisan polarization of the community by measuring the distance from an even 
 vote share between Republican and Democratic communities by taking the absolute 
 value of the difference between the Democratic vote share and the expected vote 
@@ -429,29 +411,38 @@ share in a perfectly polarized community of 0.5. The greater this difference, th
 less likely I believe candidate emergence will be due to the homogenous nature 
 of voter preferences in the community. 
 
-As a final measure, I follow the work of citet{moe,anzia} and explore the influence of teachers' unions in elections. Teachers' unions represent the 
+As a final measure, I follow the work of \cite{moe,anzia} and explore the influence 
+of teachers' unions in elections. Teachers' unions represent the 
 strongest interest group in school board politics. The greater the share of the 
 teaching staff in the voting population, the less likely I expect candidates 
-to emerge. A strong interest group presence on the board should suppress 
-electoral competition. 
+to emerge. A strong interest group presence in the community should ensure the 
+the board reflects interest group preferences and depress the need for electoral competition. 
 
 A final set of total variables is policy related concerns. These variables 
 explore the idea that candidates may desire to emerge in response to underlying 
-policy changes in the district. %TODO: Not perfect due to timing
+policy changes in the district. Policy concerns allow me to test whether or not 
+voters in school board races are retrospective. A challenge with retrospective 
+voting is the irregular timing of school board seat opening relative to other 
+offices. Whereas the state and federal legislatures are elected on a regular cycle, 
+school board seats are more like senate seats -- they come up for election at 
+different times in different jurisdictions, and thus they may be influenced by 
+distinct policy evaluations from voters depending on the year they are up for election. 
+%TODO: Not perfect due to timing
 
 First, I assess the impact that a change in superintendent has on school board 
 challengers. Because theory suggests that board turnover often precedes 
 superintendent turnover, I posit that a new superintendent should signal a 
-decrease in candidate challenges to board members %TODO: cite \cite{wu,baratc}. 
+decrease in candidate challenges to board members \cite{RefWorks:336, RefWorks:340}.
 
 Next, I include measures of school district funding referenda. Wisconsin has 
 two common types of school referenda measures -- bond and override referenda. 
 Bond referenda are familiar across the United States as authority for a school 
-district to raise taxes to cover the payments on a loan to build infrastructure 
-such as a new or renovated school building. Override referenda are specific 
+district to raise taxes to cover the payments on a loan for the costs of infrastructure 
+construction such as a new or renovated school building. Override referenda are specific 
 to school funding formulas like Wisconsin and Massachusetts, where schools must 
 operate under a revenue limit unless given explicit authority via an 
-election to exceed that limit with additional property tax revenue. Attempting 
+election to exceed that limit with additional property tax revenue.\footnote{SOME DETAILS 
+AND LINKS TO DESCRIPTIONS OF WISCONSIN SCHOOL FUNDING HERE.} Attempting 
 a bond or override referenda is one of the more high profile actions a school 
 board can take -- asking the public to increase property tax rates in return 
 for improved quality of educational services. As such, I expect failed referenda 
@@ -467,13 +458,13 @@ of student performance to test whether districts with higher or lower performanc
 are more likely to have candidates emerge. I do not expect a relationship here. 
 Finally, I include a measure of the share of district salaries spent on 
 administrators. All else equal, I expect more administrative school districts 
-to have less board challenges. %TODO: why
+to have fewer board challenges. %TODO: why
 
 These expectations are summarized in Table \ref{tab:candIV}. 
 
 
+\begin{tiny}
 \begin{center}
-\begin{small}
 \label{tab:candIV}
 \begin{longtable}{| p{.45\textwidth} | p{.12\textwidth} | p{.35\textwidth} |} \hline
 \textbf{Variable}  & \textbf{Expected Sign} & \textbf{Shortname} \\ \hline
@@ -506,10 +497,18 @@ Administrator Share of Salary & - & ADMIN\_SHARE \\
 Percentage of Pupils in Non-public schools & - & NonPublicPupilPer \\ \hline
 \caption{Available Variables and Expected Signs}
 \end{longtable}
-\end{small}
 \end{center}
+\end{tiny}
 
-School district data that helps sort this out. 
+\clearpage
+\subsection{Variable Selection}
+
+It is not feasible to test all of the variables in Table \ref{tab:candIV} 
+simultaneously due to the presence of high correlation among some of these 
+key indicators. In this section, I investigate the correlation among these 
+variables and describe the process of reducing the list of factors in Table \ref{tab:candIV} 
+to a manageable subset for inclusion in statistical models that can evaluate their 
+impact. 
 
 <<cleanupIV, echo=FALSE, results='hide'>>=
 # library(GGally)
@@ -563,7 +562,7 @@ nopanel <- theme(panel.background=element_blank(),
                                axis.text = element_text(colour = "black"))
 @
 
-<<demog1, fig.cap="Correlations of Demographic Variables", fig.height=5, fig.width=6.25>>=
+<<demog1, fig.cap="Correlations of Demographic Variables", fig.height=5.5, fig.width=7.5>>=
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% demogIdx)], use = "pairwise"), 3)) 
 
@@ -576,11 +575,26 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray40")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value)) + nopanel + 
+  geom_text(aes(label = value), size = 2) + nopanel + 
   labs(x = "", y = "")
 @
 
-<<fiscal1, fig.cap="Correlations of Fiscal Variables", fig.height=5, fig.width=6.25>>=
+In Figure \ref{fig:demog1} we see a depiction of the correlations between key 
+demographic variables with dark red and green representing the highest negative 
+and positive correlations respectively.\footnote{These figures represent the correlation 
+matrix for the complete pooled dataset across years and school districts. Correlations 
+for individual years follow similar patterns, but are not shown.} The most problematic correlations are 
+between the median household income and percentage of pupils in the school district 
+eligible for free and reduced price lunch -- quite obviously strongly negatively 
+correlated. The other largest correlation is between the number of pupils in the 
+district and the VAP -- a strong positive correlation. This means that in the 
+models below, I choose one variable from each of these pairs. Household median 
+income is also strongly correlated with the proportion of the population with a 
+BA or above and with the proportion of owner-occupied housing. As a result, 
+it may be necessary to drop median income in favor of these two variables in the 
+models below. 
+
+<<fiscal1, fig.cap="Correlations of Fiscal Variables", fig.height=5.5, fig.width=7.5>>=
 
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% fiscalIdx)], 
@@ -595,12 +609,26 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value))  + nopanel + 
+  geom_text(aes(label = value), size = 3)  + nopanel + 
   labs(x = "", y = "")
 
 @
 
-<<politic1, fig.cap="Correlations of Political Variables", fig.height=5, fig.width=6.25>>=
+Figure \ref{fig:fiscal1} shows the correlations among the fiscal measures for school 
+districts. Here there are fewer extermely high correlations. The largest correlations 
+belong to two pairs of four variables. Understandably, our two measures of equalized 
+district costs, \texttt{TDC\_MEMBER} (Total district cost per member) and 
+\texttt{TEC\_MEMBER (Total Complete Educational Cost per member), are very highly 
+correlated with the only differences being relative spending on transportation and 
+food services. In the models below, only one of these will ever be included. The 
+next set of high correlations have to do with property tax rates and population. 
+The share of the millrate within the school district attributable to school district 
+taxation is highly correlated with the tax rate set by the school district. 
+Additionally, the amount of property value per tax filer in the community is 
+highly correlated with the millrate in a negative direction. 
+
+
+<<politic1, fig.cap="Correlations of Political Variables", fig.height=5.5, fig.width=7.5>>=
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% politicIdx)], 
               use = "pairwise"), 3)) 
@@ -614,12 +642,18 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value))  + nopanel + 
+  geom_text(aes(label = value), size = 3)  + nopanel + 
   labs(x = "", y = "")
 @
 
+The political variables in Figure \ref{fig:politic1} are largely free of high 
+correlations among them. The exception is the strong relationship between the 
+number of incumbents running and the overall share of all candidates running 
+who are incumbents -- two attempts at measuring the phenomenon of how open the 
+election is. 
 
-<<policy1, fig.cap="Correlations of Policy Variables", fig.height=5, fig.width=6.25>>=
+
+<<policy1, fig.cap="Correlations of Policy Variables", fig.height=5.5, fig.width=7.5>>=
 
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% policyIdx)],  
@@ -634,10 +668,16 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value))  + nopanel + 
+  geom_text(aes(label = value), size = 3)  + nopanel + 
   labs(x = "", y = "")
 @
 
+The story is the same for policy measures in Figure \ref{fig:policy1}. The only 
+large correlations are between reading and math state standardized assessment 
+proficiency rates, a measure of academic performance of the district. Other high 
+positive correlations occur between the success, failure, and attempts at passing 
+bond or revenue limit override referenda. Curiously, superintendent turnover in 
+year t-1 and year t is also highly correlated. 
 
 <<skiptables, eval=FALSE, echo=FALSE>>=
 xtable(round(cor(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout), 
@@ -645,24 +685,43 @@ xtable(round(cor(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout),
 @
 
 
-\subsubsection{Dependent Variable}
+\clearpage
+\subsection{Dependent Variables}
+
+
+\subsubsection{Candidate Emergence}
 
 To understand candidacy it is important to consider measures of candidate emergence 
 that make the most sense. % Find studies of candidate emergence in low-level elections
+Previous research has focused on incumbent challenges or candidate self-reports of 
+contestation in their most recent elections \citep{Refworks:311, RefWorks:321}. 
 By collecting election results directly, in contrast to surveying former school 
-board members, we can for the first time seriously explore the level of contestation 
-in school board elections directly. Previous literature has found that apolitical 
-forms of board member turnover often swamp political forms of turnover and skew 
-results \citep{RefWorks:311}. A limitation of the current study is identifying seat 
-vacancies due to retirement or plausible threat where a candidate does not mount a 
-campaign. This is less troubling in the school board case because the cost of 
-campaigning is so low that presumably a challenged incumbent would still stand 
-for election. Using election results we measure contestation by 
-two factors -- if the number of candidates is greater than the number of victors, 
-and if the number of non-minor candidates is greater than the number of victors. 
+board members, we can for the first time explore the level of contestation 
+in school board elections directly. This allows me to construct measures of contestation, 
+the presence of multiple choices for voters on the ballot. Choice among candidates 
+is a key feature of a democratic body, and one criticism leveled against 
+school boards and other local offices is that they are undemocratic due to a lack 
+of choice for voters. %TODO: Citation here
+Thus, a measure of contestation should capture the cases in which voters have a 
+choice -- whether for an open seat, or a race contesting a seated incumbent. To 
+that end, I use election results to construct two measures of contestation -- 
+if the number of candidates is greater than the number of victors, and if the 
+number of non-minor candidates is greater than the number of victors. 
+
+The definition of a minor candidate is inherently subjective. Previous work in the 
+literature has excluded candidates who receive fewer than 5\% of the overall vote, 
+while other studies have focused exclusively on contested inbument held seats in 
+open jurisdictions \cite{krebs, oliver}. Due to the diversity of school board 
+electoral organization, school district size, and the relatively low number of votes 
+necessary to secure a victory, I define minor candidates as those candidates who 
+receive fewer than 30 votes on the ballot. This is a liberal enough interpretation 
+of candidate seriousness to include write-in challenges and has the potential to 
+bias results downward. However, with the median winning candidate needing only 
+\Sexpr{iNum(median(dat$votes[dat$winner ==1]))} votes to secure victory, 30 votes 
+seems sizable enough to exert influence on the race overall. 
 
 
-<<candidatedescriptives4, echo=FALSE, fig.cap="Districts with contested school board elections under two different measures of candidate contestation.">>=
+<<candidatedescriptives4, echo=FALSE, fig.cap="Annual share of contested school board elections under two different measures of candidate contestation.">>=
 library(scales)
 
 # 
@@ -728,18 +787,12 @@ grid.arrange(p1, p2, main = "Comparing School Board Contestation Measures")
 % Compare other measures of contestation, number of candidates per seat, etc. 
 
 Figure \ref{fig:candidatedescriptives4} depicts the pattern of school board candidate 
-emergence over time. Excluding minor candidates vastly changes the share of elections 
-that are contested at any given juncture. Minor candidates are defined as those 
-candidates who receive fewer than 30 votes on the ballot. With appearance on a 
-school board ballot being much less of selection filter than many other higher 
-offices, it is important to evaluate the seriousness and strength of an opponent 
-in an alternative way. Here we filter out elections featuring an opposition candidate 
-that receives fewer than 30 votes as non-contested elections. 
+emergence over time. Contested elections are in blue and uncontested races are in 
+salmon. A slight trend toward fewer contested races is evident in both panels. 
+The bottom panel, excluding minor candidates, changes the share of elections 
+that are contested each year, but does not change the pattern across years. 
 
-Another way we might measure the level of candidate emergence in school board races 
-would be to look at the number of candidates per open seat. This measure would 
-differentiate between districts with wide spread contestation and those with 
-simply a single contested seat -- perhaps adding some additional information. 
+
 
 <<perseatcontests,  echo=FALSE, fig.cap="Serious candidates per open seat by school year in Wisconsin school districts over time.">>=
 
@@ -750,22 +803,35 @@ qplot(factor(year), candPerSeat,
   theme_bw() + 
   labs(x="Year", y="Candidates per Open Seat", 
        title = "Candidates Per Open Seat on Wisconsin School Boards") + 
-  geom_hline(yintercept = 2, linetype = I(2), color = I("blue"))
+  geom_hline(yintercept = 2, linetype = I(2), color = I("blue")) +
+  geom_hline(yintercept = 1, linetype = I(5), color = I("red"), size = I(1.025))
 
 
 @
 
-As Figure \ref{fig:perseatcontests} demonstrates, the level of contestation per open 
-seat does not change much across the years with the vast majority of seats having 
-between 1 and 2 candidates per seat. In general, the years surrounding Act 10 do not appear more contested than the years prior to Act 10 -- whether minor candidates are included 
-or excluded. However, we have to control for local factors as well as macro factors 
-in order to evaluate the independent effect Act 10 may have had on the likelihood 
-of running for office. In the next section I turn my attention to how to leverage 
+Another way we might measure the level of candidate emergence in school board races 
+would be to look at the number of candidates per seat. This measure would 
+differentiate between districts with wide spread contestation and those with 
+simply a single contested seat. As Figure \ref{fig:perseatcontests} demonstrates, 
+the level of contestation per open seat does not change much across the years with 
+the median race having 1 candidate per seat, and the majority of seats having between 
+1 and 2 candidates per seat. 
+
+In the next section I turn my attention to how to leverage 
 this unique data to test competing theories of when contestation for a seat on a 
 school board in Wisconsin will emerge. 
 
 \clearpage
-\subsection{Methods}
+
+\subsubsection{Incumbent Defeat}
+Previous research has found that apolitical 
+forms of board member turnover often swamp political forms of turnover and skew 
+results \citep{RefWorks:311}. A limitation of the current study is identifying seat 
+vacancies due to retirement or plausible threat where a candidate does not mount a 
+campaign. This is less troubling in the school board case because the cost of 
+campaigning is so low that presumably a challenged incumbent would still stand 
+for election.
+\section{Methods}
 
 Using administrative records and election returns leaves little 
 room to conduct an in-depth analysis at the motivations of individual candidates 
@@ -1292,12 +1358,13 @@ stopCluster(cl)
 
 <<pbtestresults, results='asis', eval=TRUE>>=
 #print parametric bootstrap
-printPB <- function(pbobj, names=NULL){
+printPB <- function(pbobj, names=NULL, label = NULL){
    require(xtable)
    if(missing(names)){
      names <- c("model 1", "model 2")
    }
-   mycap <- paste0("Parametric bootstrap specification test results using ", pbobj$samples[[1]], 
+   mycap <- paste0("Parametric bootstrap specification test results for ", 
+                   label, " using ", pbobj$samples[[1]], 
                    " simulations. Between ", names[1], " and ", names[2], ".")
    print(xtable(pbobj$test, caption = mycap), include.rownames=TRUE)
 }
@@ -1305,17 +1372,17 @@ printPB <- function(pbobj, names=NULL){
 nams1 <- c("district and year effects", "districts nested in years")
 nams2 <-  c("districts nested in years", "district effects alone")
 
-printPB(modTestDemog1, names = nams1)
-printPB(modTestDemog2, names = nams2)
+printPB(modTestDemog1, names = nams1, label = "demographic models")
+printPB(modTestDemog2, names = nams2, label = "demographic models")
 
-printPB(modTestFiscal1, names = nams1)
-printPB(modTestFiscal2, names = nams2)
+printPB(modTestFiscal1, names = nams1, label = "fiscal models")
+printPB(modTestFiscal2, names = nams2, label = "fiscal models")
 
-printPB(modTestPolitic1, names = nams1)
-printPB(modTestPolitic2, names = nams2)
+printPB(modTestPolitic1, names = nams1, label = "political models")
+printPB(modTestPolitic2, names = nams2, label = "political models")
 
-printPB(modTestPolicy1, names = nams1)
-printPB(modTestPolicy2, names = nams2)
+printPB(modTestPolicy1, names = nams1, label = "policy models")
+printPB(modTestPolicy2, names = nams2, label = "policy models")
 
 
 
