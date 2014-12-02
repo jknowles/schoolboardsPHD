@@ -328,14 +328,22 @@ cand <- as.data.table(dat[dat$candidateid != 99,])[, list(nraces = .N,
                                   ninc = sum(incumbent)), 
                            by = c("candidateid2")]
 
+dat$incDefeat <- NA
+dat$incDefeat[dat$incumbent == 1] <- 0
+dat$incDefeat[dat$incumbent == 1 & dat$winner == 0] <- 1
+
+
 races <- as.data.table(dat)[, list(ncand = .N,
                                    nrealcand = length(winner[candidateid!=99]),
                                    nwins = sum(winner), 
                                    ninc = sum(incumbent), 
+                                   nincDef = sum(incDefeat, na.rm=TRUE),
                                    nminor = sum(minor), 
                                    votes = sum(votes), 
                                    districtwide = max(districtwide)), 
                             by = c("raceid2")]
+
+races$nincDef[is.na(races$nincDef)] <- 0
 
 ################################################################################
 # Check for extreme values
