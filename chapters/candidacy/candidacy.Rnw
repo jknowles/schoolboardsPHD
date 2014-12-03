@@ -627,7 +627,7 @@ Figure \ref{fig:fiscal1} shows the correlations among the fiscal measures for sc
 districts. Here there are fewer extermely high correlations. The largest correlations 
 belong to two pairs of four variables. Understandably, our two measures of equalized 
 district costs, \texttt{TDC\_MEMBER} (Total district cost per member) and 
-\texttt{TEC\_MEMBER (Total Complete Educational Cost per member), are very highly 
+\texttt{TEC\_MEMBER} (Total Complete Educational Cost per member), are very highly 
 correlated with the only differences being relative spending on transportation and 
 food services. In the models below, only one of these will ever be included. The 
 next set of high correlations have to do with property tax rates and population. 
@@ -703,7 +703,7 @@ xtable(round(cor(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout),
 To understand candidacy it is important to consider measures of candidate emergence 
 that make the most sense. % Find studies of candidate emergence in low-level elections
 Previous research has focused on incumbent challenges or candidate self-reports of 
-contestation in their most recent elections \citep{Refworks:311, RefWorks:321}. 
+contestation in their most recent elections \citep{RefWorks:311, RefWorks:321}. 
 By collecting election results directly, in contrast to surveying former school 
 board members, we can for the first time explore the level of contestation 
 in school board elections directly. This allows me to construct measures of contestation, 
@@ -915,7 +915,7 @@ I employ sandwich estimators of the variance-covariance matrix to extract robust
 standard errors for these models, which will correct for the interdependence between 
 the observations and avoid overly optimistic tests for statistical significance 
 among the $\beta$ coefficients. I estimate the robust standard errors using 
-the \texttt{lmtest} and \texttt{sandwich} packages for R \cite{sandwich, lmtest}. 
+the \texttt{lmtest} and \texttt{sandwich} packages for R \cite{sandwich, sandwich2, lmtest}. 
 
 I fit four separate models following this approach, looking at the impact of 
 demographic, fiscal, political, and policy characteristics of school districts on 
@@ -1376,7 +1376,7 @@ Computing is fun.
 
 \subsection{Model Specification Tests}
 
-<<modTestRuns, results='hide', eval=TRUE, cache=TRUE>>=
+<<modTestRuns, results='hide', eval=FALSE, cache=TRUE>>=
 library(pbkrtest)
 library(doParallel)
 cl <- makePSOCKcluster(detectCores())
@@ -1449,7 +1449,7 @@ stopCluster(cl)
 # stopCluster(cl)
 @
 
-<<pbtestresults, results='asis', eval=TRUE, cache=TRUE>>=
+<<pbtestresults, results='asis', eval=FALSE, cache=TRUE>>=
 #print parametric bootstrap
 printPB <- function(pbobj, names=NULL, label = NULL){
    require(xtable)
@@ -1479,7 +1479,7 @@ printPB(modTestPolicy2, names = nams2, label = "policy models")
 
 @
 
-<<pbresults, results='markup', eval=TRUE, cache=TRUE>>=
+<<pbresults, results='markup', eval=FALSE, cache=TRUE>>=
 modTestDemog1
 modTestDemog2
 modTestFiscal1
