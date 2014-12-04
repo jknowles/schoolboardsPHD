@@ -581,7 +581,7 @@ year t-1 and year t is also highly correlated.
 To understand candidacy it is important to consider measures of candidate emergence 
 that make the most sense. % Find studies of candidate emergence in low-level elections
 Previous research has focused on incumbent challenges or candidate self-reports of 
-contestation in their most recent elections \citep{Refworks:311, RefWorks:321}. 
+contestation in their most recent elections \citep{RefWorks:311, RefWorks:321}. 
 By collecting election results directly, in contrast to surveying former school 
 board members, we can for the first time explore the level of contestation 
 in school board elections directly. This allows me to construct measures of contestation, 
@@ -1047,7 +1047,7 @@ school district having a contested election.
 A table of likelihood ratio tests shows the same result:
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Dec 02 17:15:55 2014
+% Wed Dec 03 07:38:28 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrrr}
@@ -1098,9 +1098,229 @@ Computing is fun.
 
 
 
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Wed Dec 03 19:31:22 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & stat & df & p.value \\ 
+  \hline
+LRT & 4.23 & 0.00 & 0.00 \\ 
+  PBtest & 4.23 &  & 0.02 \\ 
+   \hline
+\end{tabular}
+\caption{Parametric bootstrap specification test results for demographic models using 200 simulations. Between district and year effects and districts nested in years.} 
+\end{table}
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Wed Dec 03 19:31:22 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & stat & df & p.value \\ 
+  \hline
+LRT & 4.23 & 1.00 & 0.04 \\ 
+  PBtest & 4.23 &  & 0.03 \\ 
+   \hline
+\end{tabular}
+\caption{Parametric bootstrap specification test results for demographic models using 200 simulations. Between district and year effects and district effects alone.} 
+\end{table}
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Wed Dec 03 19:31:22 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & stat & df & p.value \\ 
+  \hline
+LRT & 93.74 & 0.00 & 0.00 \\ 
+  PBtest & 93.74 &  & 0.04 \\ 
+   \hline
+\end{tabular}
+\caption{Parametric bootstrap specification test results for fiscal models using 200 simulations. Between district and year effects and districts nested in years.} 
+\end{table}
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Wed Dec 03 19:31:22 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & stat & df & p.value \\ 
+  \hline
+LRT & 0.07 & 1.00 & 0.79 \\ 
+  PBtest & 0.07 &  & 0.71 \\ 
+   \hline
+\end{tabular}
+\caption{Parametric bootstrap specification test results for fiscal models using 200 simulations. Between district and year effects and district effects alone.} 
+\end{table}
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Wed Dec 03 19:31:22 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & stat & df & p.value \\ 
+  \hline
+LRT & 90.38 & 0.00 & 0.00 \\ 
+  PBtest & 90.38 &  & 0.03 \\ 
+   \hline
+\end{tabular}
+\caption{Parametric bootstrap specification test results for political models using 200 simulations. Between district and year effects and districts nested in years.} 
+\end{table}
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Wed Dec 03 19:31:22 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & stat & df & p.value \\ 
+  \hline
+LRT & 2.42 & 1.00 & 0.12 \\ 
+  PBtest & 2.42 &  & 0.04 \\ 
+   \hline
+\end{tabular}
+\caption{Parametric bootstrap specification test results for political models using 200 simulations. Between district and year effects and district effects alone.} 
+\end{table}
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Wed Dec 03 19:31:22 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & stat & df & p.value \\ 
+  \hline
+LRT & 91.89 & 0.00 & 0.00 \\ 
+  PBtest & 91.89 &  & 0.03 \\ 
+   \hline
+\end{tabular}
+\caption{Parametric bootstrap specification test results for policy models using 200 simulations. Between district and year effects and districts nested in years.} 
+\end{table}
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Wed Dec 03 19:31:22 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & stat & df & p.value \\ 
+  \hline
+LRT & 5.36 & 1.00 & 0.02 \\ 
+  PBtest & 5.36 &  & 0.02 \\ 
+   \hline
+\end{tabular}
+\caption{Parametric bootstrap specification test results for policy models using 200 simulations. Between district and year effects and district effects alone.} 
+\end{table}
 
 
-
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## Parametric bootstrap test; time: 2508.15 sec; samples: 200 extremes: 1;
+## Requested samples: 200 Used samples: 113 Extremes: 1
+## large : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | year) + (1 | distid)
+## small : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | distid/year)
+##         stat df p.value    
+## LRT    4.231  0 < 2e-16 ***
+## PBtest 4.231    0.01754 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Parametric bootstrap test; time: 1458.89 sec; samples: 200 extremes: 1;
+## Requested samples: 200 Used samples: 63 Extremes: 1
+## large : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | year) + (1 | distid)
+## small : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | distid)
+##         stat df p.value  
+## LRT    4.231  1 0.03969 *
+## PBtest 4.231    0.03125 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Parametric bootstrap test; time: 5933.92 sec; samples: 200 extremes: 0;
+## Requested samples: 200 Used samples: 25 Extremes: 0
+## large : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | year) + (1 | distid) + schoolMillShare + 
+##     PROPERTYTAX_REV_SHARE + TCEC_MEMBER + balance_member_lag + 
+##     millrate_delta
+## small : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + schoolMillShare + PROPERTYTAX_REV_SHARE + TCEC_MEMBER + 
+##     balance_member_lag + millrate_delta + (1 | year/distid)
+##          stat df p.value    
+## LRT    93.744  0 < 2e-16 ***
+## PBtest 93.744    0.03846 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Parametric bootstrap test; time: 5915.74 sec; samples: 200 extremes: 64;
+## Requested samples: 200 Used samples: 91 Extremes: 64
+## large : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | year) + (1 | distid) + schoolMillShare + 
+##     PROPERTYTAX_REV_SHARE + TCEC_MEMBER + balance_member_lag + 
+##     millrate_delta
+## small : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | distid) + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+##     TCEC_MEMBER + balance_member_lag + millrate_delta
+##          stat df p.value
+## LRT    0.0709  1  0.7901
+## PBtest 0.0709     0.7065
+## Parametric bootstrap test; time: 8287.74 sec; samples: 200 extremes: 0;
+## Requested samples: 200 Used samples: 29 Extremes: 0
+## large : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | year) + (1 | distid) + incumShare + overrideYesPer + 
+##     fallTwoPartyShareDem + teachShareofVoters + fallTurnout + 
+##     nraces
+## small : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + incumShare + overrideYesPer + fallTwoPartyShareDem + 
+##     teachShareofVoters + fallTurnout + nraces + (1 | year/distid)
+##          stat df p.value    
+## LRT    90.378  0 < 2e-16 ***
+## PBtest 90.378    0.03333 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Parametric bootstrap test; time: 7066.52 sec; samples: 200 extremes: 3;
+## Requested samples: 200 Used samples: 88 Extremes: 3
+## large : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | year) + (1 | distid) + incumShare + overrideYesPer + 
+##     fallTwoPartyShareDem + teachShareofVoters + fallTurnout + 
+##     nraces
+## small : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | distid) + incumShare + overrideYesPer + 
+##     fallTwoPartyShareDem + teachShareofVoters + fallTurnout + 
+##     nraces
+##          stat df p.value  
+## LRT    2.4184  1 0.11992  
+## PBtest 2.4184    0.04494 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Parametric bootstrap test; time: 5607.13 sec; samples: 200 extremes: 0;
+## Requested samples: 200 Used samples: 37 Extremes: 0
+## large : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | year) + (1 | distid) + ADMIN_SHARE_COMP + 
+##     NEW_SUP + NonPublicPupilPer + DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93
+## small : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+##     DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93 + (1 | year/distid)
+##          stat df p.value    
+## LRT    91.894  0 < 2e-16 ***
+## PBtest 91.894    0.02632 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Parametric bootstrap test; time: 5854.08 sec; samples: 200 extremes: 0;
+## Requested samples: 200 Used samples: 61 Extremes: 0
+## large : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | year) + (1 | distid) + ADMIN_SHARE_COMP + 
+##     NEW_SUP + NonPublicPupilPer + DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93
+## small : contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all + 
+##     OOH_share + (1 | distid) + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+##     DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93
+##          stat df p.value  
+## LRT    5.3623  1 0.02058 *
+## PBtest 5.3623    0.01613 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
 
 
 % 

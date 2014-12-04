@@ -1376,7 +1376,7 @@ Computing is fun.
 
 \subsection{Model Specification Tests}
 
-<<modTestRuns, results='hide', eval=FALSE, cache=TRUE>>=
+<<modTestRuns, results='hide', eval=TRUE, cache=TRUE>>=
 library(pbkrtest)
 library(doParallel)
 cl <- makePSOCKcluster(detectCores())
@@ -1449,7 +1449,7 @@ stopCluster(cl)
 # stopCluster(cl)
 @
 
-<<pbtestresults, results='asis', eval=FALSE, cache=TRUE>>=
+<<pbtestresults, results='asis', eval=TRUE, cache=TRUE>>=
 #print parametric bootstrap
 printPB <- function(pbobj, names=NULL, label = NULL){
    require(xtable)
@@ -1479,7 +1479,7 @@ printPB(modTestPolicy2, names = nams2, label = "policy models")
 
 @
 
-<<pbresults, results='markup', eval=FALSE, cache=TRUE>>=
+<<pbresults, results='markup', eval=TRUE, cache=TRUE>>=
 modTestDemog1
 modTestDemog2
 modTestFiscal1
