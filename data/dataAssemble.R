@@ -344,7 +344,7 @@ races <- as.data.table(dat)[, list(ncand = .N,
                             by = c("raceid2")]
 
 races$nincDef[is.na(races$nincDef)] <- 0
-
+races$nincDefInd <- ifelse(races$nincDef > 0, 1, 0)
 ################################################################################
 # Check for extreme values
 # Within districts

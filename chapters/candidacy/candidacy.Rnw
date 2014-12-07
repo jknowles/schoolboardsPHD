@@ -287,6 +287,7 @@ decisions about the board as a whole by evaluating district wide conditions inst
 of features of individual board members \citep{oliver}. 
 
 \section{Data}
+\label{sec:data}
 
 
 
@@ -651,7 +652,7 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value), size = 3)  + nopanel + 
+  geom_text(aes(label = value), size = 2)  + nopanel + 
   labs(x = "", y = "")
 @
 
@@ -677,7 +678,7 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value), size = 3)  + nopanel + 
+  geom_text(aes(label = value), size = 2)  + nopanel + 
   labs(x = "", y = "")
 @
 
@@ -873,7 +874,7 @@ qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013,],
 Figure \ref{fig:incdefeat} shows the rate of incumbent defeat in Wisconsin. The 
 greatest share of races featuring an incumbent that had incumbent defeat is 
 \Sexpr{iPer(max(a.tmp$Freq[a.tmp$Freq < 0.5])*100)}. As we saw in 
-Chapter \ref{chap:aboutwisco} this rate of incumbent defeat is lower than other 
+Chapter \ref{chap:wisco} this rate of incumbent defeat is lower than other 
 forms of office, but it is not as low as might be expected. \citet{oliver}'s study 
 of the suburban voter found 10 out of 11 mayoral incumbents securing re-election 
 and 47 out of 56 city council incumbents winning re-election. This result is encouraging 
@@ -964,13 +965,14 @@ The model below includes a third grouping level for years.
 
 \begin{align*} 
 \Pr_{CE_{ij}} &= \alpha_{i} + \beta X_{i} + \gamma_{j} + \lambda_{t} + \epsilon   \\ 
-\gamma_{j} &=  \alpha_{j} + \zeta Z_{j}
+\gamma_{j} &=  \alpha_{j} + \zeta Z_{j} \\
 \lambda_{t} &= \alpha_{t}
 \end{align*}
 
 This approach allows year parameters to be estimated independently without assuming 
 a functional form for the relationship between the probability of candidate emergence 
-and time. This is beneficial as there does not appear to be a single time trend. 
+and time. This is beneficial as there does not appear to be a linear time trend 
+in Figure \ref{fig:incdefeat} or Figure \ref{fig:candidatedescriptives4}. 
 It also results in estimates the $\beta$ coefficients that are conditional 
 on the group specific variances captured in the $\gamma$ and $\lambda$ vectors. 
 This allows us to take advantage of the repeated measure structure of the data and 
@@ -1003,7 +1005,7 @@ event -- whether or not a challenger emerges in a school district board election
 it makes most sense to judge model fit using a measure of how well the model 
 accurately classifies elections into types -- contested and uncontested. 
 
-
+% TODO: Hausman test, comparison to fixed effect models
 
 % Table \ref{tab:emergenceD} shows the theories and expected evidence in support of 
 % them that can be explored using a descriptive analysis of the Wisconsin data. Here 
@@ -1033,11 +1035,9 @@ accurately classifies elections into types -- contested and uncontested.
 
 \section{Results}
 
-The challenge in the descriptive analysis is to identify systematic contextual 
-factors that have influence over school board candidate emergence. In essence, we 
-can imagine three types of contextual factors that may influence the local political 
-conditions in a school board -- taxation decisions, political conditions, and 
-policy decisions. Of particular interest is understanding which of these factors, 
+As discussed in Section \ref{sec:data} there are four categories of contextual 
+factors in school districts that theory suggests should influence the likelihood 
+a school board seat is contested. Of particular interest is understanding which of these factors, 
 for the sample observed and over the time period of observation, are the most 
 predictive of the emergence of contested school board seats. 
 
@@ -1048,12 +1048,17 @@ of a challenge.
 %% model binomial by district, contested or not
 %% model beta by district, # of contested out of # of races
 %% model nested, races in districts
+% Think carefully about the variable selection using the correlation matrices above
+% Select variables for each grouping carefully
+% Prepare alternative specifications in the technical appendix and include details 
+% about model specification tests (year and district FE, hausman test, etc.)
 
 <<cleanModData, results='asis'>>=
-dvs <- c("contestSer", "contestMinor", "contestMinorLag", "contestSerLag")
+dvs <- c("contestSer", "contestMinor", "contestMinorLag", "contestSerLag", "incDefeats")
 ids <- c("distid", "year", "districtwide")
 
 moddat <- dist_turn[, c(dvs, ids, demogIdx, fiscalIdx, policyIdx, politicIdx)]
+
 
 moddat$year <- factor(moddat$year)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -1063,6 +1068,7 @@ moddat$contestSer <- factor(moddat$contestSer)
 moddat$contestMinor <- factor(moddat$contestMinor)
 moddat$contestMinorLag <- factor(moddat$contestMinorLag)
 moddat$contestSerLag <- factor(moddat$contestSerLag)
+moddat$incDefeats <- factor(moddat$incDefeats)
 moddat$NEW_SUP <- factor(moddat$NEW_SUP)
 moddat$SUP_TURNOVER_PRIOR_YEAR <- factor(moddat$SUP_TURNOVER_PRIOR_YEAR)
 moddat$debtPass <- factor(moddat$debtPass)
@@ -1104,13 +1110,13 @@ get_CL_vcov<-function(model, cluster){
 <<glmmods, results='asis'>>=
 moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
 
-demogs <- glm(contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all +
+demogs <- glm(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
               OOH_share, data = moddat, family = "binomial") #bach and 65o switch?
 
 demogSE <- get_CL_vcov(demogs, moddat$distid)
 demogs$se <- sqrt(diag(demogSE))
 
-politic <- update(demogs, . ~ . + incumShare + overrideYesPer +  fallTwoPartyShareDem +
+politic <- update(demogs, . ~ . + incumShare + overrideYesPer +  partyDivision +
                     teachShareofVoters + fallTurnout + nraces) 
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
@@ -1142,6 +1148,14 @@ rescalenote <- "All continuous variables rescaled to center 0
 stars.note <- apsrtable:::stars.note
 
 
+coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
+               "\\% White", "\\% OOH", "\\% Incumbents", "\\% Yes Rev. Limit", 
+               "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
+               "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
+               "Balance per Pupil", "Millrate \\delta", "\\% Salary - Admin.", 
+               "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
+               "Cumul. Override Att.")
+
 apsrtable(demogs, politic, fiscal, policy, fullmod, se = "robust", 
           float = "longtable",
           label="tab:glmMods", 
@@ -1150,7 +1164,7 @@ apsrtable(demogs, politic, fiscal, policy, fullmod, se = "robust",
                         "Policy", "Full"), 
           caption = "Models of Contestation in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3)
+          Sweave=FALSE, digits = 3, coef.names = coefnames2)
 
 @
 \end{tiny}
@@ -1166,7 +1180,7 @@ ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
 
 
 
-demogsMM <- glmer(contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all +
+demogsMM <- glmer(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
               OOH_share + (1|year) + (1|distid), 
               data = moddat, family = "binomial", control = ctrl) #bach and 65o switch?
 
@@ -1182,7 +1196,7 @@ demogsMM3 <- glmer(contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_whi
 
 
 
-politicMM <- update(demogsMM, . ~ . + incumShare + overrideYesPer +  fallTwoPartyShareDem +
+politicMM <- update(demogsMM, . ~ . + incumShare + overrideYesPer +  partyDivision +
                     teachShareofVoters + fallTurnout + nraces, control = ctrl) 
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
@@ -1208,7 +1222,7 @@ apsrtable(demogsMM, politicMM, fiscalMM, policyMM, fullmodMM,
                         "Policy", "Full"), 
           caption = "Mixed Models of Contestation in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3)
+          Sweave=FALSE, digits = 3, coef.names = coefnames2)
 @
 
 \end{tiny}
@@ -1217,6 +1231,110 @@ apsrtable(demogsMM, politicMM, fiscalMM, policyMM, fullmodMM,
 bmProf <- profile(biggerMod, which = "beta_", devtol = 0.001)
 confInts <- confint(bmProf, level = .95)
 @
+
+<<hausmantest, eval=FALSE>>=
+phtest_glmer <- function (glmerMod, glmMod, ...)  {  ## changed function call
+    coef.wi <- coef(glmMod)
+    coef.re <- fixef(glmerMod)  ## changed coef() to fixef() for glmer
+    vcov.wi <- vcov(glmMod)
+    vcov.re <- vcov(glmerMod)
+    names.wi <- names(coef.wi)
+    names.re <- names(coef.re)
+    coef.h <- names.re[names.re %in% names.wi]
+    dbeta <- coef.wi[coef.h] - coef.re[coef.h]
+    df <- length(dbeta)
+    dvcov <- vcov.re[coef.h, coef.h] - vcov.wi[coef.h, coef.h]
+    stat <- abs(t(dbeta) %*% as.matrix(solve(dvcov)) %*% dbeta)  ## added as.matrix()
+    pval <- pchisq(stat, df = df, lower.tail = FALSE)
+    names(stat) <- "chisq"
+    parameter <- df
+    names(parameter) <- "df"
+    alternative <- "one model is inconsistent"
+    res <- list(statistic = stat, p.value = pval, parameter = parameter, 
+        method = "Hausman Test",  alternative = alternative,
+                data.name=deparse(glmerMod@call$data))  ## changed
+    class(res) <- "htest"
+    return(res)
+}
+
+
+
+phtest_glmer(policyMM, update(policy, . ~. + distid + factor(year)))
+phtest_glmer(politicMM, update(politic, . ~. + distid + factor(year)))
+phtest_glmer(demogsMM, update(demogs, . ~. + distid + factor(year)))
+phtest_glmer(fiscalMM, update(fiscal, . ~. + distid + factor(year)))
+@
+
+<<submodels1>>=
+demogsMMs <- glmer(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + (1|year) + (1|distid), 
+              data = moddat[moddat$incumShare < max(moddat$incumShare), ], 
+              family = "binomial", control = ctrl) #bach and 65o switch?
+
+politicMMs <- update(demogsMMs, . ~ . + incumShare + overrideYesPer +  partyDivision +
+                    teachShareofVoters + fallTurnout + nraces, control = ctrl) 
+  # partyDivision and fallTwoPartyShareDem lose 2 years
+
+fiscalMMs <- update(demogsMMs, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta, control = ctrl)
+
+policyMMs <- update(demogsMMs, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, control = ctrl)
+
+fullmodMMs <- update(politicMMs, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta + 
+                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, 
+                   control = ctrl)
+
+apsrtable(demogsMMs, politicMMs, fiscalMMs, policyMMs, fullmodMMs,
+          float = "longtable",
+          label="tab:glmerMods", 
+          model.names=c("Demog.", "Politic", 
+                        "Fiscal",
+                        "Policy", "Full"), 
+          caption = "Mixed Models of Contestation in School Board Elections: Exclude All Incumbents",
+          notes = list(stars.note, rescalenote),
+          Sweave=FALSE, digits = 3, coef.names = coefnames2)
+@
+
+\subsection{Incumbent Defeat}
+
+<<incdefeatMods, eval=FALSE>>=
+demogsMMd <- glmer(incDefeats ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + (1|year) + (1|distid), 
+              data = moddat[moddat$incumShare != max(moddat$incumShare) &
+                              moddat$incumShare != min(moddat$incumShare),], 
+              family = "binomial", control = ctrl) #bach and 65o switch?
+
+politicMMd <- update(demogsMMd, . ~ . + incumShare + overrideYesPer +  partyDivision +
+                    teachShareofVoters + fallTurnout + nraces, control = ctrl) 
+  # partyDivision and fallTwoPartyShareDem lose 2 years
+
+fiscalMMd <- update(demogsMMd, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta, control = ctrl)
+
+policyMMd <- update(demogsMMd, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, control = ctrl)
+
+fullmodMMd <- update(politicMMd, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta + 
+                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, 
+                   control = ctrl)
+
+apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
+          float = "longtable",
+          label="tab:glmerMods", 
+          model.names=c("Demog.", "Politic", 
+                        "Fiscal",
+                        "Policy", "Full"), 
+          caption = "Mixed Models of Incumbent Defeat in School Board Elections",
+          notes = list(stars.note, rescalenote),
+          Sweave=FALSE, digits = 3, coef.names = coefnames2)
+
+@
+
 
 \subsubsection{Demographics}
 
@@ -1290,20 +1408,22 @@ roc4 <- makeROCdf(policy, "policy"); roc4$type <- "glm"
 roc5 <- makeROCdf(fullmod, "full"); roc5$type <- "glm"
 
 roc1.1 <- makeROCdf(demogsMM, "demog"); roc1.1$type <- "mm"
-roc2.1 <- makeROCdf(politicMM, "politics"); roc2.1$type <- "mm"
+roc2.1 <- makeROCdf(update(politicMM, . ~ . - incumShare), "politics"); roc2.1$type <- "mm"
 roc3.1 <- makeROCdf(fiscalMM, "fiscal"); roc3.1$type <- "mm"
 roc4.1 <- makeROCdf(policyMM, "policy"); roc4.1$type <- "mm"
 roc5.1 <- makeROCdf(fullmodMM, "full"); roc5.1$type <- "mm"
 
-# rocNull <- 
+rocNull <- makeROCdf(update(demogs, . ~ + 1), "null"); rocNull$type <- "glm"
+rocNull.1 <- makeROCdf(update(demogsMM, . ~ + 1 + (1|distid) + (1|year)), "null"); rocNull.1$type <- "mm"
 # rocMMnull <- 
 
 rocList <- list(roc1, roc2, roc3, roc4, roc1.1, roc2.1, roc3.1, roc4.1, roc5, 
-                roc5.1)
+                roc5.1, rocNull, rocNull.1)
 
 roc <- do.call(rbind, rocList)
 
-rm(rocList, roc1, roc2, roc3, roc4, roc1.1, roc2.1, roc3.1, roc4.1)
+rm(rocList, roc1, roc2, roc3, roc4, roc1.1, roc2.1, roc3.1, roc4.1, 
+   rocNull, rocNull.1)
 
 @
 

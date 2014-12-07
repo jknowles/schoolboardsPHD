@@ -51,6 +51,7 @@ races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand",
                                           "nrealcand", "nwins", "ninc", "raceid",
                                           "nminor", "votes", "districtwide", 
                                           "electiontype", "VAP", "VAP_adj", 
+                                          "nincDefInd",
                                           "topPresVotesPrior", "presTwoPartyShareDem", 
                                           "topGovVotesPrior", "govTwoPartyShareDem"))
 
@@ -73,6 +74,7 @@ dist_turn <- ddply(races.tmp, .(distid, year), summarise,
                    nwins = sum(nwins), ninc = sum(ninc), 
                    nminor = sum(nminor), votes = sum(votes), 
                    VAP_adj = statamode(VAP_adj), 
+                   incDefeats = sum(nincDefInd),
                    nraces = length(distid))
 
 dist_turn$districtwide <- 1
@@ -85,6 +87,7 @@ races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
 races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
                                           "nrealcand", "nwins", "ninc", "raceid",
                                           "nminor", "votes", "districtwide", 
+                                          "nincDefInd",
                                           "electiontype", "VAP_adj"))
 
 races.tmp <- subset(races.tmp, raceid!=0)
@@ -102,6 +105,7 @@ dist.tmp <- ddply(races.tmp, .(distid, year), summarise,
                   nwins = sum(nwins), ninc = sum(ninc), 
                   nminor = sum(nminor), votes = sum(votes), 
                   VAP_adj = statamode(VAP_adj), 
+                  incDefeats = sum(nincDefInd),
                   nraces = length(distid))
 
 dist.tmp$districtwide <- 0
@@ -225,3 +229,4 @@ dist_turn <- as.data.table(dist_turn)[, contestSerLag2:= lg2(contestSer), by = "
 
 dist_turn <- as.data.frame(dist_turn)
 dist_turn$refInPlace <- zeroNA(dist_turn$refInPlace)
+dist_turn$incDefeats <- ifelse(dist_turn$incDefeats > 0, 1, 0)
