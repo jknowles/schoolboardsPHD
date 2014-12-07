@@ -325,6 +325,36 @@ districts in the state. From Table \ref{tab:samplecomp} we saw
 that the school districts providing records did not differ significantly in any 
 key variable from those who did not provide records on observable characteristics. 
 
+\subsection{Data Structure and Grouping}
+
+School districts as jurisdictions can have multiple election races per election 
+cycle. Unlike in studies of legislative elections, then, the electoral district 
+is not unique to a single race each year. Instead, a school district may feature 
+two or three distinct races for school board each year, with each race electing 
+multiple winners. Coding individual races was done by 
+
+<<datastructure, results='asis'>>=
+tablestruc <- ddply(races, .(year), summarize, 
+                    districts = length(unique(distid)), 
+                    races = length(raceid2))
+
+tmp.cap   <- "Frequency of multiple races within a district by year."
+tmp.label <- "tab:mrfreq"
+print(xtable(t(tablestruc[tablestruc$year > 2001, ]), caption = tmp.cap, 
+             label = tmp.label), include.colnames = FALSE, 
+      include.rownames=TRUE)
+
+@
+
+Due to the relatively few unique variables I have at the level of the school 
+district race, I aggregate multiple races per district into a single district-year 
+observation. This aggregation is done by summing the number of candidates, winners, 
+votes, and incumbents across races and including a binary indicator if any of the 
+races was a district wide race. I also include the maximum value of the coding for 
+the presence of a contested race. This approach is similar to the approach of 
+\citet{berry} as a solution to handle the case where jurisdictional overlap is 
+difficult to determine. 
+
 \subsection{Independent Variables}
 
 With the Wisconsin data, a number of variables are available with which to test 
@@ -506,6 +536,8 @@ Percentage of Pupils in Non-public schools & - & NonPublicPupilPer \\ \hline
 \end{tiny}
 
 \clearpage
+
+
 \subsection{Variable Selection}
 
 It is not feasible to test all of the variables in Table \ref{tab:candIV} 
@@ -550,7 +582,7 @@ fiscalIdx <- c("PROPERTYTAX_REV_SHARE", "balance_member_lag", "TCEC_MEMBER", "TD
 
 #eqv_member
 
-politicIdx <- c("fallTwoPartyShareDem", "incumRun", "nraces", "partyDivision", 
+politicIdx <- c("fallTwoPartyShareDem", "incumRun", "nraces", "partyDivision", "nwins",
                 "teachShareofVoters", "overrideYesPer", "turnoutLag2", 
                 "fallTurnout", "incumShare")
 
@@ -693,6 +725,52 @@ xtable(round(cor(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout),
 \clearpage
 \subsection{Dependent Variables}
 
+Measuring candidate emergence and contestation in multi-member seats is not as 
+straightforward as in single member districts. 
+
+\subsubsection{Non-incumbents}
+
+A first condition of contestation is that someone other than incumbents run for 
+office. The least competitive of all elections is that in which voters not only 
+have no choie, but they have no choice and all candidates are incumbents. I model 
+election contestation then as a two-stage process for school boards. In the first 
+stage, I estimate the probability that a non-incumbent will appear on the ballot. 
+Conditional on this, I then estimate a second stage that voters will have at least 
+one more candidate than total winners -- a choice. 
+
+<<nonincumbent, results='asis'>>=
+tablestruc <- ddply(races[races$nwins > 0,], .(year), summarize, 
+                    districts = length(unique(distid)), 
+                    races = length(raceid2), 
+                    nonIncumbents = sum(ifelse(nrealcand > ninc, 1, 0)), 
+                    incumbOnly = sum(ifelse(nrealcand == ninc, 1, 0)))
+
+tmp.cap   <- "Frequency of races with and without non-incumbents."
+tmp.label <- "tab:nifreq"
+
+print(xtable(tablestruc[tablestruc$year > 2001, ], caption = tmp.cap, 
+             label = tmp.label, digits = 0), include.colnames = TRUE, 
+      include.rownames=FALSE)
+
+@
+
+
+<<nonincumbent2>>=
+races$contestMinor <- 0
+races$contestMinor[races$nrealcand > races$nwins] <- 1
+races$contestSer <- 0
+races$contestSer[(races$nrealcand - races$nminor) > races$nwins] <- 1
+races$incumbOnly <- ifelse(races$nrealcand == races$ninc, 1, 0)
+@
+
+
+Nearly 35\% of races each year feature all incumbents. Of these, 
+\Sexpr{nrow(races[races$incumbOnly ==1 & races$contestMinor == 1, ])} such races 
+are considered contested, and of these, only \Sexpr{nrow(races[races$incumbOnly ==1 & races$contestSer == 1, ])} are considered to be contested by serious candidates. 
+These races are given a flag in the dataset as they either represent a coding 
+error or the rare event that two incumbents are redistricted into the same seat. The 
+low occurrence of this event makes it desirable to either exclude it or give it 
+a specific dummy variable to avoid bias. 
 
 \subsubsection{Candidate Emergence}
 
@@ -911,7 +989,8 @@ I employ sandwich estimators of the variance-covariance matrix to extract robust
 standard errors for these models, which will correct for the interdependence between 
 the observations and avoid overly optimistic tests for statistical significance 
 among the $\beta$ coefficients. I estimate the robust standard errors using 
-the \texttt{lmtest} and \texttt{sandwich} packages for R \cite{sandwich, sandwich2, lmtest}. 
+the \texttt{lmtest} and \texttt{sandwich} packages for R 
+\cite{sandwich, sandwich2, lmtest}. 
 
 I fit four separate models following this approach, looking at the impact of 
 demographic, fiscal, political, and policy characteristics of school districts on 
@@ -1001,6 +1080,7 @@ it makes most sense to judge model fit using a measure of how well the model
 accurately classifies elections into types -- contested and uncontested. 
 
 % TODO: Hausman test, comparison to fixed effect models
+% TODO: explain grand mean centering and its advantages
 
 % Table \ref{tab:emergenceD} shows the theories and expected evidence in support of 
 % them that can be explored using a descriptive analysis of the Wisconsin data. Here 
@@ -1049,7 +1129,8 @@ of a challenge.
 % about model specification tests (year and district FE, hausman test, etc.)
 
 <<cleanModData, results='asis'>>=
-dvs <- c("contestSer", "contestMinor", "contestMinorLag", "contestSerLag", "incDefeats")
+dvs <- c("contestSer", "contestMinor", "contestMinorLag", 
+         "contestSerLag", "incDefeats", "onlyIncum")
 ids <- c("distid", "year", "districtwide")
 
 moddat <- dist_turn[, c(dvs, ids, demogIdx, fiscalIdx, policyIdx, politicIdx)]
@@ -1063,6 +1144,7 @@ moddat$contestSer <- factor(moddat$contestSer)
 moddat$contestMinor <- factor(moddat$contestMinor)
 moddat$contestMinorLag <- factor(moddat$contestMinorLag)
 moddat$contestSerLag <- factor(moddat$contestSerLag)
+moddat$onlyIncum <- factor(moddat$onlyIncum)
 moddat$incDefeats <- factor(moddat$incDefeats)
 moddat$NEW_SUP <- factor(moddat$NEW_SUP)
 moddat$SUP_TURNOVER_PRIOR_YEAR <- factor(moddat$SUP_TURNOVER_PRIOR_YEAR)
@@ -1090,16 +1172,129 @@ get_CL_vcov<-function(model, cluster){
   N <- length(cluster)
   K <- model$rank
   dfc <- (M/(M-1))*((N-1)/(N-K))
-  
   #calculate the uj's
   uj  <- apply(estfun(model),2, function(x) tapply(x, cluster, sum))
-  
   #use sandwich to get the var-covar matrix
   vcovCL <- dfc*sandwich(model, meat=crossprod(uj)/N)
   return(vcovCL)
 }
 
 @
+
+\subsection{Stage 1: Non-incumbents}
+
+<<glmmodsNI, results='asis'>>=
+moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
+
+demogs <- glm(onlyIncum ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share, data = moddat, family = "binomial") #bach and 65o switch?
+
+demogSE <- get_CL_vcov(demogs, moddat$distid)
+demogs$se <- sqrt(diag(demogSE))
+
+politic <- update(demogs, . ~ . +  overrideYesPer +  partyDivision +
+                    teachShareofVoters + fallTurnout + nraces) 
+  # partyDivision and fallTwoPartyShareDem lose 2 years
+
+politicSE <- get_CL_vcov(politic, moddat$distid)
+politic$se <- sqrt(diag(politicSE))
+
+fiscal <- update(demogs, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta)
+
+fiscalSE <- get_CL_vcov(fiscal, moddat$distid)
+fiscal$se <- sqrt(diag(fiscalSE))
+
+policy <- update(demogs, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+policySE <- get_CL_vcov(policy, moddat$distid)
+policy$se <- sqrt(diag(policySE))
+
+fullmod <- update(politic, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta + 
+                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+
+fullmodSE <- get_CL_vcov(fullmod, moddat$distid)
+fullmod$se <- sqrt(diag(fullmodSE))
+rescalenote <- "All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations."
+stars.note <- apsrtable:::stars.note
+
+
+coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
+               "\\% White", "\\% OOH",  "\\% Yes Rev. Limit", 
+               "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
+               "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
+               "Balance per Pupil", "Millrate \\delta", "\\% Salary - Admin.", 
+               "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
+               "Cumul. Override Att.")
+
+apsrtable(demogs, politic, fiscal, policy, fullmod, se = "robust", 
+          float = "longtable",
+          label="tab:glmMods", 
+          model.names=c("Demog.", "Politic", 
+                        "Fiscal",
+                        "Policy", "Full"), 
+          caption = "Models of Contestation in School Board Elections",
+          notes = list(stars.note, rescalenote),
+          Sweave=FALSE, digits = 3, coef.names = coefnames2)
+
+@
+
+<<glmermodsNI>>=
+library(optimx)
+
+ctrl2 <- glmerControl(optimizer = "optimx", calc.derivs = FALSE, 
+                     optCtrl = list(method = "nlminb", starttests = FALSE, 
+                                    kkt = FALSE, maxit = 4000))
+ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
+
+
+
+demogsMM <- glmer(onlyIncum ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + (1|year) + (1|distid), 
+              data = moddat, family = "binomial", control = ctrl) #bach and 65o switch?
+
+
+
+demogsMM3 <- glmer(contestSer ~  VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share +  year + (1|distid), 
+              data = moddat, family = "binomial", control = ctrl) #bach and 65o switch?
+
+
+
+politicMM <- update(demogsMM, . ~ . +  overrideYesPer +  partyDivision +
+                    teachShareofVoters + fallTurnout + nwins, control = ctrl) 
+  # partyDivision and fallTwoPartyShareDem lose 2 years
+
+fiscalMM <- update(demogsMM, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta, control = ctrl)
+
+policyMM <- update(demogsMM, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, control = ctrl)
+
+fullmodMM <- update(politicMM, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta + 
+                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, 
+                   control = ctrl)
+
+
+apsrtable(demogsMM, politicMM, fiscalMM, policyMM, fullmodMM,
+          float = "longtable",
+          label="tab:glmerMods", 
+          model.names=c("Demog.", "Politic", 
+                        "Fiscal",
+                        "Policy", "Full"), 
+          caption = "Mixed Models of Contestation in School Board Elections",
+          notes = list(stars.note, rescalenote),
+          Sweave=FALSE, digits = 3, coef.names = coefnames2)
+
+@
+
 
 \begin{tiny}
 <<glmmods, results='asis'>>=
@@ -1112,7 +1307,7 @@ demogSE <- get_CL_vcov(demogs, moddat$distid)
 demogs$se <- sqrt(diag(demogSE))
 
 politic <- update(demogs, . ~ . + incumShare + overrideYesPer +  partyDivision +
-                    teachShareofVoters + fallTurnout + nraces) 
+                    teachShareofVoters + fallTurnout + nwins) 
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
 politicSE <- get_CL_vcov(politic, moddat$distid)

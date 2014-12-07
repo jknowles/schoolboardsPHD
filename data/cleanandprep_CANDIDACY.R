@@ -34,6 +34,9 @@ distAttr$TotalPopulation <- NULL
 # How to calculate total votes in elections with multiple winners...
 
 races <- as.data.frame(races)
+## RACES needs to be filtered
+races <- races[races$nwins > 0, ]
+
 races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
 
 presTurn$presTwoPartyVote <- presTurn$presDemVotes + presTurn$presRepVotes
@@ -218,6 +221,7 @@ dist_turn$partyDivision <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
 dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
 dist_turn$incumRun <- ifelse(dist_turn$ninc > 0, 1, 0)
 dist_turn$incumShare <- dist_turn$ninc / (dist_turn$nrealcand)
+dist_turn$onlyIncum <- ifelse(dist_turn$incumShare == 1, 1, 0)
 
 dist_turn$teachSalDiff <- dist_turn$ADJ_MEDIAN_SALARY_TEACHlog - 
   dist_turn$median_incomeLOG
