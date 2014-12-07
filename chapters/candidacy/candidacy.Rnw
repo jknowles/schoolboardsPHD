@@ -14,6 +14,7 @@ setwd("../../")
 library(eeptools)
 source("data/dataAssemble.R")
 source("data/cleanandprep_CANDIDACY.R")
+source("R/thesis_functions.R")
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 library(gridExtra)
@@ -23,12 +24,6 @@ library(devtools)
 install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
 library(apsrtable)
 
-iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
-                                           digits = 3)}
-iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
-                                                  digits = 3)),"\\%")}
-iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
-                                                   digits = 3)),"%")}
 
 @
 
@@ -1571,16 +1566,6 @@ stopCluster(cl)
 
 <<pbtestresults, results='asis', eval=TRUE, cache=TRUE>>=
 #print parametric bootstrap
-printPB <- function(pbobj, names=NULL, label = NULL){
-   require(xtable)
-   if(missing(names)){
-     names <- c("model 1", "model 2")
-   }
-   mycap <- paste0("Parametric bootstrap specification test results for ", 
-                   label, " using ", pbobj$samples[[1]], 
-                   " simulations. Between ", names[1], " and ", names[2], ".")
-   print(xtable(pbobj$test, caption = mycap), include.rownames=TRUE)
-}
 
 nams1 <- c("district and year effects", "districts nested in years")
 nams2 <-  c("district and year effects", "district effects alone")

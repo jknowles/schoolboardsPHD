@@ -10,6 +10,7 @@ opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE,
 setwd("../../")
 source("data/dataAssemble.R")
 #source("data/dataMerge.R")
+source("R/thesis_functions.R")
 library(scales)
 library(xtable)
 library(eeptools)
@@ -35,8 +36,6 @@ distAttr$white_count <- NULL
 distAttr$PopWhiteAlone <- NULL
 distAttr$TotalPopulation <- NULL
 
-iNum <- function(x) prettyNum(x, big.mark = ",", digits = 3)
-iPer <- function(x){paste0(prettyNum(x, big.mark = ",", digits = 1),"\\%")}
 
 @
 
@@ -933,39 +932,6 @@ RefWorks:218,RefWorks:320}.
 \[(5) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta S_{t} 
 + \gamma P_{t} + \psi Ce_{t} + \epsilon \] \\
 
-\subsection{The Impact of Salience and Information on Voter Turnout}
-
-While the equations above can prove useful for providing evidence of various theories 
-of voter turnout in non-partisan local elections, they cannot test some theories and 
-they do not shed any light on causes of voter turnout. Table \ref{turnoutH2} demonstrates 
-how two such models can be explicitly tested by leveraging the exogenous shock of 
-the passage of Act 10. To estimate these effects, we estimate an equation like below: \\
-
-\[(6) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{lag} + \gamma W_{t} + \lambda P_{lag} +
-      \tau 1- |W_{t} * P_{lag}| + \theta I_{lag} + \psi Ce_{t}+\epsilon \] \\
-
-Here $VP_{t}$ is voter turnout in either the 2011 or 2012 Spring Elections by school 
-district in Wisconsin. $\alpha$, $X_{lag}$ remain the same as above though now 
-including some measure of prior turnout in the district such as turnout in the 
-Gubernatorial election in 2010.  $Z_{t}$ is the absolute value of the deviation 
-from 50\% of the vote share for the Governor. $I_{lag}$ representing an indicator 
-of the strength of teachers' unions in the district--likely the most salient and 
-relevant interest group in the spring elections \citep{RefWorks:320, RefWorks:207, RefWorks:218}.
-Voters are unlikely to participate if presented with no choice, so $Ce_{t}$ represents 
-a measure of the number of candidates per seat. $W_{t}$ represents the vote share 
-for Governor Walker in the recall election--a measure of community support or opposition 
-to the Governor's education policy. Thus it would be expected that $\theta$ should 
-be positive--strong interest groups should drive political activity. The inclusion 
-of partisanship predictors of voter turnout could also be explored here. The 
-effects of $\gamma$  and $\lambda$ alone are uninteresting, but the interaction 
-of $W_{t} * P_{lag}$ is of great interest. This essentially represents a measure 
-of board policy alignment with voter preferences--taking the absolute value simplifies 
-interpretation. As such, it should be expected that for large values of $W_{t} * P_{lag}$, 
-voter participation would be small as the board policy and the community 
-preferences would be aligned. As $W_{t} * P_{lag}$ approaches zero, voter 
-participation will increase as predicted by \citep{RefWorks:243}--voters seeing 
-dissonance between their preferences and board policy are more likely to vote. 
-Thus $\tau$ should be negative.  %Add detail here
 
 \subsection{Model Specifications}
 \label{subsec:spec}
@@ -1083,6 +1049,7 @@ dumbRLM1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq
 
 dumbRLM1$se <- sqrt(diag(vcov(robcov(dumbRLM1, cluster = moddat$distid))))
 
+naive1$se <- sqrt(diag(vcov(naive1)))
 
 dumbRLM1.2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
                     per_white_all + 
@@ -1469,6 +1436,11 @@ moddat <- moddat[moddat$outflag <=5 & moddat$outflag >= -5,]
 dd <<- datadist(moddat)
 options(datadist="dd")
 
+##TODO: add interaction between teachShareofVoters and VAP_adjLOG, for coordination 
+# purposes it is easier for teachers to work together in smaller population. Turnout 
+# increases as teach share of voters increases, decreases as population increases
+# and decreases as size of district + teacher share increases due to coordination costs
+
 teachRLM <- ols(turnout ~ teachShareofVoters + fallTurnout + 
                     VAP_adjLOG + per_white_all +
                    per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + districtwide +
@@ -1646,6 +1618,8 @@ m0 <- lm(turnoutDiff ~ turnoutLag2 * VAP_adjLOG + per_white_all +
                    per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + CLOSE + 
                    contest + teachShareofVoters , data = moddat) # fit the null model
 
+## Add teacher interaction here as well
+
 # REtest1 <- exactLRT(m = refitML(undvote2), m0 = m0)
 # 
 # # Test for year specific slopes
@@ -1723,55 +1697,3 @@ appA1
 
 @
 
-
-<<datasources, results='hide', eval=FALSE>>=
-
-################################################################################
-# Recall 2012
-################################################################################
-
-recall12 <- read.csv("Ward Election Data/2012/Spring 2012/JuneRecallFinal.csv")
-
-
-recall12<-recall12[-grep("Totals", recall12$muni), ]
-
-recall12 <- mcd_process(recall12)
-
-# customizations
-
-recall12$muniname3 <- gsub("COMBINED", "", recall12$muniname3)
-recall12$muniname3 <- gsub("FIREHOUSE", "", recall12$muniname3)
-recall12$muniname3 <- gsub("TOWNHALL", "", recall12$muniname3)
-recall12$muniname3[recall12$muniname3 == "EDSONS"] <- "EDSON"
-recall12$muniname3[recall12$muniname3 == "TRENTONS"] <- "TRENTON"
-recall12$muniname3[recall12$muniname3 == "GLENDALEE"] <- "GLENDALE"
-recall12$muniname3[recall12$muniname3 == "LAGRANGEAAA"] <- "LAGRANGE"
-recall12$muniname3[recall12$muniname3 == "LAGRANGEBBB"] <- "LAGRANGE"
-recall12$muniname3[recall12$muniname3 == "LOCKS"] <- "COMBINEDLOCKS"
-recall12$muniname3[recall12$muniname3 == "BRILLIONS"] <- "BRILLION"
-
-
-
-merge12<-merge(recall12,cw,by.x=c("muniname3","mcdType","county"),
-                 by.y=c("name","mcdType","countyname"),all.x=TRUE)
-
-length(merge12$dorCode[is.na(merge12$dorCode)])
-
-#head(bigtest12.2[is.na(bigtest12.2$dorCode),],25)
-merge12<-merge(merge12,sd12,by.x="dorCode",by.y="municode")
-rm(recall12,sd12)
-
-merge12$votes <- cleanvotes(merge12$votes)
-merge12$rep <- cleanvotes(merge12$rep)
-merge12$dem <- cleanvotes(merge12$dem)
-merge12$ind <- cleanvotes(merge12$ind)
-merge12$scatter <- cleanvotes(merge12$scatter)
-
-
-distvotes12r<-ddply(merge12,.(distid),summarise,year="2012","RECTOT"=sum(votes*share,na.rm=T),
-                   "GOVDEM"=sum(dem*share,na.rm=T), "GOVREP" = sum(rep * share, na.rm=T), 
-                    "GOVIND" = sum(ind * share, na.rm=T), "GOVSCATT" = sum(scatter* share, na.rm=T))
-rm(merge12)
-
-save(distvotes12r, file = "../../../MasterText/data/cache/WalkerRecall.rda")
-@

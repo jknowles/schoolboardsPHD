@@ -12,14 +12,9 @@ library(scales)
 library(xtable)
 library(eeptools)
 source("data/cleanandprep_WALKER.R")
+source("R/thesis_functions.R")
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
-iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
-                                           digits = 3)}
-iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
-                                                  digits = 3)),"\\%")}
-iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
-                                                   digits = 3)),"%")}
 
 library(devtools)
 install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
@@ -185,6 +180,42 @@ either united for or against the Governor. Thus, all things equal, we would expe
 $\gamma$ to have a negative value--as $Z_{t}$ increases, the number of challengers, 
 $Y_{t}$ should decrease because the community is fairly homogeneous and the school 
 board should reflect existing preferences for or against the Governor's reforms. 
+
+\subsection{Turnout}
+
+\subsection{The Impact of Salience and Information on Voter Turnout}
+
+While the equations above can prove useful for providing evidence of various theories 
+of voter turnout in non-partisan local elections, they cannot test some theories and 
+they do not shed any light on causes of voter turnout. Table \ref{turnoutH2} demonstrates 
+how two such models can be explicitly tested by leveraging the exogenous shock of 
+the passage of Act 10. To estimate these effects, we estimate an equation like below: \\
+
+\[(6) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{lag} + \gamma W_{t} + \lambda P_{lag} +
+      \tau 1- |W_{t} * P_{lag}| + \theta I_{lag} + \psi Ce_{t}+\epsilon \] \\
+
+Here $VP_{t}$ is voter turnout in either the 2011 or 2012 Spring Elections by school 
+district in Wisconsin. $\alpha$, $X_{lag}$ remain the same as above though now 
+including some measure of prior turnout in the district such as turnout in the 
+Gubernatorial election in 2010.  $Z_{t}$ is the absolute value of the deviation 
+from 50\% of the vote share for the Governor. $I_{lag}$ representing an indicator 
+of the strength of teachers' unions in the district--likely the most salient and 
+relevant interest group in the spring elections \citep{RefWorks:320, RefWorks:207, RefWorks:218}.
+Voters are unlikely to participate if presented with no choice, so $Ce_{t}$ represents 
+a measure of the number of candidates per seat. $W_{t}$ represents the vote share 
+for Governor Walker in the recall election--a measure of community support or opposition 
+to the Governor's education policy. Thus it would be expected that $\theta$ should 
+be positive--strong interest groups should drive political activity. The inclusion 
+of partisanship predictors of voter turnout could also be explored here. The 
+effects of $\gamma$  and $\lambda$ alone are uninteresting, but the interaction 
+of $W_{t} * P_{lag}$ is of great interest. This essentially represents a measure 
+of board policy alignment with voter preferences--taking the absolute value simplifies 
+interpretation. As such, it should be expected that for large values of $W_{t} * P_{lag}$, 
+voter participation would be small as the board policy and the community 
+preferences would be aligned. As $W_{t} * P_{lag}$ approaches zero, voter 
+participation will increase as predicted by \citep{RefWorks:243}--voters seeing 
+dissonance between their preferences and board policy are more likely to vote. 
+Thus $\tau$ should be negative.  %Add detail here
 
 
 \clearpage

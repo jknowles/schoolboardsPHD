@@ -11,6 +11,7 @@ opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE,
 setwd("../../")
 source("data/dataAssemble.R")
 # source("data/dataMerge.R")
+source("R/thesis_functions.R")
 load("data/cache/DataMergeVAP.rda")
 library(plyr)
 library(eeptools)
@@ -19,10 +20,7 @@ library(xtable)
 library(data.table)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
-iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
-                                           digits = 3)}
-iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", digits = 3)),"\\%")}
-iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", digits = 3)),"%")}
+
 
 @
 
@@ -404,13 +402,9 @@ rm(list=ls())
 setwd("../../")
 source("data/dataAssemble.R")
 source("data/cleanandprep_ABOUTWISCO.R")
-
+source("R/thesis_functions.R")
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
-iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
-                                           digits = 3)}
-iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", digits = 3)),"\\%")}
-iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", digits = 3)),"%")}
 plotdf <- ddply(races, .(distid), summarize, years = length(unique(year)), 
                 races = length(year))
 @
