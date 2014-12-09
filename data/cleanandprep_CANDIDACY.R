@@ -45,6 +45,22 @@ presTurn$presTwoPartyShareDem <- presTurn$presDemVotes / presTurn$presTwoPartyVo
 govTurn$govTwoPartyVote <- govTurn$govDemVotes + govTurn$govRepVotes
 govTurn$govTwoPartyShareDem <- govTurn$govDemVotes / govTurn$govTwoPartyVote
 
+## Because school board election is in spring and the general election is in the 
+## fall, the prior gubernatorial election and presidential election needs to be 
+## incremented by 1 so that the 2004 gen. results coincide with the 2005 SB results
+## the first SB election which the outcome of the 2004 gen. election is known
+
+presTurn$year <- presTurn$year + 1
+
+## For gubernatorial election, 1998 results are not available, so I preserve the 
+## 2002 results for 2002 and include an indicator flag
+
+tmp <- govTurn[govTurn$year == 2002, ]
+govTurn$year <- govTurn$year + 1
+
+govTurn <- rbind(govTurn, tmp)
+govTurn$flag <- ifelse(govTurn$year == 2002, 1, 0)
+
 
 # turnout over the prior presidential election
 races.tmp <- merge(races.tmp, presTurn, by = c("distid", "year"), all.x=TRUE)
@@ -131,6 +147,26 @@ dist_turn <- merge(dist_turn, govTurn, by = c("distid", "year"), all.x=TRUE)
 dist_turn$VAP_adj <- as.numeric(dist_turn$VAP_adj)
 dist_turn$voters <- dist_turn$votes / dist_turn$nwins
 dist_turn$turnout <- dist_turn$voters / dist_turn$VAP_adj
+
+dist_turn$recentTwoPartyShareDem <- NA
+dist_turn$recentFallTurnout <- NA
+
+for(i in unique(dist_turn$distid)){
+  for(j in unique(dist_turn$year)){
+    if(j %in% c("2003", "2004", "2007", "2008", "2011", "2012")){
+      dist_turn$recentTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i] <- 
+                dist_turn$govTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i]
+      dist_turn$recentFallTurnout[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$topGovTurnoutPrior[dist_turn$year == j & dist_turn$distid == i]
+    } else if(j %in% c("2001", "2002", "2005", "2006", "2009", "2010", "2013")) {
+      dist_turn$recentTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$presTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i]
+      dist_turn$recentFallTurnout[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$topPresTurnoutPrior[dist_turn$year == j & dist_turn$distid == i]
+    }
+  }
+}
+
 # Fall turnout 
 dist_turn$fallTurnout <- (dist_turn$topGovTurnoutPrior + dist_turn$topPresTurnoutPrior) / 2
 dist_turn$fallTwoPartyShareDem <- (dist_turn$govTwoPartyShareDem + dist_turn$presTwoPartyShareDem) /2
@@ -234,3 +270,5 @@ dist_turn <- as.data.table(dist_turn)[, contestSerLag2:= lg2(contestSer), by = "
 dist_turn <- as.data.frame(dist_turn)
 dist_turn$refInPlace <- zeroNA(dist_turn$refInPlace)
 dist_turn$incDefeats <- ifelse(dist_turn$incDefeats > 0, 1, 0)
+
+rm(tmp, i, j)

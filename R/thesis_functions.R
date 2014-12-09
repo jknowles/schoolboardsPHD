@@ -202,6 +202,49 @@ plotMCMCfe <- function(dat, scale, var, sd, sigmaScale = NULL, oddsRatio = FALSE
     theme_dpi()
 }
 
+
+dimNA <- function(df){
+  dims <- dim(df)[1] * dim(df)[2]
+  propNA <- apply(df, 2, vecNAsearch)
+  countNA <- propNA * dim(df)[1]
+  total <- sum(countNA)
+  totalP <- total / dims
+  return(list("TotalCells" = dims, "MissingbyColumn" = countNA, 
+              "TotalMissing" = total, "TotalProportionMissing" = totalP))
+  
+}
+
+vecNAsearch <- function(x){
+  l <- length(x)
+  lNA <- length(x[is.na(x)])
+  return(lNA / l)
+}
+
+
+zeroInf <- function(x){
+  x[!is.finite(x)] <- 0
+}
+
+zeroNA <- function(x){
+  x[is.na(x)] <- 0
+  return(x)
+}
+
+
+FORMATdistid <- function(x){
+  if(class(x) != "character"){
+    x <- as.character(x)
+  }
+  nchars <- sapply(x, nchar)
+  x[nchars ==3] <- paste0("0", x[nchars==3])
+  x[nchars ==2] <- paste0("00", x[nchars==2])
+  x[nchars ==1] <- paste0("000", x[nchars==1])
+  return(x)
+}
+
+lg  <- function(x) c(NA, x[1:length(x)-1])
+lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
+
 # http://stats.stackexchange.com/questions/56525/standard-deviation-of-random-effect-is-0
 # http://stat.columbia.edu/~jcliu/paper/HierarchicalPrior.pdf
 # http://www.stat.columbia.edu/~radon/paper/paper.pdf (example)
