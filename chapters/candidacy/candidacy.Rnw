@@ -23,8 +23,6 @@ library(reshape2)
 library(devtools)
 install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
 library(apsrtable)
-
-
 @
 
 
@@ -576,15 +574,15 @@ demogIdx <- c("per_white_all", "median_incomeLOG", "per65o", "VAP_adjLOG",
               "OOH_share", "PerBachelorOrAbove", "publicPupilCountLOG", 
               "econ_disadv_per")
 
-fiscalIdx <- c("PROPERTYTAX_REV_SHARE", "balance_member_lag", "TCEC_MEMBER", "TDC_MEMBER", 
+fiscalIdx <- c("PROPERTYTAX_REV_SHARE", "balance_member_lag", "TCEC_MEMBER", "TEC_MEMBER", 
                "NonSDMill", "millrate", "schoolMillShare", "millrate_delta", 
                "total_cat_aids_member", "teachSalDiff", "eqv_taxfiler")
 
 #eqv_member
 
-politicIdx <- c("fallTwoPartyShareDem", "incumRun", "nraces", "partyDivision", "nwins",
+politicIdx <- c("recentTwoPartyShareDem", "incumRun", "nraces", "partyDivisionRecent", "nwins",
                 "teachShareofVoters", "overrideYesPer", "turnoutLag2", 
-                "fallTurnout", "incumShare")
+                "fallTurnout")
 
 # ggpairs(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout),], 
 #         columns = which(names(dist_turn) %in% fiscalIdx), 
@@ -684,10 +682,9 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")
 @
 
 The political variables in Figure \ref{fig:politic1} are largely free of high 
-correlations among them. The exception is the strong relationship between the 
-number of incumbents running and the overall share of all candidates running 
-who are incumbents -- two attempts at measuring the phenomenon of how open the 
-election is. 
+correlations among them. The strongest relationships are between partisan division 
+and the share of the two party vote -- an expected correlation. Higher fall turnout 
+is also correlated with partisan division. 
 
 
 <<policy1, fig.cap="Correlations of Policy Variables", fig.height=5.5, fig.width=7.5>>=
@@ -1130,7 +1127,7 @@ of a challenge.
 
 <<cleanModData, results='asis'>>=
 dvs <- c("contestSer", "contestMinor", "contestMinorLag", 
-         "contestSerLag", "incDefeats", "onlyIncum")
+         "contestSerLag", "incDefeats", "onlyIncum", "incumShare")
 ids <- c("distid", "year", "districtwide")
 
 moddat <- dist_turn[, c(dvs, ids, demogIdx, fiscalIdx, policyIdx, politicIdx)]
@@ -1166,34 +1163,36 @@ moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 \subsection{Stage 1: Non-incumbents}
 
 <<glmmodsNI, results='asis'>>=
-moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
 
-demogs <- glm(onlyIncum ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share, data = moddat, family = "binomial") #bach and 65o switch?
+# moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
 
-demogSE <- get_CL_vcov(demogs, moddat$distid)
+demogsNI <- glm(onlyIncum ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + year, data = moddat, family = "binomial") #bach and 65o switch?
+
+demogSE <- get_CL_vcov(demogsNI, moddat$distid)
 demogs$se <- sqrt(diag(demogSE))
 
-politic <- update(demogs, . ~ . +  overrideYesPer +  partyDivision +
+politicNI <- update(demogsNI, . ~ . + overrideQues + overridePass + 
+                      debtQues + debtPass +  partyDivisionRecent +
                     teachShareofVoters + fallTurnout + nraces) 
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
-politicSE <- get_CL_vcov(politic, moddat$distid)
+politicSE <- get_CL_vcov(politicNI, moddat$distid)
 politic$se <- sqrt(diag(politicSE))
 
-fiscal <- update(demogs, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+fiscalNI <- update(demogsNI, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta)
 
-fiscalSE <- get_CL_vcov(fiscal, moddat$distid)
+fiscalSE <- get_CL_vcov(fiscalNI, moddat$distid)
 fiscal$se <- sqrt(diag(fiscalSE))
 
-policy <- update(demogs, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+policyNI <- update(demogsNI, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
 
-policySE <- get_CL_vcov(policy, moddat$distid)
+policySE <- get_CL_vcov(policyNI, moddat$distid)
 policy$se <- sqrt(diag(policySE))
 
-fullmod <- update(politic, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+fullmodNI <- update(politicNI, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta + 
                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
@@ -1204,24 +1203,27 @@ fullmod$se <- sqrt(diag(fullmodSE))
 rescalenote <- "All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations."
 stars.note <- apsrtable:::stars.note
-
+coef.note <- "Year fixed effect coefficients excluded."
 
 coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% OOH",  "\\% Yes Rev. Limit", 
+               "\\% White", "\\% OOH",  "Rev. Lim. Attpt.", "Rev. Lim. Pass", 
+               "Bond Attpt.", "Bond Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
                "Balance per Pupil", "Millrate \\delta", "\\% Salary - Admin.", 
                "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
-apsrtable(demogs, politic, fiscal, policy, fullmod, se = "robust", 
+apsrtable(demogsNI, politicNI, fiscalNI, policyNI, fullmodNI, se = "robust", 
           float = "longtable",
-          label="tab:glmMods", 
+          label="tab:glmModsNI", 
+          omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
           model.names=c("Demog.", "Politic", 
                         "Fiscal",
                         "Policy", "Full"), 
-          caption = "Models of Contestation in School Board Elections",
-          notes = list(stars.note, rescalenote),
+          caption = "Models of Incumbent Lockout in School Board Elections",
+          notes = list(stars.note, rescalenote, coef.note),
           Sweave=FALSE, digits = 3, coef.names = coefnames2)
 
 @
@@ -1236,84 +1238,92 @@ ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
 
 
 
-demogsMM <- glmer(onlyIncum ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share + (1|year) + (1|distid), 
-              data = moddat, family = "binomial", control = ctrl) #bach and 65o switch?
+demogsMMni <- glmer(onlyIncum ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + year + (1|distid), 
+              data = moddat, family = "binomial", control = ctrl) 
+
+# 
+# demogsMM3 <- glmer(contestSer ~  VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+#               OOH_share +  year + (1|distid), 
+#               data = moddat, family = "binomial", control = ctrl) #bach and 65o switch?
 
 
 
-demogsMM3 <- glmer(contestSer ~  VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share +  year + (1|distid), 
-              data = moddat, family = "binomial", control = ctrl) #bach and 65o switch?
-
-
-
-politicMM <- update(demogsMM, . ~ . +  overrideYesPer +  partyDivision +
+politicMMni <- update(demogsMMni, . ~ . + overrideQues + overridePass + 
+                      debtQues + debtPass +   partyDivisionRecent +
                     teachShareofVoters + fallTurnout + nwins, control = ctrl) 
-  # partyDivision and fallTwoPartyShareDem lose 2 years
 
-fiscalMM <- update(demogsMM, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+fiscalMMni <- update(demogsMMni, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta, control = ctrl)
 
 policyMM <- update(demogsMM, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, control = ctrl)
 
-fullmodMM <- update(politicMM, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+fullmodMMni <- update(politicMMni, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta + 
                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, 
                    control = ctrl)
 
 
-apsrtable(demogsMM, politicMM, fiscalMM, policyMM, fullmodMM,
+apsrtable(demogsMMni, politicMMni, fiscalMMni, policyMMni, fullmodMMni,
           float = "longtable",
-          label="tab:glmerMods", 
+          label="tab:glmerModsNI", 
+          omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
           model.names=c("Demog.", "Politic", 
                         "Fiscal",
                         "Policy", "Full"), 
-          caption = "Mixed Models of Contestation in School Board Elections",
+          caption = "Mixed Models of Incumbent Lockout in School Board Elections",
           notes = list(stars.note, rescalenote),
           Sweave=FALSE, digits = 3, coef.names = coefnames2)
 
 @
 
 
+\subsection{Stage 2: Serious Contest With Non-Incumbents}
+
 \begin{tiny}
-<<glmmods, results='asis'>>=
-moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
+<<glmmodsContest, results='asis'>>=
+# moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
 
-demogs <- glm(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share, data = moddat, family = "binomial") #bach and 65o switch?
+moddat2 <- moddat[moddat$incumShare != max(moddat$incumShare),]
 
-demogSE <- get_CL_vcov(demogs, moddat$distid)
+demogsCon <- glm(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + year, 
+              data = moddat2, 
+              family = "binomial") #bach and 65o switch?
+
+demogSE <- get_CL_vcov(demogsCon, moddat2$distid)
 demogs$se <- sqrt(diag(demogSE))
 
-politic <- update(demogs, . ~ . + incumShare + overrideYesPer +  partyDivision +
+politicCon <- update(demogsCon, . ~ . + incumShare + overrideQues + overridePass + 
+                      debtQues + debtPass + partyDivisionRecent +
                     teachShareofVoters + fallTurnout + nwins) 
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
-politicSE <- get_CL_vcov(politic, moddat$distid)
+politicSE <- get_CL_vcov(politicCon, moddat2$distid)
 politic$se <- sqrt(diag(politicSE))
 
-fiscal <- update(demogs, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+fiscalCon <- update(demogsCon, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta)
 
-fiscalSE <- get_CL_vcov(fiscal, moddat$distid)
+fiscalSE <- get_CL_vcov(fiscalCon, moddat2$distid)
 fiscal$se <- sqrt(diag(fiscalSE))
 
-policy <- update(demogs, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+policyCon <- update(demogsCon, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
 
-policySE <- get_CL_vcov(policy, moddat$distid)
+policySE <- get_CL_vcov(policyCon, moddat2$distid)
 policy$se <- sqrt(diag(policySE))
 
-fullmod <- update(politic, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+fullmodCon <- update(politicCon, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta + 
                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
 
 
-fullmodSE <- get_CL_vcov(fullmod, moddat$distid)
+fullmodSE <- get_CL_vcov(fullmodCon, moddat2$distid)
 fullmod$se <- sqrt(diag(fullmodSE))
 rescalenote <- "All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations."
@@ -1328,9 +1338,11 @@ coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +",
                "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
-apsrtable(demogs, politic, fiscal, policy, fullmod, se = "robust", 
+apsrtable(demogsCon, politicCon, fiscalCon, policyCon, fullmodCon, se = "robust", 
           float = "longtable",
-          label="tab:glmMods", 
+          label="tab:glmModsCon", 
+          omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
           model.names=c("Demog.", "Politic", 
                         "Fiscal",
                         "Policy", "Full"), 
@@ -1352,43 +1364,44 @@ ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
 
 
 
-demogsMM <- glmer(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share + (1|year) + (1|distid), 
-              data = moddat, family = "binomial", control = ctrl) #bach and 65o switch?
+demogsMMCon <- glmer(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + year + (1|distid), 
+              data = moddat2, family = "binomial", control = ctrl) #bach and 65o switch?
 
 
-demogsMM2 <- glmer(contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all +
-              OOH_share + (1|distid/year), 
-              data = moddat, family = "binomial", control = ctrl) #bach and 65o switch?
+# demogsMM2 <- glmer(contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all +
+#               OOH_share + (1|distid/year), 
+#               data = moddat2, family = "binomial", control = ctrl) #bach and 65o switch?
+# 
+# 
+# demogsMM3 <- glmer(contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all +
+#               OOH_share +  (1|distid), 
+#               data = moddat2, family = "binomial", control = ctrl) #bach and 65o switch?
 
-
-demogsMM3 <- glmer(contestSer ~ VAP_adjLOG + per65o + median_incomeLOG + per_white_all +
-              OOH_share +  (1|distid), 
-              data = moddat, family = "binomial", control = ctrl) #bach and 65o switch?
-
-
-
-politicMM <- update(demogsMM, . ~ . + incumShare + overrideYesPer +  partyDivision +
-                    teachShareofVoters + fallTurnout + nraces, control = ctrl) 
+politicMMCon <- update(demogsMMCon, . ~ . + incumShare + overrideQues + overridePass + 
+                      debtQues + debtPass + partyDivisionRecent +
+                    teachShareofVoters + fallTurnout + nraces, control = ctrl2) 
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
-fiscalMM <- update(demogsMM, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
-                   TCEC_MEMBER + balance_member_lag + millrate_delta, control = ctrl)
+fiscalMMCon <- update(demogsMMCon, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta, control = ctrl2)
 
-policyMM <- update(demogsMM, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, control = ctrl)
+policyMMCon <- update(demogsMMCon, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, control = ctrl2)
 
-fullmodMM <- update(politicMM, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+fullmodMMCon <- update(politicMMCon, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta + 
                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, 
-                   control = ctrl)
+                   control = ctrl2)
 
-fullmodMM2 <- update(fullmodMM, . ~ . - incumShare, control = ctrl)
+# fullmodMM2 <- update(fullmodMM, . ~ . - incumShare, control = ctrl)
 
-apsrtable(demogsMM, politicMM, fiscalMM, policyMM, fullmodMM,
+apsrtable(demogsMMCon, politicMMCon, fiscalMMCon, policyMMCon, fullmodMMCon,
           float = "longtable",
-          label="tab:glmerMods", 
+          label="tab:glmerModsCon", 
+           omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
           model.names=c("Demog.", "Politic", 
                         "Fiscal",
                         "Policy", "Full"), 
@@ -1437,49 +1450,18 @@ phtest_glmer(demogsMM, update(demogs, . ~. + distid + factor(year)))
 phtest_glmer(fiscalMM, update(fiscal, . ~. + distid + factor(year)))
 @
 
-<<submodels1>>=
-demogsMMs <- glmer(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share + (1|year) + (1|distid), 
-              data = moddat[moddat$incumShare < max(moddat$incumShare), ], 
-              family = "binomial", control = ctrl) #bach and 65o switch?
-
-politicMMs <- update(demogsMMs, . ~ . + incumShare + overrideYesPer +  partyDivision +
-                    teachShareofVoters + fallTurnout + nraces, control = ctrl) 
-  # partyDivision and fallTwoPartyShareDem lose 2 years
-
-fiscalMMs <- update(demogsMMs, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
-                   TCEC_MEMBER + balance_member_lag + millrate_delta, control = ctrl)
-
-policyMMs <- update(demogsMMs, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, control = ctrl)
-
-fullmodMMs <- update(politicMMs, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
-                   TCEC_MEMBER + balance_member_lag + millrate_delta + 
-                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, 
-                   control = ctrl)
-
-apsrtable(demogsMMs, politicMMs, fiscalMMs, policyMMs, fullmodMMs,
-          float = "longtable",
-          label="tab:glmerMods", 
-          model.names=c("Demog.", "Politic", 
-                        "Fiscal",
-                        "Policy", "Full"), 
-          caption = "Mixed Models of Contestation in School Board Elections: Exclude All Incumbents",
-          notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames2)
-@
-
 \subsection{Incumbent Defeat}
 
 <<incdefeatMods, eval=FALSE>>=
+moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
+                              moddat$incumShare != min(moddat$incumShare),]
+
 demogsMMd <- glmer(incDefeats ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share + (1|year) + (1|distid), 
-              data = moddat[moddat$incumShare != max(moddat$incumShare) &
-                              moddat$incumShare != min(moddat$incumShare),], 
+              OOH_share + year + (1|distid), 
+              data = moddat3, 
               family = "binomial", control = ctrl) #bach and 65o switch?
 
-politicMMd <- update(demogsMMd, . ~ . + incumShare + overrideYesPer +  partyDivision +
+politicMMd <- update(demogsMMd, . ~ . + incumShare + overrideYesPer +  partyDivisionRecent +
                     teachShareofVoters + fallTurnout + nraces, control = ctrl) 
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
@@ -1497,7 +1479,9 @@ fullmodMMd <- update(politicMMd, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHAR
 
 apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
           float = "longtable",
-          label="tab:glmerMods", 
+          label="tab:glmerModsID", 
+           omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
           model.names=c("Demog.", "Politic", 
                         "Fiscal",
                         "Policy", "Full"), 
@@ -1508,33 +1492,8 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
 @
 
 
-\subsubsection{Demographics}
 
-Table \ref{tab:meDemog} shows the results of a mixed effect model.\footnote{To test the 
-proper specification of the random effects terms, the parametric bootstrap of the 
-likelihood ratio test was used to compare the mixed models. It showed that district 
-effects alone improved model fit and no additional gain was made by including a 
-random effect for years \citep{pbkrtest}. This was implemented in R using the 
-\texttt{pbkrtest} package. Results and script available upon request. } 
-
-
-\subsubsection{Fiscal}
-
-One of the highest profile activities of a school district is fiscal management. 
-Does fiscal health of a district predict the run for office? 
-
-Some text
-
-
-
-\subsubsection{Politics}
-
-\clearpage
-
-Some text. 
-
-
-\subsubsection{Comparisons}
+\subsection{Comparisons}
 
 But which model is better? 
 

@@ -168,6 +168,37 @@ compRev$MEMBERSHIP <- NULL
 
 compFunds <- merge(compCost, compRev, by = c("DISTID", "YEAR", "SCHOOL_YEAR"))
 rm(compCost, compRev)
+compFunds <- na.omit(compFunds)
+
+compFunds.tmp <- compFunds[compFunds$YEAR == 2004,]
+compFunds.tmp$YEAR <- 2003
+compFunds.tmp$SCHOOL_YEAR <- "2002-03"
+compFunds.tmp2 <- compFunds.tmp
+compFunds.tmp2$YEAR <- 2002
+compFunds.tmp2$SCHOOL_YEAR <- "2001-02"
+
+compFunds.tmp <- rbind(compFunds.tmp, compFunds.tmp2)
+compFunds <- rbind(compFunds.tmp, compFunds)
+rm(compFunds.tmp, compFunds.tmp2)
+
+
+canInterp <- table(compFunds$DISTID)
+canInterpIDX <- names(canInterp)[canInterp == 12]
+
+## Interpolate comparative cost and comparative revenue
+for(i in canInterpIDX){
+  for(j in names(compFunds)[4:18]){
+    try(compFunds[compFunds$YEAR == 2003 & compFunds$DISTID == i, j] <- 
+      compFunds[compFunds$YEAR == 2004 & compFunds$DISTID==i, j] - ((compFunds[compFunds$YEAR == 2013 & compFunds$DISTID==i, j] -
+      compFunds[compFunds$YEAR == 2004 & compFunds$DISTID==i, j]) / 9))
+    try(compFunds[compFunds$YEAR == 2002 & compFunds$DISTID == i, j] <- 
+          compFunds[compFunds$YEAR == 2003 & compFunds$DISTID==i, j] - ((compFunds[compFunds$YEAR == 2013 & compFunds$DISTID==i, j] -
+                                                                           compFunds[compFunds$YEAR == 2003 & compFunds$DISTID==i, j]) / 10))
+  }
+}
+
+########### 11 districts are not interpolated, just repeated
+
 
 ADMIN <- merge(ADMIN, compFunds, by = c("DISTID", "YEAR", "SCHOOL_YEAR"), all.x=TRUE)
 sparsity <- subset(sparsity, select = c("DISTID", "AREA_SQ_MILES"))

@@ -31,6 +31,17 @@ distAttr$white_count <- NULL
 distAttr$PopWhiteAlone <- NULL
 distAttr$TotalPopulation <- NULL
 
+##############################################################
+# interpolate millrate_deltas
+##############################################################
+
+for(i in unique(distAttr$distid)){
+  distAttr$millrate_delta[distAttr$distid == i & distAttr$year == 2002] <- 
+    mean(distAttr$millrate_delta[distAttr$distid == i & distAttr$year > 2002], na.rm= TRUE)  
+}
+
+
+
 # How to calculate total votes in elections with multiple winners...
 
 races <- as.data.frame(races)
@@ -253,7 +264,8 @@ dist_turn$median_incomeLOG <- log(dist_turn$median_income)
 dist_turn$ADJ_MEDIAN_FRINGE_TEACH[dist_turn$ADJ_MEDIAN_FRINGE_TEACH == 0] <- 1
 dist_turn$ADJ_MEDIAN_FRINGE_TEACHlog <- log(dist_turn$ADJ_MEDIAN_FRINGE_TEACH)
 dist_turn$ADJ_MEDIAN_SALARY_TEACHlog <- log(dist_turn$ADJ_MEDIAN_SALARY_TEACH)
-dist_turn$partyDivision <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
+dist_turn$partyDivisionFall <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
+dist_turn$partyDivisionRecent <- abs(0.5 - dist_turn$recentTwoPartyShareDem)
 dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
 dist_turn$incumRun <- ifelse(dist_turn$ninc > 0, 1, 0)
 dist_turn$incumShare <- dist_turn$ninc / (dist_turn$nrealcand)
