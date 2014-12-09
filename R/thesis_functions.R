@@ -254,6 +254,10 @@ plotMCMCre <- function(dat, scale, var, sd, sigmaScale = NULL, oddsRatio = FALSE
 }
 
 
+RMSE.loess <- function(m){
+  sqrt(sum(m$residuals^2)/length(m$residuals))
+}
+
 # subst_eff_plot<-function(x){
 #   c<-coef(x)
 #   mod_mean<-apply(x$x,2,mean)

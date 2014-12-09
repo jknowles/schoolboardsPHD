@@ -646,7 +646,7 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value), size = 3)  + nopanel + 
+  geom_text(aes(label = value), size = 2)  + nopanel + 
   labs(x = "", y = "")
 
 @
@@ -1161,24 +1161,6 @@ moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
 library(arm)
 nums <- sapply(moddat, is.numeric)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
-
-get_CL_vcov<-function(model, cluster){
-  # from: http://rforpublichealth.blogspot.com/2014/10/easy-clustered-standard-errors-in-r.html
-  require(sandwich, quietly = TRUE)
-  require(lmtest, quietly = TRUE)
-  
-  #calculate degree of freedom adjustment
-  M <- length(unique(cluster))
-  N <- length(cluster)
-  K <- model$rank
-  dfc <- (M/(M-1))*((N-1)/(N-K))
-  #calculate the uj's
-  uj  <- apply(estfun(model),2, function(x) tapply(x, cluster, sum))
-  #use sandwich to get the var-covar matrix
-  vcovCL <- dfc*sandwich(model, meat=crossprod(uj)/N)
-  return(vcovCL)
-}
-
 @
 
 \subsection{Stage 1: Non-incumbents}

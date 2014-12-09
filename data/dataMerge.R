@@ -306,30 +306,47 @@ struc <- list.files("../Data/Raw Files/Election Data/sdmunipieces",
 
 
 for(i in 1:length(struc)){
-  eval(parse(text=paste0("sd0",1+i,"<- read.csv(file=struc[",i,"], 
+  eval(parse(text=paste0("sd0", i,"<- read.csv(file=struc[",i,"], 
                          stringsAsFactors=FALSE)")))
-  eval(parse(text=paste0("collength <- ifelse(ncol(sd0",i+1,")>11, 11, ncol(sd0", i+1,"))")))
-  eval(parse(text=paste0("sd0",1+i,"<- sd0", 1+i,"[,1:collength]")))
+  eval(parse(text=paste0("collength <- ifelse(ncol(sd0",i,")>11, 11, ncol(sd0", i,"))")))
+  eval(parse(text=paste0("sd0",i,"<- sd0", i,"[,1:collength]")))
 }
 
 
 cleanSDdata <- function(df){
   myregexp <- "[[:digit:]]+"
+  if(exists("eqvalue", where=df)){
+    df$eqv <- df$eqvalue
+    df$eqvalue <- NULL
+  }
+  if(exists("taxlevy", where=df)){
+    df$levy <- df$taxlevy
+    df$taxlevy <- NULL
+  }
+  names(df)[1] <- "municode"
   df$eqv <- gsub(",", "", df$eqv)
   df$levy <- gsub(",","", df$levy)
-  df <- df[, 1:6]
+  df <- df[, c("municode", "distid", "cesa", "techcollege", "eqv", "levy", "taxrate")]
   df <- na.omit(df)
   df[,1] <- as.character(df[,1])
   df[,1] <- str_extract(df[,1], myregexp)
   df[,1] <- as.numeric(df[,1])
-  names(df)[1] <- "municode"
   df$eqv<-as.numeric(df$eqv)
   df$levy<-as.numeric(df$levy)
-  df$rate <- NA
-  df$eqvout <- NA
+  if(exists("eqvout", where=df)){
+    df$eqvout <- NA
+  }
+  if(exists("rate", where=df)){
+    df$taxrate <- as.numeric(df.rate)
+  }
+  if(exists("taxrate", where=df)){
+    df$taxrate <- as.numeric(df$taxrate)
+  }
   return(df)
 }
 
+sd01 <- cleanSDdata(sd01)
+sd01$year <- 2001
 sd02 <- cleanSDdata(sd02)
 sd02$year <- 2002
 sd03 <- cleanSDdata(sd03)
@@ -344,13 +361,11 @@ cleanSDdata2 <- function(df){
     df$eqvout <- as.numeric(df$eqvout)
   }
   if(exists("rate", where=df)){
-    df$rate <- as.numeric(df$rate)
+    df$taxrate <- as.numeric(df$rate)
   }
   if(exists("taxrate", where=df)){
-    df$rate <- as.numeric(df$taxrate)
-    df$taxrate <- NULL
+    df$taxrate <- as.numeric(df$taxrate)
   }
-  df$rate <- NA
   df$eqvout <- NA
   df$levy <- gsub(",","", df$levy)
   df$distname <- NULL
@@ -395,8 +410,8 @@ vars <- names(sd02)
 # test <- merge(sd02, cw[,1:2], by.x="municode", by.y="dorCode")
 
 for(i in 1:length(struc)){
-  eval(parse(text=paste0("sd0", 1+i,"<- sd0", 1+i, "[, vars]")))
-  eval(parse(text=paste0("tmp <- merge(sd0", 1+i, ", cw[,1:2], by.x='municode', by.y='dorCode')")))
+  eval(parse(text=paste0("sd0", i,"<- sd0", i, "[, vars]")))
+  eval(parse(text=paste0("tmp <- merge(sd0", i, ", cw[,1:2], by.x='municode', by.y='dorCode')")))
   eval(parse(text=paste0("vptempA <- merge(vaplong, tmp, by.x=c('doacode', 'year'), 
                          by.y=c('doaCode', 'year'), all.y=TRUE)")))
   if(exists("vptemp")){
@@ -410,7 +425,7 @@ rm(vptempA)
 
 for(i in 1:length(struc)){
   #eval(parse(text=paste0("sd0", 1+i,"<- sd0", 1+i, "[, vars]")))
-  eval(parse(text=paste0("rm(sd0",1+i,")")))
+  eval(parse(text=paste0("rm(sd0",i,")")))
 }
 
 rm(collength, i, struc, vars)
@@ -634,6 +649,16 @@ rm(m1, m2, m3, m4, wghts)
 setwd("../Data/Raw Files/Election Data")
 source("dataclean.R")
 
+# No secondary election results availble for 2000
+distvotes00$TOTPOP18 <- NA
+distvotes00$GOVDEM <- NA
+distvotes00$GOVREP <- NA
+distvotes00$RECTOT <- NA
+
+distvotes00 <- subset(distvotes00, select=c("distid", "year", "TOTPOP18", "PRESTOT", 
+                                            "PRESDEM", "PRESREP",  "RECTOT",  "GOVDEM", 
+                                            "GOVREP"))
+
 
 names(distvotes02)
 
@@ -681,6 +706,7 @@ distvotes12 <- subset(test, select=c("distid", "year", "TOTPOP18", "PRESTOT", "P
 
 
 
+names(distvotes00) <- mynames
 names(distvotes02) <- mynames
 names(distvotes04) <- mynames
 names(distvotes06) <- mynames
@@ -689,7 +715,8 @@ names(distvotes10) <- mynames
 names(distvotes12) <- mynames
 
 
-district_vote_panel <- rbind(distvotes02, distvotes04)
+district_vote_panel <- rbind(distvotes00, distvotes02)
+district_vote_panel <- rbind(district_vote_panel, distvotes04)
 district_vote_panel <- rbind(district_vote_panel, distvotes06)
 district_vote_panel <- rbind(district_vote_panel, distvotes08)
 district_vote_panel <- rbind(district_vote_panel, distvotes10)
@@ -729,6 +756,10 @@ for(i in unique(dvp$distid)){
       dvp$TOTPOP[dvp$distid==i & dvp$year==j - 2] + dvp$TOTPOP_CHG[dvp$distid==i & dvp$year == j-2]
     
   }
+  for(z in 2000){
+    dvp$TOTPOP[dvp$distid==i & dvp$year==z] <- 
+      dvp$TOTPOP[dvp$distid==i & dvp$year==z + 2] - dvp$TOTPOP_CHG[dvp$distid==i & dvp$year == z + 2]
+  }
 }
 
 ###############################################################################################
@@ -759,7 +790,7 @@ dvp <- rbind(dvp, dvp2)
 rm(vptemp, vaplong, cw)
 
 dvp$year <- as.numeric(dvp$year)
-presTurn <- subset(dvp, year == 2004 | year == 2008 | year ==2012)
+presTurn <- subset(dvp, year == 2000 | year == 2004 | year == 2008 | year ==2012)
 presTurn <- subset(presTurn, select = c("distid", "year", "toptotvotes", 
                                         "topturnout1", "topdem", "toprep"))
 govTurn <- subset(dvp, year == 2002 | year == 2006 | year ==2010)
@@ -795,7 +826,8 @@ govTurn <- govTurn[order(govTurn$distid, govTurn$year),]
 rm(dvp2)
 
 rm(distvotes12r, distvotes12, distvotes10, distvotes09, distvotes08, 
-   distvotes06, distvotes05, distvotes04, distvotes02, bigtest11)
+   distvotes06, distvotes05, distvotes04, distvotes02, bigtest11, 
+   distvotes00, sd01, z)
 rm(dvp2, prespref11, sd11, test, i, j, mynames, wisc, pres12, sd12)
 
 setwd("../../../MasterText")
