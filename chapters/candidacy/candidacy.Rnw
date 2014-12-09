@@ -1162,6 +1162,7 @@ moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 
 \subsection{Stage 1: Non-incumbents}
 
+\begin{tiny}
 <<glmmodsNI, results='asis'>>=
 
 # moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
@@ -1170,7 +1171,7 @@ demogsNI <- glm(onlyIncum ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white
               OOH_share + year, data = moddat, family = "binomial") #bach and 65o switch?
 
 demogSE <- get_CL_vcov(demogsNI, moddat$distid)
-demogs$se <- sqrt(diag(demogSE))
+demogsNI$se <- sqrt(diag(demogSE))
 
 politicNI <- update(demogsNI, . ~ . + overrideQues + overridePass + 
                       debtQues + debtPass +  partyDivisionRecent +
@@ -1178,19 +1179,19 @@ politicNI <- update(demogsNI, . ~ . + overrideQues + overridePass +
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
 politicSE <- get_CL_vcov(politicNI, moddat$distid)
-politic$se <- sqrt(diag(politicSE))
+politicNI$se <- sqrt(diag(politicSE))
 
 fiscalNI <- update(demogsNI, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta)
 
 fiscalSE <- get_CL_vcov(fiscalNI, moddat$distid)
-fiscal$se <- sqrt(diag(fiscalSE))
+fiscalNI$se <- sqrt(diag(fiscalSE))
 
 policyNI <- update(demogsNI, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
 
 policySE <- get_CL_vcov(policyNI, moddat$distid)
-policy$se <- sqrt(diag(policySE))
+policyNI$se <- sqrt(diag(policySE))
 
 fullmodNI <- update(politicNI, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta + 
@@ -1198,8 +1199,8 @@ fullmodNI <- update(politicNI, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
 
 
-fullmodSE <- get_CL_vcov(fullmod, moddat$distid)
-fullmod$se <- sqrt(diag(fullmodSE))
+fullmodSE <- get_CL_vcov(fullmodNI, moddat$distid)
+fullmodNI$se <- sqrt(diag(fullmodSE))
 rescalenote <- "All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations."
 stars.note <- apsrtable:::stars.note
@@ -1227,8 +1228,10 @@ apsrtable(demogsNI, politicNI, fiscalNI, policyNI, fullmodNI, se = "robust",
           Sweave=FALSE, digits = 3, coef.names = coefnames2)
 
 @
+\end{tiny}
 
-<<glmermodsNI>>=
+\begin{tiny}
+<<glmermodsNI, results='asis'>>=
 library(optimx)
 
 ctrl2 <- glmerControl(optimizer = "optimx", calc.derivs = FALSE, 
@@ -1256,7 +1259,7 @@ politicMMni <- update(demogsMMni, . ~ . + overrideQues + overridePass +
 fiscalMMni <- update(demogsMMni, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta, control = ctrl)
 
-policyMM <- update(demogsMM, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+policyMMni <- update(demogsMMni, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, control = ctrl)
 
 fullmodMMni <- update(politicMMni, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
@@ -1279,7 +1282,7 @@ apsrtable(demogsMMni, politicMMni, fiscalMMni, policyMMni, fullmodMMni,
           Sweave=FALSE, digits = 3, coef.names = coefnames2)
 
 @
-
+\end{tiny}
 
 \subsection{Stage 2: Serious Contest With Non-Incumbents}
 
@@ -1295,7 +1298,7 @@ demogsCon <- glm(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_whi
               family = "binomial") #bach and 65o switch?
 
 demogSE <- get_CL_vcov(demogsCon, moddat2$distid)
-demogs$se <- sqrt(diag(demogSE))
+demogsCon$se <- sqrt(diag(demogSE))
 
 politicCon <- update(demogsCon, . ~ . + incumShare + overrideQues + overridePass + 
                       debtQues + debtPass + partyDivisionRecent +
@@ -1303,19 +1306,19 @@ politicCon <- update(demogsCon, . ~ . + incumShare + overrideQues + overridePass
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
 politicSE <- get_CL_vcov(politicCon, moddat2$distid)
-politic$se <- sqrt(diag(politicSE))
+politicCon$se <- sqrt(diag(politicSE))
 
 fiscalCon <- update(demogsCon, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta)
 
 fiscalSE <- get_CL_vcov(fiscalCon, moddat2$distid)
-fiscal$se <- sqrt(diag(fiscalSE))
+fiscalCon$se <- sqrt(diag(fiscalSE))
 
 policyCon <- update(demogsCon, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
 
 policySE <- get_CL_vcov(policyCon, moddat2$distid)
-policy$se <- sqrt(diag(policySE))
+policyCon$se <- sqrt(diag(policySE))
 
 fullmodCon <- update(politicCon, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta + 
@@ -1324,7 +1327,7 @@ fullmodCon <- update(politicCon, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHAR
 
 
 fullmodSE <- get_CL_vcov(fullmodCon, moddat2$distid)
-fullmod$se <- sqrt(diag(fullmodSE))
+fullmodCon$se <- sqrt(diag(fullmodSE))
 rescalenote <- "All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations."
 stars.note <- apsrtable:::stars.note
@@ -1452,6 +1455,8 @@ phtest_glmer(fiscalMM, update(fiscal, . ~. + distid + factor(year)))
 
 \subsection{Incumbent Defeat}
 
+\begin{tiny}
+
 <<incdefeatMods, eval=FALSE>>=
 moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
                               moddat$incumShare != min(moddat$incumShare),]
@@ -1490,7 +1495,7 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
           Sweave=FALSE, digits = 3, coef.names = coefnames2)
 
 @
-
+\end{tiny}
 
 
 \subsection{Comparisons}

@@ -312,7 +312,7 @@ two or three distinct races for school board each year, with each race electing
 multiple winners. Coding individual races was done by 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Dec 09 11:41:22 2014
+% Tue Dec 09 15:20:07 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rllllllllllll}
@@ -585,10 +585,9 @@ highly correlated with the millrate in a negative direction.
 \end{knitrout}
 
 The political variables in Figure \ref{fig:politic1} are largely free of high 
-correlations among them. The exception is the strong relationship between the 
-number of incumbents running and the overall share of all candidates running 
-who are incumbents -- two attempts at measuring the phenomenon of how open the 
-election is. 
+correlations among them. The strongest relationships are between partisan division 
+and the share of the two party vote -- an expected correlation. Higher fall turnout 
+is also correlated with partisan division. 
 
 
 \begin{knitrout}
@@ -626,7 +625,7 @@ Conditional on this, I then estimate a second stage that voters will have at lea
 one more candidate than total winners -- a choice. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Dec 09 11:41:25 2014
+% Tue Dec 09 15:20:10 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrr}
@@ -950,453 +949,75 @@ of a challenge.
 
 \subsection{Stage 1: Non-incumbents}
 
-\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
-\caption{Models of Contestation in School Board Elections}
-\label{tab:glmMods}\\ 
-\hline 
-  & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
-\endhead
- %                      & Demog.    & Politic   & Fiscal    & Policy    & Full     \\ 
-Intercept              & -0.983 ^* & -1.004 ^* & -0.977 ^* & -0.948 ^* & -0.959 ^*\\ 
-                       & (0.059)   & (0.059)   & (0.058)   & (0.062)   & (0.062)  \\ 
-VAP                    & -0.844 ^* & -0.955 ^* & -0.774 ^* & -0.876 ^* & -0.887 ^*\\ 
-                       & (0.117)   & (0.187)   & (0.145)   & (0.149)   & (0.238)  \\ 
-\% Over 65            & -0.099    & -0.154    & -0.217    & -0.085    & -0.251   \\ 
-                       & (0.144)   & (0.158)   & (0.167)   & (0.152)   & (0.179)  \\ 
-\% Bachelor +         & 0.251 ^*  & 0.099     & 0.107     & 0.223 ^*  & -0.043   \\ 
-                       & (0.100)   & (0.151)   & (0.167)   & (0.110)   & (0.210)  \\ 
-\% White              & 0.044     & -0.012    & 0.090     & 0.054     & 0.081    \\ 
-                       & (0.075)   & (0.087)   & (0.106)   & (0.078)   & (0.122)  \\ 
-\% OOH                & -0.152    & -0.187    & -0.065    & -0.171    & -0.117   \\ 
-                       & (0.133)   & (0.134)   & (0.155)   & (0.141)   & (0.174)  \\ 
-\% Yes Rev. Limit     &           & -0.299 ^* &           &           & -0.298 ^*\\ 
-                       &           & (0.096)   &           &           & (0.095)  \\ 
-\% Polarized          &           & -0.114    &           &           & -0.115   \\ 
-                       &           & (0.121)   &           &           & (0.131)  \\ 
-\% Teach. Voters      &           & -0.125    &           &           & -0.083   \\ 
-                       &           & (0.166)   &           &           & (0.187)  \\ 
-Fall Turnout           &           & 0.269     &           &           & 0.265    \\ 
-                       &           & (0.165)   &           &           & (0.174)  \\ 
-Number Seats           &           & -0.016    &           &           & -0.035   \\ 
-                       &           & (0.111)   &           &           & (0.110)  \\ 
-\% Millrate for Schl. &           &           & -0.153    &           & -0.175   \\ 
-                       &           &           & (0.122)   &           & (0.125)  \\ 
-\% Revenue Prop. Tax  &           &           & 0.157     &           & 0.101    \\ 
-                       &           &           & (0.180)   &           & (0.210)  \\ 
-Cost per Pupil         &           &           & 0.062     &           & 0.120    \\ 
-                       &           &           & (0.130)   &           & (0.139)  \\ 
-Balance per Pupil      &           &           & 0.103     &           & 0.109    \\ 
-                       &           &           & (0.118)   &           & (0.118)  \\ 
-Millrate \delta       &           &           & 0.077     &           & 0.045    \\ 
-                       &           &           & (0.103)   &           & (0.105)  \\ 
-\% Salary - Admin.    &           &           &           & 0.009     & -0.020   \\ 
-                       &           &           &           & (0.108)   & (0.112)  \\ 
-New Superintendent     &           &           &           & -0.248    & -0.255   \\ 
-                       &           &           &           & (0.131)   & (0.132)  \\ 
-\% Private School     &           &           &           & 0.032     & 0.019    \\ 
-                       &           &           &           & (0.116)   & (0.121)  \\ 
-Cumul. Bond Att.       &           &           &           & 0.123     & 0.101    \\ 
-                       &           &           &           & (0.111)   & (0.117)  \\ 
-Cumul. Override Att.   &           &           &           & -0.106    & -0.051   \\ 
-                       &           &           &           & (0.123)   & (0.125)   \\
- $N$                    & 2569      & 2569      & 2569      & 2569      & 2569     \\ 
-AIC                    & 2983.396  & 2977.576  & 2987.038  & 2987.382  & 2986.111 \\ 
-BIC                    & 3123.826  & 3235.032  & 3244.494  & 3244.838  & 3477.618 \\ 
-$\log L$              & -1467.698 & -1444.788 & -1449.519 & -1449.691 & -1409.056 \\ \hline
- \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations.}} 
-\end{longtable} 
-
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-## \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
-## \caption{Mixed Models of Contestation in School Board Elections}
-## \label{tab:glmerMods}\\ 
-## \hline 
-##   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
-## \endhead
-##  %                      & Demog.        & Politic       & Fiscal        & Policy        & Full         \\ 
-## Intercept              & -1.086 ^*     & -1.159 ^*     & -1.075 ^*     & -1.053 ^*     & -1.122 ^*    \\ 
-##                        & (0.068)       & (0.064)       & (0.061)       & (0.071)       & (0.067)      \\ 
-## VAP                    & -0.934 ^*     & -0.683 ^*     & -0.829 ^*     & -0.964 ^*     & -0.603 ^*    \\ 
-##                        & (0.136)       & (0.200)       & (0.152)       & (0.170)       & (0.246)      \\ 
-## \% Over 65            & -0.100        & -0.114        & -0.240        & -0.095        & -0.206       \\ 
-##                        & (0.152)       & (0.164)       & (0.175)       & (0.159)       & (0.190)      \\ 
-## \% Bachelor +         & 0.298 ^*      & -0.012        & 0.158         & 0.265 ^*      & -0.056       \\ 
-##                        & (0.123)       & (0.176)       & (0.179)       & (0.126)       & (0.214)      \\ 
-## \% White              & 0.039         & 0.084         & 0.141         & 0.052         & 0.262        \\ 
-##                        & (0.133)       & (0.143)       & (0.158)       & (0.134)       & (0.171)      \\ 
-## \% OOH                & -0.163        & -0.189        & -0.069        & -0.195        & -0.212       \\ 
-##                        & (0.159)       & (0.166)       & (0.171)       & (0.167)       & (0.198)      \\ 
-## \% Yes Rev. Limit     &               & -0.326 ^*     &               &               & -0.300 ^*    \\ 
-##                        &               & (0.103)       &               &               & (0.105)      \\ 
-## \% Polarized          &               & -0.094        &               &               & -0.063       \\ 
-##                        &               & (0.134)       &               &               & (0.141)      \\ 
-## \% Teach. Voters      &               & -0.010        &               &               & -0.042       \\ 
-##                        &               & (0.171)       &               &               & (0.189)      \\ 
-## Fall Turnout           &               & 0.248         &               &               & 0.262        \\ 
-##                        &               & (0.167)       &               &               & (0.180)      \\ 
-## Number Seats           &               & -1.144 ^*     &               &               & -1.160 ^*    \\ 
-##                        &               & (0.113)       &               &               & (0.115)      \\ 
-## \% Millrate for Schl. &               &               & -0.147        &               & -0.117       \\ 
-##                        &               &               & (0.117)       &               & (0.124)      \\ 
-## \% Revenue Prop. Tax  &               &               & 0.128         &               & -0.109       \\ 
-##                        &               &               & (0.187)       &               & (0.217)      \\ 
-## Cost per Pupil         &               &               & 0.175         &               & 0.184        \\ 
-##                        &               &               & (0.142)       &               & (0.157)      \\ 
-## Balance per Pupil      &               &               & 0.114         &               & 0.171        \\ 
-##                        &               &               & (0.129)       &               & (0.136)      \\ 
-## Millrate \delta       &               &               & 0.077         &               & 0.084        \\ 
-##                        &               &               & (0.097)       &               & (0.101)      \\ 
-## \% Salary - Admin.    &               &               &               & 0.020         & 0.046        \\ 
-##                        &               &               &               & (0.125)       & (0.133)      \\ 
-## New Superintendent     &               &               &               & -0.219        & -0.199       \\ 
-##                        &               &               &               & (0.136)       & (0.140)      \\ 
-## \% Private School     &               &               &               & 0.059         & 0.042        \\ 
-##                        &               &               &               & (0.132)       & (0.141)      \\ 
-## Cumul. Bond Att.       &               &               &               & 0.127         & 0.106        \\ 
-##                        &               &               &               & (0.136)       & (0.144)      \\ 
-## Cumul. Override Att.   &               &               &               & -0.119        & -0.182       \\ 
-##                        &               &               &               & (0.131)       & (0.145)       \\
-##  $N$                    & 2569          & 2569          & 2569          & 2569          & 2569         \\ 
-## AIC                    & 2945.608      & 2834.906      & 2950.454      & 2951.390      & 2845.814     \\ 
-## N Groups               & 310 | 9       & 310 | 9       & 310 | 9       & 310 | 9       & 310 | 9      \\ 
-## Group Names            & distid | year & distid | year & distid | year & distid | year & distid | year\\ 
-## Group:distid Effs.     & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-## Group:year Effs.       & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-## Group:distid Var.      & 0.652         & 0.666         & 0.653         & 0.643         & 0.655        \\ 
-## Group:year Var.        & 0.092         & 0.031         & 0.013         & 0.1           & 0.024        \\ 
-## Sigma                  & 1             & 1             & 1             & 1             & 1             \\ \hline
-##  \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-## \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
-##                 and divided by 2 standard deviations.}} 
-## \end{longtable}
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-
 \begin{tiny}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
-\caption{Models of Contestation in School Board Elections}
-\label{tab:glmMods}\\ 
+\caption{Models of Incumbent Lockout in School Board Elections}
+\label{tab:glmModsNI}\\ 
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
  %                      & Demog.    & Politic   & Fiscal    & Policy    & Full     \\ 
-Intercept              & -0.574 ^* & -0.731 ^* & -0.603 ^* & -0.605 ^* & -0.764 ^*\\ 
-                       & (0.059)   & (0.064)   & (0.059)   & (0.062)   & (0.068)  \\ 
-VAP                    & 1.004 ^*  & 0.846 ^*  & 0.896 ^*  & 1.020 ^*  & 0.728 ^* \\ 
-                       & (0.140)   & (0.202)   & (0.162)   & (0.163)   & (0.241)  \\ 
-\% Over 65            & 0.160     & 0.165     & 0.451 ^*  & 0.277     & 0.506 ^* \\ 
-                       & (0.142)   & (0.168)   & (0.169)   & (0.144)   & (0.196)  \\ 
-\% Bachelor +         & -0.334 ^* & -0.180    & -0.033    & -0.355 ^* & 0.068    \\ 
-                       & (0.117)   & (0.187)   & (0.162)   & (0.123)   & (0.222)  \\ 
-\% White              & -0.053    & -0.055    & -0.223    & -0.095    & -0.256   \\ 
-                       & (0.098)   & (0.146)   & (0.121)   & (0.094)   & (0.171)  \\ 
-\% OOH                & 0.043     & 0.046     & -0.143    & 0.123     & 0.065    \\ 
-                       & (0.147)   & (0.166)   & (0.162)   & (0.148)   & (0.192)  \\ 
-\% Incumbents         &           & -2.188 ^* &           &           & -2.232 ^*\\ 
-                       &           & (0.108)   &           &           & (0.112)  \\ 
-\% Yes Rev. Limit     &           & 0.025     &           &           & 0.076    \\ 
-                       &           & (0.089)   &           &           & (0.095)  \\ 
-\% Polarized          &           & -0.275 ^* &           &           & -0.214   \\ 
-                       &           & (0.139)   &           &           & (0.149)  \\ 
-\% Teach. Voters      &           & 0.045     &           &           & -0.114   \\ 
-                       &           & (0.176)   &           &           & (0.190)  \\ 
-Fall Turnout           &           & -0.080    &           &           & -0.261   \\ 
-                       &           & (0.184)   &           &           & (0.210)  \\ 
-Number Seats           &           & 0.557 ^*  &           &           & 0.533 ^* \\ 
-                       &           & (0.115)   &           &           & (0.116)  \\ 
-\% Millrate for Schl. &           &           & 0.396 ^*  &           & 0.404 ^* \\ 
-                       &           &           & (0.124)   &           & (0.133)  \\ 
-\% Revenue Prop. Tax  &           &           & -0.359 ^* &           & -0.202   \\ 
-                       &           &           & (0.176)   &           & (0.218)  \\ 
-Cost per Pupil         &           &           & -0.370 ^* &           & -0.310   \\ 
-                       &           &           & (0.152)   &           & (0.177)  \\ 
-Balance per Pupil      &           &           & -0.072    &           & -0.001   \\ 
-                       &           &           & (0.129)   &           & (0.149)  \\ 
-Millrate \delta       &           &           & 0.103     &           & 0.101    \\ 
-                       &           &           & (0.090)   &           & (0.104)  \\ 
-\% Salary - Admin.    &           &           &           & 0.012     & 0.083    \\ 
-                       &           &           &           & (0.135)   & (0.149)  \\ 
-New Superintendent     &           &           &           & 0.112     & -0.044   \\ 
-                       &           &           &           & (0.114)   & (0.135)  \\ 
-\% Private School     &           &           &           & -0.230    & -0.254   \\ 
-                       &           &           &           & (0.146)   & (0.169)  \\ 
-Cumul. Bond Att.       &           &           &           & 0.311 ^*  & 0.409 ^* \\ 
-                       &           &           &           & (0.120)   & (0.138)  \\ 
-Cumul. Override Att.   &           &           &           & -0.089    & -0.155   \\ 
-                       &           &           &           & (0.117)   & (0.139)   \\
- $N$                    & 2569      & 2569      & 2569      & 2569      & 2569     \\ 
-AIC                    & 3263.215  & 2729.196  & 3241.221  & 3256.756  & 2703.548 \\ 
-BIC                    & 3403.645  & 3010.057  & 3498.676  & 3514.212  & 3218.460 \\ 
-$\log L$              & -1607.607 & -1316.598 & -1576.610 & -1584.378 & -1263.774 \\ \hline
+Intercept              & -1.102 ^* & -1.037 ^* & -1.250 ^* & -1.123 ^* & -1.155 ^*\\ 
+                       & (0.159)   & (0.170)   & (0.184)   & (0.165)   & (0.205)  \\ 
+VAP                    & -0.767 ^* & -0.793 ^* & -0.771 ^* & -0.831 ^* & -0.786 ^*\\ 
+                       & (0.106)   & (0.170)   & (0.139)   & (0.135)   & (0.218)  \\ 
+\% Over 65            & -0.162    & -0.162    & -0.212    & -0.180    & -0.213   \\ 
+                       & (0.137)   & (0.151)   & (0.157)   & (0.145)   & (0.170)  \\ 
+\% Bachelor +         & 0.194 ^*  & 0.105     & 0.106     & 0.161     & 0.007    \\ 
+                       & (0.089)   & (0.143)   & (0.155)   & (0.099)   & (0.195)  \\ 
+\% White              & 0.118     & 0.127     & 0.063     & 0.152 ^*  & 0.135    \\ 
+                       & (0.073)   & (0.083)   & (0.111)   & (0.077)   & (0.122)  \\ 
+\% OOH                & -0.195    & -0.206    & -0.130    & -0.257    & -0.206   \\ 
+                       & (0.123)   & (0.125)   & (0.141)   & (0.134)   & (0.164)  \\ 
+Rev. Lim. Attpt.       &           & -0.691 ^* &           &           & -0.664 ^*\\ 
+                       &           & (0.220)   &           &           & (0.219)  \\ 
+Rev. Lim. Pass         &           & 0.246     &           &           & 0.263    \\ 
+                       &           & (0.267)   &           &           & (0.266)  \\ 
+Bond Attpt.            &           & 0.203     &           &           & 0.148    \\ 
+                       &           & (0.240)   &           &           & (0.248)  \\ 
+Bond Pass              &           & -0.234    &           &           & -0.216   \\ 
+                       &           & (0.295)   &           &           & (0.303)  \\ 
+\% Polarized          &           & 0.078     &           &           & 0.082    \\ 
+                       &           & (0.106)   &           &           & (0.112)  \\ 
+\% Teach. Voters      &           & -0.070    &           &           & 0.033    \\ 
+                       &           & (0.156)   &           &           & (0.171)  \\ 
+Fall Turnout           &           & 0.065     &           &           & 0.073    \\ 
+                       &           & (0.184)   &           &           & (0.191)  \\ 
+Number Seats           &           & -0.085    &           &           & -0.085   \\ 
+                       &           & (0.112)   &           &           & (0.108)  \\ 
+\% Millrate for Schl. &           &           & -0.138    &           & -0.148   \\ 
+                       &           &           & (0.116)   &           & (0.121)  \\ 
+\% Revenue Prop. Tax  &           &           & 0.149     &           & 0.096    \\ 
+                       &           &           & (0.170)   &           & (0.193)  \\ 
+Cost per Pupil         &           &           & -0.251    &           & -0.191   \\ 
+                       &           &           & (0.187)   &           & (0.193)  \\ 
+Balance per Pupil      &           &           & 0.203     &           & 0.192    \\ 
+                       &           &           & (0.138)   &           & (0.140)  \\ 
+Millrate \delta       &           &           & 0.004     &           & -0.003   \\ 
+                       &           &           & (0.102)   &           & (0.103)  \\ 
+\% Salary - Admin.    &           &           &           & -0.071    & -0.062   \\ 
+                       &           &           &           & (0.112)   & (0.116)  \\ 
+New Superintendent     &           &           &           & -0.258 ^* & -0.258 ^*\\ 
+                       &           &           &           & (0.121)   & (0.122)  \\ 
+\% Private School     &           &           &           & 0.108     & 0.108    \\ 
+                       &           &           &           & (0.109)   & (0.114)  \\ 
+Cumul. Bond Att.       &           &           &           & 0.057     & 0.048    \\ 
+                       &           &           &           & (0.111)   & (0.123)  \\ 
+Cumul. Override Att.   &           &           &           & -0.157    & -0.020   \\ 
+                       &           &           &           & (0.123)   & (0.124)   \\
+ $N$                    & 3031      & 3031      & 3031      & 3031      & 3031     \\ 
+AIC                    & 3508.614  & 3507.647  & 3509.129  & 3509.198  & 3513.214 \\ 
+BIC                    & 3893.679  & 4085.245  & 4014.527  & 4014.596  & 4331.478 \\ 
+$\log L$              & -1690.307 & -1657.823 & -1670.564 & -1670.599 & -1620.607 \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations.}} 
+                and divided by 2 standard deviations.}}\\
+\multicolumn{6}{l}{\footnotesize{Year fixed effect coefficients excluded.}} 
 \end{longtable} 
 
 \end{tiny}
 
 \begin{tiny}
-\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
-\caption{Mixed Models of Contestation in School Board Elections}
-\label{tab:glmerMods}\\ 
-\hline 
-  & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
-\endhead
- %                      & Demog.        & Politic       & Fiscal        & Policy        & Full         \\ 
-Intercept              & -0.644 ^*     & -0.821 ^*     & -0.676 ^*     & -0.662 ^*     & -0.843 ^*    \\ 
-                       & (0.083)       & (0.090)       & (0.068)       & (0.089)       & (0.087)      \\ 
-VAP                    & 1.129 ^*      & 1.119 ^*      & 0.995 ^*      & 1.097 ^*      & 0.956 ^*     \\ 
-                       & (0.149)       & (0.228)       & (0.166)       & (0.185)       & (0.275)      \\ 
-\% Over 65            & 0.184         & 0.230         & 0.499 ^*      & 0.325         & 0.647 ^*     \\ 
-                       & (0.171)       & (0.199)       & (0.197)       & (0.176)       & (0.226)      \\ 
-\% Bachelor +         & -0.379 ^*     & -0.194        & -0.092        & -0.377 ^*     & 0.123        \\ 
-                       & (0.140)       & (0.215)       & (0.199)       & (0.142)       & (0.257)      \\ 
-\% White              & -0.081        & -0.023        & -0.303        & -0.135        & -0.238       \\ 
-                       & (0.147)       & (0.173)       & (0.174)       & (0.146)       & (0.199)      \\ 
-\% OOH                & 0.056         & 0.095         & -0.141        & 0.164         & 0.128        \\ 
-                       & (0.181)       & (0.202)       & (0.196)       & (0.189)       & (0.237)      \\ 
-\% Incumbents         &               & -2.439 ^*     &               &               & -2.457 ^*    \\ 
-                       &               & (0.123)       &               &               & (0.124)      \\ 
-\% Yes Rev. Limit     &               & 0.053         &               &               & 0.098        \\ 
-                       &               & (0.099)       &               &               & (0.103)      \\ 
-\% Polarized          &               & -0.269        &               &               & -0.198       \\ 
-                       &               & (0.158)       &               &               & (0.165)      \\ 
-\% Teach. Voters      &               & 0.034         &               &               & -0.167       \\ 
-                       &               & (0.212)       &               &               & (0.235)      \\ 
-Fall Turnout           &               & -0.237        &               &               & -0.450 ^*    \\ 
-                       &               & (0.207)       &               &               & (0.214)      \\ 
-Number Seats           &               & 0.229         &               &               & 0.247 ^*     \\ 
-                       &               & (0.124)       &               &               & (0.123)      \\ 
-\% Millrate for Schl. &               &               & 0.505 ^*      &               & 0.579 ^*     \\ 
-                       &               &               & (0.142)       &               & (0.163)      \\ 
-\% Revenue Prop. Tax  &               &               & -0.310        &               & -0.220       \\ 
-                       &               &               & (0.213)       &               & (0.266)      \\ 
-Cost per Pupil         &               &               & -0.497 ^*     &               & -0.347       \\ 
-                       &               &               & (0.158)       &               & (0.190)      \\ 
-Balance per Pupil      &               &               & -0.053        &               & 0.003        \\ 
-                       &               &               & (0.139)       &               & (0.163)      \\ 
-Millrate \delta       &               &               & 0.104         &               & 0.085        \\ 
-                       &               &               & (0.097)       &               & (0.113)      \\ 
-\% Salary - Admin.    &               &               &               & -0.058        & 0.002        \\ 
-                       &               &               &               & (0.144)       & (0.165)      \\ 
-New Superintendent     &               &               &               & 0.059         & -0.075       \\ 
-                       &               &               &               & (0.126)       & (0.142)      \\ 
-\% Private School     &               &               &               & -0.294        & -0.386 ^*    \\ 
-                       &               &               &               & (0.157)       & (0.177)      \\ 
-Cumul. Bond Att.       &               &               &               & 0.315 ^*      & 0.420 ^*     \\ 
-                       &               &               &               & (0.142)       & (0.160)      \\ 
-Cumul. Override Att.   &               &               &               & -0.028        & -0.165       \\ 
-                       &               &               &               & (0.130)       & (0.149)       \\
- $N$                    & 2569          & 2569          & 2569          & 2569          & 2569         \\ 
-AIC                    & 3164.430      & 2672.541      & 3151.531      & 3165.699      & 2658.074     \\ 
-N Groups               & 310 | 9       & 310 | 9       & 310 | 9       & 310 | 9       & 310 | 9      \\ 
-Group Names            & distid | year & distid | year & distid | year & distid | year & distid | year\\ 
-Group:distid Effs.     & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-Group:year Effs.       & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-Group:distid Var.      & 0.836         & 0.901         & 0.818         & 0.814         & 0.855        \\ 
-Group:year Var.        & 0.154         & 0.151         & 0.052         & 0.175         & 0.115        \\ 
-Sigma                  & 1             & 1             & 1             & 1             & 1             \\ \hline
- \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations.}} 
-\end{longtable} 
-
-
-\end{tiny}
-
-
-
-
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-## \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
-## \caption{Mixed Models of Contestation in School Board Elections: Exclude All Incumbents}
-## \label{tab:glmerMods}\\ 
-## \hline 
-##   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
-## \endhead
-##  %                      & Demog.        & Politic       & Fiscal        & Policy        & Full         \\ 
-## Intercept              & -0.040        & -0.291 ^*     & -0.071        & -0.040        & -0.313 ^*    \\ 
-##                        & (0.076)       & (0.088)       & (0.068)       & (0.082)       & (0.084)      \\ 
-## VAP                    & 0.922 ^*      & 1.005 ^*      & 0.815 ^*      & 0.857 ^*      & 0.791 ^*     \\ 
-##                        & (0.153)       & (0.221)       & (0.173)       & (0.189)       & (0.267)      \\ 
-## \% Over 65            & 0.235         & 0.269         & 0.585 ^*      & 0.406 ^*      & 0.688 ^*     \\ 
-##                        & (0.180)       & (0.194)       & (0.209)       & (0.184)       & (0.221)      \\ 
-## \% Bachelor +         & -0.300 ^*     & -0.149        & 0.040         & -0.318 ^*     & 0.170        \\ 
-##                        & (0.146)       & (0.208)       & (0.214)       & (0.147)       & (0.252)      \\ 
-## \% White              & -0.104        & -0.080        & -0.314        & -0.165        & -0.325       \\ 
-##                        & (0.152)       & (0.167)       & (0.183)       & (0.150)       & (0.195)      \\ 
-## \% OOH                & 0.036         & 0.097         & -0.164        & 0.146         & 0.088        \\ 
-##                        & (0.187)       & (0.195)       & (0.203)       & (0.193)       & (0.228)      \\ 
-## \% Incumbents         &               & -1.030 ^*     &               &               & -1.040 ^*    \\ 
-##                        &               & (0.156)       &               &               & (0.157)      \\ 
-## \% Yes Rev. Limit     &               & 0.032         &               &               & 0.075        \\ 
-##                        &               & (0.097)       &               &               & (0.101)      \\ 
-## \% Polarized          &               & -0.206        &               &               & -0.134       \\ 
-##                        &               & (0.154)       &               &               & (0.161)      \\ 
-## \% Teach. Voters      &               & 0.072         &               &               & -0.125       \\ 
-##                        &               & (0.208)       &               &               & (0.230)      \\ 
-## Fall Turnout           &               & -0.191        &               &               & -0.378       \\ 
-##                        &               & (0.200)       &               &               & (0.206)      \\ 
-## Number Seats           &               & 0.144         &               &               & 0.169        \\ 
-##                        &               & (0.123)       &               &               & (0.122)      \\ 
-## \% Millrate for Schl. &               &               & 0.589 ^*      &               & 0.581 ^*     \\ 
-##                        &               &               & (0.153)       &               & (0.160)      \\ 
-## \% Revenue Prop. Tax  &               &               & -0.388        &               & -0.263       \\ 
-##                        &               &               & (0.227)       &               & (0.262)      \\ 
-## Cost per Pupil         &               &               & -0.476 ^*     &               & -0.389 ^*    \\ 
-##                        &               &               & (0.166)       &               & (0.179)      \\ 
-## Balance per Pupil      &               &               & 0.014         &               & 0.018        \\ 
-##                        &               &               & (0.154)       &               & (0.160)      \\ 
-## Millrate \delta       &               &               & 0.162         &               & 0.133        \\ 
-##                        &               &               & (0.108)       &               & (0.111)      \\ 
-## \% Salary - Admin.    &               &               &               & -0.074        & 0.004        \\ 
-##                        &               &               &               & (0.152)       & (0.160)      \\ 
-## New Superintendent     &               &               &               & -0.041        & -0.076       \\ 
-##                        &               &               &               & (0.139)       & (0.142)      \\ 
-## \% Private School     &               &               &               & -0.318 ^*     & -0.321       \\ 
-##                        &               &               &               & (0.162)       & (0.172)      \\ 
-## Cumul. Bond Att.       &               &               &               & 0.488 ^*      & 0.464 ^*     \\ 
-##                        &               &               &               & (0.152)       & (0.160)      \\ 
-## Cumul. Override Att.   &               &               &               & -0.132        & -0.141       \\ 
-##                        &               &               &               & (0.133)       & (0.144)       \\
-##  $N$                    & 1851          & 1851          & 1851          & 1851          & 1851         \\ 
-## AIC                    & 2454.930      & 2421.934      & 2439.166      & 2450.790      & 2404.426     \\ 
-## N Groups               & 310 | 9       & 310 | 9       & 310 | 9       & 310 | 9       & 310 | 9      \\ 
-## Group Names            & distid | year & distid | year & distid | year & distid | year & distid | year\\ 
-## Group:distid Effs.     & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-## Group:year Effs.       & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-## Group:distid Var.      & 0.797         & 0.825         & 0.781         & 0.754         & 0.777        \\ 
-## Group:year Var.        & 0.101         & 0.107         & 0             & 0.125         & 0.031        \\ 
-## Sigma                  & 1             & 1             & 1             & 1             & 1             \\ \hline
-##  \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-## \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
-##                 and divided by 2 standard deviations.}} 
-## \end{longtable}
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-\subsection{Incumbent Defeat}
-
-
-
-
-\subsubsection{Demographics}
-
-Table \ref{tab:meDemog} shows the results of a mixed effect model.\footnote{To test the 
-proper specification of the random effects terms, the parametric bootstrap of the 
-likelihood ratio test was used to compare the mixed models. It showed that district 
-effects alone improved model fit and no additional gain was made by including a 
-random effect for years \citep{pbkrtest}. This was implemented in R using the 
-\texttt{pbkrtest} package. Results and script available upon request. } 
-
-
-\subsubsection{Fiscal}
-
-One of the highest profile activities of a school district is fiscal management. 
-Does fiscal health of a district predict the run for office? 
-
-Some text
-
-
-
-\subsubsection{Politics}
-
-\clearpage
-
-Some text. 
-
-
-\subsubsection{Comparisons}
-
-But which model is better? 
-
-
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-rocplot1-1} \caption[ROC Curves for Models of Election Contestation in Wisconsin School Boards]{ROC Curves for Models of Election Contestation in Wisconsin School Boards\label{fig:rocplot1}}
-\end{figure}
-
-
-\end{knitrout}
-
-
-In Figure \ref{fig:rocplot1} it is clear that policy and tax variables have less 
-explanatory power than politics and the full model. The x-axis represents the 
-false-alarm rate, or uncontested elections that would be classified as contested 
-elections. The y-axis represents the true contested elections that would be 
-correctly classified. Our politics model and our uber model both exhibit superior 
-performance for a lower rate of false-alarms than the policy or tax measures. 
-
-This is not evidence that taxation and compensation policy do not matter to school 
-districts or in determining board elections. The goal here is to simply compare 
-the explanatory power of different classes of descriptive predictors available 
-statewide over time for all school districts in order to understand which, if any, 
-macro-level measures that are publicly reported provide strong evidence of a 
-school district having a contested election. 
-
-A table of likelihood ratio tests shows the same result:
-
-% latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Dec 09 11:50:33 2014
-\begin{table}[ht]
-\centering
-\begin{tabular}{lrrrrr}
-  \hline
- & Resid. Df & Resid. Dev & Df & Deviance & Pr($>$Chi) \\ 
-  \hline
-1 & 2563 & 3251.21 &  &  &  \\ 
-  2 & 2557 & 2705.20 & 6 & 546.02 & 0.0000 \\ 
-  3 & 2558 & 3234.76 & -1 & -529.56 & 0.0000 \\ 
-  4 & 2558 & 3219.22 & -0 & 15.54 &  \\ 
-  5 & 2547 & 2659.55 & 11 & 559.67 & 0.0000 \\ 
-   \hline
-\end{tabular}
-\caption{Likelihood Ratio Test of Pooled Model Fit} 
-\end{table}
-
-
-This provides some evidence that school district elections are driven by political 
-factors -- both local and cross-district -- more so than the measures of financial 
-and policy concern that we have available at a statewide level. As the task is to 
-explain school district elections using consistent and statewide available data, 
-it appears that measures of political climate in the school district are particularly 
-well suited to the task. 
-
-% Figure \ref{fig:modelsplot} shows the coefficients and their standard errors 
-% plotted for the four models.\footnote{Graph made using the excellent \texttt{coefplot} package for R along with \texttt{theme\_dpi} theme for \texttt{ggplot2} provided 
-% in the \texttt{eeptools} package \citep{eeptools, coefplot, gg}.} The scale is 
-% exaggerated around 0 to allow for presentation of smaller coefficient sizes and 
-% to be able to distinguish them from 0. 
-% 
-% From this we can see that the comprehensive model provides point estimates very 
-% close to the estimates in the corresponding topic models. We can also see that 
-% most of the effects are very low - the coefficients reported here are logistic 
-% coefficients - with a few pointed exceptions. 
-
-
-Here is some text about the within district variation. 
-
-\section{Conclusions}
-
-School board elections are not marked by much contestation. 
-
-\section{Technical Appendix}
-
-Computing is fun. 
-
-\subsection{Model Specification Tests}
 
 
 
@@ -1405,21 +1026,19 @@ Computing is fun.
 
 
 
-% 
-% \begin{table}[h!]
-% \begin{center}
-% \begin{small}
-% \caption{Descriptive Models of Candidate Emergence}
-% \label{tab:emergenceDmodels}
-% \begin{tabular}{| p{.1\textwidth} | p{.4\textwidth} | p{.35\textwidth} |}
-% \hline
-% \textbf{Model}  & \textbf{Predictors} & \textbf{Interpretation} \\ \hline
-% Fiscal   & revenue limit, tax rate, median income, referenda & If the model is explanatory, fiscal forces may motivate candidates\\ \hline
-% Politics & Lagged contestation, lagged primary, cumulative debt referenda, political division, lagged referendum & Political activity \\ \hline
-% %Fiscal Revolt & \citet{RefWorks:297,RefWorks:271} & Union membership as share of electorate drives up turnout \\ \hline
-% Policy & teacher compensation, referenda attempts & Unsure \\ \hline 
-% Controls & District population, white \%,  median income & To control for differences in contexts \\ \hline
-% \end{tabular}
-% \end{small}
-% \end{center}
-% \end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
