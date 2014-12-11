@@ -311,6 +311,1078 @@ is not unique to a single race each year. Instead, a school district may feature
 two or three distinct races for school board each year, with each race electing 
 multiple winners. Coding individual races was done by 
 
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Thu Dec 11 12:39:19 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllllllllllll}
+  \hline
+  \hline
+year & 2002 & 2003 & 2004 & 2005 & 2006 & 2007 & 2008 & 2009 & 2010 & 2011 & 2012 & 2013 \\ 
+  districts & 221 & 243 & 257 & 255 & 271 & 299 & 299 & 299 & 300 & 305 & 305 &  15 \\ 
+  races & 287 & 333 & 338 & 334 & 363 & 402 & 380 & 396 & 393 & 392 & 406 &  18 \\ 
+   \hline
+\end{tabular}
+\caption{Frequency of multiple races within a district by year.} 
+\label{tab:mrfreq}
+\end{table}
+
+
+Due to the relatively few unique variables I have at the level of the school 
+district race, I aggregate multiple races per district into a single district-year 
+observation. This aggregation is done by summing the number of candidates, winners, 
+votes, and incumbents across races and including a binary indicator if any of the 
+races was a district wide race. I also include the maximum value of the coding for 
+the presence of a contested race. This approach is similar to the approach of 
+\citet{berry} as a solution to handle the case where jurisdictional overlap is 
+difficult to determine. 
+
+\subsection{Independent Variables}
+
+With the Wisconsin data, a number of variables are available with which to test 
+the theories outlined above. The first set of variables I include are basic 
+demographic variables to account for the diversity in school districts as 
+jurisdictions. As shown in \citet{oliver} these variables are important to 
+take into consideration when considering the factors that influence candidate 
+participation in local elections. 
+
+The first of these variables I consider is the voting age population (VAP) of 
+the school district. VAP represents the pool of voters and also of potential 
+candidates for school board in a community. I expect this variable to be 
+positively related to contestation of school board elections both because of the 
+larger pool of available candidates, but also the larger scope of influence in 
+larger school districts -- which is more attractive to potential candidates 
+\citep{oliver}. In addition to 
+size, the homogeneity of the community is an important indicator of the level 
+of electoral participation. I consider two types of heterogeneity -- racial and 
+generational. First, I include a measure of the percentage of the adult population 
+in the school district that is white. While Wisconsin is an overwhelmingly white 
+state, I expect racial heterogeneity to be positively associated with more 
+school board contestation. Additionally, prior research has shown that voter 
+(and property tax payer) age is associated with support for local schools. The 
+greater the percentage of elderly in the school district, the more participation 
+I expect to see \citep{RefWorks:332}. 
+Additionally, given the results of surveys that indicate school board members 
+are more likely to be white and elderly, I expect that the increase in these 
+variables is an increase in supply of potential candidates, and thus should be 
+positively related to board contestation \citep{RefWorks:321, RefWorks:322, RefWorks:333}. 
+
+The last two demographic variables are measures of tax base in some sense. First, 
+I include a measure of the percentage of housing occupied by owners as a measure 
+of both the permanency of the community (following \citet{oliver}) and the 
+salience of property tax rates -- an important issue for single jurisdiction 
+governments like school boards \citep{berry2}. 
+As an additional control, I include a measure of median household income, but 
+as other studies have noted, this does not exhibit much variation within Wisconsin 
+as it does in other jurisdictions %todo: cite amiel, reschowsky, knowles
+
+Next, I consider variables measuring the scope of the school district relative 
+to other local governments. As \cite{berry2} finds stacking of local governments 
+with overlapping taxing jurisdictions divides the attention of voters, I consider 
+whether overlapping fiscal authority might divide the attention of potential 
+candidates and make school boards less attractive. The first variable I consider 
+is what share of its total revenue a school district raises from property taxes. 
+While the intricacies of the Wisconsin school funding formula are beyond the 
+scope of this paper, the result of this formula is that there is much variation 
+in the share of district revenues that are raised by local property owners. 
+I expect the greater the share of revenue from property taxes, the more likely 
+candidates are to participate. However, the share of revenue derived from 
+property tax may not be particularly salient to the voting population, especially 
+not those without school aged children. Due to this, I test an alternate measure 
+which is the share of total property tax revenue that is levied by school 
+districts. This variable should also be positively related to candidacy -- as 
+property tax revenue directed to schools increases as a share of all property 
+tax revenue, individuals should be more motivated to pursue a seat on the school 
+board \cite{berry2, oliver}.
+Another indicator of the fiscal health of a school district is the available 
+savings, or fund balance, of the school district. I normalize this variable to 
+be a per pupil measure of dollars available in savings to the school district. 
+I expect this variable to be negatively related to candidacy with districts 
+that have more savings having less contestation as a result of lower overall 
+fiscal pressure. A final measure of fiscal health is the level of per pupil 
+spending in the school district. I expect higher spending districts to have 
+higher levels of candidate contestation. %TODO: why
+
+Next, I look to explore the influence of political factors in the emergence of 
+challenges to incumbents. First, I include a variable to control for the 
+different structure of school board elections by controlling for the number of 
+races in each school district. This variable should be positive related with 
+more incumbency challenge as it represents more opportunities for a challenge 
+to emerge when multiple races exist. I also test for advantage of incumbency 
+by including a measure of the share of candidates who are incumbents. I expect 
+this variable to be negatively related to challenge as incumbents should deter 
+challengers. %TODO: citation
+
+Next, I explore the impact of both turnout and partisanship in general elections 
+on local elections. I am interested in the role partisan divisions among voters 
+in the school district may play in the off-cycle non-partisan school board 
+election cycle. I include two potential measures of partisanship. First I 
+measure the average two party vote share for Democrats across the immediately 
+previous Gubernatorial and Presidential fall elections. I expect this variable 
+to be unrelated to challengers emerging for school board -- Republican and Democrat 
+leaning communities should exhibit similar levels of local contestation. Next, I test the 
+partisan polarization of the community by measuring the distance from an even 
+vote share between Republican and Democratic communities by taking the absolute 
+value of the difference between the Democratic vote share and the expected vote 
+share in a perfectly polarized community of 0.5. The greater this difference, the 
+less likely I believe candidate emergence will be due to the homogenous nature 
+of voter preferences in the community. 
+
+As a final measure, I follow the work of \cite{moe,anzia} and explore the influence 
+of teachers' unions in elections. Teachers' unions represent the 
+strongest interest group in school board politics. The greater the share of the 
+teaching staff in the voting population, the less likely I expect candidates 
+to emerge. A strong interest group presence in the community should ensure the 
+the board reflects interest group preferences and depress the need for electoral competition. 
+
+A final set of total variables is policy related concerns. These variables 
+explore the idea that candidates may desire to emerge in response to underlying 
+policy changes in the district. Policy concerns allow me to test whether or not 
+voters in school board races are retrospective. A challenge with retrospective 
+voting is the irregular timing of school board seat opening relative to other 
+offices. Whereas the state and federal legislatures are elected on a regular cycle, 
+school board seats are more like senate seats -- they come up for election at 
+different times in different jurisdictions, and thus they may be influenced by 
+distinct policy evaluations from voters depending on the year they are up for election. 
+%TODO: Not perfect due to timing
+
+First, I assess the impact that a change in superintendent has on school board 
+challengers. Because theory suggests that board turnover often precedes 
+superintendent turnover, I posit that a new superintendent should signal a 
+decrease in candidate challenges to board members \cite{RefWorks:336, RefWorks:340}.
+
+Next, I include measures of school district funding referenda. Wisconsin has 
+two common types of school referenda measures -- bond and override referenda. 
+Bond referenda are familiar across the United States as authority for a school 
+district to raise taxes to cover the payments on a loan for the costs of infrastructure 
+construction such as a new or renovated school building. Override referenda are specific 
+to school funding formulas like Wisconsin and Massachusetts, where schools must 
+operate under a revenue limit unless given explicit authority via an 
+election to exceed that limit with additional property tax revenue.\footnote{SOME DETAILS 
+AND LINKS TO DESCRIPTIONS OF WISCONSIN SCHOOL FUNDING HERE.} Attempting 
+a bond or override referenda is one of the more high profile actions a school 
+board can take -- asking the public to increase property tax rates in return 
+for improved quality of educational services. As such, I expect failed referenda 
+to precede challenges to school board, and I expect merely offering a referenda 
+to also be related to increased challenges. 
+
+Three other policy indicators are relevant to board challenge. The first is the 
+percentage of school age children in non-public schools. I expect as this 
+percentage increases, competition for school boards will decrease due to a 
+reduced interest among more educated and affluent families attending private 
+schools in shaping the policy of the local school board. I also look at measures 
+of student performance to test whether districts with higher or lower performance 
+are more likely to have candidates emerge. I do not expect a relationship here. 
+Finally, I include a measure of the share of district salaries spent on 
+administrators. All else equal, I expect more administrative school districts 
+to have fewer board challenges. %TODO: why
+
+These expectations are summarized in Table \ref{tab:candIV}. 
+
+
+\begin{tiny}
+\begin{center}
+\label{tab:candIV}
+\begin{longtable}{| p{.45\textwidth} | p{.12\textwidth} | p{.35\textwidth} |} \hline
+\textbf{Variable}  & \textbf{Expected Sign} & \textbf{Shortname} \\ \hline
+Demographics  &  & \\ \hline 
+Voting Age Population (VAP) & + & VAP \\
+\% white VAP & + & per\_white \\
+\% Over 65 & + & per65O \\
+Median Household Income & + & median\_income \\
+\% Bachelor Degree Over age 25 & + & PerBachelorOrAbove \\
+Public School Pupils & + & PublicPupils \\
+\% Owner Occupied Housing & + & OOH\_share \\ \hline
+Fiscal & & \\ \hline
+Property Tax Share of District Revenue & + & PROPERTYTAX\_REV\_SHARE \\
+District Fund Balance Per Pupil & - & balance\_member \\
+Per Pupil Expenditure & + & TCEC\_MEMBER or TDC\_MEMBER, TEC\_MEMBER \\
+School District Share of Property Tax & + & millrateShare \\ 
+Equalized Property Value Per Pupil & + & eqv\_member \\ \hline
+Political & & \\ \hline
+Number of Board Races & + & nraces \\
+Share of Candidates Who are Incumbents & - & incumShare \\
+Partisanship in Fall Election & None & fallTwoPartyShareDem \\
+Partisan Division in Previous Fall & - & partyDivision \\
+Teacher Share of Voters & - & teachShareofVoters \\ \hline
+Policy & & \\ \hline
+New Superintendent & - & NEW\_SUP \\
+Math and Reading Performance & Null & MATH\_PROFADV\_PER READ\_PROFADV\_PER \\
+Debt Referenda Attempt and Failure & + & debtFail; debtQues \\
+Override Referenda Attempt and Failure & + & overrideQues; overrideFail \\
+Administrator Share of Salary & - & ADMIN\_SHARE \\
+Percentage of Pupils in Non-public schools & - & NonPublicPupilPer \\ \hline
+\caption{Available Variables and Expected Signs}
+\end{longtable}
+\end{center}
+\end{tiny}
+
+\clearpage
+
+
+\subsection{Variable Selection}
+
+It is not feasible to test all of the variables in Table \ref{tab:candIV} 
+simultaneously due to the presence of high correlation among some of these 
+key indicators. In this section, I investigate the correlation among these 
+variables and describe the process of reducing the list of factors in Table \ref{tab:candIV} 
+to a manageable subset for inclusion in statistical models that can evaluate their 
+impact. 
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-demog1-1} \caption[Correlations of Demographic Variables]{Correlations of Demographic Variables\label{fig:demog1}}
+\end{figure}
+
+
+\end{knitrout}
+
+In Figure \ref{fig:demog1} we see a depiction of the correlations between key 
+demographic variables with dark red and green representing the highest negative 
+and positive correlations respectively.\footnote{These figures represent the correlation 
+matrix for the complete pooled dataset across years and school districts. Correlations 
+for individual years follow similar patterns, but are not shown.} The most problematic correlations are 
+between the median household income and percentage of pupils in the school district 
+eligible for free and reduced price lunch -- quite obviously strongly negatively 
+correlated. The other largest correlation is between the number of pupils in the 
+district and the VAP -- a strong positive correlation. This means that in the 
+models below, I choose one variable from each of these pairs. Household median 
+income is also strongly correlated with the proportion of the population with a 
+BA or above and with the proportion of owner-occupied housing. As a result, 
+it may be necessary to drop median income in favor of these two variables in the 
+models below. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fiscal1-1} \caption[Correlations of Fiscal Variables]{Correlations of Fiscal Variables\label{fig:fiscal1}}
+\end{figure}
+
+
+\end{knitrout}
+
+Figure \ref{fig:fiscal1} shows the correlations among the fiscal measures for school 
+districts. Here there are fewer extermely high correlations. The largest correlations 
+belong to two pairs of four variables. Understandably, our two measures of equalized 
+district costs, \texttt{TDC\_MEMBER} (Total district cost per member) and 
+\texttt{TEC\_MEMBER} (Total Complete Educational Cost per member), are very highly 
+correlated with the only differences being relative spending on transportation and 
+food services. In the models below, only one of these will ever be included. The 
+next set of high correlations have to do with property tax rates and population. 
+The share of the millrate within the school district attributable to school district 
+taxation is highly correlated with the tax rate set by the school district. 
+Additionally, the amount of property value per tax filer in the community is 
+highly correlated with the millrate in a negative direction. 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-politic1-1} \caption[Correlations of Political Variables]{Correlations of Political Variables\label{fig:politic1}}
+\end{figure}
+
+
+\end{knitrout}
+
+The political variables in Figure \ref{fig:politic1} are largely free of high 
+correlations among them. The strongest relationships are between partisan division 
+and the share of the two party vote -- an expected correlation. Higher fall turnout 
+is also correlated with partisan division. 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-policy1-1} \caption[Correlations of Policy Variables]{Correlations of Policy Variables\label{fig:policy1}}
+\end{figure}
+
+
+\end{knitrout}
+
+The story is the same for policy measures in Figure \ref{fig:policy1}. The only 
+large correlations are between reading and math state standardized assessment 
+proficiency rates, a measure of academic performance of the district. Other high 
+positive correlations occur between the success, failure, and attempts at passing 
+bond or revenue limit override referenda. Curiously, superintendent turnover in 
+year t-1 and year t is also highly correlated. 
+
+
+
+
+\clearpage
+\subsection{Dependent Variables}
+
+Measuring candidate emergence and contestation in multi-member seats is not as 
+straightforward as in single member districts. 
+
+\subsubsection{Non-incumbents}
+
+A first condition of contestation is that someone other than incumbents run for 
+office. The least competitive of all elections is that in which voters not only 
+have no choie, but they have no choice and all candidates are incumbents. I model 
+election contestation then as a two-stage process for school boards. In the first 
+stage, I estimate the probability that a non-incumbent will appear on the ballot. 
+Conditional on this, I then estimate a second stage that voters will have at least 
+one more candidate than total winners -- a choice. 
+
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Thu Dec 11 12:39:21 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+year & districts & races & nonIncumbents & incumbOnly \\ 
+  \hline
+2002 & 221 & 287 & 195 & 92 \\ 
+  2003 & 243 & 333 & 238 & 95 \\ 
+  2004 & 257 & 338 & 241 & 97 \\ 
+  2005 & 255 & 334 & 235 & 99 \\ 
+  2006 & 271 & 363 & 245 & 118 \\ 
+  2007 & 299 & 402 & 275 & 127 \\ 
+  2008 & 299 & 380 & 240 & 140 \\ 
+  2009 & 299 & 396 & 249 & 147 \\ 
+  2010 & 300 & 393 & 251 & 142 \\ 
+  2011 & 305 & 392 & 258 & 134 \\ 
+  2012 & 305 & 406 & 257 & 149 \\ 
+  2013 & 15 & 18 & 8 & 10 \\ 
+   \hline
+\end{tabular}
+\caption{Frequency of races with and without non-incumbents.} 
+\label{tab:nifreq}
+\end{table}
+
+
+
+
+
+
+Nearly 35\% of races each year feature all incumbents. Of these, 
+32 such races 
+are considered contested, and of these, only 15 are considered to be contested by serious candidates. 
+These races are given a flag in the dataset as they either represent a coding 
+error or the rare event that two incumbents are redistricted into the same seat. The 
+low occurrence of this event makes it desirable to either exclude it or give it 
+a specific dummy variable to avoid bias. 
+
+\subsubsection{Candidate Emergence}
+
+To understand candidacy it is important to consider measures of candidate emergence 
+that make the most sense. % Find studies of candidate emergence in low-level elections
+Previous research has focused on incumbent challenges or candidate self-reports of 
+contestation in their most recent elections \citep{RefWorks:311, RefWorks:321}. 
+By collecting election results directly, in contrast to surveying former school 
+board members, we can for the first time explore the level of contestation 
+in school board elections directly. This allows me to construct measures of contestation, 
+the presence of multiple choices for voters on the ballot. Choice among candidates 
+is a key feature of a democratic body, and one criticism leveled against 
+school boards and other local offices is that they are undemocratic due to a lack 
+of choice for voters. %TODO: Citation here
+Thus, a measure of contestation should capture the cases in which voters have a 
+choice -- whether for an open seat, or a race contesting a seated incumbent. To 
+that end, I use election results to construct two measures of contestation -- 
+if the number of candidates is greater than the number of victors, and if the 
+number of non-minor candidates is greater than the number of victors. 
+
+The definition of a minor candidate is inherently subjective. Previous work in the 
+literature has excluded candidates who receive fewer than 5\% of the overall vote, 
+while other studies have focused exclusively on contested inbument held seats in 
+open jurisdictions \cite{krebs, oliver}. Due to the diversity of school board 
+electoral organization, school district size, and the relatively low number of votes 
+necessary to secure a victory, I define minor candidates as those candidates who 
+receive fewer than 30 votes on the ballot. This is a liberal enough interpretation 
+of candidate seriousness to include write-in challenges and has the potential to 
+bias results downward. However, with the median winning candidate needing only 
+NA votes to secure victory, 30 votes 
+seems sizable enough to exert influence on the race overall. 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-candidatedescriptives4-1} \caption[Annual share of contested school board elections under two different measures of candidate contestation]{Annual share of contested school board elections under two different measures of candidate contestation.\label{fig:candidatedescriptives4}}
+\end{figure}
+
+
+\end{knitrout}
+
+
+% Compare other measures of contestation, number of candidates per seat, etc. 
+
+Figure \ref{fig:candidatedescriptives4} depicts the pattern of school board candidate 
+emergence over time. Contested elections are in blue and uncontested races are in 
+salmon. A slight trend toward fewer contested races is evident in both panels. 
+The bottom panel, excluding minor candidates, changes the share of elections 
+that are contested each year, but does not change the pattern across years. 
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-perseatcontests-1} \caption[Serious candidates per open seat by school year in Wisconsin school districts over time]{Serious candidates per open seat by school year in Wisconsin school districts over time.\label{fig:perseatcontests}}
+\end{figure}
+
+
+\end{knitrout}
+
+Another way we might measure the level of candidate emergence in school board races 
+would be to look at the number of candidates per seat. This measure would 
+differentiate between districts with wide spread contestation and those with 
+simply a single contested seat. As Figure \ref{fig:perseatcontests} demonstrates, 
+the level of contestation per open seat does not change much across the years with 
+the median race having 1 candidate per seat, and the majority of races having between 
+1 and 2 candidates per seat. This measure does not appear to capture much information 
+beyond a binary indicator for the presence of more than one candidate per race. 
+
+\subsubsection{Incumbent Defeat}
+
+Traditionally, the school board literature has not been concerned as much with 
+overall levels of contestation, but instead the frequency with which incumbents 
+are defeated. Incumbent defeat is a good measure of the democratic functioning 
+of the school district as a government because it reflects the ability of voters 
+to exercise a preference for change and to ``throw the bums out''. %TODO: citation
+Incumbent defeat is at the heart of the dissatisfaction theory of school board 
+participation \cite{RefWorks:297}. Previous research has found that apolitical 
+forms of board member turnover often swamp political forms of turnover and skew 
+results \citep{RefWorks:311}. These studies used surveys of former board members 
+and asked whether their reason for no longer serving was political or apolitical -- 
+allowing the observation of candidates who chose not to run due to political pressure 
+or a perception of a strong emerging challenger. This is a limitation of the current 
+study is identifying seat 
+vacancies due to retirement or plausible threat where a candidate does not mount a 
+campaign. This is less troubling in the school board case because the cost of 
+campaigning is so low that presumably a challenged incumbent would still stand 
+for election.
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-incdefeat-1} \caption[Annual share of Wisconsin school board elections featuring an incumbent with a defeated incumbent 2002-2012]{Annual share of Wisconsin school board elections featuring an incumbent with a defeated incumbent 2002-2012.\label{fig:incdefeat}}
+\end{figure}
+
+
+\end{knitrout}
+
+Figure \ref{fig:incdefeat} shows the rate of incumbent defeat in Wisconsin. The 
+greatest share of races featuring an incumbent that had incumbent defeat is 
+22.8\%. As we saw in 
+Chapter \ref{chap:wisco} this rate of incumbent defeat is lower than other 
+forms of office, but it is not as low as might be expected. \citet{oliver}'s study 
+of the suburban voter found 10 out of 11 mayoral incumbents securing re-election 
+and 47 out of 56 city council incumbents winning re-election. This result is encouraging 
+and it suggests the potential to explore theories for why voters may prefer 
+challengers over incumbents, including retrospective voting. 
+
+In the next section I turn my attention to how to leverage 
+this unique data to test competing theories of when contestation for a seat on a 
+school board in Wisconsin will emerge. 
+
+\clearpage
+
+\section{Methods}
+
+To assess the probability of a contested election in a school district in a given 
+election cycle, we start with a model of the emergence of candidates:
+
+\[ (1) \hspace{0.25 in}  \Pr_{CE_{t}} = \alpha + \beta X + \epsilon \] \\
+
+Here, $\Pr_{CE_{t}}$ represents the probability that a school board seat is contested 
+in an election in year \emph{t}. The $X$ represent a vector of measures of conditions 
+in the school district leading up to the time candidates choose to run for office, 
+the period between the previous election and the current election. Estimating 
+$\beta$ provides a way to test for the importance of each of the conditions in 
+the school districts. 
+
+The first way to estimate $\Pr_{CE_{t}}$ is by estimating a logistic regression. 
+Logistic regression allows for the estimation of a binomial outcome using linear 
+predictors. In this case, the linear predictors will be composed of the variables 
+discussed above in Table \ref{tab:candIV}. I estimate the logistic regression using 
+the maximum likelihood estimator available in the generalized linear model,  
+\texttt{glm}, functions in R \cite{cran}. 
+
+However, this logistic regression is not correctly specified as it ignores the 
+dependence between observations inherent in the Wisconsin data. Each school district 
+is observed between two and ten times, meaning that the assumption of independent 
+and identically distributed random variables is likely violated. To correct for this, 
+I employ sandwich estimators of the variance-covariance matrix to extract robust 
+standard errors for these models, which will correct for the interdependence between 
+the observations and avoid overly optimistic tests for statistical significance 
+among the $\beta$ coefficients. I estimate the robust standard errors using 
+the \texttt{lmtest} and \texttt{sandwich} packages for R 
+\cite{sandwich, sandwich2, lmtest}. 
+
+I fit four separate models following this approach, looking at the impact of 
+demographic, fiscal, political, and policy characteristics of school districts on 
+the probability of a contested school board race. I then fit a full model which 
+includes all of the variables from the above models. 
+
+This approach still makes some assumptions about the structure of the data that 
+are not ideal. Most importantly, this approach compares each school district year 
+to all other school district years in the dataset and ignores any explicit 
+interdependence on prior years within the same district. This fails to take advantage 
+of the repeated measures available for each school district due to the panel nature 
+of the dataset and reduces the importance of large changes in $X$ values within a 
+district that are still relatively small when compared across all districts. 
+
+There are a number of approaches available to estimating longitudinal and panel 
+data. As the panel here is not balanced, the observations within districts are 
+not evenly spaced due to the fact that districts may not have open seats on their 
+board each year, I adopt a multi-level modeling approach that assumes district 
+elections are nested within districts. This approach, also known as hierarchical 
+linear modeling, is flexible for cases with unbalanced repeated measures and 
+allows the analyst to disentangle the effects of time specific variables from the 
+overall variability among individual units, e.g. school districts \cite{mlmod}. 
+One way to depict this approach is in the equation:
+
+\begin{align*} 
+\Pr_{CE_{ij}} &= \alpha_{i} + \beta X_{i} + \gamma_{j} + \epsilon   \\ 
+\gamma_{j} &=  \alpha_{j} + \zeta Z_{j}
+\end{align*}
+
+In the model I use \texttt{i} for the specific elections nested within the school 
+districts, \texttt{j}. Here the $\gamma_{j}$ terms represent independent intercepts for each school 
+district as predicted by $Z_{j}$, a vector of school district characteristics 
+that are time invariant. $X_{t}$ is a vector of time variant school district 
+characteristics, some of which may be lagged. In the mixed-effect 
+framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
+is explained by the linear combination of $\alpha$ and $\zeta$. 
+
+This method does not account for the time structure of the data, as no 
+explicit parameterization of time is included. As I have no reason to believe that 
+time linearly related to the probability of an election being contested, this is 
+appropriate. However, I do want to control for secular effects of election year 
+variability that reaches across districts. One approach would be to include 
+fixed effects for years in the $X$ vector. However, the multilevel approach is 
+flexible enough to allow for a third group -- years, to be included in the model. 
+The model below includes a third grouping level for years. 
+
+\begin{align*} 
+\Pr_{CE_{ij}} &= \alpha_{i} + \beta X_{i} + \gamma_{j} + \lambda_{t} + \epsilon   \\ 
+\gamma_{j} &=  \alpha_{j} + \zeta Z_{j} \\
+\lambda_{t} &= \alpha_{t}
+\end{align*}
+
+This approach allows year parameters to be estimated independently without assuming 
+a functional form for the relationship between the probability of candidate emergence 
+and time. This is beneficial as there does not appear to be a linear time trend 
+in Figure \ref{fig:incdefeat} or Figure \ref{fig:candidatedescriptives4}. 
+It also results in estimates the $\beta$ coefficients that are conditional 
+on the group specific variances captured in the $\gamma$ and $\lambda$ vectors. 
+This allows us to take advantage of the repeated measure structure of the data and 
+avoid overconfidence in estimates resulting from comparisons within and across groups. 
+The multilevel approach is not common in longitudinal applications in political 
+science, but has been used by \citet{oliver} to understand the relationship between 
+individual survey respondents and their communities. The models are fit following the 
+guidance of \citet{gelhill} using the \texttt{lme4} package in R \citep{lme4, cran}. 
+
+The only difference between this approach and the generalized linear models above 
+is that there are group-level terms. For the mixed model approach, I also fit the 
+four models -- demographic, fiscal, political, and policy. The mixed models will 
+increase the accuracy of over the pooled models. Next, I need a way to compare 
+the models to evaluate the variables that best explain the emergence of candidates. 
+Model comparison is difficult, especially in the case of binomial regression where 
+more traditional measures like $R^{2}$ are not available. Instead of a model 
+based measure like deviance, I instead focus on correct classification -- the 
+ability of models to correctly assign observations as either a contested or 
+uncontested election. 
+
+Since my observations are unbalanced, with many more uncontested than contested 
+elections, I need a measure of correct classification that is robust to class 
+imbalance. For this, I use the receiver operator characteristic, or ROC, curve 
+which provides a measure of the tradeoff between detection (true positive identification) 
+and false alarm rates across different values of the cutoff of the probability 
+estimate \citep{hanley, zwieg}. Of particular value is the 
+area-under-the-curve which summarizes the accuracy of the model across all values 
+of the probability cutoff. As we are modeling a discrete 
+event -- whether or not a challenger emerges in a school district board election -- 
+it makes most sense to judge model fit using a measure of how well the model 
+accurately classifies elections into types -- contested and uncontested. 
+
+% TODO: Hausman test, comparison to fixed effect models
+% TODO: explain grand mean centering and its advantages
+
+% Table \ref{tab:emergenceD} shows the theories and expected evidence in support of 
+% them that can be explored using a descriptive analysis of the Wisconsin data. Here 
+% we are evaluating what evidence there is that is suggestive of a relationship in 
+% macro-level motivations among school board candidates common across the state of 
+% Wisconsin. A lack of evidence tells us that we have the wrong measures. Finding 
+% supportive measures suggests that further work with better measures should be 
+% undertaken. 
+%
+% \begin{table}[h!]
+% \begin{center}
+% \begin{small}
+% \caption{Theories of Candidate Emergence and Expected Evidence}
+% \label{tab:emergenceD}
+% \begin{tabular}{| p{.2\textwidth} | p{.25\textwidth} | p{.45\textwidth} |}
+% \hline
+% \textbf{Theory}  & \textbf{Citation} & \textbf{Expected Finding} \\ \hline
+% Strategic Candidates  & \citet{Plutzer2002} & Change in partisanship precedes increase in candidates \\ \hline
+% Policy Oriented Candidates & \citet{deckman1, CanonBook} & Changes in policy drive change \\ \hline
+% %Fiscal Revolt & \citet{RefWorks:297,RefWorks:271} & Union membership as share of electorate drives up turnout \\ \hline
+% Ambition & \citet{AJPS:AJPS147, Lasswell} & No data available to test \\ \hline
+% Dissatisfaction & \citet{RefWorks:297,RefWorks:271} & Failed referenda leads to more candidates running \\ \hline
+% \end{tabular}
+% \end{small}
+% \end{center}
+% \end{table}
+
+\section{Results}
+
+As discussed in Section \ref{sec:data} there are four categories of contextual 
+factors in school districts that theory suggests should influence the likelihood 
+a school board seat is contested. Of particular interest is understanding which of these factors, 
+for the sample observed and over the time period of observation, are the most 
+predictive of the emergence of contested school board seats. 
+
+Let's look at the demographics of districts and how they affect the likelihood 
+of a challenge. 
+
+% 3 modeling strategies
+%% model binomial by district, contested or not
+%% model beta by district, # of contested out of # of races
+%% model nested, races in districts
+% Think carefully about the variable selection using the correlation matrices above
+% Select variables for each grouping carefully
+% Prepare alternative specifications in the technical appendix and include details 
+% about model specification tests (year and district FE, hausman test, etc.)
+
+
+
+\subsection{Stage 1: Non-incumbents}
+
+\begin{tiny}
+\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
+\caption{Models of Incumbent Lockout in School Board Elections}
+\label{tab:glmModsNI}\\ 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
+\endhead
+ %                      & Demog.    & Politic   & Fiscal    & Policy    & Full     \\ 
+Intercept              & -1.102 ^* & -1.037 ^* & -1.250 ^* & -1.123 ^* & -1.155 ^*\\ 
+                       & (0.159)   & (0.170)   & (0.184)   & (0.165)   & (0.205)  \\ 
+VAP                    & -0.767 ^* & -0.793 ^* & -0.771 ^* & -0.831 ^* & -0.786 ^*\\ 
+                       & (0.106)   & (0.170)   & (0.139)   & (0.135)   & (0.218)  \\ 
+\% Over 65            & -0.162    & -0.162    & -0.212    & -0.180    & -0.213   \\ 
+                       & (0.137)   & (0.151)   & (0.157)   & (0.145)   & (0.170)  \\ 
+\% Bachelor +         & 0.194 ^*  & 0.105     & 0.106     & 0.161     & 0.007    \\ 
+                       & (0.089)   & (0.143)   & (0.155)   & (0.099)   & (0.195)  \\ 
+\% White              & 0.118     & 0.127     & 0.063     & 0.152 ^*  & 0.135    \\ 
+                       & (0.073)   & (0.083)   & (0.111)   & (0.077)   & (0.122)  \\ 
+\% OOH                & -0.195    & -0.206    & -0.130    & -0.257    & -0.206   \\ 
+                       & (0.123)   & (0.125)   & (0.141)   & (0.134)   & (0.164)  \\ 
+Rev. Lim. Attpt.       &           & -0.691 ^* &           &           & -0.664 ^*\\ 
+                       &           & (0.220)   &           &           & (0.219)  \\ 
+Rev. Lim. Pass         &           & 0.246     &           &           & 0.263    \\ 
+                       &           & (0.267)   &           &           & (0.266)  \\ 
+Bond Attpt.            &           & 0.203     &           &           & 0.148    \\ 
+                       &           & (0.240)   &           &           & (0.248)  \\ 
+Bond Pass              &           & -0.234    &           &           & -0.216   \\ 
+                       &           & (0.295)   &           &           & (0.303)  \\ 
+\% Polarized          &           & 0.078     &           &           & 0.082    \\ 
+                       &           & (0.106)   &           &           & (0.112)  \\ 
+\% Teach. Voters      &           & -0.070    &           &           & 0.033    \\ 
+                       &           & (0.156)   &           &           & (0.171)  \\ 
+Fall Turnout           &           & 0.065     &           &           & 0.073    \\ 
+                       &           & (0.184)   &           &           & (0.191)  \\ 
+Number Seats           &           & -0.085    &           &           & -0.085   \\ 
+                       &           & (0.112)   &           &           & (0.108)  \\ 
+\% Millrate for Schl. &           &           & -0.138    &           & -0.148   \\ 
+                       &           &           & (0.116)   &           & (0.121)  \\ 
+\% Revenue Prop. Tax  &           &           & 0.149     &           & 0.096    \\ 
+                       &           &           & (0.170)   &           & (0.193)  \\ 
+Cost per Pupil         &           &           & -0.251    &           & -0.191   \\ 
+                       &           &           & (0.187)   &           & (0.193)  \\ 
+Balance per Pupil      &           &           & 0.203     &           & 0.192    \\ 
+                       &           &           & (0.138)   &           & (0.140)  \\ 
+Millrate $\delta$     &           &           & 0.004     &           & -0.003   \\ 
+                       &           &           & (0.102)   &           & (0.103)  \\ 
+\% Salary - Admin.    &           &           &           & -0.071    & -0.062   \\ 
+                       &           &           &           & (0.112)   & (0.116)  \\ 
+New Superintendent     &           &           &           & -0.258 ^* & -0.258 ^*\\ 
+                       &           &           &           & (0.121)   & (0.122)  \\ 
+\% Private School     &           &           &           & 0.108     & 0.108    \\ 
+                       &           &           &           & (0.109)   & (0.114)  \\ 
+Cumul. Bond Att.       &           &           &           & 0.057     & 0.048    \\ 
+                       &           &           &           & (0.111)   & (0.123)  \\ 
+Cumul. Override Att.   &           &           &           & -0.157    & -0.020   \\ 
+                       &           &           &           & (0.123)   & (0.124)   \\
+ $N$                    & 3031      & 3031      & 3031      & 3031      & 3031     \\ 
+AIC                    & 3508.614  & 3507.647  & 3509.129  & 3509.198  & 3513.214 \\ 
+BIC                    & 3893.679  & 4085.245  & 4014.527  & 4014.596  & 4331.478 \\ 
+$\log L$              & -1690.307 & -1657.823 & -1670.564 & -1670.599 & -1620.607 \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations.}}\\
+\multicolumn{6}{l}{\footnotesize{Year fixed effect coefficients excluded.}} 
+\end{longtable} 
+
+\end{tiny}
+
+\begin{tiny}
+\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
+\caption{Mixed Models of Incumbent Lockout in School Board Elections}
+\label{tab:glmerModsNI}\\ 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
+\endhead
+ %                      & Demog.      & Politic     & Fiscal      & Policy      & Full       \\ 
+Intercept              & -1.203 ^*   & -1.247 ^*   & -1.307 ^*   & -1.227 ^*   & -1.379 ^*  \\ 
+                       & (0.167)     & (0.178)     & (0.191)     & (0.172)     & (0.211)    \\ 
+VAP                    & -0.844 ^*   & -0.503 ^*   & -0.805 ^*   & -0.904 ^*   & -0.455 ^*  \\ 
+                       & (0.127)     & (0.183)     & (0.143)     & (0.157)     & (0.223)    \\ 
+\% Over 65            & -0.183      & -0.126      & -0.264      & -0.220      & -0.181     \\ 
+                       & (0.146)     & (0.156)     & (0.164)     & (0.152)     & (0.176)    \\ 
+\% Bachelor +         & 0.222       & 0.048       & 0.122       & 0.183       & 0.030      \\ 
+                       & (0.118)     & (0.171)     & (0.169)     & (0.121)     & (0.206)    \\ 
+\% White              & 0.113       & 0.259       & 0.110       & 0.150       & 0.340 ^*   \\ 
+                       & (0.127)     & (0.136)     & (0.152)     & (0.129)     & (0.161)    \\ 
+\% OOH                & -0.209      & -0.200      & -0.138      & -0.288      & -0.289     \\ 
+                       & (0.151)     & (0.157)     & (0.163)     & (0.159)     & (0.189)    \\ 
+Rev. Lim. Attpt.       &             & -0.769 ^*   &             &             & -0.700 ^*  \\ 
+                       &             & (0.262)     &             &             & (0.266)    \\ 
+Rev. Lim. Pass         &             & 0.340       &             &             & 0.342      \\ 
+                       &             & (0.321)     &             &             & (0.321)    \\ 
+Bond Attpt.            &             & 0.234       &             &             & 0.198      \\ 
+                       &             & (0.258)     &             &             & (0.261)    \\ 
+Bond Pass              &             & -0.300      &             &             & -0.290     \\ 
+                       &             & (0.319)     &             &             & (0.319)    \\ 
+\% Polarized          &             & 0.127       &             &             & 0.147      \\ 
+                       &             & (0.117)     &             &             & (0.121)    \\ 
+\% Teach. Voters      &             & 0.055       &             &             & 0.102      \\ 
+                       &             & (0.158)     &             &             & (0.173)    \\ 
+Fall Turnout           &             & -0.069      &             &             & -0.029     \\ 
+                       &             & (0.177)     &             &             & (0.186)    \\ 
+Number Seats           &             & -1.178 ^*   &             &             & -1.193 ^*  \\ 
+                       &             & (0.106)     &             &             & (0.107)    \\ 
+\% Millrate for Schl. &             &             & -0.126      &             & -0.075     \\ 
+                       &             &             & (0.110)     &             & (0.117)    \\ 
+\% Revenue Prop. Tax  &             &             & 0.132       &             & -0.093     \\ 
+                       &             &             & (0.176)     &             & (0.203)    \\ 
+Cost per Pupil         &             &             & -0.149      &             & -0.160     \\ 
+                       &             &             & (0.185)     &             & (0.200)    \\ 
+Balance per Pupil      &             &             & 0.234       &             & 0.298 ^*   \\ 
+                       &             &             & (0.134)     &             & (0.140)    \\ 
+Millrate $\delta$     &             &             & 0.013       &             & 0.034      \\ 
+                       &             &             & (0.099)     &             & (0.102)    \\ 
+\% Salary - Admin.    &             &             &             & -0.046      & 0.022      \\ 
+                       &             &             &             & (0.123)     & (0.128)    \\ 
+New Superintendent     &             &             &             & -0.231      & -0.225     \\ 
+                       &             &             &             & (0.125)     & (0.129)    \\ 
+\% Private School     &             &             &             & 0.161       & 0.153      \\ 
+                       &             &             &             & (0.122)     & (0.131)    \\ 
+Cumul. Bond Att.       &             &             &             & 0.041       & 0.033      \\ 
+                       &             &             &             & (0.130)     & (0.138)    \\ 
+Cumul. Override Att.   &             &             &             & -0.159      & -0.142     \\ 
+                       &             &             &             & (0.127)     & (0.140)     \\
+ $N$                    & 3031        & 3031        & 3031        & 3031        & 3031       \\ 
+AIC                    & 3460.365    & 3329.594    & 3465.074    & 3463.516    & 3338.077   \\ 
+N Groups               & 310         & 310         & 310         & 310         & 310        \\ 
+Group Names            & distid      & distid      & distid      & distid      & distid     \\ 
+Group:distid Effs.     & (Intercept) & (Intercept) & (Intercept) & (Intercept) & (Intercept)\\ 
+Group:distid Var.      & 0.629       & 0.638       & 0.617       & 0.621       & 0.623      \\ 
+Sigma                  & 1           & 1           & 1           & 1           & 1           \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations.}} 
+\end{longtable} 
+
+\end{tiny}
+
+\subsection{Stage 2: Serious Contest With Non-Incumbents}
+
+\begin{tiny}
+\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
+\caption{Models of Contestation in School Board Elections}
+\label{tab:glmModsCon}\\ 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
+\endhead
+ %                      & Demog.    & Politic   & Fiscal    & Policy    & Full     \\ 
+Intercept              & -0.119    & -0.436 ^* & -0.232    & -0.039    & -0.513 ^*\\ 
+                       & (0.160)   & (0.180)   & (0.199)   & (0.172)   & (0.222)  \\ 
+VAP                    & 0.866 ^*  & 0.893 ^*  & 0.737 ^*  & 0.894 ^*  & 0.724 ^* \\ 
+                       & (0.137)   & (0.192)   & (0.163)   & (0.156)   & (0.231)  \\ 
+\% Over 65            & 0.228     & 0.248     & 0.511 ^*  & 0.376 ^*  & 0.603 ^* \\ 
+                       & (0.144)   & (0.161)   & (0.165)   & (0.152)   & (0.182)  \\ 
+\% Bachelor +         & -0.233    & -0.216    & 0.066     & -0.274 ^* & 0.060    \\ 
+                       & (0.125)   & (0.178)   & (0.176)   & (0.134)   & (0.214)  \\ 
+\% White              & -0.036    & -0.048    & -0.209    & -0.101    & -0.265   \\ 
+                       & (0.110)   & (0.129)   & (0.141)   & (0.110)   & (0.164)  \\ 
+\% OOH                & 0.021     & 0.027     & -0.175    & 0.131     & -0.015   \\ 
+                       & (0.145)   & (0.155)   & (0.159)   & (0.150)   & (0.189)  \\ 
+\% Incumbents         &           & -0.931 ^* &           &           & -0.958 ^*\\ 
+                       &           & (0.145)   &           &           & (0.146)  \\ 
+\% Yes Rev. Limit     &           & 0.470 ^*  &           &           & 0.575 ^* \\ 
+                       &           & (0.210)   &           &           & (0.222)  \\ 
+\% Polarized          &           & -0.486    &           &           & -0.473   \\ 
+                       &           & (0.261)   &           &           & (0.261)  \\ 
+\% Teach. Voters      &           & 0.145     &           &           & 0.041    \\ 
+                       &           & (0.241)   &           &           & (0.239)  \\ 
+Fall Turnout           &           & -0.015    &           &           & -0.023   \\ 
+                       &           & (0.302)   &           &           & (0.298)  \\ 
+Number Seats           &           & -0.146    &           &           & -0.087   \\ 
+                       &           & (0.129)   &           &           & (0.133)  \\ 
+\% Millrate for Schl. &           & 0.103     &           &           & -0.027   \\ 
+                       &           & (0.176)   &           &           & (0.186)  \\ 
+\% Revenue Prop. Tax  &           & 0.035     &           &           & -0.129   \\ 
+                       &           & (0.205)   &           &           & (0.218)  \\ 
+Cost per Pupil         &           & 0.286 ^*  &           &           & 0.272 ^* \\ 
+                       &           & (0.111)   &           &           & (0.112)  \\ 
+Balance per Pupil      &           &           & 0.352 ^*  &           & 0.300 ^* \\ 
+                       &           &           & (0.122)   &           & (0.124)  \\ 
+Millrate $\delta$     &           &           & -0.347    &           & -0.231   \\ 
+                       &           &           & (0.186)   &           & (0.209)  \\ 
+\% Salary - Admin.    &           &           & -0.309    &           & -0.291   \\ 
+                       &           &           & (0.223)   &           & (0.233)  \\ 
+New Superintendent     &           &           & -0.205    &           & -0.198   \\ 
+                       &           &           & (0.158)   &           & (0.157)  \\ 
+\% Private School     &           &           & 0.174     &           & 0.169    \\ 
+                       &           &           & (0.100)   &           & (0.102)  \\ 
+Cumul. Bond Att.       &           &           &           & 0.095     & 0.101    \\ 
+                       &           &           &           & (0.143)   & (0.148)  \\ 
+Cumul. Override Att.   &           &           &           & -0.017    & -0.026   \\ 
+                       &           &           &           & (0.123)   & (0.126)  \\ 
+Intercept              &           &           &           & -0.228    & -0.183   \\ 
+                       &           &           &           & (0.142)   & (0.149)  \\ 
+VAP                    &           &           &           & 0.463 ^*  & 0.426 ^* \\ 
+                       &           &           &           & (0.129)   & (0.136)  \\ 
+\% Over 65            &           &           &           & -0.104    & -0.184   \\ 
+                       &           &           &           & (0.125)   & (0.134)   \\
+ $N$                    & 2198      & 2198      & 2198      & 2198      & 2198     \\ 
+AIC                    & 2981.079  & 2936.287  & 2962.911  & 2965.213  & 2909.212 \\ 
+BIC                    & 3345.578  & 3505.817  & 3441.316  & 3443.618  & 3706.554 \\ 
+$\log L$              & -1426.539 & -1368.143 & -1397.455 & -1398.606 & -1314.606 \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations.}} 
+\end{longtable} 
+
+\end{tiny}
+
+\begin{tiny}
+\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
+\caption{Mixed Models of Contestation in School Board Elections}
+\label{tab:glmerModsCon}\\ 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
+\endhead
+ %                      & Demog.      & Politic     & Fiscal      & Policy      & Full       \\ 
+Intercept              & -0.087      & -0.450 ^*   & -0.232      & -0.010      & -0.594 ^*  \\ 
+                       & (0.174)     & (0.192)     & (0.204)     & (0.180)     & (0.231)    \\ 
+VAP                    & 0.966 ^*    & 1.064 ^*    & 0.822 ^*    & 0.970 ^*    & 0.851 ^*   \\ 
+                       & (0.143)     & (0.204)     & (0.161)     & (0.173)     & (0.241)    \\ 
+\% Over 65            & 0.277       & 0.321       & 0.578 ^*    & 0.425 ^*    & 0.719 ^*   \\ 
+                       & (0.169)     & (0.181)     & (0.191)     & (0.172)     & (0.200)    \\ 
+\% Bachelor +         & -0.274 ^*   & -0.229      & 0.025       & -0.289 ^*   & 0.117      \\ 
+                       & (0.138)     & (0.201)     & (0.197)     & (0.138)     & (0.238)    \\ 
+\% White              & -0.078      & -0.037      & -0.274      & -0.139      & -0.280     \\ 
+                       & (0.140)     & (0.154)     & (0.170)     & (0.138)     & (0.177)    \\ 
+\% OOH                & 0.077       & 0.083       & -0.127      & 0.193       & 0.036      \\ 
+                       & (0.175)     & (0.183)     & (0.189)     & (0.181)     & (0.214)    \\ 
+\% Incumbents         &             & -0.990 ^*   &             &             & -1.006 ^*  \\ 
+                       &             & (0.143)     &             &             & (0.144)    \\ 
+\% Yes Rev. Limit     &             & 0.592 ^*    &             &             & 0.657 ^*   \\ 
+                       &             & (0.230)     &             &             & (0.235)    \\ 
+\% Polarized          &             & -0.575 ^*   &             &             & -0.545     \\ 
+                       &             & (0.288)     &             &             & (0.289)    \\ 
+\% Teach. Voters      &             & 0.124       &             &             & 0.080      \\ 
+                       &             & (0.267)     &             &             & (0.272)    \\ 
+Fall Turnout           &             & -0.046      &             &             & -0.063     \\ 
+                       &             & (0.323)     &             &             & (0.326)    \\ 
+Number Seats           &             & -0.053      &             &             & -0.009     \\ 
+                       &             & (0.131)     &             &             & (0.134)    \\ 
+\% Millrate for Schl. &             & 0.090       &             &             & -0.054     \\ 
+                       &             & (0.190)     &             &             & (0.208)    \\ 
+\% Revenue Prop. Tax  &             & -0.088      &             &             & -0.280     \\ 
+                       &             & (0.209)     &             &             & (0.218)    \\ 
+Cost per Pupil         &             & 0.158       &             &             & 0.177      \\ 
+                       &             & (0.112)     &             &             & (0.111)    \\ 
+Balance per Pupil      &             &             & 0.433 ^*    &             & 0.420 ^*   \\ 
+                       &             &             & (0.140)     &             & (0.146)    \\ 
+Millrate $\delta$     &             &             & -0.333      &             & -0.247     \\ 
+                       &             &             & (0.208)     &             & (0.238)    \\ 
+\% Salary - Admin.    &             &             & -0.375      &             & -0.385     \\ 
+                       &             &             & (0.222)     &             & (0.236)    \\ 
+New Superintendent     &             &             & -0.193      &             & -0.162     \\ 
+                       &             &             & (0.153)     &             & (0.156)    \\ 
+\% Private School     &             &             & 0.165       &             & 0.160      \\ 
+                       &             &             & (0.108)     &             & (0.111)    \\ 
+Cumul. Bond Att.       &             &             &             & 0.058       & 0.055      \\ 
+                       &             &             &             & (0.144)     & (0.151)    \\ 
+Cumul. Override Att.   &             &             &             & -0.049      & -0.047     \\ 
+                       &             &             &             & (0.127)     & (0.130)    \\ 
+Intercept              &             &             &             & -0.267      & -0.240     \\ 
+                       &             &             &             & (0.146)     & (0.156)    \\ 
+VAP                    &             &             &             & 0.428 ^*    & 0.400 ^*   \\ 
+                       &             &             &             & (0.141)     & (0.150)    \\ 
+\% Over 65            &             &             &             & -0.074      & -0.193     \\ 
+                       &             &             &             & (0.128)     & (0.139)     \\
+ $N$                    & 2198        & 2198        & 2198        & 2198        & 2198       \\ 
+AIC                    & 2913.740    & 2873.296    & 2903.558    & 2911.271    & 2861.394   \\ 
+N Groups               & 310         & 310         & 310         & 310         & 310        \\ 
+Group Names            & distid      & distid      & distid      & distid      & distid     \\ 
+Group:distid Effs.     & (Intercept) & (Intercept) & (Intercept) & (Intercept) & (Intercept)\\ 
+Group:distid Var.      & 0.756       & 0.78        & 0.727       & 0.708       & 0.719      \\ 
+Sigma                  & 1           & 1           & 1           & 1           & 1           \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations.}} 
+\end{longtable} 
+
+
+\end{tiny}
+
+
+
+
+
+\subsection{Incumbent Defeat}
+
+\begin{tiny}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
+## \caption{Mixed Models of Incumbent Defeat in School Board Elections}
+## \label{tab:glmerModsID}\\ 
+## \hline 
+##   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
+## \endhead
+##  %                      & Demog.      & Politic     & Fiscal      & Policy      & Full       \\ 
+## Intercept              & -0.869 ^*   & -0.716 ^*   & -0.855 ^*   & -0.891 ^*   & -0.719 ^*  \\ 
+##                        & (0.190)     & (0.199)     & (0.216)     & (0.196)     & (0.237)    \\ 
+## VAP                    & 0.346 ^*    & 0.174       & 0.348 ^*    & 0.233       & 0.134      \\ 
+##                        & (0.125)     & (0.179)     & (0.145)     & (0.160)     & (0.222)    \\ 
+## \% Over 65            & 0.135       & 0.014       & 0.081       & 0.103       & -0.029     \\ 
+##                        & (0.153)     & (0.161)     & (0.171)     & (0.158)     & (0.181)    \\ 
+## \% Bachelor +         & -0.170      & -0.287      & -0.342      & -0.198      & -0.416     \\ 
+##                        & (0.128)     & (0.186)     & (0.188)     & (0.130)     & (0.225)    \\ 
+## \% White              & 0.126       & -0.018      & 0.054       & 0.129       & -0.033     \\ 
+##                        & (0.155)     & (0.167)     & (0.181)     & (0.155)     & (0.187)    \\ 
+## \% OOH                & 0.051       & 0.062       & 0.136       & -0.009      & 0.050      \\ 
+##                        & (0.161)     & (0.166)     & (0.178)     & (0.169)     & (0.200)    \\ 
+## \% Incumbents         &             & 0.698 ^*    &             &             & 0.704 ^*   \\ 
+##                        &             & (0.210)     &             &             & (0.210)    \\ 
+## \% Yes Rev. Limit     &             & 0.206 ^*    &             &             & 0.215 ^*   \\ 
+##                        &             & (0.101)     &             &             & (0.106)    \\ 
+## \% Polarized          &             & -0.143      &             &             & -0.173     \\ 
+##                        &             & (0.129)     &             &             & (0.134)    \\ 
+## \% Teach. Voters      &             & -0.288      &             &             & -0.218     \\ 
+##                        &             & (0.184)     &             &             & (0.206)    \\ 
+## Fall Turnout           &             & 0.212       &             &             & 0.210      \\ 
+##                        &             & (0.197)     &             &             & (0.212)    \\ 
+## Number Seats           &             & -0.036      &             &             & -0.028     \\ 
+##                        &             & (0.104)     &             &             & (0.105)    \\ 
+## \% Millrate for Schl. &             &             & -0.041      &             & 0.009      \\ 
+##                        &             &             & (0.126)     &             & (0.135)    \\ 
+## \% Revenue Prop. Tax  &             &             & 0.269       &             & 0.171      \\ 
+##                        &             &             & (0.193)     &             & (0.222)    \\ 
+## Cost per Pupil         &             &             & -0.049      &             & 0.019      \\ 
+##                        &             &             & (0.220)     &             & (0.239)    \\ 
+## Balance per Pupil      &             &             & -0.092      &             & -0.108     \\ 
+##                        &             &             & (0.149)     &             & (0.151)    \\ 
+## Millrate $\delta$     &             &             & -0.063      &             & -0.059     \\ 
+##                        &             &             & (0.126)     &             & (0.127)    \\ 
+## \% Salary - Admin.    &             &             &             & -0.054      & -0.053     \\ 
+##                        &             &             &             & (0.151)     & (0.153)    \\ 
+## New Superintendent     &             &             &             & 0.063       & 0.078      \\ 
+##                        &             &             &             & (0.144)     & (0.145)    \\ 
+## \% Private School     &             &             &             & 0.157       & 0.153      \\ 
+##                        &             &             &             & (0.132)     & (0.139)    \\ 
+## Cumul. Bond Att.       &             &             &             & 0.047       & 0.049      \\ 
+##                        &             &             &             & (0.121)     & (0.126)    \\ 
+## Cumul. Override Att.   &             &             &             & 0.044       & -0.033     \\ 
+##                        &             &             &             & (0.112)     & (0.120)     \\
+##  $N$                    & 1896        & 1896        & 1896        & 1896        & 1896       \\ 
+## AIC                    & 2208.650    & 2200.412    & 2216.292    & 2216.551    & 2217.114   \\ 
+## N Groups               & 308         & 308         & 308         & 308         & 308        \\ 
+## Group Names            & distid      & distid      & distid      & distid      & distid     \\ 
+## Group:distid Effs.     & (Intercept) & (Intercept) & (Intercept) & (Intercept) & (Intercept)\\ 
+## Group:distid Var.      & 0.217       & 0.214       & 0.211       & 0.201       & 0.199      \\ 
+## Sigma                  & 1           & 1           & 1           & 1           & 1           \\ \hline
+##  \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+## \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
+##                 and divided by 2 standard deviations.}} 
+## \end{longtable}
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{tiny}
+
+\subsection{Substantive Effects}
+
+\subsubsection{Fixed Effects}
+
+\subsubsection{District and Year Variation}
+
+\subsection{Comparisons}
+
+But which model is better? 
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-rocplot1-1} \caption[ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type]{ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type\label{fig:rocplot1}}
+\end{figure}
+
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-rocplot2-1} \caption[ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV]{ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV\label{fig:rocplot2}}
+\end{figure}
+
+
+\end{knitrout}
+
+
+In Figure \ref{fig:rocplot1} it is clear that policy and tax variables have less 
+explanatory power than politics and the full model. The x-axis represents the 
+false-alarm rate, or uncontested elections that would be classified as contested 
+elections. The y-axis represents the true contested elections that would be 
+correctly classified. Our politics model and our uber model both exhibit superior 
+performance for a lower rate of false-alarms than the policy or tax measures. 
+
+This is not evidence that taxation and compensation policy do not matter to school 
+districts or in determining board elections. The goal here is to simply compare 
+the explanatory power of different classes of descriptive predictors available 
+statewide over time for all school districts in order to understand which, if any, 
+macro-level measures that are publicly reported provide strong evidence of a 
+school district having a contested election. 
+
+
+This provides some evidence that school district elections are driven by political 
+factors -- both local and cross-district -- more so than the measures of financial 
+and policy concern that we have available at a statewide level. As the task is to 
+explain school district elections using consistent and statewide available data, 
+it appears that measures of political climate in the school district are particularly 
+well suited to the task. 
+
+% Figure \ref{fig:modelsplot} shows the coefficients and their standard errors 
+% plotted for the four models.\footnote{Graph made using the excellent \texttt{coefplot} package for R along with \texttt{theme\_dpi} theme for \texttt{ggplot2} provided 
+% in the \texttt{eeptools} package \citep{eeptools, coefplot, gg}.} The scale is 
+% exaggerated around 0 to allow for presentation of smaller coefficient sizes and 
+% to be able to distinguish them from 0. 
+% 
+% From this we can see that the comprehensive model provides point estimates very 
+% close to the estimates in the corresponding topic models. We can also see that 
+% most of the effects are very low - the coefficients reported here are logistic 
+% coefficients - with a few pointed exceptions. 
+
+
+Here is some text about the within district variation. 
+
+\section{Conclusions}
+
+School board elections are not marked by much contestation. 
+
+\section{Technical Appendix}
+
+Computing is fun. 
+
+\subsection{Model Specification Tests}
 
 
 
@@ -319,47 +1391,21 @@ multiple winners. Coding individual races was done by
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% 
+% \begin{table}[h!]
+% \begin{center}
+% \begin{small}
+% \caption{Descriptive Models of Candidate Emergence}
+% \label{tab:emergenceDmodels}
+% \begin{tabular}{| p{.1\textwidth} | p{.4\textwidth} | p{.35\textwidth} |}
+% \hline
+% \textbf{Model}  & \textbf{Predictors} & \textbf{Interpretation} \\ \hline
+% Fiscal   & revenue limit, tax rate, median income, referenda & If the model is explanatory, fiscal forces may motivate candidates\\ \hline
+% Politics & Lagged contestation, lagged primary, cumulative debt referenda, political division, lagged referendum & Political activity \\ \hline
+% %Fiscal Revolt & \citet{RefWorks:297,RefWorks:271} & Union membership as share of electorate drives up turnout \\ \hline
+% Policy & teacher compensation, referenda attempts & Unsure \\ \hline 
+% Controls & District population, white \%,  median income & To control for differences in contexts \\ \hline
+% \end{tabular}
+% \end{small}
+% \end{center}
+% \end{table}
