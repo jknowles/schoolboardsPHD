@@ -97,6 +97,7 @@ makeROCdf <- function(model, name){
   fpr <- unlist(slot(tprfpr, "x.values"))
   roc <- data.frame(tpr, fpr)
   roc$mod <- name
+  roc$type <- class(model)[1]
   return(roc)
 }
 

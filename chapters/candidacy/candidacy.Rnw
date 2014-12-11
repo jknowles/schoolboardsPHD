@@ -1211,7 +1211,7 @@ coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +",
                "Bond Attpt.", "Bond Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
-               "Balance per Pupil", "Millrate \\delta", "\\% Salary - Admin.", 
+               "Balance per Pupil", "Millrate $\\delta$", "\\% Salary - Admin.", 
                "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
@@ -1337,7 +1337,7 @@ coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +",
                "\\% White", "\\% OOH", "\\% Incumbents", "\\% Yes Rev. Limit", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
-               "Balance per Pupil", "Millrate \\delta", "\\% Salary - Admin.", 
+               "Balance per Pupil", "Millrate $\\delta$", "\\% Salary - Admin.", 
                "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
@@ -1397,7 +1397,7 @@ fullmodMMCon <- update(politicMMCon, . ~ . +  schoolMillShare + PROPERTYTAX_REV_
                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, 
                    control = ctrl2)
-
+## Varnames are wrong here
 # fullmodMM2 <- update(fullmodMM, . ~ . - incumShare, control = ctrl)
 
 apsrtable(demogsMMCon, politicMMCon, fiscalMMCon, policyMMCon, fullmodMMCon,
@@ -1457,7 +1457,7 @@ phtest_glmer(fiscalMM, update(fiscal, . ~. + distid + factor(year)))
 
 \begin{tiny}
 
-<<incdefeatMods, eval=FALSE>>=
+<<incdefeatMods, eval=TRUE>>=
 moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
                               moddat$incumShare != min(moddat$incumShare),]
 
@@ -1497,6 +1497,11 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
 @
 \end{tiny}
 
+\subsection{Substantive Effects}
+
+\subsubsection{Fixed Effects}
+
+\subsubsection{District and Year Variation}
 
 \subsection{Comparisons}
 
@@ -1505,76 +1510,92 @@ But which model is better?
 <<generateROC, eval=TRUE>>=
 library(ROCR)
 
-confusionMatrixTmp <- function(data, model) {
-  prediction <- ifelse(predict(model, data, type='response') > 0.5, TRUE, FALSE)
-    if(class(model)[1] %in% c("lmerMod", "glmerMod")){
-        confusion  <- table(prediction, as.logical(model@frame[, 1]))
-  } else{
-  confusion  <- table(prediction, as.logical(model$y))
-  }
-  confusion  <-   confusion  <- cbind(confusion, 
-      c(1 - confusion[1,1]/(confusion[1,1]+ 
-                              confusion[2,1]), 
-        1 - confusion[2,2]/(confusion[2,2]+confusion[1,2])))
-  confusion  <- as.data.frame(confusion)
-  names(confusion) <- c('FALSE', 'TRUE', 'class.error')
-  confusion
-}
+rocNInull <- makeROCdf(update(demogsMMni, . ~ + 1 + (1|distid) + year), "null")
+rocNI1 <- makeROCdf(demogsMMni, "demog")
+rocNI2 <- makeROCdf(fiscalMMni, "fiscal")
+rocNI3 <- makeROCdf(policyMMni, "policy")
+rocNI4 <- makeROCdf(politicMMni, "politic")
+rocNI5 <- makeROCdf(fullmodMMni, "full")
 
-makeROCdf <- function(model, name){
-  predicted <- predict(model)
-  if(class(model)[1] %in% c("lmerMod", "glmerMod")){
-    prob <- prediction(predicted, model@frame[, 1])
-  } else{
-    prob <- prediction(predicted, model$model[, 1])
-  }
-  tprfpr <- performance(prob, "tpr", "fpr")
-  tpr <- unlist(slot(tprfpr, "y.values"))
-  fpr <- unlist(slot(tprfpr, "x.values"))
-  roc <- data.frame(tpr, fpr)
-  roc$mod <- name
-  return(roc)
-}
+rocNI <- do.call(rbind, list(rocNInull, rocNI1, rocNI2, rocNI3, rocNI4, rocNI5))
+rm(rocNInull, rocNI1, rocNI2, rocNI3, rocNI4, rocNI5)
+rocNI$dv <- "No Incumbents"
 
+rocConnull <- makeROCdf(update(demogsMMCon, . ~ + 1 + (1|distid) + year), "null")
+rocCon1 <- makeROCdf(demogsMMCon, "demog")
+rocCon2 <- makeROCdf(fiscalMMCon, "fiscal")
+rocCon3 <- makeROCdf(policyMMCon, "policy")
+rocCon4 <- makeROCdf(politicMMCon, "politic")
+rocCon5 <- makeROCdf(fullmodMMCon, "full")
 
-roc1 <- makeROCdf(demogs, "demog"); roc1$type <- "glm"
-roc2 <- makeROCdf(politic, "politics"); roc2$type <- "glm"
-roc3 <- makeROCdf(fiscal, "fiscal"); roc3$type <- "glm"
-roc4 <- makeROCdf(policy, "policy"); roc4$type <- "glm"
-roc5 <- makeROCdf(fullmod, "full"); roc5$type <- "glm"
+rocCon <- do.call(rbind, list(rocConnull, rocCon1, rocCon2, rocCon3, rocCon4, rocCon5))
+rm(rocConnull, rocCon1, rocCon2, rocCon3, rocCon4, rocCon5)
+rocCon$dv <- "Contested Race"
 
-roc1.1 <- makeROCdf(demogsMM, "demog"); roc1.1$type <- "mm"
-roc2.1 <- makeROCdf(update(politicMM, . ~ . - incumShare), "politics"); roc2.1$type <- "mm"
-roc3.1 <- makeROCdf(fiscalMM, "fiscal"); roc3.1$type <- "mm"
-roc4.1 <- makeROCdf(policyMM, "policy"); roc4.1$type <- "mm"
-roc5.1 <- makeROCdf(fullmodMM, "full"); roc5.1$type <- "mm"
+rocDnull <- makeROCdf(update(demogsMMd, . ~ + 1 + (1|distid) + year), "null")
+rocD1 <- makeROCdf(demogsMMd, "demog")
+rocD2 <- makeROCdf(fiscalMMd, "fiscal")
+rocD3 <- makeROCdf(policyMMd, "policy")
+rocD4 <- makeROCdf(politicMMd, "politic")
+rocD5 <- makeROCdf(fullmodMMd, "full")
 
-rocNull <- makeROCdf(update(demogs, . ~ + 1), "null"); rocNull$type <- "glm"
-rocNull.1 <- makeROCdf(update(demogsMM, . ~ + 1 + (1|distid) + (1|year)), "null"); rocNull.1$type <- "mm"
-# rocMMnull <- 
-
-rocList <- list(roc1, roc2, roc3, roc4, roc1.1, roc2.1, roc3.1, roc4.1, roc5, 
-                roc5.1, rocNull, rocNull.1)
-
-roc <- do.call(rbind, rocList)
-
-rm(rocList, roc1, roc2, roc3, roc4, roc1.1, roc2.1, roc3.1, roc4.1, 
-   rocNull, rocNull.1)
-
+rocD <- do.call(rbind, list(rocDnull, rocD1, rocD2, rocD3, rocD4, rocD5))
+rm(rocDnull, rocD1, rocD2, rocD3, rocD4, rocD5)
+rocD$dv <- "Incumbent Defeat"
 @
 
-<<rocplot1, echo=FALSE, fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards", fig.keep='last', fig.width=6.75, fig.height=5>>=
+<<rocplot1, echo=FALSE, fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type", fig.keep='last', fig.width=6.75, fig.height=5>>=
 
-roc$modType <- paste(roc$mod, roc$type, sep ="-")
-ggplot(roc, aes(x = fpr, y = tpr, group = modType,color = mod, linetype = type)) + 
-  geom_smooth(size= I(1.1), se = FALSE) +
+roc <- do.call(rbind, list(rocNI, rocCon, rocD))
+rm(rocNI, rocCon, rocD)
+roc$modType <- paste(roc$mod, roc$dv, sep ="-")
+
+# ggplot(roc, aes(x = fpr, y = tpr, group = modType,color = mod)) + 
+#   geom_smooth(size= I(1.1), se = FALSE) +
+#    geom_abline(intercept = 0, slope = 1, colour = "gray") + 
+#    ylab("Sensitivity") + 
+#    xlab("1 - Specificity") + 
+#   coord_cartesian(xlim=c(0, 1), ylim=c(0,1)) + theme_bw() + 
+#   labs(title = "Comparing Models of Candidate Contestation \n 
+#        in School Board Elections", 
+#        color = "Model") + theme(legend.position = c(0.8, 0.15)) + 
+#   facet_wrap(~dv, nrow=3)
+
+
+ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = dv)) + 
+  geom_line(size= I(1.1), se = FALSE, stat = "smooth") +
    geom_abline(intercept = 0, slope = 1, colour = "gray") + 
    ylab("Sensitivity") + 
    xlab("1 - Specificity") + 
   coord_cartesian(xlim=c(0, 1), ylim=c(0,1)) + theme_bw() + 
   labs(title = "Comparing Models of Candidate Contestation \n 
-       in School Board Elections", 
-       color = "Model")
+       in School Board Elections across Dependent Variables", 
+       color = "Model") + theme(legend.position = c(0.8, 0.15)) + 
+    facet_wrap(~mod, nrow=2) +
+  geom_line(data = roc[roc$mod == "null", c(1, 2, 6)], 
+              aes(x = fpr, y = tpr, group = modType, color = NULL), 
+               alpha = I(0.6), size = I(1.1), color = I('gray20'), 
+            se = FALSE, linetype = 2, stat = "smooth") 
+
+@
+
+<<rocplot2, echo=FALSE, fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV", fig.keep='last', fig.width=6.75, fig.height=5>>=
+
+ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = mod)) + 
+  geom_line(size= I(1.1), se = FALSE, stat = "smooth") +
+   geom_abline(intercept = 0, slope = 1, colour = "gray") + 
+   ylab("Sensitivity") + 
+   xlab("1 - Specificity") + 
+  coord_cartesian(xlim=c(0, 1), ylim=c(0,1)) + theme_bw() + 
+  labs(title = "Comparing Models of Candidate Contestation \n 
+       in School Board Elections within Dependent Variables", 
+       color = "Model") + theme(legend.position = c(0.8, 0.15)) + 
+    facet_wrap(~dv, nrow=2) +
+  geom_line(data = roc[roc$mod == "null", c(1, 2, 5, 6)], 
+              aes(x = fpr, y = tpr, group = modType, color = NULL), 
+               alpha = I(0.6), size = I(1.1), color = I('gray20'), 
+            se = FALSE, linetype = 2, stat = "smooth") 
+
 
 @
 
@@ -1593,13 +1614,6 @@ statewide over time for all school districts in order to understand which, if an
 macro-level measures that are publicly reported provide strong evidence of a 
 school district having a contested election. 
 
-A table of likelihood ratio tests shows the same result:
-
-<<anovatable1, results='asis'>>=
-print(xtable(anova(demogs, politic, policy, fiscal, fullmod, test="LRT"), 
-             caption = "Likelihood Ratio Test of Pooled Model Fit"), 
-      include.rownames=TRUE)
-@
 
 This provides some evidence that school district elections are driven by political 
 factors -- both local and cross-district -- more so than the measures of financial 

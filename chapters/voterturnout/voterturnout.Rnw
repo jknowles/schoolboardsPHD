@@ -1647,10 +1647,10 @@ Table \ref{tab:modReview} reviews the major findings.
 
 <<ReviewTab, results='asis'>>=
 
-apsrtable(mixedMod1b, mixedMod2b, mixedMod3b, mixedModCaus, 
+apsrtable(mixedMod1b, mixedMod2b, mixedMod3b, 
           caption = "Partial Pooling Model of Post-Election Polarization",
           float = 'longtable', 
-          model.names = c("Lagged", "Competitive", "Blank", "Causal"),
+          model.names = c("Lagged", "Competitive", "Blank"),
             label = "tab:modReview", notes = list(tabnote, stars.note), 
           Sweave = FALSE)
 
