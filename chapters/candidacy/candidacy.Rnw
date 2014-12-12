@@ -722,8 +722,66 @@ xtable(round(cor(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout),
 \clearpage
 \subsection{Dependent Variables}
 
+<<nonincumbent2, results='asis'>>=
+races$contestMinor <- 0
+races$contestMinor[races$nrealcand > races$nwins] <- 1
+races$contestSer <- 0
+races$contestSer[(races$nrealcand - races$nminor) > races$nwins] <- 1
+races$incumbOnly <- ifelse(races$nrealcand == races$ninc, 1, 0)
+
+table(dist_turn$contestSer, dist_turn$incDefeats)
+
+tab1 <- table(dist_turn$onlyIncum, dist_turn$contestSer)
+
+
+
+rownames(tab1) <- c("Non-Incumbents Run", "Only Incumbents")
+colnames(tab1) <- c("No Serious Challengers", "Serious Challengers")
+
+tmp.cap   <- "Frequency of Incumbency and Contestation."
+tmp.label <- "tab:icbychal"
+
+print(xtable(tab1, caption = tmp.cap, 
+             label = tmp.label, digits = 0), include.rownames=TRUE, 
+      format.args = list(big.mark= ","))
+
+@
+
 Measuring candidate emergence and contestation in multi-member seats is not as 
-straightforward as in single member districts. 
+straightforward as in single member districts. In a partisan single member district, such 
+as a legislative race, a race is almost always contested if no incumbent is running. 
+However, in school board races in Wisconsin, as shown in Table \ref{tab:icbychal} 
+there is rarely a case when a race features all incumbents and there is a serious 
+challenge. This is likely due to the relative infrequency with which school board 
+seats are changed or redrawn. Due to this, I think of contestation in school boards 
+as a three step process. First, voters have to have a choice of a candidate that 
+is not an incumbent. If all the candidates are incumbents, then voters cannot reasonably 
+be said to have a choice and it can be assumed that the school board seat is not 
+sufficiently attractive to potential candidates. Next, voters have to have a 
+choice between more candidates than there are open seats. Finally, the ultimate 
+measure of contestation is that an incumbent is successfully defeated. 
+Table \ref{tab:icbydef} shows that in races in which 
+at least one of the candidates is not an incumbent incumbent defeat is rare. 
+
+<<nonincumbent3, results='asis'>>=
+tab1 <- table(dist_turn$contestSer[dist_turn$onlyIncum ==0], 
+              dist_turn$incDefeats[dist_turn$onlyIncum ==0])
+
+colnames(tab1) <- c("Incumbents All Win", "Incumbent Defeated")
+rownames(tab1) <- c("No Serious Challengers", "Serious Challengers")
+
+tmp.cap   <- "Frequency of Incumbency Defeat and Contestation."
+tmp.label <- "tab:icbydef"
+
+print(xtable(tab1, caption = tmp.cap, 
+             label = tmp.label, digits = 0), include.rownames=TRUE, 
+      format.args = list(big.mark= ","))
+
+@
+
+This three step approach means that I model three separate dependent variables 
+and explore the way the explanatory variables discussed above explain or do not 
+explain the variation in these three degrees of contestation. 
 
 \subsubsection{Non-incumbents}
 
@@ -745,19 +803,11 @@ tablestruc <- ddply(races[races$nwins > 0,], .(year), summarize,
 tmp.cap   <- "Frequency of races with and without non-incumbents."
 tmp.label <- "tab:nifreq"
 
-print(xtable(tablestruc[tablestruc$year > 2001, ], caption = tmp.cap, 
+print(xtable(tablestruc[tablestruc$year > 2001 & tablestruc$year < 2013, ], 
+             caption = tmp.cap, 
              label = tmp.label, digits = 0), include.colnames = TRUE, 
       include.rownames=FALSE)
 
-@
-
-
-<<nonincumbent2>>=
-races$contestMinor <- 0
-races$contestMinor[races$nrealcand > races$nwins] <- 1
-races$contestSer <- 0
-races$contestSer[(races$nrealcand - races$nminor) > races$nwins] <- 1
-races$incumbOnly <- ifelse(races$nrealcand == races$ninc, 1, 0)
 @
 
 
@@ -965,7 +1015,9 @@ election cycle, we start with a model of the emergence of candidates:
 \[ (1) \hspace{0.25 in}  \Pr_{CE_{t}} = \alpha + \beta X + \epsilon \] \\
 
 Here, $\Pr_{CE_{t}}$ represents the probability that a school board seat is contested 
-in an election in year \emph{t}. The $X$ represent a vector of measures of conditions 
+in an election in year \emph{t} as measured by one of the three flavors of contestation 
+discussed above: non-incumbents running, contested seats, and finally incumbent defeat. 
+The $X$ represent a vector of measures of conditions 
 in the school district leading up to the time candidates choose to run for office, 
 the period between the previous election and the current election. Estimating 
 $\beta$ provides a way to test for the importance of each of the conditions in 
@@ -1113,8 +1165,6 @@ a school board seat is contested. Of particular interest is understanding which 
 for the sample observed and over the time period of observation, are the most 
 predictive of the emergence of contested school board seats. 
 
-Let's look at the demographics of districts and how they affect the likelihood 
-of a challenge. 
 
 % 3 modeling strategies
 %% model binomial by district, contested or not
@@ -1162,8 +1212,7 @@ moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 
 \subsection{Stage 1: Non-incumbents}
 
-\begin{tiny}
-<<glmmodsNI, results='asis'>>=
+<<glmmodsNI, results='hide'>>=
 
 # moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
 
@@ -1210,12 +1259,12 @@ coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +",
                "\\% White", "\\% OOH",  "Rev. Lim. Attpt.", "Rev. Lim. Pass", 
                "Bond Attpt.", "Bond Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
-               "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
-               "Balance per Pupil", "Millrate $\\delta$", "\\% Salary - Admin.", 
-               "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
-               "Cumul. Override Att.")
+               "\\% Millrate for Schl.", "\\% Rev. Prop. Tax", "Cost per Pupil", 
+               "Bal. per Pupil", "Millrate $\\Delta$", "\\% Salary Admin.", 
+               "New Sup.", "\\% Private School", "Cumul. Bond Att.", 
+               "Cumul. Ref Att.")
 
-apsrtable(demogsNI, politicNI, fiscalNI, policyNI, fullmodNI, se = "robust", 
+glmNItab <-apsrtable(demogsNI, politicNI, fiscalNI, policyNI, fullmodNI, se = "robust", 
           float = "longtable",
           label="tab:glmModsNI", 
           omitcoef=list("year", 
@@ -1228,7 +1277,7 @@ apsrtable(demogsNI, politicNI, fiscalNI, policyNI, fullmodNI, se = "robust",
           Sweave=FALSE, digits = 3, coef.names = coefnames2)
 
 @
-\end{tiny}
+
 
 \begin{tiny}
 <<glmermodsNI, results='asis'>>=
@@ -1286,8 +1335,7 @@ apsrtable(demogsMMni, politicMMni, fiscalMMni, policyMMni, fullmodMMni,
 
 \subsection{Stage 2: Serious Contest With Non-Incumbents}
 
-\begin{tiny}
-<<glmmodsContest, results='asis'>>=
+<<glmmodsContest, results='hide'>>=
 # moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
 
 moddat2 <- moddat[moddat$incumShare != max(moddat$incumShare),]
@@ -1341,7 +1389,7 @@ coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +",
                "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
-apsrtable(demogsCon, politicCon, fiscalCon, policyCon, fullmodCon, se = "robust", 
+glmContab <- apsrtable(demogsCon, politicCon, fiscalCon, policyCon, fullmodCon, se = "robust", 
           float = "longtable",
           label="tab:glmModsCon", 
           omitcoef=list("year", 
@@ -1354,7 +1402,7 @@ apsrtable(demogsCon, politicCon, fiscalCon, policyCon, fullmodCon, se = "robust"
           Sweave=FALSE, digits = 3, coef.names = coefnames2)
 
 @
-\end{tiny}
+
 
 \begin{tiny}
 <<glmermods, results='asis'>>=
@@ -1420,44 +1468,79 @@ bmProf <- profile(biggerMod, which = "beta_", devtol = 0.001)
 confInts <- confint(bmProf, level = .95)
 @
 
-<<hausmantest, eval=FALSE>>=
-phtest_glmer <- function (glmerMod, glmMod, ...)  {  ## changed function call
-    coef.wi <- coef(glmMod)
-    coef.re <- fixef(glmerMod)  ## changed coef() to fixef() for glmer
-    vcov.wi <- vcov(glmMod)
-    vcov.re <- vcov(glmerMod)
-    names.wi <- names(coef.wi)
-    names.re <- names(coef.re)
-    coef.h <- names.re[names.re %in% names.wi]
-    dbeta <- coef.wi[coef.h] - coef.re[coef.h]
-    df <- length(dbeta)
-    dvcov <- vcov.re[coef.h, coef.h] - vcov.wi[coef.h, coef.h]
-    stat <- abs(t(dbeta) %*% as.matrix(solve(dvcov)) %*% dbeta)  ## added as.matrix()
-    pval <- pchisq(stat, df = df, lower.tail = FALSE)
-    names(stat) <- "chisq"
-    parameter <- df
-    names(parameter) <- "df"
-    alternative <- "one model is inconsistent"
-    res <- list(statistic = stat, p.value = pval, parameter = parameter, 
-        method = "Hausman Test",  alternative = alternative,
-                data.name=deparse(glmerMod@call$data))  ## changed
-    class(res) <- "htest"
-    return(res)
-}
-
-
-
-phtest_glmer(policyMM, update(policy, . ~. + distid + factor(year)))
-phtest_glmer(politicMM, update(politic, . ~. + distid + factor(year)))
-phtest_glmer(demogsMM, update(demogs, . ~. + distid + factor(year)))
-phtest_glmer(fiscalMM, update(fiscal, . ~. + distid + factor(year)))
-@
-
 \subsection{Incumbent Defeat}
 
-\begin{tiny}
+<<incdefeatGLM, eval=FALSE, results='hide'>>=
+moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
+                              moddat$incumShare != min(moddat$incumShare),]
 
-<<incdefeatMods, eval=TRUE>>=
+demogsD <- glm(incDefeats ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + year, 
+              data = moddat3, 
+              family = "binomial") #bach and 65o switch?
+
+
+demogSE <- get_CL_vcov(demogsD, moddat3$distid)
+demogsD$se <- sqrt(diag(demogSE))
+
+politicD <- update(demogsD, . ~ . + incumShare + overrideYesPer +  partyDivisionRecent +
+                    teachShareofVoters + fallTurnout + nraces) 
+
+politicSE <- get_CL_vcov(politicD, moddat3$distid)
+politicD$se <- sqrt(diag(politicSE))
+
+
+fiscalD <- update(demogsD, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta)
+
+fiscalSE <- get_CL_vcov(fiscalD, moddat3$distid)
+fiscalD$se <- sqrt(diag(fiscalSE))
+
+
+policyD <- update(demogsD, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+
+policySE <- get_CL_vcov(policyD, moddat3$distid)
+policyD$se <- sqrt(diag(policySE))
+
+fullmodD <- update(politicD, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta + 
+                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+fullmodSE <- get_CL_vcov(fullmodD, moddat3$distid)
+fullmodD$se <- sqrt(diag(fullmodSE))
+
+rescalenote <- "All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations."
+stars.note <- apsrtable:::stars.note
+
+
+coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
+               "\\% White", "\\% OOH", "\\% Incumbents", "\\% Yes Rev. Limit", 
+               "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
+               "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
+               "Balance per Pupil", "Millrate $\\delta$", "\\% Salary - Admin.", 
+               "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
+               "Cumul. Override Att.")
+
+glmDtab <- apsrtable(demogsD, politicD, fiscalD, policyD, fullmodD, se = "robust", 
+          float = "longtable",
+          label="tab:glmModsD", 
+          omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          model.names=c("Demog.", "Politic", 
+                        "Fiscal",
+                        "Policy", "Full"), 
+          caption = "Logit Models of Incumbent Defeat in School Board Elections",
+          notes = list(stars.note, rescalenote),
+          Sweave=FALSE, digits = 3, coef.names = coefnames2)
+
+@
+
+\begin{tiny}
+<<incdefeatMods, eval=TRUE, results='asis'>>=
 moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
                               moddat$incumShare != min(moddat$incumShare),]
 
@@ -1499,13 +1582,34 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
 
 \subsection{Substantive Effects}
 
+Given the high number of observations available in this data set, there is likely 
+sufficient power to detect effects that are substantively quite small yet remain 
+statistically significant. In order to better understand this, I use simulations 
+to illustrate the substantive impact of several of the key variables identified 
+in the models above on school board contestation.  
+
 \subsubsection{Fixed Effects}
+
+The tables above provide the coefficients and standard errors for the models, but 
+logistic regression coefficients can be difficult to interpret -- especially on 
+data that has been rescaled. In order to better demonstrate the impact of key 
+variables, I provide simulations from the models above that show the impact on the 
+probability of contestation conditional on changes in those variables. 
+
+
+
 
 \subsubsection{District and Year Variation}
 
+By far the most variation is explained both by year effects across districts and 
+by district effects across years. These effects represent the sum of unobserved 
+characteristics that do not vary within districts over time, and of characteristics 
+that vary over time across all districts. 
+
 \subsection{Comparisons}
 
-But which model is better? 
+After exploring these effects, the question stands -- which set of variables best 
+explain the pattern of contested elections and candidate emergence in Wisconsin. 
 
 <<generateROC, eval=TRUE>>=
 library(ROCR)
@@ -1600,51 +1704,77 @@ ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = m
 @
 
 
-In Figure \ref{fig:rocplot1} it is clear that policy and tax variables have less 
-explanatory power than politics and the full model. The x-axis represents the 
-false-alarm rate, or uncontested elections that would be classified as contested 
-elections. The y-axis represents the true contested elections that would be 
-correctly classified. Our politics model and our uber model both exhibit superior 
-performance for a lower rate of false-alarms than the policy or tax measures. 
+In Figure \ref{fig:rocplot1} each model is represented in an individual panel. 
+The x-axis represents the false-alarm rate, or uncontested elections that would be 
+classified as contested elections. The y-axis represents the true contested elections
+that would be correctly classified.The ROC curves along these dimensions for the 
+predictions produced by each model are represented by individual 
+curves for each dependent variable. A null model consisting of year fixed 
+effects and random intercepts for each school district is represented in each panel 
+by the dashed gray curves. From Figure \ref{fig:rocplot1} a clear pattern emerges. 
+First, incumbent defeat is much more difficult to predict than either the presence 
+of all incumbents, or a serious challenger -- these two curves are substantially 
+higher than the green curve representing incumbent defeat in all panels. Second, 
+each of the models appears to do equally well at classifying districts for each 
+of the dependent variables -- the pattern is the same panel to panel. This is likely 
+due to a final observation, which is that the null model is nearly identical to 
+the models which include predictors. 
 
-This is not evidence that taxation and compensation policy do not matter to school 
-districts or in determining board elections. The goal here is to simply compare 
-the explanatory power of different classes of descriptive predictors available 
-statewide over time for all school districts in order to understand which, if any, 
-macro-level measures that are publicly reported provide strong evidence of a 
-school district having a contested election. 
-
-
-This provides some evidence that school district elections are driven by political 
-factors -- both local and cross-district -- more so than the measures of financial 
-and policy concern that we have available at a statewide level. As the task is to 
-explain school district elections using consistent and statewide available data, 
-it appears that measures of political climate in the school district are particularly 
-well suited to the task. 
-
-% Figure \ref{fig:modelsplot} shows the coefficients and their standard errors 
-% plotted for the four models.\footnote{Graph made using the excellent \texttt{coefplot} package for R along with \texttt{theme\_dpi} theme for \texttt{ggplot2} provided 
-% in the \texttt{eeptools} package \citep{eeptools, coefplot, gg}.} The scale is 
-% exaggerated around 0 to allow for presentation of smaller coefficient sizes and 
-% to be able to distinguish them from 0. 
-% 
-% From this we can see that the comprehensive model provides point estimates very 
-% close to the estimates in the corresponding topic models. We can also see that 
-% most of the effects are very low - the coefficients reported here are logistic 
-% coefficients - with a few pointed exceptions. 
+This is further explored in Figure \ref{fig:rocplot2} where the same ROC curves 
+are reorganized into each of the three dependent variables, with each model being 
+represented by a colored line and the null model again in gray. This makes it 
+clear that a simple random intercept model with fixed year effects has the same 
+explanatory power as the other models that include district level explanatory 
+values. This suggests that the bulk of the variation in school board contestation 
+is the result of individual district patterns and year to year fluctuations in 
+political participation. 
 
 
-Here is some text about the within district variation. 
+\clearpage
 
-\section{Conclusions}
+\section{Discussion}
 
-School board elections are not marked by much contestation. 
+On one hand it may seem easy to read these results as disappointing for theories 
+of local political participation. After testing the impact of variables such as 
+fiscal, political, policy, and demographics on the likelihood that challengers 
+emerge and voters are presented a choice, we are left to conclude that at best 
+there is only weak evidence such measures matter. 
 
 \section{Technical Appendix}
 
 Computing is fun. 
 
+\subsection{Pooled GLM Model Results}
+
+\begin{tiny}
+<<printGLMni>>=
+glmNItab
+@
+\end{tiny}
+
+\begin{tiny}
+<<printGLMcon>>=
+glmContab
+@
+\end{tiny}
+
+\begin{tiny}
+<<printGLMd, eval=FALSE>>=
+glmDtab
+@
+\end{tiny}
+
+
 \subsection{Model Specification Tests}
+
+<<hausmantest, eval=FALSE>>=
+phtest_glmer(policyMM, update(policy, . ~. + distid + factor(year)))
+phtest_glmer(politicMM, update(politic, . ~. + distid + factor(year)))
+phtest_glmer(demogsMM, update(demogs, . ~. + distid + factor(year)))
+phtest_glmer(fiscalMM, update(fiscal, . ~. + distid + factor(year)))
+@
+
+@
 
 <<modTestRuns, results='hide', eval=FALSE, cache=TRUE>>=
 library(pbkrtest)
