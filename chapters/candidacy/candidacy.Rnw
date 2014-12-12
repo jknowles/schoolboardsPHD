@@ -1596,7 +1596,85 @@ data that has been rescaled. In order to better demonstrate the impact of key
 variables, I provide simulations from the models above that show the impact on the 
 probability of contestation conditional on changes in those variables. 
 
+<<fixefplot1, eval=TRUE, fig.cap="Coefficient Plot for Full Model Fixed Effects">>=
+sim1 <- FEsim(fullmodMMCon, nsims = 1000); sim1$dv <- "Contest"
+sim2 <- FEsim(fullmodMMni, nsims = 1000); sim2$dv <- "No Incumb."
+sim3 <- FEsim(fullmodMMd, nsims = 1000); sim3$dv <- "Defeat"
 
+simPlot <- do.call(rbind, list(sim1, sim2, sim3))
+
+p1 <- plotMCMCfe(simPlot[simPlot$dv == "Contest", ], scale = 2, 
+           var = "meanEff", sd = "sdEff") + labs(title = "Contestation") + 
+  theme_dpi(base_size = 12)
+p2 <- plotMCMCfe(simPlot[simPlot$dv == "No Incumb.", ], scale = 2, 
+           var = "meanEff", sd = "sdEff") + labs(title = "Incumbent Lockout")+ 
+  theme_dpi(base_size = 12)
+p3 <- plotMCMCfe(simPlot[simPlot$dv == "Defeat", ], scale = 2, 
+           var = "meanEff", sd = "sdEff") + labs(title = "Incumbent Defeat")+ 
+  theme_dpi(base_size = 12)
+
+grid.arrange(p1, p2, p3, nrow = 1)
+
+# substantive effect
+
+substEffSimFE <- function(mod, var, ncases){
+  # var should be a character, name of variable in model
+  # ncases is integer
+  # mod is a merMod
+  cases <- mod@frame[sample(1:nrow(mod@frame), ncases),]
+  cases$caseID <- 1:nrow(cases)
+  varLength <- length(unique(mod@frame[, var]))
+  if(varLength < 30){
+    jitters <- unique(mod@frame[, var])
+  } else {
+    jitters <- quantile(mod@frame[, var], probs=seq(0,1, by =0.05))
+  }
+  simvals <- expand.grid(caseID = unique(cases$caseID), newvar = jitters)
+  plotdf <- merge(cases, simvals)
+  plotdf$oldvar <- plotdf[, var]
+  plotdf[, var] <- plotdf$newvar
+  plotdf$y <- predict(mod, newdata=plotdf, type = "response")
+  return(plotdf)
+}
+# 
+# seplotdf <- substEffSimFE(fullmodMMni, "overrideQues", ncases = 10L)
+# qplot(newvar, y, data = seplotdf, geom = 'line', group = caseID)
+# 
+# 
+
+# set.seed(101)
+# bb <- bootMer(fullmodMMni,
+#               FUN=function(x)
+#               predict(x,re.form=NA,newdata=seplotdf,type="response"),
+#               nsim=5)
+# 
+# cpredboot1.CI <- t(sapply(1:4,
+#        function(i)
+#          boot.ci(bb,type="perc",index=i)$percent[4:5]))
+
+easyPredCI <- function(model,newdata,alpha=0.05) {
+  # From https://rpubs.com/bbolker/glmmchapter
+    ## baseline prediction, on the linear predictor (logit) scale:
+    pred0 <- predict(model,re.form=NA,newdata=newdata)
+    ## fixed-effects model matrix for new data
+    X <- model.matrix(formula(model,fixed.only=TRUE)[-2],
+                   newdata)
+    beta <- fixef(model) ## fixed-effects coefficients
+    V <- vcov(model)     ## variance-covariance matrix of beta
+    pred.se <- sqrt(diag(X %*% V %*% t(X))) ## std errors of predictions
+    ## inverse-link (logistic) function: could also use plogis()
+    linkinv <- model@resp$family$linkinv
+    ## construct 95% Normal CIs on the link scale and
+    ##  transform back to the response (probability) scale:
+    crit <- -qnorm(alpha/2)
+    linkinv(cbind(lwr=pred0-crit*pred.se,
+                  upr=pred0+crit*pred.se))
+}
+
+predCI <- easyPredCI(fullmodMMni, seplotdf)
+
+
+@
 
 
 \subsubsection{District and Year Variation}
@@ -1605,6 +1683,30 @@ By far the most variation is explained both by year effects across districts and
 by district effects across years. These effects represent the sum of unobserved 
 characteristics that do not vary within districts over time, and of characteristics 
 that vary over time across all districts. 
+
+<<randomEffectplot1, eval=FALSE>>=
+
+substEffSimRE <- function(mod, var, ncases){
+  # var should be a character, name of variable in model
+  # ncases is integer
+  # mod is a merMod
+  cases <- mod@frame[sample(1:nrow(mod@frame), ncases),]
+  cases$caseID <- 1:nrow(cases)
+  varLength <- length(unique(mod@frame[, var]))
+  jitters <- unique(mod@frame[, var])
+  simvals <- expand.grid(caseID = unique(cases$caseID), newvar = jitters)
+  plotdf <- merge(cases, simvals)
+  plotdf$oldvar <- plotdf[, var]
+  plotdf[, var] <- plotdf$newvar
+  plotdf$y <- predict(mod, newdata=plotdf, type = "response")
+  return(plotdf)
+}
+
+replotdf <- substEffSimRE(fullmodMMni, "distid", ncases=1)
+
+qplot(y, data = replotdf, geom = 'density')
+
+@
 
 \subsection{Comparisons}
 
