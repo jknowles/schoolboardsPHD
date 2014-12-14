@@ -312,7 +312,7 @@ two or three distinct races for school board each year, with each race electing
 multiple winners. Coding individual races was done by 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Thu Dec 11 17:38:01 2014
+% Sun Dec 14 16:16:33 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rllllllllllll}
@@ -616,7 +616,7 @@ year t-1 and year t is also highly correlated.
   0 1792  128
   1  706  405
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Thu Dec 11 17:38:04 2014
+% Sun Dec 14 16:16:35 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -649,7 +649,7 @@ Table \ref{tab:icbydef} shows that in races in which
 at least one of the candidates is not an incumbent incumbent defeat is rare. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Thu Dec 11 17:38:04 2014
+% Sun Dec 14 16:16:35 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -680,7 +680,7 @@ Conditional on this, I then estimate a second stage that voters will have at lea
 one more candidate than total winners -- a choice. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Thu Dec 11 17:38:04 2014
+% Sun Dec 14 16:16:35 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrr}
@@ -1239,7 +1239,25 @@ data that has been rescaled. In order to better demonstrate the impact of key
 variables, I provide simulations from the models above that show the impact on the 
 probability of contestation conditional on changes in those variables. 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefplot1-1} \caption[Coefficient Plot for Full Model Fixed Effects]{Coefficient Plot for Full Model Fixed Effects\label{fig:fixefplot11}}
+\end{figure}
 
+\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefplot1-2} \caption[Coefficient Plot for Full Model Fixed Effects]{Coefficient Plot for Full Model Fixed Effects\label{fig:fixefplot12}}
+\end{figure}
+
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefSub1-1} \caption[Substantive Effect on Contestation for Selected Variables]{Substantive Effect on Contestation for Selected Variables\label{fig:fixefSub1}}
+\end{figure}
+
+
+\end{knitrout}
 
 
 \subsubsection{District and Year Variation}
@@ -1249,6 +1267,27 @@ by district effects across years. These effects represent the sum of unobserved
 characteristics that do not vary within districts over time, and of characteristics 
 that vary over time across all districts. 
 
+Across year effects.
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefSub2-1} \caption[Substantive Effect on Contestation for Selected Variables]{Substantive Effect on Contestation for Selected Variables\label{fig:fixefSub2}}
+\end{figure}
+
+
+\end{knitrout}
+
+
+Across district effects.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-randomEffectplot1-1} \caption[Substantive Impact of District Intercepts]{Substantive Impact of District Intercepts\label{fig:randomEffectplot1}}
+\end{figure}
+
+
+\end{knitrout}
+
+\clearpage
 \subsection{Comparisons}
 
 After exploring these effects, the question stands -- which set of variables best 
@@ -1471,30 +1510,9 @@ Computing is fun.
 
 
 
-@
 
 
 
 
 
 
-
-
-% 
-% \begin{table}[h!]
-% \begin{center}
-% \begin{small}
-% \caption{Descriptive Models of Candidate Emergence}
-% \label{tab:emergenceDmodels}
-% \begin{tabular}{| p{.1\textwidth} | p{.4\textwidth} | p{.35\textwidth} |}
-% \hline
-% \textbf{Model}  & \textbf{Predictors} & \textbf{Interpretation} \\ \hline
-% Fiscal   & revenue limit, tax rate, median income, referenda & If the model is explanatory, fiscal forces may motivate candidates\\ \hline
-% Politics & Lagged contestation, lagged primary, cumulative debt referenda, political division, lagged referendum & Political activity \\ \hline
-% %Fiscal Revolt & \citet{RefWorks:297,RefWorks:271} & Union membership as share of electorate drives up turnout \\ \hline
-% Policy & teacher compensation, referenda attempts & Unsure \\ \hline 
-% Controls & District population, white \%,  median income & To control for differences in contexts \\ \hline
-% \end{tabular}
-% \end{small}
-% \end{center}
-% \end{table}
