@@ -53,3 +53,14 @@ cleantex <- function(mydoc,keepPDF){
 }
 
 cleantex("dissertation", keepPDF=TRUE)
+
+
+## Make word docs
+# pandoc -s math.tex -o example30.docx
+# setwd("chapters")
+# setwd("aboutwisconsin")
+# http://tex.stackexchange.com/questions/186606/partial-compile-latex-and-bibtex-for-pandoc 
+# system("pandoc -s aboutwisconsin.tex -o aboutwisconsin.docx") 
+# system("pandoc -o word.docx --bibliography ../../bib/candidcay.bib --csl ../../bib/apsr.csl original.tex")
+
+

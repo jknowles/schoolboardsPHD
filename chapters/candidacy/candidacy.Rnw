@@ -1204,6 +1204,12 @@ moddat$per_white_all <- moddat$per_white_all * 100
 moddat$OOH_share <- moddat$OOH_share * 100
 moddat$per65o <- moddat$per65o * 100
 moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
+
+# Save scale parameters 
+nums <- sapply(moddat, is.numeric)
+ScaleMeans <- apply(moddat[, nums], 2, mean)
+ScaleSD <- apply(moddat[, nums], 2, sd)
+moddatScale <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 #Rescale
 library(arm)
 nums <- sapply(moddat, is.numeric)
@@ -1415,7 +1421,8 @@ ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
 
 
 
-demogsMMCon <- glmer(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+demogsMMCon <- glmer(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + 
+                       per_white_all +
               OOH_share + year + (1|distid), 
               data = moddat2, family = "binomial", control = ctrl) #bach and 65o switch?
 
@@ -1549,7 +1556,8 @@ demogsMMd <- glmer(incDefeats ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_w
               data = moddat3, 
               family = "binomial", control = ctrl) #bach and 65o switch?
 
-politicMMd <- update(demogsMMd, . ~ . + incumShare + overrideYesPer +  partyDivisionRecent +
+politicMMd <- update(demogsMMd, . ~ . + incumShare + overrideYesPer +  
+                       partyDivisionRecent +
                     teachShareofVoters + fallTurnout + nraces, control = ctrl) 
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
@@ -1613,66 +1621,24 @@ p3 <- plotMCMCfe(simPlot[simPlot$dv == "Defeat", ], scale = 2,
            var = "meanEff", sd = "sdEff") + labs(title = "Incumbent Defeat")+ 
   theme_dpi(base_size = 12)
 
+plotMCMCfe(simPlot, scale = 2, var = "meanEff", sd = "sdEff")
+
 grid.arrange(p1, p2, p3, nrow = 1)
 
-# substantive effect
+# confint(fullmodMMni, method = "Wald", level = 0.9)
+@
 
-substEffSimFE <- function(mod, var, ncases){
-  # var should be a character, name of variable in model
-  # ncases is integer
-  # mod is a merMod
-  cases <- mod@frame[sample(1:nrow(mod@frame), ncases),]
-  cases$caseID <- 1:nrow(cases)
-  varLength <- length(unique(mod@frame[, var]))
-  if(varLength < 30){
-    jitters <- unique(mod@frame[, var])
-  } else {
-    jitters <- quantile(mod@frame[, var], probs=seq(0,1, by =0.05))
-  }
-  simvals <- expand.grid(caseID = unique(cases$caseID), newvar = jitters)
-  plotdf <- merge(cases, simvals)
-  plotdf$oldvar <- plotdf[, var]
-  plotdf[, var] <- plotdf$newvar
-  plotdf$y <- predict(mod, newdata=plotdf, type = "response")
-  return(plotdf)
-}
-# 
-# seplotdf <- substEffSimFE(fullmodMMni, "overrideQues", ncases = 10L)
-# qplot(newvar, y, data = seplotdf, geom = 'line', group = caseID)
-# 
-# 
+<<fixefSub1, fig.cap="Substantive Effect on Contestation for Selected Variables">>=
+seplotdf <- substEffSimFE(fullmodMMCon, "schoolMillShare", ncases = 12L, 
+                          unscale = moddatScale, re = TRUE)
 
-# set.seed(101)
-# bb <- bootMer(fullmodMMni,
-#               FUN=function(x)
-#               predict(x,re.form=NA,newdata=seplotdf,type="response"),
-#               nsim=5)
-# 
-# cpredboot1.CI <- t(sapply(1:4,
-#        function(i)
-#          boot.ci(bb,type="perc",index=i)$percent[4:5]))
-
-easyPredCI <- function(model,newdata,alpha=0.05) {
-  # From https://rpubs.com/bbolker/glmmchapter
-    ## baseline prediction, on the linear predictor (logit) scale:
-    pred0 <- predict(model,re.form=NA,newdata=newdata)
-    ## fixed-effects model matrix for new data
-    X <- model.matrix(formula(model,fixed.only=TRUE)[-2],
-                   newdata)
-    beta <- fixef(model) ## fixed-effects coefficients
-    V <- vcov(model)     ## variance-covariance matrix of beta
-    pred.se <- sqrt(diag(X %*% V %*% t(X))) ## std errors of predictions
-    ## inverse-link (logistic) function: could also use plogis()
-    linkinv <- model@resp$family$linkinv
-    ## construct 95% Normal CIs on the link scale and
-    ##  transform back to the response (probability) scale:
-    crit <- -qnorm(alpha/2)
-    linkinv(cbind(lwr=pred0-crit*pred.se,
-                  upr=pred0+crit*pred.se))
-}
-
-predCI <- easyPredCI(fullmodMMni, seplotdf)
-
+ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
+                     alpha=0.4) + 
+  facet_wrap(~caseID) + 
+  geom_rug(data = dist_turn, aes(x = schoolMillShare, y = NULL)) + 
+  theme_dpi(base_size=12)
 
 @
 
@@ -1684,30 +1650,47 @@ by district effects across years. These effects represent the sum of unobserved
 characteristics that do not vary within districts over time, and of characteristics 
 that vary over time across all districts. 
 
-<<randomEffectplot1, eval=FALSE>>=
+Across year effects.
+<<fixefSub2, fig.cap="Substantive Effect on Contestation for Selected Variables">>=
+seplotdf <- substEffSimFE(fullmodMMni, "year", ncases = 12L, re = TRUE, alpha = 0.1)
 
-substEffSimRE <- function(mod, var, ncases){
-  # var should be a character, name of variable in model
-  # ncases is integer
-  # mod is a merMod
-  cases <- mod@frame[sample(1:nrow(mod@frame), ncases),]
-  cases$caseID <- 1:nrow(cases)
-  varLength <- length(unique(mod@frame[, var]))
-  jitters <- unique(mod@frame[, var])
-  simvals <- expand.grid(caseID = unique(cases$caseID), newvar = jitters)
-  plotdf <- merge(cases, simvals)
-  plotdf$oldvar <- plotdf[, var]
-  plotdf[, var] <- plotdf$newvar
-  plotdf$y <- predict(mod, newdata=plotdf, type = "response")
-  return(plotdf)
-}
-
-replotdf <- substEffSimRE(fullmodMMni, "distid", ncases=1)
-
-qplot(y, data = replotdf, geom = 'density')
+ggplot(seplotdf, aes(x = year, y = yhat)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
+                     alpha=0.4) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
+  facet_wrap(~caseID) +
+  theme_dpi(base_size=12) + 
+  theme(strip.text = element_blank(), strip.background = element_blank()) +  
+  labs(x = "Year", y = "Pr(Non-Incumbent)", title= "Year Effect Across Observations")
 
 @
 
+
+Across district effects.
+
+<<randomEffectplot1, eval=TRUE, fig.cap="Substantive Impact of District Intercepts">>=
+replotdf <- substEffSimRE(fullmodMMni, "distid", ncases=12, alpha = 0.1)
+
+ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
+                            ymin = lwr, ymax = upr)) + 
+  geom_linerange(alpha = I(0.3)) + geom_point(alpha = I(0.8)) +
+  theme_dpi(base_size=12) + 
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
+                      strip.text = element_blank(), 
+                      strip.background = element_blank(), 
+                      panel.grid.minor = element_blank(), 
+                      panel.grid.major = element_blank()) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
+  facet_wrap(~caseID) + 
+  labs(x = "District", y = "Pr(No Incumbent)", title = "Variability in District 
+       Effects on Pr For Random Cases")
+
+@
+
+\clearpage
 \subsection{Comparisons}
 
 After exploring these effects, the question stands -- which set of variables best 

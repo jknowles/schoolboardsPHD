@@ -1,5 +1,4 @@
 # Load packages
-
 # libraries
 # library(eeptools)
 # library(ROCR)
@@ -11,17 +10,12 @@
 # library(scales); 
 # library(stargazer)
 
-# iNum <- function(x) prettyNum(x, big.mark = ",", digits = 3)
-# iPer <- function(x){paste0(prettyNum(x, big.mark = ",", digits = 1),"\\%")}
-# 
-
 iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
                               digits = 3)}
 iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
                                                   digits = 3)),"\\%")}
 iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
                                                    digits = 3)),"%")}
-
 
 glmCorrHeatMap <- function(mod){
   # find numeric data
@@ -177,6 +171,13 @@ FEsim <- function(x, nsims){
   return(dat)
 }
 
+# Dat is the result of FEsim
+# scale is the multiplier for the width of the confidence intervals
+# var is a character of the name ("mean" or "median")
+# sd is a character of the name for the confidence interval
+# sigmaScale is a scalar to transfrm the random effects by
+# oddsRatio --> logical, should oddsRatios be calculated
+# labs -> custom X axis label
 plotMCMCfe <- function(dat, scale, var, sd, sigmaScale = NULL, oddsRatio = FALSE) {
   if(!missing(sigmaScale)){
     dat[, sd] <- dat[, sd] / sigmaScale
@@ -250,11 +251,6 @@ lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
 # http://stat.columbia.edu/~jcliu/paper/HierarchicalPrior.pdf
 # http://www.stat.columbia.edu/~radon/paper/paper.pdf (example)
 
-# Plot the fixed effects
-
-
-
-# Plot the random effects
 # Dat is the result of REsim
 # scale is the multiplier for the width of the confidence intervals
 # var is a character of the name ("mean" or "median")
@@ -301,6 +297,86 @@ plotMCMCre <- function(dat, scale, var, sd, sigmaScale = NULL, oddsRatio = FALSE
 RMSE.loess <- function(m){
   sqrt(sum(m$residuals^2)/length(m$residuals))
 }
+
+substEffSimFE <- function(mod, var, ncases, unscale = NULL, ...){
+  # var should be a character, name of variable in model
+  # ncases is integer
+  # mod is a merMod
+  cases <- mod@frame[sample(1:nrow(mod@frame), ncases),]
+  cases$caseID <- 1:nrow(cases)
+  varLength <- length(unique(mod@frame[, var]))
+  if(varLength < 30){
+    jitters <- unique(mod@frame[, var])
+  } else {
+    jitters <- quantile(mod@frame[, var], probs=seq(0,1, by =0.05))
+  }
+  simvals <- expand.grid(caseID = unique(cases$caseID), newvar = jitters)
+  plotdf <- merge(cases, simvals)
+  plotdf$oldvar <- plotdf[, var]
+  plotdf[, var] <- plotdf$newvar
+  plotdf$newvar <- NULL
+  plotdf <- cbind(plotdf, easyPredCI(mod, newdata=plotdf, ...))
+  if(missing(unscale)){
+    return(plotdf)
+  } else {
+    stopifnot(class(unscale) == "matrix")
+    plotdf$newvarUnscale <- (plotdf[, var] * 2 * unscale[var, 2]) + unscale[var, 1]
+    return(plotdf)
+  }
+}
+
+
+substEffSimRE <- function(mod, var, ncases, ...){
+  # var should be a character, name of variable in model
+  # ncases is integer
+  # mod is a merMod
+  cases <- mod@frame[sample(1:nrow(mod@frame), ncases),]
+  cases$caseID <- 1:nrow(cases)
+  varLength <- length(unique(mod@frame[, var]))
+  jitters <- unique(mod@frame[, var])
+  simvals <- expand.grid(caseID = unique(cases$caseID), newvar = jitters)
+  plotdf <- merge(cases, simvals)
+  plotdf$oldvar <- plotdf[, var]
+  plotdf[, var] <- plotdf$newvar
+  plotdf <- cbind(plotdf, easyPredCI(mod, newdata=plotdf, re = TRUE))
+  return(plotdf)
+}
+
+
+easyPredCI <- function(model, newdata, alpha=0.05, re = NULL) {
+  # From https://rpubs.com/bbolker/glmmchapter
+  ## baseline prediction, on the linear predictor (logit) scale:
+  if(missing(re)){
+    pred0 <- predict(model, re.form = NA, newdata=newdata)
+  } else{
+    pred0 <- predict(model, newdata=newdata)
+  }
+  ## fixed-effects model matrix for new data
+  X <- model.matrix(formula(model,fixed.only=TRUE)[-2],
+                    newdata)
+  beta <- fixef(model) ## fixed-effects coefficients
+  V <- vcov(model)     ## variance-covariance matrix of beta
+  pred.se <- sqrt(diag(X %*% V %*% t(X))) ## std errors of predictions
+  ## inverse-link (logistic) function: could also use plogis()
+  linkinv <- model@resp$family$linkinv
+  ## construct 95% Normal CIs on the link scale and
+  ##  transform back to the response (probability) scale:
+  crit <- -qnorm(alpha/2)
+  linkinv(cbind(lwr = pred0 - crit * pred.se,
+                upr = pred0 + crit * pred.se, 
+                yhat = pred0))
+}
+
+### Boot CI for merMod
+# set.seed(101)
+# bb <- bootMer(fullmodMMni,
+#               FUN=function(x)
+#               predict(x,re.form=NA,newdata=seplotdf,type="response"),
+#               nsim=5)
+# 
+# cpredboot1.CI <- t(sapply(1:4,
+#        function(i)
+#          boot.ci(bb,type="perc",index=i)$percent[4:5]))
 
 # subst_eff_plot<-function(x){
 #   c<-coef(x)
