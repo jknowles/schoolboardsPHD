@@ -1852,12 +1852,46 @@ glmDtab
 
 \subsection{Model Specification Tests}
 
-<<hausmantest, eval=FALSE>>=
-phtest_glmer(policyMM, update(policy, . ~. + distid + factor(year)))
-phtest_glmer(politicMM, update(politic, . ~. + distid + factor(year)))
-phtest_glmer(demogsMM, update(demogs, . ~. + distid + factor(year)))
-phtest_glmer(fiscalMM, update(fiscal, . ~. + distid + factor(year)))
-@
+<<hausmantest, eval=TRUE, results='asis'>>=
+phDemog1 <- phtest_glmer(demogsMMd, update(demogsD, . ~. + distid))
+phDemog2 <- phtest_glmer(demogsMMni, update(demogsNI, . ~. + distid))
+phDemog3 <- phtest_glmer(demogsMMCon, update(demogsCon, . ~. + distid))
+
+phPolicy1 <- phtest_glmer(policyMMd, update(policyD, . ~. + distid))
+phPolicy2 <- phtest_glmer(policyMMni, update(policyNI, . ~. + distid))
+phPolicy3 <- phtest_glmer(policyMMCon, update(policyCon, . ~. + distid))
+
+phPolitic1 <- phtest_glmer(politicMMd, update(politicD, . ~. + distid))
+phPolitic2 <- phtest_glmer(politicMMni, update(politicNI, . ~. + distid))
+phPolitic3 <- phtest_glmer(politicMMCon, update(politicCon, . ~. + distid))
+
+phFiscal1 <- phtest_glmer(fiscalMMd, update(fiscalD, . ~. + distid))
+phFiscal2 <- phtest_glmer(fiscalMMni, update(fiscalNI, . ~. + distid))
+phFiscal3 <- phtest_glmer(fiscalMMCon, update(fiscalCon, . ~. + distid))
+
+phFull1 <- phtest_glmer(fullmodMMd, update(fullmodD, . ~. + distid ))
+phFull2 <- phtest_glmer(fullmodMMni, update(fullmodNI, . ~. + distid ))
+phFull3 <- phtest_glmer(fullmodMMCon, update(fullmodCon, . ~. + distid))
+
+results_grid <- expand.grid(spec = c("Demog", "Fiscal", "Policy", "Politic", "Full"), 
+                            var = c("Non-Incumbent", "Contestation", "Defeat"))
+
+pval.ph <- function(x) x$p.value
+ts.ph <- function(x) x$statistic
+df.ph <- function(x) x$parameter
+
+mods <- list(phDemog2, phFiscal2, phPolicy2, phPolitic2, phFull2, 
+             phDemog3, phFiscal3, phPolicy3, phPolitic3, phFull3, 
+             phDemog1, phFiscal1, phPolicy1, phPolitic1, phFull1)
+
+results_grid$pval <- lapply(mods, pval.ph)
+results_grid$test.stat <- lapply(mods, ts.ph)
+results_grid$degfree <- lapply(mods, df.ph)
+names(results_grid) <- c("Model", "Dependent Variable", "Hausman P Value", 
+                         "Chi-Square", "Degrees of Freedom")
+
+kable(results_grid, digits = 3, row.names = FALSE, 
+      caption = "Hausman Specification Test Results for All Models")
 
 @
 
