@@ -3,7 +3,12 @@
 \chapterstyle{deposit}
 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in loadNamespace(name): there is no package called 'RCurl'}}\end{kframe}
+\end{knitrout}
 
 
 \section{Introduction}
@@ -312,7 +317,7 @@ two or three distinct races for school board each year, with each race electing
 multiple winners. Coding individual races was done by 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Dec 14 16:16:33 2014
+% Tue Dec 16 19:25:13 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rllllllllllll}
@@ -616,7 +621,7 @@ year t-1 and year t is also highly correlated.
   0 1792  128
   1  706  405
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Dec 14 16:16:35 2014
+% Tue Dec 16 19:25:16 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -649,7 +654,7 @@ Table \ref{tab:icbydef} shows that in races in which
 at least one of the candidates is not an incumbent incumbent defeat is rare. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Dec 14 16:16:35 2014
+% Tue Dec 16 19:25:16 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -680,7 +685,7 @@ Conditional on this, I then estimate a second stage that voters will have at lea
 one more candidate than total winners -- a choice. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Dec 14 16:16:35 2014
+% Tue Dec 16 19:25:16 2014
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrr}
@@ -1241,11 +1246,7 @@ probability of contestation conditional on changes in those variables.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefplot1-1} \caption[Coefficient Plot for Full Model Fixed Effects]{Coefficient Plot for Full Model Fixed Effects\label{fig:fixefplot11}}
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefplot1-2} \caption[Coefficient Plot for Full Model Fixed Effects]{Coefficient Plot for Full Model Fixed Effects\label{fig:fixefplot12}}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefplot1-1} \caption[Coefficient Plot for Full Model Fixed Effects]{Coefficient Plot for Full Model Fixed Effects\label{fig:fixefplot1}}
 \end{figure}
 
 
@@ -1270,7 +1271,7 @@ that vary over time across all districts.
 Across year effects.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefSub2-1} \caption[Substantive Effect on Contestation for Selected Variables]{Substantive Effect on Contestation for Selected Variables\label{fig:fixefSub2}}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefSubYear-1} \caption[Substantive Effect on Contestation for Years]{Substantive Effect on Contestation for Years\label{fig:fixefSubYear}}
 \end{figure}
 
 
@@ -1508,6 +1509,33 @@ Computing is fun.
 
 \subsection{Model Specification Tests}
 
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Tue Dec 16 19:39:40 2014
+\begin{table}[ht]
+\centering
+\begin{tabular}{llrrr}
+  \hline
+Model & Dependent Variable & Hausman P Value & Chi-Square & Degrees of Freedom \\ 
+  \hline
+Demog & Non-Incumbent & 0.992 & 5.621 & 16.0 \\ 
+  Fiscal & Non-Incumbent & 0.978 & 10.044 & 21.0 \\ 
+  Policy & Non-Incumbent & 0.857 & 14.287 & 21.0 \\ 
+  Politic & Non-Incumbent & 0.345 & 25.099 & 23.0 \\ 
+  Full & Non-Incumbent & 0.344 & 35.661 & 33.0 \\ 
+  Demog & Contestation & 0.543 & 14.753 & 16.0 \\ 
+  Fiscal & Contestation & 0.691 & 17.322 & 21.0 \\ 
+  Policy & Contestation & 0.260 & 24.699 & 21.0 \\ 
+  Politic & Contestation & 0.177 & 30.243 & 24.0 \\ 
+  Full & Contestation & 0.193 & 40.910 & 34.0 \\ 
+  Demog & Defeat & 0.746 & 11.974 & 16.0 \\ 
+  Fiscal & Defeat & 0.888 & 13.554 & 21.0 \\ 
+  Policy & Defeat & 0.423 & 21.597 & 21.0 \\ 
+  Politic & Defeat & 0.525 & 20.936 & 22.0 \\ 
+  Full & Defeat & 0.553 & 30.287 & 32.0 \\ 
+   \hline
+\end{tabular}
+\caption{Hausman Specification Test Results for All Models} 
+\end{table}
 
 
 
@@ -1516,3 +1544,22 @@ Computing is fun.
 
 
 
+
+% 
+% \begin{table}[h!]
+% \begin{center}
+% \begin{small}
+% \caption{Descriptive Models of Candidate Emergence}
+% \label{tab:emergenceDmodels}
+% \begin{tabular}{| p{.1\textwidth} | p{.4\textwidth} | p{.35\textwidth} |}
+% \hline
+% \textbf{Model}  & \textbf{Predictors} & \textbf{Interpretation} \\ \hline
+% Fiscal   & revenue limit, tax rate, median income, referenda & If the model is explanatory, fiscal forces may motivate candidates\\ \hline
+% Politics & Lagged contestation, lagged primary, cumulative debt referenda, political division, lagged referendum & Political activity \\ \hline
+% %Fiscal Revolt & \citet{RefWorks:297,RefWorks:271} & Union membership as share of electorate drives up turnout \\ \hline
+% Policy & teacher compensation, referenda attempts & Unsure \\ \hline 
+% Controls & District population, white \%,  median income & To control for differences in contexts \\ \hline
+% \end{tabular}
+% \end{small}
+% \end{center}
+% \end{table}

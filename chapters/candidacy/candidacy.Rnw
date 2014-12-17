@@ -1207,8 +1207,8 @@ moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
 
 # Save scale parameters 
 nums <- sapply(moddat, is.numeric)
-ScaleMeans <- apply(moddat[, nums], 2, mean)
-ScaleSD <- apply(moddat[, nums], 2, sd)
+ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
+ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
 moddatScale <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 #Rescale
 library(arm)
@@ -1477,7 +1477,7 @@ confInts <- confint(bmProf, level = .95)
 
 \subsection{Incumbent Defeat}
 
-<<incdefeatGLM, eval=FALSE, results='hide'>>=
+<<incdefeatGLM, eval=TRUE, results='hide'>>=
 moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
                               moddat$incumShare != min(moddat$incumShare),]
 
@@ -1532,17 +1532,17 @@ coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +",
                "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
-glmDtab <- apsrtable(demogsD, politicD, fiscalD, policyD, fullmodD, se = "robust", 
-          float = "longtable",
-          label="tab:glmModsD", 
-          omitcoef=list("year", 
-                        expression(grep("year", coefnames, value = TRUE))), 
-          model.names=c("Demog.", "Politic", 
-                        "Fiscal",
-                        "Policy", "Full"), 
-          caption = "Logit Models of Incumbent Defeat in School Board Elections",
-          notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames2)
+# glmDtab <- apsrtable(demogsD, politicD, fiscalD, policyD, fullmodD, se = "robust", 
+#           float = "longtable",
+#           label="tab:glmModsD", 
+#           omitcoef=list("year", 
+#                         expression(grep("year", coefnames, value = TRUE))), 
+#           model.names=c("Demog.", "Politic", 
+#                         "Fiscal",
+#                         "Policy", "Full"), 
+#           caption = "Logit Models of Incumbent Defeat in School Board Elections",
+#           notes = list(stars.note, rescalenote),
+#           Sweave=FALSE, digits = 3, coef.names = coefnames2)
 
 @
 
@@ -1621,7 +1621,6 @@ p3 <- plotMCMCfe(simPlot[simPlot$dv == "Defeat", ], scale = 2,
            var = "meanEff", sd = "sdEff") + labs(title = "Incumbent Defeat")+ 
   theme_dpi(base_size = 12)
 
-plotMCMCfe(simPlot, scale = 2, var = "meanEff", sd = "sdEff")
 
 grid.arrange(p1, p2, p3, nrow = 1)
 
@@ -1651,19 +1650,51 @@ characteristics that do not vary within districts over time, and of characterist
 that vary over time across all districts. 
 
 Across year effects.
-<<fixefSub2, fig.cap="Substantive Effect on Contestation for Selected Variables">>=
-seplotdf <- substEffSimFE(fullmodMMni, "year", ncases = 12L, re = TRUE, alpha = 0.1)
+<<fixefSubYear, fig.cap="Substantive Effect on Contestation for Years">>=
+seplotdf <- substEffSimFE(fullmodMMni, "year", ncases = 4L, re = TRUE, alpha = 0.1)
 
-ggplot(seplotdf, aes(x = year, y = yhat)) +
+p1 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
   geom_line(aes(group = caseID)) + 
     geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
                      alpha=0.4) + 
   geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
   geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
-  facet_wrap(~caseID) +
+  facet_wrap(~caseID, nrow=1) +
   theme_dpi(base_size=12) + 
   theme(strip.text = element_blank(), strip.background = element_blank()) +  
   labs(x = "Year", y = "Pr(Non-Incumbent)", title= "Year Effect Across Observations")
+
+
+seplotdf <- substEffSimFE(fullmodMMCon, "year", ncases = 4L, re = TRUE, alpha = 0.1)
+
+p2 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
+                     alpha=0.4) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
+  facet_wrap(~caseID, nrow=1) +
+  theme_dpi(base_size=12) + 
+  theme(strip.text = element_blank(), strip.background = element_blank()) +  
+  labs(x = "Year", y = "Pr(Contested)", title= "Year Effect Across Observations")
+
+
+seplotdf <- substEffSimFE(fullmodMMd, "year", ncases = 4L, re = TRUE, alpha = 0.1)
+
+p3 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
+                     alpha=0.4) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
+  facet_wrap(~caseID, nrow=1) +
+  theme_dpi(base_size=12) + 
+  theme(strip.text = element_blank(), strip.background = element_blank()) +  
+  labs(x = "Year", y = "Pr(Inc. Defeat)", title= "Year Effect Across Observations")
+
+
+grid.arrange(p1, p2, p3, ncol = 1)
+
 
 @
 
@@ -1890,8 +1921,8 @@ results_grid$degfree <- lapply(mods, df.ph)
 names(results_grid) <- c("Model", "Dependent Variable", "Hausman P Value", 
                          "Chi-Square", "Degrees of Freedom")
 
-kable(results_grid, digits = 3, row.names = FALSE, 
-      caption = "Hausman Specification Test Results for All Models")
+print(xtable(results_grid, digits = c(0,0, 0, 3, 3, 1),
+      caption = "Hausman Specification Test Results for All Models"))
 
 @
 
