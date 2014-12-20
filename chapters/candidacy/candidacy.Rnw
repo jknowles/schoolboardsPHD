@@ -580,9 +580,9 @@ fiscalIdx <- c("PROPERTYTAX_REV_SHARE", "balance_member_lag", "TCEC_MEMBER", "TE
 
 #eqv_member
 
-politicIdx <- c("recentTwoPartyShareDem", "incumRun", "nraces", "partyDivisionRecent", "nwins",
-                "teachShareofVoters", "overrideYesPer", "turnoutLag2", 
-                "fallTurnout")
+politicIdx <- c("recentTwoPartyShareDem", "incumRun", "nraces", 
+                "partyDivisionRecent", "nwins", "teachShareofVoters", 
+                "overrideYesPer", "fallTurnout")
 
 # ggpairs(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout),], 
 #         columns = which(names(dist_turn) %in% fiscalIdx), 
@@ -729,7 +729,7 @@ races$contestSer <- 0
 races$contestSer[(races$nrealcand - races$nminor) > races$nwins] <- 1
 races$incumbOnly <- ifelse(races$nrealcand == races$ninc, 1, 0)
 
-table(dist_turn$contestSer, dist_turn$incDefeats)
+# table(dist_turn$contestSer, dist_turn$incDefeats)
 
 tab1 <- table(dist_turn$onlyIncum, dist_turn$contestSer)
 
@@ -1388,10 +1388,11 @@ stars.note <- apsrtable:::stars.note
 
 
 coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% OOH", "\\% Incumbents", "\\% Yes Rev. Limit", 
+               "\\% White", "\\% OOH", "\\% Incumbents", 
+               "Override Attpt.", "Override Pass", "Debt Ques.", "Debt Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
-               "Balance per Pupil", "Millrate $\\delta$", "\\% Salary - Admin.", 
+               "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
                "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
@@ -1481,7 +1482,8 @@ confInts <- confint(bmProf, level = .95)
 moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
                               moddat$incumShare != min(moddat$incumShare),]
 
-demogsD <- glm(incDefeats ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+demogsD <- glm(incDefeats ~ VAP_adjLOG + per65o + PerBachelorOrAbove + 
+                 per_white_all +
               OOH_share + year, 
               data = moddat3, 
               family = "binomial") #bach and 65o switch?
@@ -1524,25 +1526,25 @@ rescalenote <- "All continuous variables rescaled to center 0
 stars.note <- apsrtable:::stars.note
 
 
-coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
+coefnames3 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
                "\\% White", "\\% OOH", "\\% Incumbents", "\\% Yes Rev. Limit", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
-               "Balance per Pupil", "Millrate $\\delta$", "\\% Salary - Admin.", 
+               "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
                "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
-# glmDtab <- apsrtable(demogsD, politicD, fiscalD, policyD, fullmodD, se = "robust", 
-#           float = "longtable",
-#           label="tab:glmModsD", 
-#           omitcoef=list("year", 
-#                         expression(grep("year", coefnames, value = TRUE))), 
-#           model.names=c("Demog.", "Politic", 
-#                         "Fiscal",
-#                         "Policy", "Full"), 
-#           caption = "Logit Models of Incumbent Defeat in School Board Elections",
-#           notes = list(stars.note, rescalenote),
-#           Sweave=FALSE, digits = 3, coef.names = coefnames2)
+glmDtab <- apsrtable(demogsD, politicD, fiscalD, policyD, fullmodD, se = "robust", 
+          float = "longtable",
+          label="tab:glmModsD", 
+          omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          model.names=c("Demog.", "Politic", 
+                        "Fiscal",
+                        "Policy", "Full"), 
+          caption = "Logit Models of Incumbent Defeat in School Board Elections",
+          notes = list(stars.note, rescalenote),
+          Sweave=FALSE, digits = 3, coef.names = coefnames3)
 
 @
 
@@ -1583,10 +1585,12 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
                         "Policy", "Full"), 
           caption = "Mixed Models of Incumbent Defeat in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames2)
+          Sweave=FALSE, digits = 3, coef.names = coefnames3)
 
 @
 \end{tiny}
+
+\clearpage
 
 \subsection{Substantive Effects}
 
@@ -1604,30 +1608,36 @@ data that has been rescaled. In order to better demonstrate the impact of key
 variables, I provide simulations from the models above that show the impact on the 
 probability of contestation conditional on changes in those variables. 
 
-<<fixefplot1, eval=TRUE, fig.cap="Coefficient Plot for Full Model Fixed Effects">>=
+<<fixefplot1, eval=TRUE, fig.cap="Coefficient Plot for Full Model Fixed Effects",fig.height=8.5, fig.width=8>>=
 sim1 <- FEsim(fullmodMMCon, nsims = 1000); sim1$dv <- "Contest"
 sim2 <- FEsim(fullmodMMni, nsims = 1000); sim2$dv <- "No Incumb."
 sim3 <- FEsim(fullmodMMd, nsims = 1000); sim3$dv <- "Defeat"
 
+
 simPlot <- do.call(rbind, list(sim1, sim2, sim3))
+simPlot$dv <- factor(simPlot$dv, levels = c("No Incumb.", "Contest", "Defeat"))
+alpha <- 1.96
+simPlot$upr <- simPlot$meanEff + (alpha*simPlot$sdEff)
+simPlot$lwr <- simPlot$meanEff - (alpha*simPlot$sdEff)
 
-p1 <- plotMCMCfe(simPlot[simPlot$dv == "Contest", ], scale = 2, 
-           var = "meanEff", sd = "sdEff") + labs(title = "Contestation") + 
-  theme_dpi(base_size = 12)
-p2 <- plotMCMCfe(simPlot[simPlot$dv == "No Incumb.", ], scale = 2, 
-           var = "meanEff", sd = "sdEff") + labs(title = "Incumbent Lockout")+ 
-  theme_dpi(base_size = 12)
-p3 <- plotMCMCfe(simPlot[simPlot$dv == "Defeat", ], scale = 2, 
-           var = "meanEff", sd = "sdEff") + labs(title = "Incumbent Defeat")+ 
-  theme_dpi(base_size = 12)
+simPlot$color <- "Not Sig."
+simPlot$color <- ifelse(simPlot$lwr >0 | simPlot$upr < 0, "Sig", "Not Sig.")
 
-
-grid.arrange(p1, p2, p3, nrow = 1)
+ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr, 
+                    ymin = lwr, color = color)) + 
+  scale_color_brewer(palette = "Dark2") + 
+  geom_point() + geom_errorbar(h=1.5) +
+  geom_hline(yintercept = 0, size = I(1.1), color = I("black"), linetype = 2, 
+             alpha = I(0.6)) +
+  coord_flip() + 
+  facet_wrap(~dv) + 
+  theme_dpi(base_size=12) +theme(legend.position = "bottom") + 
+  labs(x = "Variable", y = "Effect", color = "Stat. Sig.")
 
 # confint(fullmodMMni, method = "Wald", level = 0.9)
 @
 
-<<fixefSub1, fig.cap="Substantive Effect on Contestation for Selected Variables">>=
+<<fixefSub1, fig.cap="Substantive Effect on Contestation Across Cases">>=
 seplotdf <- substEffSimFE(fullmodMMCon, "schoolMillShare", ncases = 12L, 
                           unscale = moddatScale, re = TRUE)
 
@@ -1637,7 +1647,8 @@ ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
                      alpha=0.4) + 
   facet_wrap(~caseID) + 
   geom_rug(data = dist_turn, aes(x = schoolMillShare, y = NULL)) + 
-  theme_dpi(base_size=12)
+  theme_dpi(base_size=12) + 
+  labs(x = "School Millrate Share", y = "Pr(Contested)")
 
 @
 
@@ -1722,6 +1733,7 @@ ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat,
 @
 
 \clearpage
+
 \subsection{Comparisons}
 
 After exploring these effects, the question stands -- which set of variables best 
@@ -1863,19 +1875,19 @@ Computing is fun.
 \subsection{Pooled GLM Model Results}
 
 \begin{tiny}
-<<printGLMni>>=
+<<printGLMni, results='asis'>>=
 glmNItab
 @
 \end{tiny}
 
 \begin{tiny}
-<<printGLMcon>>=
+<<printGLMcon, results='asis'>>=
 glmContab
 @
 \end{tiny}
 
 \begin{tiny}
-<<printGLMd, eval=FALSE>>=
+<<printGLMd, results='asis',eval=TRUE>>=
 glmDtab
 @
 \end{tiny}
@@ -1895,6 +1907,7 @@ phPolicy3 <- phtest_glmer(policyMMCon, update(policyCon, . ~. + distid))
 phPolitic1 <- phtest_glmer(politicMMd, update(politicD, . ~. + distid))
 phPolitic2 <- phtest_glmer(politicMMni, update(politicNI, . ~. + distid))
 phPolitic3 <- phtest_glmer(politicMMCon, update(politicCon, . ~. + distid))
+
 
 phFiscal1 <- phtest_glmer(fiscalMMd, update(fiscalD, . ~. + distid))
 phFiscal2 <- phtest_glmer(fiscalMMni, update(fiscalNI, . ~. + distid))

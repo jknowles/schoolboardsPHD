@@ -47,6 +47,9 @@ get_CL_vcov<-function(model, cluster){
   require(sandwich, quietly = TRUE)
   require(lmtest, quietly = TRUE)
   
+  # NA
+  cluster <- as.character(cluster)
+  
   #calculate degree of freedom adjustment
   M <- length(unique(cluster))
   N <- length(cluster)
@@ -54,7 +57,7 @@ get_CL_vcov<-function(model, cluster){
   dfc <- (M/(M-1))*((N-1)/(N-K))
   
   #calculate the uj's
-  uj  <- apply(estfun(model),2, function(x) tapply(x, cluster, sum))
+  uj  <- apply(estfun(model), 2, function(x) tapply(x, cluster, sum))
   
   #use sandwich to get the var-covar matrix
   vcovCL <- dfc*sandwich(model, meat=crossprod(uj)/N)
