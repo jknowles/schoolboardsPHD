@@ -26,20 +26,25 @@ options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
 \section{The Wisconsin Case}
 
-As noted in Chapter \ref{chap:intro}, this dissertation focuses on a 
-single state -- Wisconsin. Wisconsin is located in the Midwest and ranks 
-23rd among U.S. states in terms of total area, 20th in terms of population size 
-with 5.7 million residents, and has over 420 local school districts.\footnote{All facts from US Census.} Recently, Wisconsin has become a crucial swing state exhibiting a close split 
-between Republican and Democratic voters in presidential politics. Wisconsin, 
-like many other states in the Midwest is a state that grants much of the power and authority 
-in school district decision making to local school boards -- a so-called ``local 
-control'' state. This is also why Wisconsin, in contrast to Southern states for example, 
-has such a large number of school districts with relatively small sizes. 
+This dissertation focuses on school board elections in Wisconsin. Wisconsin is 
+located in the Midwest and ranks 23rd among U.S. states in terms of total area, 
+20th in terms of population size with 5.7 million residents, and has 424 
+school districts.\footnote{All facts from US Census.} Recently, Wisconsin has 
+become a crucial swing state exhibiting a close split 
+between Republican and Democratic voters in presidential politics. 
+
+One differentiating factor for Wisconsin is that like many other states in the 
+Midwest it grants much of the authority in school district decision making to 
+local school boards -- a so-called ``local control'' state. This is also why 
+Wisconsin, in contrast to Southern states for example, has such a large number of 
+school districts serving relatively small populations over relatively small areas. 
 Prior studies of school boards like those of \citet{RefWorks:311,RefWorks:214} have 
 taken place in states with larger school districts and more centralized state 
 control. Thus, Wisconsin serves as a good exemplar for other ``local control'' 
 jurisdictions where school boards have more authority relative to the state 
-government. Another advantage of selecting Wisconsin is the comparative advantage
+government. 
+
+Another advantage of selecting Wisconsin is the comparative advantage
 I have had in gathering the necessary data to study a substantial proportion of the 
 school board races within the state.\footnote{For details on this, see the 
 Appendix \ref{app:data}.} A final advantage is the ability 
@@ -49,18 +54,20 @@ Governor Scott Walker in 2010. Taken together, these advantages mean that the in
 study of school board elections across the entire K-12 educational system in Wisconsin 
 can provide a new perspective on theories of candidate emergence in local elections, 
 voter turnout in non-partisan off-cycle local races, and federalist linkages between 
-state and local governments. 
+state and local governments. Such an in-depth study of a single system can, then, 
+build a foundation on which to advance the study of local governance more broadly 
+\citep{RefWorks:192}. 
 
 In this chapter I address the unique case of Wisconsin by providing a descriptive 
-overview of the legal and the electoral landscape for school board races within 
+overview of the legal, demographic, and historical landscape for school board races within 
 the state. I start by describing the ways in which the laws governing 
 school board races vary from more familiar legislative races. Next, I describe the data 
 I have collected on school board election results in detail and provide descriptive 
 statistics of the frequency of incumbency challenges and open races, voter turnout, 
 and the socio-demographic diversity of the constituencies served by Wisconsin school 
 boards. This overview serves as the groundwork for the three subsequent chapters 
-which examine how well theories of political engagement explain candidate emergence, 
-voter turnout, and policy shifts in school board elections. 
+which examine how well theories of political engagement explain candidate emergenceand voter 
+turnout in school board elections, as well as any subsequent policy shifts. 
 
 \section{Background and Legal Basis of Wisconsin School District Elections}
 \label{sec:wiscolaw}
@@ -75,13 +82,14 @@ a non-partisan elected board independent of other local government
 bodies. The independence of Wisconsin school districts is established in the 
 state constitution and through state law (WI Const. art. X, \S 3 and Wis. Stat 120.10). 
 
-This independence gives Wisconsin school districts considerable power and authority. 
+This independence gives Wisconsin school districts comparatively considerable power and authority. 
 Importantly, school boards administer their own elections and retain their own 
 election records. This represents a serious barrier to studies of school board 
 elections due to the burden associated with collecting and organizing school board 
-elections from over 420 independent administrative entities. This is why previous studies of 
+election results from over 420 independent administrative entities. This is why previous studies of 
 school boards have tended to focus on candidates, random samples of school boards, 
-or on states with county-wide school boards such as North Carolina or Georgia. 
+or on states with county-wide school boards such as North Carolina and Georgia 
+\citep{RefWorks:311,RefWorks:210,RefWorks:214}. 
 
 A benefit of the independence of Wisconsin school boards is the opportunity for study 
 their organizational diversity presents compared to other states. While Wisconsin school 
@@ -99,11 +107,14 @@ ballot preparation, and election announcement is the responsibility of the schoo
 clerk (Wis. Stat \S 120.06 (8)) -- often a role filled by a board member. Primary 
 elections occur if there are more than 
 twice as many candidates as there are members to be elected (Wis. Stat \S 120.06 (7) (b)). 
-School boards may choose to apportion their seats in dramatically different ways 
+School boards may choose to apportion their seats in different ways 
 ranging from a board of 3-9 members each representing the entire district, to a board 
 of 3-11 members each representing either a specific region of the school district or 
-the entire district. The only restriction on the way seats are allocated is that the 
-plan is proposed with a petition by a varying threshold of voters and passed by the board 
+the entire district. Figure \ref{fig:boardsize} shows the sizes of school boards 
+in Wisconsin over the time period being studied. This is calculated using a database 
+of school board members provided by the Wisconsin Association of School Boards (WASB). 
+The only restriction on the way seats are allocated is that the 
+plan is proposed with a petition by a threshold of voters and passed by the board 
 at an annual meeting or through an election (Wis. Stat \S 120.02 (2)). 
 
 
@@ -129,8 +140,8 @@ school districts themselves and gathering school board election results in Wisco
 requires requesting records from individual school districts.\footnote{See Appendix 
 \ref{app:data} and the Appendix \ref{app:log} for details on the request process.} These election records come in many forms and though school boards are required by law to retain 
 these records, the record keeping is often incomplete, unclear, or confusing (Wis. 
-Stat \S 120.06 (8) (g)).\footnote{While a few enterprising county clerks have 
-collected school board election results and made them available online, however these can be incomplete 
+Stat \S 120.06 (8) (g)).\footnote{A few enterprising county clerks have 
+collected school board election results and made them available online, however, these can be incomplete 
 by only including the precincts that are within the county. They also are not official. 
 \citep[personal communication with][]{clerk1}.} In order to conduct this study then, a records 
 request was made to all 424 public school districts in the state of Wisconsin. 
@@ -151,18 +162,20 @@ analysis.
 The median district provided 
 \Sexpr{iNum(median(ddply(races, .(distid), summarise, out = length(unique(year)))[, 2]))} 
 years of records.\footnote{While each district was requested to provide the maximum amount of records legally required to be retained, ten years, many districts were unable to locate complete 
-records going this far back.} Overall, records were provided on \Sexpr{iNum(nrow(races))} school 
-board races involving \Sexpr{iNum(nrow(cand))} candidates in the state. For each election 
+records going this far back.} Figure \ref{fig:yeargraph} shows the number of districts providing 
+records in each year. Overall, records were provided on \Sexpr{iNum(nrow(races))} school 
+board races involving \Sexpr{iNum(nrow(cand))} unique candidates in the state -- many 
+candidates participated in multiple elections. For each election 
 the votes received by each candidate was recorded, as well as whether the candidate 
 won, was an incumbent, was a repeat candidate in the school district, or was a 
-minor candidate. For each race, whether the candidate was running for district 
-wide or regional seat was also recorded. 
+minor candidate -- receiving fewer than 30 total votes. For each race, whether 
+the candidate was running for district wide or regional seat was also recorded. 
 
 Using the names, vote totals, and winners from each school board election allows 
 for the construction of measures of the number of candidates in each election 
 cycle, the number of contested seats, the level of voter participation, and other 
 metrics of electoral activity at the school board level. Importantly, because the 
-data was collected for several years in each district, time-variant trends can be 
+data were collected for several years in each district, time-variant trends can be 
 explored. 
 
 
@@ -221,11 +234,14 @@ continuity <- continuity[, 8:13]
 The good news is that the most crucial period of the sample, from 2007 to 2012, is 
 the period with the most complete set of records. The mean district provided records on 
 \Sexpr{prettyNum(mean(plotdf$races), big.mark=",", digits = 3)} school 
-board races. \Sexpr{iNum(table(rowSums(continuity) >5)[[2]])} districts had 
+board races. Figure \ref{fig:racesgraph} shows the number of races 
+provided by each school district, with the median highlighted by a red vertical line. 
+\Sexpr{iNum(table(rowSums(continuity) >5)[[2]])} districts had 
 a race in each year between 2007 and 2012, while \Sexpr{iNum(table(rowSums(continuity) >5)[[1]])} 
 did not. I distinguish these cases from others by verifying the absence of a ballot 
 for school board, as opposed to the absence of records. 
-
+ 
+\clearpage
 \section{The Diversity of Wisconsin School Districts}
 
 The authority given to school districts in Wisconsin to determine their own electoral 
@@ -266,7 +282,7 @@ selectVars <- c("TOTPOP", "member_aidyear", "econ_disadv_per",
 rnames <- c("Total Population", "Membership", 
             "% FRL", "Millrate", "% Republican", "% Bachelor+", "% White Pop.","Avg Teach. Sal. ($)", 
             "Avg Teach. Fringe ($)", "Median Income ($)", "% Owner Occupied", 
-            "Acct. Balance per Member", "Teacher-Pupil Ratio", "EQV per Member ($100k)")
+            "Acct. Balance per Member", "Teacher-Pupil Ratio", "Property Wealth per Member ($100k)")
 
 a <- round(t(aggregate(mysub[, selectVars], 
                   by = list(sample = mysub$sample), mean, na.rm=TRUE)), digits=2)
@@ -289,8 +305,12 @@ row.names(ab) <- c("Var", rnames)
 @
 
 <<samplecomparisons, results='asis'>>=
+
+tabDigits <- c(0,0,2,2,1,1,1,0,0,0,0,0,2,2)
+tabDigitsMat <- cbind(rep(0, 14), tabDigits, tabDigits, tabDigits, tabDigits)
+tabDigitsMat <- as.matrix(tabDigitsMat, ncol = 5)
 sampleStats <- xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data 
-             from the 2010-2011 school year.", digits = 2)
+             from the 2010-2011 school year.", digits = tabDigitsMat)
 
 align(sampleStats) <- c('p{1.5in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}')
 
@@ -305,15 +325,15 @@ rm(a, b, ab)
 
 As shown in Table \ref{tab:samplecomp}, there is little difference between districts 
 in and out of the sample for the year 2011 on a range of measures of school district 
-characteristics. Politically, the sample and the non-respondents reflect the rest of 
-the state of Wisconsin -- evenly split. The groups have similar levels of student 
+characteristics. The groups have similar levels of student 
 economic disadvantage as measured by eligibility for free and reduced price lunch and 
 similar proportions of minority students in their schools. 
 Their communities have similar levels of income, owner occupied housing, and levels 
 of education. Teacher salary and fringe benefit rates are also nearly identical, as 
-is the teacher-pupil ratio.\footnote{2012 was selected as an exemplar year, but 
+is the teacher-pupil ratio.\footnote{2011 was selected as an exemplar year, but 
 the pattern holds for all available years from 2007-2012, which comprise the focus 
-of this study.} 
+of this study.} The districts also look similar on their partisanship in presidential 
+and gubernatorial elections.
 
 The biggest discrepancy is that sample districts tend to be larger on average than 
 out-of-sample districts in terms of student membership. This is no surprise as the largest 
@@ -324,21 +344,21 @@ is lower. The sample districts tend to have slightly smaller account balances or
 district savings accounts on a per pupil basis which is likely related to their larger size. 
 Finally, sample districts tend to have less property value per member, or taxable 
 assets to raise revenue from, owing to the slightly higher populations of sample 
-districts and the inclusion of all urban areas. All of these differences, however, 
+districts and the inclusion of all urban areas.\footnote{Property value is measured 
+by equalized property value, known as EQV, which is used in the state school funding 
+formula to determine state equalization aid for school districts.} All of these differences, however, 
 are within one standard deviation of the mean from one another and do not represent 
 a significant deviation either statistically or substantively. 
-\clearpage
-\subsection{The Bigs and the Smalls}
+
+\subsection{Exploring the Biggest and Smallest Jurisdictions}
 
 Wisconsin, like other states with independent school districts, has a great diversity 
-in school district size, demographic make up, and structure. To illustrate the wide 
-array of organizations that school boards in Wisconsin govern, I present Tables 
+in school district size and demographics. To illustrate the wide 
+array of communities that school boards in Wisconsin represent, I present Tables 
 \ref{tab:small5} and \ref{tab:big5} describing the five smallest and five largest 
 school districts in Wisconsin and how 
-they compare on the variables above in Table \ref{tab:samplecomp}. These tables are intended 
-to illustrate the range of organizational contexts that govern public K-12 education 
-in Wisconsin and to illustrate the diversity of jurisdictions within which school 
-board members are contesting elections. Table \ref{tab:small5} shows that the smallest 
+they compare on the variables from Table \ref{tab:samplecomp}. Table \ref{tab:small5} 
+shows that the smallest 
 school districts in Wisconsin have fewer than 100 students and fewer than 1,000 
 residents. Smaller districts also tend to be much higher percentage Republican, 
 less low-income, whiter, and have less disparity between the average teacher 
@@ -348,6 +368,10 @@ the electorate is much more Democratic, student poverty is higher, and teacher
 salaries and median incomes are more divergent. 
 
 <<small5, results='asis'>>=
+
+tabDigits <- c(0,0,2,2,1,1,1,0,0,0,0,0,2,2)
+tabDigitsMat <- cbind(rep(0, 14), tabDigits, tabDigits, tabDigits, tabDigits,tabDigits)
+tabDigitsMat <- as.matrix(tabDigitsMat, ncol = 6)
 tmp.mat <- head(mysub[order(mysub$member_aidyear), c("legal_name", selectVars)], 5)
 row.names(tmp.mat) <- tmp.mat[,1]
 tmp.mat <- tmp.mat[,-1]
@@ -360,7 +384,7 @@ small5[11, ] <- small5[11, ] *100
 small5[14, ] <- small5[14, ] * .00001
 
 small5x <-xtable(small5, label="tab:small5", caption = "Some attributes of Wisconsin's 5 smallest school districts. Data 
-             from the 2010-2011 school year.", digits = 2)
+             from the 2010-2011 school year.", digits = tabDigitsMat)
 
 align(small5x) <- c('p{1.25in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}', 'p{.8in}')
 
@@ -382,7 +406,7 @@ big5[11, ] <- big5[11, ] *100
 big5[14, ] <- big5[14, ] * .00001
 
 big5x <- xtable(big5, label="tab:big5", caption = "Some attributes of Wisconsin's 5 largest school districts. Data 
-             from the 2010-2011 school year.", digits = 2)
+             from the 2010-2011 school year.", digits = tabDigitsMat)
 
 align(big5x) <-  c('p{1.25in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}', 'p{.8in}')
 
@@ -419,9 +443,9 @@ General elections for school board members follow the schedule described in Sect
 for school board office including school board member primaries and special elections. 
 School board primaries occur when the number of candidates exceeds twice 
 the number of seats open in a race.\footnote{In Wisconsin first class cities, 
-only Milwaukee during the period of study, a primary must be held whenever there are more than two candidates for 
+only Milwaukee is a first class city during the period of study, a primary must be held whenever there are more than two candidates for 
 a race. Wis. Stat \S 8.11 (2m)} Special 
-elections occur either if a vacancy occurs in a specific window or in a first class 
+elections occur either if a vacancy occurs in a specific window in a first class 
 city, or if a candidate is recalled under Wis. Stat \S 9.10 (1) (a) 
 which states that a petition for recall must be signed by electors equal 
 in number to at least 25\% of the votes cast for the office of President of the United 
@@ -431,7 +455,7 @@ school district election official, who may determine that a reliable count of vo
 is not available and thus may defer to a formula specified in statute to determine the 
 number of petitioners required to initiate a recall. Wis. Stat \S 9.10 (1) (c) to (d). 
 Cited in a Staff Brief by the Joint Legislative Council Special Committee on Election 
-Law Review, October 2004 \url{http://libcd.law.wisc.edu/~wilc/sb/sb\_2004\_07.pdf}} 
+Law Review, October 2004 \url{http://libcd.law.wisc.edu/~wilc/sb/sb\_2004\_07.pdf}}
 A special election is also required to fill a vacancy for board of school directors 
 in the Milwaukee Public School system (MPS) [Wis. Stat \S 8.50 (intro.)]. A 
 special election is not required to fill a vacancy for any other school district - 
@@ -478,10 +502,8 @@ to be 668 - which is roughly the average number of voters who voted for school b
 An additional difficulty was the overlap between many officials involved in the 
 recall process in this small jurisdiction had overlapping responsibilities and allegations 
 of conflicts of interest arose as a result -- leading to appeals to the Wisconsin 
-Governmental Accountability Board.  
-\footnote{For a full account of this 
-particular case, see the Peshtigo Times article online \url{http://www.peshtigotimes.net/?id=12617}} 
-In general, school board elections have fewer primary and special elections than 
+Governmental Accountability Board.\footnote{For a full account of this 
+particular case, see the Peshtigo Times article online \url{http://www.peshtigotimes.net/?id=12617}} In general, school board elections have fewer primary and special elections than 
 their legislative counterparts. This leads to the biggest question in the school 
 board literature from Chapter \ref{chap:intro}. 
 
@@ -520,37 +542,39 @@ of candidacy to register for the election with the election clerk in the school 
 After meeting these requirements the candidate will appear on the spring ballot as 
 a candidate for school board. Outside of first and second class cities, running for school board presents very few barriers to entry for potential candidates. Even 
 within first and second class cities, candidates face lower formal barriers than 
-candidates for legislative or executive office. Coupled with the low cost of school board campaigns, most often fewer than \$1,000, the campaign presents 
-very little friction toward serving on a school board \citep{RefWorks:322}. If we 
+candidates for legislative or executive office. Coupled with the low cost of school board campaigns, most often less than \$1,000, the campaign presents 
+very little impediment toward serving on a school board \citep{RefWorks:322}. If we 
 observe low levels of candidate participation in school board races, then, we must 
 look to other explanations. 
 %TODO: Explain why this is so and how the current study contributes to this
 
-To explore candidate participation, let's consider the pool of school board races between 
+To explore candidate participation, I consider the pool of school board races between 
 2002 and 2012 for which records were successfully obtained. Of the \Sexpr{iNum(nrow(races))}, I focus on the \Sexpr{iNum(nrow(races[races$electiontype == 1,]))} 
 general elections. Of these general election races, 
 \Sexpr{iNum(nrow(races[races$electiontype == 1 & races$nrealcand > 1,]))} feature 
-two or more candidates who either were on the ballot or garnered more than 10 votes.\footnote{
-It is not uncommon in school board races for a write-in candidate to garner well over 10 votes. Thus, candidates not appearing on the ballot but receiving over 10 votes are included in the 
-dataset. Candidates under 10 votes are collapsed into a category of scatter votes.} 
+two or more candidates who both were on the ballot and garnered more than 20 votes.\footnote{
+It is not uncommon in school board races for a write-in candidate to garner well over 20 votes. Thus, candidates not appearing on the ballot but receiving over 20 votes are included in the 
+dataset where their names were reported by the jurisdictions. Candidates under 20 
+votes are collapsed into a category of scatter votes.} 
 However, it is important to note that in many school districts voters select more than 
 one candidate for each seat and elect the top N vote recipients to the board. A 
 better measure of contestation is to see how many races featured more candidates than 
 winners - \Sexpr{iNum(nrow(races[races$electiontype == 1 & races$nrealcand > races$nwins,]))} 
-races featured this, or \Sexpr{iNum(nrow(races[races$electiontype == 1 & races$nrealcand > races$nwins,])/ 
-nrow(races[races$electiontype == 1,])*100)}\% of all races. 
+races featured this, or \Sexpr{iPer((nrow(races[races$electiontype == 1 & races$nrealcand > races$nwins,])/ 
+nrow(races[races$electiontype == 1,]))*100)} of all races. 
 
-Next, let's look at how often incumbents stand for election and how often they are 
+Next, I look at how often incumbents stand for election and how often they are 
 defeated. In order to code incumbency, two data sources were used. First, if a 
 candidate appeared in consecutive races and was coded as a winner in the prior 
-race, they are coded as an incumbent. However, for races that were the beginning 
+race, they are coded as an incumbent. However, for races from the beginning 
 of the dataset, incumbency was coded using a master roster of known school board 
 members provided by the Wisconsin Department of Public Instruction to the author.\footnote{
 This collection is not required or official, but is maintained by the DPI in partnership with 
 the Wisconsin Association of School Boards.} This collection indicates name, school district, 
 and year of service for school board members in Wisconsin. Candidates appearing on the ballot 
 in the early years of a school district's election records were cross referenced against this 
-list to infer their incumbency status. 
+list to infer their incumbency status.\footnote{Details about this procedure can 
+be found in the Appendix \ref{app:log}} 
 
 <<challeng1, echo=FALSE, results='hide'>>=
 nrow(races[races$ninc > 0 & races$electiontype == 1,])
@@ -564,8 +588,8 @@ base <- nrow(races[races$electiontype == 1,])
 
 % More candidates than seats
 
-A basic requirement for voters to express a choice is to have multiple options to 
-choose from. In order to assess this I first identify the number of races where 
+A basic requirement for voters to express an electoral choice is to have multiple 
+candidates to choose amongst. In order to assess this I first identify the number of races where 
 there are more candidates on the ballot than winners. This is a nominal measure 
 of the level of choice that voters are presented with. \Sexpr{iPer(contested/base*100)} 
 of races feature at least one more candidate than the number of winners. However, 
@@ -574,8 +598,10 @@ not provide an indication of the seriousness of the challenge. Merely having
 multiple candidates is not the same as having a contested election. Political scientists 
 focus on serious candidates and quality challengers. Measuring challenger quality 
 in elections is difficult, but particularly difficult in non-partisan 
-off-cycle elections like school boards \citep{oliver12}. In lieu of a better measure, I restrict the sample only to candidates that garner at least 20 votes -- which represents \Sexpr{iPer(20/median(races$votes[races$electiontype==1], na.rm=TRUE)*100)} of the votes cast in the median school board race. 
-This represents arguably a conservative estimate, because in some cases a write-in candidate may garner 20 votes and in larger jurisdictions 20 votes are easier to come by than in smaller jurisdictions. Once I filter out all cases where a candidate received fewer than 20 votes, the level of contestation is \Sexpr{iPer(contestedSer/base*100)} of general election races. In Wisconsin 
+off-cycle elections like school boards where measures of features of individual 
+candidates are difficult to gather or compare across jurisdictions \citep{oliver12}. 
+In lieu of a better measure, I restrict the sample only to candidates that garner at least 20 votes -- which represents \Sexpr{iPer(20/median(races$votes[races$electiontype==1], na.rm=TRUE)*100)} of the total votes cast in the median school board race -- other studies have used cutoffs of 3 or even 
+5\%. This represents arguably a conservative cutoff, because in some cases a write-in candidate may garner 20 votes and in larger jurisdictions 20 votes are easier to come by than in smaller jurisdictions. Once I filter out all cases where a candidate received fewer than 20 votes, the level of contestation is \Sexpr{iPer(contestedSer/base*100)} of general election races. In Wisconsin 
 school board races candidates may appear on the ballot but not garner even 20 votes. Other times, local election records did not distinguish between candidates who declared officially and any 
 candidate who received votes.
 
@@ -596,7 +622,7 @@ In general elections, \Sexpr{iPer((nrow(races[races$ninc > 0 & races$electiontyp
 identifying how many races featured at least one challenger against an incumbent. 
 \Sexpr{iPer(contested/base*100)} of Wisconsin school board general elections featured 
 this pattern of contestation.  %TODO: Check citation here.
-Only \Sexpr{iPer(contestedSer/base*100)} of races featured challengers that received more than 20 votes. \footnote{Some evidence to support the selection of 20 votes is that very few 
+However, only \Sexpr{iPer(contestedSer/base*100)} of races featured challengers that received more than 20 votes. \footnote{Some evidence to support the selection of 20 votes is that very few 
 candidates that appeared on the ballot received fewer than 20 votes -- even in the 
 smallest jurisdictions.} %TODO: Find evidence and count of this. 
 
@@ -604,8 +630,7 @@ Table \ref{tab:incumbentContest} shows the patterns of contestation in Wisconsin
 elections for the period from 2002-2012 for the approximately 400 races in each 
 year. Two trends that appear are the decrease in uncontested incumbents running 
 and contested open seats. Instead, there has been an increase in races featuring 
-an open and uncontested seat. Chapter \ref{chap:candidacy} will investigate this 
-more thoroughly.
+an open and uncontested seat. Chapter \ref{chap:candidacy} will investigate this.
 
 <<incumbtable, echo=FALSE, results='asis'>>=
 
@@ -631,7 +656,7 @@ print(table.tmp, include.rownames=TRUE, size = "small")
 
 % Comparisons
 
-In comparison to school board races, legislative races at both the state and federal 
+In comparison to these school board races, legislative races at both the state and federal 
 level have much higher rates of contestation. In 2012, 10 out of 435 (2.3\%) U.S. House 
 races were uncontested, and none of the 33 U.S. Senate races were uncontested. 
 While these races are considerably more attractive to candidates due to the career and financial 
@@ -646,26 +671,30 @@ nominal contestation and contestation of partisan seats can be explained by the
 competitiveness of the seat (based on redistricting), looking at the contestation 
 levels of primaries might provide a more apt legislative comparison. In the 2014 
 U.S. House midterm primaries, only 314 of the 795 possible major party primaries (39.5\%)
-were contested. \footnote{Ballotpedia. \url{http://ballotpedia.org/National_contested\_primary\_average\_during\_the\_2014\_U.S.\_congressional_elections}} This figure is on par with the level of 
-contestation seen in school board elections. 
+were contested.\footnote{Ballotpedia. \url{http://ballotpedia.org/National_contested\_primary\_average\_during\_the\_2014\_U.S.\_congressional_elections}} This figure is on par with the level of 
+contestation seen in school board elections in Table \ref{tab:incumbentContest}. 
 
-%TODO: Compare primaries, how often are they contested vs. school board?
-
-Candidates have many fewer reasons to run for school board. Despite the low barrier 
-of entry, serving on a school board is much less prestigous than other offices, 
-requires attending evening meetings, and in most cases offers only a modest stipend 
-and no benefits \citep{RefWorks:321,RefWorks:322}. 
-
-% Some more discussion here
+The similar levels of contestation between partisan primaries and school board 
+races serves as an interesting background to explore why boards are contested 
+so rarely. The barrier to entry in a school board race is quite low when compared to a 
+partisan primary for a major party. However, relative to legislative office, candidates 
+have seemingly many fewer reasons to run for school board -- a narrow issue portfolio, 
+low media exposure, and little to no money or fame \citep{RefWorks:321,RefWorks:322}. 
+Despite this, both a primary race and a school board race are characterized by 
+smaller electorates, lower information available to voters, and an off-cycle election 
+seat. 
 
 \subsubsection{Close Races}
 
 In Table \ref{tab:incumbentContest} we see that school board elections are contested more often than the literature from Chapter \ref{chap:intro} would lead us to believe. In fact, 
 school board races are about as contested as partisan primaries for Congress. However, 
 Table \ref{tab:incumbentContest} represents an overestimate of contestation by 
-using a generous definition of a serious contest. Another way to look at this is 
-to look at the differential vote share between winners and losers and count the 
-number of close races that have occurred in Wisconsin.  
+using a generous definition of a serious contest. As with other studies of electoral 
+competitiveness, it is important to consider not just the presence of alternative 
+candidates, but of serious challenges. Ideally, this would mean developing a priori 
+judgments of the fitness of individual candidates for office. Chapter \ref{chap:candidacy} 
+will explore this issue further, but for an overview one method is to analyze the 
+the number of close races that have occurred in Wisconsin during this period. 
 
 <<votemargin1>>=
 cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
@@ -698,16 +727,17 @@ iNum <- function(x){prettyNum(x, big.mark = ",", small.mark = ".",
                                            digits = 0)}
 @
 
-For an analysis of the intensity of competitiveness in school board races, we turn 
-our attention to races where voters have a choice -- those with serious candidates 
-on the ballot. As we saw above, this is a much smaller subset of all races than 
+For an analysis of the intensity of competitiveness in school board races, I turn my 
+attention to races where voters have a choice -- those with serious candidates 
+on the ballot. As shown above, this is a much smaller subset of all races than 
 the corresponding restriction would be for state or federal legislative offices. 
 I restrict the sample to the 
-\Sexpr{iPer(nrow(plotdf[plotdf$nrealcand > plotdf$winners,])/nrow(plotdf) * 100)} of 
-general election races that feature more real candidates than winners. These races 
+\Sexpr{iPer(nrow(plotdf[plotdf$cand > plotdf$winners,])/nrow(plotdf) * 100)} of 
+general election races that feature more serious candidates than winners -- those 
+who appear on the ballot and garner more than 20 votes. These races 
 are most commonly for one, two, or three seats simultaneously. These multi-member 
 districts pose a challenge in calculating the win margin and making comparisons 
-across races with differing expected pluralities. 
+of the closeness of races across jurisdictions with differing expected pluralities. 
 
 Figure \ref{fig:winsandcandidatestable} shows the distribution of school board 
 races by the number of winners and the number of candidates. From this figure 
@@ -733,6 +763,19 @@ Maximum Value & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}
 \end{footnotesize}
 \end{center}
 \end{table}
+
+% One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
+% ENP = 1 / sum(votes_share[candidate] ^2)
+
+% Expectation of M+1 serious candidates in an M seat district (Cox electoral rules)
+% Extension of Duverger's Law
+
+% Droop quota = (total votes / total seats + 1) + 1
+% Hagenbach-Bischoff Quota (total votes/ total seats + 1)
+
+% Create psuedo-districts Jackman Winsky
+
+% Consider partial versus full contestation
 
 One method to do this is to take the share of votes won by each candidate as a start 
 by taking votes for one candidate over the total votes cast in the election.\footnote{All 
@@ -769,7 +812,7 @@ negative win margin from the expected total.
 
 %TODO: Find an example for the above
 
-<<winsandcandidatestable, echo=FALSE, fig.cap="Distribution of School Board Races by Candidates and Winners.">>=
+<<winsandcandidatestable, echo=FALSE, fig.cap="Distribution of School Board Races by Candidates and Winners.", fig.width=6, fig.height=6>>=
 plotdf <- merge(plotdf, races, by = "raceid2", all.x=TRUE)
 plotdf <- plotdf[plotdf$winmargin3 > -.1, ]
 
@@ -778,11 +821,12 @@ mytab <- table(plotdf$nrealcand, plotdf$winners)
 mytab <- reshape2::melt(mytab)
 mytab$value2 <- mytab$value / sum(mytab$value)
 mytab$value2LABEL <- paste0(round(mytab$value2, 3)*100, "%")
+mytab <- mytab[mytab$Var1 <= 6,]
 ggplot(mytab, aes(Var1, Var2)) + geom_tile(aes(fill = value2), color = I('gray80')) + 
   scale_fill_gradient(low = "white", high = "gray50", guide = "none") + 
   geom_text(aes(label = value2LABEL)) + 
-  scale_x_continuous(breaks = c(0:max(mytab$Var1))) + 
-  scale_y_continuous(breaks = c(0:max(mytab$Var2))) + theme_bw() + 
+  scale_x_continuous(breaks = c(0:6)) + 
+  scale_y_continuous(breaks = c(0:6)) + theme_bw() + 
   theme(panel.grid = element_blank()) + 
   labs(x = "Serious Candidates", y = "Winners", 
        title = "Distribution of Races by Winners and Candidates")
@@ -790,7 +834,7 @@ ggplot(mytab, aes(Var1, Var2)) + geom_tile(aes(fill = value2), color = I('gray80
 @
 
 
-<<winmarginplots, echo=FALSE, fig.cap="Win Margin in Competitive School Board Races.">>=
+<<winmarginplots, echo=FALSE, fig.cap="Win Margin in Contested School Board Races.">>=
 qplot(year, winmargin3, 
       data = plotdf[plotdf$cand > plotdf$winners & 
                       plotdf$year > 2001 & plotdf$year < 2013,], 
@@ -803,10 +847,12 @@ qplot(year, winmargin3,
 
 Figure \ref{fig:winmarginplots} shows that contested school board races do not tend 
 to be that close. On average, fewer than 25\% of the contested races have a win 
-margin of less than 5 percentage points as indicated by the blue line. The average race sees the 
-winners securing about 10 percentage points more votes than the losers. Thus, while 
-school board races may have some level of contestation, the intensity of that 
-contestation is called into doubt. 
+margin of less than 5 percentage points as indicated by the dotted blue line. The 
+dashed red line represents a win margin of 0 percentage points -- a dead heat. The 
+average race sees the winners securing about 10 percentage points more votes than 
+the losers. Thus, while school board races may have some level of contestation, the 
+intensity of that contestation is called into doubt. Note that 2011 and 2012 represent 
+the two spring elections in Scott Walker's first term and post the passage of Act 10.
 
 % \subsubsection{Scattered Votes}
 % 

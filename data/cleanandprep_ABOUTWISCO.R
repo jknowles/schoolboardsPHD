@@ -110,7 +110,7 @@ asinh_trans <- function(){
 
 distnames <- read.csv("data/cache/districtadmin0211.csv")
 distnames <- distnames[, c("district", "district_name", "legal_name")]
-distnames <- distnames[!duplicated(distnames),]
+distnames <- distnames[!duplicated(distnames$district),]
 FULLDAT <- merge(FULLDAT, distnames, by.x = "distid", by.y = "district")
 rm(distnames)
 
