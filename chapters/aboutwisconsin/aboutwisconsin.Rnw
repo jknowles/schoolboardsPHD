@@ -689,12 +689,17 @@ seat.
 In Table \ref{tab:incumbentContest} we see that school board elections are contested more often than the literature from Chapter \ref{chap:intro} would lead us to believe. In fact, 
 school board races are about as contested as partisan primaries for Congress. However, 
 Table \ref{tab:incumbentContest} represents an overestimate of contestation by 
-using a generous definition of a serious contest. As with other studies of electoral 
-competitiveness, it is important to consider not just the presence of alternative 
-candidates, but of serious challenges. Ideally, this would mean developing a priori 
-judgments of the fitness of individual candidates for office. Chapter \ref{chap:candidacy} 
-will explore this issue further, but for an overview one method is to analyze the 
-the number of close races that have occurred in Wisconsin during this period. 
+using a generous definition of a contest -- the presence of a nominal challenge. 
+As with other studies of electoral competitiveness, it is important to consider not 
+just the presence of alternative candidates, but of serious challenges. Ideally, 
+this would mean developing a priori judgments of the fitness of individual candidates 
+for office and polling information on the preferences of voters ahead of the 
+campaign. Such measures as unavailable in the current study. Instead, I turn to 
+measures of the margin of victory as a proxy for pre-election voter preferences. 
+
+Chapter \ref{chap:candidacy} will explore this measurement in further depth, but here 
+I pause to review some possible measures of electoral margin in cases of non-partisan 
+multi-member districts. 
 
 <<votemargin1>>=
 cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
@@ -729,24 +734,19 @@ iNum <- function(x){prettyNum(x, big.mark = ",", small.mark = ".",
 
 For an analysis of the intensity of competitiveness in school board races, I turn my 
 attention to races where voters have a choice -- those with serious candidates 
-on the ballot. As shown above, this is a much smaller subset of all races than 
-the corresponding restriction would be for state or federal legislative offices. 
-I restrict the sample to the 
+on the ballot. I restrict the sample to the 
 \Sexpr{iPer(nrow(plotdf[plotdf$cand > plotdf$winners,])/nrow(plotdf) * 100)} of 
 general election races that feature more serious candidates than winners -- those 
-who appear on the ballot and garner more than 20 votes. These races 
-are most commonly for one, two, or three seats simultaneously. These multi-member 
-districts pose a challenge in calculating the win margin and making comparisons 
-of the closeness of races across jurisdictions with differing expected pluralities. 
-
-Figure \ref{fig:winsandcandidatestable} shows the distribution of school board 
+who appear on the ballot and garner more than 20 votes. Figure 
+\ref{fig:winsandcandidatestable} shows the distribution of school board 
 races by the number of winners and the number of candidates. From this figure 
-it is clear that while a plurality of races feature 1 or 2 winners and only 1 or 
-2 candidates the method for calculating vote margin has to be robust to a wide 
+it is clear that a plurality of races feature 1 or 2 winners and only 1 or 
+2 candidates, however, the method for calculating vote margin has to be robust to a wide 
 array of combinations of candidates receiving votes and number of winners for the 
 seat. Table \ref{tab:votemargincalc} describes the ways of dealing with this in 
-calculating the margin of victory in school board races. 
-
+calculating the margin of victory in school board races.\footnote{Chapter \ref{chap:candidacy} 
+will discuss the virtues of these methods in more depth as well as why other methods 
+are not included here.} 
 
 \begin{table}[h!]
 \begin{center}
@@ -755,15 +755,37 @@ calculating the margin of victory in school board races.
 \label{tab:votemargincalc}
 \begin{tabular}{| p{.2\textwidth} | p{.45\textwidth} | p{.175\textwidth}| p{.175\textwidth}|}
 \hline
-\textbf{Name}  & \textbf{Method} & \textbf{Pros} & \textbf{Cons} \\ \hline
-Share by Each  & $\sum \frac{votes_{iw}}{votes_{total}} - \sum \frac{votes_{il}}{votes_{total}}$ & Clean & Biased by lopsided races \\ \hline
-Two-Means & $\frac{\sum \frac{votes_{iw}}{votes_{total}}}{n_{winners}} - \frac{\sum \frac{votes_{il}}{votes_{total}}}{n_{losers}}$ & Intuitive & Biased by lopsided races   \\ \hline
-Maximum Value & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$ & Normalized & Not intuitive \\ \hline
+\textbf{Name}  & \textbf{Description} & \textbf{Formula} & \textbf{Citation} \\ \hline
+Vote Margin  & Minimum votes needed for a losing candidate to win & $min(votes_{winner}) - max(votes_{loser})$ & \citet{VoteCalculus68,RefWorks:351,cox88} \\ \hline
+Hare Quota Difference & Average Distance of Winners from Minimum Winning Vote Count & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$  & \citet{Jesse1999323}   \\ \hline
+Blais-Lagos Quotient & Adjustment of Vote Margin to Normalize Across District Types & 100 X VoteMargin/TotalVotes/Seats & \citet{blaislago} \\ \hline
 \end{tabular}
 \end{footnotesize}
 \end{center}
 \end{table}
 
+
+% -----------------------------------------------------------------------------
+% \begin{table}[h!]
+% \begin{center}
+% \begin{footnotesize}
+% \caption{Methods of Calculating Vote Margin}
+% \label{tab:votemargincalc}
+% \begin{tabular}{| p{.2\textwidth} | p{.45\textwidth} | p{.175\textwidth}| p{.175\textwidth}|}
+% \hline
+% \textbf{Name}  & \textbf{Method} & \textbf{Pros} & \textbf{Cons} \\ \hline
+% Share by Each  & $\sum \frac{votes_{iw}}{votes_{total}} - \sum \frac{votes_{il}}{votes_{total}}$ & Clean & Biased by lopsided races \\ \hline
+% Two-Means & $\frac{\sum \frac{votes_{iw}}{votes_{total}}}{n_{winners}} - \frac{\sum \frac{votes_{il}}{votes_{total}}}{n_{losers}}$ & Intuitive & Biased by lopsided races   \\ \hline
+% Maximum Value & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$ & Normalized & Not intuitive \\ \hline
+% \end{tabular}
+% \end{footnotesize}
+% \end{center}
+% \end{table}
+% -----------------------------------------------------------------------------
+
+% ------------------------------------------------------------
+%% Move to candidacy section
+%----------------------------------------------------------------
 % One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
 % ENP = 1 / sum(votes_share[candidate] ^2)
 
@@ -774,8 +796,8 @@ Maximum Value & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}
 % Hagenbach-Bischoff Quota (total votes/ total seats + 1)
 
 % Create psuedo-districts Jackman Winsky
-
 % Consider partial versus full contestation
+%---------------------------------------------------------------
 
 One method to do this is to take the share of votes won by each candidate as a start 
 by taking votes for one candidate over the total votes cast in the election.\footnote{All 
