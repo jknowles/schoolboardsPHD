@@ -722,6 +722,20 @@ xtable(round(cor(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout),
 \clearpage
 \subsection{Dependent Variables}
 
+
+% One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
+% ENP = 1 / sum(votes_share[candidate] ^2)
+
+% Expectation of M+1 serious candidates in an M seat district (Cox electoral rules)
+% Extension of Duverger's Law
+
+% Droop quota = (total votes / total seats + 1) + 1
+% Hagenbach-Bischoff Quota (total votes/ total seats + 1)
+
+% Create psuedo-districts Jackman Winsky
+% Consider partial versus full contestation
+%---------------------------------------------------------------
+
 <<nonincumbent2, results='asis'>>=
 races$contestMinor <- 0
 races$contestMinor[races$nrealcand > races$nwins] <- 1

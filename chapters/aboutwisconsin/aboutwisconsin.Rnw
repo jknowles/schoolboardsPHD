@@ -19,9 +19,6 @@ library(scales)
 library(xtable)
 library(data.table)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
-
-
-
 @
 
 \section{The Wisconsin Case}
@@ -711,19 +708,29 @@ votes.tmp <- merge(cand.tmp, as.data.frame(races)[races$nwins >0, c("raceid2", "
 
 votes.tmp$vote_share <- votes.tmp$votes.cand / votes.tmp$votes.race
 votes.tmp$vote_share[is.na(votes.tmp$vote_share)] <- 0
+votes.tmp$hareQuota <- votes.tmp$votes.race / (votes.tmp$nwins + 1)
+
 plotdf <- as.data.table(votes.tmp)[, list(cand = length(winner), 
                                           winners = sum(winner),
                                           votescast = sum(votes.cand, na.rm=TRUE),
+                                          minWinVotes = min(votes.cand[winner == 1], na.rm=TRUE),
+                                          maxLoseVotes = max(votes.cand[winner == 0], na.rm=TRUE),
                                           winnerVotes = sum(votes.cand[winner == 1], na.rm=TRUE),
                                           winshare = sum(vote_share[winner ==1], na.rm=TRUE),
-                                          totalvoteshare = sum(vote_share, na.rm=TRUE),
-    winmargin = sum(vote_share[winner == 1], na.rm=TRUE) - sum(vote_share[winner == 0], na.rm=TRUE),
-    winmargin2 = mean(vote_share[winner==1], na.rm=TRUE) - mean(vote_share[winner == 0], na.rm=TRUE)), 
+                                          totalvoteshare = sum(vote_share, na.rm=TRUE), 
+                          hareQuotaDeltaWinners = mean(votes.cand[winner ==1] - hareQuota[winner==1])),
                                    by = c("raceid2")]
-plotdf$winmargin3 <- plotdf$winshare - (1/plotdf$cand * plotdf$winners)
-plotdf$winmargin3[plotdf$cand == plotdf$winners] <- .5
 
-errors <- subset(plotdf, winmargin < 0)
+plotdf$minWinVotes[!is.finite(plotdf$minWinVotes)] <- 0
+plotdf$maxLoseVotes[!is.finite(plotdf$maxLoseVotes)] <- 0
+plotdf$voteMargin <- plotdf$minWinVotes - plotdf$maxLoseVotes
+plotdf$blaisLago <- 100 * (plotdf$voteMargin / plotdf$votescast / plotdf$winners)
+plotdf$hareQuota <- plotdf$votescast / (plotdf$winners + 1)
+plotdf$hareQuotaDelta2 <- plotdf$winnerVotes - (plotdf$hareQuota * plotdf$winners)
+
+# To correct
+# plotdf2[plotdf2$voteMargin < 0,] 19 cases with more votes for a loser than a winner
+errors <- subset(plotdf, voteMargin < 0)
 plotdf <- as.data.frame(plotdf)
 #plotdf <- reshape(plotdf, direction = "wide", timevar = "winner", idvar = c("distid", "year", "raceid"))
 
@@ -753,90 +760,69 @@ are not included here.}
 \begin{footnotesize}
 \caption{Methods of Calculating Vote Margin}
 \label{tab:votemargincalc}
-\begin{tabular}{| p{.2\textwidth} | p{.45\textwidth} | p{.175\textwidth}| p{.175\textwidth}|}
+\begin{tabular}{| p{.17\textwidth} | p{.35\textwidth} | p{.275\textwidth}| p{.175\textwidth}|}
 \hline
 \textbf{Name}  & \textbf{Description} & \textbf{Formula} & \textbf{Citation} \\ \hline
 Vote Margin  & Minimum votes needed for a losing candidate to win & $min(votes_{winner}) - max(votes_{loser})$ & \citet{VoteCalculus68,RefWorks:351,cox88} \\ \hline
 Hare Quota Difference & Average Distance of Winners from Minimum Winning Vote Count & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$  & \citet{Jesse1999323}   \\ \hline
-Blais-Lagos Quotient & Adjustment of Vote Margin to Normalize Across District Types & 100 X VoteMargin/TotalVotes/Seats & \citet{blaislago} \\ \hline
+Blais-Lagos Quotient & Adjustment of Vote Margin to Normalize Across District Types & $100 x \frac{\frac{VoteMargin}{TotalVotes}}{Seats}$ & \citet{blaislago} \\ \hline
 \end{tabular}
 \end{footnotesize}
 \end{center}
 \end{table}
 
+In the comparative politics literature, competitiveness if often described as the 
+vote differential between the last winner and the first loser. That is, the number 
+of votes necessary to change the proportion of seats awarded to parties in the 
+district \citep{blaislago}. Wisconsin school board seats are non-partisan so instead I focus on the 
+number of votes between the last winner and the first loser -- the number of votes 
+necessary to change who is on the board. This method also focuses on the rational 
+choice perspective that voters evaluate electoral closeness by the pure number 
+of votes separating candidates -- the probability of their vote changing the outcome 
+\citep{VoteCalculus68,RefWorks:351}. 
 
-% -----------------------------------------------------------------------------
-% \begin{table}[h!]
-% \begin{center}
-% \begin{footnotesize}
-% \caption{Methods of Calculating Vote Margin}
-% \label{tab:votemargincalc}
-% \begin{tabular}{| p{.2\textwidth} | p{.45\textwidth} | p{.175\textwidth}| p{.175\textwidth}|}
-% \hline
-% \textbf{Name}  & \textbf{Method} & \textbf{Pros} & \textbf{Cons} \\ \hline
-% Share by Each  & $\sum \frac{votes_{iw}}{votes_{total}} - \sum \frac{votes_{il}}{votes_{total}}$ & Clean & Biased by lopsided races \\ \hline
-% Two-Means & $\frac{\sum \frac{votes_{iw}}{votes_{total}}}{n_{winners}} - \frac{\sum \frac{votes_{il}}{votes_{total}}}{n_{losers}}$ & Intuitive & Biased by lopsided races   \\ \hline
-% Maximum Value & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$ & Normalized & Not intuitive \\ \hline
-% \end{tabular}
-% \end{footnotesize}
-% \end{center}
-% \end{table}
-% -----------------------------------------------------------------------------
+The vote margin metric has two disadvantages. First, it only measures the competitiveness 
+of the most competitive part of a multimember district. The rest of the seats in 
+such a district may be very lopsided. In cases where party membership of the 
+candidates is known this can still be meaningful since if the competitive division 
+is between two candidates from different parties, the substantive representation of 
+the district will change and voters may realize a shift in district ideology toward 
+their own ideal point by casting votes. In non-partisan elections like those of 
+school boards, it is difficult to know \emph{a priori} if an ideological difference 
+exists between the last winner and first loser in a seat, and thus whether a narrow 
+victory is meaningful. A second problem with the vote margin metric is more practical. 
+Vote margin functions well when comparing districts in which the number of voters is 
+relatively similar, such as U.S. House seats. However, in cases where the voting 
+population can vary by two orders of magnitude or more, using the raw vote margin 
+can prove distorting \citep{cox88}. 
 
-% ------------------------------------------------------------
-%% Move to candidacy section
-%----------------------------------------------------------------
-% One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
-% ENP = 1 / sum(votes_share[candidate] ^2)
+To adjust for this there are two methods. The first is to measure the mean distance 
+of all winning candidates from the minimum necessary to secure a seat, also known 
+as the Hare Quota.\footnote{The Hare Quota is simply the quotient $\frac{Total Votes}{Seats}$ For simplicity I use the Hare Quota, but other measures 
+that are similar include the Droop Quota and the Hagenbach-Bischoff Quota. While Wisconsin school board elections do not use the Hare Quota formally to determine representation, because 
+voters may vote once for each seat, it properly represents the plurality necessary to 
+win a seat on boards across the state.} This measure better captures the competitiveness 
+of the entire race because multiple candidate races where some of the victors win 
+in blowouts will be less competitive than if they were measured solely on the 
+closest single matchup within their district. This method also has the benefit 
+of being more normalized across disparate electorate sizes by differencing out the 
+required plurality from the measure, thereby adjusting for differential electorate 
+size. 
 
-% Expectation of M+1 serious candidates in an M seat district (Cox electoral rules)
-% Extension of Duverger's Law
-
-% Droop quota = (total votes / total seats + 1) + 1
-% Hagenbach-Bischoff Quota (total votes/ total seats + 1)
-
-% Create psuedo-districts Jackman Winsky
-% Consider partial versus full contestation
-%---------------------------------------------------------------
-
-One method to do this is to take the share of votes won by each candidate as a start 
-by taking votes for one candidate over the total votes cast in the election.\footnote{All 
-school board elections in Wisconsin restrict voters to one vote per candidate -- 
-though in multi-member districts voters may select two or three candidates total 
-for election to office.} Then, the vote share for the winners is summed and the 
-vote share for the losers is summed, and the difference is taken as the margin 
-of victory for the winners. Another method takes the mean of the winners' vote 
-share and the mean of the losers' vote share and differences these. A final measure 
-captures the share of votes all the winners in the election captured above the 
-maximum they can capture -- determined by the proportion of votes available to 
-each candidate (1 over the number of candidates) multiplied by the number of winners. 
-For a district with three candidates running for two seats, this would mean that 
-the winners collectively need to win 66\% of the vote. If they win 70\% this equates 
-to a margin of victory of 4\%. For a district with five candidates running for three seats, 
-the winners collectively need to win 60\% of the vote. If they win 70\% of the vote 
-this equates to a 10\% margin of victory, even though each candidate has only won 
-on average 23.3\% of the vote in this race as compared to 35\% of the vote in the 
-prior race. 
-
-This final method is the best because it normalizes across the number of winners 
-per race, but it has some limitations. First, school board race vote share measures 
-are more heavily influenced by the presence of write-in candidates than state or 
-federal legislative districts. This is because the average school board race has 
-only \Sexpr{iNum(mean(plotdf$votescast, na.rm=TRUE))} votes cast and the median 
-race has only \Sexpr{iNum(median(plotdf$votescast, na.rm=TRUE))}. A large number 
-of scatter votes can thus swing the vote share calculation. Note that in the current 
-data set, any candidate receiving more than 20 votes is counted as a candidate, but 
-districts with many candidates receiving fewer than 20 votes will still be affected 
-by this concern. This makes it possible for the winning candidates 
-to collectively secure only 58\% of the votes and win election, resulting in a 
-negative win margin from the expected total. 
-
+The final and preferred method in the literature is the Blais-Lago metric described 
+in Table \ref{tab:votemargincalc}. This metric has the advantage of better adjusting 
+the vote margin calculation for both the size of the electorate and the size of the 
+election slate, thus making meaningful comparisons across diverse districts possible. 
+While this method still focuses on the most competitive seat in the district, it 
+better enables comparisons across districts. Thus, the Blais-Lago Quotient can be 
+interpreted as the minimum number of votes necessary to adjust the outcome divided 
+by the number of voters. 
 
 %TODO: Find an example for the above
 
-<<winsandcandidatestable, echo=FALSE, fig.cap="Distribution of School Board Races by Candidates and Winners.", fig.width=6, fig.height=6>>=
+<<winsandcandidatestable, echo=FALSE, fig.cap="Distribution of School Board Races by Candidates and Winners.", fig.width=4.5, fig.height=4.5>>=
 plotdf <- merge(plotdf, races, by = "raceid2", all.x=TRUE)
-plotdf <- plotdf[plotdf$winmargin3 > -.1, ]
+plotdf <- plotdf[plotdf$voteMargin > 0, ]
 
 mytab <- table(plotdf$nrealcand, plotdf$winners)
 
@@ -856,25 +842,60 @@ ggplot(mytab, aes(Var1, Var2)) + geom_tile(aes(fill = value2), color = I('gray80
 @
 
 
-<<winmarginplots, echo=FALSE, fig.cap="Win Margin in Contested School Board Races.">>=
-qplot(year, winmargin3, 
+<<winmarginplots, echo=FALSE, fig.cap="Win margin in contested school board elections as measured by the Blais-Lago Quotient.">>=
+qplot(year, blaisLago/100, 
       data = plotdf[plotdf$cand > plotdf$winners & 
                       plotdf$year > 2001 & plotdf$year < 2013,], 
       geom = 'boxplot') + theme_dpi() + 
-  labs(y = "Maximum Value Method", x = "Year", title = "Distribution of Margin of 
-       Victory in Contested School Board Races") + scale_y_continuous(label = percent) + 
+  labs(y = "Maximum Value Method", x = "Year", title = "Distribution of Blais-Lago Quotient in Contested School Board Races") + scale_y_continuous(label = percent) + 
   geom_hline(yintercept = 0, color = I("red"), linetype = 2, size = I(1.05)) +
   geom_hline(yintercept = 0.05, color = I("blue"), linetype = 3, size = I(1.05))
 @
 
-Figure \ref{fig:winmarginplots} shows that contested school board races do not tend 
-to be that close. On average, fewer than 25\% of the contested races have a win 
-margin of less than 5 percentage points as indicated by the dotted blue line. The 
-dashed red line represents a win margin of 0 percentage points -- a dead heat. The 
-average race sees the winners securing about 10 percentage points more votes than 
-the losers. Thus, while school board races may have some level of contestation, the 
-intensity of that contestation is called into doubt. Note that 2011 and 2012 represent 
-the two spring elections in Scott Walker's first term and post the passage of Act 10.
+Figures \ref{fig:winmarginplots} and \ref{fig:winmarginplots2} show the distribution 
+of the Blais-Lago Quotient and the Hare Quota distance for contested school board 
+races respectively. They show that school board races, when they are contested, 
+tend to be fairly competitive. \citet{blaislago} find that national legislative 
+districts in four countries had average quotients ranging from 16.77 in Portugal to 26.88 
+in Spain. All Wisconsin school board elections in the study have a quotient of 
+\Sexpr{round(mean(plotdf$blaisLago), digits=2)}. However, the \Sexpr{iPer(nrow(plotdf[plotdf$cand > plotdf$winners,])/nrow(plotdf) * 100)} of races that were contested featured a 
+quotient of \Sexpr{round(mean(plotdf$blaisLago[plotdf$cand > plotdf$winners]), digits=2)}.
+
+Figure \ref{fig:winmarginplots2} shows why this might be the case. The interquartile 
+range of the Hare Quota distance for contested school board races is roughly 25 to 
+200 in a given year. This means that the average winner in these school board race was 
+between 25 and 200 voters shifting their ballots away from losing their seat. School 
+board races are so competitive on these measures, in part, because of the low number of total votes 
+cast. 
+
+
+<<winmarginplots2, echo=FALSE, fig.cap="Win margin in contested school board elections as measured by the Hare Quota distance.">>=
+qplot(year, hareQuotaDeltaWinners, 
+      data = plotdf[plotdf$cand > plotdf$winners & 
+                      plotdf$year > 2001 & plotdf$year < 2013,], 
+      geom = 'boxplot') + theme_dpi() + scale_y_sqrt() +
+  labs(y = "Vote Margin", x = "Year", title = "Average Hare Quota Distance") + 
+  geom_hline(yintercept = 25, color = I("red"), linetype = 2, size = I(1.05)) +
+  geom_hline(yintercept = 200, color = I("blue"), linetype = 3, size = I(1.05))
+@
+
+<<competitivenessTab, echo=FALSE, eval=FALSE>>==
+
+competitionMeasures <- ddply(plotdf, .(year), summarize, 
+                            allRaces = length(unique(raceid2)), 
+                            closeMargin = length(voteMargin[voteMargin < 100]), 
+                            closeHareQuota = length(hareQuotaDeltaWinners[hareQuotaDeltaWinners < 50]),
+                            closeblaisLago = length(blaisLago[blaisLago < 2.5]))
+qplot(blaisLago, data=plotdf[plotdf$blaisLago < 50,], binwidth = 1) + scale_x_continuous(breaks = seq(0,50, by = 1))
+@
+
+
+
+Which of these two measures best captures the meaning of competitiveness in school 
+board races is left up to a more thorough analysis in Chapter \ref{chap:candidacy}, but
+for now these results show that school board races are less competitive as a whole, but 
+when they are contested, the results are closer than partisan national multimember 
+legislative seats. 
 
 % \subsubsection{Scattered Votes}
 % 
@@ -937,7 +958,9 @@ current and former school board members. Using self-reports and lists of current
 and past members of school board members does not provide a reliable way to distinguish 
 between political and apolitical forms of turnover \citep{RefWorks:311}. Using 
 incumbent electoral defeat is not a perfect measure, because it does not capture 
-cases where an incumbent finds it not worth it to run for office. 
+cases where an incumbent finds it not worth it to run for office. However, it does 
+allow me to identify political turnover empriically and consistently across jurisdictions 
+and time within the state of Wisconsin -- a first in the literature. 
 
 <<incDefeat, results='asis'>>=
 incDefeat <- ddply(dat[dat$electiontype == 1 & dat$year > 2001 & dat$year < 2013,], 
@@ -990,6 +1013,17 @@ qplot(year, incDefeatDist/totalDistricts, data = incDefeatDist, geom = 'bar',
 rm(incDefeat,incDefeatDist)
 @ 
 
+Figure \ref{fig:incDefeat} shows the percentage of districts with school board 
+races each year where an incumbent was defeated. This shows a consistent pattern 
+of regular incumbent defeat on school boards, suggesting the incumbency advantage 
+in school boards is much weaker than in other elections. \citet{oliver} shows evidence 
+from suburban mayoral elections that voters defeat incumbents based on a retrospective 
+evaluation of their stewardship of the community, likability, and issue agreement. Unlike 
+national election voters, however, \citet{oliver} shows that local election voters are 
+much more engaged in and informed about local issues. This, coupled with the low-cost 
+of entry into a school board campaign, may explain why incumbent defeat is more 
+frequent. This will be explored further in Chapter \ref{chap:candidacy}.
+
 
 \subsection{Voter Turnout}
 \label{subsec:turnout}
@@ -1019,17 +1053,12 @@ A first concern with estimating turnout is finding the proper denominator.
 For the analysis here I elect to use Voting Age Population (VAP) as the measure for 
 the denominator of the voter turnout calculation instead of registered or eligible 
 voters. VAP is the only measure available both at a unit smaller than a school district 
-and at the statewide level that can allow for consistent comparisons between the two. \
-Unfortunately, the state of Wisconsin does not maintain county, municipality, or ward 
-level registered voter or eligible voter counts historically -- though such figures can be obtained from the GAB around election time for a current election.
+and at the statewide level that can allow for consistent comparisons between the two over 
+the entire period of study. Unfortunately, the state of Wisconsin does not maintain 
+county, municipality, or ward level registered voter or eligible voter counts 
+historically.
 
-Estimating school board election turnout is decidedly difficult because it requires 
-both a reliable assessment of the votes cast in the election and a reliable 
-estimate of the voting age population in the school district. Due to the fact that 
-school districts have diverse organizational structure, independent boundaries, 
-and no requirements on election reporting to a central authority, it is often difficult to ascertain 
-the number of votes cast by voters within the school district. To determine the VAP 
-of the school district in Wisconsin, I employ the finest resolution 
+To determine the VAP of the school district in Wisconsin, I employ the finest resolution 
 estimate of voting age population available -- VAP estimates by minor civil division (MCD) 
 produced by the Wisconsin Department of Administration.\footnote{ Minor civil division is a 
 term used by the US Census Bureau to denote the primary governmental and/or administrative 
@@ -1037,6 +1066,7 @@ divisions within a county. In Wisconsin these include cities, towns, villages an
 unincorporated areas. Statistics available online: \url{http://gab.wi.gov/elections-voting/results}. 
 Statistics for Wisconsin Minor Civil Divisions are maintained by the Department of Administration 
 Demographic Services Center: \url{http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9}}
+
 However, MCDs are not perfectly contiguous with school districts -- school districts 
 are contiguous only at the ward level where VAP estimates are not available. In 
 order to estimate the proportion of each MCD's VAP that belongs to a given school district, 
@@ -1045,14 +1075,14 @@ These records annually report for each school district every MCD that is located
 (as measured by equalized values, or EQV), for that MCD that the school district 
 is authorized to levy tax for. For each year, the share of every MCD's EQV that 
 was allocated to each school district was calculated. I use this share to 
-prorate the population of each school district both for the purposes of 
+prorate the population of each MCD both for the purposes of 
 calculating the voting age population, and for calculating votes cast for and 
 against candidates in statewide elections. An additional adjustment 
 is made to interpolate the VAP for school districts to correct for adjustments in 
 the creation and destruction of MCDs year to year which can influence the VAP 
 estimates for a school district.\footnote{A sensitivity check was done 
-to determine if weighting by residential property values only changed the estimates, but 
-it did not. For more details see Appendix \ref{app:data}}
+to determine if weighting by residential property values  instead of all property 
+value changed the estimates, but it did not. For more details see Appendix \ref{app:data}}
 
 We can measure how accurate this estimation procedure is by comparing the official number 
 of votes cast and voter turnout statewide to the statewide estimates derived by 
@@ -1119,21 +1149,19 @@ print(table1,
 @
 
 As shown in Table \ref{tab:turnoutEst}, the estimation procedure accurately 
-reproduces the statewide official turnout estimates. Using these estimates, 
-are more confident that the procedure used generates 
+reproduces the statewide official turnout estimates. Thus the procedure used generates 
 reasonable estimates of the VAP at the school district level. This takes care 
 of the denominator of the turnout equation. 
 
 The numerator, the number of voters casting votes for school board, presents a 
-second set of challenges. 
-I begin by collecting election returns from as many school districts as possible 
-in Wisconsin.\footnote{For details on the collection procedure see Appendix \ref{app:data}} 
-However, unlike a top ticket race such as a presidential or gubernatorial race, 
-the election rules vary across school district jurisdictions. In some districts, 
-voters may have multiple votes to cast in the election -- eliminating the ability 
-to judge voter turnout based on the number of votes cast. In other districts, only 
-a subsection of the electorate may be eligible to vote for a school district office 
-due to apportionment within the district. 
+second set of challenges. I begin by collecting election returns from as many 
+school districts as possible in Wisconsin.\footnote{For details on the collection 
+procedure see Appendix \ref{app:data}} However, unlike a top ticket race such as 
+a presidential or gubernatorial race, the election rules vary across school district 
+jurisdictions. In some districts, voters may have multiple votes to cast in the election 
+and in each race -- eliminating the ability to judge voter turnout based on the 
+number of votes cast. In other districts, only a subsection of the electorate may 
+be eligible to vote for a school district office due to apportionment within the district. 
 
 <<turnoutgraph, echo=FALSE, fig.cap="Turnout for district wide school board races.", fig.height=4.5>>=
 races <- as.data.frame(races)
@@ -1176,9 +1204,11 @@ There is one set of cases for which estimating voter turnout is easy - the case
 where a school board seat is chosen district wide. As shown in Table \ref{tab:yearsample}, 
 this is the vast majority of Wisconsin school districts. To determine if a seat 
 was apportioned or district wide, I coded the seats for labels such as ``Area", ``District", 
-``Region", or ``Village" as opposed to ``At-Large". As district wide is the default in state law, 
-in the absence of evidence, I assume the race is district wide.  Figure \ref{fig:turnoutgraph} 
-shows that district wide school board races feature an average turnout below 25\%. 
+``Region", or ``Village" as opposed to ``At-Large". In these races, the number of voters is 
+simply the number of votes cast divided by then umber of seats elected. As district 
+wide is the default in state law, in the absence of evidence, I assume the race is 
+district wide.  Figure \ref{fig:turnoutgraph} shows that district wide school board 
+races feature an average turnout below 25\%. 
 
 <<comparison, results='asis', echo=FALSE>>=
 out1 <- ddply(races.tmp, .(year), summarize, 
@@ -1205,8 +1235,8 @@ table2 <- xtable(table2, label="tab:yearsample",
 align(table2) <- c('p{.2in}','p{.5in}',  'p{.8in}','p{.8in}','p{.8in}','p{.8in}',
                    'p{.8in}','p{.8in}')
 
-print(table2, 
-      include.rownames = FALSE, 
+print(t(table2), 
+      include.colnames = FALSE, include.rownames = TRUE,
       format.args = list(big.mark = ",", decimal.mark = "."), 
       size = "footnotesize")
 
@@ -1260,10 +1290,12 @@ qplot(year, turnout, data = dist.tmp, geom = 'boxplot') +
 
 Figure \ref{fig:nondistraces} shows the pattern for non-district wide races appears 
 very similar under the estimation method of collapsing all races in a district 
-into one race and dividing the votes counted by the number of winners. This 
-represents an underestimate, as even districts with apportioned seats 
-do not elect all portions of their district in the same election cycle or even 
-have consistent apportionment from one cycle to the next.
+into one race and dividing the votes counted by the number of winners. This still
+represents an underestimate, as districts with apportioned seats 
+do not always elect all seats within district in the same election cycle. However, 
+the underestimate represents the best possible estimate and can be partially 
+controlled for in subsequent analyses by including indicator variables for boards 
+with elections that are not districtwide. 
 
 %TODO: Explain this better.
 
@@ -1382,17 +1414,17 @@ after the passage of Act 10 and the election of Governor Scott Walker.
 \label{subsec:undervote}
 
 The spring 2011 election is an example of why it is not accurate to attribute 
-voter turnout in school board elections solely to the school board race. School 
-board races are downticket from other races that are occuring during the spring 
-non-partisan elections cycle in Wisconsin and the spring of 2011 was marked by 
+voter turnout in school board elections solely, or even primarily, to the school 
+board race. School board races are far down the ballot from other races that are occuring 
+during the spring non-partisan elections cycle in Wisconsin and the spring of 2011 was marked by 
 a highly contested statewide race for the Supreme Court. The election was seen 
 as a referendum on the recent passage of Act 10 and Governor Scott Walker's first 
 year in office and was characterized by unprecedented turnout. The influence of 
 the strength of weakeness of the top ticket race confounds our understanding 
 of voter turnout in school board elections. One way to approach this is to consider 
 studying the dropoff in votes cast from the statewide top of the ticket race to the school 
-board races further down the ballot -- a phenomenon known as voter rolloff. For the 
-2007-2012 period, I estimate the top ticket 
+board races further down the ballot -- a phenomenon known as voter rolloff \citep{wattenberg00}. 
+For the 2007-2012 period, I estimate the top ticket 
 turnout in each school district. Importantly, in this period, several different 
 office types were the top ticket due to the pattern of statewide office terms 
 in Wisconsin. These consist of primarily state supreme court races, but as there 
@@ -1483,7 +1515,7 @@ had a top ticket race of Wisconsin Appeals Court judges. The other jurisdictions
 had only local elections on the ballot. To avoid losing these observations, I impute 
 the 2010 estimated turnout as if the top ticket was a state supreme court race or 
 election for state superintendent.\footnote{Imputation was done using model averaging 
-of three k-nearest-neighbor models using votes cast in other spring elections as the 
+of three separate k-nearest-neighbor models using votes cast in other spring elections as the 
 primary predictors.} I expect the majority of Wisconsin districts to exhibit an 
 undervote in school board elections relative to these top ticket races. 
 
@@ -1494,13 +1526,15 @@ X axis and turnout for the school board race(s) on the Y axis. The solid line re
 the line of best fit, which has a slope and intercept less than the dashed line 
 in all years except for in the 2010 year where the top ticket turnout was estimated. 
 Interestingly, roll off is fairly small in all years, except for in 2011 where 
-top ticket turnout was substantially elevated. This provides some evidence that the 
-new voters attracted to the spring race in 2011 were not as motivated by school board elections 
-as the electorate in previous spring elections. This relationship will be explored 
-further in subsequent chapters. 
-Table \ref{tab:undervotestats} shows the annual trends in Wisconsin from 2007 through 
+top ticket turnout was substantially elevated. 
+
+This relationship will be explored further in subsequent chapters. Table 
+\ref{tab:undervotestats} shows the annual trends in Wisconsin from 2007 through 
 2012 for districts where school board races received more or fewer votes than the 
-top ticket candidate. 
+top ticket candidate. Overvote occurs more than we might expect. However, school 
+districts are very small jurisdictions and across all of them in a given year, it 
+is not impossible to believe that voters may be interested in local candidates, but 
+relatively uninterested in the non-partisan statewide race at the top of the ticket. 
 
 <<undervotetab, results='asis', echo=FALSE>>=
 plotdat$vote_diff <- plotdat$topTicketTurnoutSpring - plotdat$turnout
@@ -1560,7 +1594,8 @@ The statewide nature of this data collection allows for the exploration of the l
 of contestation and turnout in school board elections across a variety of contexts and 
 within the same state political system. 
 
-School boards, despite their lower barrier to ballot entry and campaign costs, are contested less than half the time. School board elections are less prestigious, carry little financial benefit 
+School boards, despite their lower ballot entry and campaign costs, are contested 
+less than half the time. School board seats are less prestigious, carry little financial benefit 
 for members, and often require late evening meetings -- making them less attractive 
 to potential candidates. School boards are also not shown to be a stepping stone 
 to further political office, reducing their attractiveness to potential political 
