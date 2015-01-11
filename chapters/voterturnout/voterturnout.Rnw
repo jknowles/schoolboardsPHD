@@ -408,7 +408,17 @@ Social group led voting &\citet{Fowler2005} & Polarized communities have higher 
 \end{center}
 \end{table}
 
-
+%-------------------------------------------------------------------------------
+% Measures of competitiveness in seats as dependent variables
+% One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
+% ENP = 1 / sum(votes_share[candidate] ^2)
+% Expectation of M+1 serious candidates in an M seat district (Cox electoral rules)
+% Extension of Duverger's Law
+% Droop quota = (total votes / total seats + 1) + 1
+% Hagenbach-Bischoff Quota (total votes/ total seats + 1)
+% Create psuedo-districts Jackman Winsky
+% Consider partial versus full contestation
+%------------------------------------------------------------------------------
 
 \section{Data}
 \label{sec:turnData}
