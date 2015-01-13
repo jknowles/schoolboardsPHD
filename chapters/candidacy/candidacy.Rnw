@@ -576,16 +576,6 @@ Consider a sub-analysis using this measure instead in the appendix.}
 
 \subsubsection{Incumbent Defeat}
 
-% One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
-% ENP = 1 / sum(votes_share[candidate] ^2)
-% Expectation of M+1 serious candidates in an M seat district (Cox electoral rules)
-% Extension of Duverger's Law
-% Droop quota = (total votes / total seats + 1) + 1
-% Hagenbach-Bischoff Quota (total votes/ total seats + 1)
-% Create psuedo-districts Jackman Winsky
-% Consider partial versus full contestation
-%---------------------------------------------------------------
-
 Traditionally, the school board literature has not been concerned as much with 
 overall levels of contestation, but instead the frequency with which incumbents 
 are defeated. Incumbent defeat is a good measure of the democratic functioning 
@@ -637,6 +627,24 @@ of the suburban voter found 10 out of 11 mayoral incumbents securing re-election
 and 47 out of 56 city council incumbents winning re-election. This result is encouraging 
 and it suggests the potential to explore theories for why voters may prefer 
 challengers over incumbents, including retrospective voting. 
+
+\subsubsection{District Competitiveness}
+
+% One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
+% ENP = 1 / sum(votes_share[candidate] ^2)
+% Expectation of M+1 serious candidates in an M seat district (Cox electoral rules)
+% Extension of Duverger's Law
+% Droop quota = (total votes / total seats + 1) + 1
+% Hagenbach-Bischoff Quota (total votes/ total seats + 1)
+% Create psuedo-districts Jackman Winsky
+% Consider partial versus full contestation
+%---------------------------------------------------------------
+
+Measure the competitiveness using Blais-Lago quotient. 
+
+<<computeblaisLago>>=
+
+@
 
 In the next section I turn my attention to how to leverage 
 this unique data to test competing theories of when contestation for a seat on a 
@@ -1423,9 +1431,11 @@ This suggests that the decision to offer an override referendum is politically p
 for school board members -- if they misjudge the community and the referendum fails, 
 they increase their chance for a contested election. 
 
+Even more support for fiscally minded voters emerges with a positive relationship 
+between districts with higher tax rates and more historical bond referenda offered 
+and likelihood of a challenge. School board races are more contentious when taxation 
+rates rise and also as districts have offered more bond referenda. 
 
-% Higher tax ratge = more likely for a challenge
-% Cumulative bond attempts = more likely there is a challenger
 
 <<glmmodsContest, results='hide'>>=
 # moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
@@ -1543,7 +1553,17 @@ apsrtable(demogsMMCon, politicMMCon, fiscalMMCon, policyMMCon, fullmodMMCon,
 
 \subsection{Incumbent Defeat}
 
-Table \ref{tab:glmerModsID} shows the results for incumbent defeat. 
+Table \ref{tab:glmerModsID} shows the results for incumbent defeat. These results 
+are less promising than those in Table \ref{tab:glmerModsCon} for candidates emerging. 
+Again, population size is strongly positively related with more incumbent defeats. 
+However, other demographic variables do not seem to be predictive of incumbents 
+being defeated. 
+
+In fact, incumbent defeat proves very difficult to predict. Outside of the 
+percentage of incumbents on the ballot -- a control to account for the varying 
+opportunity for incumbent defeat election to election -- only the passage of a 
+revenue limit maintains its predictive power in the full model. 
+
 
 
 % VAP = correct, larger = more defeats, but peters out in fuller models
@@ -1665,6 +1685,11 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
 
 @
 \end{tiny}
+
+\subsection{Competitiveness}
+
+
+
 
 \clearpage
 
