@@ -640,15 +640,48 @@ challengers over incumbents, including retrospective voting.
 % Consider partial versus full contestation
 %---------------------------------------------------------------
 
-Measure the competitiveness using Blais-Lago quotient. 
+Incumbent defeat is a good measure of strong candidates emerging, but it is overly 
+conservative because a challenger losing by a single vote is counted the same as 
+a race where a challenger gains only a few dozen votes. Political scientists have 
+developed a standardized way to assess the competiveness of an electoral competition 
+when races are for varying number of seats with varying numbers of candidates. 
+This method was introduced in Chapter \ref{chap:wisco}. Table \ref{tab:votemargincalc} 
+reviewed possible measures. 
 
-<<computeblaisLago>>=
+The preferred method from the literature is the Blais-Lago metric described 
+in Table \ref{tab:votemargincalc}. This metric has the advantage of better adjusting 
+the vote margin calculation for both the size of the electorate and the size of the 
+election slate, thus making meaningful comparisons across diverse districts possible. 
+While this method still focuses on the most competitive seat in the district, it 
+better enables comparisons across districts. Thus, the Blais-Lago Quotient can be 
+interpreted as the minimum number of votes necessary to adjust the outcome divided 
+by the number of voters in the election.
+
+Figure \ref{fig:computeblaisLago} shows the distribution of the minimum (most competitive) 
+Blais-Lago Quotient for school districts for each year of the sample. This includes 
+races where no challenge is observed - where the quotient is 100. Figure \ref{fig:computeblaisLago2} 
+adjusts this and depicts only the \Sexpr{iPer((nrow(dist_turn[dist_turn$nrealcand > dist_turn$nwins,]) / nrow(dist_turn)) *100)} of seats where voters have a choice - as in the second panel 
+of Figure \ref{fig:candidatedescriptives4}. As I noted in Section \ref{subsec:closeraces}, 
+school board races that are contested are generally much closer than the contested 
+multi-member districts for national legislatures that the Blais-Lago Quotient was 
+first developed to evaluate \citep{blaislago}. Although incumbent defeat may be 
+uncommon, races that can be decided by a handful of voters are not as uncommon. 
+
+<<computeblaisLago1, echo=FALSE, fig.cap="Annual competitiveness of most competitive seat in each school district as measured by the Blais-Lago quotient.",fig.width=7,fig.height=4>>=
+
+qplot(factor(year), minBlaisLago, data = dist_turn[dist_turn$minBlaisLago > 0,], 
+      geom='boxplot') + theme_dpi() + labs(x = "Year", y = "Blais-Lago Quotient")
 
 @
 
-In the next section I turn my attention to how to leverage 
-this unique data to test competing theories of when contestation for a seat on a 
-school board in Wisconsin will emerge. 
+<<computeblaisLago2, echo=FALSE, fig.cap="Annual competitiveness of most competitive seat in each school district with more candidates than seats as measured by the Blais-Lago quotient.",fig.width=7,fig.height=4>>=
+qplot(factor(year), minBlaisLago, data = dist_turn[dist_turn$minBlaisLago > 0 & 
+                                dist_turn$nrealcand > dist_turn$nwins,], 
+      geom='boxplot') + theme_dpi() + labs(x = "Year", y = "Blais-Lago Quotient")
+@
+
+Next I turn my attention to the selection of variables to explain the variability 
+in these dependent variables. 
 
 \clearpage
 
@@ -1215,9 +1248,12 @@ the prediction across the range of the variable of interest.
 
 <<cleanModData, results='asis'>>=
 dist_turn$nonincumbRun <- ifelse(dist_turn$onlyIncum == 1, 0, 1)
+dist_turn$minBlaisLago <- abs(dist_turn$minBlaisLago) #TODO fix negative BLQ
+
 demogIdx <- c(demogIdx, "locale2")
 dvs <- c("contestSer", "contestMinor", "contestMinorLag", 
-         "contestSerLag", "incDefeats", "onlyIncum", "incumShare", "nonincumbRun")
+         "contestSerLag", "incDefeats", "onlyIncum", "incumShare", "nonincumbRun", 
+         "minBlaisLago")
 ids <- c("distid", "year", "districtwide")
 
 
@@ -1688,8 +1724,106 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
 
 \subsection{Competitiveness}
 
+<<blqGLMs, eval=TRUE, results='hide'>>=
+# Select only elections with more candidates than seats
+moddat4 <- moddat[moddat$contestMinor == 1, ]
+
+demogsBLQ <- lm(minBlaisLago ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + locale2 + year,
+              data = moddat4)
+
+demogSE <- get_CL_vcov(demogsBLQ, moddat4$distid)
+demogsBLQ$se <- sqrt(diag(demogSE))
+
+politicBLQ <- update(demogsBLQ, . ~ . + incumShare + overrideYesPer +  partyDivisionRecent +
+                    teachShareofVoters + fallTurnout + nraces) 
+
+politicSE <- get_CL_vcov(politicBLQ, moddat4$distid)
+politicBLQ$se <- sqrt(diag(politicSE))
 
 
+fiscalBLQ <- update(demogsBLQ, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta)
+
+fiscalSE <- get_CL_vcov(fiscalBLQ, moddat4$distid)
+fiscalBLQ$se <- sqrt(diag(fiscalSE))
+
+
+policyBLQ <- update(demogsBLQ, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+
+policySE <- get_CL_vcov(policyBLQ, moddat4$distid)
+policyBLQ$se <- sqrt(diag(policySE))
+
+fullmodBLQ <- update(politicBLQ, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta + 
+                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+fullmodSE <- get_CL_vcov(fullmodBLQ, moddat4$distid)
+fullmodBLQ$se <- sqrt(diag(fullmodSE))
+
+rescalenote <- "All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations."
+stars.note <- apsrtable:::stars.note
+
+
+coefnames4 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
+               "\\% White", "\\% OOH", "Exurb", "Rural", "\\% Incumbents", "\\% Yes Rev. Limit", 
+               "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
+               "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
+               "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
+               "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
+               "Cumul. Override Att.")
+
+glmBLQtab <- apsrtable(demogsBLQ, politicBLQ, fiscalBLQ, policyBLQ, fullmodBLQ, se = "robust", 
+          float = "longtable",
+          label="tab:glmModsBLQ", 
+          omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          model.names=c("Demog.", "Politic", 
+                        "Fiscal",
+                        "Policy", "Full"), 
+          caption = "Linear Models of Blais-Lago Quotient of Competitiveness in School Board Elections",
+          notes = list(stars.note, rescalenote),
+          Sweave=FALSE, digits = 3, coef.names = coefnames4)
+
+@
+
+<<blqMMmods, eval=TRUE, results='asis'>>=
+demogsMMblq <- lmer(minBlaisLago ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + locale2 + year + (1|distid), 
+              data = moddat4) 
+
+politicMMblq <- update(demogsMMblq, . ~ . + incumShare +  overrideYesPer +  
+                       partyDivisionRecent +
+                    teachShareofVoters + fallTurnout + nraces) 
+  
+fiscalMMblq <- update(demogsMMblq, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta)
+
+policyMMblq <- update(demogsMMblq, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+fullmodMMblq <- update(politicMMblq, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta + 
+                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+apsrtable(demogsMMblq, politicMMblq, fiscalMMblq, policyMMblq, fullmodMMblq,
+          float = "longtable",
+          label="tab:glmerModsBLQ", 
+           omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          model.names=c("Demog.", "Politic", 
+                        "Fiscal",
+                        "Policy", "Full"), 
+          caption = "Linear Mixed Models of Blais-Lago Quotient of Competitiveness in School Board Elections",
+          notes = list(stars.note, rescalenote),
+          Sweave=FALSE, digits = 3, coef.names = coefnames4)
+
+@
 
 \clearpage
 

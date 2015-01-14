@@ -301,7 +301,7 @@ with each race electing multiple winners.\footnote{See Appendix \ref{app:data} f
 details about the coding of races.}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:34:43 2015
+% Tue Jan 13 17:33:43 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rllllllllllll}
@@ -354,7 +354,7 @@ level is predicted by theory.
 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:34:43 2015
+% Tue Jan 13 17:33:43 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -387,7 +387,7 @@ Table \ref{tab:icbydef} shows that in races in which
 at least one of the candidates is not an incumbent incumbent defeat is rare. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:34:43 2015
+% Tue Jan 13 17:33:43 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -410,7 +410,7 @@ explain the variation in these three degrees of contestation.
 \subsubsection{Non-incumbents}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:34:44 2015
+% Tue Jan 13 17:33:43 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrrr}
@@ -499,16 +499,6 @@ Consider a sub-analysis using this measure instead in the appendix.}
 
 \subsubsection{Incumbent Defeat}
 
-% One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
-% ENP = 1 / sum(votes_share[candidate] ^2)
-% Expectation of M+1 serious candidates in an M seat district (Cox electoral rules)
-% Extension of Duverger's Law
-% Droop quota = (total votes / total seats + 1) + 1
-% Hagenbach-Bischoff Quota (total votes/ total seats + 1)
-% Create psuedo-districts Jackman Winsky
-% Consider partial versus full contestation
-%---------------------------------------------------------------
-
 Traditionally, the school board literature has not been concerned as much with 
 overall levels of contestation, but instead the frequency with which incumbents 
 are defeated. Incumbent defeat is a good measure of the democratic functioning 
@@ -548,9 +538,63 @@ and 47 out of 56 city council incumbents winning re-election. This result is enc
 and it suggests the potential to explore theories for why voters may prefer 
 challengers over incumbents, including retrospective voting. 
 
-In the next section I turn my attention to how to leverage 
-this unique data to test competing theories of when contestation for a seat on a 
-school board in Wisconsin will emerge. 
+\subsubsection{District Competitiveness}
+
+% One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
+% ENP = 1 / sum(votes_share[candidate] ^2)
+% Expectation of M+1 serious candidates in an M seat district (Cox electoral rules)
+% Extension of Duverger's Law
+% Droop quota = (total votes / total seats + 1) + 1
+% Hagenbach-Bischoff Quota (total votes/ total seats + 1)
+% Create psuedo-districts Jackman Winsky
+% Consider partial versus full contestation
+%---------------------------------------------------------------
+
+Incumbent defeat is a good measure of strong candidates emerging, but it is overly 
+conservative because a challenger losing by a single vote is counted the same as 
+a race where a challenger gains only a few dozen votes. Political scientists have 
+developed a standardized way to assess the competiveness of an electoral competition 
+when races are for varying number of seats with varying numbers of candidates. 
+This method was introduced in Chapter \ref{chap:wisco}. Table \ref{tab:votemargincalc} 
+reviewed possible measures. 
+
+The preferred method from the literature is the Blais-Lago metric described 
+in Table \ref{tab:votemargincalc}. This metric has the advantage of better adjusting 
+the vote margin calculation for both the size of the electorate and the size of the 
+election slate, thus making meaningful comparisons across diverse districts possible. 
+While this method still focuses on the most competitive seat in the district, it 
+better enables comparisons across districts. Thus, the Blais-Lago Quotient can be 
+interpreted as the minimum number of votes necessary to adjust the outcome divided 
+by the number of voters in the election.
+
+Figure \ref{fig:computeblaisLago} shows the distribution of the minimum (most competitive) 
+Blais-Lago Quotient for school districts for each year of the sample. This includes 
+races where no challenge is observed - where the quotient is 100. Figure \ref{fig:computeblaisLago2} 
+adjusts this and depicts only the 55.3\% of seats where voters have a choice - as in the second panel 
+of Figure \ref{fig:candidatedescriptives4}. As I noted in Section \ref{subsec:closeraces}, 
+school board races that are contested are generally much closer than the contested 
+multi-member districts for national legislatures that the Blais-Lago Quotient was 
+first developed to evaluate \citep{blaislago}. Although incumbent defeat may be 
+uncommon, races that can be decided by a handful of voters are not as uncommon. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-computeblaisLago1-1} \caption[Annual competitiveness of most competitive seat in each school district as measured by the Blais-Lago quotient]{Annual competitiveness of most competitive seat in each school district as measured by the Blais-Lago quotient.\label{fig:computeblaisLago1}}
+\end{figure}
+
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-computeblaisLago2-1} \caption[Annual competitiveness of most competitive seat in each school district with more candidates than seats as measured by the Blais-Lago quotient]{Annual competitiveness of most competitive seat in each school district with more candidates than seats as measured by the Blais-Lago quotient.\label{fig:computeblaisLago2}}
+\end{figure}
+
+
+\end{knitrout}
+
+Next I turn my attention to the selection of variables to explain the variability 
+in these dependent variables. 
 
 \clearpage
 
@@ -1154,9 +1198,11 @@ This suggests that the decision to offer an override referendum is politically p
 for school board members -- if they misjudge the community and the referendum fails, 
 they increase their chance for a contested election. 
 
+Even more support for fiscally minded voters emerges with a positive relationship 
+between districts with higher tax rates and more historical bond referenda offered 
+and likelihood of a challenge. School board races are more contentious when taxation 
+rates rise and also as districts have offered more bond referenda. 
 
-% Higher tax ratge = more likely for a challenge
-% Cumulative bond attempts = more likely there is a challenger
 
 
 
@@ -1240,7 +1286,17 @@ Sigma                  & 1           & 1           & 1           & 1           &
 
 \subsection{Incumbent Defeat}
 
-Table \ref{tab:glmerModsID} shows the results for incumbent defeat. 
+Table \ref{tab:glmerModsID} shows the results for incumbent defeat. These results 
+are less promising than those in Table \ref{tab:glmerModsCon} for candidates emerging. 
+Again, population size is strongly positively related with more incumbent defeats. 
+However, other demographic variables do not seem to be predictive of incumbents 
+being defeated. 
+
+In fact, incumbent defeat proves very difficult to predict. Outside of the 
+percentage of incumbents on the ballot -- a control to account for the varying 
+opportunity for incumbent defeat election to election -- only the passage of a 
+revenue limit maintains its predictive power in the full model. 
+
 
 
 % VAP = correct, larger = more defeats, but peters out in fuller models
@@ -1322,6 +1378,78 @@ Sigma                  & 1           & 1           & 1           & 1           &
 \end{longtable} 
 
 \end{tiny}
+
+\subsection{Competitiveness}
+
+
+
+\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
+\caption{Linear Mixed Models of Blais-Lago Quotient of Competitiveness in School Board Elections}
+\label{tab:glmerModsBLQ}\\ 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
+\endhead
+ %                      & Demog.      & Politic     & Fiscal      & Policy      & Full       \\ 
+Intercept              & -0.231 ^*   & -0.223 ^*   & -0.222 ^*   & -0.235 ^*   & -0.215 ^*  \\ 
+                       & (0.040)     & (0.036)     & (0.040)     & (0.040)     & (0.038)    \\ 
+VAP                    & -0.072 ^*   & -0.089 ^*   & -0.056 ^*   & -0.083 ^*   & -0.082 ^*  \\ 
+                       & (0.019)     & (0.022)     & (0.021)     & (0.022)     & (0.026)    \\ 
+\% Over 65            & 0.007       & 0.003       & -0.014      & -0.001      & -0.014     \\ 
+                       & (0.019)     & (0.017)     & (0.021)     & (0.020)     & (0.020)    \\ 
+\% Bachelor +         & 0.003       & 0.030       & -0.018      & 0.002       & 0.007      \\ 
+                       & (0.015)     & (0.019)     & (0.022)     & (0.016)     & (0.023)    \\ 
+\% White              & -0.014      & -0.016      & 0.005       & -0.015      & -0.007     \\ 
+                       & (0.015)     & (0.014)     & (0.018)     & (0.016)     & (0.017)    \\ 
+\% OOH                & -0.003      & -0.001      & 0.012       & -0.009      & 0.008      \\ 
+                       & (0.020)     & (0.018)     & (0.021)     & (0.021)     & (0.021)    \\ 
+Exurb                  & 0.005       & -0.009      & 0.032       & 0.012       & 0.013      \\ 
+                       & (0.039)     & (0.034)     & (0.040)     & (0.040)     & (0.035)    \\ 
+Rural                  & -0.002      & -0.021      & 0.025       & 0.002       & 0.000      \\ 
+                       & (0.038)     & (0.033)     & (0.039)     & (0.039)     & (0.034)    \\ 
+\% Incumbents         &             & -0.005      &             &             & -0.002     \\ 
+                       &             & (0.013)     &             &             & (0.013)    \\ 
+\% Yes Rev. Limit     &             & 0.020 ^*    &             &             & 0.015      \\ 
+                       &             & (0.009)     &             &             & (0.009)    \\ 
+\% Polarized          &             & -0.011      &             &             & -0.015     \\ 
+                       &             & (0.012)     &             &             & (0.013)    \\ 
+\% Teach. Voters      &             & -0.009      &             &             & -0.002     \\ 
+                       &             & (0.018)     &             &             & (0.020)    \\ 
+Fall Turnout           &             & -0.021      &             &             & -0.013     \\ 
+                       &             & (0.020)     &             &             & (0.021)    \\ 
+Number Seats           &             & 0.093 ^*    &             &             & 0.092 ^*   \\ 
+                       &             & (0.011)     &             &             & (0.011)    \\ 
+\% Millrate for Schl. &             &             & -0.032 ^*   &             & -0.022     \\ 
+                       &             &             & (0.015)     &             & (0.014)    \\ 
+\% Revenue Prop. Tax  &             &             & 0.021       &             & 0.022      \\ 
+                       &             &             & (0.023)     &             & (0.023)    \\ 
+Cost per Pupil         &             &             & 0.070 ^*    &             & 0.048      \\ 
+                       &             &             & (0.025)     &             & (0.024)    \\ 
+Balance per Pupil      &             &             & -0.023      &             & -0.022     \\ 
+                       &             &             & (0.016)     &             & (0.015)    \\ 
+Millrate $\Delta$     &             &             & 0.012       &             & 0.011      \\ 
+                       &             &             & (0.011)     &             & (0.011)    \\ 
+\% Salary - Admin.    &             &             &             & 0.000       & -0.004     \\ 
+                       &             &             &             & (0.016)     & (0.015)    \\ 
+New Superintendent     &             &             &             & 0.007       & 0.011      \\ 
+                       &             &             &             & (0.012)     & (0.012)    \\ 
+\% Private School     &             &             &             & 0.022       & 0.009      \\ 
+                       &             &             &             & (0.016)     & (0.015)    \\ 
+Cumul. Bond Att.       &             &             &             & -0.010      & -0.004     \\ 
+                       &             &             &             & (0.015)     & (0.014)    \\ 
+Cumul. Override Att.   &             &             &             & 0.032 ^*    & 0.021      \\ 
+                       &             &             &             & (0.014)     & (0.013)     \\
+ $N$                    & 1677        & 1677        & 1677        & 1677        & 1677       \\ 
+AIC                    & -692.671    & -715.948    & -674.981    & -667.409    & -665.684   \\ 
+N Groups               & 305         & 305         & 305         & 305         & 305        \\ 
+Group Names            & distid      & distid      & distid      & distid      & distid     \\ 
+Group:distid Effs.     & (Intercept) & (Intercept) & (Intercept) & (Intercept) & (Intercept)\\ 
+Group:distid Var.      & 0.091       & 0.067       & 0.089       & 0.091       & 0.067      \\ 
+Sigma                  & 0.1769      & 0.1786      & 0.1768      & 0.1768      & 0.1784      \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
+\multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
+                and divided by 2 standard deviations.}} 
+\end{longtable} 
+
 
 \clearpage
 
@@ -1669,7 +1797,7 @@ $\log L$              & -1032.260 & -1004.578 & -1016.107 & -1016.150 & -972.821
 \subsection{Model Specification Tests}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:48:58 2015
+% Tue Jan 13 17:48:26 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{llrrr}

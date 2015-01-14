@@ -217,7 +217,7 @@ of Wisconsin school districts.
 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:33:08 2015
+% Tue Jan 13 17:32:06 2015
 \begin{table}[ht]
 \centering
 {\scriptsize
@@ -295,7 +295,7 @@ the electorate is much more Democratic, student poverty is higher, and teacher
 salaries and median incomes are more divergent. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:33:08 2015
+% Tue Jan 13 17:32:06 2015
 \begin{table}[ht]
 \centering
 {\scriptsize
@@ -327,7 +327,7 @@ Total Population & 707 & 677 & 511 & 673 & 364 \\
 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:33:08 2015
+% Tue Jan 13 17:32:06 2015
 \begin{table}[ht]
 \centering
 {\scriptsize
@@ -396,7 +396,7 @@ instead vacancies are filled by appointment of the remaining members [Wis. Stat 
 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:33:23 2015
+% Tue Jan 13 17:32:20 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrrr}
@@ -566,7 +566,7 @@ and contested open seats. Instead, there has been an increase in races featuring
 an open and uncontested seat. Chapter \ref{chap:candidacy} will investigate this.
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:33:23 2015
+% Tue Jan 13 17:32:21 2015
 \begin{table}[ht]
 \centering
 {\small
@@ -624,7 +624,7 @@ smaller electorates, lower information available to voters, and an off-cycle ele
 seat. 
 
 \subsubsection{Close Races}
-
+\label{subsec:closeraces}
 In Table \ref{tab:incumbentContest} we see that school board elections are contested more often than the literature from Chapter \ref{chap:intro} would lead us to believe. In fact, 
 school board races are about as contested as partisan primaries for Congress. However, 
 Table \ref{tab:incumbentContest} represents an overestimate of contestation by 
@@ -654,9 +654,7 @@ it is clear that a plurality of races feature 1 or 2 winners and only 1 or
 2 candidates, however, the method for calculating vote margin has to be robust to a wide 
 array of combinations of candidates receiving votes and number of winners for the 
 seat. Table \ref{tab:votemargincalc} describes the ways of dealing with this in 
-calculating the margin of victory in school board races.\footnote{Chapter \ref{chap:candidacy} 
-will discuss the virtues of these methods in more depth as well as why other methods 
-are not included here.} 
+calculating the margin of victory in school board races.
 
 \begin{table}[h!]
 \begin{center}
@@ -668,6 +666,7 @@ are not included here.}
 \textbf{Name}  & \textbf{Description} & \textbf{Formula} & \textbf{Citation} \\ \hline
 Vote Margin  & Minimum votes needed for a losing candidate to win & $min(votes_{winner}) - max(votes_{loser})$ & \citet{VoteCalculus68,RefWorks:351,cox88} \\ \hline
 Hare Quota Difference & Average Distance of Winners from Minimum Winning Vote Count & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$  & \citet{Jesse1999323}   \\ \hline
+Psuedo Two Candidate Races & Combine candidates and challengers into plurality races & & \citet{jackmanwinsky} \\ \hline
 Blais-Lagos Quotient & Adjustment of Vote Margin to Normalize Across District Types & $100 x \frac{\frac{VoteMargin}{TotalVotes}}{Seats}$ & \citet{blaislago} \\ \hline
 \end{tabular}
 \end{footnotesize}
@@ -699,7 +698,7 @@ relatively similar, such as U.S. House seats. However, in cases where the voting
 population can vary by two orders of magnitude or more, using the raw vote margin 
 can prove distorting \citep{cox88}. 
 
-To adjust for this there are two methods. The first is to measure the mean distance 
+To adjust for this there are three methods. The first is to measure the mean distance 
 of all winning candidates from the minimum necessary to secure a seat, also known 
 as the Hare Quota.\footnote{The Hare Quota is simply the quotient $\frac{Total Votes}{Seats}$ For simplicity I use the Hare Quota, but other measures 
 that are similar include the Droop Quota and the Hagenbach-Bischoff Quota. While Wisconsin school board elections do not use the Hare Quota formally to determine representation, because 
@@ -711,6 +710,28 @@ closest single matchup within their district. This method also has the benefit
 of being more normalized across disparate electorate sizes by differencing out the 
 required plurality from the measure, thereby adjusting for differential electorate 
 size. 
+
+The second option is to construct psuedo races of two candidates each from within 
+the multi-member districts. This is the approach taken by \citet{jackmanwinsky} to 
+evaluate the competitiveness of multimember districts in US state legislative elections. 
+This is an elegant approach as the authors argue, becasue it appears to best reflect 
+the decision process of individual voters -- voters who split their ticket between 
+parties are likely doing so based on their evaluation of an individual candidate.
+This approach was possible because of the partisan nature of these seats, allowing 
+logical contests to be simulated from the multimember results pitting Democrats 
+against Republicans. Though it could be argued that local elections are  
+best characterized as incumbents versus challengers, no such logical partisan or 
+ideological categorization is available in school board races to make this approach 
+possible. The incumbent challenger divide will not work for two reasons. First, 
+not all races feature an incumbent and a challenger as we have seen above. In cases 
+where seats are open or only one challenger and three incumbents are running, it is 
+difficult to see how to apply the psuedo-district model. Second, challenger and 
+incumbent status is not even clear to voters on the ballot -- not all ballots indicate 
+incumbent status and voters are likely often unaware of which candidates are up 
+for re-election. In this low-information environment then, the simulated district 
+approach does not appear to accurately model the decision of individual voters, though 
+further research into voter decisions in local elections a la \citet{oliver12} is 
+warranted. %TODO: find infomration in Oliver confirming 2nd objection here 
 
 The final and preferred method in the literature is the Blais-Lago metric described 
 in Table \ref{tab:votemargincalc}. This metric has the advantage of better adjusting 
@@ -919,7 +940,7 @@ of votes cast and voter turnout statewide to the statewide estimates derived by
 rebuilding voter data at the district level. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:33:26 2015
+% Tue Jan 13 17:32:23 2015
 \begin{table}[ht]
 \centering
 {\footnotesize
@@ -1119,7 +1140,7 @@ is not impossible to believe that voters may be interested in local candidates, 
 relatively uninterested in the non-partisan statewide race at the top of the ticket. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Jan 11 14:33:36 2015
+% Tue Jan 13 17:32:33 2015
 \begin{table}[ht]
 \centering
 {\footnotesize
