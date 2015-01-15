@@ -1239,12 +1239,25 @@ for this data.
 \section{Results}
 
 I present results across three dependent variables for four models. I begin by 
-discussing the results for each dependent variable separately, and then proceed 
-to compare the results across models. For each model I examine both the statistical 
-significance of predictors, but also the substantive meaning of the results for 
-some of those variables. I do this by producing simulated observations and showing 
-the prediction across the range of the variable of interest. 
+discussing the results for each dependent variable separately. In the text, I 
+report the results for of the mixed-effect models and I leave the results of the 
+pooled models for the appendix \ref{sec:appendix}. I prefer the mixed-effect 
+models for reasons stated above, and because they represent a closer estimation 
+of the impact of the variables of interest by eliminating the variance attributable 
+to unobservable time-invariant characteristics of school districts. 
 
+Next, I explore some substantive interpretations of the findings in the models. I do this by producing simulated observations and showing the prediction across the range 
+of the variable of interest. This allows me to explore the marginal effect of 
+changes in a predictor in the probability space of the predicted values of the 
+model. This is more intuitive than discussing the coefficient values or 
+interpreting effect sizes. 
+
+Finally, I close by comparing the four groups of models to one another in an effort 
+to understand which variables jointly explain the dependent variables best. In this 
+section, I also compare the models to null models consisting merely of year and 
+group factors. Thus, I explore how much additional classification power the school 
+district annual attributes provide in explaining the likelihood candidates emerge 
+or incumbents are defeated in a school board race. 
 
 <<cleanModData, results='asis'>>=
 dist_turn$nonincumbRun <- ifelse(dist_turn$onlyIncum == 1, 0, 1)
@@ -1726,42 +1739,39 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
 
 <<blqGLMs, eval=TRUE, results='hide'>>=
 # Select only elections with more candidates than seats
-moddat4 <- moddat[moddat$contestMinor == 1, ]
+# moddat4 <- moddat[moddat$contestMinor == 1, ]
 
 demogsBLQ <- lm(minBlaisLago ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share + locale2 + year,
-              data = moddat4)
+              OOH_share + locale2 + year + contestMinor + contestSer,
+              data = moddat)
 
-demogSE <- get_CL_vcov(demogsBLQ, moddat4$distid)
+demogSE <- get_CL_vcov(demogsBLQ, moddat$distid)
 demogsBLQ$se <- sqrt(diag(demogSE))
 
 politicBLQ <- update(demogsBLQ, . ~ . + incumShare + overrideYesPer +  partyDivisionRecent +
                     teachShareofVoters + fallTurnout + nraces) 
 
-politicSE <- get_CL_vcov(politicBLQ, moddat4$distid)
+politicSE <- get_CL_vcov(politicBLQ, moddat$distid)
 politicBLQ$se <- sqrt(diag(politicSE))
 
 
 fiscalBLQ <- update(demogsBLQ, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta)
 
-fiscalSE <- get_CL_vcov(fiscalBLQ, moddat4$distid)
+fiscalSE <- get_CL_vcov(fiscalBLQ, moddat$distid)
 fiscalBLQ$se <- sqrt(diag(fiscalSE))
-
 
 policyBLQ <- update(demogsBLQ, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
 
-
-policySE <- get_CL_vcov(policyBLQ, moddat4$distid)
+policySE <- get_CL_vcov(policyBLQ, moddat$distid)
 policyBLQ$se <- sqrt(diag(policySE))
 
 fullmodBLQ <- update(politicBLQ, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta + 
                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-
-fullmodSE <- get_CL_vcov(fullmodBLQ, moddat4$distid)
+fullmodSE <- get_CL_vcov(fullmodBLQ, moddat$distid)
 fullmodBLQ$se <- sqrt(diag(fullmodSE))
 
 rescalenote <- "All continuous variables rescaled to center 0 
@@ -1770,7 +1780,8 @@ stars.note <- apsrtable:::stars.note
 
 
 coefnames4 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% OOH", "Exurb", "Rural", "\\% Incumbents", "\\% Yes Rev. Limit", 
+               "\\% White", "\\% OOH", "Exurb", "Rural", "Minor Contestation Lag", 
+               "Major Contestation Lag", "\\% Incumbents", "\\% Yes Rev. Limit", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
                "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
@@ -1791,10 +1802,12 @@ glmBLQtab <- apsrtable(demogsBLQ, politicBLQ, fiscalBLQ, policyBLQ, fullmodBLQ, 
 
 @
 
+
+\begin{tiny}
 <<blqMMmods, eval=TRUE, results='asis'>>=
 demogsMMblq <- lmer(minBlaisLago ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share + locale2 + year + (1|distid), 
-              data = moddat4) 
+              OOH_share + locale2 + contestMinorLag + contestSerLag + year + (1|distid), 
+              data = moddat) 
 
 politicMMblq <- update(demogsMMblq, . ~ . + incumShare +  overrideYesPer +  
                        partyDivisionRecent +
@@ -1824,16 +1837,25 @@ apsrtable(demogsMMblq, politicMMblq, fiscalMMblq, policyMMblq, fullmodMMblq,
           Sweave=FALSE, digits = 3, coef.names = coefnames4)
 
 @
+\end{tiny}
 
 \clearpage
 
+
+
 \subsection{Substantive Effects}
+
+The results of the above models are disappointing. The data do not provide much 
+evidence of many of the theoretical expectations despite an ample sample size. 
+This section seeks to explore the effects that do matter from the models to 
+illustrate the magnitude of the effects that have been identified and explore 
+the findings of the models. 
 
 Given the high number of observations available in this data set, there is likely 
 sufficient power to detect effects that are substantively quite small yet remain 
 statistically significant. In order to better understand this, I use simulations 
 to illustrate the substantive impact of several of the key variables identified 
-in the models above on school board contestation.  
+in the models above on school board contestation and illustrat ethem here.  
 
 \subsubsection{Fixed Effects}
 
@@ -1847,10 +1869,11 @@ probability of contestation conditional on changes in those variables.
 sim1 <- FEsim(fullmodMMCon, nsims = 1000); sim1$dv <- "Contest"
 sim2 <- FEsim(fullmodMMni, nsims = 1000); sim2$dv <- "No Incumb."
 sim3 <- FEsim(fullmodMMd, nsims = 1000); sim3$dv <- "Defeat"
+sim4 <- FEsim(fullmodMMblq, nsims = 1000); sim4$dv <- "Competitiveness"
 
-
-simPlot <- do.call(rbind, list(sim1, sim2, sim3))
-simPlot$dv <- factor(simPlot$dv, levels = c("No Incumb.", "Contest", "Defeat"))
+simPlot <- do.call(rbind, list(sim1, sim2, sim3, sim4))
+simPlot$dv <- factor(simPlot$dv, levels = c("No Incumb.", "Contest", 
+                                            "Defeat", "Competitiveness"))
 alpha <- 1.96
 simPlot$upr <- simPlot$meanEff + (alpha*simPlot$sdEff)
 simPlot$lwr <- simPlot$meanEff - (alpha*simPlot$sdEff)
@@ -1871,6 +1894,8 @@ ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr,
 
 # confint(fullmodMMni, method = "Wald", level = 0.9)
 @
+
+% List of effects to make plots for
 
 <<fixefSub1, fig.cap="Substantive Effect on Contestation Across Cases">>=
 seplotdf <- substEffSimFE(fullmodMMCon, "schoolMillShare", ncases = 12L, 
@@ -1917,8 +1942,8 @@ p2 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
   geom_line(aes(group = caseID)) + 
     geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
                      alpha=0.4) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75)) + 
   facet_wrap(~caseID, nrow=1) +
   theme_dpi(base_size=12) + 
   theme(strip.text = element_blank(), strip.background = element_blank()) +  
@@ -1931,8 +1956,8 @@ p3 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
   geom_line(aes(group = caseID)) + 
     geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
                      alpha=0.4) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.75)) + 
   facet_wrap(~caseID, nrow=1) +
   theme_dpi(base_size=12) + 
   theme(strip.text = element_blank(), strip.background = element_blank()) +  
@@ -1940,17 +1965,31 @@ p3 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
 
 
 grid.arrange(p1, p2, p3, ncol = 1)
-
-
 @
 
 
-Across district effects.
+Figure \ref{fig:randomEffectplot1} simulates the variance in the predicted 
+probabilities of each outcome across school districts. The horizontal lines in 
+each plot represent the IQR of the fitted values from the models to give a sense 
+of the variability in the predicted probabilities across cases. Each panel represents 
+a single case. Within that panel, the predicted probability for that case is 
+estimated if that case had been observed in that district. Thus, each panel can 
+be interpreted as, all else constant, how much would the probability of the outcome 
+change due to the estimated district intercept. 
+
+The first set of plots on the left represent the variability in incumbent defeat 
+probabilities that are explained by school districts. Given how little each case 
+changes across districts (the slope of the line formed by these probabilities), 
+it appears that the district effects provide very little explanation. The next 
+two panels, contestation and incumbent lockout, have much steeper slopes, suggesting 
+that the variability between the highest and lowest district effect is equivalent 
+to more than the the distance between the first and third quartiles in predicted 
+probabilities. 
 
 <<randomEffectplot1, eval=TRUE, fig.cap="Substantive Impact of District Intercepts">>=
 replotdf <- substEffSimRE(fullmodMMni, "distid", ncases=12, alpha = 0.1)
 
-ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
+NIre <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
                             ymin = lwr, ymax = upr)) + 
   geom_linerange(alpha = I(0.3)) + geom_point(alpha = I(0.8)) +
   theme_dpi(base_size=12) + 
@@ -1965,6 +2004,59 @@ ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat,
   labs(x = "District", y = "Pr(No Incumbent)", title = "Variability in District 
        Effects on Pr For Random Cases")
 
+replotdf <- substEffSimRE(fullmodMMCon, "distid", ncases=12, alpha = 0.1)
+
+NIcon <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
+                            ymin = lwr, ymax = upr)) + 
+  geom_linerange(alpha = I(0.3)) + geom_point(alpha = I(0.8)) +
+  theme_dpi(base_size=12) + 
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
+                      strip.text = element_blank(), 
+                      strip.background = element_blank(), 
+                      panel.grid.minor = element_blank(), 
+                      panel.grid.major = element_blank()) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75)) + 
+  facet_wrap(~caseID) + 
+  labs(x = "District", y = "Pr(Contested)", title = "Variability in District 
+       Effects on Pr For Random Cases")
+
+
+replotdf <- substEffSimRE(fullmodMMd, "distid", ncases=12, alpha = 0.1)
+
+NIdef <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
+                            ymin = lwr, ymax = upr)) + 
+  geom_linerange(alpha = I(0.3)) + geom_point(alpha = I(0.8)) +
+  theme_dpi(base_size=12) + 
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
+                      strip.text = element_blank(), 
+                      strip.background = element_blank(), 
+                      panel.grid.minor = element_blank(), 
+                      panel.grid.major = element_blank()) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.75)) + 
+  facet_wrap(~caseID) + 
+  labs(x = "District", y = "Pr(Incumb. Def.)", title = "Variability in District 
+       Effects on Pr For Random Cases")
+
+# replotdf <- substEffSimRE(fullmodMMblq, "distid", ncases=12, alpha = 0.1)
+# 
+# NIblq <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
+#                             ymin = lwr, ymax = upr)) + 
+#   geom_linerange(alpha = I(0.3)) + geom_point(alpha = I(0.8)) +
+#   theme_dpi(base_size=12) + 
+#   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
+#                       strip.text = element_blank(), 
+#                       strip.background = element_blank(), 
+#                       panel.grid.minor = element_blank(), 
+#                       panel.grid.major = element_blank()) + 
+#   geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.25)) + 
+#   geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.75)) + 
+#   facet_wrap(~caseID) + 
+#   labs(x = "District", y = "Pr(Contested)", title = "Variability in District 
+#        Effects on Pr For Random Cases")
+
+grid.arrange(NIdef, NIcon, NIre, nrow = 1)
 @
 
 \clearpage
@@ -2104,8 +2196,9 @@ emerge and voters are presented a choice, we are left to conclude that at best
 there is only weak evidence such measures matter. 
 
 \section{Technical Appendix}
-\ref{sec:appendix}
-Computing is fun. 
+\label{sec:appendix}
+
+All analyses were done using R \citep{cran}. Source code and data available online. 
 
 \subsection{Pooled GLM Model Results}
 
@@ -2127,6 +2220,11 @@ glmDtab
 @
 \end{tiny}
 
+\begin{tiny}
+<<printGLMblq, results='asis',eval=TRUE>>=
+glmBLQtab
+@
+\end{tiny}
 
 \subsection{Model Specification Tests}
 
@@ -2279,21 +2377,3 @@ modTestPolicy2
 @
 
 
-% 
-% \begin{table}[h!]
-% \begin{center}
-% \begin{small}
-% \caption{Descriptive Models of Candidate Emergence}
-% \label{tab:emergenceDmodels}
-% \begin{tabular}{| p{.1\textwidth} | p{.4\textwidth} | p{.35\textwidth} |}
-% \hline
-% \textbf{Model}  & \textbf{Predictors} & \textbf{Interpretation} \\ \hline
-% Fiscal   & revenue limit, tax rate, median income, referenda & If the model is explanatory, fiscal forces may motivate candidates\\ \hline
-% Politics & Lagged contestation, lagged primary, cumulative debt referenda, political division, lagged referendum & Political activity \\ \hline
-% %Fiscal Revolt & \citet{RefWorks:297,RefWorks:271} & Union membership as share of electorate drives up turnout \\ \hline
-% Policy & teacher compensation, referenda attempts & Unsure \\ \hline 
-% Controls & District population, white \%,  median income & To control for differences in contexts \\ \hline
-% \end{tabular}
-% \end{small}
-% \end{center}
-% \end{table}
