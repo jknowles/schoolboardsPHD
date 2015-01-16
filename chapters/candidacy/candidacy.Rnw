@@ -1898,7 +1898,7 @@ data that has been rescaled. In order to better demonstrate the impact of key
 variables, I provide simulations from the models above that show the impact on the 
 probability of contestation conditional on changes in those variables. 
 
-<<fixefplot1, eval=TRUE, fig.cap="Coefficient Plot for Full Model Fixed Effects",fig.height=8.5, fig.width=8>>=
+<<fixefplot1, eval=TRUE, fig.cap="Coefficient Plot for Full Model Fixed Effects",fig.height=8.5, fig.width=8, results='hide'>>=
 sim1 <- FEsim(fullmodMMCon, nsims = 1000); sim1$dv <- "Contest"
 sim2 <- FEsim(fullmodMMni, nsims = 1000); sim2$dv <- "No Incumb."
 sim3 <- FEsim(fullmodMMd, nsims = 1000); sim3$dv <- "Defeat"
@@ -1937,11 +1937,13 @@ ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr,
 seplotdf <- substEffSimFE(fullmodMMCon, "schoolMillShare", ncases = 4L, 
                           unscale = moddatScale, re = TRUE)
 
-ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
+p1 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
   geom_line(aes(group = caseID)) + 
     geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
                      alpha=0.4) + 
   facet_wrap(~caseID) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75)) + 
   geom_rug(data = dist_turn, aes(x = schoolMillShare, y = NULL)) + 
   theme_dpi(base_size=12) + 
   labs(x = "School Millrate Share", y = "Pr(Contested)")
@@ -1949,11 +1951,13 @@ ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
 seplotdf <- substEffSimFE(fullmodMMCon, "VAP_adjLOG", ncases = 4L, 
                           unscale = moddatScale, re = TRUE)
 
-ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
+p2 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
   geom_line(aes(group = caseID)) + 
     geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
                      alpha=0.4) + 
   facet_wrap(~caseID) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75)) + 
   geom_rug(data = dist_turn, aes(x = VAP_adjLOG, y = NULL)) + 
   theme_dpi(base_size=12) + 
   labs(x = "log(VAP)", y = "Pr(Contested)")
@@ -1961,16 +1965,32 @@ ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
 seplotdf <- substEffSimFE(fullmodMMblq, "TCEC_MEMBER", ncases = 4L, 
                           unscale = moddatScale, re = TRUE)
 
-ggplot(seplotdf, aes(x = newvarUnscale, y = exp(yhat))) +
+seplotdf$yhatUnscale <- exp(seplotdf[, "yhat"] * 2 * moddatScale["minBlaisLago", 2]) + 
+  moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
+seplotdf$lwrUnscale <- exp(seplotdf[, "lwr"] * 2 * moddatScale["minBlaisLago", 2]) + 
+  moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
+seplotdf$uprUnscale <- exp(seplotdf[, "upr"] * 2 * moddatScale["minBlaisLago", 2]) + 
+  moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
+seplotdf <- seplotdf[seplotdf$uprUnscale < 100,]
+lowerBar <- exp((quantile(fitted(fullmodMMblq), prob = 0.25) * 2 * moddatScale["minBlaisLago", 2]) + 
+      moddatScale["minBlaisLago", 1])
+upperBar <- exp((quantile(fitted(fullmodMMblq), prob = 0.75) * 2 * moddatScale["minBlaisLago", 2]) + 
+      moddatScale["minBlaisLago", 1])
+
+p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = exp(yhatUnscale))) +
   geom_line(aes(group = caseID)) + 
-    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
-                     alpha=0.4) + 
+    geom_ribbon(aes(ymin=exp(lwrUnscale), ymax=ifelse(exp(uprUnscale) > 100, 
+                                                      100, exp(uprUnscale)), 
+                    group = caseID), alpha=0.4) + 
   facet_wrap(~caseID) + 
   geom_rug(data = dist_turn, aes(x = TCEC_MEMBER, y = NULL)) + 
+  geom_hline(yintercept = lowerBar) + 
+  geom_hline(yintercept = upperBar) + 
   theme_dpi(base_size=12) + 
-  labs(x = "TCEC_MEMBER", y = "Blais-Lago")
+  labs(x = "TCEC_MEMBER", y = "Blais-Lago") + scale_y_log10()
 
-
+grid.arrange(p1, p2, p3, nrow = 1, 
+             main = "Simulated Effect of Key Variables on Contestations Levels Across Models")
 @
 
 
@@ -1980,53 +2000,6 @@ By far the most variation is explained both by year effects across districts and
 by district effects across years. These effects represent the sum of unobserved 
 characteristics that do not vary within districts over time, and of characteristics 
 that vary over time across all districts. 
-
-Across year effects.
-<<fixefSubYear, fig.cap="Substantive Effect on Contestation for Years">>=
-seplotdf <- substEffSimFE(fullmodMMni, "year", ncases = 4L, re = TRUE, alpha = 0.1)
-
-p1 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
-  geom_line(aes(group = caseID)) + 
-    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
-                     alpha=0.4) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
-  facet_wrap(~caseID, nrow=1) +
-  theme_dpi(base_size=12) + 
-  theme(strip.text = element_blank(), strip.background = element_blank()) +  
-  labs(x = "Year", y = "Pr(Non-Incumbent)", title= "Year Effect Across Observations")
-
-
-seplotdf <- substEffSimFE(fullmodMMCon, "year", ncases = 4L, re = TRUE, alpha = 0.1)
-
-p2 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
-  geom_line(aes(group = caseID)) + 
-    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
-                     alpha=0.4) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25)) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75)) + 
-  facet_wrap(~caseID, nrow=1) +
-  theme_dpi(base_size=12) + 
-  theme(strip.text = element_blank(), strip.background = element_blank()) +  
-  labs(x = "Year", y = "Pr(Contested)", title= "Year Effect Across Observations")
-
-
-seplotdf <- substEffSimFE(fullmodMMd, "year", ncases = 4L, re = TRUE, alpha = 0.1)
-
-p3 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
-  geom_line(aes(group = caseID)) + 
-    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
-                     alpha=0.4) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.25)) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.75)) + 
-  facet_wrap(~caseID, nrow=1) +
-  theme_dpi(base_size=12) + 
-  theme(strip.text = element_blank(), strip.background = element_blank()) +  
-  labs(x = "Year", y = "Pr(Inc. Defeat)", title= "Year Effect Across Observations")
-
-
-grid.arrange(p1, p2, p3, ncol = 1)
-@
 
 
 Figure \ref{fig:randomEffectplot1} simulates the variance in the predicted 
@@ -2045,14 +2018,17 @@ it appears that the district effects provide very little explanation. The next
 two panels, contestation and incumbent lockout, have much steeper slopes, suggesting 
 that the variability between the highest and lowest district effect is equivalent 
 to more than the the distance between the first and third quartiles in predicted 
-probabilities. 
+probabilities. The final panel shows the impact on the Blais-Lago quotient which 
+appears to be in some cases equivalent to a substantial portion of the interquartile 
+range of the predicted probabilities. 
 
 <<randomEffectplot1, eval=TRUE, fig.cap="Substantive Impact of District Intercepts">>=
-replotdf <- substEffSimRE(fullmodMMni, "distid", ncases=12, alpha = 0.1)
-
+replotdf <- substEffSimRE(fullmodMMni, "distid", ncases=6, alpha = 0.1)
+replotdf$distid <- as.character(replotdf$distid)
 NIre <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
                             ymin = lwr, ymax = upr)) + 
-  geom_linerange(alpha = I(0.3)) + geom_point(alpha = I(0.8)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(group = caseID), alpha=0.4) + 
   theme_dpi(base_size=12) + 
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
                       strip.text = element_blank(), 
@@ -2062,14 +2038,14 @@ NIre <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat,
   geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
   geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
   facet_wrap(~caseID) + 
-  labs(x = "District", y = "Pr(No Incumbent)", title = "Variability in District 
-       Effects on Pr For Random Cases")
+  labs(x = "District", y = "Pr(No Incumbent)")
 
-replotdf <- substEffSimRE(fullmodMMCon, "distid", ncases=12, alpha = 0.1)
-
+replotdf <- substEffSimRE(fullmodMMCon, "distid", ncases=6, alpha = 0.1)
+replotdf$distid <- as.character(replotdf$distid)
 NIcon <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
                             ymin = lwr, ymax = upr)) + 
-  geom_linerange(alpha = I(0.3)) + geom_point(alpha = I(0.8)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(group = caseID), alpha=0.4) + 
   theme_dpi(base_size=12) + 
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
                       strip.text = element_blank(), 
@@ -2079,15 +2055,15 @@ NIcon <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat,
   geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25)) + 
   geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75)) + 
   facet_wrap(~caseID) + 
-  labs(x = "District", y = "Pr(Contested)", title = "Variability in District 
-       Effects on Pr For Random Cases")
+  labs(x = "District", y = "Pr(Contested)")
 
 
-replotdf <- substEffSimRE(fullmodMMd, "distid", ncases=12, alpha = 0.1)
-
+replotdf <- substEffSimRE(fullmodMMd, "distid", ncases=6, alpha = 0.1)
+replotdf$distid <- as.character(replotdf$distid)
 NIdef <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
                             ymin = lwr, ymax = upr)) + 
-  geom_linerange(alpha = I(0.3)) + geom_point(alpha = I(0.8)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(group = caseID), alpha=0.4) + 
   theme_dpi(base_size=12) + 
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
                       strip.text = element_blank(), 
@@ -2097,30 +2073,46 @@ NIdef <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat,
   geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.25)) + 
   geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.75)) + 
   facet_wrap(~caseID) + 
-  labs(x = "District", y = "Pr(Incumb. Def.)", title = "Variability in District 
-       Effects on Pr For Random Cases")
+  labs(x = "District", y = "Pr(Incumb. Def.)")
 
-# replotdf <- substEffSimRE(fullmodMMblq, "distid", ncases=12, alpha = 0.1)
-# 
-# NIblq <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
-#                             ymin = lwr, ymax = upr)) + 
-#   geom_linerange(alpha = I(0.3)) + geom_point(alpha = I(0.8)) +
-#   theme_dpi(base_size=12) + 
-#   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
-#                       strip.text = element_blank(), 
-#                       strip.background = element_blank(), 
-#                       panel.grid.minor = element_blank(), 
-#                       panel.grid.major = element_blank()) + 
-#   geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.25)) + 
-#   geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.75)) + 
-#   facet_wrap(~caseID) + 
-#   labs(x = "District", y = "Pr(Contested)", title = "Variability in District 
-#        Effects on Pr For Random Cases")
+replotdf <- substEffSimRE(fullmodMMblq, "distid", ncases=6, alpha = 0.1)
+replotdf$yhatUnscale <- exp(replotdf[, "yhat"] * 2 * moddatScale["minBlaisLago", 2]) + 
+  moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
+replotdf$lwrUnscale <- exp(replotdf[, "lwr"] * 2 * moddatScale["minBlaisLago", 2]) + 
+  moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
+replotdf$uprUnscale <- exp(replotdf[, "upr"] * 2 * moddatScale["minBlaisLago", 2]) + 
+  moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
+replotdf <- replotdf[replotdf$uprUnscale < 100,]
+lowerBar <- exp((quantile(fitted(fullmodMMblq), prob = 0.25) * 2 * moddatScale["minBlaisLago", 2]) + 
+      moddatScale["minBlaisLago", 1])
+upperBar <- exp((quantile(fitted(fullmodMMblq), prob = 0.75) * 2 * moddatScale["minBlaisLago", 2]) + 
+      moddatScale["minBlaisLago", 1])
 
-grid.arrange(NIdef, NIcon, NIre, nrow = 1)
+replotdf$newvar <- as.character(replotdf$newvar)
+
+NIblq <- ggplot(replotdf, aes(x = reorder(newvar, -yhatUnscale), y = yhatUnscale)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(ymin=lwrUnscale, ymax=uprUnscale, group = caseID),
+                     alpha=0.4) + 
+  geom_hline(yintercept = lowerBar) + 
+  geom_hline(yintercept = upperBar) + 
+  facet_wrap(~caseID) +
+  theme_dpi(base_size=12) + 
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
+                      strip.text = element_blank(), 
+                      strip.background = element_blank(), 
+                      panel.grid.minor = element_blank(), 
+                      panel.grid.major = element_blank()) +
+  labs(x = "District", y = "Blais-Lago")
+
+
+grid.arrange(NIdef, NIcon, NIre, NIblq, nrow = 1)
 @
 
 \clearpage
+
+Figure \ref{fig:randomEffectplot1} makes it seem clear that between districts there 
+is much variability in the level of contestation between districts. 
 
 \subsection{Comparisons}
 
@@ -2276,16 +2268,93 @@ glmContab
 \end{tiny}
 
 \begin{tiny}
+<<printGLMblq, results='asis',eval=TRUE>>=
+glmBLQtab
+@
+\end{tiny}
+
+\begin{tiny}
 <<printGLMd, results='asis',eval=TRUE>>=
 glmDtab
 @
 \end{tiny}
 
-\begin{tiny}
-<<printGLMblq, results='asis',eval=TRUE>>=
-glmBLQtab
+
+\subsection{Year Effects Across Models}
+
+Across year effects. There is no consistent pattern between years and the year 
+to year variation is a fraction of the IQR of the fitted values for all models - 
+represented by the horizontal lines in each panel.
+
+<<fixefSubYear, fig.cap="Substantive Effect on Contestation for Years">>=
+seplotdf <- substEffSimFE(fullmodMMni, "year", ncases = 4L, re = TRUE, alpha = 0.1)
+
+p1 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
+                     alpha=0.4) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
+  facet_wrap(~caseID, nrow=1) +
+  theme_dpi(base_size=12) + 
+  theme(strip.text = element_blank(), strip.background = element_blank()) +  
+  labs(x = "Year", y = "Pr(Non-Incumbent)", title= "Year Effect Across Observations")
+
+
+seplotdf <- substEffSimFE(fullmodMMCon, "year", ncases = 4L, re = TRUE, alpha = 0.1)
+
+p2 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
+                     alpha=0.4) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75)) + 
+  facet_wrap(~caseID, nrow=1) +
+  theme_dpi(base_size=12) + 
+  theme(strip.text = element_blank(), strip.background = element_blank()) +  
+  labs(x = "Year", y = "Pr(Contested)", title= "Year Effect Across Observations")
+
+
+seplotdf <- substEffSimFE(fullmodMMd, "year", ncases = 4L, re = TRUE, alpha = 0.1)
+
+p3 <- ggplot(seplotdf, aes(x = year, y = yhat)) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
+                     alpha=0.4) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.25)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.75)) + 
+  facet_wrap(~caseID, nrow=1) +
+  theme_dpi(base_size=12) + 
+  theme(strip.text = element_blank(), strip.background = element_blank()) +  
+  labs(x = "Year", y = "Pr(Inc. Defeat)", title= "Year Effect Across Observations")
+
+seplotdf <- substEffSimFE(fullmodMMblq, "year", ncases = 4L, re = TRUE, alpha = 0.1)
+seplotdf$yhatUnscale <- (seplotdf[, "yhat"] * 2 * moddatScale["minBlaisLago", 2]) + 
+  moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
+seplotdf$lwrUnscale <- (seplotdf[, "lwr"] * 2 * moddatScale["minBlaisLago", 2]) + 
+  moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
+seplotdf$uprUnscale <- (seplotdf[, "upr"] * 2 * moddatScale["minBlaisLago", 2]) + 
+  moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
+
+lowerBar <- exp((quantile(fitted(fullmodMMblq), prob = 0.25) * 2 * moddatScale["minBlaisLago", 2]) + 
+      moddatScale["minBlaisLago", 1])
+upperBar <- exp((quantile(fitted(fullmodMMblq), prob = 0.75) * 2 * moddatScale["minBlaisLago", 2]) + 
+      moddatScale["minBlaisLago", 1])
+
+p4 <- ggplot(seplotdf, aes(x = year, y = exp(yhatUnscale))) +
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(ymin=exp(lwrUnscale), ymax=exp(uprUnscale), group = caseID),
+                     alpha=0.4) + 
+  geom_hline(yintercept = lowerBar) + 
+  geom_hline(yintercept = upperBar) + 
+  facet_wrap(~caseID, nrow=1) +
+  theme_dpi(base_size=12) + 
+  theme(strip.text = element_blank(), strip.background = element_blank()) +  
+  labs(x = "Year", y = "Blais-Lago", title= "Year Effect Across Observations")
+
+grid.arrange(p1, p2, p3, p4, ncol = 1)
 @
-\end{tiny}
+
 
 \subsection{Model Specification Tests}
 

@@ -341,7 +341,7 @@ substEffSimRE <- function(mod, var, ncases, ...){
   plotdf <- merge(cases, simvals)
   plotdf$oldvar <- plotdf[, var]
   plotdf[, var] <- plotdf$newvar
-  plotdf <- cbind(plotdf, easyPredCI(mod, newdata=plotdf, re = TRUE))
+  plotdf <- cbind(plotdf, easyPredCI(mod, newdata=plotdf, re = TRUE, ...))
   return(plotdf)
 }
 
