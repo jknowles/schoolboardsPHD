@@ -360,8 +360,13 @@ easyPredCI <- function(model, newdata, alpha=0.05, re = NULL) {
   beta <- fixef(model) ## fixed-effects coefficients
   V <- vcov(model)     ## variance-covariance matrix of beta
   pred.se <- sqrt(diag(X %*% V %*% t(X))) ## std errors of predictions
-  ## inverse-link (logistic) function: could also use plogis()
-  linkinv <- model@resp$family$linkinv
+  
+  if(class(model) == "lmerMod"){
+    linkinv <- identity
+  } else if(class(model) == "glmerMod"){
+    ## inverse-link (logistic) function: could also use plogis()
+    linkinv <- model@resp$family$linkinv
+  }
   ## construct 95% Normal CIs on the link scale and
   ##  transform back to the response (probability) scale:
   crit <- -qnorm(alpha/2)

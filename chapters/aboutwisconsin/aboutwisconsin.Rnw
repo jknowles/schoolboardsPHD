@@ -764,7 +764,7 @@ calculating the margin of victory in school board races.
 Vote Margin  & Minimum votes needed for a losing candidate to win & $min(votes_{winner}) - max(votes_{loser})$ & \citet{VoteCalculus68,RefWorks:351,cox88} \\ \hline
 Hare Quota Difference & Average Distance of Winners from Minimum Winning Vote Count & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$  & \citet{Jesse1999323}   \\ \hline
 Psuedo Two Candidate Races & Combine candidates and challengers into plurality races & & \citet{jackmanwinsky} \\ \hline
-Blais-Lagos Quotient & Adjustment of Vote Margin to Normalize Across District Types & $100 x \frac{\frac{VoteMargin}{TotalVotes}}{Seats}$ & \citet{blaislago} \\ \hline
+Blais-Lago Quotient & Adjustment of Vote Margin to Normalize Across District Types & $100 x \frac{\frac{VoteMargin}{TotalVotes}}{Seats}$ & \citet{blaislago} \\ \hline
 \end{tabular}
 \end{footnotesize}
 \end{center}
@@ -835,7 +835,20 @@ in Table \ref{tab:votemargincalc}. This metric has the advantage of better adjus
 the vote margin calculation for both the size of the electorate and the size of the 
 election slate, thus making meaningful comparisons across diverse districts possible. 
 While this method still focuses on the most competitive seat in the district, it 
-better enables comparisons across districts. Thus, the Blais-Lago Quotient can be 
+better enables comparisons across districts. 
+
+The authors describe the measure as: ``the minimal number of additional votes 
+required under existing rules, for any party to win one additional seat'' \citep{blaislago}. 
+A downside of the Blais-Lago quotient 
+is that in non-partisan elections it must be interpreted with caution as the last 
+winner and first loser may have little to no ideological divide. That is, for voters, 
+switching the last winner with the first loser would not meaningfully affect policy, 
+and thus the competition was not between these two candidates and must either be 
+with a third candidate further down the vote tabulation, or no competition exists 
+at all because all candidates broadly represent the same interests. While this 
+makes the ideological consequences of changing winners unclear, it still represents 
+the best way to comparatively measure the closeness of the election outcome across 
+districts with differing seats. Thus, the Blais-Lago Quotient can be 
 interpreted as the minimum number of votes necessary to adjust the outcome divided 
 by the number of voters. 
 
