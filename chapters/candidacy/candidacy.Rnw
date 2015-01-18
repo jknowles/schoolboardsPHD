@@ -829,6 +829,14 @@ Finally, I include a measure of the share of district salaries spent on
 administrators. All else equal, I expect more administrative school districts 
 to have fewer board challenges. % TODO: why
 
+Finally, I seek to control for autocorrelation in board contestation. If board 
+elections are competitive consecutively because of sustained community dissatisfaction 
+or the goal of seeking a majority of seats, then I expect lagged measures of 
+contestation to be positively related to contestation in the current period. 
+There is little evidence in the literature to suggest whether it is likely that 
+sustained competition will emerge in school board elections, so I expect this 
+variable to be unrelated in the models that follow. 
+
 These expectations are summarized in Table \ref{tab:candIV}. 
 
 
@@ -865,7 +873,9 @@ Debt Referenda Attempt and Failure & + & debtFail; debtQues \\
 Override Referenda Attempt and Failure & + & overrideQues; overrideFail \\
 Cumulative Bond Attempts & + & cumulAttp \\
 Administrator Share of Salary & - & ADMIN\_SHARE \\
-Percentage of Pupils in Non-public schools & - & NonPublicPupilPer \\ \hline
+Percentage of Pupils in Non-public schools & - & NonPublicPupilPer \\ 
+Serious Contestation in Prior election & None & contestSerLag \\ 
+\hline
 \caption{Available Variables and Expected Signs}
 \end{longtable}
 \end{center}
@@ -910,7 +920,7 @@ policyIdx <- c("NEW_SUP", "MATH_PROFADV_PER", "READ_PROFADV_PER", "debtFail",
 
 demogIdx <- c("per_white_all", "median_incomeLOG", "per65o", "VAP_adjLOG", 
               "OOH_share", "PerBachelorOrAbove", "publicPupilCountLOG", 
-              "econ_disadv_per")
+              "econ_disadv_per", "NonWhitePublicPupilPer")
 
 fiscalIdx <- c("PROPERTYTAX_REV_SHARE", "balance_member_lag", "TCEC_MEMBER", "TEC_MEMBER", 
                "NonSDMill", "millrate", "schoolMillShare", "millrate_delta", 
@@ -1311,11 +1321,13 @@ moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 <<glmmodsNI, results='hide'>>=
 
 # moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
+moddat2 <- moddat[!is.na(moddat$contestSerLag), ]
 
 demogsNI <- glm(nonincumbRun ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share + locale2 + year, data = moddat, family = "binomial") #bach and 65o switch?
+              OOH_share + locale2 + contestSerLag + year, 
+              data = moddat2, family = "binomial") #bach and 65o switch?
 
-demogSE <- get_CL_vcov(demogsNI, moddat$distid)
+demogSE <- get_CL_vcov(demogsNI, moddat2$distid)
 demogsNI$se <- sqrt(diag(demogSE))
 
 politicNI <- update(demogsNI, . ~ . + overrideQues + overridePass + 
@@ -1323,19 +1335,19 @@ politicNI <- update(demogsNI, . ~ . + overrideQues + overridePass +
                     teachShareofVoters + fallTurnout + nraces) 
   # partyDivision and fallTwoPartyShareDem lose 2 years
 
-politicSE <- get_CL_vcov(politicNI, moddat$distid)
+politicSE <- get_CL_vcov(politicNI, moddat2$distid)
 politicNI$se <- sqrt(diag(politicSE))
 
 fiscalNI <- update(demogsNI, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
                    TCEC_MEMBER + balance_member_lag + millrate_delta)
 
-fiscalSE <- get_CL_vcov(fiscalNI, moddat$distid)
+fiscalSE <- get_CL_vcov(fiscalNI, moddat2$distid)
 fiscalNI$se <- sqrt(diag(fiscalSE))
 
 policyNI <- update(demogsNI, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
 
-policySE <- get_CL_vcov(policyNI, moddat$distid)
+policySE <- get_CL_vcov(policyNI, moddat2$distid)
 policyNI$se <- sqrt(diag(policySE))
 
 fullmodNI <- update(politicNI, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
@@ -1344,7 +1356,7 @@ fullmodNI <- update(politicNI, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
 
 
-fullmodSE <- get_CL_vcov(fullmodNI, moddat$distid)
+fullmodSE <- get_CL_vcov(fullmodNI, moddat2$distid)
 fullmodNI$se <- sqrt(diag(fullmodSE))
 rescalenote <- "All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations."
@@ -1352,9 +1364,8 @@ stars.note <- apsrtable:::stars.note
 coef.note <- "Year fixed effect coefficients excluded."
 
 coefnames1 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% OOH",  "Exurb", "Rural", "Rev. Lim. Attpt.", 
-               "Rev. Lim. Pass", 
-               "Bond Attpt.", "Bond Pass", 
+               "\\% White", "\\% OOH",  "Exurb", "Rural", "Contestation Lag", 
+               "Rev. Lim. Attpt.", "Rev. Lim. Pass", "Bond Attpt.", "Bond Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Rev. Prop. Tax", "Cost per Pupil", 
                "Bal. per Pupil", "Millrate $\\Delta$", "\\% Salary Admin.", 
@@ -1387,7 +1398,7 @@ ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
 
 
 demogsMMni <- glmer(nonincumbRun ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share + locale2 + year + (1|distid), 
+              OOH_share + locale2 + contestSerLag + year + (1|distid), 
               data = moddat, family = "binomial", control = ctrl) 
 
 politicMMni <- update(demogsMMni, . ~ . + overrideQues + overridePass + 
@@ -1492,10 +1503,11 @@ rates rise and also as districts have offered more bond referenda historically.
 <<glmmodsContest, results='hide'>>=
 # moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
 
-moddat2 <- moddat[moddat$incumShare != max(moddat$incumShare),]
+moddat2 <- moddat[moddat$incumShare != max(moddat$incumShare) & 
+                    !is.na(moddat$contestSerLag), ]
 
 demogsCon <- glm(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share + locale2 + year, 
+              OOH_share + locale2 + contestSerLag +  year, 
               data = moddat2, 
               family = "binomial") #bach and 65o switch?
 
@@ -1536,7 +1548,8 @@ stars.note <- apsrtable:::stars.note
 
 
 coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% OOH", "Exurb", "Rural","\\% Incumbents", 
+               "\\% White", "\\% OOH", "Exurb", "Rural", "Lagged Contestation", 
+               "\\% Incumbents", 
                "Override Attpt.", "Override Pass", "Debt Ques.", "Debt Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
@@ -1569,7 +1582,7 @@ ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
 
 demogsMMCon <- glmer(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + 
                        per_white_all +
-              OOH_share + locale2 + year + (1|distid), 
+              OOH_share + locale2 + contestSerLag + year + (1|distid), 
               data = moddat2, family = "binomial", control = ctrl) #bach and 65o switch?
 
 politicMMCon <- update(demogsMMCon, . ~ . + incumShare + overrideQues + overridePass + 
@@ -1764,11 +1777,12 @@ revenue limit maintains its predictive power in the full model.
 
 <<incdefeatGLM, eval=TRUE, results='hide'>>=
 moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
-                              moddat$incumShare != min(moddat$incumShare),]
+                              moddat$incumShare != min(moddat$incumShare) & 
+                    !is.na(moddat$contestSerLag),]
 
 demogsD <- glm(incDefeats ~ VAP_adjLOG + per65o + PerBachelorOrAbove + 
                  per_white_all +
-              OOH_share + locale2 + year, 
+              OOH_share + locale2 + contestSerLag + year, 
               data = moddat3, 
               family = "binomial") #bach and 65o switch?
 
@@ -1811,7 +1825,8 @@ stars.note <- apsrtable:::stars.note
 
 
 coefnames3 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% OOH", "Exurb", "Rural", "\\% Incumbents", "\\% Yes Rev. Limit", 
+               "\\% White", "\\% OOH", "Exurb", "Rural", "Lagged Contestation", 
+               "\\% Incumbents", "\\% Yes Rev. Limit", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
                "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
@@ -2106,7 +2121,7 @@ NIblq <- ggplot(replotdf, aes(x = reorder(newvar, -yhatUnscale), y = yhatUnscale
   labs(x = "District", y = "Blais-Lago")
 
 
-grid.arrange(NIdef, NIcon, NIre, NIblq, nrow = 1)
+grid.arrange(NIdef, NIcon, NIre, NIblq, nrow = 1, main = "Effect of School Districts on Measures of Contestation")
 @
 
 \clearpage
@@ -2207,8 +2222,6 @@ ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = m
               aes(x = fpr, y = tpr, group = modType, color = NULL), 
                alpha = I(0.6), size = I(1.1), color = I('gray20'), 
             se = FALSE, linetype = 2, stat = "smooth") 
-
-
 @
 
 
@@ -2242,11 +2255,108 @@ political participation.
 
 \section{Discussion}
 
-On one hand it may seem easy to read these results as disappointing for theories 
-of local political participation. After testing the impact of variables such as 
-fiscal, political, policy, and demographics on the likelihood that challengers 
-emerge and voters are presented a choice, we are left to conclude that at best 
-there is only weak evidence such measures matter. 
+The results above have demonstrated that the decision to contest school board 
+elections, and thus for new candidates to emerge, is not well explained by 
+attributes of the school districts themselves. Across an array of attributes 
+such as the demographic makeup of the district, the fiscal health of the district, 
+the local politics of school district finances, and the policy decisions of the 
+school boards themselves -- very little of the variation in school board 
+contestation was explained. The biggest factor in school board election contestation 
+from the data in Wisconsin was the unobserved variance between districts themselves 
+as demonstrated by the simulations plotted in Figure \ref{randomEffectplot1}. 
+
+This finding is important for three reasons. First, by eliminating a number of 
+possible between-district explanations, these findings provide evidence that the 
+determinants of running for school board are localized and idiosyncratic as opposed 
+to based on responses to policy, fiscal, or political pressures. The fact that 
+unobservable school district effects explain the biggest share of the variance in 
+candidate emergence and competitiveness, and that other factors explain very little 
+provides strong evidence for this. This fits with 
+other studies of local non-partisan elections -- particularly those held off-cycle -- 
+where an engaged subset of the general election electorate votes based on 
+primarily local issues \citep{oliver12}. This suggests that future study of school 
+board elections needs to take a deeper look at the issues at play in individual 
+districts by studying the preferences of likely voters and the positions of 
+potential candidates, a la the suburban voter studies of \citet{oliver12}. 
+
+Second, the Wisconsin evidence suggests that the competitiveness of board elections 
+across this period in the state has not changed. There is no detectable uptick or 
+decrease in competition across any of the measures of competition. This is a theme 
+I will return to in Chapter \ref{chap:walker}, but it is clear from the evidence 
+here that whatever the implications are for the level of competitiveness shown 
+in school board elections in Wisconsin, it is stable. 
+
+Third, board elections appear to operate on a non-partisan issue domain. Predictors 
+of the partisanship of the community or the partisan division of the community 
+in recent elections had no detectable effect on the contestation of school board 
+elections. Education is an issue that confounds ideology for both parties, but 
+the lack of evidence of partisanship mattering for board contestation has important 
+consequences for future studies. 
+
+Taken together, when returning to the question that guides this chapter -- why 
+run for school board -- the answer appears to be idiosyncratic to the conditions 
+within the school district as a community. While it is certainly true that the 
+size of the population is importantly related to higher levels of contestation 
+across almost all measures, there are few other relevant factors that seem 
+predictive of the frequency of challenges for school board seats. School board 
+candidates do not seem to emerge in response at all to the measures of policy pressure 
+collected for this study such as shifts in compensation, changes in the district 
+superintendent, or the academic performance of the school district. However, 
+candidates do seem to be responsive to fiscal factors. Consistently, some 
+measure of fiscal policy is predictive across the models, whether it is the share 
+of the millrate devoted to the school district, the passage of an override or debt 
+referenda, or the cumulative effect of school district referenda since the imposition 
+of revenue limits. Despite these variables being statistically significant, they 
+explained relatively little of the variation in candidate contestation and proved 
+to be poor predictors of contestation. 
+
+So, why run for school board? In the majority of school boards across Wisconsin 
+the answer appears to be in response to some local issue or because of the nature 
+of the community itself. Potential board members may be activated by fiscal conditions, 
+if at all, but predominantly appear to respond to unobservable conditions in the 
+community in which they serve. Chapter \ref{chap:walker} will seek to more formally 
+test the causality of candidate activation. 
+
+Normatively, arguments can be constructed for or against these findings being healthy 
+for democracy. Critics of special jurisdictions such as school boards are 
+quick to point out their ease of capture by special interests due to the very low 
+levels of interest exhibited by voters and candidates in serving these organizations 
+\citep{moe, berry2}. It is undoubtedly true that low-levels of participation are 
+observed here, but my, admittedly weaker, tests of teacher-union capture found 
+no observable effects on board policy. More work remains to be done to understand 
+the motivations of candidates and school board voters, but this study suggests that 
+such work needs to go beyond administrative collections of school district attributes 
+and delve into specific features of the individual candidates and voters in the 
+districts they serve. 
+
+In defense of the findings here, school board elections -- when contested -- appear to 
+be more competitive than legislative counterparts \citep{blaislago}. Attempting to 
+explain this competition led to few observable results, which suggests further study 
+is needed to understand what issues or policy concerns lead to competitive elections. 
+Without a deeper understanding than can be given by the statewide measures used 
+in this study, it is clear that any community divisions that may drive board competition 
+will continue to go undetected. For adherents of dissatisfaction theory, this study 
+has eliminated some easily observable antecedents of voter dissatisfaction, but has 
+certainly not eliminated the likely possibility that voter dissatisfaction with 
+boards is more closely related to specific policy decisions. In fact, consistent 
+evidence was found that the highest of high profile board decisions, offering a 
+referenda for school funding, was related to competition for board seats. This 
+suggests that other high profile decisions not captured here, such as a change in the 
+curriculum or the modification of graduation requirements, may also be more than 
+sufficient to activate voters and be part of the large variation between districts 
+observed in the models above. 
+
+The next chapters will explore the motivations of voters to help further understand 
+this puzzle. Then I will turn my attention to using exogenous variation to test 
+the causal impact of changes to compensation plans on voter and candidate activity 
+in board elections. Finally, I will turn my attention toward investigating if 
+board turnover leads to any detectable changes in school district policies in an 
+effort to answer the question -- if an incumbent loses in a school board election 
+that is marked by low turnout, does anything happen?
+
+%TODO: Group center achievement
+%TODO: Group center finances like costs
+
 
 \section{Technical Appendix}
 \label{sec:appendix}
@@ -2278,7 +2388,6 @@ glmBLQtab
 glmDtab
 @
 \end{tiny}
-
 
 \subsection{Year Effects Across Models}
 
