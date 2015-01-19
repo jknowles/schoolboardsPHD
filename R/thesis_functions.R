@@ -12,6 +12,9 @@
 
 iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
                               digits = 3)}
+
+iNum2 <- function(x){prettyNum(x, big.mark = ",", small.mark = ".", 
+                              digits = 3)}
 iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
                                                   digits = 3)),"\\%")}
 iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
