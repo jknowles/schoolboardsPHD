@@ -657,8 +657,10 @@ a$Var1 <- as.numeric(as.character(a$Var1))
 a.tmp$Var1 <- as.numeric(as.character(a.tmp$Var1))
 
 qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013,], 
-            geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
-  labs(x= "Year", y = "Percent of Races", title = "Percentage of Races with Incumbents Defeated", 
+            geom='bar', stat='identity', fill=Var2, position='stack', 
+      color = I("black")) + 
+  labs(x= "Year", y = "Percent of Races", 
+       title = "Percentage of Races with Incumbents Defeated", 
        fill = "Inc. Defeat") + theme_bw() + scale_y_continuous(label = percent)
 
 
@@ -922,11 +924,10 @@ demogIdx <- c("per_white_all", "median_incomeLOG", "per65o", "VAP_adjLOG",
               "OOH_share", "PerBachelorOrAbove", "publicPupilCountLOG", 
               "econ_disadv_per", "NonWhitePublicPupilPer")
 
-fiscalIdx <- c("PROPERTYTAX_REV_SHARE", "balance_member_lag", "TCEC_MEMBER", "TEC_MEMBER", 
+fiscalIdx <- c("PROPERTYTAX_REV_SHARE", "balance_member_lag", "TCEC_MEMBER", 
+               "TEC_MEMBER", 
                "NonSDMill", "millrate", "schoolMillShare", "millrate_delta", 
                "total_cat_aids_member", "teachSalDiff", "eqv_taxfiler")
-
-#eqv_member
 
 politicIdx <- c("recentTwoPartyShareDem", "incumRun", "nraces", 
                 "partyDivisionRecent", "nwins", "teachShareofVoters", 

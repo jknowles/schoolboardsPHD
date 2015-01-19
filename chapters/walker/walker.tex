@@ -133,6 +133,8 @@ The approach here is to leverage the passage of Act 10 as an exogenous shock whi
 allows us to reasonably assume that differences between the period prior to the shock 
 and after the shock are causally attributable to the shock itself. 
 
+% Citations: Shadish and Cook
+
 \subsection{Candidacy}
 
 Combining this information with returns from the late spring recall election of 
@@ -251,17 +253,17 @@ from candidates in terms of increasing the attractiveness of school board seats.
  %                             & Naive Causal Model & Overvote Model    \\ 
 (Intercept)                   & -0.37 ^*           & -0.37 ^*          \\ 
                               & (0.13)             & (0.13)            \\ 
-turnoutLag1                   & 0.28 ^*            & 0.21              \\ 
+turnoutLag1                   & 0.27 ^*            & 0.20              \\ 
                               & (0.11)             & (0.11)            \\ 
-VAP\_adjLOG                  & 1.15 ^*            & 1.24 ^*           \\ 
+VAP\_adjLOG                  & 1.13 ^*            & 1.22 ^*           \\ 
                               & (0.13)             & (0.13)            \\ 
 per\_white\_all             & 0.05               & 0.04              \\ 
                               & (0.14)             & (0.14)            \\ 
-per65o                        & 0.11               & -0.05             \\ 
+per65o                        & 0.12               & -0.03             \\ 
                               & (0.14)             & (0.14)            \\ 
 PerBachelorOrAbove            & -0.49 ^*           & -0.63 ^*          \\ 
                               & (0.16)             & (0.17)            \\ 
-OOH\_share                   & 0.17               & 0.13              \\ 
+OOH\_share                   & 0.19               & 0.15              \\ 
                               & (0.15)             & (0.16)            \\ 
 median\_incomeLOG            & -0.11              & -0.16             \\ 
                               & (0.22)             & (0.22)            \\ 
@@ -269,18 +271,18 @@ districtwide1                 & 0.57 ^*            & 0.57 ^*           \\
                               & (0.13)             & (0.14)            \\ 
 RecallPolarization            & -0.10              & -0.11             \\ 
                               & (0.13)             & (0.13)            \\ 
-treatment1                    & 0.06               & 0.06              \\ 
+treatment1                    & 0.05               & 0.06              \\ 
                               & (0.10)             & (0.11)            \\ 
-turnout\_overall\_werc      & -0.21 ^*           & -0.21 ^*          \\ 
+turnout\_overall\_werc      & -0.20              & -0.20 ^*          \\ 
                               & (0.10)             & (0.10)            \\ 
-RecallPolarization:treatment1 & 0.14               & 0.02              \\ 
+RecallPolarization:treatment1 & 0.11               & -0.01             \\ 
                               & (0.21)             & (0.22)            \\ 
-topTicketTurnoutSpring        &                    & 0.54 ^*           \\ 
+topTicketTurnoutSpring        &                    & 0.53 ^*           \\ 
                               &                    & (0.12)             \\
  $N$                           & 1747               & 1747              \\ 
-AIC                           & 2324.49            & 2304.23           \\ 
-BIC                           & 2608.70            & 2610.31           \\ 
-$\log L$                     & -1110.24           & -1096.12           \\ \hline
+AIC                           & 2327.70            & 2308.37           \\ 
+BIC                           & 2611.91            & 2614.44           \\ 
+$\log L$                     & -1111.85           & -1098.18           \\ \hline
  \multicolumn{3}{l}{\footnotesize{Standard errors in parentheses}}\\
 \multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
@@ -298,38 +300,38 @@ Table \ref{tab:causmod1} shows good things.
  %                             & Serious     & Minor      \\ 
 (Intercept)                   & -0.93 ^*    & -0.33 ^*   \\ 
                               & (0.18)      & (0.16)     \\ 
-turnoutLag1                   & 0.36 ^*     & 0.13       \\ 
+turnoutLag1                   & 0.35 ^*     & 0.13       \\ 
                               & (0.13)      & (0.13)     \\ 
-VAP\_adjLOG                  & 1.24 ^*     & 1.33 ^*    \\ 
+VAP\_adjLOG                  & 1.20 ^*     & 1.30 ^*    \\ 
                               & (0.17)      & (0.16)     \\ 
 per\_white\_all             & 0.10        & 0.04       \\ 
                               & (0.20)      & (0.18)     \\ 
-per65o                        & 0.03        & -0.04      \\ 
+per65o                        & 0.05        & -0.02      \\ 
                               & (0.20)      & (0.18)     \\ 
 PerBachelorOrAbove            & -0.30       & -0.65 ^*   \\ 
                               & (0.23)      & (0.22)     \\ 
-OOH\_share                   & 0.09        & 0.14       \\ 
+OOH\_share                   & 0.13        & 0.16       \\ 
                               & (0.23)      & (0.20)     \\ 
-median\_incomeLOG            & -0.43       & -0.19      \\ 
+median\_incomeLOG            & -0.42       & -0.18      \\ 
                               & (0.32)      & (0.28)     \\ 
 districtwide1                 & 0.18        & 0.55 ^*    \\ 
                               & (0.19)      & (0.17)     \\ 
-RecallPolarization            & -0.11       & -0.11      \\ 
+RecallPolarization            & -0.14       & -0.11      \\ 
                               & (0.18)      & (0.16)     \\ 
-treatment1                    & 0.02        & 0.06       \\ 
+treatment1                    & 0.02        & 0.05       \\ 
                               & (0.12)      & (0.11)     \\ 
-turnout\_overall\_werc      & -0.12       & -0.23      \\ 
+turnout\_overall\_werc      & -0.10       & -0.22      \\ 
                               & (0.15)      & (0.13)     \\ 
-RecallPolarization:treatment1 & 0.21        & 0.01       \\ 
+RecallPolarization:treatment1 & 0.19        & -0.02      \\ 
                               & (0.24)      & (0.23)     \\ 
-topTicketTurnoutSpring        &             & 0.60 ^*    \\ 
+topTicketTurnoutSpring        &             & 0.59 ^*    \\ 
                               &             & (0.13)      \\
  $N$                           & 1747        & 1747       \\ 
-AIC                           & 2130.99     & 2278.58    \\ 
+AIC                           & 2132.76     & 2282.68    \\ 
 N Groups                      & 310         & 310        \\ 
 Group Names                   & distid      & distid     \\ 
 Group:distid Effs.            & (Intercept) & (Intercept)\\ 
-Group:distid Var.             & 0.8         & 0.67       \\ 
+Group:distid Var.             & 0.81        & 0.67       \\ 
 Sigma                         & 1           & 1           \\ \hline
  \multicolumn{3}{l}{\footnotesize{Standard errors in parentheses}}\\
 \multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
@@ -370,41 +372,41 @@ clear.
 \hline 
   & \multicolumn{ 1 }{ c }{ Naive Causal Model } & \multicolumn{ 1 }{ c }{ Overvote Model } \\ \hline
  %                              & Naive Causal Model & Overvote Model    \\ 
-Intercept                      & -17.96             & -17.49            \\ 
-                               & (15.72)            & (15.50)           \\ 
-turnoutLag2                    & 27.45 ^*           & 18.83 ^*          \\ 
-                               & (3.33)             & (2.98)            \\ 
-fallTurnout                    & 6.70               & -8.24 ^*          \\ 
+Intercept                      & -18.32             & -17.82            \\ 
+                               & (15.66)            & (15.46)           \\ 
+turnoutLag2                    & 27.44 ^*           & 18.79 ^*          \\ 
+                               & (3.33)             & (2.99)            \\ 
+fallTurnout                    & 6.70               & -8.23 ^*          \\ 
                                & (3.87)             & (3.76)            \\ 
-VAP\_adjLOG                   & -2.66 ^*           & -2.15 ^*          \\ 
+VAP\_adjLOG                   & -2.67 ^*           & -2.17 ^*          \\ 
                                & (0.28)             & (0.27)            \\ 
-per\_white\_all              & -3.43              & -5.32 ^*          \\ 
-                               & (2.93)             & (2.70)            \\ 
-per65o                         & 22.53 ^*           & -1.24             \\ 
-                               & (8.33)             & (7.36)            \\ 
-PerBachelorOrAbove             & 8.89               & 5.67              \\ 
-                               & (4.95)             & (4.60)            \\ 
-OOH\_share                    & -5.26              & -7.08 ^*          \\ 
-                               & (3.39)             & (3.50)            \\ 
-median\_incomeLOG             & 5.11 ^*            & 5.12 ^*           \\ 
-                               & (1.99)             & (2.04)            \\ 
-CLOSE=Not Competitive          & -1.36 ^*           & -1.63 ^*          \\ 
-                               & (0.60)             & (0.45)            \\ 
+per\_white\_all              & -3.48              & -5.38 ^*          \\ 
+                               & (2.91)             & (2.69)            \\ 
+per65o                         & 22.74 ^*           & -0.98             \\ 
+                               & (8.30)             & (7.34)            \\ 
+PerBachelorOrAbove             & 8.74               & 5.53              \\ 
+                               & (4.93)             & (4.59)            \\ 
+OOH\_share                    & -5.20              & -7.01 ^*          \\ 
+                               & (3.38)             & (3.49)            \\ 
+median\_incomeLOG             & 5.16 ^*            & 5.17 ^*           \\ 
+                               & (1.98)             & (2.03)            \\ 
+CLOSE=Not Competitive          & -1.46 ^*           & -1.68 ^*          \\ 
+                               & (0.59)             & (0.45)            \\ 
 districtwide=1                 & -0.21              & -0.18             \\ 
                                & (0.54)             & (0.47)            \\ 
-contest=Open Contested         & -0.17              & -0.65             \\ 
+contest=Open Contested         & -0.20              & -0.70             \\ 
                                & (0.82)             & (0.64)            \\ 
-contest=Uncontested            & -3.40 ^*           & -2.33 ^*          \\ 
-                               & (0.54)             & (0.40)            \\ 
-RecallPolarization             & -3.67              & -2.02             \\ 
-                               & (2.90)             & (2.49)            \\ 
-treatment                      & 4.99 ^*            & -1.03             \\ 
-                               & (0.63)             & (0.54)            \\ 
-turnout\_overall\_werc       & 1.17 ^*            & 1.09 ^*           \\ 
-                               & (0.49)             & (0.46)            \\ 
-RecallPolarization * treatment & 23.21 ^*           & 10.68 ^*          \\ 
-                               & (4.35)             & (3.27)            \\ 
-topTicketTurnoutSpring         &                    & 67.11 ^*          \\ 
+contest=Uncontested            & -3.29 ^*           & -2.29 ^*          \\ 
+                               & (0.53)             & (0.40)            \\ 
+RecallPolarization             & -3.88              & -2.24             \\ 
+                               & (2.83)             & (2.45)            \\ 
+treatment                      & 4.94 ^*            & -1.07 ^*          \\ 
+                               & (0.63)             & (0.53)            \\ 
+turnout\_overall\_werc       & 1.17 ^*            & 1.10 ^*           \\ 
+                               & (0.49)             & (0.45)            \\ 
+RecallPolarization * treatment & 23.64 ^*           & 11.03 ^*          \\ 
+                               & (4.35)             & (3.26)            \\ 
+topTicketTurnoutSpring         &                    & 67.12 ^*          \\ 
                                &                    & (2.39)             \\
  $N$                            & 1699               & 1699              \\ 
 $R^2$                          & 0.42               & 0.67              \\ 
@@ -425,51 +427,51 @@ Table \ref{tab:causmod1} shows good things.
 \hline 
   & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } \\ \hline
  %                            & Turnout       & Rolloff      \\ 
-(Intercept)                  & -4.51         & 10.78        \\ 
-                             & (17.51)       & (14.85)      \\ 
-turnoutLag2                  & 10.09 ^*      & -6.27 ^*     \\ 
+(Intercept)                  & -4.96         & 11.14        \\ 
+                             & (17.47)       & (14.83)      \\ 
+turnoutLag2                  & 10.14 ^*      & -6.26 ^*     \\ 
                              & (2.15)        & (1.64)       \\ 
-fallTurnout                  & 9.93 ^*       & 4.34         \\ 
-                             & (3.84)        & (3.36)       \\ 
-VAP\_adjLOG                 & -3.28 ^*      & 2.51 ^*      \\ 
+fallTurnout                  & 9.90 ^*       & 4.33         \\ 
+                             & (3.83)        & (3.35)       \\ 
+VAP\_adjLOG                 & -3.29 ^*      & 2.52 ^*      \\ 
                              & (0.26)        & (0.23)       \\ 
-per\_white\_all            & -4.16         & 6.32         \\ 
-                             & (3.84)        & (3.41)       \\ 
-per65o                       & 33.04 ^*      & -3.14        \\ 
-                             & (7.63)        & (6.86)       \\ 
-PerBachelorOrAbove           & 12.93 ^*      & -3.51        \\ 
-                             & (6.15)        & (5.33)       \\ 
-OOH\_share                  & -3.35         & 6.32 ^*      \\ 
-                             & (2.76)        & (2.45)       \\ 
-median\_incomeLOG           & 4.12 ^*       & -4.62 ^*     \\ 
-                             & (1.98)        & (1.68)       \\ 
-CLOSENot Competitive         & -1.77 ^*      & 1.65 ^*      \\ 
+per\_white\_all            & -4.22         & 6.40         \\ 
+                             & (3.83)        & (3.41)       \\ 
+per65o                       & 33.26 ^*      & -3.36        \\ 
+                             & (7.61)        & (6.85)       \\ 
+PerBachelorOrAbove           & 12.78 ^*      & -3.35        \\ 
+                             & (6.14)        & (5.32)       \\ 
+OOH\_share                  & -3.29         & 6.24 ^*      \\ 
+                             & (2.75)        & (2.45)       \\ 
+median\_incomeLOG           & 4.17 ^*       & -4.67 ^*     \\ 
+                             & (1.98)        & (1.67)       \\ 
+CLOSENot Competitive         & -1.84 ^*      & 1.68 ^*      \\ 
                              & (0.49)        & (0.37)       \\ 
 districtwide1                & 0.27          & -0.36        \\ 
                              & (0.57)        & (0.48)       \\ 
-contestOpen Contested        & -0.83         & 0.67         \\ 
+contestOpen Contested        & -0.87         & 0.73         \\ 
                              & (0.71)        & (0.53)       \\ 
-contestUncontested           & -3.28 ^*      & 2.38 ^*      \\ 
+contestUncontested           & -3.20 ^*      & 2.35 ^*      \\ 
                              & (0.49)        & (0.37)       \\ 
-RecallPolarization           & -2.76         & 1.76         \\ 
-                             & (3.53)        & (3.11)       \\ 
-treatment                    & 4.73          & 1.46 ^*      \\ 
-                             & (2.76)        & (0.49)       \\ 
-turnout\_overall\_werc     & 1.48 ^*       & -1.29 ^*     \\ 
+RecallPolarization           & -2.98         & 1.98         \\ 
+                             & (3.52)        & (3.10)       \\ 
+treatment                    & 4.69          & 1.51 ^*      \\ 
+                             & (2.77)        & (0.48)       \\ 
+turnout\_overall\_werc     & 1.48 ^*       & -1.30 ^*     \\ 
                              & (0.62)        & (0.56)       \\ 
-RecallPolarization:treatment & 21.62 ^*      & -8.65 ^*     \\ 
+RecallPolarization:treatment & 22.02 ^*      & -8.98 ^*     \\ 
                              & (4.04)        & (3.04)       \\ 
-topTicketTurnoutSpring       &               & 28.84 ^*     \\ 
+topTicketTurnoutSpring       &               & 28.79 ^*     \\ 
                              &               & (1.73)        \\
  $N$                          & 1699          & 1699         \\ 
-AIC                          & 11215.12      & 10326.13     \\ 
+AIC                          & 11212.26      & 10320.66     \\ 
 N Groups                     & 310 | 6       & 310 | 6      \\ 
 Group Names                  & distid | year & distid | year\\ 
 Group:distid Effs.           & (Intercept)   & (Intercept)  \\ 
 Group:year Effs.             & (Intercept)   & (Intercept)  \\ 
-Group:distid Var.            & 3.04          & 3.07         \\ 
+Group:distid Var.            & 3.02          & 3.06         \\ 
 Group:year Var.              & 3.11          & 0            \\ 
-Sigma                        & 6.145         & 4.588         \\ \hline
+Sigma                        & 6.142         & 4.58          \\ \hline
  \multicolumn{3}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
 \multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
@@ -484,6 +486,8 @@ Table \ref{tab:causModme} shows the results here.
 
 % Can't say it is only due to school board elections, but phenomenon does show up 
 % in school board elections. 
+
+
 
 \section{Conclusion}
 

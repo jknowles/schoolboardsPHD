@@ -118,8 +118,6 @@ school board elections in Wisconsin.
   \item Habits and Socialization
 \end{myitemize}
 
-
-
 \subsection{Rational Choice}
 
 \citet{Downs57}'s elegant statement of the problem of voting as a question of 
@@ -148,8 +146,7 @@ This seems less germane to the present case - school board members and the commu
 are unlikely to interpret a substantial victory as a mandate.} 
 While the D term did not solve the puzzle posed by \citet{Downs57}, it 
 did touch off a decades long research project to uncover why the D term varies 
-among voters, and the functional form of this benefit of self-expression.\citep[see:][]{KanYang2001, 
-Dowding2005,feddersenreview,Schuessler1} 
+among voters, and the functional form of this benefit of self-expression.\citep[see:][]{KanYang2001,Dowding2005,feddersenreview,Schuessler1} 
 
 %%%%%%%%%%% CITES %%%%%%%%%%%%%%%%%
 
@@ -1015,12 +1012,31 @@ in the Wisconsin dataset due to the ragged panel structure of the data.
 
 <<simpleModel, fig.cap="Regression Diagnostics for A Simple Multiple Regression", fig.height=9>>=
 dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
+# 
+# policyIdx <- c("NEW_SUP", "MATH_PROFADV_PER", "READ_PROFADV_PER", "debtFail", 
+#                "overrideFail", "overrideQues", "debtQues", "NonPublicPupilPer", 
+#                "ADMIN_SHARE", "ADMIN_SHARE_COMP", "debtPass", "overridePass",
+#                "DEBT_ATTEMPT_CUMUL93", "OVERRIDE_ATTEMPT_CUMUL93", 
+#                "SUP_TURNOVER_PRIOR_YEAR")
+# 
+# demogIdx <- c("per_white_all", "median_incomeLOG", "per65o", "VAP_adjLOG", 
+#               "OOH_share", "PerBachelorOrAbove", "publicPupilCountLOG", 
+#               "econ_disadv_per", "NonWhitePublicPupilPer")
+# 
+# fiscalIdx <- c("PROPERTYTAX_REV_SHARE", "balance_member_lag", "TCEC_MEMBER", 
+#                "TEC_MEMBER", 
+#                "NonSDMill", "millrate", "schoolMillShare", "millrate_delta", 
+#                "total_cat_aids_member", "teachSalDiff", "eqv_taxfiler")
+# 
+# politicIdx <- c("recentTwoPartyShareDem", "incumRun", "nraces", 
+#                 "partyDivisionRecent", "nwins", "teachShareofVoters", 
+#                 "overrideYesPer", "fallTurnout")
+
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest",
                         "fallTurnout", "VAP_adjLOG", "distid", "districtwide",
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", 
                         "median_incomeLOG", "minBlaisLago")]
 #moddat <- na.omit(moddat)
-# Filter out extreme values
 moddat <- subset(moddat, turnout < 0.95,)
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
@@ -1139,7 +1155,6 @@ apsrtable(naive1, dumbRLM1, dumbRLM1.2, dumbRLMbest, dumbRLM2, se="robust",
           Sweave=FALSE, float = "sidewaystable")
 
 @
-
 \end{tiny}
 
 Prior turnout appears to be a substantively important predictor in Table \ref{tab:lagmods}.\footnote{Using twice-lagged school board turnout. Results are not substantively different 
