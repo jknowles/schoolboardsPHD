@@ -1,8 +1,6 @@
 # Do Sweave
 library(knitr)
 setwd("chapters")
-
-
 setwd("aboutwisconsin")
 knit("aboutwisconsin.Rnw", envir=new.env())
 rm(list=ls())

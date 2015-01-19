@@ -373,7 +373,17 @@ Social group led voting &\citet{Fowler2005} & Polarized communities have higher 
 \end{center}
 \end{table}
 
-
+%-------------------------------------------------------------------------------
+% Measures of competitiveness in seats as dependent variables
+% One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
+% ENP = 1 / sum(votes_share[candidate] ^2)
+% Expectation of M+1 serious candidates in an M seat district (Cox electoral rules)
+% Extension of Duverger's Law
+% Droop quota = (total votes / total seats + 1) + 1
+% Hagenbach-Bischoff Quota (total votes/ total seats + 1)
+% Create psuedo-districts Jackman Winsky
+% Consider partial versus full contestation
+%------------------------------------------------------------------------------
 
 \section{Data}
 \label{sec:turnData}
@@ -469,7 +479,7 @@ that voters are more likely to turnout than in larger school board races. Figure
 between electorate size and school board election turnout across the years of data 
 available in Wisconsin. As voting age population increases, Wisconsin school board 
 elections have lower turnout with a correlation of 
--0.14499.01979.63187. 
+-0.14842.74997.06363. 
 This conforms with the predictions of game-theoretic approaches which state that 
 in a small electorate a voter can expect their vote to matter more in the outcome and 
 thus increase the potential benefits associated with voting
@@ -492,9 +502,9 @@ Figure \ref{fig:turnoutAutocorrelation} explores how habit forming turnout may b
 in spring elections in school districts \citep{Plutzer2002}. Using a two-year lag 
 of turnout, Figure \ref{fig:turnoutAutocorrelation} shows a consistently high 
 positive correlation between lagged and current turnout, averaging 
-0.31641.46305.31252.
+0.31685.01907.42866.
 \footnote{For a single year lag, the corresponding correlation is 
-0.29179.72290.05278 and the 
+0.29175.84656.87825 and the 
 year to year pattern is largely similar.} A robust linear model is used to show 
 the smoothed relationship between lagged and current turnout. Of note is the pattern 
 shift in both 2005 and 2011 where the correlation is more pronounced and turnout 
@@ -502,7 +512,7 @@ appears to be inflated. Figure \ref{fig:turnoutComparison} looks at this further
 yet by showing the relationship between the average of the turnout in the prior two 
 fall elections for Governor and President compared to the current school board turnout. 
 These correlate positively as well at a level of 
-0.13469.32188.68916. 
+0.13437.55360.79937. 
 
 With a reduced electorate, school board elections are an interesting case to study 
 the role substantial interest groups can play in an election. \citet{Fowler2005} 
@@ -517,7 +527,7 @@ might estimate they possess based on the number of votes cast in previous electi
 The relationship shown in Figure \ref{fig:unionInf} is not what theory would expect. 
 Here a higher teacher share of the prior school board turnout is associated with depressed turnout rates, 
 instead of elevated turnout. The average correlation across years is 
-0.17099.38402.35372. 
+0.17165.76821.56758. 
 I will pursue this finding further with statistical models, 
 but it is worth noting that there may be limits on the impact social groups can have 
 on driving up turnout before they capture the electorate and thus reduce competitiveness 
@@ -525,6 +535,10 @@ and turnout. In fact, for \citet{RefWorks:207} this would represent the ideal co
 for a union, freeing their members from the need to be politically active and influencing 
 the school board through the nomination and campaign process instead. 
 
+% Here rewrite
+% TODO: Fix paragraph about competitiveness
+% Competitiveness has a very modest positive effect on turnout across 
+% all observations
 Still, when school board races are competitive, do they exhibit much higher turnout? Figure 
 \ref{fig:competition} shows that races where the winner and loser are within 15\% of 
 one another in votes do exhibit higher turnout.\footnote{For this graph the definition 
@@ -548,7 +562,7 @@ partisan unity and turnout. Figure \ref{fig:partisan2} shows the linear relation
 between higher partisan unity and turnout. In most years there is almost no relationship, 
 but in 2011 and 2012 there appears to be an uptick in school board turnout associated 
 with more strongly partisan school districts. The correlation is 
-0.08722.29889.26438.4. 
+0.08575.64833.46187.7. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -713,6 +727,11 @@ first column. This model includes no adjustments for clustering to the standard
 errors. It is included here to demonstrate the need for specification testing 
 in the Wisconsin dataset due to the ragged panel structure of the data. 
 
+%TODO: Add Blais-Lago to the calulation
+%TODO: Code contestation like in chapter 3
+%TODO: Rescale variables and add discussion to that
+%TODO: 
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
 \includegraphics[width=\maxwidth]{../../phd_figs/chap4-simpleModel-1} \caption[Regression Diagnostics for A Simple Multiple Regression]{Regression Diagnostics for A Simple Multiple Regression\label{fig:simpleModel}}
@@ -745,6 +764,8 @@ clustered standard errors to provide a more robust view of the effects in school
 board turnout. The results for these alternative specifications are displayed 
 alongside the initial model in Table \ref{tab:lagmods}. 
 
+
+\begin{tiny}
 \begin{sidewaystable}[!ht]
 \caption{Models of Lagged Turnout in School Board Elections}
 \label{tab:lagmods} 
@@ -752,52 +773,48 @@ alongside the initial model in Table \ref{tab:lagmods}.
 \hline 
   & \multicolumn{ 1 }{ c }{ Naive OLS } & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ Interaction } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
  %                          & Naive OLS         & Simple RLM        & RLM + Year FE     & Interaction       & RLM + District FE\\ 
-(Intercept)                & 31.63             &                   &                   &                   &                  \\ 
-                           & (16.78)           &                   &                   &                   &                  \\ 
-turnoutLag2                & 21.13             & 20.05 ^*          & 22.17 ^*          & 14.72             & -1.87            \\ 
-                           & (2.26)            & (3.17)            & (3.14)            & (22.66)           & (2.77)           \\ 
-fallTurnout                & 9.07              & 9.20 ^*           & 9.55 ^*           & 9.52 ^*           & 9.84             \\ 
-                           & (3.12)            & (3.52)            & (3.57)            & (3.56)            & (7.16)           \\ 
-VAP\_adjLOG               & -14.78            & -12.76 ^*         & -12.03 ^*         & -12.52 ^*         & -61.20           \\ 
-                           & (2.14)            & (2.31)            & (2.33)            & (2.34)            & (61.67)          \\ 
-VAP\_adjLOG\_sq          & 0.67              & 0.57 ^*           & 0.53 ^*           & 0.55 ^*           & 2.66             \\ 
-                           & (0.12)            & (0.13)            & (0.13)            & (0.12)            & (3.48)           \\ 
-per\_white\_all          & -7.26             & -5.45             & -4.79             & -4.83             & -85.87           \\ 
-                           & (3.24)            & (3.30)            & (3.57)            & (3.58)            & (49.16)          \\ 
-per65o                     & 47.07             & 37.62 ^*          & 30.19 ^*          & 29.92 ^*          & 207.28 ^*        \\ 
-                           & (6.43)            & (9.01)            & (9.41)            & (9.36)            & (43.35)          \\ 
-PerBachelorOrAbove         & 11.68             & 7.82              & 3.31              & 3.28              & 47.73            \\ 
-                           & (4.91)            & (5.01)            & (4.79)            & (4.78)            & (28.81)          \\ 
-OOH\_share                & 0.92              & -1.44             & -2.98             & -3.08             & 13.98            \\ 
-                           & (2.25)            & (2.94)            & (2.89)            & (2.91)            & (22.72)          \\ 
-median\_incomeLOG         & 5.24              & 4.96 ^*           & 5.22 ^*           & 5.26 ^*           & 5.73             \\ 
-                           & (1.58)            & (1.70)            & (1.72)            & (1.72)            & (5.54)           \\ 
-districtwide1              & -0.04             &                   &                   &                   &                  \\ 
-                           & (0.51)            &                   &                   &                   &                  \\ 
-contestOpen Contested      & -0.33             &                   &                   &                   &                  \\ 
-                           & (0.80)            &                   &                   &                   &                  \\ 
-contestUncontested         & -4.81             &                   &                   &                   &                  \\ 
-                           & (0.39)            &                   &                   &                   &                  \\ 
-Intercept                  &                   & 26.54             & 29.28             & 31.81             & 315.73           \\ 
-                           &                   & (18.34)           & (18.54)           & (18.71)           & (269.04)         \\ 
-districtwide=1             &                   & -0.03             & 0.03              & 0.02              & 2.66 ^*          \\ 
-                           &                   & (0.58)            & (0.55)            & (0.55)            & (1.12)           \\ 
-contest=Open Contested     &                   & -0.47             & -0.94             & -0.95             & 0.09             \\ 
-                           &                   & (0.81)            & (0.77)            & (0.78)            & (0.87)           \\ 
-contest=Uncontested        &                   & -4.54 ^*          & -4.76 ^*          & -4.76 ^*          & -4.59 ^*         \\ 
-                           &                   & (0.38)            & (0.35)            & (0.35)            & (0.40)           \\ 
-turnoutLag2 * VAP\_adjLOG &                   &                   &                   & 0.90              &                  \\ 
-                           &                   &                   &                   & (2.63)            &                   \\
+(Intercept)                & -0.01             &                   &                   &                   &                  \\ 
+                           & (0.03)            &                   &                   &                   &                  \\ 
+turnoutLag2                & 0.20              & 0.18 ^*           & 0.20 ^*           & 0.21 ^*           & -0.03            \\ 
+                           & (0.02)            & (0.03)            & (0.03)            & (0.03)            & (0.03)           \\ 
+fallTurnout                & 0.09              & 0.09 ^*           & 0.10 ^*           & 0.10 ^*           & 0.10             \\ 
+                           & (0.03)            & (0.04)            & (0.04)            & (0.04)            & (0.07)           \\ 
+VAP\_adjLOG               & -1.49             & -1.27 ^*          & -1.19 ^*          & -1.24 ^*          & -4.54            \\ 
+                           & (0.24)            & (0.25)            & (0.25)            & (0.25)            & (6.81)           \\ 
+VAP\_adjLOG\_sq          & 1.25              & 1.04 ^*           & 0.98 ^*           & 1.03 ^*           & 2.92             \\ 
+                           & (0.24)            & (0.24)            & (0.25)            & (0.25)            & (6.92)           \\ 
+per\_white\_all          & -0.05             & -0.04             & -0.03             & -0.03             & -0.58            \\ 
+                           & (0.03)            & (0.03)            & (0.03)            & (0.03)            & (0.42)           \\ 
+per65o                     & 0.20              & 0.16 ^*           & 0.13 ^*           & 0.13 ^*           & 0.87 ^*          \\ 
+                           & (0.03)            & (0.04)            & (0.04)            & (0.04)            & (0.19)           \\ 
+PerBachelorOrAbove         & 0.07              & 0.04              & 0.01              & 0.01              & 0.33             \\ 
+                           & (0.04)            & (0.04)            & (0.03)            & (0.03)            & (0.21)           \\ 
+OOH\_share                & 0.03              & -0.00             & -0.02             & -0.02             & 0.14             \\ 
+                           & (0.03)            & (0.04)            & (0.04)            & (0.04)            & (0.31)           \\ 
+median\_incomeLOG         & 0.11              & 0.11 ^*           & 0.11 ^*           & 0.11 ^*           & 0.11             \\ 
+                           & (0.04)            & (0.05)            & (0.05)            & (0.05)            & (0.14)           \\ 
+districtwide1              & 0.00              &                   &                   &                   &                  \\ 
+                           & (0.03)            &                   &                   &                   &                  \\ 
+minBlaisLago               & -0.04             & -0.04             & -0.07 ^*          & -0.07 ^*          & -0.09 ^*         \\ 
+                           & (0.02)            & (0.03)            & (0.02)            & (0.02)            & (0.03)           \\ 
+Intercept                  &                   & -0.02             & 0.34 ^*           & 0.34 ^*           & -0.02            \\ 
+                           &                   & (0.03)            & (0.11)            & (0.11)            & (0.34)           \\ 
+districtwide=1             &                   & 0.00              & -0.01             & -0.01             & 0.10             \\ 
+                           &                   & (0.03)            & (0.03)            & (0.03)            & (0.06)           \\ 
+turnoutLag2 * VAP\_adjLOG &                   &                   &                   & 0.02              &                  \\ 
+                           &                   &                   &                   & (0.05)            &                   \\
  $N$                        & 2053              & 2046              & 2046              & 2046              & 2046             \\ 
-$R^2$                      & 0.26              & 0.24              & 0.43              & 0.43              & 0.42             \\ 
-adj. $R^2$                 & 0.25              & 0.23              & 0.43              & 0.43              & 0.33             \\ 
-Resid. sd                  & 8.37              & 7.98              & 6.90              & 6.90              & 7.43              \\ \hline
+$R^2$                      & 0.20              & 0.18              & 0.38              & 0.38              & 0.38             \\ 
+adj. $R^2$                 & 0.20              & 0.18              & 0.37              & 0.37              & 0.29             \\ 
+Resid. sd                  & 0.44              & 0.42              & 0.37              & 0.37              & 0.39              \\ \hline
  \multicolumn{6}{l}{\footnotesize{Standard errors clustered at the school district except in model 1.}}\\
 \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{6}{l}{\footnotesize{Year and district fixed effects omitted.}} 
 \end{tabular} 
  \end{sidewaystable}
 
+
+\end{tiny}
 
 Prior turnout appears to be a substantively important predictor in Table \ref{tab:lagmods}.\footnote{Using twice-lagged school board turnout. Results are not substantively different 
 when I estimate using single lagged school board turnout, as shown in Table \ref{tab:lagmods2}.} 
@@ -835,7 +852,7 @@ clustered structure of the district terms.
 
 
 
-
+\begin{tiny}
 \begin{table}[!ht]
 \caption{Partial Pooling Model of Lagged Turnout}
 \label{tab:meTurnout} 
@@ -843,46 +860,46 @@ clustered structure of the district terms.
 \hline 
   & \multicolumn{ 1 }{ c }{ Partial Pooled } \\ \hline
  %                        & Partial Pooled\\ 
-(Intercept)              & -15.878       \\ 
-                         & (16.989)      \\ 
-turnoutLag2              & 35.416 ^*     \\ 
-                         & (15.103)      \\ 
-fallTurnout              & 12.256 ^*     \\ 
-                         & (3.680)       \\ 
-VAP\_adjLOG             & -2.448 ^*     \\ 
-                         & (0.405)       \\ 
-per\_white\_all        & -7.602        \\ 
-                         & (4.020)       \\ 
-per65o                   & 33.116 ^*     \\ 
-                         & (8.138)       \\ 
-PerBachelorOrAbove       & 1.990         \\ 
-                         & (5.990)       \\ 
-OOH\_share              & -2.411        \\ 
-                         & (2.842)       \\ 
-median\_incomeLOG       & 4.987 ^*      \\ 
-                         & (1.895)       \\ 
-districtwide1            & 1.034         \\ 
-                         & (0.573)       \\ 
-contestOpen Contested    & -0.651        \\ 
-                         & (0.640)       \\ 
-contestUncontested       & -4.784 ^*     \\ 
-                         & (0.325)       \\ 
-turnoutLag2:VAP\_adjLOG & -3.296        \\ 
-                         & (1.818)        \\
+(Intercept)              & -0.031        \\ 
+                         & (0.072)       \\ 
+turnoutLag2              & 0.051 ^*      \\ 
+                         & (0.020)       \\ 
+fallTurnout              & 0.131 ^*      \\ 
+                         & (0.039)       \\ 
+VAP\_adjLOG             & -0.288 ^*     \\ 
+                         & (0.030)       \\ 
+per\_white\_all        & -0.056        \\ 
+                         & (0.034)       \\ 
+per65o                   & 0.147 ^*      \\ 
+                         & (0.036)       \\ 
+PerBachelorOrAbove       & 0.006         \\ 
+                         & (0.044)       \\ 
+OOH\_share              & -0.015        \\ 
+                         & (0.038)       \\ 
+median\_incomeLOG       & 0.103         \\ 
+                         & (0.051)       \\ 
+districtwide1            & 0.033         \\ 
+                         & (0.031)       \\ 
+minBlaisLago             & -0.086 ^*     \\ 
+                         & (0.018)       \\ 
+turnoutLag2:VAP\_adjLOG & -0.061        \\ 
+                         & (0.036)        \\
  $N$                      & 2046          \\ 
-AIC                      & 13689.758     \\ 
+AIC                      & 1702.633      \\ 
 N Groups                 & 265 | 10      \\ 
 Group Names              & distid | year \\ 
 Group:distid Effs.       & (Intercept)   \\ 
 Group:year Effs.         & (Intercept)   \\ 
-Group:distid Var.        & 3.151         \\ 
-Group:year Var.          & 4.05          \\ 
-Sigma                    & 6.298          \\ \hline
+Group:distid Var.        & 0.169         \\ 
+Group:year Var.          & 0.204         \\ 
+Sigma                    & 0.3367         \\ \hline
  \multicolumn{2}{l}{\footnotesize{Group level intercepts are not shown.}}\\
 \multicolumn{2}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
  \end{table}
 
+
+\end{tiny}
 
 
 
@@ -919,41 +936,38 @@ If we have evidence that voters in different jurisdicstions have more informatio
 likely electorate size in a school board election, and this varies across jurisdictions, 
 then this becomes more problematic. 
 
+\begin{tiny}
 \begin{table}[!ht]
 \caption{Models of Competitiveness and Turnout in School Board Elections}
 \label{tab:closemods} 
 \begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } & \multicolumn{ 1 }{ c }{ Interact + Year FE } \\ \hline
- %                                    & Simple RLM         & RLM + Year FE      & RLM + District FE  & Interact + Year FE\\ 
-Intercept                            & -23.96             & -19.59             & 81.60              & -19.00            \\ 
-                                     & (19.48)            & (19.42)            & (87.11)            & (19.75)           \\ 
-CLOSE=Not Competitive                & -1.33 ^*           & -1.82 ^*           & -1.50 ^*           & -2.90             \\ 
-                                     & (0.59)             & (0.56)             & (0.55)             & (4.00)            \\ 
-VAP\_adjLOG                         & -3.34 ^*           & -3.34 ^*           & -12.25 ^*          & -3.41 ^*          \\ 
-                                     & (0.32)             & (0.32)             & (5.96)             & (0.37)            \\ 
-per\_white\_all                    & -9.77 ^*           & -8.94              & -92.59             & -9.00             \\ 
-                                     & (4.42)             & (4.62)             & (48.56)            & (4.64)            \\ 
-per65o                               & 40.84 ^*           & 35.14 ^*           & 221.75 ^*          & 35.04 ^*          \\ 
-                                     & (11.01)            & (11.54)            & (43.92)            & (11.53)           \\ 
-PerBachelorOrAbove                   & 15.95 ^*           & 12.25 ^*           & 58.34 ^*           & 12.19 ^*          \\ 
-                                     & (5.24)             & (5.26)             & (28.71)            & (5.25)            \\ 
-OOH\_share                          & -3.57              & -4.94              & 13.09              & -4.95             \\ 
-                                     & (3.96)             & (3.98)             & (22.84)            & (3.98)            \\ 
-median\_incomeLOG                   & 7.38 ^*            & 7.74 ^*            & 7.52               & 7.75 ^*           \\ 
-                                     & (2.11)             & (2.14)             & (5.44)             & (2.14)            \\ 
-districtwide=1                       & 0.33               & 0.35               & 2.55 ^*            & 0.36              \\ 
-                                     & (0.71)             & (0.70)             & (1.11)             & (0.70)            \\ 
-contest=Open Contested               & 0.25               & -0.15              & 0.25               & -0.15             \\ 
-                                     & (0.81)             & (0.75)             & (0.85)             & (0.75)            \\ 
-contest=Uncontested                  & -3.56 ^*           & -3.42 ^*           & -3.54 ^*           & -3.42 ^*          \\ 
-                                     & (0.55)             & (0.51)             & (0.53)             & (0.51)            \\ 
-CLOSE=Not Competitive * VAP\_adjLOG &                    &                    &                    & 0.12              \\ 
-                                     &                    &                    &                    & (0.43)             \\
- $N$                                  & 2046               & 2046               & 2046               & 2046              \\ 
-$R^2$                                & 0.19               & 0.38               & 0.42               & 0.38              \\ 
-adj. $R^2$                           & 0.19               & 0.38               & 0.33               & 0.38              \\ 
-Resid. sd                            & 8.21               & 7.19               & 7.42               & 7.19               \\ \hline
+ %                           & Simple RLM         & RLM + Year FE      & RLM + District FE  & Interact + Year FE\\ 
+Intercept                   & -0.02              & 0.30 ^*            & -0.18              & 0.30 ^*           \\ 
+                            & (0.04)             & (0.13)             & (0.33)             & (0.13)            \\ 
+VAP\_adjLOG                & -0.33 ^*           & -0.33 ^*           & -1.53 ^*           & -0.34 ^*          \\ 
+                            & (0.04)             & (0.04)             & (0.71)             & (0.04)            \\ 
+per\_white\_all           & -0.08 ^*           & -0.08              & -0.67              & -0.07             \\ 
+                            & (0.04)             & (0.04)             & (0.44)             & (0.04)            \\ 
+per65o                      & 0.19 ^*            & 0.17 ^*            & 1.00 ^*            & 0.17 ^*           \\ 
+                            & (0.05)             & (0.05)             & (0.21)             & (0.05)            \\ 
+PerBachelorOrAbove          & 0.11 ^*            & 0.08 ^*            & 0.44 ^*            & 0.08 ^*           \\ 
+                            & (0.04)             & (0.04)             & (0.22)             & (0.04)            \\ 
+OOH\_share                 & -0.03              & -0.05              & 0.16               & -0.05             \\ 
+                            & (0.06)             & (0.06)             & (0.34)             & (0.06)            \\ 
+median\_incomeLOG          & 0.18 ^*            & 0.19 ^*            & 0.14               & 0.19 ^*           \\ 
+                            & (0.06)             & (0.06)             & (0.15)             & (0.06)            \\ 
+districtwide=1              & 0.03               & 0.02               & 0.12               & 0.02              \\ 
+                            & (0.04)             & (0.04)             & (0.06)             & (0.04)            \\ 
+minBlaisLago                & -0.04              & -0.07 ^*           & -0.09 ^*           & -0.08 ^*          \\ 
+                            & (0.03)             & (0.03)             & (0.03)             & (0.03)            \\ 
+VAP\_adjLOG * minBlaisLago &                    &                    &                    & -0.10             \\ 
+                            &                    &                    &                    & (0.06)             \\
+ $N$                         & 2046               & 2046               & 2046               & 2046              \\ 
+$R^2$                       & 0.13               & 0.32               & 0.38               & 0.32              \\ 
+adj. $R^2$                  & 0.13               & 0.32               & 0.29               & 0.32              \\ 
+Resid. sd                   & 0.47               & 0.41               & 0.42               & 0.41               \\ \hline
  \multicolumn{5}{l}{\footnotesize{Robust standard errors in parentheses}}\\
 \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
@@ -961,56 +975,61 @@ Resid. sd                            & 8.21               & 7.19               &
  \end{table}
 
 
+
+\end{tiny}
+
 As Table \ref{tab:closemods} shows, across all three specifications, competitiveness and the electorate size matter. A non-competitive race has about a 2\% decrease in voter turnout -- substantial considering the average turnout in school board elections of X\%. A log increase 
 in voting age population decreases turnout by about 3.5\%. However, the same specification 
 problems from Table \ref{tab:lagmods} appaers in Table \ref{tab:closemods}. Again, 
 I turn to partial pooling to resolve this issue. 
 
+\begin{tiny}
 \begin{table}[!ht]
 \caption{Partial Pooling Model for Competitiveness}
 \label{tab:meClose} 
 \begin{tabular}{ l D{.}{.}{2} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Partial Pooled } \\ \hline
- %                                 & Partial Pooled\\ 
-(Intercept)                       & -17.30        \\ 
-                                  & (18.13)       \\ 
-CLOSENot Competitive              & -6.82 ^*      \\ 
-                                  & (2.83)        \\ 
-VAP\_adjLOG                      & -3.71 ^*      \\ 
-                                  & (0.33)        \\ 
-per\_white\_all                 & -8.56         \\ 
-                                  & (4.39)        \\ 
-per65o                            & 38.49 ^*      \\ 
-                                  & (8.79)        \\ 
-PerBachelorOrAbove                & 11.55         \\ 
-                                  & (5.68)        \\ 
-OOH\_share                       & -1.58         \\ 
-                                  & (3.07)        \\ 
-median\_incomeLOG                & 6.92 ^*       \\ 
-                                  & (1.99)        \\ 
-districtwide1                     & 1.14          \\ 
-                                  & (0.61)        \\ 
-contestOpen Contested             & -0.29         \\ 
-                                  & (0.64)        \\ 
-contestUncontested                & -3.43 ^*      \\ 
-                                  & (0.46)        \\ 
-CLOSENot Competitive:VAP\_adjLOG & 0.57          \\ 
-                                  & (0.32)         \\
- $N$                               & 2046          \\ 
-AIC                               & 13642.91      \\ 
-N Groups                          & 265 | 10      \\ 
-Group Names                       & distid | year \\ 
-Group:distid Effs.                & (Intercept)   \\ 
-Group:year Effs.                  & (Intercept)   \\ 
-Group:distid Var.                 & 3.67          \\ 
-Group:year Var.                   & 4.24          \\ 
-Sigma                             & 6.242          \\ \hline
+ %                         & Partial Pooled\\ 
+(Intercept)               & 0.08          \\ 
+                          & (0.08)        \\ 
+minBlaisLago              & 0.07 ^*       \\ 
+                          & (0.02)        \\ 
+VAP\_adjLOG              & -0.38 ^*      \\ 
+                          & (0.03)        \\ 
+per\_white\_all         & -0.07         \\ 
+                          & (0.04)        \\ 
+per65o                    & 0.17 ^*       \\ 
+                          & (0.04)        \\ 
+PerBachelorOrAbove        & 0.08          \\ 
+                          & (0.04)        \\ 
+OOH\_share               & -0.02         \\ 
+                          & (0.04)        \\ 
+median\_incomeLOG        & 0.19 ^*       \\ 
+                          & (0.05)        \\ 
+districtwide1             & 0.09 ^*       \\ 
+                          & (0.03)        \\ 
+contestOpen Contested     & -0.03         \\ 
+                          & (0.04)        \\ 
+contestUncontested        & -0.30 ^*      \\ 
+                          & (0.02)        \\ 
+minBlaisLago:VAP\_adjLOG & -0.01         \\ 
+                          & (0.04)         \\
+ $N$                       & 2046          \\ 
+AIC                       & 1859.64       \\ 
+N Groups                  & 265 | 10      \\ 
+Group Names               & distid | year \\ 
+Group:distid Effs.        & (Intercept)   \\ 
+Group:year Effs.          & (Intercept)   \\ 
+Group:distid Var.         & 0.2           \\ 
+Group:year Var.           & 0.23          \\ 
+Sigma                     & 0.3445         \\ \hline
  \multicolumn{2}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
 \multicolumn{2}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
  \end{table}
 
+\end{tiny}
 
 The results in Table \ref{tab:meClose} mirror those found in columns 1 and 2 of Table 
 \ref{tab:closemods}. This provides evidence in support of the argument that school board 
@@ -1024,6 +1043,7 @@ To test the argument that voter turnout may be influenced by the share of the
 electorate that is made up of unionized teachers, I combine features from the 
 previous models in an attempt to find evidence of such an effect.  
 
+\begin{tiny}
 \begin{table}[!ht]
 \caption{Models of Unionization and Turnout in School Board Elections}
 \label{tab:teachmods} 
@@ -1031,89 +1051,98 @@ previous models in an attempt to find evidence of such an effect.
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
  %                      & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
-Intercept              & -28.40            & -21.06            & 97.05            \\ 
-                       & (21.65)           & (21.76)           & (99.92)          \\ 
-teachShareofVoters     & 86.81             & 71.20             & 207.38           \\ 
-                       & (63.21)           & (62.99)           & (174.79)         \\ 
-fallTurnout            & 7.79              & 8.95 ^*           & 10.95            \\ 
-                       & (4.24)            & (4.45)            & (6.78)           \\ 
-VAP\_adjLOG           & -2.82 ^*          & -2.87 ^*          & -12.90           \\ 
-                       & (0.42)            & (0.42)            & (6.91)           \\ 
-per\_white\_all      & -9.10 ^*          & -8.70             & -88.03           \\ 
-                       & (4.43)            & (4.73)            & (45.60)          \\ 
-per65o                 & 41.97 ^*          & 35.60 ^*          & 213.82 ^*        \\ 
-                       & (11.19)           & (11.76)           & (43.26)          \\ 
-PerBachelorOrAbove     & 9.37              & 4.91              & 46.21            \\ 
-                       & (6.06)            & (6.01)            & (29.42)          \\ 
-OOH\_share            & -4.50             & -5.87             & 14.06            \\ 
-                       & (3.87)            & (3.91)            & (22.80)          \\ 
-median\_incomeLOG     & 6.77 ^*           & 6.97 ^*           & 5.54             \\ 
-                       & (2.28)            & (2.35)            & (5.52)           \\ 
-districtwide=1         & 0.40              & 0.46              & 2.71 ^*          \\ 
-                       & (0.71)            & (0.70)            & (1.12)           \\ 
-contest=Open Contested & 0.10              & -0.39             & 0.04             \\ 
-                       & (0.83)            & (0.78)            & (0.87)           \\ 
-contest=Uncontested    & -4.48 ^*          & -4.69 ^*          & -4.60 ^*         \\ 
-                       & (0.40)            & (0.38)            & (0.40)            \\
+Intercept              & 0.08 ^*           & 0.49 ^*           & 0.03             \\ 
+                       & (0.04)            & (0.11)            & (0.33)           \\ 
+teachShareofVoters     & 0.07              & 0.05              & 0.15             \\ 
+                       & (0.04)            & (0.04)            & (0.13)           \\ 
+fallTurnout            & 0.08              & 0.10 ^*           & 0.12             \\ 
+                       & (0.04)            & (0.05)            & (0.07)           \\ 
+minBlaisLago           & 0.14 ^*           & 0.12 ^*           & 0.08 ^*          \\ 
+                       & (0.03)            & (0.03)            & (0.03)           \\ 
+VAP\_adjLOG           & -0.31 ^*          & -0.32 ^*          & -1.41            \\ 
+                       & (0.05)            & (0.05)            & (0.80)           \\ 
+per\_white\_all      & -0.07             & -0.07             & -0.75            \\ 
+                       & (0.04)            & (0.04)            & (0.39)           \\ 
+per65o                 & 0.19 ^*           & 0.16 ^*           & 0.94 ^*          \\ 
+                       & (0.05)            & (0.05)            & (0.20)           \\ 
+PerBachelorOrAbove     & 0.06              & 0.03              & 0.31             \\ 
+                       & (0.05)            & (0.04)            & (0.22)           \\ 
+OOH\_share            & -0.06             & -0.08             & 0.22             \\ 
+                       & (0.05)            & (0.05)            & (0.32)           \\ 
+median\_incomeLOG     & 0.19 ^*           & 0.20 ^*           & 0.14             \\ 
+                       & (0.06)            & (0.06)            & (0.15)           \\ 
+districtwide=1         & 0.08 ^*           & 0.07              & 0.16 ^*          \\ 
+                       & (0.04)            & (0.04)            & (0.06)           \\ 
+contest=Open Contested & -0.00             & -0.03             & 0.00             \\ 
+                       & (0.05)            & (0.04)            & (0.05)           \\ 
+contest=Uncontested    & -0.32 ^*          & -0.32 ^*          & -0.29 ^*         \\ 
+                       & (0.02)            & (0.02)            & (0.03)            \\
  $N$                    & 2046              & 2046              & 2046             \\ 
-$R^2$                  & 0.19              & 0.38              & 0.42             \\ 
-adj. $R^2$             & 0.19              & 0.38              & 0.33             \\ 
-Resid. sd              & 8.20              & 7.19              & 7.43              \\ \hline
+$R^2$                  & 0.20              & 0.39              & 0.43             \\ 
+adj. $R^2$             & 0.20              & 0.39              & 0.34             \\ 
+Resid. sd              & 0.45              & 0.39              & 0.41              \\ \hline
  \multicolumn{4}{l}{\footnotesize{Robust standard errors in parentheses}}\\
 \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted.}} 
 \end{tabular} 
  \end{table}
 
+\end{tiny}
 
 Table \ref{tab:teachmods} shows that there is some evidence to support that teacher 
 share of the electorate has an effect on the turnout. 
 
+\begin{tiny}
 \begin{table}[!ht]
 \caption{Partial Pooling Model of Staff Influence}
 \label{tab:meInf} 
 \begin{tabular}{ l D{.}{.}{2} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Partial Pooled } \\ \hline
- %                     & Partial Pooled\\ 
-(Intercept)           & -18.32        \\ 
-                      & (19.31)       \\ 
-teachShareofVoters    & 65.99         \\ 
-                      & (55.80)       \\ 
-fallTurnout           & 13.82 ^*      \\ 
-                      & (3.92)        \\ 
-VAP\_adjLOG          & -2.93 ^*      \\ 
-                      & (0.38)        \\ 
-per\_white\_all     & -8.13         \\ 
-                      & (4.43)        \\ 
-per65o                & 37.68 ^*      \\ 
-                      & (9.17)        \\ 
-PerBachelorOrAbove    & 0.54          \\ 
-                      & (6.49)        \\ 
-OOH\_share           & -2.93         \\ 
-                      & (3.10)        \\ 
-median\_incomeLOG    & 5.55 ^*       \\ 
-                      & (2.05)        \\ 
-districtwide1         & 1.23          \\ 
-                      & (0.61)        \\ 
-contestOpen Contested & -0.49         \\ 
-                      & (0.64)        \\ 
-contestUncontested    & -4.71 ^*      \\ 
-                      & (0.32)         \\
- $N$                   & 2046          \\ 
-AIC                   & 13633.86      \\ 
-N Groups              & 265 | 10      \\ 
-Group Names           & distid | year \\ 
-Group:distid Effs.    & (Intercept)   \\ 
-Group:year Effs.      & (Intercept)   \\ 
-Group:distid Var.     & 3.67          \\ 
-Group:year Var.       & 4.31          \\ 
-Sigma                 & 6.25           \\ \hline
+ %                               & Partial Pooled\\ 
+(Intercept)                     & 0.07          \\ 
+                                & (0.08)        \\ 
+teachShareofVoters              & -0.07         \\ 
+                                & (0.05)        \\ 
+fallTurnout                     & 0.16 ^*       \\ 
+                                & (0.04)        \\ 
+minBlaisLago                    & 0.08 ^*       \\ 
+                                & (0.02)        \\ 
+VAP\_adjLOG                    & -0.38 ^*      \\ 
+                                & (0.04)        \\ 
+per\_white\_all               & -0.06         \\ 
+                                & (0.04)        \\ 
+per65o                          & 0.18 ^*       \\ 
+                                & (0.04)        \\ 
+PerBachelorOrAbove              & -0.01         \\ 
+                                & (0.05)        \\ 
+OOH\_share                     & -0.01         \\ 
+                                & (0.04)        \\ 
+median\_incomeLOG              & 0.14 ^*       \\ 
+                                & (0.05)        \\ 
+districtwide1                   & 0.07 ^*       \\ 
+                                & (0.03)        \\ 
+contestOpen Contested           & -0.03         \\ 
+                                & (0.03)        \\ 
+contestUncontested              & -0.30 ^*      \\ 
+                                & (0.02)        \\ 
+teachShareofVoters:VAP\_adjLOG & -0.21 ^*      \\ 
+                                & (0.06)         \\
+ $N$                             & 2046          \\ 
+AIC                             & 1840.60       \\ 
+N Groups                        & 265 | 10      \\ 
+Group Names                     & distid | year \\ 
+Group:distid Effs.              & (Intercept)   \\ 
+Group:year Effs.                & (Intercept)   \\ 
+Group:distid Var.               & 0.19          \\ 
+Group:year Var.                 & 0.24          \\ 
+Sigma                           & 0.3431         \\ \hline
  \multicolumn{2}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
 \multicolumn{2}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
  \end{table}
 
+\end{tiny}
 
 The effect is the same in the partially pooled model. 
 
@@ -1143,53 +1172,58 @@ voter interest as many voters do not abstain.
 
 %CITATIONS
 
+\begin{tiny}
 \begin{table}[!ht]
 \caption{Partial Pooling Model of School Board Undervote}
 \label{tab:meUndv} 
-\begin{tabular}{ l D{.}{.}{2} } 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2} } 
 \hline 
-  & \multicolumn{ 1 }{ c }{ Partial Pooled } \\ \hline
- %                        & Partial Pooled\\ 
-(Intercept)              & 16.29         \\ 
-                         & (17.86)       \\ 
-turnoutLag2              & -33.43 ^*     \\ 
-                         & (14.15)       \\ 
-VAP\_adjLOG             & 1.91 ^*       \\ 
-                         & (0.44)        \\ 
-per\_white\_all        & 13.64 ^*      \\ 
-                         & (4.10)        \\ 
-per65o                   & 11.67         \\ 
-                         & (8.43)        \\ 
-PerBachelorOrAbove       & 11.72 ^*      \\ 
-                         & (5.24)        \\ 
-OOH\_share              & 7.51 ^*       \\ 
-                         & (2.87)        \\ 
-median\_incomeLOG       & -5.06 ^*      \\ 
-                         & (1.89)        \\ 
-CLOSENot Competitive     & 1.57 ^*       \\ 
-                         & (0.43)        \\ 
-contestOpen Contested    & 0.78          \\ 
-                         & (0.60)        \\ 
-contestUncontested       & 2.29 ^*       \\ 
-                         & (0.42)        \\ 
-teachShareofVoters       & 34.22         \\ 
-                         & (52.44)       \\ 
-turnoutLag2:VAP\_adjLOG & 3.30          \\ 
-                         & (1.71)         \\
- $N$                      & 1453          \\ 
-AIC                      & 9003.58       \\ 
-N Groups                 & 265 | 6       \\ 
-Group Names              & distid | year \\ 
-Group:distid Effs.       & (Intercept)   \\ 
-Group:year Effs.         & (Intercept)   \\ 
-Group:distid Var.        & 3.42          \\ 
-Group:year Var.          & 2.19          \\ 
-Sigma                    & 4.802          \\ \hline
- \multicolumn{2}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
-\multicolumn{2}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+  & \multicolumn{ 1 }{ c }{ Partial Pooled } & \multicolumn{ 1 }{ c }{ Teacher Share Interaction } \\ \hline
+ %                               & Partial Pooled            & Teacher Share Interaction\\ 
+(Intercept)                     & -0.15 ^*                  & -0.10 ^*                 \\ 
+                                & (0.07)                    & (0.02)                   \\ 
+turnoutLag2                     & -0.06 ^*                  & -0.11 ^*                 \\ 
+                                & (0.03)                    & (0.03)                   \\ 
+VAP\_adjLOG                    & 0.36 ^*                   & 0.44 ^*                  \\ 
+                                & (0.05)                    & (0.06)                   \\ 
+per\_white\_all               & 0.16 ^*                   & 0.15 ^*                  \\ 
+                                & (0.05)                    & (0.05)                   \\ 
+per65o                          & 0.07                      & 0.11 ^*                  \\ 
+                                & (0.05)                    & (0.05)                   \\ 
+PerBachelorOrAbove              & 0.12 ^*                   & 0.14 ^*                  \\ 
+                                & (0.05)                    & (0.05)                   \\ 
+OOH\_share                     & 0.13 ^*                   & 0.10                     \\ 
+                                & (0.05)                    & (0.05)                   \\ 
+median\_incomeLOG              & -0.18 ^*                  & -0.15 ^*                 \\ 
+                                & (0.07)                    & (0.07)                   \\ 
+minBlaisLago                    & -0.16 ^*                  & -0.13 ^*                 \\ 
+                                & (0.03)                    & (0.03)                   \\ 
+contestOpen Contested           & 0.08                      & 0.09                     \\ 
+                                & (0.04)                    & (0.05)                   \\ 
+contestUncontested              & 0.33 ^*                   & 0.32 ^*                  \\ 
+                                & (0.03)                    & (0.03)                   \\ 
+teachShareofVoters              & 0.04                      & 0.25 ^*                  \\ 
+                                & (0.05)                    & (0.06)                   \\ 
+turnoutLag2:VAP\_adjLOG        & 0.10 ^*                   &                          \\ 
+                                & (0.05)                    &                          \\ 
+VAP\_adjLOG:teachShareofVoters &                           & 0.32 ^*                  \\ 
+                                &                           & (0.07)                    \\
+ $N$                             & 1453                      & 1453                     \\ 
+AIC                             & 1469.46                   & 1680.34                  \\ 
+N Groups                        & 265 | 6                   & 265                      \\ 
+Group Names                     & distid | year             & distid                   \\ 
+Group:distid Effs.              & (Intercept)               & (Intercept)              \\ 
+Group:year Effs.                & (Intercept)               &                          \\ 
+Group:distid Var.               & 0.25                      & 0.22                     \\ 
+Group:year Var.                 & 0.17                      &                          \\ 
+Sigma                           & 0.3473                    & 0.3859                    \\ \hline
+ \multicolumn{3}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
+\multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
  \end{table}
 
+
+\end{tiny}
 
 Let's do some interpretation of the undervote. Table \ref{tab:meUndv} explains 
 undervote. 
@@ -1209,48 +1243,50 @@ Table \ref{tab:modReview} reviews the major findings.
 \hline 
   & \multicolumn{ 1 }{ c }{ Lagged } & \multicolumn{ 1 }{ c }{ Competitive } & \multicolumn{ 1 }{ c }{ Blank } \\ \hline
 \endhead
- %                                 & Lagged        & Competitive   & Blank        \\ 
-(Intercept)                       & -15.88        & -17.30        & -18.32       \\ 
-                                  & (16.99)       & (18.13)       & (19.31)      \\ 
-turnoutLag2                       & 35.42 ^*      &               &              \\ 
-                                  & (15.10)       &               &              \\ 
-fallTurnout                       & 12.26 ^*      &               & 13.82 ^*     \\ 
-                                  & (3.68)        &               & (3.92)       \\ 
-VAP\_adjLOG                      & -2.45 ^*      & -3.71 ^*      & -2.93 ^*     \\ 
-                                  & (0.40)        & (0.33)        & (0.38)       \\ 
-per\_white\_all                 & -7.60         & -8.56         & -8.13        \\ 
-                                  & (4.02)        & (4.39)        & (4.43)       \\ 
-per65o                            & 33.12 ^*      & 38.49 ^*      & 37.68 ^*     \\ 
-                                  & (8.14)        & (8.79)        & (9.17)       \\ 
-PerBachelorOrAbove                & 1.99          & 11.55         & 0.54         \\ 
-                                  & (5.99)        & (5.68)        & (6.49)       \\ 
-OOH\_share                       & -2.41         & -1.58         & -2.93        \\ 
-                                  & (2.84)        & (3.07)        & (3.10)       \\ 
-median\_incomeLOG                & 4.99 ^*       & 6.92 ^*       & 5.55 ^*      \\ 
-                                  & (1.90)        & (1.99)        & (2.05)       \\ 
-districtwide1                     & 1.03          & 1.14          & 1.23         \\ 
-                                  & (0.57)        & (0.61)        & (0.61)       \\ 
-contestOpen Contested             & -0.65         & -0.29         & -0.49        \\ 
-                                  & (0.64)        & (0.64)        & (0.64)       \\ 
-contestUncontested                & -4.78 ^*      & -3.43 ^*      & -4.71 ^*     \\ 
-                                  & (0.32)        & (0.46)        & (0.32)       \\ 
-turnoutLag2:VAP\_adjLOG          & -3.30         &               &              \\ 
-                                  & (1.82)        &               &              \\ 
-CLOSENot Competitive              &               & -6.82 ^*      &              \\ 
-                                  &               & (2.83)        &              \\ 
-CLOSENot Competitive:VAP\_adjLOG &               & 0.57          &              \\ 
-                                  &               & (0.32)        &              \\ 
-teachShareofVoters                &               &               & 65.99        \\ 
-                                  &               &               & (55.80)       \\
- $N$                               & 2046          & 2046          & 2046         \\ 
-AIC                               & 13689.76      & 13642.91      & 13633.86     \\ 
-N Groups                          & 265 | 10      & 265 | 10      & 265 | 10     \\ 
-Group Names                       & distid | year & distid | year & distid | year\\ 
-Group:distid Effs.                & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-Group:year Effs.                  & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-Group:distid Var.                 & 3.15          & 3.67          & 3.67         \\ 
-Group:year Var.                   & 4.05          & 4.24          & 4.31         \\ 
-Sigma                             & 6.298         & 6.242         & 6.25          \\ \hline
+ %                               & Lagged        & Competitive   & Blank        \\ 
+(Intercept)                     & -0.03         & 0.08          & 0.07         \\ 
+                                & (0.07)        & (0.08)        & (0.08)       \\ 
+turnoutLag2                     & 0.05 ^*       &               &              \\ 
+                                & (0.02)        &               &              \\ 
+fallTurnout                     & 0.13 ^*       &               & 0.16 ^*      \\ 
+                                & (0.04)        &               & (0.04)       \\ 
+VAP\_adjLOG                    & -0.29 ^*      & -0.38 ^*      & -0.38 ^*     \\ 
+                                & (0.03)        & (0.03)        & (0.04)       \\ 
+per\_white\_all               & -0.06         & -0.07         & -0.06        \\ 
+                                & (0.03)        & (0.04)        & (0.04)       \\ 
+per65o                          & 0.15 ^*       & 0.17 ^*       & 0.18 ^*      \\ 
+                                & (0.04)        & (0.04)        & (0.04)       \\ 
+PerBachelorOrAbove              & 0.01          & 0.08          & -0.01        \\ 
+                                & (0.04)        & (0.04)        & (0.05)       \\ 
+OOH\_share                     & -0.01         & -0.02         & -0.01        \\ 
+                                & (0.04)        & (0.04)        & (0.04)       \\ 
+median\_incomeLOG              & 0.10          & 0.19 ^*       & 0.14 ^*      \\ 
+                                & (0.05)        & (0.05)        & (0.05)       \\ 
+districtwide1                   & 0.03          & 0.09 ^*       & 0.07 ^*      \\ 
+                                & (0.03)        & (0.03)        & (0.03)       \\ 
+minBlaisLago                    & -0.09 ^*      & 0.07 ^*       & 0.08 ^*      \\ 
+                                & (0.02)        & (0.02)        & (0.02)       \\ 
+turnoutLag2:VAP\_adjLOG        & -0.06         &               &              \\ 
+                                & (0.04)        &               &              \\ 
+contestOpen Contested           &               & -0.03         & -0.03        \\ 
+                                &               & (0.04)        & (0.03)       \\ 
+contestUncontested              &               & -0.30 ^*      & -0.30 ^*     \\ 
+                                &               & (0.02)        & (0.02)       \\ 
+minBlaisLago:VAP\_adjLOG       &               & -0.01         &              \\ 
+                                &               & (0.04)        &              \\ 
+teachShareofVoters              &               &               & -0.07        \\ 
+                                &               &               & (0.05)       \\ 
+teachShareofVoters:VAP\_adjLOG &               &               & -0.21 ^*     \\ 
+                                &               &               & (0.06)        \\
+ $N$                             & 2046          & 2046          & 2046         \\ 
+AIC                             & 1702.63       & 1859.64       & 1840.60      \\ 
+N Groups                        & 265 | 10      & 265 | 10      & 265 | 10     \\ 
+Group Names                     & distid | year & distid | year & distid | year\\ 
+Group:distid Effs.              & (Intercept)   & (Intercept)   & (Intercept)  \\ 
+Group:year Effs.                & (Intercept)   & (Intercept)   & (Intercept)  \\ 
+Group:distid Var.               & 0.17          & 0.2           & 0.19         \\ 
+Group:year Var.                 & 0.2           & 0.23          & 0.24         \\ 
+Sigma                           & 0.3367        & 0.3445        & 0.3431        \\ \hline
  \multicolumn{4}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
 \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{longtable} 
@@ -1297,43 +1333,37 @@ Single lagged turnout:
 \begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Naive OLS } & \multicolumn{ 1 }{ c }{ Simple RLM } & \multicolumn{ 1 }{ c }{ RLM + Year FE } & \multicolumn{ 1 }{ c }{ RLM + District FE } \\ \hline
- %                      & Naive OLS         & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
-(Intercept)            & -20.10            &                   &                   &                  \\ 
-                       & (12.76)           &                   &                   &                  \\ 
-turnoutLag1            & 16.05             & 16.05 ^*          & 24.47 ^*          & -9.85 ^*         \\ 
-                       & (1.90)            & (2.85)            & (3.09)            & (2.06)           \\ 
-fallTurnout            & 3.06              & 3.06              & 7.28 ^*           & -4.52            \\ 
-                       & (2.74)            & (3.56)            & (3.65)            & (6.68)           \\ 
-VAP\_adjLOG           & -2.86             & -2.86 ^*          & -2.59 ^*          & -17.60 ^*        \\ 
-                       & (0.20)            & (0.26)            & (0.25)            & (6.06)           \\ 
-per\_white\_all      & -8.31             & -8.31 ^*          & -6.86             & -86.81 ^*        \\ 
-                       & (2.90)            & (3.85)            & (3.62)            & (39.65)          \\ 
-per65o                 & 31.29             & 31.29 ^*          & 22.64 ^*          & 188.10 ^*        \\ 
-                       & (5.91)            & (9.25)            & (8.92)            & (40.15)          \\ 
-PerBachelorOrAbove     & 9.35              & 9.35              & 2.41              & 41.80            \\ 
-                       & (4.51)            & (5.16)            & (4.66)            & (28.70)          \\ 
-OOH\_share            & -3.85             & -3.85             & -4.80             & -0.41            \\ 
-                       & (2.06)            & (3.29)            & (3.00)            & (20.02)          \\ 
-median\_incomeLOG     & 6.25              & 6.25 ^*           & 5.53 ^*           & 6.18             \\ 
-                       & (1.44)            & (1.91)            & (1.77)            & (5.58)           \\ 
-districtwide1          & 0.28              &                   &                   &                  \\ 
-                       & (0.46)            &                   &                   &                  \\ 
-contestOpen Contested  & 0.53              &                   &                   &                  \\ 
-                       & (0.74)            &                   &                   &                  \\ 
-contestUncontested     & -4.65             &                   &                   &                  \\ 
-                       & (0.36)            &                   &                   &                  \\ 
-Intercept              &                   & -20.10            & -22.51            & 168.47           \\ 
-                       &                   & (17.49)           & (16.01)           & (88.48)          \\ 
-districtwide=1         &                   & 0.28              & 0.27              & 2.70 ^*          \\ 
-                       &                   & (0.62)            & (0.57)            & (1.04)           \\ 
-contest=Open Contested &                   & 0.53              & 0.01              & 0.25             \\ 
-                       &                   & (0.83)            & (0.75)            & (0.81)           \\ 
-contest=Uncontested    &                   & -4.65 ^*          & -4.74 ^*          & -4.69 ^*         \\ 
-                       &                   & (0.38)            & (0.35)            & (0.37)            \\
- $N$                    & 2310              & 2310              & 2310              & 2310             \\ 
-$R^2$                  & 0.22              & 0.22              & 0.42              & 0.43             \\ 
-adj. $R^2$             & 0.22              & 0.22              & 0.41              & 0.35             \\ 
-Resid. sd              & 8.16              & 8.16              & 7.08              & 7.42              \\ \hline
+ %                  & Naive OLS         & Simple RLM        & RLM + Year FE     & RLM + District FE\\ 
+(Intercept)        & -0.01             &                   &                   &                  \\ 
+                   & (0.02)            &                   &                   &                  \\ 
+turnoutLag1        & 0.17              & 0.17 ^*           & 0.25 ^*           & -0.11 ^*         \\ 
+                   & (0.02)            & (0.03)            & (0.03)            & (0.02)           \\ 
+fallTurnout        & 0.03              & 0.03              & 0.08 ^*           & -0.04            \\ 
+                   & (0.03)            & (0.04)            & (0.04)            & (0.07)           \\ 
+VAP\_adjLOG       & -0.26             & -0.26 ^*          & -0.23 ^*          & -1.94 ^*         \\ 
+                   & (0.02)            & (0.03)            & (0.03)            & (0.68)           \\ 
+per\_white\_all  & -0.06             & -0.06             & -0.05             & -0.65            \\ 
+                   & (0.02)            & (0.03)            & (0.03)            & (0.34)           \\ 
+per65o             & 0.13              & 0.13 ^*           & 0.10 ^*           & 0.82 ^*          \\ 
+                   & (0.03)            & (0.04)            & (0.04)            & (0.18)           \\ 
+PerBachelorOrAbove & 0.06              & 0.06              & 0.01              & 0.27             \\ 
+                   & (0.03)            & (0.04)            & (0.03)            & (0.21)           \\ 
+OOH\_share        & -0.03             & -0.03             & -0.04             & -0.01            \\ 
+                   & (0.03)            & (0.04)            & (0.04)            & (0.26)           \\ 
+median\_incomeLOG & 0.13              & 0.13 ^*           & 0.11 ^*           & 0.13             \\ 
+                   & (0.04)            & (0.05)            & (0.05)            & (0.14)           \\ 
+districtwide1      & 0.01              &                   &                   &                  \\ 
+                   & (0.03)            &                   &                   &                  \\ 
+minBlaisLago       & -0.06             & -0.06 ^*          & -0.07 ^*          & -0.09 ^*         \\ 
+                   & (0.02)            & (0.02)            & (0.02)            & (0.02)           \\ 
+Intercept          &                   & -0.01             & -0.31 ^*          & 0.38             \\ 
+                   &                   & (0.03)            & (0.09)            & (0.33)           \\ 
+districtwide=1     &                   & 0.01              & 0.00              & 0.10 ^*          \\ 
+                   &                   & (0.04)            & (0.03)            & (0.05)            \\
+ $N$                & 2310              & 2310              & 2310              & 2310             \\ 
+$R^2$              & 0.16              & 0.16              & 0.36              & 0.39             \\ 
+adj. $R^2$         & 0.16              & 0.16              & 0.36              & 0.31             \\ 
+Resid. sd          & 0.43              & 0.43              & 0.38              & 0.39              \\ \hline
  \multicolumn{5}{l}{\footnotesize{Standard errors clustered at the school district.}}\\
 \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
