@@ -259,7 +259,7 @@ in other cases by political scientists as well \citep{ParticAnnReview2004}.\foot
 Other scholars have found that not just the depth and frequency of interactions with 
 voters matters, but also the nature of those interactions, the ideological 
 composition of those groups, and socio-economic status
-\citep{Mutz2002, classpart04, classbias92, sesbias92}.}
+\citep{Mutz2002, classpart04, classbias92}.}
 
 
 In school boards there is evidence that such socialization has occurred in the case of 
@@ -474,9 +474,9 @@ extremely small electorate sizes common in school board elections there is evide
 that voters are more likely to turnout than in larger school board races. Figure 
 \ref{fig:turnoutSize} shows that there is a consistent negative relationship 
 between electorate size and school board election turnout across the years of data 
-available in Wisconsin. As voting age population increases, Wisconsin school board 
+available in Wisconsin. As population increases, Wisconsin school board 
 elections have lower turnout with a correlation of 
--0.14842.74997.06363. 
+-0.148. 
 This conforms with the predictions of game-theoretic approaches which state that 
 in a small electorate a voter can expect their vote to matter more in the outcome and 
 thus increase the potential benefits associated with voting
@@ -487,7 +487,7 @@ driven by these races.
 
 Having competitive races is critical in driving voter turnout, as voters have 
 very little reason to vote if they are not presented with a meaningful choice \citep{Downs57}. 
-Figure \ref{turnoutCompetitive} shows voter turnout across the competitiveness typologies 
+Figure \ref{fig:turnoutCompetitive} shows voter turnout across the competitiveness typologies 
 described in Chapter \ref{chap:wisco} with a clear pattern of higher turnout in races 
 featuring an incumbent and a serious challenger. Open seats also appear to feature higher 
 turnout than uncontested races. The turnout in uncontested races in the bottom panel 
@@ -499,9 +499,9 @@ Figure \ref{fig:turnoutAutocorrelation} explores how habit forming turnout may b
 in spring elections in school districts \citep{Plutzer2002}. Using a two-year lag 
 of turnout, Figure \ref{fig:turnoutAutocorrelation} shows a consistently high 
 positive correlation between lagged and current turnout, averaging 
-0.31685.01907.42866.
+0.317.
 \footnote{For a single year lag, the corresponding correlation is 
-0.29175.84656.87825 and the 
+0.292 and the 
 year to year pattern is largely similar.} A robust linear model is used to show 
 the smoothed relationship between lagged and current turnout. Of note is the pattern 
 shift in both 2005 and 2011 where the correlation is more pronounced and turnout 
@@ -509,7 +509,7 @@ appears to be inflated. Figure \ref{fig:turnoutComparison} looks at this further
 yet by showing the relationship between the average of the turnout in the prior two 
 fall elections for Governor and President compared to the current school board turnout. 
 These correlate positively as well at a level of 
-0.13437.55360.79937. 
+0.134. 
 
 With a reduced electorate, school board elections are an interesting case to study 
 the role substantial interest groups can play in an election. \citet{Fowler2005} 
@@ -536,15 +536,30 @@ the school board through the nomination and campaign process instead.
 % TODO: Fix paragraph about competitiveness
 % Competitiveness has a very modest positive effect on turnout across 
 % all observations
-Still, when school board races are competitive, do they exhibit much higher turnout? Figure 
-\ref{fig:competition} shows that races where the winner and loser are within 15\% of 
-one another in votes do exhibit higher turnout.\footnote{For this graph the definition 
-of win-margin described in Chapter \ref{chap:wisco} was used.} About 1/3 races is 
-competitive in this way. This is an imperfect measure however, because voters do 
-not know before they go to the ballot how competitive a race will be. In fact, in 
-school board races, it is very unlikely that voters have much information at all about 
-how close the race will be due to a lack of polling information and very little 
-campaigning common in school board races \citep{RefWorks:321, RefWorks:217, RefWorks:322}. 
+
+A final element that is important to consider is the phenomenon that voter turnout 
+is higher when races are more competitive. Measuring competitiveness in conjunction 
+with turnout is a difficult methodological task, but often some measure of the final 
+election margin is used as a proxy for the pre-election competitiveness of the race 
+anticipated by voters. Following the argument of \citet{cox88}, I avoid using the 
+percentage margin of victory due to the fact that it shares a denominator with 
+the dependent variable, voter turnout. Instead, I use the Blais-Lago quotient used in 
+Chapters \ref{chap:wisco} and \ref{chap:candidacy} which uses the total votes cast 
+as the denominator. Figure \ref{fig:competition} shows all the races for which 
+records are available with the competitiveness measures on the x-axis and the 
+turnout in the corresponding school board race on the y-axis. There is a very 
+slight negative effect of less competitive (higher value on the X-axis) races on 
+voter turnout. \footnote{This figure excludes races with turnout greater than 95\% 
+which are likely due to extremely low numbers of voters or recording error.}
+one another in votes do exhibit higher turnout. How informed voters are about the 
+competitiveness of their school board races prior to the election is unclear. 
+There are many reasons to believe voters have little to no pre-election information 
+about the closeness of their board races -- due to a lack of polling information and the 
+low-level campaigning common in school board races \citep{RefWorks:321, RefWorks:217, RefWorks:322}. 
+However, the electorate in Wisconsin school board elections is very different than 
+the fall partisan electorate, and evidence from other jurisdictions suggests such 
+off-cycle local voters are much more engaged, informed, and politically active 
+than general election voters \citep{oliver12}. 
 
 Figure \ref{fig:partyDivision} takes a different approach to this problem by looking 
 at the information voters may have about their community -- the level of partisan 
@@ -559,7 +574,7 @@ partisan unity and turnout. Figure \ref{fig:partisan2} shows the linear relation
 between higher partisan unity and turnout. In most years there is almost no relationship, 
 but in 2011 and 2012 there appears to be an uptick in school board turnout associated 
 with more strongly partisan school districts. The correlation is 
-0.08575.64833.46187.7. 
+0.0858. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -572,8 +587,19 @@ with more strongly partisan school districts. The correlation is
 Taken alone, these figures do not suggest that any of the theories in Table \ref{turnoutH} 
 are confirmed or denied, but it does help illustrate the diversity of school board 
 elections in Wisconsin and the need for statistical models to help separate out 
-competing explanations that may themselves by highly correlated or confound 
+competing explanations that may themselves be highly correlated or confound 
 one another. 
+
+%TODO Fix this
+A key factor to control for in the case of school boards is the fiscal issue dimension. 
+Researchers have studied the impact of economic conditions on voting before, and 
+have found some evidence that economic conditions influence voting patterns 
+\citep{EconandOutcomes2000}. 
+If we reduce school boards to a two-dimensional game with incumbents and non-incumbents 
+along one dimension and the relative fiscal performance along the other, ceteris 
+paribus we would expect that incumbents are at an advantage (and turnout is lower) 
+when fiscal performance is strong. To measure fiscal performance we use the share 
+of the revenue limit a district is spending.
 
 \clearpage
 
@@ -604,7 +630,18 @@ smoother fit in each scatterplot in the first column. There are also strong rela
 between these individual demographic categories, with particularly strong relationships 
 between education, age, and income sticking out, as well as a strong negative between 
 age and owner occupied housing and age and education level.\footnote{This pairs plot 
-is produced using the "GGally" package in R \citep{ggally}.}
+is produced using the "GGally" package in R \citep{ggally}.} 
+
+% Write up findings
+% OOH_share and median income are highly correlated
+% Per 65 older and OOH are highly correlated (-)
+% Per 65 older and income are highly correlated (-)
+% Turnout is lowly correlated with all of these measures
+% What about adding fall turnout?
+% ALl of these controls are much more strongly correlated with the fall turnout 
+% than with the school board election turnout
+
+% Evidence school board electorate is different than regular electorate
 
 \clearpage
 \section{Methods}
@@ -613,43 +650,32 @@ This paper has two main methodological approaches to evaluating theories of vote
 turnout in school board elections. The first follows on several empirical studies 
 of theories of voter turnout to compare the power of various theories of voter 
 turnout to one another \citep{Larcinese, Lapp99, KanYang2001,Coate2008582}. The 
-second approach leverages the exogenous shock of the Walker administration in 
-Wisconsin and the passage of Act 10 to evaluate the causal impact of changes in 
-voter information on both the level of turnout in school board elections, and 
-the prompting of voters to exercise their dissatisfaction through the ballot. 
+second approach investigates more narrowly the gap between voters voting at the 
+top of the spring election ticket, and votes for school board. While overall 
+spring election turnout may be driven by the presence of a partisan primary 
+or a non-partisan statewide election, the gap between votes cast in that election 
+and the school board election narrowing should be attributed to increased interest 
+by voters in school board elections. 
 
-A key factor to control for in the case of school boards is the fiscal issue dimension. 
-Researchers have studied the impact of economic conditions on voting before, and 
-have found some evidence that economic conditions influence voting patterns 
-\citep{EconandOutcomes2000}. 
-If we reduce school boards to a two-dimensional game with incumbents and non-incumbents 
-along one dimension and the relative fiscal performance along the other, ceteris 
-paribus we would expect that incumbents are at an advantage (and turnout is lower) 
-when fiscal performance is strong. To measure fiscal performance we use the share 
-of the revenue limit a district is spending.
+\subsection{Estimation Equations}
 
-\subsection{Evaluating Theories in Non-Partisan Local Elections}
-
-Now we turn to operationalizing Table \ref{turnoutH} into estimable equations to 
+I now turn to operationalizing Table \ref{turnoutH} into estimable equations to 
 look for evidence of voter turnout theories in school board elections. 
 
 \[(1) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{lag} + \psi Ce_{t}+\epsilon \] \\
 
-Here $VP_{t}$ is voter turnout in time $t$. $\alpha$ is the intercept and $x_{lag}$ 
+Here $VP_{t}$ is voter turnout in the spring election $t$. $\alpha$ is the intercept and $x_{lag}$ 
 represents a vector of lagged covariates such as turnout in school district $i$. 
 Additionally, we include a term $Ce_{t}$ for the level of candidate participation 
 in the election as a control. As per \citet{habit02}, a high predictive value 
 of the lagged term, especially in smaller districts, would suggest the electorate 
 is largely consistent of the same individuals year to year, suggesting that learning 
-is occurring. To test this more rigorously, we could specifically look at years 
-where turnout increases are particularly sharp, and see if these correspond to 
-heightened turnout in particular years through the inclusion of a $\delta turnout$ 
-term. 
+is occurring. 
 
-Next, we turn to testing the pivotal-voter model using a similar method as \citep{Coate2008582}. 
+Next, I turn to testing the pivotal-voter model using a similar method as \citep{Coate2008582}. 
 The pivotal-voter model predicts that turnout should be higher in elections that 
-are closer. % OR IS IT THE OPPOSITE? 
-Thus we include the $M_{t}$ for the margin of victory for candidates in the school 
+are closer and that this effect should be greater in smaller electorates.
+Thus I include the $M_{t}$ for the margin of victory for candidates in the school 
 board election in the equation below. 
 
 %% do we consider controlling for the effect of candidate participation?
@@ -696,16 +722,88 @@ Voter turnout is driven by many forces. Aside from the exogenous shock provided
 by Scott Walker's election and the passage of Act 10, the ability to test the 
 causal impact of any factor on school board elections is limited. In my first 
 set of models I look for evidence that the explanations described in Table \ref{turnoutH} 
-are supported in the data available on Wisconsin school boards. In each case, 
-I start with a specification that pools observations across years and districts and 
-estimates the impact of the key independent variable and a few key demographic 
-control variables described in Section \ref{sec:turnData}. 
+are supported in the data available on Wisconsin school boards. In the second 
+case, I change my dependent variable to be the distance between the turnout for 
+the school board races in a school district, and the top non-partisan statewide 
+race in the district. In each case, I start with a specification that pools 
+observations across years and districts and estimates the impact of the key independent 
+variable and a few key demographic control variables described in Section 
+\ref{sec:turnData}. 
 
-Due to the presence of outliers exhibited in the figures in \ref{sec:turnData} my 
-initial models will represent penalized regressions estimated using the \texttt{ols} 
-function in the \texttt{rms} package for R \citep{cran, rms}. Instead of estimating 
-$\beta$ as $(X'X)^{-1} X'Y$, a user specified penalty factor P is included 
-to adjust $\beta$ and estimate it as $(X'X + P)^{-1} X'Y$. 
+Models are fit using two methods. The first method is a pooled linear regression 
+model that includes fixed effects for years and for school districts. As each 
+school district is observed between two and ten times, the assumption of independent 
+and identically distributed random variables is violated. To correct for this, 
+I adjust the standard errors by using the Huber-White estimator of the covariance 
+matrix through the \texttt{robcov} function implemented in \citet{rms}'s \texttt{rms} 
+package. This estimator will correct for the clustering of school districts
+between the observations and avoid overly optimistic standard errors for 
+the $\beta$ coefficients \citep{hwhite,hwhite2,pjhuber}. 
+
+In addition to robust fixed effect models described above, I also fit multi-level 
+regressions. The multilevel approach is not common in longitudinal applications in political 
+science, but has been used by \citet{oliver} to understand the relationship between 
+individual survey respondents and their communities in a study of local elections. 
+The choice between these two approaches is as much theoretical as it is econometric, 
+and as a result I run my analyses with both approaches.\footnote{The Hausman test 
+can be used to formally test the specification of random or fixed effects and the 
+results of this test for all models is included in the Methodological Appendix 
+\ref{sec:appendixT} \citep{haustest}.} 
+However, I prefer the multi-level approach because the panel here is not balanced, 
+the observations within districts are not evenly spaced due to the fact that districts 
+may not have open seats on their board each year. Furthermore, my data does not 
+include all Wisconsin school districts, but instead a large sample of districts. 
+This makes the ability to model the variation between districts of interest to 
+understand the range of plausible district variation across the broader population 
+of school districts. 
+
+The multilevel modeling approach, also known as hierarchical linear modeling (HLM), 
+is flexible for cases with unbalanced repeated measures and allows the analyst to 
+disentangle the effects of time specific variables from the overall variability 
+among individual units, e.g. school districts \cite{mlmod,raudbryk}. One way to depict 
+this approach is in the equation:
+
+\begin{align*} 
+VP_{i} = \alpha + \gamma_{j} + \beta X_{ij} + \psi Ce_{i} + \epsilon  \\ 
+\gamma_{j} &=  \alpha_{j} + \zeta Z_{j}
+\end{align*}
+
+The only difference between this approach the linear models with equations above 
+is the presence of a unique intercept for each school district \emph{j}. 
+Here the $\gamma_{j}$ terms represent independent intercepts for each school 
+district as predicted by $Z_{j}$, a vector of school district characteristics 
+that are time invariant. $X_{lag}$ is a vector of time variant school district 
+characteristics such as prior turnout. In the mixed-effect 
+framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
+is explained by the linear combination of $\alpha$ and $\zeta$. The equation above 
+is flexible to the inclusion of the other predictors identified. 
+
+This method does not account for the time structure of the data, as no 
+explicit parameterization of time is included. As I have no reason to believe that 
+time linearly related to the probability of an election being contested, this is 
+appropriate. However, I do want to control for secular effects of election year 
+variability that reaches across districts. One approach would be to include 
+fixed effects for years in the $X$ vector. However, the multilevel approach is 
+flexible enough to allow for a third group -- years, to be included in the model. 
+The model below includes a third grouping level for years. 
+
+\begin{align*} 
+VP_{t} = \alpha + \gamma_{jt} + \lambda_{t} + \beta X_{ijt} + \psi Ce_{ijt} + \epsilon  \\ 
+\gamma_{jt} &=  \alpha_{jt} + \zeta Z_{jt} \\
+\lambda_{t} &= \alpha_{t}
+\end{align*}
+
+This approach allows year parameters to be estimated independently without assuming 
+a functional form for the relationship between the probability of candidate emergence 
+and time.
+
+\subsection{Computation}
+
+Due to the suspicion of measurement issues in the key estimate of turnout, I use 
+the approach taken by \citet{berry2} on administrative data and exclude all 
+observations that fall outside of five standard deviations of the normal values 
+for the dependent variable. 
+
 
 %Demonstrate outliers
 % Talk about penalized maximum likelhood
@@ -714,10 +812,6 @@ to adjust $\beta$ and estimate it as $(X'X + P)^{-1} X'Y$.
 % Bayesian and tobit regression options
 % Triangulating 
 
-
-\section{Results}
-
-\subsection{Autocorrelated Turnout}
 
 The initial pooled linear regression is shown in Table \ref{tab:lagmods} as the 
 first column. This model includes no adjustments for clustering to the standard 
@@ -761,6 +855,22 @@ clustered standard errors to provide a more robust view of the effects in school
 board turnout. The results for these alternative specifications are displayed 
 alongside the initial model in Table \ref{tab:lagmods}. 
 
+\clearpage
+\section{Results}
+
+I now review the results for the four models above. First, I look for evidence 
+of these models providing predictive power on turnout in the spring school board 
+races. Then I apply these same models to the rolloff of voters in the spring 
+election. 
+
+% Autocorrelation - habit forming
+% Electorate size - game theory, value of vote
+% Electorate size * competitiveness - pivotal voter
+% Social groups -- unionization and partisanship
+
+% Rolloff
+
+\subsection{Habit Forming Voters}
 
 \begin{tiny}
 \begin{sidewaystable}[!ht]
@@ -1318,7 +1428,7 @@ the nomination process being strongly controlled by the teacher union.
 - Union participation downplays turnout
 
 \section{Appendix}
-
+\label{sec:appendixT}
 Sensitivity checks and further table analysis. 
 
 Single lagged turnout:
