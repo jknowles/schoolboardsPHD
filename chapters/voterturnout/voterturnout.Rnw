@@ -1109,12 +1109,13 @@ dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest",
                         "fallTurnout", "VAP_adjLOG", "distid", "districtwide",
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", 
-                        "median_incomeLOG", "minBlaisLago")]
+                        "median_incomeLOG", "minBlaisLago", "contest")]
 #moddat <- na.omit(moddat)
 moddat <- subset(moddat, turnout < 0.95,)
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
+moddat$contest <- factor(moddat$contest)
 moddat$turnout <- moddat$turnout * 100
 moddat$districtwide <- factor(moddat$districtwide)
 moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
@@ -1169,17 +1170,15 @@ alongside the initial model in Table \ref{tab:lagmods}.
 \clearpage
 \section{Results}
 
-I now review the results for the four models above. First, I look for evidence 
-of these models providing predictive power on turnout in the spring school board 
-races. Then I apply these same models to the rolloff of voters in the spring 
-election. 
-
-% Autocorrelation - habit forming
-% Electorate size - game theory, value of vote
-% Electorate size * competitiveness - pivotal voter
-% Social groups -- unionization and partisanship
-
-% Rolloff
+I now review the results for models for all of the theories discussed above -- 
+habit forming voters, rational voters, pivotal voters, and social group motivated 
+voters. I fit both a fixed-effect OLS regression and a mixed-effect linear 
+model for each of these theories including control variables and the key predictors. 
+I fist look at evidence for these theories in each of these models for an effect 
+on turnout in the spring school board races. Then I apply these same models to 
+the rolloff of voters in the spring election. Finally, I conclude by interpreting 
+the substantive effect of these variables to weigh how large the effects of 
+these characteristics might be on school board election turnout. 
 
 \subsection{Habit Forming Voters}
 
@@ -1192,52 +1191,50 @@ library(devtools)
 install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
 library(apsrtable)
 moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
+moddat <- moddat[moddat$year != "2002",]
+moddat$year <- factor(as.character(moddat$year))
 dd <<- datadist(moddat)
 options(datadist="dd")
 
 dumbRLM1 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
                   per_white_all + 
                        per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-               districtwide + minBlaisLago, data = moddat, x = TRUE, y = TRUE)
+               districtwide +  minBlaisLago, data = moddat, x = TRUE, y = TRUE)
 
 dumbRLM1$se <- sqrt(diag(vcov(robcov(dumbRLM1, cluster = moddat$distid))))
 
-naive1$se <- sqrt(diag(vcov(naive1)))
 
 dumbRLM1.2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
                     per_white_all + 
                        per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-               districtwide + minBlaisLago + 
+               districtwide +  minBlaisLago + 
                  factor(year), data = moddat, x= TRUE, y = TRUE)
 
 dumbRLM1.2$se <- sqrt(diag(vcov(robcov(dumbRLM1.2, cluster = moddat$distid))))
 
-dumbRLMbest <- ols(turnout ~ turnoutLag2 *VAP_adjLOG + fallTurnout + VAP_adjLOG +
+dumbRLMbest <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG +
                      VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove +
-                     OOH_share + median_incomeLOG + districtwide + 
-               minBlaisLago + factor(year), data = moddat, x= TRUE, y = TRUE)
+                     OOH_share + median_incomeLOG + districtwide +  
+               minBlaisLago + factor(year) + factor(distid), data = moddat, x= TRUE, y = TRUE)
 
 dumbRLMbest$se <- sqrt(diag(vcov(robcov(dumbRLMbest, cluster = moddat$distid))))
-
-
-dumbRLM2 <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
-                  median_incomeLOG + districtwide + minBlaisLago + 
+dumbRLM2 <- ols(turnout ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
+                  per_white_all + per65o + PerBachelorOrAbove +  OOH_share+
+                  median_incomeLOG + districtwide + minBlaisLago + factor(year) + 
                   factor(distid), data = moddat, x = TRUE, y = TRUE)
-
 dumbRLM2$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
 
 stars.note <- apsrtable:::stars.note
 se.note <- apsrtable:::se.note
 
-apsrtable(naive1, dumbRLM1, dumbRLM1.2, dumbRLMbest, dumbRLM2, se="robust", 
+apsrtable(dumbRLM1, dumbRLMbest, dumbRLM2, se="robust", 
           label="tab:lagmods", 
-          model.names=c("Naive OLS", "Simple RLM", "RLM + Year FE", "Interaction", 
+          model.names=c("Simple RLM",  "Interaction", 
                         "RLM + District FE"), 
           caption = "Models of Lagged Turnout in School Board Elections",
-          notes = list("Standard errors clustered at the school district except in model 1.", 
+          notes = list("Standard errors clustered at the school district level.", 
                        stars.note, 
-                       "Year and district fixed effects omitted."),
+                       "Year and district fixed effects omitted in models 2 and 3."),
           omitcoef=list("distid", 
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
@@ -1344,15 +1341,15 @@ appA1 <- apsrtable(naive2, turn21, turn22, turn23, se="robust", label="tab:lagmo
 <<model2, results ='asis'>>=
 library(lme4)
 
-mixedMod1 <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                    per_white_all + turnoutLag2 * VAP_adjLOG + 
+mixedMod1 <- lmer(turnout ~ turnoutLag2 +  VAP_adjLOG + 
+                    per_white_all + 
                        per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
                districtwide + 
-               minBlaisLago + (1|distid), 
+               minBlaisLago + (1|year) + (1|distid), 
               data = moddat, REML = FALSE)
 
-mixedMod1b <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                    per_white_all + turnoutLag2 * VAP_adjLOG + 
+mixedMod1b <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq +
+                    per_white_all + 
                        per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
                districtwide + 
                minBlaisLago + (1|year) + (1|distid), 
@@ -1365,10 +1362,10 @@ mixedMod1b <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG +
 
 tabnote <- "Model includes both year and district random effects modeled as intercepts."
 
-apsrtable(mixedMod1b, caption = "Partial Pooling Model of Lagged Turnout",
-          model.names = c("Partial Pooled"), 
+apsrtable(mixedMod1, mixedMod1b, caption = "Partial Pooling Model of Lagged Turnout",
+          model.names = c("No Fall Turnout", "Partial Pooled"), 
             label = "tab:meTurnout",  
-           notes = list("Group level intercepts are not shown.", 
+           notes = list("All variables grand-mean scaled and centered.", 
                        stars.note), 
           Sweave = FALSE, digits = 3)
 
@@ -1378,7 +1375,7 @@ apsrtable(mixedMod1b, caption = "Partial Pooling Model of Lagged Turnout",
 \end{tiny}
 
 
-<<laggedTurnSens, results='hide'>>=
+<<laggedTurnSens, results='hide', eval=FALSE>>=
 library(RLRsim)
 m0 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                     per_white_all + turnoutLag2 * VAP_adjLOG + 
@@ -1412,13 +1409,12 @@ found in the models in Table \ref{tab:lagmods2} -- prior turnout and fall turnou
 are predictive of current turnout. This suggests that voters in school board 
 elections are indeed habit forming. 
 
-
 <<coefficients1>>=
 #library(coefplot)
 #coefplot(mixedMod1b, intercept = FALSE) + theme_dpi()
 @
 
-\subsection{Electorate Size and Margin of Victory}
+\subsection{Rational Voters}
 
 Our second empirical question was to examine the relationship between electorate size 
 and turnout, and electorate size, margin of victory and turnout. I use an adjusted estimate 
@@ -1436,17 +1432,17 @@ then this becomes more problematic.
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", 
                         "VAP_adjLOG", "distid", 
                         "per_white_all", "per65o", "PerBachelorOrAbove", 
-                        "OOH_share", "median_incomeLOG", 
-                        "CLOSE", "districtwide", "contest", "minBlaisLago")]
+                        "OOH_share", "median_incomeLOG", "districtwide", 
+                        "contest", "minBlaisLago")]
 moddat <- na.omit(moddat)
 moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
 moddat$turnout <- moddat$turnout * 100
 moddat$districtwide <- factor(moddat$districtwide)
+moddat$contest <- factor(moddat$contest)
+moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 centr <- mean(moddat$turnout)
 stddev <- sd(moddat$turnout)
 moddat$outflag <- (moddat$turnout - centr) / stddev
@@ -1468,25 +1464,25 @@ closeRLM <- ols(turnout ~ VAP_adjLOG + per_white_all +
               data = moddat, x = TRUE, y = TRUE)
 
 closeRLM$se <- sqrt(diag(vcov(robcov(closeRLM, cluster = moddat$distid))))
-closeRLM2 <- ols(turnout ~ VAP_adjLOG + per_white_all + 
+closeRLM2 <- ols(turnout ~ VAP_adjLOG + VAP_adjLOG_sq + per_white_all + 
                   per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
                    districtwide + minBlaisLago + factor(year),
               data = moddat, x= TRUE, y = TRUE)
 closeRLM2$se <- sqrt(diag(vcov(robcov(closeRLM2, cluster = moddat$distid))))
-closeRLM3 <- ols(turnout ~ VAP_adjLOG + per_white_all + 
+closeRLM3 <- ols(turnout ~ VAP_adjLOG + VAP_adjLOG_sq+ per_white_all + 
                   per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-                   districtwide + minBlaisLago + factor(distid), 
+                   districtwide + minBlaisLago + factor(year) + factor(distid), 
               data = moddat, x = TRUE, y = TRUE)
 closeRLM3$se <- sqrt(diag(vcov(robcov(closeRLM3, cluster = moddat$distid))))
-closeRLM4 <- ols(turnout ~ VAP_adjLOG + minBlaisLago*VAP_adjLOG + per_white_all + 
+closeRLM4 <- ols(turnout ~ VAP_adjLOG + VAP_adjLOG_sq+ minBlaisLago*VAP_adjLOG + per_white_all + 
                   per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-                   districtwide + minBlaisLago + factor(year), 
+                   districtwide + minBlaisLago + factor(year) + factor(distid), 
               data = moddat, x = TRUE, y = TRUE)
 closeRLM4$se <- sqrt(diag(vcov(robcov(closeRLM4, cluster = moddat$distid))))
 
-apsrtable(closeRLM, closeRLM2, closeRLM3, closeRLM4, se="robust", 
+apsrtable(closeRLM3, closeRLM4, se="robust", 
           label="tab:closemods", 
-          model.names=c("Simple RLM", "RLM + Year FE", "RLM + District FE", "Interact + Year FE"), 
+          model.names=c("RLM + District FE", "Interact + Year FE"), 
           caption = "Models of Competitiveness and Turnout in School Board Elections",
           notes = list(se.note, stars.note, "Year and district fixed effects omitted."),
           omitcoef=list("distid", 
@@ -1514,18 +1510,19 @@ I turn to partial pooling to resolve this issue.
 
 \begin{tiny}
 <<model4, results='asis'>>=
-mixedMod2 <- lmer(turnout ~  minBlaisLago + VAP_adjLOG + 
+mixedMod2 <- lmer(turnout ~  minBlaisLago + VAP_adjLOG + VAP_adjLOG_sq +
                     minBlaisLago*VAP_adjLOG + per_white_all + 
                     per65o + PerBachelorOrAbove + OOH_share + 
                     median_incomeLOG + districtwide + 
                   contest  + (1|distid), 
               data = moddat, REML = TRUE)
 
-mixedMod2b <- lmer(turnout ~ minBlaisLago + VAP_adjLOG + 
+mixedMod2b <- lmer(turnout ~ minBlaisLago + VAP_adjLOG +  VAP_adjLOG_sq + 
+                     fallTurnout +
                      minBlaisLago*VAP_adjLOG + per_white_all + 
                      per65o + PerBachelorOrAbove + OOH_share + 
-                     median_incomeLOG + districtwide + 
-                  contest + (1|year) + (1|distid), 
+                     median_incomeLOG + districtwide + contest + 
+                   (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
 # summary(mixedMod2)
@@ -1540,7 +1537,7 @@ The results in Table \ref{tab:meClose} mirror those found in columns 1 and 2 of 
 \ref{tab:closemods}. This provides evidence in support of the argument that school board 
 election voters are more active in smaller electorates and in competitive races. 
 
-<<closeModSens,results='hide'>>=
+<<closeModSens,results='hide', eval=FALSE>>=
 m0 <- lm(turnout ~  minBlaisLago + VAP_adjLOG + minBlaisLago*VAP_adjLOG + 
            per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
            median_incomeLOG + districtwide + 
@@ -1554,18 +1551,21 @@ m0 <- update(mixedMod2b, . ~ . - (1|distid))
 exactRLRT(m.slope, mixedMod2b, m0)
 @
 
-\subsection{Unionization}
+\subsection{Social Groups}
 
 To test the argument that voter turnout may be influenced by the share of the 
 electorate that is made up of unionized teachers, I combine features from the 
 previous models in an attempt to find evidence of such an effect.  
 
+% Partisanship and unionization
+
+\subsubsection{Teachers' Unions}
 \begin{tiny}
 <<model5, results ='asis'>>=
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", 
                         "VAP_adjLOG", "distid", "per_white_all", "per65o", 
                         "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
-                        "CLOSE", "teachShareofVoters", "districtwide", 
+                        "teachShareofVoters", "districtwide", 
                         "contest", "minBlaisLago")]
 moddat <- na.omit(moddat)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -1573,7 +1573,9 @@ moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
+moddat$contest <- factor(moddat$contest)
 moddat$districtwide <- factor(moddat$districtwide)
+moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 moddat$year <- factor(moddat$year)
 moddat$turnout <- moddat$turnout * 100
 centr <- mean(moddat$turnout)
@@ -1611,16 +1613,16 @@ teachRLM2 <- ols(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago +
 teachRLM2$se <- sqrt(diag(vcov(robcov(teachRLM2, cluster = moddat$distid))))
 
 
-teachRLM3 <- ols(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago + 
+teachRLM3 <- ols(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago + VAP_adjLOG_sq +
                     VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide + contest + 
-                   distid, 
+                   distid + factor(year), 
               data = moddat, x = TRUE, y = TRUE)
 
 teachRLM3$se <- sqrt(diag(vcov(robcov(teachRLM3, cluster = moddat$distid))))
 
 # Interaction model
-teachRLM4 <- ols(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago + 
+teachRLM4 <- ols(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago +  VAP_adjLOG_sq +
                     VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide + contest + 
                    teachShareofVoters * VAP_adjLOG + factor(year) +
@@ -1630,8 +1632,8 @@ teachRLM4 <- ols(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago +
 teachRLM4$se <- sqrt(diag(vcov(robcov(teachRLM4, cluster = moddat$distid))))
 
 
-apsrtable(teachRLM, teachRLM2, teachRLM3, se="robust", label="tab:teachmods", 
-          model.names=c("Simple RLM", "RLM + Year FE", "RLM + District FE"), 
+apsrtable(teachRLM3, teachRLM4, se="robust", label="tab:teachmods", 
+          model.names=c("RLM + District FE", "+ Interaction"), 
           caption = "Models of Unionization and Turnout in School Board Elections",
           notes = list(se.note, stars.note, "Year and district fixed effects omitted."),
           omitcoef=list("distid", 
@@ -1639,15 +1641,6 @@ apsrtable(teachRLM, teachRLM2, teachRLM3, se="robust", label="tab:teachmods",
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
           Sweave=FALSE)
-
-# 
-# library(MCMCpack)
-# 
-# fit1<-MCMCtobit(turnout ~ CLOSE + turnoutLag2 + fallTurnout + log(VAP_adj) + per_white_all +
-#                    per65o + PerBachelorOrAbove + OOH_share + log(median_income),
-#                 data=moddat,below=0,above=1,burnin=2000,mcmc=70000,thin=5)
-# HPDinterval(fit1)
-
 @
 \end{tiny}
 
@@ -1656,20 +1649,20 @@ share of the electorate has an effect on the turnout.
 
 \begin{tiny}
 <<mixedInfMod, results='asis'>>=
-mixedMod3 <- lmer(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago + 
-                    VAP_adjLOG + per_white_all + teachShareofVoters * VAP_adjLOG + 
-                   per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-                     districtwide + contest+ (1|distid), 
+mixedMod3 <- lmer(turnout ~ teachShareofVoters +  minBlaisLago +  
+                    VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide + contest + 
+                   teachShareofVoters * VAP_adjLOG + (1|distid), 
               data = moddat, REML = TRUE)
 
-mixedMod3b <- lmer(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago + 
-                    VAP_adjLOG + per_white_all + teachShareofVoters * VAP_adjLOG + 
-                   per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-                     districtwide + contest+ (1|year) + (1|distid), 
+mixedMod3b <- lmer(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago +  VAP_adjLOG_sq +
+                    VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide + contest + 
+                   teachShareofVoters * VAP_adjLOG + (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
-apsrtable(mixedMod3b, caption = "Partial Pooling Model of Staff Influence",
-          model.names = c("Partial Pooled"),
+apsrtable(mixedMod3, mixedMod3b, caption = "Partial Pooling Model of Staff Influence",
+          model.names = c("Model 1","Model 2"),
             label = "tab:meInf", notes = list(tabnote, stars.note), 
           Sweave = FALSE)
 
@@ -1678,7 +1671,7 @@ apsrtable(mixedMod3b, caption = "Partial Pooling Model of Staff Influence",
 
 The effect is the same in the partially pooled model. 
 
-<<mixedInfmodSen, results='hide'>>=
+<<mixedInfmodSen, results='hide', eval=FALSE>>=
 m0 <- lm(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago + 
                     VAP_adjLOG + per_white_all + teachShareofVoters * VAP_adjLOG + 
                    per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
@@ -1690,11 +1683,122 @@ m0 <- update(mixedMod3b, . ~ . - (1|distid))
 exactRLRT(m.slope, mixedMod3b, m0)
 @
 
+\subsubsection{Partisanship}
+
+Another social group to explore is political parties. Use measure of partisanship 
+from average of two prior partisan general elections. 
+
+\begin{tiny}
+<<partyMods, results ='asis'>>=
+dist_turn$fallPartyDivision <- abs(dist_turn$fallTwoPartyShareDem - 0.5)
+
+moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", 
+                        "VAP_adjLOG", "distid", "per_white_all", "per65o", 
+                        "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
+                        "fallTwoPartyShareDem", "fallPartyDivision", 
+                        "districtwide", "contest", "minBlaisLago")]
+moddat <- na.omit(moddat)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$year <- factor(moddat$year)
+moddat <- moddat[order(moddat$distid, moddat$year),]
+moddat$distid <- factor(moddat$distid)
+moddat$contest <- factor(moddat$contest)
+moddat$districtwide <- factor(moddat$districtwide)
+moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
+moddat$year <- factor(moddat$year)
+moddat$turnout <- moddat$turnout * 100
+centr <- mean(moddat$turnout)
+stddev <- sd(moddat$turnout)
+moddat$outflag <- (moddat$turnout - centr) / stddev
+moddat <- moddat[moddat$outflag <=5 & moddat$outflag >= -5,]
+
+nums <- sapply(moddat, is.numeric)
+ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
+ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
+moddatScale <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
+nums <- sapply(moddat, is.numeric)
+moddat[, nums] <- apply(moddat[, nums], 2, rescale)
+dd <<- datadist(moddat)
+options(datadist="dd")
+
+partyRLM1 <- ols(turnout ~ fallPartyDivision + fallTurnout + minBlaisLago + 
+                    VAP_adjLOG + per_white_all + per65o + 
+                   PerBachelorOrAbove + OOH_share + median_incomeLOG + 
+                   districtwide + contest + year + distid,
+              data = moddat, x= TRUE, y = TRUE)
+
+partyRLM1$se <- sqrt(diag(vcov(robcov(partyRLM1, cluster = moddat$distid))))
+
+
+partyRLM2 <- ols(turnout ~ fallTwoPartyShareDem + fallTurnout + minBlaisLago + 
+                    VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide + contest + 
+                   distid + factor(year), 
+              data = moddat, x = TRUE, y = TRUE)
+
+partyRLM2$se <- sqrt(diag(vcov(robcov(partyRLM2, cluster = moddat$distid))))
+
+partyRLM3 <- ols(turnout ~ fallPartyDivision*VAP_adjLOG + fallTurnout + minBlaisLago + 
+                    VAP_adjLOG + per_white_all + per65o + 
+                   PerBachelorOrAbove + OOH_share + median_incomeLOG + 
+                   districtwide + contest + year + distid,
+              data = moddat, x= TRUE, y = TRUE)
+
+partyRLM3$se <- sqrt(diag(vcov(robcov(partyRLM3, cluster = moddat$distid))))
+
+
+partyRLM4 <- ols(turnout ~ fallTwoPartyShareDem*VAP_adjLOG + fallTurnout + minBlaisLago + 
+                    VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide + contest + 
+                   distid + factor(year), 
+              data = moddat, x = TRUE, y = TRUE)
+
+partyRLM4$se <- sqrt(diag(vcov(robcov(partyRLM4, cluster = moddat$distid))))
+
+
+
+apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4, se="robust", label="tab:partymods", 
+          model.names=c("Party Unity", "Dem Share", "Party Unity Inter.", "Dem Share Inter."), 
+          caption = "Models of Partisanship and Turnout in School Board Elections",
+          notes = list(se.note, stars.note, "Year and district fixed effects omitted."),
+          omitcoef=list("distid", 
+                        expression(grep("distid", coefnames, value=TRUE)), 
+                        "year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          Sweave=FALSE)
+@
+\end{tiny}
+
+
+Mixed models are superior. 
+\begin{tiny}
+<<partyMixedMods, results='asis'>>=
+mixedModP <- lmer(turnout ~ fallPartyDivision*VAP_adjLOG + fallTurnout + minBlaisLago + 
+                    VAP_adjLOG + per_white_all + per65o + 
+                   PerBachelorOrAbove + OOH_share + median_incomeLOG + 
+                   districtwide + contest + (1|distid) + (1|year), 
+              data = moddat, REML = TRUE)
+
+mixedModPb <- lmer(turnout ~ fallTwoPartyShareDem*VAP_adjLOG + fallTurnout + minBlaisLago + 
+                    VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide + contest + (1|year) + (1|distid), 
+              data = moddat, REML = TRUE)
+
+apsrtable(mixedModP, mixedModPb, caption = "Partial Pooling Model of Partisanship",
+          model.names = c("Model 1","Model 2"),
+            label = "tab:mePartisan", notes = list(tabnote, stars.note), 
+          Sweave = FALSE)
+
+@
+\end{tiny}
+
+
 <<cleanup, echo=FALSE,results='hide'>>=
 rm(dist.tmp, dat, cand, VAP_dist, distAttr, dvp, errors, govTurn, presTurn, races, 
    closeRLM, closeRLM2, closeRLM3, closeRLM4, dumbRLM1, dumbRLM1.2, dumbRLM2, 
    teachRLM, teachRLM2, teachRLM3, turn21, turn22, turn23, 
-   naive1, naive2, mixedMod1, mixedMod2, mixedMod3)
+   naive1, naive2, mixedMod1, mixedMod2, mixedMod3, mixedModP, mixedModPb)
 @
 
 \subsection{School Board Vote Roll Off}
@@ -1822,20 +1926,8 @@ undervote.
 % Can't say it is only due to school board elections, but phenomenon does show up 
 % in school board elections. 
 
-\subsection{Review}
+\subsection{Substantive Effects}
 
-Table \ref{tab:modReview} reviews the major findings. 
-
-<<ReviewTab, results='asis'>>=
-
-apsrtable(mixedMod1b, mixedMod2b, mixedMod3b, 
-          caption = "Partial Pooling Model of Post-Election Polarization",
-          float = 'longtable', 
-          model.names = c("Lagged", "Competitive", "Blank"),
-            label = "tab:modReview", notes = list(tabnote, stars.note), 
-          Sweave = FALSE)
-
-@
 
 \section{Discussion}
 
