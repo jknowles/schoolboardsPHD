@@ -28,6 +28,9 @@
 \newenvironment{wbepi}[1]{\begin{quote}\renewcommand{\wb@episource}{#1}\itshape}{\par\upshape \raggedleft --- \textsc{\wb@episource}\\ \end{quote}}
 \makeatother
 
+% For knitr output, workaround for bug in highlighting code
+\let\hlesc\hlstd \let\hlpps\hlstd \let\hllin\hlstd \let\hlslc\hlcom 
+
 %%%%% SVN
 % \IfFileExists{svn-multi.sty}{%
 % \usepackage{svn-multi}%
