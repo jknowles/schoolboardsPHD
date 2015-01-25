@@ -2070,23 +2070,46 @@ Table \ref{tab:meUndv2} looks at interest group influence and how it affects
 voter roll-off. The results for the control variables are largely the same as 
 in Table \ref{tab:meUndv1}, but here the undervote results are different than 
 the results for total turnout. In all three cases I find evidence of group influence 
-in the completion of spring ballots. 
+in the completion of spring ballots. In the case of partisan division, this effect 
+is only present in larger communities -- as communities and division get larger, 
+the turnout gap for school board races widens. 
 
-
+In the case of teachers, as teachers make up a greater share of the electorate 
+fewer voters cast a vote for school board -- paralleling the finding from above 
+for overall turnout. Democratic party strength is also related with fewer voters 
+completing the school board vote. An interaction effect just misses statistical 
+significance here -- suggesting that as communities get larger and more Democratic, 
+voter rolloff lessens. 
 
 \clearpage
 
-
 \subsection{Substantive Effects}
+
+After finding evidence in favor of voters behaving as theory might expect, I now 
+turn my attention to exploring the magnitude of these effects. 
+
+
+\subsubsection{Turnout}
+
+
+\subsubsection{Rolloff}
 
 
 \section{Discussion}
 
-An interesting proposition here is considering whether or not voters in low-salience 
-and low-turnout school board elections are a subset of the voters in higher salience 
-and higher turnout elections \citep{Cho2008}.
+I find strong evidence that, like voters in other elections, school board voters 
+are highly habit-forming, appear to evaluate their voting decision somewhat rationally, 
+and appear to be shaped by social group voting. It bears repeating that school board 
+voters are a subset of the total electorate and the fall electorate in Wisconsin 
+school districts, but it appears that they too appear to behave in accordance 
+with voter theories. 
 
-Table \ref{tab:lagmods} and \ref{tab:meTurnout} both provide strong evidence that 
+% Evidence for habit forming voters
+% Evidence for rational voters
+% Evidence for social group voters
+% Evidence for discontent among voters
+
+Table \ref{tab:meTurnout} provides strong evidence that 
 in Wisconsin spring elections voters are habit forming. The electorate in these 
 elections is smaller and highly autocorrelated. As the electorate size increases, 
 the less prior turnout matters. This is exactly in line with the theoretical 
@@ -2094,20 +2117,48 @@ expectation that smaller electorates are more habit forming than larger electora
 Though school boards are experiencing much less voter turnout, they appear to be 
 behaving within the expectations of other electorates.
 
-Table \ref{tab:closemods} and \ref{tab:meClose} competitive races matter for turnout in school board elections as well. 
-Uncontested races have lower voter turnout than races with contestation. Little 
-difference exists between races for open seats and races featuring an incumbent. 
-Competitiveness matters as well, with races where a non-competitive candidate is 
-running seeing voter turnout depressed as well. (substantive interpretation). 
+Table \ref{tab:meClose} demonstrates that competitive races matter for turnout in
+school board elections as well. Uncontested races have lower voter turnout than races 
+with contestation. Little difference exists between races for open seats and races 
+featuring an incumbent. Competitiveness matters as well, with races that are contested 
+but include a non-competitive candidate having depressed turnout as well. This 
+suggests that, despite a lack of campaigning by candidates or major media coverage, 
+voters in school board elections are able to assess whether or not to vote based 
+on an assessment of how contested a race will be. 
 
-A school board specific effects were explored in Table \ref{tab:teachmods} and 
-\ref{tab:meInf}. In this, the larger the teacher share of voters in the district, 
+A school board specific effects were explored in Table \ref{tab:meInf} and Table 
+\ref{tab:mePartisan}. In this, the larger the teacher share of voters in the district, 
 the lower the voter turnout. This is in line with the theory of regulatory capture -- 
 the nomination process being strongly controlled by the teacher union. 
 
-- Voters appear to be habit forming
-- Election closeness matters, but more work to do
-- Union participation downplays turnout
+This study is not without its limits. A first limitation is the question of how 
+much spring election voter turnout can be considered to be driven by local 
+down-ticket elections. This is particularly true during the period of study in 
+this chapter, which included the highest turnout spring election in Wisconsin 
+history -- a result that cannot be attributed to a slate of particularly 
+contentious school board elections, but instead to the aftershocks of historical
+partisan politics surrounding Governor Scott Walker and the state fiscal crisis. 
+In an effort to address these concerns I confirmed the theory expectations on a 
+narrower dependent variable -- the difference in turnout between the top spring 
+ticket and the school board race. While this addresses the concern about falsely 
+attributing larger spring election forces to school boards, more evidence directly 
+about school boards would be preferred. 
+
+Second, this study is an attempt to infer voter behavior from the observed patterns 
+of turnout and rolloff observed over the last several years in a sample of 
+Wisconsin school districts. Thus, while theories of habit-forming voters are in
+accordance with the pattern observed here, this study is limited by its inability
+to peer into the rationales of individual voters. In order to disentangle the many
+confounding theories, future research must survey eligible voters and ask them about
+their decision to vote or not vote in local school board elections like the work
+of \citet{oliver12}. Thus, readers should be cautious in overinterpreting the
+results here. 
+
+Unlike the results in Chapter \ref{chap:candidacy}, the results in this chapter 
+broadly reflect the theoretical expectations for elections. This suggests that 
+although the school board electorate is different than the general election electorate, 
+that electorate behaves in expected ways -- that is, habit forming, selective about 
+their vote mattering, and influenced by social group mechanisms. 
 
 \clearpage
 
