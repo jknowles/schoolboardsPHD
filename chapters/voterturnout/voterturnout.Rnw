@@ -620,8 +620,11 @@ qplot(turnoutLag2, turnout,
 <<unionInf, echo=FALSE, fig.cap="Turnout in School Board Elections based on School Staff Share">>=
 dist_turn <- merge(dist_turn, distAttr, by = c("distid", "year"))
 
-dist_turn <- merge(dist_turn, ADMIN, by.x = c("distid", "year"), 
+dist_turn$mergeKey <- FORMATdistid(dist_turn$distid)
+dist_turn <- merge(dist_turn, ADMIN, by.x = c("mergeKey", "year"), 
                    by.y =c("DISTID", "YEAR"))
+dist_turn$mergeKey <- NULL
+dist_turn$DISTID <- NULL
 
 dist_turn$teachShareofVoters <- round(dist_turn$FTE_TEACH,0) / dist_turn$VAP_adj
 dist_turn$teachShareofVoters[!is.finite(dist_turn$teachShareofVoters)] <- 0
@@ -1240,6 +1243,29 @@ lagmodTab <- apsrtable(dumbRLM1, dumbRLMbest, dumbRLM2, se="robust",
 
 @
 
+Table \ref{tab:meTurnout} confirms the theoretical expectations from above to a 
+large extent. 
+
+% Lagged turnout increases turnout
+% district size decreases turnout
+% whiter communities vote slightly less, not sig
+% older communities vote more, sig.
+% education vote more, not sig. 
+% OOH does not appear to matter
+% income leads to more voting, except with fall turnout, is sig.
+% district wide dummy does not matter
+% less competitive the seat, the less turnout (higher BL = less turnout)
+% Fall turnout related to spring turnout
+% squared relationship with VAP?
+
+% Footnote about fixed effect models
+% in non district fixed effects, relationship is same with lag1 and lag2
+% District FE sign reverses and lagged turnout is related to negative turnout
+%% Reversion to the mean, small within district differences, small within district samples
+%% Lose a lot of statistical significance because the models seem to fall apart
+
+
+
 Prior turnout appears to be a substantively important predictor in Table \ref{tab:lagmods}.\footnote{Using twice-lagged school board turnout. Results are not substantively different 
 when I estimate using single lagged school board turnout, as shown in Table \ref{tab:lagmods2}.} 
 Model 1 represents a standard pooled regression with clustered standard errors to 
@@ -1380,10 +1406,6 @@ a model with random effects only for district. In both cases, the additional
 random effect terms significantly improve model fit and in Table \ref{tab:meTurnout} 
 this final model is what is shown. 
 
-The mixed effect model in Table \ref{tab:meTurnout} confirms largely what was 
-found in the models in Table \ref{tab:lagmods2} -- prior turnout and fall turnout 
-are predictive of current turnout. This suggests that voters in school board 
-elections are indeed habit forming. 
 
 <<coefficients1>>=
 #library(coefplot)
@@ -1392,7 +1414,7 @@ elections are indeed habit forming.
 
 \subsection{Rational Voters}
 
-Our second empirical question was to examine the relationship between electorate size 
+My second empirical question was to examine the relationship between electorate size 
 and turnout, and electorate size, margin of victory and turnout. I use an adjusted estimate 
 of the voting age population - the denominator in the turnout variable - to serve as 
 an estimate of the electorate size. This is a conservative estimate of the actual electorate 
@@ -1483,10 +1505,20 @@ rm(ADMIN, VAP_dist, dist.tmp, dvp, errors, plotdf, presTurn, canInterp,
 @
 
 
-As Table \ref{tab:closemods} shows, across all three specifications, competitiveness and the electorate size matter. A non-competitive race has about a 2\% decrease in voter turnout -- substantial considering the average turnout in school board elections of X\%. A log increase 
-in voting age population decreases turnout by about 3.5\%. However, the same specification 
-problems from Table \ref{tab:lagmods} appaers in Table \ref{tab:closemods}. Again, 
-I turn to partial pooling to resolve this issue. 
+Table \ref{tab:meClose} shows the partial-pooling results for the competitiveness 
+of elections. Variables are the same pretty much from table \ref{tab:meTurnout}. 
+These models include two separate measures of the closeness of elections. The first 
+builds on the coding schema in Chapter \ref{chap:candidacy} to label races as 
+contested or uncontested based on the presence of candidates. As expected, uncontested 
+races have much lower turnout than contested races. Races contested as open seats 
+or by incumbents have no detectable difference on turnout. 
+
+Again, the Blais-Lago quotient matters and is in the expected direction -- less 
+competitive elections result in less turnout. However, the expectation that the 
+relationship between competitiveness and district size would have an effect on 
+turnout is not confirmed here. \footnote{In the fixed effect specifications, the 
+same specification problems from Table \ref{tab:lagmods} appaers in Table 
+\ref{tab:closemods}. Again, I turn to partial pooling to resolve this issue.}
 
 \begin{tiny}
 <<closeModMM, results='asis'>>=
@@ -1497,35 +1529,33 @@ mixedModclose <- lmer(turnout ~  minBlaisLago + VAP_adjLOG + VAP_adjLOG_sq +
                   contest  + (1|distid), 
               data = moddat, REML = TRUE)
 
-mixedModcloseB <- lmer(turnout ~ minBlaisLago + VAP_adjLOG +  VAP_adjLOG_sq + 
+mixedModcloseB <- lmer(turnout ~  VAP_adjLOG +  VAP_adjLOG_sq + 
                      fallTurnout +
-                     minBlaisLago*VAP_adjLOG + per_white_all + 
+                     per_white_all + 
                      per65o + PerBachelorOrAbove + OOH_share + 
                      median_incomeLOG + districtwide + contest + 
                    (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
-mixedModcloseC <- update(mixedModcloseB, . ~ . - fallTurnout)
+mixedModcloseC <- update(mixedModcloseB, . ~ . - contest + 
+                           minBlaisLago * VAP_adjLOG)
 
-closeCoefs1 <- c("Intercept", "ln(VAP)", 
+closeCoefs2 <- c("Intercept", "ln(VAP)", 
                   "$ln(VAP)^{2}$", "Fall Turnout", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Blais-Lago", 
-                 "VAP x Blais-Lago")
+                  "ln(MedianIncome)", "District-wide", "Open Contested", 
+                 "Uncontested", "Blais-Lago", "VAP x Blais-Lago")
 
 
 # summary(mixedMod2)
 apsrtable(mixedModcloseB, mixedModcloseC, caption = "Partial Pooling Models of Competitiveness",
-          model.names = c("Fall Turnout", "No Fall Turnout"),
+          model.names = c("Qualitative", "Blais-Lago"),
             label = "tab:meClose", notes = list(tabnote, stars.note), 
-          coef.names = closeCoefs1, 
+          coef.names = closeCoefs2, 
           Sweave = FALSE)
 @
 \end{tiny}
 
-The results in Table \ref{tab:meClose} mirror those found in columns 1 and 2 of Table 
-\ref{tab:closemods}. This provides evidence in support of the argument that school board 
-election voters are more active in smaller electorates and in competitive races. 
 
 <<closeModSens,results='hide', eval=TRUE>>=
 m0 <- lm(turnout ~  minBlaisLago + VAP_adjLOG + minBlaisLago*VAP_adjLOG + 
@@ -1638,50 +1668,55 @@ teachTab1 <- apsrtable(teachRLM3, teachRLM4, se="robust", label="tab:teachmods",
 @
 
 
-Table \ref{tab:teachmods} shows that there is some evidence to support that teacher 
-share of the electorate has an effect on the turnout. 
+Table \ref{tab:meInf} shows that there is some evidence to support that teacher 
+share of the electorate has an effect on the turnout. Again, the control variables 
+appear the same as before. THe key variables here are the teacher share of voters 
+and its interaction with the voting age population. The main effects of the share 
+of voters who are teachers is not significant, but it suggests the more teachers 
+make up the voting age population the lower the turnout. THe interaction suggests 
+that as the voting age population increases and the teacher share of voting age 
+population increases, turnout decreases. 
 
-
-% ##TODO: add interaction between teachShareofVoters and VAP_adjLOG, for coordination 
-% # purposes it is easier for teachers to work together in smaller population. Turnout 
-% # increases as teach share of voters increases, decreases as population increases
-% # and decreases as size of district + teacher share increases due to coordination costs
+This is counter to the theoretical expectations above, but it is understandable. 
+If voters believe the school board election to be captured by a large interest 
+group, they have  less of an incentive to vote. The threat of controlling the 
+spring electorate for an interest group is enough to deter unorganized voters 
+from participating. 
 
 
 \begin{tiny}
 <<teachInfMM, results='asis'>>=
 teachCoefnames2 <- c("Intercept", "Teacher \\% VAP",  
-                 "Blais-Lago", "ln(VAP)", "\\% White", 
+                 "Blais-Lago", "Lag Turnout 2", "ln(VAP)", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Open Seat Contested", 
-                 "Uncontested Seat", "Teacher \\% x VAP", 
+                  "ln(MedianIncome)", "District-wide",
+                 "Teacher \\% x VAP", 
                  "Fall Turnout",  "$ln(VAP)^{2}$")
 
 
-mixedModteach <- lmer(turnout ~ teachShareofVoters +  minBlaisLago +  
+mixedModteach <- lmer(turnout ~ teachShareofVoters +  minBlaisLago +  turnoutLag2 + 
                     VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + contest + 
+                   OOH_share + median_incomeLOG + districtwide +  
                    teachShareofVoters * VAP_adjLOG + (1|year) +  (1|distid), 
               data = moddat, REML = TRUE)
 
 mixedModteachB <- lmer(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago +  
                          VAP_adjLOG + VAP_adjLOG_sq + per_white_all + per65o + 
                          PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-                         districtwide + contest + 
+                         districtwide +  
                          teachShareofVoters * VAP_adjLOG + 
                          (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
 apsrtable(mixedModteach, mixedModteachB, caption = "Partial Pooling Model of Staff Influence",
           model.names = c("Model 1","Model 2"),
-            label = "tab:meInf", notes = list(tabnote, stars.note), 
+            label = "tab:meInf", notes = list(stars.note), 
           coef.names = teachCoefnames2, 
           Sweave = FALSE)
 
 @
 \end{tiny}
 
-The effect is the same in the partially pooled model. 
 
 <<mixedInfmodSen, results='hide', eval=TRUE>>=
 # Test for year specific slopes
@@ -1700,7 +1735,7 @@ from average of two prior partisan general elections.
 <<partyMods, results ='hide'>>=
 dist_turn$fallPartyDivision <- abs(dist_turn$fallTwoPartyShareDem - 0.5)
 
-moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", 
+moddat <- dist_turn[, c("turnout", "year", "fallTurnout", 
                         "VAP_adjLOG", "distid", "per_white_all", "per65o", 
                         "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
                         "fallTwoPartyShareDem", "fallPartyDivision", 
@@ -1722,10 +1757,10 @@ moddat$outflag <- (moddat$turnout - centr) / stddev
 moddat <- moddat[moddat$outflag <=5 & moddat$outflag >= -5,]
 
 nums <- sapply(moddat, is.numeric)
+nums <- nums[!names(nums) %in% c("fallPartyDivision")]
 ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
 ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
 moddatScale <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
-nums <- sapply(moddat, is.numeric)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 dd <<- datadist(moddat)
 options(datadist="dd")
@@ -1792,14 +1827,13 @@ Mixed models are superior.
 partyCoefNames2 <- c("Intercept", "Fall Party Divide", "Fall Turnout", 
                  "Blais-Lago", "ln(VAP)", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Open Seat Contested", 
-                  "Uncontested Seat", "Party Division x VAP", "Fall 2 Party Dem.", 
+                  "ln(MedianIncome)", "District-wide", "Party Division x VAP", "Fall 2 Party Dem.", 
                  "2 Party Dem x VAP")
 
 mixedModP <- lmer(turnout ~ fallPartyDivision + fallTurnout + minBlaisLago + 
                     VAP_adjLOG + per_white_all + per65o + 
                    PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-                   districtwide + contest + fallPartyDivision * VAP_adjLOG + 
+                   districtwide + fallPartyDivision * VAP_adjLOG + 
                     (1|distid) + (1|year), 
               data = moddat, REML = TRUE)
 
@@ -1807,7 +1841,7 @@ mixedModPb <- lmer(turnout ~ fallTwoPartyShareDem*VAP_adjLOG + fallTurnout +
                      minBlaisLago + 
                     VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide + 
-                     contest + (1|year) + (1|distid), 
+                     (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
 apsrtable(mixedModP, mixedModPb, caption = "Partial Pooling Model of Partisanship",
@@ -1948,44 +1982,61 @@ undervoteMMcloseB <- lmer(turnoutDiff ~ minBlaisLago + VAP_adjLOG +  VAP_adjLOG_
                    (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMteach <- lmer(turnoutDiff ~ teachShareofVoters + fallTurnout + 
-                           minBlaisLago +  VAP_adjLOG_sq +
-                    VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                      ImputedFlag +
-                   OOH_share + median_incomeLOG + districtwide + contest + 
+                           minBlaisLago + VAP_adjLOG + VAP_adjLOG_sq +
+                           per_white_all + per65o + PerBachelorOrAbove +
+                  OOH_share + median_incomeLOG + districtwide + 
+                    ImputedFlag+ contest + 
                    teachShareofVoters * VAP_adjLOG + (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMparty <- lmer(turnoutDiff ~ fallTwoPartyShareDem*VAP_adjLOG + 
                            fallTurnout + minBlaisLago +
-                     ImputedFlag + 
-                    VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
+                  VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide + 
+                    ImputedFlag + 
                      contest + (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMpartyB <- lmer(turnoutDiff ~ fallPartyDivision*VAP_adjLOG + 
                            fallTurnout + minBlaisLago +
-                     ImputedFlag + 
-                    VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + 
+                  VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide +
+                    ImputedFlag +
                      contest + (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
+
+coefNamesUnd1 <- c("Intercept", "Turnout Lag (2)","Fall Turnout", 
+                 "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
+                  "\\% Over 65", "\\% Bach. +", "\\% OOH", 
+                  "ln(MedianIncome)", "District-wide", "Imputed",
+                 "Blais-Lago", "Open Seat Contested", 
+                  "Uncontested Seat", "Blais-Lago x Turnout")
 
 
 apsrtable(undervoteMMlag, undervoteMMclose,  undervoteMMcloseB,
           caption = "Partial Pooling Model of School Board Undervote",
            model.names = c("Lag", "Close Race", "Close Race 2"),
-            label = "tab:meUndv1", notes = list(tabnote, stars.note), 
-          Sweave = FALSE, float = "sidewaystable")
+            label = "tab:meUndv1", notes = list(stars.note), 
+          Sweave = FALSE, 
+          coef.names = coefNamesUnd1)
 @
 \end{tiny}
 
 \begin{tiny}
 <<undervoteMMfits2, results='asis'>>=
+
+coefNamesUnd2 <- c("Intercept", "Teacher Share VAP", "Fall Turnout", 
+                   "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
+                  "\\% Over 65", "\\% Bach. +", "\\% OOH", 
+                  "ln(MedianIncome)", "District-wide", "Imputed",
+                 "Open Seat Contested", "Uncontested Seat", 
+                 "Teacher Share x VAP", "Fall Dem.", "Fall Dem. X VAP", 
+                 "Fall Partisan", "Fall Partisan x VAP")
+
+
 apsrtable(undervoteMMteach, undervoteMMparty, undervoteMMpartyB,
           caption = "Partial Pooling Model of School Board Undervote",
            model.names = c("Teacher Influence", "Party Influence", "Party Divide"),
-            label = "tab:meUndv2", notes = list(tabnote, stars.note), 
-          Sweave = FALSE)
-
+            label = "tab:meUndv2", notes = list(stars.note), 
+          Sweave = FALSE, coef.names = coefNamesUnd2)
 @
 \end{tiny}
 
