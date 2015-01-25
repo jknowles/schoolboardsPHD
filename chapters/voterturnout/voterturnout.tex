@@ -1168,14 +1168,18 @@ Sigma              & 0.3606        & 0.3564        \\ \hline
 
 \subsubsection{Partisanship}
 
-Another social group to explore is political parties. Use measure of partisanship 
-from average of two prior partisan general elections. 
+Table \ref{tab:mePartisan} provides no evidence for a partisan dimension in school 
+board turnout. While other variables hold their relationship from the tables 
+above, the new variables for partisanship and party divide in the electorate are 
+not statistically significant. If parties played an important role in the vote 
+in spring elections than either the interaction between the party division or the 
+proportion Democrats and the population of the district should be statistically 
+significant and positive. The lack of a relationship provides evidence that parties 
+do not
 
 
 
 
-
-Mixed models are superior. 
 \begin{tiny}
 \begin{table}[!ht]
 \caption{Partial Pooling Model of Partisanship}
@@ -1184,43 +1188,43 @@ Mixed models are superior.
 \hline 
   & \multicolumn{ 1 }{ c }{ Model 1 } & \multicolumn{ 1 }{ c }{ Model 2 } \\ \hline
  %                    & Model 1       & Model 2      \\ 
-Intercept            & -0.03         & -0.01        \\ 
+Intercept            & -0.03         & -0.03        \\ 
                      & (0.07)        & (0.07)       \\ 
-Fall Party Divide    & 0.24          &              \\ 
-                     & (0.19)        &              \\ 
-Fall Turnout         & 0.14 ^*       & 0.14 ^*      \\ 
-                     & (0.03)        & (0.03)       \\ 
-Blais-Lago           & -0.23 ^*      & -0.23 ^*     \\ 
+Fall Party Divide    & 0.04          &              \\ 
+                     & (0.03)        &              \\ 
+Fall Turnout         & 0.16 ^*       & 0.17 ^*      \\ 
+                     & (0.04)        & (0.04)       \\ 
+Blais-Lago           & -0.11 ^*      & -0.11 ^*     \\ 
                      & (0.02)        & (0.02)       \\ 
-ln(VAP)              & -0.40 ^*      & -0.36 ^*     \\ 
+ln(VAP)              & -0.33 ^*      & -0.34 ^*     \\ 
+                     & (0.03)        & (0.03)       \\ 
+\% White            & -0.06         & -0.07        \\ 
                      & (0.04)        & (0.03)       \\ 
-\% White            & -0.03         & -0.04        \\ 
-                     & (0.03)        & (0.03)       \\ 
-\% Over 65          & 0.19 ^*       & 0.18 ^*      \\ 
-                     & (0.03)        & (0.03)       \\ 
-\% Bach. +          & 0.08          & 0.08 ^*      \\ 
+\% Over 65          & 0.20 ^*       & 0.20 ^*      \\ 
                      & (0.04)        & (0.04)       \\ 
-\% OOH              & 0.02          & 0.01         \\ 
+\% Bach. +          & 0.02          & 0.03         \\ 
                      & (0.04)        & (0.04)       \\ 
-ln(MedianIncome)     & 0.04          & 0.03         \\ 
-                     & (0.04)        & (0.05)       \\ 
-District-wide        & 0.01          & 0.01         \\ 
+\% OOH              & -0.03         & -0.02        \\ 
+                     & (0.04)        & (0.04)       \\ 
+ln(MedianIncome)     & 0.11 ^*       & 0.10         \\ 
+                     & (0.05)        & (0.05)       \\ 
+District-wide        & 0.04          & 0.04         \\ 
                      & (0.03)        & (0.03)       \\ 
-Party Division x VAP & 0.44          &              \\ 
-                     & (0.32)        &              \\ 
-Fall 2 Party Dem.    &               & -0.03        \\ 
+Party Division x VAP & 0.01          &              \\ 
+                     & (0.04)        &              \\ 
+Fall 2 Party Dem.    &               & -0.01        \\ 
                      &               & (0.03)       \\ 
-2 Party Dem x VAP    &               & -0.02        \\ 
-                     &               & (0.05)        \\
+2 Party Dem x VAP    &               & 0.08         \\ 
+                     &               & (0.04)        \\
  $N$                  & 3009          & 3009         \\ 
-AIC                  & 2891.09       & 2900.38      \\ 
+AIC                  & 2985.00       & 2983.01      \\ 
 N Groups             & 310 | 11      & 310 | 11     \\ 
 Group Names          & distid | year & distid | year\\ 
 Group:distid Effs.   & (Intercept)   & (Intercept)  \\ 
 Group:year Effs.     & (Intercept)   & (Intercept)  \\ 
-Group:distid Var.    & 0.2           & 0.2          \\ 
-Group:year Var.      & 0.22          & 0.22         \\ 
-Sigma                & 0.3591        & 0.3591        \\ \hline
+Group:distid Var.    & 0.22          & 0.21         \\ 
+Group:year Var.      & 0.21          & 0.21         \\ 
+Sigma                & 0.3622        & 0.3625        \\ \hline
  \multicolumn{3}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
 \multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
@@ -1256,12 +1260,17 @@ interest of voters in school boards. A disadvantage of this measure is that
 school board is not the only down-ticket race and undervote does not measure 
 voter interest as many voters do not abstain. 
 
-%CITATIONS
 
 
+For undervote data, I use the spring elections in from 2007-2012. To calculate 
+rolloff, I take the difference in the turnout for the top ticket in the spring 
+election and the turnout for the highest turnout school board election in the 
+school district. The greater this number, the greater the share of voters who 
+failed to complete their ballots. The median district has 3.61\% percentage point difference in their turnout, meaning that if the 
+turnout in the school board election was 1,810, then the turnout for the top ticket 
+race would be 1,875. 
+Thus ballot fatigue is not that uncommon in Wisconsin. %cite rolloff papers
 
-
-% TODO: make RLM table for these models for appendix
 
 \begin{tiny}
 \begin{table}[!ht]
@@ -1270,53 +1279,72 @@ voter interest as many voters do not abstain.
 \begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Close Race } & \multicolumn{ 1 }{ c }{ Close Race 2 } \\ \hline
- %                    & Lag           & Close Race    & Close Race 2 \\ 
-Intercept            & 0.40 ^*       & 0.29 ^*       & 0.30 ^*      \\ 
-                     & (0.10)        & (0.10)        & (0.10)       \\ 
-Turnout Lag (2)      & -0.06 ^*      &               &              \\ 
-                     & (0.02)        &               &              \\ 
-Fall Turnout         & 0.13 ^*       &               & 0.11 ^*      \\ 
-                     & (0.05)        &               & (0.05)       \\ 
-ln(VAP)              & 1.65 ^*       & 2.00 ^*       & 1.81 ^*      \\ 
-                     & (0.38)        & (0.39)        & (0.39)       \\ 
-$ln(VAP)^{2}$        & -1.40 ^*      & -1.70 ^*      & -1.49 ^*     \\ 
-                     & (0.39)        & (0.39)        & (0.40)       \\ 
-\% White            & 0.07          & 0.08          & 0.08         \\ 
-                     & (0.04)        & (0.05)        & (0.05)       \\ 
-\% Over 65          & -0.01         & 0.00          & -0.00        \\ 
-                     & (0.04)        & (0.05)        & (0.04)       \\ 
-\% Bach. +          & 0.04          & 0.11 ^*       & 0.04         \\ 
-                     & (0.06)        & (0.05)        & (0.06)       \\ 
-\% OOH              & 0.12 ^*       & 0.13 ^*       & 0.13 ^*      \\ 
-                     & (0.05)        & (0.05)        & (0.05)       \\ 
-ln(MedianIncome)     & -0.17 ^*      & -0.16 ^*      & -0.20 ^*     \\ 
-                     & (0.07)        & (0.06)        & (0.07)       \\ 
-District-wide        & -0.03         & -0.07         & -0.07        \\ 
-                     & (0.04)        & (0.04)        & (0.04)       \\ 
-Imputed              & -0.40 ^*      & -0.41 ^*      & -0.41 ^*     \\ 
-                     & (0.05)        & (0.05)        & (0.05)       \\ 
-Blais-Lago           & 0.02          & -0.16 ^*      & -0.15 ^*     \\ 
-                     & (0.02)        & (0.03)        & (0.03)       \\ 
-Open Seat Contested  &               & 0.06          & 0.06         \\ 
-                     &               & (0.04)        & (0.04)       \\ 
-Uncontested Seat     &               & 0.31 ^*       & 0.31 ^*      \\ 
-                     &               & (0.02)        & (0.02)       \\ 
-Blais-Lago x Turnout &               &               & 0.08         \\ 
-                     &               &               & (0.05)        \\
- $N$                  & 1700          & 1700          & 1700         \\ 
-AIC                  & 1829.68       & 1692.00       & 1692.97      \\ 
-N Groups             & 310 | 6       & 310 | 6       & 310 | 6      \\ 
-Group Names          & distid | year & distid | year & distid | year\\ 
-Group:distid Effs.   & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-Group:year Effs.     & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-Group:distid Var.    & 0.24          & 0.26          & 0.25         \\ 
-Group:year Var.      & 0.18          & 0.21          & 0.21         \\ 
-Sigma                & 0.3657        & 0.3439        & 0.3443        \\ \hline
+ %                   & Lag           & Close Race    & Close Race 2 \\ 
+Intercept           & 0.40 ^*       & 0.42 ^*       & 0.28 ^*      \\ 
+                    & (0.10)        & (0.10)        & (0.10)       \\ 
+Turnout Lag (2)     & -0.06 ^*      &               &              \\ 
+                    & (0.02)        &               &              \\ 
+Fall Turnout        & 0.13 ^*       &               & 0.12 ^*      \\ 
+                    & (0.05)        &               & (0.05)       \\ 
+ln(VAP)             & 1.65 ^*       & 1.62 ^*       & 1.92 ^*      \\ 
+                    & (0.38)        & (0.41)        & (0.39)       \\ 
+$ln(VAP)^{2}$       & -1.40 ^*      & -1.35 ^*      & -1.60 ^*     \\ 
+                    & (0.39)        & (0.41)        & (0.40)       \\ 
+\% White           & 0.07          & 0.08          & 0.08         \\ 
+                    & (0.04)        & (0.05)        & (0.05)       \\ 
+\% Over 65         & -0.01         & -0.01         & -0.01        \\ 
+                    & (0.04)        & (0.05)        & (0.05)       \\ 
+\% Bach. +         & 0.04          & 0.11 ^*       & 0.03         \\ 
+                    & (0.06)        & (0.05)        & (0.06)       \\ 
+\% OOH             & 0.12 ^*       & 0.12 ^*       & 0.13 ^*      \\ 
+                    & (0.05)        & (0.05)        & (0.05)       \\ 
+ln(MedianIncome)    & -0.17 ^*      & -0.15 ^*      & -0.20 ^*     \\ 
+                    & (0.07)        & (0.07)        & (0.07)       \\ 
+District-wide       & -0.03         & -0.03         & -0.02        \\ 
+                    & (0.04)        & (0.04)        & (0.04)       \\ 
+Imputed             & -0.40 ^*      & -0.41 ^*      & -0.41 ^*     \\ 
+                    & (0.05)        & (0.05)        & (0.05)       \\ 
+Blais-Lago          & 0.02          & 0.03          &              \\ 
+                    & (0.02)        & (0.02)        &              \\ 
+Blais-Lago x VAP    &               & 0.16 ^*       &              \\ 
+                    &               & (0.05)        &              \\ 
+Open Seat Contested &               &               & 0.06         \\ 
+                    &               &               & (0.04)       \\ 
+Uncontested Seat    &               &               & 0.23 ^*      \\ 
+                    &               &               & (0.02)        \\
+ $N$                 & 1700          & 1700          & 1700         \\ 
+AIC                 & 1829.68       & 1849.13       & 1728.59      \\ 
+N Groups            & 310 | 6       & 310 | 6       & 310 | 6      \\ 
+Group Names         & distid | year & distid | year & distid | year\\ 
+Group:distid Effs.  & (Intercept)   & (Intercept)   & (Intercept)  \\ 
+Group:year Effs.    & (Intercept)   & (Intercept)   & (Intercept)  \\ 
+Group:distid Var.   & 0.24          & 0.26          & 0.25         \\ 
+Group:year Var.     & 0.18          & 0.2           & 0.2          \\ 
+Sigma               & 0.3657        & 0.3632        & 0.3487        \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
  \end{table}
 
 \end{tiny}
+
+Table \ref{tab:meUndv1} shows the results of the first three types of models investigated 
+above for turnout. Note that here the sign is flipped -- the smaller the dependent 
+variable, the more turnout for school board in relation to the top ticket turnout 
+in the spring election. 
+
+% Lagged turnout being higher, results in lower turnout differential
+% higher fall turnout results in higher turnout differential
+% bigger size = higher turnout differential
+% whiter = higher turnout differential
+% older - no difference
+% more educated = higher turnout differential (more rolloff)
+% higher income = lower turnout differential
+% higher OOH share = higher voter rolloff
+% imputation model dummy adjusts rolloff downward
+% uncontested seat = higher rolloff
+% less competitive seat = more rolloff, but only in smaller jurisdictions
+
+
 
 \begin{tiny}
 \begin{table}[!ht]
@@ -1326,55 +1354,51 @@ Sigma                & 0.3657        & 0.3439        & 0.3443        \\ \hline
 \hline 
   & \multicolumn{ 1 }{ c }{ Teacher Influence } & \multicolumn{ 1 }{ c }{ Party Influence } & \multicolumn{ 1 }{ c }{ Party Divide } \\ \hline
  %                   & Teacher Influence & Party Influence   & Party Divide     \\ 
-Intercept           & 0.31 ^*           & 0.31 ^*           & 0.30 ^*          \\ 
+Intercept           & 0.42 ^*           & 0.41 ^*           & 0.41 ^*          \\ 
                     & (0.10)            & (0.10)            & (0.10)           \\ 
 Teacher Share VAP   & 0.15 ^*           &                   &                  \\ 
                     & (0.06)            &                   &                  \\ 
-Fall Turnout        & 0.11 ^*           & 0.16 ^*           & 0.12 ^*          \\ 
+Fall Turnout        & 0.11              & 0.14 ^*           & 0.09             \\ 
                     & (0.05)            & (0.05)            & (0.05)           \\ 
-Blais-Lago          & -0.16 ^*          & -0.17 ^*          & -0.17 ^*         \\ 
-                    & (0.03)            & (0.02)            & (0.03)           \\ 
-ln(VAP)             & 1.74 ^*           & 0.33 ^*           & 0.31 ^*          \\ 
-                    & (0.51)            & (0.04)            & (0.04)           \\ 
-$ln(VAP)^{2}$       & -1.33 ^*          &                   &                  \\ 
-                    & (0.51)            &                   &                  \\ 
-\% White           & 0.10 ^*           & 0.11 ^*           & 0.14 ^*          \\ 
-                    & (0.05)            & (0.04)            & (0.05)           \\ 
-\% Over 65         & 0.01              & 0.01              & 0.02             \\ 
-                    & (0.05)            & (0.04)            & (0.05)           \\ 
-\% Bach. +         & 0.05              & -0.02             & 0.04             \\ 
-                    & (0.06)            & (0.06)            & (0.06)           \\ 
-\% OOH             & 0.10 ^*           & 0.12 ^*           & 0.16 ^*          \\ 
-                    & (0.05)            & (0.05)            & (0.05)           \\ 
-ln(MedianIncome)    & -0.18 ^*          & -0.12             & -0.23 ^*         \\ 
-                    & (0.07)            & (0.07)            & (0.07)           \\ 
-District-wide       & -0.06             & -0.07             & -0.07            \\ 
-                    & (0.04)            & (0.04)            & (0.04)           \\ 
-Imputed             & -0.41 ^*          & -0.42 ^*          & -0.42 ^*         \\ 
-                    & (0.05)            & (0.05)            & (0.05)           \\ 
-Open Seat Contested & 0.06              & 0.06              & 0.05             \\ 
-                    & (0.04)            & (0.04)            & (0.04)           \\ 
-Uncontested Seat    & 0.31 ^*           & 0.32 ^*           & 0.31 ^*          \\ 
+Blais-Lago          & 0.02              & 0.02              & 0.01             \\ 
                     & (0.02)            & (0.02)            & (0.02)           \\ 
-Teacher Share x VAP & 0.16              &                   &                  \\ 
+ln(VAP)             & 1.63 ^*           & 1.30 ^*           & 1.94 ^*          \\ 
+                    & (0.53)            & (0.47)            & (0.40)           \\ 
+$ln(VAP)^{2}$       & -1.27 ^*          & -1.03 ^*          & -1.69 ^*         \\ 
+                    & (0.53)            & (0.48)            & (0.40)           \\ 
+\% White           & 0.10 ^*           & 0.09              & 0.10             \\ 
+                    & (0.05)            & (0.05)            & (0.05)           \\ 
+\% Over 65         & -0.00             & -0.01             & -0.02            \\ 
+                    & (0.05)            & (0.05)            & (0.05)           \\ 
+\% Bach. +         & 0.05              & -0.00             & 0.06             \\ 
+                    & (0.06)            & (0.06)            & (0.06)           \\ 
+\% OOH             & 0.10              & 0.11 ^*           & 0.12 ^*          \\ 
+                    & (0.05)            & (0.05)            & (0.05)           \\ 
+ln(MedianIncome)    & -0.17 ^*          & -0.11             & -0.20 ^*         \\ 
+                    & (0.07)            & (0.07)            & (0.07)           \\ 
+District-wide       & -0.02             & -0.03             & -0.02            \\ 
+                    & (0.04)            & (0.04)            & (0.04)           \\ 
+Imputed             & -0.41 ^*          & -0.41 ^*          & -0.41 ^*         \\ 
+                    & (0.05)            & (0.05)            & (0.05)           \\ 
+Teacher Share x VAP & 0.15              &                   &                  \\ 
                     & (0.08)            &                   &                  \\ 
-Fall Dem.           &                   & 0.13 ^*           &                  \\ 
+Fall Dem.           &                   & 0.12 ^*           &                  \\ 
                     &                   & (0.04)            &                  \\ 
-Fall Dem. X VAP     &                   & -0.19 ^*          &                  \\ 
-                    &                   & (0.05)            &                  \\ 
-Fall Partisan       &                   &                   & 0.04             \\ 
+Fall Dem. X VAP     &                   & -0.10             &                  \\ 
+                    &                   & (0.06)            &                  \\ 
+Fall Partisan       &                   &                   & 0.06             \\ 
                     &                   &                   & (0.03)           \\ 
 Fall Partisan x VAP &                   &                   & 0.12 ^*          \\ 
                     &                   &                   & (0.05)            \\
  $N$                 & 1700              & 1700              & 1700             \\ 
-AIC                 & 1691.04           & 1690.96           & 1709.49          \\ 
+AIC                 & 1854.10           & 1850.74           & 1853.63          \\ 
 N Groups            & 310 | 6           & 310 | 6           & 310 | 6          \\ 
 Group Names         & distid | year     & distid | year     & distid | year    \\ 
 Group:distid Effs.  & (Intercept)       & (Intercept)       & (Intercept)      \\ 
 Group:year Effs.    & (Intercept)       & (Intercept)       & (Intercept)      \\ 
-Group:distid Var.   & 0.25              & 0.25              & 0.26             \\ 
-Group:year Var.     & 0.21              & 0.21              & 0.21             \\ 
-Sigma               & 0.3448            & 0.3443            & 0.3444            \\ \hline
+Group:distid Var.   & 0.25              & 0.25              & 0.25             \\ 
+Group:year Var.     & 0.2               & 0.21              & 0.2              \\ 
+Sigma               & 0.3648            & 0.3643            & 0.3643            \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
  \end{table}
@@ -1382,15 +1406,16 @@ Sigma               & 0.3448            & 0.3443            & 0.3444            
 \end{tiny}
 
 
-Let's do some interpretation of the undervote. Table \ref{tab:meUndv1} explains 
-undervote. 
+Table \ref{tab:meUndv2} looks at interest group influence and how it affects 
+voter roll-off. The results for the control variables are largely the same as 
+in Table \ref{tab:meUndv1}, but here the undervote results are different than 
+the results for total turnout. In all three cases I find evidence of group influence 
+in the completion of spring ballots. 
 
-Table \ref{tab:meUndv2} looks at influence and how it affects voter roll-off.
+
 
 \clearpage
 
-% Can't say it is only due to school board elections, but phenomenon does show up 
-% in school board elections. 
 
 \subsection{Substantive Effects}
 
@@ -1456,7 +1481,7 @@ Sensitivity checks and further table analysis.
 ## 	(p-value based on 10000 simulated values)
 ## 
 ## data:  
-## RLRT = 359.628, p-value < 2.2e-16
+## RLRT = 392.4762, p-value < 2.2e-16
 ## 
 ## 	simulated finite sample distribution of RLRT.
 ## 	
@@ -1664,40 +1689,42 @@ Resid. sd           & 0.34              & 0.34              \\ \hline
 \hline 
   & \multicolumn{ 1 }{ c }{ Party Unity } & \multicolumn{ 1 }{ c }{ Dem Share } & \multicolumn{ 1 }{ c }{ Party Unity Inter. } & \multicolumn{ 1 }{ c }{ Dem Share Inter. } \\ \hline
  %                    & Party Unity        & Dem Share          & Party Unity Inter. & Dem Share Inter.  \\ 
-Intercept            & 0.19               & 0.26               & 0.16               & 0.16              \\ 
-                     & (0.19)             & (0.19)             & (0.19)             & (0.19)            \\ 
-Fall Party Divide    & 0.20               &                    & 0.24               &                   \\ 
-                     & (0.31)             &                    & (0.31)             &                   \\ 
-Fall Turnout         & 0.09               & 0.08               & 0.08               & 0.09              \\ 
-                     & (0.06)             & (0.06)             & (0.06)             & (0.06)            \\ 
-Blais-Lago           & -0.01              & -0.01              & -0.01              & -0.01             \\ 
-                     & (0.03)             & (0.03)             & (0.03)             & (0.03)            \\ 
-ln(VAP)              & -0.45              & -0.44              & -0.49              & -0.53             \\ 
-                     & (0.29)             & (0.29)             & (0.29)             & (0.29)            \\ 
-\% White            & 0.01               & 0.01               & 0.01               & 0.01              \\ 
+Intercept            & 0.52 ^*            & 0.59 ^*            & 0.51 ^*            & 0.55 ^*           \\ 
+                     & (0.21)             & (0.22)             & (0.21)             & (0.22)            \\ 
+Fall Party Divide    & 0.05               &                    & 0.05               &                   \\ 
+                     & (0.04)             &                    & (0.04)             &                   \\ 
+Fall Turnout         & 0.26 ^*            & 0.26 ^*            & 0.26 ^*            & 0.27 ^*           \\ 
                      & (0.07)             & (0.07)             & (0.07)             & (0.07)            \\ 
-\% Over 65          & 0.17               & 0.17               & 0.17               & 0.15              \\ 
-                     & (0.11)             & (0.11)             & (0.11)             & (0.11)            \\ 
-\% Bach. +          & -0.23 ^*           & -0.22 ^*           & -0.23 ^*           & -0.23 ^*          \\ 
-                     & (0.09)             & (0.09)             & (0.09)             & (0.09)            \\ 
-\% OOH              & 0.08               & 0.08               & 0.08               & 0.07              \\ 
-                     & (0.13)             & (0.13)             & (0.13)             & (0.13)            \\ 
-ln(MedianIncome)     & -0.00              & 0.00               & -0.01              & 0.02              \\ 
-                     & (0.12)             & (0.12)             & (0.12)             & (0.12)            \\ 
-District-wide        & 0.12 ^*            & 0.12 ^*            & 0.12 ^*            & 0.12 ^*           \\ 
-                     & (0.05)             & (0.05)             & (0.05)             & (0.05)            \\ 
-Open Seat Contested  & -0.29 ^*           & -0.29 ^*           & -0.29 ^*           & -0.29 ^*          \\ 
+Blais-Lago           & 0.07 ^*            & 0.07 ^*            & 0.07 ^*            & 0.07 ^*           \\ 
                      & (0.02)             & (0.02)             & (0.02)             & (0.02)            \\ 
-Uncontested Seat     &                    & 0.05               &                    & 0.01              \\ 
-                     &                    & (0.07)             &                    & (0.07)            \\ 
-Fall 2 Party Dem.    &                    &                    & 0.71               &                   \\ 
-                     &                    &                    & (0.55)             &                   \\ 
-Party Division x VAP &                    &                    &                    & -0.27 ^*          \\ 
+ln(VAP)              & -1.13 ^*           & -1.11 ^*           & -1.13 ^*           & -1.23 ^*          \\ 
+                     & (0.45)             & (0.44)             & (0.45)             & (0.44)            \\ 
+\% White            & 0.09               & 0.10               & 0.09               & 0.08              \\ 
+                     & (0.19)             & (0.19)             & (0.19)             & (0.19)            \\ 
+\% Over 65          & 0.20               & 0.19               & 0.20               & 0.18              \\ 
+                     & (0.13)             & (0.13)             & (0.13)             & (0.13)            \\ 
+\% Bach. +          & -0.29 ^*           & -0.28 ^*           & -0.28 ^*           & -0.28 ^*          \\ 
+                     & (0.13)             & (0.13)             & (0.13)             & (0.13)            \\ 
+\% OOH              & 0.07               & 0.07               & 0.07               & 0.07              \\ 
+                     & (0.17)             & (0.17)             & (0.17)             & (0.17)            \\ 
+ln(MedianIncome)     & 0.01               & 0.01               & 0.01               & 0.02              \\ 
+                     & (0.13)             & (0.13)             & (0.13)             & (0.13)            \\ 
+District-wide        & 0.14 ^*            & 0.14 ^*            & 0.14 ^*            & 0.14 ^*           \\ 
+                     & (0.04)             & (0.04)             & (0.04)             & (0.04)            \\ 
+Open Seat Contested  & -0.02              & -0.02              & -0.02              & -0.02             \\ 
+                     & (0.03)             & (0.03)             & (0.03)             & (0.03)            \\ 
+Uncontested Seat     & -0.32 ^*           & -0.32 ^*           & -0.32 ^*           & -0.31 ^*          \\ 
+                     & (0.02)             & (0.02)             & (0.02)             & (0.02)            \\ 
+Fall 2 Party Dem.    &                    & 0.07               &                    & 0.03              \\ 
+                     &                    & (0.09)             &                    & (0.08)            \\ 
+Party Division x VAP &                    &                    & 0.03               &                   \\ 
+                     &                    &                    & (0.07)             &                   \\ 
+2 Party Dem x VAP    &                    &                    &                    & -0.19 ^*          \\ 
                      &                    &                    &                    & (0.09)             \\
  $N$                  & 3009               & 3009               & 3009               & 3009              \\ 
-$R^2$                & 0.57               & 0.57               & 0.57               & 0.57              \\ 
-adj. $R^2$           & 0.52               & 0.52               & 0.52               & 0.52              \\ 
-Resid. sd            & 0.35               & 0.35               & 0.35               & 0.35               \\ \hline
+$R^2$                & 0.59               & 0.59               & 0.59               & 0.59              \\ 
+adj. $R^2$           & 0.54               & 0.54               & 0.54               & 0.54              \\ 
+Resid. sd            & 0.34               & 0.34               & 0.34               & 0.34               \\ \hline
  \multicolumn{5}{l}{\footnotesize{Robust standard errors in parentheses}}\\
 \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
 \multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 

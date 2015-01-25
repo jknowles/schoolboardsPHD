@@ -1729,8 +1729,14 @@ teachLRT$callSmall <- m.slope@call
 
 \subsubsection{Partisanship}
 
-Another social group to explore is political parties. Use measure of partisanship 
-from average of two prior partisan general elections. 
+Table \ref{tab:mePartisan} provides no evidence for a partisan dimension in school 
+board turnout. While other variables hold their relationship from the tables 
+above, the new variables for partisanship and party divide in the electorate are 
+not statistically significant. If parties played an important role in the vote 
+in spring elections than either the interaction between the party division or the 
+proportion Democrats and the population of the district should be statistically 
+significant and positive. The lack of a relationship provides evidence that parties 
+do not
 
 <<partyMods, results ='hide'>>=
 dist_turn$fallPartyDivision <- abs(dist_turn$fallTwoPartyShareDem - 0.5)
@@ -1757,7 +1763,7 @@ moddat$outflag <- (moddat$turnout - centr) / stddev
 moddat <- moddat[moddat$outflag <=5 & moddat$outflag >= -5,]
 
 nums <- sapply(moddat, is.numeric)
-nums <- nums[!names(nums) %in% c("fallPartyDivision")]
+# nums <- nums[!names(nums) %in% c("fallPartyDivision")]
 ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
 ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
 moddatScale <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
@@ -1819,16 +1825,14 @@ partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4, se="robust"
 @
 
 
-
-Mixed models are superior. 
 \begin{tiny}
 <<partyMixedMods, results='asis'>>=
 
 partyCoefNames2 <- c("Intercept", "Fall Party Divide", "Fall Turnout", 
                  "Blais-Lago", "ln(VAP)", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Party Division x VAP", "Fall 2 Party Dem.", 
-                 "2 Party Dem x VAP")
+                  "ln(MedianIncome)", "District-wide", "Party Division x VAP", 
+                 "Fall 2 Party Dem.", "2 Party Dem x VAP")
 
 mixedModP <- lmer(turnout ~ fallPartyDivision + fallTurnout + minBlaisLago + 
                     VAP_adjLOG + per_white_all + per65o + 
@@ -1889,9 +1893,6 @@ school board turnout to top ticket turnout can be one way to measure the politic
 interest of voters in school boards. A disadvantage of this measure is that 
 school board is not the only down-ticket race and undervote does not measure 
 voter interest as many voters do not abstain. 
-
-%CITATIONS
-
 
 <<cleanundervotedata, results='hide'>>=
 load("../../data/cache/springElectionVotes.rda")
@@ -1955,7 +1956,15 @@ dd <<- datadist(moddat)
 options(datadist="dd")
 @
 
-% TODO: make RLM table for these models for appendix
+For undervote data, I use the spring elections in from 2007-2012. To calculate 
+rolloff, I take the difference in the turnout for the top ticket in the spring 
+election and the turnout for the highest turnout school board election in the 
+school district. The greater this number, the greater the share of voters who 
+failed to complete their ballots. The median district has \Sexpr{iPer(mean(dist_turn$turnoutDiff, na.rm=TRUE)*100)} percentage point difference in their turnout, meaning that if the 
+turnout in the school board election was 1,810, then the turnout for the top ticket 
+race would be \Sexpr{iNum2(1810 + 1810*mean(dist_turn$turnoutDiff, na.rm=TRUE))}. 
+Thus ballot fatigue is not that uncommon in Wisconsin. %cite rolloff papers
+
 
 \begin{tiny}
 <<undervoteMMfits1, results='asis'>>=
@@ -1969,13 +1978,13 @@ undervoteMMlag <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout +
 undervoteMMclose <- lmer(turnoutDiff ~  minBlaisLago + VAP_adjLOG + 
                            VAP_adjLOG_sq + per_white_all + 
                     per65o + PerBachelorOrAbove + OOH_share + 
-                      ImputedFlag +
+                      ImputedFlag + minBlaisLago * VAP_adjLOG +
                     median_incomeLOG + districtwide + 
-                  contest  + (1|year) + (1|distid), 
+                    (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
-undervoteMMcloseB <- lmer(turnoutDiff ~ minBlaisLago + VAP_adjLOG +  VAP_adjLOG_sq + 
+undervoteMMcloseB <- lmer(turnoutDiff ~ VAP_adjLOG +  VAP_adjLOG_sq + 
                      fallTurnout +
-                     minBlaisLago*VAP_adjLOG + per_white_all + 
+                     VAP_adjLOG + per_white_all + 
                      per65o + PerBachelorOrAbove + OOH_share + 
                        ImputedFlag +
                      median_incomeLOG + districtwide + contest + 
@@ -1985,30 +1994,31 @@ undervoteMMteach <- lmer(turnoutDiff ~ teachShareofVoters + fallTurnout +
                            minBlaisLago + VAP_adjLOG + VAP_adjLOG_sq +
                            per_white_all + per65o + PerBachelorOrAbove +
                   OOH_share + median_incomeLOG + districtwide + 
-                    ImputedFlag+ contest + 
+                    ImputedFlag+  
                    teachShareofVoters * VAP_adjLOG + (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
-undervoteMMparty <- lmer(turnoutDiff ~ fallTwoPartyShareDem*VAP_adjLOG + 
+undervoteMMparty <- lmer(turnoutDiff ~ fallTwoPartyShareDem*VAP_adjLOG + VAP_adjLOG_sq +
                            fallTurnout + minBlaisLago +
                   VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide + 
                     ImputedFlag + 
-                     contest + (1|year) + (1|distid), 
+                      (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
-undervoteMMpartyB <- lmer(turnoutDiff ~ fallPartyDivision*VAP_adjLOG + 
+undervoteMMpartyB <- lmer(turnoutDiff ~ fallPartyDivision*VAP_adjLOG +  VAP_adjLOG_sq+ 
                            fallTurnout + minBlaisLago +
                   VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide +
                     ImputedFlag +
-                     contest + (1|year) + (1|distid), 
+                      (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
 coefNamesUnd1 <- c("Intercept", "Turnout Lag (2)","Fall Turnout", 
                  "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
                   "ln(MedianIncome)", "District-wide", "Imputed",
-                 "Blais-Lago", "Open Seat Contested", 
-                  "Uncontested Seat", "Blais-Lago x Turnout")
+                 "Blais-Lago", "Blais-Lago x VAP", 
+                 "Open Seat Contested", 
+                  "Uncontested Seat")
 
 
 apsrtable(undervoteMMlag, undervoteMMclose,  undervoteMMcloseB,
@@ -2020,18 +2030,33 @@ apsrtable(undervoteMMlag, undervoteMMclose,  undervoteMMcloseB,
 @
 \end{tiny}
 
+Table \ref{tab:meUndv1} shows the results of the first three types of models investigated 
+above for turnout. Note that here the sign is flipped -- the smaller the dependent 
+variable, the more turnout for school board in relation to the top ticket turnout 
+in the spring election. 
+
+% Lagged turnout being higher, results in lower turnout differential
+% higher fall turnout results in higher turnout differential
+% bigger size = higher turnout differential
+% whiter = higher turnout differential
+% older - no difference
+% more educated = higher turnout differential (more rolloff)
+% higher income = lower turnout differential
+% higher OOH share = higher voter rolloff
+% imputation model dummy adjusts rolloff downward
+% uncontested seat = higher rolloff
+% less competitive seat = more rolloff, but only in smaller jurisdictions
+
+
+
 \begin{tiny}
 <<undervoteMMfits2, results='asis'>>=
-
 coefNamesUnd2 <- c("Intercept", "Teacher Share VAP", "Fall Turnout", 
                    "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Imputed",
-                 "Open Seat Contested", "Uncontested Seat", 
+                  "ln(MedianIncome)", "District-wide", "Imputed", 
                  "Teacher Share x VAP", "Fall Dem.", "Fall Dem. X VAP", 
                  "Fall Partisan", "Fall Partisan x VAP")
-
-
 apsrtable(undervoteMMteach, undervoteMMparty, undervoteMMpartyB,
           caption = "Partial Pooling Model of School Board Undervote",
            model.names = c("Teacher Influence", "Party Influence", "Party Divide"),
@@ -2041,15 +2066,16 @@ apsrtable(undervoteMMteach, undervoteMMparty, undervoteMMpartyB,
 \end{tiny}
 
 
-Let's do some interpretation of the undervote. Table \ref{tab:meUndv1} explains 
-undervote. 
+Table \ref{tab:meUndv2} looks at interest group influence and how it affects 
+voter roll-off. The results for the control variables are largely the same as 
+in Table \ref{tab:meUndv1}, but here the undervote results are different than 
+the results for total turnout. In all three cases I find evidence of group influence 
+in the completion of spring ballots. 
 
-Table \ref{tab:meUndv2} looks at influence and how it affects voter roll-off.
+
 
 \clearpage
 
-% Can't say it is only due to school board elections, but phenomenon does show up 
-% in school board elections. 
 
 \subsection{Substantive Effects}
 
