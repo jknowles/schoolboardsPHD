@@ -257,11 +257,11 @@ plot.tmp$avgBlaisLago[!is.finite(plot.tmp$avgBlaisLago)] <- 100
 plot.tmp$minHareQuotaDelta[!is.finite(plot.tmp$minHareQuotaDelta)] <- NA
 plot.tmp$avgHareQuotaDelta[!is.finite(plot.tmp$avgHareQuotaDelta)] <- NA
 dist_turn <- merge(dist_turn, plot.tmp, all.x=TRUE)
-rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
+rm(plot.tmp, plotdf2, votes.tmp, errors, cand.tmp)
 
 dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
 
-rm(govTurn, presTurn, dvp, errors, dist.tmp, distAttr)
+rm(govTurn, presTurn, dvp, dist.tmp, distAttr)
 
 source("data/cleanandprep_DPIADMIN.R")
 

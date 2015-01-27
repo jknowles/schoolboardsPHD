@@ -304,9 +304,18 @@ RMSE.loess <- function(m){
   sqrt(sum(m$residuals^2)/length(m$residuals))
 }
 
-substEffSimFE <- function(mod, var, ncases, unscale = NULL, ...){
+substEffSimFE <- function(mod, var, ncases, unscale = NULL, unscaleDV = NULL, ...){
+  if(missing(unscaleDV)){
+    if(class(mod) == "lmerMod"){
+      unscaleDV <- TRUE
+    } else {
+      unscaleDV <- FALSE
+    }
+  }
+  dvName <- names(mod@frame)[1]
   # var should be a character, name of variable in model
   # ncases is integer
+  # unscale is a logical indicating if the independent variable should be unscaled
   # mod is a merMod
   cases <- mod@frame[sample(1:nrow(mod@frame), ncases),]
   cases$caseID <- 1:nrow(cases)
@@ -327,6 +336,11 @@ substEffSimFE <- function(mod, var, ncases, unscale = NULL, ...){
   } else {
     stopifnot(class(unscale) == "matrix")
     plotdf$newvarUnscale <- (plotdf[, var] * 2 * unscale[var, 2]) + unscale[var, 1]
+    if(unscaleDV == TRUE){
+      plotdf$yhatUnscale <- (plotdf[, "yhat"] * 2 * unscale[dvName, 2]) + unscale[dvName, 1]
+      plotdf$lwrUnscale <- (plotdf[, "lwr"] * 2 * unscale[dvName, 2]) + unscale[dvName, 1]
+      plotdf$uprUnscale <- (plotdf[, "upr"] * 2 * unscale[dvName, 2]) + unscale[dvName, 1]
+    }
     return(plotdf)
   }
 }

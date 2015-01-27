@@ -1126,7 +1126,7 @@ moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 nums <- sapply(moddat, is.numeric)
 ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
 ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
-moddatScale <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
+moddatScaleLag <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 #Rescale
 library(arm)
 nums <- sapply(moddat, is.numeric)
@@ -1448,7 +1448,7 @@ moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
 nums <- sapply(moddat, is.numeric)
 ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
 ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
-moddatScale <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
+moddatScaleClose <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 nums <- sapply(moddat, is.numeric)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 
@@ -1526,7 +1526,7 @@ mixedModclose <- lmer(turnout ~  minBlaisLago + VAP_adjLOG + VAP_adjLOG_sq +
                     minBlaisLago*VAP_adjLOG + per_white_all + 
                     per65o + PerBachelorOrAbove + OOH_share + 
                     median_incomeLOG + districtwide + 
-                  contest  + (1|distid), 
+                  contest  + (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
 mixedModcloseB <- lmer(turnout ~  VAP_adjLOG +  VAP_adjLOG_sq + 
@@ -1558,18 +1558,18 @@ apsrtable(mixedModcloseB, mixedModcloseC, caption = "Partial Pooling Models of C
 
 
 <<closeModSens,results='hide', eval=TRUE>>=
-m0 <- lm(turnout ~  minBlaisLago + VAP_adjLOG + minBlaisLago*VAP_adjLOG + 
-           per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
-           median_incomeLOG + districtwide + 
-                  contest, data = moddat) # fit the null model
+# m0 <- lm(turnout ~  minBlaisLago + VAP_adjLOG + minBlaisLago*VAP_adjLOG + 
+#            per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
+#            median_incomeLOG + districtwide + 
+#                   contest, data = moddat) # fit the null model
 
-exactLRT(m = refitML(mixedModclose), m0 = m0)
+# exactLRT(m = refitML(mixedModclose), m0 = m0)
 
 # Test for year specific slopes
-m.slope <- update(mixedModcloseB, . ~ . - (1|year))
-m0 <- update(mixedModcloseB, . ~ . - (1|distid))
-closeLRT <- exactRLRT(m.slope, mixedModcloseB, m0)
-closeLRT$callFull <- mixedModcloseB@call
+m.slope <- update(mixedModcloseC, . ~ . - (1|year))
+m0 <- update(mixedModcloseC, . ~ . - (1|distid))
+closeLRT <- exactRLRT(m.slope, mixedModcloseC, m0)
+closeLRT$callFull <- mixedModcloseC@call
 closeLRT$callSmall <- m.slope@call
 @
 
@@ -1607,7 +1607,7 @@ moddat <- moddat[moddat$outflag <=5 & moddat$outflag >= -5,]
 nums <- sapply(moddat, is.numeric)
 ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
 ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
-moddatScale <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
+moddatScaleTeach <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 nums <- sapply(moddat, is.numeric)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 dd <<- datadist(moddat)
@@ -1766,7 +1766,7 @@ nums <- sapply(moddat, is.numeric)
 # nums <- nums[!names(nums) %in% c("fallPartyDivision")]
 ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
 ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
-moddatScale <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
+moddatScaleParty <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 dd <<- datadist(moddat)
 options(datadist="dd")
@@ -1827,24 +1827,26 @@ partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4, se="robust"
 
 \begin{tiny}
 <<partyMixedMods, results='asis'>>=
-
 partyCoefNames2 <- c("Intercept", "Fall Party Divide", "Fall Turnout", 
-                 "Blais-Lago", "ln(VAP)", "\\% White", 
+                 "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
                   "ln(MedianIncome)", "District-wide", "Party Division x VAP", 
-                 "Fall 2 Party Dem.", "2 Party Dem x VAP")
+                 "Fall 2 Party Dem.", "$2 Party Dem^{2}$","2 Party Dem x VAP")
 
 mixedModP <- lmer(turnout ~ fallPartyDivision + fallTurnout + minBlaisLago + 
-                    VAP_adjLOG + per_white_all + per65o + 
+                    VAP_adjLOG + VAP_adjLOG_sq +per_white_all + per65o + 
                    PerBachelorOrAbove + OOH_share + median_incomeLOG + 
                    districtwide + fallPartyDivision * VAP_adjLOG + 
                     (1|distid) + (1|year), 
               data = moddat, REML = TRUE)
 
-mixedModPb <- lmer(turnout ~ fallTwoPartyShareDem*VAP_adjLOG + fallTurnout + 
+mixedModPb <- lmer(turnout ~ VAP_adjLOG + VAP_adjLOG_sq + fallTwoPartyShareDem +
+                     I(fallTwoPartyShareDem^2)+ 
+                     fallTurnout + 
                      minBlaisLago + 
                     VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide + 
+                     fallTwoPartyShareDem * VAP_adjLOG +
                      (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
@@ -1949,7 +1951,7 @@ moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
 nums <- sapply(moddat, is.numeric)
 ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
 ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
-moddatScale <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
+moddatScaleUndervote <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 nums <- sapply(moddat, is.numeric)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 dd <<- datadist(moddat)
@@ -2092,7 +2094,467 @@ turn my attention to exploring the magnitude of these effects.
 \subsubsection{Turnout}
 
 
+<<fixefplot1, eval=FALSE, fig.cap="Coefficient Plot for Full Model Fixed Effects",fig.height=8.5, fig.width=8, results='hide'>>=
+sim1 <- FEsim(mixedMod1lagsb, nsims = 1000); sim1$dv <- "Lags"
+sim2 <- FEsim(mixedModcloseC, nsims = 1000); sim2$dv <- "Close"
+sim3 <- FEsim(fullmodMMd, nsims = 1000); sim3$dv <- "Defeat"
+sim4 <- FEsim(fullmodMMblq, nsims = 1000); sim4$dv <- "Competitiveness"
+
+simPlot <- do.call(rbind, list(sim1, sim2, sim3, sim4))
+simPlot$dv <- factor(simPlot$dv, levels = c("No Incumb.", "Contest", 
+                                            "Defeat", "Competitiveness"))
+alpha <- 1.96
+simPlot$upr <- simPlot$meanEff + (alpha*simPlot$sdEff)
+simPlot$lwr <- simPlot$meanEff - (alpha*simPlot$sdEff)
+
+simPlot$color <- "Not Sig."
+simPlot$color <- ifelse(simPlot$lwr >0 | simPlot$upr < 0, "Sig", "Not Sig.")
+
+ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr, 
+                    ymin = lwr, color = color)) + 
+  scale_color_brewer(palette = "Dark2") + 
+  geom_point() + geom_errorbar(h=1.5) +
+  geom_hline(yintercept = 0, size = I(1.1), color = I("black"), linetype = 2, 
+             alpha = I(0.6)) +
+  coord_flip() + 
+  facet_wrap(~dv) + 
+  theme_dpi(base_size=12) +theme(legend.position = "bottom") + 
+  labs(x = "Variable", y = "Effect", color = "Stat. Sig.")
+
+# confint(fullmodMMni, method = "Wald", level = 0.9)
+@
+
+
+<<fixefSub1, fig.cap="Substantive Effect on School Board Turnout Across Cases">>=
+library(gridExtra)
+seplotdf <- substEffSimFE(mixedModP, "fallPartyDivision", ncases = 4L, 
+                          unscale = moddatScaleParty, re = FALSE)
+
+lowerBar <- ((quantile(fitted(mixedModP), prob = 0.25) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) / 100
+upperBar <- ((quantile(fitted(mixedModP), prob = 0.75) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) / 100
+
+seplotdf$yhatUnscale <- seplotdf$yhatUnscale / 100
+seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
+seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
+
+p1 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
+  geom_line(aes(group = caseID, color = factor(caseID)), size = I(1.05)) + 
+  scale_color_discrete(guide = FALSE) +
+    geom_ribbon(aes(ymin=lwrUnscale, ymax=uprUnscale, group = caseID),
+                     alpha=0.1) + 
+#   facet_wrap(~caseID) + 
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  geom_rug(data = dist_turn, aes(x = fallPartyDivision, y = NULL)) + 
+  theme_dpi(base_size=12) + 
+  labs(x = "Partisan Division", y = "School Board Turnout")+ 
+  scale_y_continuous(label = percent, limits = c(0, .50))
+
+seplotdf <- substEffSimFE(mixedModteach, "teachShareofVoters", ncases = 4L, 
+                          unscale = moddatScaleTeach, re = TRUE)
+
+lowerBar <- ((quantile(fitted(mixedModteach), prob = 0.25) * 2 * moddatScaleTeach["turnout", 2]) + 
+      moddatScaleTeach["turnout", 1]) /100
+upperBar <- ((quantile(fitted(mixedModteach), prob = 0.75) * 2 * moddatScaleTeach["turnout", 2]) + 
+      moddatScaleTeach["turnout", 1]) / 100
+
+seplotdf$yhatUnscale <- seplotdf$yhatUnscale / 100
+seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
+seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
+
+p2 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
+  geom_line(aes(group = caseID, color = factor(caseID)), size = I(1.05)) + 
+  scale_color_discrete(guide = FALSE) +
+    geom_ribbon(aes(ymin=lwrUnscale, ymax=uprUnscale, group = caseID),
+                     alpha=0.1) + 
+#   facet_wrap(~caseID) + 
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  geom_rug(data = dist_turn, aes(x = teachShareofVoters, y = NULL)) + 
+  theme_dpi(base_size=12) + 
+  labs(x = "Teacher Share of Voters", y = "School Board Turnout") + 
+  scale_y_continuous(label = percent, limits = c(0, .50)) + 
+  scale_x_continuous(label = percent)
+
+
+seplotdf <- substEffSimFE(mixedModcloseC, "minBlaisLago", ncases = 4L, 
+                          unscale = moddatScaleClose, re = TRUE)
+
+lowerBar <- ((quantile(fitted(mixedModcloseC), prob = 0.25) * 2 * moddatScaleClose["turnout", 2]) + 
+      moddatScaleClose["turnout", 1]) /100
+upperBar <- ((quantile(fitted(mixedModcloseC), prob = 0.75) * 2 * moddatScaleClose["turnout", 2]) + 
+      moddatScaleClose["turnout", 1]) / 100
+
+seplotdf$yhatUnscale <- seplotdf$yhatUnscale / 100
+seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
+seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
+
+p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
+  geom_line(aes(group = caseID, color = factor(caseID)), size = I(1.05)) + 
+  scale_color_discrete(guide = FALSE) +
+    geom_ribbon(aes(ymin=lwrUnscale, ymax=uprUnscale, group = caseID),
+                     alpha=0.1) + 
+#   facet_wrap(~caseID) + 
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  geom_rug(data = dist_turn, aes(x = minBlaisLago, y = NULL)) + 
+  theme_dpi(base_size=12) + 
+  labs(x = "Blais-Lago Competitiveness", y = "School Board Turnout") + 
+  scale_y_continuous(label = percent, limits = c(0, .50))
+
+
+seplotdf <- substEffSimFE(mixedMod1lagsb, "turnoutLag2", ncases = 4L, 
+                          unscale = moddatScaleLag, re = TRUE)
+
+lowerBar <- ((quantile(fitted(mixedMod1lagsb), prob = 0.25) * 2 * moddatScaleLag["turnout", 2]) + 
+      moddatScaleLag["turnout", 1]) /100
+upperBar <- ((quantile(fitted(mixedMod1lagsb), prob = 0.75) * 2 * moddatScaleLag["turnout", 2]) + 
+      moddatScaleLag["turnout", 1]) / 100
+
+seplotdf$yhatUnscale <- seplotdf$yhatUnscale / 100
+seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
+seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
+
+p4 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
+  geom_line(aes(group = caseID, color = factor(caseID)), size = I(1.05)) + 
+  scale_color_discrete(guide = FALSE) +
+    geom_ribbon(aes(ymin=lwrUnscale, ymax=uprUnscale, group = caseID),
+                     alpha=0.1) + 
+#   facet_wrap(~caseID) + 
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  geom_rug(data = dist_turn, aes(x = turnoutLag2, y = NULL)) + 
+  theme_dpi(base_size=12) + 
+  labs(x = "Lagged SB Turnout (2)", y = "School Board Turnout") + 
+  scale_y_continuous(label = percent, limits = c(0, .50)) +
+  scale_x_continuous(label = percent, limits = c(0, 0.35))
+
+grid.arrange(p1, p2, p3, p4, main = "Simulated Effects on School Board Turnout")
+@
+
+<<fixefSub2, results='hide'>>=
+seplotdf <- substEffSimFE(mixedModteachB, "teachShareofVoters", ncases = 64L, 
+                          unscale = moddatScaleTeach, re = TRUE)
+
+lowerBar <- ((quantile(fitted(mixedModteachB), prob = 0.25) * 2 * moddatScaleTeach["turnout", 2]) + 
+      moddatScaleTeach["turnout", 1]) /100
+upperBar <- ((quantile(fitted(mixedModteachB), prob = 0.75) * 2 * moddatScaleTeach["turnout", 2]) + 
+      moddatScaleTeach["turnout", 1]) / 100
+
+seplotdf$yhatUnscale <- seplotdf$yhatUnscale / 100
+seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
+seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
+
+seplotdf$sizeCut <- cut(seplotdf$VAP_adjLOG, 
+                        breaks = quantile(mixedModteachB@frame$VAP_adjLOG, 
+                                          prob = c(0, 0.25, .5, .75, 1)), 
+                        labels = c("VAP Quart. 1", "VAP Quart. 2", "VAP Quart. 3", "VAP Quart. 4"))
+
+TeachInteractPlot <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
+  geom_line(aes(group = caseID), alpha = 0.4, size = I(1.05)) +
+  facet_wrap(~sizeCut) +
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  geom_rug(data = dist_turn, aes(x = teachShareofVoters, y = NULL)) + 
+  theme_dpi(base_size=12) + 
+  labs(x = "Teacher Share of Voters", y = "School Board Turnout") + 
+  scale_y_continuous(label = percent, limits = c(0, .50)) + 
+  scale_x_continuous(label = percent)
+
+@
+
+
+<<fixefSub3, results='hide'>>=
+# mixedModPb
+seplotdf <- substEffSimFE(mixedModPb, "fallTwoPartyShareDem", ncases = 64L, 
+                          unscale = moddatScaleParty, re = TRUE)
+
+lowerBar <- ((quantile(fitted(mixedModPb), prob = 0.25) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) /100
+upperBar <- ((quantile(fitted(mixedModPb), prob = 0.75) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) / 100
+
+seplotdf$yhatUnscale <- seplotdf$yhatUnscale / 100
+seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
+seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
+
+seplotdf$sizeCut <- cut(seplotdf$VAP_adjLOG, 
+                        breaks = quantile(mixedModPb@frame$VAP_adjLOG, 
+                                          prob = c(0, 0.25, .5, .75, 1)), 
+                        labels = c("VAP Quart. 1", "VAP Quart. 2", "VAP Quart. 3", "VAP Quart. 4"))
+
+PartyInteractPlot <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
+  geom_line(aes(group = caseID), alpha = 0.4, size = I(1.05)) +
+  facet_wrap(~sizeCut) +
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  geom_rug(data = dist_turn, aes(x = fallTwoPartyShareDem, y = NULL)) + 
+  theme_dpi(base_size=12) + 
+  labs(x = "Democratic Two-Party Share", y = "School Board Turnout") + 
+  scale_y_continuous(label = percent, limits = c(0, .50)) + 
+  scale_x_continuous(label = percent)
+@
+
+Fixed effects -- talk about them.
+
+Random effects -- talk about them.
+
+<<randomEffectplot1, eval=TRUE, fig.cap="Comparing District Intercepts on Standardized Coefficient Scale">>=
+replotdf <- substEffSimRE(mixedModP, "distid", ncases = 3, alpha = 0.1)
+replotdf$distid <- as.character(replotdf$distid)
+
+replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$yhatUnscale <- replotdf$yhatUnscale / 100
+replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$lwrUnscale <- replotdf$lwrUnscale / 100
+replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$uprUnscale <- replotdf$uprUnscale / 100
+
+lowerBar <- ((quantile(fitted(mixedModP), prob = 0.25) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) /100
+upperBar <- ((quantile(fitted(mixedModP), prob = 0.75) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) / 100
+
+p0 <- ggplot(data = replotdf, aes(x = reorder(distid, -yhatUnscale), y = yhatUnscale, 
+                            ymin = lwrUnscale, ymax = uprUnscale)) + 
+  geom_line(aes(group = caseID)) + 
+    geom_ribbon(aes(group = caseID), alpha=0.4) + 
+  theme_dpi(base_size=12) + 
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
+                      strip.text = element_blank(), 
+                      strip.background = element_blank(), 
+                      panel.grid.minor = element_blank(), 
+                      panel.grid.major = element_blank()) + 
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  facet_wrap(~caseID, ncol = 1) + 
+  labs(x = "District", y = "Predicted SB Turnout", title = "Party Model") + 
+  scale_y_continuous(label = percent)
+
+plotdf <- REsim(mixedModP, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 1",]
+p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+               sd = "sd", sigmaScale = sigma(mixedModP)) + 
+  labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModclose, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 1",]
+p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModclose)) + 
+  labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModteach, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 1",]
+p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModteach))+ 
+  labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModlags, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 1",]
+p4 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModlags))+ 
+  labs(title = "Lagged Model", x= "District", y = "Intercept") + 
+  ylim(c(-2, 3.5))
+
+grid.arrange(p1, p2, p3, p4, main = "Variance in District Intercepts Across Models")
+@
+
+Talk about the year effect. 
+
+<<randomEffectplot2, eval=TRUE, fig.cap="Substantive Impact of Year Effects">>=
+replotdf <- substEffSimRE(mixedModP, "year", ncases = 1, alpha = 0.1)
+replotdf$year <- as.character(replotdf$year)
+
+replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$yhatUnscale <- replotdf$yhatUnscale / 100
+replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$lwrUnscale <- replotdf$lwrUnscale / 100
+replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$uprUnscale <- replotdf$uprUnscale / 100
+
+lowerBar <- ((quantile(fitted(mixedModP), prob = 0.2) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) /100
+upperBar <- ((quantile(fitted(mixedModP), prob = 0.8) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) / 100
+
+ggplot(data = replotdf, aes(x = year, y = yhatUnscale, 
+                            ymin = lwrUnscale, ymax = uprUnscale)) + 
+  geom_errorbar(width = .4) + geom_point()+
+  theme_dpi(base_size=12) + 
+  theme(
+                      strip.text = element_blank(), 
+                      strip.background = element_blank(), 
+                      panel.grid.minor = element_blank()) + 
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  facet_wrap(~caseID, ncol = 1) + 
+  labs(x = "Year", y = "Predicted SB Turnout") + 
+  scale_y_continuous(label = percent)
+
+
+plotdf <- REsim(mixedModP, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+               sd = "sd", sigmaScale = sigma(mixedModP)) + 
+  labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModclose, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModclose)) + 
+  labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModteach, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModteach))+ 
+  labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModlags, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+p4 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModlags))+ 
+  labs(title = "Lagged Model", x= "District", y = "Intercept") + 
+  ylim(c(-2, 3.5))
+
+grid.arrange(p1, p2, p3, p4, main = "Variance in Year Intercepts Across Models")
+
+@
+
 \subsubsection{Rolloff}
+
+<<fixefSubUndv, results='hide'>>=
+library(gridExtra)
+seplotdf <- substEffSimFE(undervoteMMlag, "turnoutLag2", ncases = 4L, 
+                          unscale = moddatScaleUndervote, re = FALSE)
+
+lowerBar <- ((quantile(fitted(undervoteMMlag), prob = 0.2) * 2 * moddatScaleUndervote["turnoutDiff", 2]) + 
+      moddatScaleUndervote["turnoutDiff", 1]) / 100
+upperBar <- ((quantile(fitted(undervoteMMlag), prob = 0.8) * 2 * moddatScaleUndervote["turnoutDiff", 2]) + 
+      moddatScaleUndervote["turnoutDiff", 1]) / 100
+
+seplotdf$yhatUnscale <- seplotdf$yhatUnscale / 100
+seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
+seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
+
+p1 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
+  geom_line(aes(group = caseID, color = factor(caseID)), size = I(1.05)) + 
+  scale_color_discrete(guide = FALSE) +
+    geom_ribbon(aes(ymin=lwrUnscale, ymax=uprUnscale, group = caseID),
+                     alpha=0.1) + 
+#   facet_wrap(~caseID) + 
+  geom_hline(yintercept = lowerBar) + 
+  geom_hline(yintercept = upperBar) + 
+  geom_rug(data = dist_turn, aes(x = turnoutLag2, y = turnoutDiff)) + 
+  theme_dpi(base_size=12) + 
+  labs(x = "Lagged Turnout Prior", y = "Voter Rolloff") + 
+  scale_x_continuous(label = percent) + 
+  scale_y_continuous(limits = c(-.2, .2))
+
+# -----------------------------------------------------------------
+
+seplotdf <- substEffSimFE(undervoteMMpartyB, "fallPartyDivision", ncases = 64L, 
+                          unscale = moddatScaleUndervote, re = TRUE)
+
+lowerBar <- ((quantile(fitted(undervoteMMpartyB), prob = 0.2) * 2 *
+                moddatScaleUndervote["turnoutDiff", 2]) + 
+      moddatScaleUndervote["turnoutDiff", 1]) /100
+
+upperBar <- ((quantile(fitted(undervoteMMpartyB), prob = 0.8) * 2 * 
+                moddatScaleUndervote["turnoutDiff", 2]) + 
+      moddatScaleUndervote["turnoutDiff", 1]) / 100
+
+seplotdf$yhatUnscale <- seplotdf$yhatUnscale / 100
+seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
+seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
+
+seplotdf$sizeCut <- cut(seplotdf$VAP_adjLOG, 
+                        breaks = quantile(undervoteMMpartyB@frame$VAP_adjLOG, 
+                                          prob = c(0, 0.25, .5, .75, 1)), 
+                        labels = c("VAP Quart. 1", "VAP Quart. 2", "VAP Quart. 3", "VAP Quart. 4"))
+
+p2 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
+  geom_line(aes(group = caseID), alpha = 0.4, size = I(1.05)) +
+  facet_wrap(~sizeCut) +
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  geom_rug(data = dist_turn, aes(x = fallPartyDivision, y = turnoutDiff)) + 
+  theme_dpi(base_size=12) + 
+  labs(x = "Fall Party Division", y = "Voter Rolloff") 
+
+# -------------------------------------------------------------------------------
+
+seplotdf <- substEffSimFE(undervoteMMteach, "teachShareofVoters", ncases = 64L, 
+                          unscale = moddatScaleUndervote, re = TRUE)
+
+lowerBar <- ((quantile(fitted(undervoteMMteach), prob = 0.2) * 2 * 
+                moddatScaleUndervote["turnoutDiff", 2]) + 
+      moddatScaleUndervote["turnoutDiff", 1]) /100
+
+upperBar <- ((quantile(fitted(undervoteMMteach), prob = 0.8) * 2 * 
+                moddatScaleUndervote["turnoutDiff", 2]) + 
+      moddatScaleUndervote["turnoutDiff", 1]) / 100
+
+seplotdf$yhatUnscale <- seplotdf$yhatUnscale / 100
+seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
+seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
+
+seplotdf$sizeCut <- cut(seplotdf$VAP_adjLOG, 
+                        breaks = quantile(undervoteMMteach@frame$VAP_adjLOG, 
+                                          prob = c(0, 0.25, .5, .75, 1)), 
+                        labels = c("VAP Quart. 1", "VAP Quart. 2", "VAP Quart. 3", "VAP Quart. 4"))
+
+p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
+  geom_line(aes(group = caseID), alpha = 0.4, size = I(1.05)) +
+  facet_wrap(~sizeCut) +
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  geom_rug(data = dist_turn, aes(x = teachShareofVoters, y = turnoutDiff)) + 
+  theme_dpi(base_size=12) + 
+  labs(x = "Teacher Share of VAP", y = "Voter Rolloff") 
+
+# -------------------------------------------------------------------------------
+
+seplotdf <- substEffSimFE(undervoteMMclose, "minBlaisLago", ncases = 64L, 
+                          unscale = moddatScaleUndervote, re = TRUE)
+
+lowerBar <- ((quantile(fitted(undervoteMMclose), prob = 0.2) * 2 * 
+                moddatScaleUndervote["turnoutDiff", 2]) + 
+      moddatScaleUndervote["turnoutDiff", 1]) /100
+
+upperBar <- ((quantile(fitted(undervoteMMclose), prob = 0.8) * 2 * 
+                moddatScaleUndervote["turnoutDiff", 2]) + 
+      moddatScaleUndervote["turnoutDiff", 1]) / 100
+
+seplotdf$yhatUnscale <- seplotdf$yhatUnscale / 100
+seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
+seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
+
+seplotdf$sizeCut <- cut(seplotdf$VAP_adjLOG, 
+                        breaks = quantile(undervoteMMclose@frame$VAP_adjLOG, 
+                                          prob = c(0, 0.25, .5, .75, 1)), 
+                        labels = c("VAP Quart. 1", "VAP Quart. 2", "VAP Quart. 3", "VAP Quart. 4"))
+
+p4 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
+  geom_line(aes(group = caseID), alpha = 0.4, size = I(1.05)) +
+  facet_wrap(~sizeCut) +
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  geom_rug(data = dist_turn, aes(x = minBlaisLago, y = turnoutDiff)) + 
+  theme_dpi(base_size=12) + 
+  labs(x = "Blais-Lago", y = "Voter Rolloff") 
+
+@
+
+<<teachUndEff, fig.cap="Interaction Effect of Teacher Share on Undervote">>=
+p3
+@
+
+<<compUndEff, fig.cap="Interaction Effect of Competition on Undervote">>=
+p4
+@
 
 
 \section{Discussion}
@@ -2167,7 +2629,25 @@ their vote mattering, and influenced by social group mechanisms.
 
 Sensitivity checks and further table analysis. 
 
-\section{Random Effect Specification Tests}
+\subsection{Additional Effect Plot}
+
+<<interactPlot1, fig.cap="Illustrating Interaction Effects with District Size and Partisanship">>=
+PartyInteractPlot
+@
+
+<<interactPlot2, fig.cap="Illustrating Interaction Effects with District Size">>=
+TeachInteractPlot
+@
+
+<<interactPlot3, fig.cap="Prior Turnout Effect on Voter Rolloff">>=
+p1
+@
+
+<<interactPlot4, fig.cap="Partisan Division Effect on Voter Rolloff in Spring">>=
+p2
+@
+
+\subsection{Random Effect Specification Tests}
 
 <<LRTresults, echo=FALSE, results='markup'>>=
 # Lag Model LRT
@@ -2181,7 +2661,7 @@ print(teachLRT)
 @
 
 
-\section{District and Year Fixed Effect Results}
+\subsection{District and Year Fixed Effect Results}
 
 District fixed effect model results. 
 
