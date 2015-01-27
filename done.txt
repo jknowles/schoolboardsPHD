@@ -1,3 +1,32 @@
+X * Update research log
+X * Methods section in candidacy and interpretation
+X * Describe partial pooling vs. fixed effect methods in methods section
+X * Add citations on rolloff and undervote
+X * Non-partisan election citations
+X * Flag races with all winners
+X * Backfill incumbency using snapshot of board size
+X * Get citations on the way to calculate win share in multi-member districts
+X * Test scores and school board action
+X * Finalized draft of chapter 2
+X * Revise cleanandprep_candidacy.R
+X * Fix models in candidacy.rnw
+X * Identify cases where no ballot/election occcurred vs. no record available
+X * Modify apsrtable calls to have the appropriate size
+X * Identify a committee reviewer for each chapter
+X * Look up multi-member district literature from Gary Cox
+X * Clean up candidacy chapter
+X * Fix tables in Chapter 2 per John W. comments
+X - Superintendent turnover and lagged superintendent turnover do not make sense
+  X * Add achievement data
+  X - Proficiency by year
+  * Add school district demographics from DPI
+  X - % minority
+  X - % FRL
+X * Create a most recent fall election variable and alternate between Gov and Pres
+X * Create variables to fix the walker models to include only Gubernatorial polarization
+X * Fix about Wisconsin per John's edits
+X * Keep incumbency and turnout
+X * Sketch out separate Scott Walker chapter
 X * Check if incumbency was backfilled (incumbents in first year of data by district?)
 X  * Back fill incumbency by using the master candidate roster if Vanessa did not do this
 X * Re-do the results for Greendale, was overwritten with New London
@@ -7,7 +36,6 @@ X* Add school district demographics from DPI
  X - % minority
  - % FRL
 X * Calculate incumbency rates and incumbency defeat rates by district
-
 X * Set up meeting with David Canon -- outline some questions for this meeting
     - Should the turnout paper be split into two papers? 1 evaluating rat-choice
       models of turnout, the other looking at causal impact of information?
@@ -61,8 +89,6 @@ X * Re-do chapter 1 and 2 into 1 chapter
 ##############
 * Check 2010 voting turnout data (DONE)
 Check out non-winners and votes going to non-races (races.tmp[races.tmp$nwins ==0,])
-
-
 Check TREVOR WILMOT (done)
 Impute votes for Albany? (63)
 Check Gale-Ettrick-Trempeleau 2003 for vote totals (DONE)
@@ -78,7 +104,6 @@ Oostburg for vote totals (Request to Sheboygan County) (NONE)
 Weyauwega-Fremont for vote totals (Drop 2002 records)
 Check Wilmot UHS for vote totals (DONE)
 Check Wonewoc-Union Center for vote totals (Request to Juneau county) (NONE)
-
 Confirm Winners:
 Abbotsford (DONE)
 Almond Bancroft (DONE)
