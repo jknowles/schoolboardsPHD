@@ -1430,13 +1430,53 @@ voter rolloff lessens.
 \subsection{Substantive Effects}
 
 After finding evidence in favor of voters behaving as theory might expect, I now 
-turn my attention to exploring the magnitude of these effects. 
+turn my attention to exploring the magnitude of these effects. In order to estimate 
+the substantive impact, I conduct simulations to show the change in the dependent 
+variable holding all else constant and manipulating an independent variable of 
+interest. While this type of simulation does not represent the interrelated 
+nature of the independent variables in the models above, it does allow me to 
+demonstrate the maximum possible effect predicted by the models described above -- 
+assuming the independent variable is changing while all other variables remain 
+constant.\footnote{Simulations are conducted using a modification of the \texttt{sim} 
+function in the \texttt{arm} package for R.}
 
 
 \subsubsection{Turnout}
 
 
 
+
+Figure \ref{fig:fixefSub1} shows the effect of four of the key variables of interest 
+from the models above. These plots show four randomly sampled observations (represented 
+by a different colored line) with the independent variable on the x-axis and the 
+predicted school board turnout on the y-axis. Along the x-axis is a rug-plot showing 
+the relative density of observations at each range of the x-variable to help demonstrate 
+where the model may be extrapolating with less data. The two dashed lines shown 
+represent the inter-quartile range or the predicted values from the model being 
+simulated. This is presented to provide a reference for how powerful the effect 
+of the independent variable -- as shown by the slope of the line -- is relative 
+to the overall variability in turnout. 
+
+In Figure \ref{fig:fixefSub1} two patterns stand out. First, the interaction 
+effect for the teacher share of voters depicted in the top right panel, stands 
+out immediately -- the differing slopes are the result of the variation in VAP 
+across these randomly sampled observations. This effect is strong and is further 
+explored in Figure \ref{fig:interactPlot1}. However, from this panel it is clear 
+the effect of the teacher share of voters can move school board turnout a substantial 
+degree of the range of the turnout variable -- as evidenced by the steep slope of 
+some of these lines. 
+
+The second pattern is in the bottom-left panel. As competitiveness decreases from 
+left to right, turnout decreases substantially. Across the range of competitiveness 
+the effect is almost equivalent to two quartiles of school board turnout. More 
+practically, it results in turnout decreasing between three and five percentage 
+points. Given that median turnout is around 20\%, this effect is quite large. 
+
+On the other diagonal there is an expected relationship between prior turnout 
+and current turnout as positive and fairly strong. Partisan division has a very 
+small positive effect of turnout with more polarized communities having a slight 
+increase in expected voter turnout -- but much less substantial than the effect 
+of teacher voter share or competitiveness. 
 
 
 \begin{knitrout}
@@ -1452,9 +1492,25 @@ turn my attention to exploring the magnitude of these effects.
 
 
 
-Fixed effects -- talk about them.
+All of the models specified included random intercepts for both school districts 
+and years as a way to control for unobservable characteristics of each district 
+and secular change in turnout from spring election to spring election. Figure 
+\ref{fig:randomEffectplot1} demonstrates the variability in the district intercepts 
+for each of the four models. These plots can be interpreted as the deviation of 
+the intercept of a school district from the average district. This figure arranges 
+the estimate of the individual intercept for each school, and its corresponding 
+95\% confidence interval, from lowest to highest to depict the variability in 
+district intercepts. This is known as a caterpillar plot and is useful in demonstrating 
+the variability among units in a mixed-effect model. 
 
-Random effects -- talk about them.
+The results in \ref{fig:randomEffectplot1} show large and consistent variance 
+between the four models with a number of individual districts deviating from the 
+average district even with their confidence intervals. The height of the points 
+can be interpreted as the number of standard deviations in election turnout the 
+school district deviates from the average for all districts in the model. 
+
+%TODO: check this and review wording
+
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -1464,23 +1520,48 @@ Random effects -- talk about them.
 
 \end{knitrout}
 
-Talk about the year effect. 
+Even more interestingly is the pattern for the year effects demonstrated in 
+Figure \ref{fig:randomEffectplot2}. In all four models we see one below average year, 
+2010, and three above average years -- 2003, 2011, and 2012. These above average 
+years are not always statistically different than zero -- 2003 tends to have many 
+fewer observations than the other years -- but statewide spring election specific 
+effects do appear to exert an influence on school board turnout. Most interestingly 
+is that two years of elevated turnout across the state (net of district-election and 
+district-average effects) were in 2011 and 2012 after the election of Governor Scott Walker 
+and the introduction of Act 10. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap4-randomEffectplot2-1} \caption[Substantive Impact of Year Effects]{Substantive Impact of Year Effects}\label{fig:randomEffectplot21}
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap4-randomEffectplot2-2} \caption[Substantive Impact of Year Effects]{Substantive Impact of Year Effects}\label{fig:randomEffectplot22}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-randomEffectplot2-1} \caption[Comparing Year Intercepts of Year Effects]{Comparing Year Intercepts of Year Effects}\label{fig:randomEffectplot2}
 \end{figure}
 
 
 \end{knitrout}
 
+\clearpage
+
 \subsubsection{Rolloff}
 
 
+
+I now review the substantive impact of key independent variables on voter rolloff. 
+Figure \ref{fig:teachUndEff} shows the variation in the impact of the teacher share 
+of voters on voter rolloff across four quartiles of district VAP. For the smallest 
+districts, the teacher share of voters does not affect voter rolloff -- voters 
+complete their ballots at the same rate whether teachers comprise 1\% or 5\% of the 
+electorate. 
+
+As districts get larger, the impact of teachers grows stronger and in the second 
+and third quartile, the impact of moving from 2\% to 3\% teachers in the VAP can 
+increase voter rolloff in school board elections by nearly as much as the interquartile 
+range for the variable. The simulation in the final panel, for the largest districts,
+is unlikely as it is very unlikely that very large VAP district would ever have 5\% 
+teachers. 
+
+Figure \ref{fig:compUndEff} provides the same look at an interactive effect with 
+district size, but for school board seat competitiveness. Competitiveness plays no 
+role in voter turnout for smaller school districts, but as districts get larger, 
+less competitive elections see much greater voter rolloff. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -1499,6 +1580,8 @@ Talk about the year effect.
 \end{knitrout}
 
 
+%TODO: add random effect plots for undervote to the appendix as well
+\clearpage
 \section{Discussion}
 
 I find strong evidence that, like voters in other elections, school board voters 
