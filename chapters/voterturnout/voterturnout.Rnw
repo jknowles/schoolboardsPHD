@@ -2085,6 +2085,47 @@ voter rolloff lessens.
 
 \clearpage
 
+\subsection{Model Fit}
+
+Assessing model fit in a mixed model framework is not as straightforward as with 
+a standard OLS regression. 
+
+<<modFitplot1, eval = FALSE>>=
+plotdf <- augment(mixedModcloseC)
+plotdf$yUnscale <- (plotdf$turnout * 2 * moddatScaleClose["turnout", 2]) + 
+   moddatScaleClose["turnout", 1]
+plotdf$yhatUnscale <- (plotdf$.fitted * 2 * moddatScaleClose["turnout", 2]) + 
+   moddatScaleClose["turnout", 1]
+plotdf$x1Unscale <- (plotdf$minBlaisLago * 2 * moddatScaleClose["minBlaisLago", 2]) + 
+   moddatScaleClose["minBlaisLago", 1]
+plotdf$yhatFixed <- (plotdf$.fixed * 2 * moddatScaleClose["turnout", 2]) + 
+   moddatScaleClose["turnout", 1]
+
+plotSlope <- coefficients(lm(yUnscale ~ x1Unscale, data = plotdf))[2]
+plotInt <- coefficients(lm(yUnscale ~ x1Unscale, data = plotdf))[1]
+
+cases <- sample(unique(plotdf$distid), 12)
+plotdf <- plotdf[plotdf$distid %in% cases, ]
+
+
+ggplot(plotdf, aes(x = x1Unscale, y = yUnscale)) +
+         geom_point() + 
+  geom_point(aes(x = x1Unscale, y = yhatUnscale), color = I("red")) + 
+  geom_point(aes(x = x1Unscale, y = yhatFixed), color = I("purple")) +
+  geom_smooth(aes(x = x1Unscale, y = yUnscale), method = "lm", 
+              se = FALSE, color = I("black")) + 
+  geom_smooth(aes(x = x1Unscale, y = yhatUnscale), method = "lm", 
+              se = FALSE, color = I("red")) + 
+  geom_smooth(aes(x = x1Unscale, y = yhatFixed), method = "lm", 
+              se = FALSE, color = I("purple")) +
+  facet_wrap(~distid) + 
+  geom_abline(intercept = plotInt, slope = plotSlope, linetype=2) +
+  xlim(c(0, quantile(plotdf$x1Unscale, prob = 0.9))) + 
+  theme_bw()
+
+@
+
+
 \subsection{Substantive Effects}
 
 After finding evidence in favor of voters behaving as theory might expect, I now 
