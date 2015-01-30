@@ -2167,6 +2167,8 @@ ggplot(plotdf, aes(x = x1Unscale, y = yUnscale)) +
   xlim(c(0, max(plotdf$x1Unscale))) + 
   theme_bw()
 
+# Bootstrap the beta coefficients here using bootMer
+# http://glmm.wikidot.com/faq
 @
 
 
