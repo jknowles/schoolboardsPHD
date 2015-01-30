@@ -2123,6 +2123,50 @@ ggplot(plotdf, aes(x = x1Unscale, y = yUnscale)) +
   xlim(c(0, quantile(plotdf$x1Unscale, prob = 0.9))) + 
   theme_bw()
 
+
+
+@
+
+
+% ---------------------------------------------
+% --------------------------------------------
+
+<<modFitplot2, eval = FALSE>>=
+plotdf <- augment(mixedMod1lagsb)
+plotdf$yUnscale <- (plotdf$turnout * 2 * moddatScaleLag["turnout", 2]) + 
+   moddatScaleLag["turnout", 1]
+plotdf$yhatUnscale <- (plotdf$.fitted * 2 * moddatScaleLag["turnout", 2]) + 
+   moddatScaleLag["turnout", 1]
+plotdf$x1Unscale <- (plotdf$turnoutLag2 * 2 * moddatScaleLag["turnoutLag2", 2]) + 
+   moddatScaleLag["turnoutLag2", 1]
+plotdf$yhatFixed <- (plotdf$.fixed * 2 * moddatScaleLag["turnout", 2]) + 
+   moddatScaleLag["turnout", 1]
+
+plotdf$x1Unscale <- plotdf$x1Unscale * 100
+plotdf <- plotdf[plotdf$x1Unscale < 99, ]
+
+plotSlope <- coefficients(lm(yUnscale ~ x1Unscale, data = plotdf))[2]
+plotInt <- coefficients(lm(yUnscale ~ x1Unscale, data = plotdf))[1]
+
+cases <- sample(unique(plotdf$distid), 12)
+plotdf <- plotdf[plotdf$distid %in% cases, ]
+
+
+ggplot(plotdf, aes(x = x1Unscale, y = yUnscale)) +
+         geom_point() + 
+  geom_point(aes(x = x1Unscale, y = yhatUnscale), color = I("red")) + 
+  geom_point(aes(x = x1Unscale, y = yhatFixed), color = I("purple")) +
+  geom_smooth(aes(x = x1Unscale, y = yUnscale), method = "lm", 
+              se = FALSE, color = I("black")) + 
+  geom_smooth(aes(x = x1Unscale, y = yhatUnscale), method = "lm", 
+              se = FALSE, color = I("red")) + 
+  geom_smooth(aes(x = x1Unscale, y = yhatFixed), method = "lm", 
+              se = FALSE, color = I("purple")) +
+  facet_wrap(~distid) + 
+  geom_abline(intercept = plotInt, slope = plotSlope, linetype=2) +
+  xlim(c(0, max(plotdf$x1Unscale))) + 
+  theme_bw()
+
 @
 
 
