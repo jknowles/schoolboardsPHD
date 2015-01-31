@@ -164,7 +164,7 @@ predict very different behaviors for differently sized electorates. As shown
 in \ref{chap:wisco} school board 
 elections are typically comprised of small electorates where 
 P is much higher than other elections.\footnote{$P$ can be estimated using the 
-Blais-Lago calculation for the competitiveness of elections under various configurations of open seats and number of winners \citep{blaisLago}.} It remains to be seen if 
+Blais-Lago calculation for the competitiveness of elections under various configurations of open seats and number of winners \citep{blaislago}.} It remains to be seen if 
 $B$ is indeed 
 higher in such cases, as we shall see the policy preferences of candidates for 
 board are not always easily discovered by voters. Yet, game theoretic and social 
@@ -2065,7 +2065,7 @@ voter rolloff lessens.
 Assessing model fit in a mixed model framework is not as straightforward as with 
 a standard OLS regression. 
 
-<<modFitplot1, eval = TRUE, fig.cap="Comparing Model Fit for Competitiveness Model. Black represents observed value, purple represents fixed effect estimate, and the red dots are the estimate from the full model.>>=
+<<modFitplot1, eval = TRUE, fig.cap="Comparing Model Fit for Competitiveness Model. Black represents observed value, purple represents fixed effect estimate, and the red dots are the estimate from the full model.">>=
 library(broom)
 plotdf <- augment(mixedModcloseC)
 plotdf$yUnscale <- (plotdf$turnout * 2 * moddatScaleClose["turnout", 2]) + 
