@@ -947,8 +947,14 @@ by voters in school board elections.
 
 \subsection{Estimation Equations}
 
-I now turn to operationalizing Table \ref{turnoutH} into estimable equations to 
-look for evidence of voter turnout theories in school board elections. 
+In my first set of models I look for evidence that the explanations described in Table 
+\ref{turnoutH} for voter turnout in elections are supported in the data 
+available on Wisconsin school boards. In the second case, I change my dependent variable to be the distance between the turnout for 
+the school board races in a school district, and the top non-partisan statewide 
+race in the district. In each case, I start with a specification that pools 
+observations across years and districts and estimates the impact of the key independent 
+variable and a few key demographic control variables described in Section 
+\ref{sec:turnData}. These equations look like: 
 
 \[(1) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{t} + \psi Z_{t}+\epsilon_{t} \] \\
 
@@ -994,30 +1000,43 @@ RefWorks:218,RefWorks:320}.
 \subsection{Model Specifications}
 \label{subsec:spec}
 The equations represented above are stylized representations of simple OLS models 
-that treat each district-year as an independently distributed observation. In my first 
-set of models I look for evidence that the explanations described in Table 
-\ref{turnoutH} 
-are supported in the data available on Wisconsin school boards. In the second 
-case, I change my dependent variable to be the distance between the turnout for 
-the school board races in a school district, and the top non-partisan statewide 
-race in the district. In each case, I start with a specification that pools 
-observations across years and districts and estimates the impact of the key independent 
-variable and a few key demographic control variables described in Section 
-\ref{sec:turnData}. 
+that treat each district-year as an independently distributed observation. In 
+reality, the data is more complex and requires some additional model features 
+to appropriately estimate the impact of key variables on turnout. I outline 
+two separate methods. 
 
-Models are fit using two methods. The first method is a pooled linear regression 
-model that includes fixed effects for years and for school districts. As each 
-school district is observed between two and ten times, the assumption of independent 
+The first method is a simple extension of the pooled linear regression 
+model that includes fixed effects for years and for school districts. This 
+eliminates time-invariant unobservable district characteristics as well as 
+election specific unobservable characteristics between districts. However, 
+the standard errors from these models are overly optimistic because each 
+school district is observed between two and ten times and the assumption of independent 
 and identically distributed random variables is violated. To correct for this, 
 I adjust the standard errors by using the Huber-White estimator of the covariance 
 matrix through the \texttt{robcov} function implemented in \citet{rms}'s \texttt{rms} 
 package. This estimator will correct for the clustering of school districts
 between the observations and avoid overly optimistic standard errors for 
-the $\beta$ coefficients \citep{hwhite,hwhite2,pjhuber}. 
+the $\beta$ coefficients \citep{hwhite,hwhite2,pjhuber}.
+
+Results from these models are placed in Appendix \ref{sec:appendixT}. 
+However, there are many reasons to doubt the validity of the fixed effect 
+specification. First, the district fixed effects are overly conservative as 
+many of the key underlining predictors are not highly variable year to year 
+within districts and number of observations per district varies. Second, there are 
+other signs of specification problems including highly inflated standard errors for 
+other parameters and highly inflated coefficients for other parameters. The district estimates themselves are problematic, the model is likely underpowered to fit them properly and they are likely too sensitive to outliers and therefore overfit. 
+There are two approaches to adjusting for this -- penalized estimation or partial pooling approach using a mixed effect model. With over 300 grouping parameters 
+to estimate, it is better to turn to a partial pooling approach that allows 
+estimates of the district effect to be shrunk toward the pooled grand estimate 
+in order to avoid overfit. A partial pooling approach is also known as a mixed 
+effect or hierarchical linear model (HLM). Partial pooling models can be fit in R 
+using the \texttt{lme4} package \citep{lme4, gelhill}. I employ the same 
+specification as the fixed effect model before, but now model the district effects 
+as random effects in order to avoid overfit. 
+
 
 In addition to robust fixed effect models described above, I also fit multi-level 
-regressions. The multilevel approach is not common in longitudinal applications in political 
-science, but has been used by \citet{oliver} to understand the relationship between 
+regressions. The multilevel approach is not common in longitudinal applications in political science, but has been used by \citet{oliver} to understand the relationship between 
 individual survey respondents and their communities in a study of local elections. 
 The choice between these two approaches is as much theoretical as it is econometric, 
 and as a result I run my analyses with both approaches.\footnote{The Hausman test 
@@ -1039,15 +1058,14 @@ among individual units, e.g. school districts \cite{mlmod,raudbryk}. One way to 
 this approach is in the equation:
 
 \begin{align*} 
-VP_{i} = \alpha + \gamma_{j} + \beta X_{ij} + \psi Ce_{i} + \epsilon  \\ 
-\gamma_{j} &=  \alpha_{j} + \zeta Z_{j}
+VP_{i} &= \alpha + \gamma_{j} + \beta X_{ij} + \lambda Z_{ij} + \epsilon_{ij}  \\ 
+\gamma_{j} &=  \alpha_{j} + \epsilon_{j}
 \end{align*}
 
 The only difference between this approach the linear models with equations above 
 is the presence of a unique intercept for each school district \emph{j}. 
 Here the $\gamma_{j}$ terms represent independent intercepts for each school 
-district as predicted by $Z_{j}$, a vector of school district characteristics 
-that are time invariant. $X_{lag}$ is a vector of time variant school district 
+district as predicted by $\alpha_{j}$, a unique intercept for each school district. $X_{ij}$ is a vector of time variant school district 
 characteristics such as prior turnout. In the mixed-effect 
 framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
 is explained by the linear combination of $\alpha$ and $\zeta$. The equation above 
@@ -1055,30 +1073,33 @@ is flexible to the inclusion of the other predictors identified.
 
 This method does not account for the time structure of the data, as no 
 explicit parameterization of time is included. As I have no reason to believe that 
-time linearly related to the probability of an election being contested, this is 
+time linearly related to voter turnout, this is 
 appropriate. However, I do want to control for secular effects of election year 
 variability that reaches across districts. One approach would be to include 
 fixed effects for years in the $X$ vector. However, the multilevel approach is 
 flexible enough to allow for a third group -- years, to be included in the model. 
 The model below includes a third grouping level for years. 
 
+
+
 \begin{align*} 
-VP_{t} = \alpha + \gamma_{jt} + \lambda_{t} + \beta X_{ijt} + \psi Ce_{ijt} + \epsilon  \\ 
-\gamma_{jt} &=  \alpha_{jt} + \zeta Z_{jt} \\
-\lambda_{t} &= \alpha_{t}
+VP_{t} &= \alpha + \gamma_{j} + \psi{t} + \beta X_{ijt} + \lambda Z_{ijt} + \epsilon_{ijt}  \\ 
+\gamma_{jt} &=  \alpha_{j} + \epsilon_{j} \\
+\psi{t} &= \alpha_{t} + \epsilon_{t}
 \end{align*}
 
 This approach allows year parameters to be estimated independently without assuming 
-a functional form for the relationship between the probability of candidate emergence 
-and time.
+a functional form for the relationship between voter turnout and time allowing for 
+the model to reflect secular effects of specific elections in the data. 
+
+The proper model of the random effects is important. Using the \texttt{RLRsim} 
+package in R, I test the specification of the random effects using an exact 
+likelihood ratio test and an exact restricted likelihood ratio test \cite{RLRsim}. 
+The first test is used to examine whether the random effects are the appropriate specification. The restricted likelihood ratio test is used to compare 
+two nested models with different random effect specifications to determine the appropriate specification. In this case, a model with random effects for district and year was compared against a model with random effects only for district. The 
+results of these tests for all of the models is included in the Appendix \ref{sec:appendixT}. 
 
 \subsection{Computation}
-
-Due to the suspicion of measurement issues in the key estimate of turnout, I use 
-the approach taken by \citet{berry2} on administrative data and exclude all 
-observations that fall outside of five standard deviations of the normal values 
-for the dependent variable. 
-
 
 %Demonstrate outliers
 % Talk about penalized maximum likelhood
@@ -1086,16 +1107,7 @@ for the dependent variable.
 % Talk about mixed effect regression 
 % Bayesian and tobit regression options
 % Triangulating 
-
-
-The initial pooled linear regression is shown in Table \ref{tab:lagmods} as the 
-first column. This model includes no adjustments for clustering to the standard 
-errors. It is included here to demonstrate the need for specification testing 
-in the Wisconsin dataset due to the ragged panel structure of the data. 
-
 %TODO: Add Blais-Lago to the calulation
-%TODO: Code contestation like in chapter 3
-%TODO: Rescale variables and add discussion to that
 %TODO: 
 
 <<simpleModel, fig.cap="Regression Diagnostics for A Simple Multiple Regression", fig.height=9>>=
@@ -1153,8 +1165,8 @@ autoplot(naive1)
 
 @
 
-Figure \ref{fig:simpleModel} shows regression diagnostics for this simple multiple 
-regression. The key result here is that there are a number of high leverage 
+Diagnostics from the simple pooled linear regression without fixed effects or 
+clustered standard errors are shown in Figure \ref{fig:simpleModel}. The key result here is that there are a number of high leverage 
 observations that appear to be extreme outliers. Additionally, the upper left 
 quadrant of Figure \ref{fig:simpleModel} suggests the presence of some level of 
 heteroskedacticity in the results, a likely result of the clustering and repeated 
@@ -1174,8 +1186,7 @@ the value of the dependent variable is more than five standard deviations above
 the group average. This is less than half of 1\% of the observations and is unlikely 
 to be influential, however, it is also likely that such deviations are due to 
 measurement error either in the VAP denominator or in the aggregation of district 
-board election vote counts themselves. I opt to remove these cases in the analyses 
-that follow. In addition, I adopt the strategies outlined in 
+board election vote counts themselves. Due to the suspicion of measurement issues in the key estimate of turnout, I use the approach taken by \citet{berry2} on administrative data and exclude all observations that fall outside of five standard deviations of the normal values for the dependent variable. In addition, I adopt the strategies outlined in 
 Subsection \ref{subsec:spec} - year fixed effects, district fixed effects, and 
 clustered standard errors to provide a more robust view of the effects in school 
 board turnout. The results for these alternative specifications are displayed 
@@ -1255,7 +1266,14 @@ lagmodTab <- apsrtable(dumbRLM1, dumbRLMbest, dumbRLM2, se="robust",
 @
 
 Table \ref{tab:meTurnout} confirms the theoretical expectations from above to a 
-large extent. 
+large extent. The higher the prior school board election turnout, the higher 
+the turnout in the current school board election. Larger districts have lower 
+turnout. When seats are less competitive, the election has lower turnout. 
+
+The random effect specification allows me to measure the variation between years 
+and between districts. As Table \ref{tab:meTurnout} shows, there is substantial 
+between district and across year variation in turnout for spring non-partisan 
+school board elections. 
 
 % Lagged turnout increases turnout
 % district size decreases turnout
@@ -1274,40 +1292,6 @@ large extent.
 % District FE sign reverses and lagged turnout is related to negative turnout
 %% Reversion to the mean, small within district differences, small within district samples
 %% Lose a lot of statistical significance because the models seem to fall apart
-
-
-
-Prior turnout appears to be a substantively important predictor in Table \ref{tab:lagmods}.\footnote{Using twice-lagged school board turnout. Results are not substantively different 
-when I estimate using single lagged school board turnout, as shown in Table \ref{tab:lagmods2}.} 
-Model 1 represents a standard pooled regression with clustered standard errors to 
-correct for the violation of the IID assumptions of OLS. The key independent variable is 
-twice lagged turnout for school board elections, which represents our test of habit 
-forming in school board elections. %RESULTS OF ONCE LAGGED AVAILALE IN APPENDIX 
-Control variables included are some standard demographic predictors of voter turnout including per 
-capita income, education level, percent of population over 65, percent of population 
-that is white. Additionally, a school district specific control, the share of residents 
-in owner-occupied housing is included to reflect the tight coupling between school boards 
-and property ownership. 
-
-Only in the district fixed effect specification does the effect of prior turnout 
-disappear. However, there are many reasons to doubt the validity of this specification. 
-First, the district fixed effects are overly conservative as many of the key underlining 
-predictors are not highly variable year to year within districts. Second, there are 
-other signs of specification problems including highly inflated standard errors for 
-other parameters and highly inflated coefficients for other parameters. The district estimates themselves are problematic, the model is likely underpowered to fit them properly and 
-they are likely too sensitive to outliers and therefore overfit. There are two 
-approaches to adjusting for this -- penalized estimation or partial pooling approach using 
-a mixed effect model. With over 300 
-grouping parameters to estimate, it is better to turn to a partial pooling approach that 
-allows estimates of the district effect to be shrunk toward the pooled grand estimate 
-in order to avoid overfit. Partial pooling 
-models can be fit in R using the \texttt{lme4} package \citep{lme4, gelhill}. 
-I employ the same specification as the fixed effect model before, but now model 
-the district effects as random effects in order to avoid overfit. The results 
-appear in Table \ref{tab:meTurnout} and appear much in line with the results 
-from the models in Table \ref{tab:lagmods}, but now also directly model the 
-clustered structure of the district terms. 
-
 
 <<model1robustness>>=
 dumbRLM1b <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
@@ -1350,7 +1334,6 @@ appA1 <- apsrtable(dumbRLM1b, dumbRLMbestb, dumbRLM2b, se="robust",
           Sweave=FALSE, coef.names = coefnamesLag2,
           float = "sidewaystable")
 @
-
 
 \begin{tiny}
 <<lagModMM, results ='asis'>>=
@@ -1406,29 +1389,13 @@ lagLRT$callFull <- mixedMod1lagsb@call
 lagLRT$callSmall <- m.slope@call
 @
 
-The proper model of the random effects is important. Using the \texttt{RLRsim} package 
-in R, I test the specification of the random effects using an exact likelihood 
-ratio test and an exact restricted likelihood ratio test \cite{RLRsim}. The first 
-test is used to examine whether the random effects are the appropriate specification. 
-The restricted likelihood ratio test is used to compare two nested models with 
-different random effect specifications to determine the appropriate specification. 
-In this case, a model with random effects for district and year was compared against 
-a model with random effects only for district. In both cases, the additional 
-random effect terms significantly improve model fit and in Table \ref{tab:meTurnout} 
-this final model is what is shown. 
-
-
-<<coefficients1>>=
-#library(coefplot)
-#coefplot(mixedMod1b, intercept = FALSE) + theme_dpi()
-@
-
 \subsection{Rational Voters}
 
 My second empirical question was to examine the relationship between electorate size 
 and turnout, and electorate size, margin of victory and turnout. I use an adjusted estimate 
 of the voting age population - the denominator in the turnout variable - to serve as 
-an estimate of the electorate size. This is a conservative estimate of the actual electorate 
+an estimate of the electorate size.\footnote{Address possible endogeneity here with 
+the dependent variable.} This is a conservative estimate of the actual electorate 
 size in school board elections, which as we have seen can be as low as 15\% of the voting 
 age population. If we assume that voters adjust the electorate size equally across jurisdictions 
 when making their assessment of the perceived uiltity of voting, then this is not a factor. 
@@ -1517,19 +1484,19 @@ rm(ADMIN, VAP_dist, dist.tmp, dvp, errors, plotdf, presTurn, canInterp,
 
 
 Table \ref{tab:meClose} shows the partial-pooling results for the competitiveness 
-of elections. Variables are the same pretty much from table \ref{tab:meTurnout}. 
+of elections. The control variables are the same from Table \ref{tab:meTurnout}. 
 These models include two separate measures of the closeness of elections. The first 
 builds on the coding schema in Chapter \ref{chap:candidacy} to label races as 
 contested or uncontested based on the presence of candidates. As expected, uncontested 
 races have much lower turnout than contested races. Races contested as open seats 
-or by incumbents have no detectable difference on turnout. 
+or by incumbents have no detectable difference on turnout.  % Note: need to interact 
+% these with VAP
 
 Again, the Blais-Lago quotient matters and is in the expected direction -- less 
 competitive elections result in less turnout. However, the expectation that the 
 relationship between competitiveness and district size would have an effect on 
-turnout is not confirmed here. \footnote{In the fixed effect specifications, the 
-same specification problems from Table \ref{tab:lagmods} appaers in Table 
-\ref{tab:closemods}. Again, I turn to partial pooling to resolve this issue.}
+turnout is not confirmed here. %TODO: Include footnotes about differences in 
+% fixed effect specification
 
 \begin{tiny}
 <<closeModMM, results='asis'>>=
