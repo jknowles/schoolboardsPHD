@@ -894,12 +894,12 @@ some common demographic control variables. Political scientists have long establ
 the strong relationship between certain demographic characteristics and voter 
 turnout in partisan elections. % CITENEEDED
 In order to understand the effect of other variables on turnout, it is desirable to 
-remove as many other explanations as possible given the availability of data and 
-the ability to generate valid estimates. Fortunately, using US census data, an 
-abundance of data is available on the population of Wisconsin school districts. 
+remove as many other explanations as possible given the availability of data. 
+Fortunately, using US census data, an abundance of data is available on the 
+population of Wisconsin school districts. 
 
 
-<<demog1, fig.cap="Pairs Plot of Demographic Variables and Turnout", fig.height = 9>>=
+<<demog1, fig.cap="Pairs Plot of Demographic Variables and Turnout in 2012", fig.height = 8, fig.width=8>>=
 library(GGally)
 
 dist_turn$median_incomeLOG <- log(dist_turn$median_income)
@@ -917,14 +917,9 @@ ggpairs(dist_turn[dist_turn$turnout < 0.95 &
         title = "Pairs Plot of Key Control Variables")
 @
 
-Figure \ref{fig:demog1} uses a "pairs plot" to examine the relationships between 
-these dependent variables and the outcome. Turnout is indeed positively correlated 
-with all of these demographic controls to differing degrees as judged by the linear 
-smoother fit in each scatterplot in the first column. There are also strong relationships 
-between these individual demographic categories, with particularly strong relationships 
-between education, age, and income sticking out, as well as a strong negative between 
-age and owner occupied housing and age and education level.\footnote{This pairs plot 
-is produced using the "GGally" package in R \citep{ggally}.} 
+Figure \ref{fig:demog1} uses a ``pairs plot" to examine the relationships between 
+these dependent variables and the outcome for the year 2012. Turnout is 
+indeed positively correlated with all of these demographic controls to differing degrees as judged by the linear smoother fit in each scatterplot in the first column. There are also strong relationships between these individual demographic categories, with particularly strong relationships between education, age, and income, as well as a strong negative between age and owner occupied housing and age and education level.\footnote{This pairs plot is produced using the \texttt{GGally} package in R \citep{ggally}.} 
 
 % Write up findings
 % OOH_share and median income are highly correlated
@@ -934,7 +929,6 @@ is produced using the "GGally" package in R \citep{ggally}.}
 % What about adding fall turnout?
 % ALl of these controls are much more strongly correlated with the fall turnout 
 % than with the school board election turnout
-
 % Evidence school board electorate is different than regular electorate
 
 \clearpage
@@ -956,66 +950,53 @@ by voters in school board elections.
 I now turn to operationalizing Table \ref{turnoutH} into estimable equations to 
 look for evidence of voter turnout theories in school board elections. 
 
-\[(1) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{lag} + \psi Ce_{t}+\epsilon \] \\
+\[(1) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{t} + \psi Z_{t}+\epsilon_{t} \] \\
 
-Here $VP_{t}$ is voter turnout in the spring election $t$. $\alpha$ is the intercept and $x_{lag}$ 
-represents a vector of lagged covariates such as turnout in school district $i$. 
-Additionally, we include a term $Ce_{t}$ for the level of candidate participation 
-in the election as a control. As per \citet{habit02}, a high predictive value 
-of the lagged term, especially in smaller districts, would suggest the electorate 
-is largely consistent of the same individuals year to year, suggesting that learning 
-is occurring. 
+Here $VP_{t}$ is voter turnout in the spring election $t$. $\alpha$ is the intercept and $X_{t}$ 
+represents a vector of covariates including the control variables described 
+above for school district $i$. All models control for competition, demographic 
+covariates, district size, and whether or not turnout was measured by a district 
+wide race.\footnote{The districtwide variable is a dummy variable to control for the 
+measurement error associated with school districts where there was no district wide 
+race to estimate voter turnout in board elections from.} I include the term $Z_{t}$ to represent the variable 
+of interest in each model. 
 
-Next, I turn to testing the pivotal-voter model using a similar method as \citep{Coate2008582}. 
+The size of the electorate is important in many theories of voter turnout. 
+\citet{dahl1973size} first hypothesized that the motivation to participate would be higher in small electorates, and there has been some evidence to support this \citep{Frandsen2002}. Thus, in all models size is included in the $X_{t}$ vector and in 
+some models it is included as an interaction to test for differential impacts 
+of key variables across the size of the electorate. 
+
+The $Z_{t}$ vector includes different variables across the different models including 
+lagged turnout, district size, race competitiveness, and social group membership in the school district. For example, a high predictive value of lagged turnout would suggest the electorate is habit forming -- especially if the effect is magnified in smaller districts\citep{habit02}.
+
+The pivotal-voter model I test next uses a similar method as \citet{Coate2008582}. 
 The pivotal-voter model predicts that turnout should be higher in elections that 
 are closer and that this effect should be greater in smaller electorates.
-Thus I include the $M_{t}$ for the margin of victory for candidates in the school 
-board election in the equation below. 
+Thus I include in the $Z_{t}$ vector a measure of the margin of victory. I also 
+include an interaction effect to explore whether or not voters are more likely 
+to turn out for close races in small electorates, where their $P$, probability of 
+deciding the election, is greatest. In a game-theoretic perspective, the smaller electorate would drive turnout because the costs of non-voting can be more easily estimated by voters in small electorates, and the expected benefit of such 
+non-voting is smaller. This interaction model is represented in equation 2. 
 
-%% do we consider controlling for the effect of candidate participation?
-%% Consider including candidate participation in table 4.1?
+\[(2) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{t} + \psi Z_{t} x \lambda S_{t} +
+\epsilon_{t} \] \\
 
-\[(2) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta M_{t} + \psi Ce_{t} + \epsilon \] \\
-
-The size of the electorate is important in many theories of voter turnout. \citet{dahl1973size} 
-first hypothesized that the motivation to participate would be higher in small 
-electorates, and there has been some evidence to support this \citep{Frandsen2002}. 
-Thus, in equation three we include a $\theta S_{t}$ term that controls for the 
-size of the electorate. In a game-theoretic perspective, the smaller electorate 
-would drive turnout because the costs of non-voting can be more easily estimated 
-by voters in small electorates, and the expected benefit of such non-voting is 
-larger. 
-
-\[(3) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta S_{t} + \psi Ce_{t} + \epsilon \] \\
-
-A pure \citet{Downs57} model would suggest that as the value of PB increases, then 
-so should turnout. Thus, equation 4 contains terms for both the size of the electorate 
-and the closeness of victory $ \theta S_{t} *\theta M_{t}$. Unfortunately, this 
-equation is not able to estimate the value of B, or the expected benefit of 
-the candidate in question to a voter. This will be addressed in the next section. 
-
-\[(4) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta S_{t} *\theta M_{t}  + \epsilon \] \\
-
-Finally, following \citet{Fowler2005}, we investigate the impact that social group 
-membership may have on voting. In equation 5, $P_{t}$ represents a measure of the
-polarization in the community. There are two options for measuring $P_{t}$ - either 
-by looking at the partisan makeup of the electorate using the partisanship of the 
-school district in partisan statewide elections, or looking at teacher membership 
-as a share of the total electorate. There has been little work explicitly testing the 
-former, but some evidence that the share of teachers in the electorate is an 
-important driver of turnout and policy change in school board elections \citep{RefWorks:207, 
+Finally, following \citet{Fowler2005}, I investigate the impact that social group 
+membership may have on voting by this time including a measure of the size of the 
+social group in the community in the $Z_{t}$ vector. I explore a separate model 
+for each type of social group -- the partisanship of the school district in partisan statewide elections, or the share of the total electorate that is teachers. There 
+has been little work explicitly testing the influence of political parties in 
+non-partisan school board races, but some evidence that the 
+share of teachers in the electorate is an important driver of turnout and 
+policy change in school board elections \citep{RefWorks:207, 
 RefWorks:218,RefWorks:320}. 
-
-\[(5) \hspace{0.4 in}  VP_{t} = \alpha + \beta X_{lag} + \theta S_{t} 
-+ \gamma P_{t} + \psi Ce_{t} + \epsilon \] \\
-
 
 \subsection{Model Specifications}
 \label{subsec:spec}
-Voter turnout is driven by many forces. Aside from the exogenous shock provided 
-by Scott Walker's election and the passage of Act 10, the ability to test the 
-causal impact of any factor on school board elections is limited. In my first 
-set of models I look for evidence that the explanations described in Table \ref{turnoutH} 
+The equations represented above are stylized representations of simple OLS models 
+that treat each district-year as an independently distributed observation. In my first 
+set of models I look for evidence that the explanations described in Table 
+\ref{turnoutH} 
 are supported in the data available on Wisconsin school boards. In the second 
 case, I change my dependent variable to be the distance between the turnout for 
 the school board races in a school district, and the top non-partisan statewide 
