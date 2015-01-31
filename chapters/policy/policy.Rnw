@@ -57,6 +57,18 @@ election.
 % Board turnover writ large = change
 % Incumbent defeat should change things
 
+% %TODO Fix this
+% A key factor to control for in the case of school boards is the fiscal issue dimension. 
+% Researchers have studied the impact of economic conditions on voting before, and 
+% have found some evidence that economic conditions influence voting patterns 
+% \citep{EconandOutcomes2000}. 
+% If we reduce school boards to a two-dimensional game with incumbents and non-incumbents 
+% along one dimension and the relative fiscal performance along the other, ceteris 
+% paribus we would expect that incumbents are at an advantage (and turnout is lower) 
+% when fiscal performance is strong. To measure fiscal performance we use the share 
+% of the revenue limit a district is spending.
+
+
 
 <<incdefeat, results='hide'>>=
 incDefeat <- ddply(dat[dat$electiontype == 1,], 

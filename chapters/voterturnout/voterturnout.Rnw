@@ -39,19 +39,29 @@ distAttr$TotalPopulation <- NULL
 
 
 \section{Introduction}
-Since \citet{Downs57} political scientists have been asking the question: why vote? 
-Voters in local school board elections may have been asking this question even 
-earlier. Despite the fact that in general school boards are in charge of levying 
+
+In most jurisdictions, school board elections are an annual event. Each year voters 
+are asked who they would like to lead the direction of their local schools including 
+the setting of property tax rates, management of strategic priorities, and 
+negotiating compensation with employees. In making this decision, voters have 
+precious little information to go on given the low level of campaign activity and 
+the lack of involvement by parties. Even worse, voters may have little way to 
+retrospectively rate the performance of the school board. Even if they have children
+in school, the information costs of evaluating school board performance remain 
+high. Given these difficulties, it is a wonder that anyone bothers to vote in 
+such elections. 
+
+Indeed, ever since \citet{Downs57} political scientists have been asking the question: why vote? Despite the fact that in general school boards are in charge of levying 
 a substantial share of many citizens' tax bill through property taxes and 
 collectively manage expenditures annually equivalent to the budget of the US 
 Department of Defense, when school board elections are held off-cycle turnout 
 and voter interest in them appears to be remarkably low \citep{RefWorks:333, RefWorks:321}. 
 This despite the fact that the community stake in quality education is large, not 
 just for parents of the students, but for the social, economic, and political 
-impacts that high or low quality schools can have on a community. %citation needed
+impacts that school quality can have on a community. 
 
-We know that voter turnout even in national on-cycle elections in the US remains 
-lower than many other democracies \citep{BlaisTurnout2006}. We also have an extensive 
+Voter turnout even in national on-cycle elections in the US remains 
+lower than many other democracies \citep{BlaisTurnout2006}. There is an extensive 
 literature seeking to explain patterns in turnout between years and within years 
 between social groups \citep{ParticAnnReview2004, econvoting2007, Galston2001, EconandOutcomes2000}.
 The specific puzzle of voter turnout in school board elections has even spawned 
@@ -60,8 +70,7 @@ its own set of theories with empirical tests \citep{RefWorks:311,RefWorks:243,Re
 Despite this rich ground, much work remains to be done to adequately test the 
 mechanisms at play in predicting turnout in off-cycle, local, non-partisan elections 
 like school board elections. Furthermore, theories of participation in on-cycle and 
-higher profile elections benefit from examining the limits of their generalizability and 
-exploring the mechanisms that contribute to this. In this paper I seek to explore 
+higher profile elections benefit from examining the limits of their generalizability. In this paper I seek to explore 
 voter turnout in school board elections through the lenses of the major theories of 
 voter turnout. I begin by reviewing these theories. Then, I move into a discussion 
 of school boards and the contribution a study of school boards can bring to 
@@ -82,29 +91,23 @@ Setting aside important though largely settled issues of access to the polls,
 enfranchisement laws, administrative and cognitive barriers to casting a ballot, and 
 freedom from intimidation -- all thankfully of minimal concern in American school 
 board elections -- there remains a wealth of intricate and interrelated factors 
-which shape a voter's decision to cast a ballot.%CITATION needed here
-I broadly group this literature 
+which shape a voter's decision to cast a ballot. I broadly group this literature 
 into three major strands and include the theories that have sprung up uniquely 
 around school boards as a fourth category. My aim is not to fully summarize this 
 rich theoretical ground, but to reframe these debates in light of the particular 
-challenge of school board elections. As prologue, I succinctly summarize the 
-unique case against voting in school board elections as follows:
-
-\begin{myitemize}
-  \item I don't know when the election is, or I forgot. (salience)
-	\item I don't know who is running. (attention)
-	\item I don't have a choice - no one is challenging the incumbent. (opportunity)
-	\item I don't care which candidate wins. (lack of partisan cues)
-	\item I'm satisfied with my schools. (lack of impetus)
-	\item I don't care how schools perform or what the property tax is (salience)
-	\item My vote won't matter
-\end{myitemize}
-
-These concerns of our average potential voter are important to keep in mind as 
-the major strands of voter participation theory are sketched out in the next 
-sections. Other researchers studying municipal or provincial elections have 
-found similar concerns with turnout \citep{Hajnal01052003, PPIC2002}. 
-
+challenge of school board elections. 
+% As prologue, I succinctly summarize the 
+% unique case against voting in school board elections as follows:
+% 
+% \begin{myitemize}
+%   \item I don't know when the election is, or I forgot. (salience)
+% 	\item I don't know who is running. (attention)
+% 	\item I don't have a choice - no one is challenging the incumbent. (opportunity)
+% 	\item I don't care which candidate wins. (lack of partisan cues)
+% 	\item I'm satisfied with my schools. (lack of impetus)
+% 	\item I don't care how schools perform or what the property tax is (salience)
+% 	\item My vote won't matter
+% \end{myitemize}
 
 The turnout literature asks two fundamental questions -- why does 
 anyone vote in the first place, and why do some people vote sometimes, and others 
@@ -118,25 +121,30 @@ school board elections in Wisconsin.
   \item Habits and Socialization
 \end{myitemize}
 
+Other researchers studying subnational municipal or provincial elections have 
+found support for these explanations of turnout \citep{Hajnal01052003, PPIC2002}. 
+
+
 \subsection{Rational Choice}
 
 \citet{Downs57}'s elegant statement of the problem of voting as a question of 
 why anyone would vote when their vote has such a small probability of influencing 
 the outcome presented political scientists with a challenge of understanding why 
-people do vote. The now famous formal statement of the problem as given by Downs:
+people do vote. In the formal statement of the problem as given by Downs:
 
 \[ R = PB - C > 0 \]
 
-R is the net expected utility of voting, P is the probability of influencing the 
-election, B is the difference in the expected utility of the policies of the 
-two candidates, and C refers to the cost of voting. \citet{VoteCalculus68}'s 
-refined the equation further by adding the D term:
+$R$ is the net expected utility of voting, $P$ is the probability of influencing the 
+election, $B$ is the difference in the expected utility of the policies of the 
+two candidates, and $C$ refers to the cost of voting. Voters should not vote 
+unless their expected benefit from having their preferred candidate elected multiplied 
+by the chance of their vote being the decisive vote exceeds the costs of voting. A first attempt to answer the empirical observation that many more voters vote than 
+should be expected under this model came from \citet{VoteCalculus68}'s 
+further refinement of the problem:
 
 \[ R = PB - C + D > 0 \]
 
-which was intended to capture the benefit of self-expression associated with voting -- 
-either self-expression of candidate preference, or self-expression of the utility of 
-voting. However, the D-term merely shifted the debate - the probability of benefit 
+The addition of the $D$ term is intended to capture the benefit of self-expression associated with voting -- either self-expression of candidate preference, or self-expression of the utility of voting. However, this $D$ term merely shifted the debate - the probability of benefit 
 from an individual vote still remained zero, so voters would only vote when $D > C$ - 
 that is, when the benefit of self-expression was greater than the cost of voting 
 \citep{nonvoting74, feddersenreview}.\footnote{\citet{Dowding2005} places an interesting 
@@ -144,20 +152,20 @@ wrinkle on this by questioning why voters care about being the decisive vote whe
 politicians so often seek large victories to ensure a safe seat or to earn a mandate. 
 This seems less germane to the present case - school board members and the community 
 are unlikely to interpret a substantial victory as a mandate.} 
-While the D term did not solve the puzzle posed by \citet{Downs57}, it 
-did touch off a decades long research project to uncover why the D term varies 
+While the $D$ term did not solve the puzzle posed by \citet{Downs57}, it 
+did touch off a decades long research project to uncover why the $D$ term varies 
 among voters, and the functional form of this benefit of self-expression.\citep[see:][]{KanYang2001,Dowding2005,feddersenreview,Schuessler1} 
-
-%%%%%%%%%%% CITES %%%%%%%%%%%%%%%%%
 
 While I will not attempt to summarize this theoretically rich debate here 
 \citep[see instead:][]{feddersenreview,geysreview}, I do want to highlight that most empirical 
 tests of these voter turnout theories have focused on large-scale electorates such 
 as state or national elections. There exists a class of voter turnout theories that 
-predict very different behaviors for differently sized electorates. School board 
-elections are typically comprised of small electorates (STATISTIC NEEDED) where 
-P is much higher than other elections.\footnote{P can be calculated following the 
-method of (CITATION) for school board races.} It remains to be seen if B is indeed 
+predict very different behaviors for differently sized electorates. As shown 
+in \ref{chap:wisco} school board 
+elections are typically comprised of small electorates where 
+P is much higher than other elections.\footnote{$P$ can be estimated using the 
+Blais-Lago calculation for the competitiveness of elections under various configurations of open seats and number of winners \citep{blaisLago}.} It remains to be seen if 
+$B$ is indeed 
 higher in such cases, as we shall see the policy preferences of candidates for 
 board are not always easily discovered by voters. Yet, game theoretic and social 
 mobilization theories of turnout expect that in smaller electorates the collective 
@@ -166,8 +174,8 @@ behavior of the electorate or social group could spur turnout to be higher.
 % Game theoretic
 
 In the game theoretic case the argument is that if everyone pursues the optimal 
-strategy of not voting, then the value of PB increase. This sets of a strategic 
-game among voters where the value of P is determined by the strategies selected by 
+strategy of not voting, then the value of $PB$ increase. This sets of a strategic 
+game among voters where the value of $P$ is determined by the strategies selected by 
 all other voters in the electorate \citep{Palfrey83, Palfrey85,Ledyard84}. In order for positive turnout to emerge from 
 such a game, voters are expected to have certainty about the costs of voting and 
 the preferences of other voters -- an unrealistic assumption in large electorates that 
@@ -179,20 +187,19 @@ Other scholars find size to be an important factor in local elections, but do no
 tie this to a particular theory of voter turnout \citep{Frandsen2002}.\footnote{The size 
 question is a curious one, because at its extreme it would predict that lower-level 
 elections should thus exhibit higher turnout than national elections - a phenomenon 
-described by \citet{Horiuchi2001} as the ``turnout-twist.''}
+described by \citet{Horiuchi2001} as the ``turnout-twist.'' Evidence of this in 
+Wisconsin will be explored later.}
 
 %%%%%%%%%%% CITES %%%%%%%%%%%%%%%%%
 
 \subsection{Group Mobilization}
 
-Social networks and group organization might also help explain voter turnout. \citet[p.23]{geysreview}
-states the key of the group-based models:
+Social networks and group organization might also help explain voter turnout. \citet[p. 23]{geysreview} states the key of the group-based models:
 
 \begin{quote}
-First, groups are likely to have larger beneﬁts than individuals from political participation. 
-The reason is that politicians may provide groups with extra beneﬁts – in terms of 
+First, groups are likely to have larger benefits than individuals from political participation. The reason is that politicians may provide groups with extra benefits – in terms of 
 policies that come closer to the group’s optimum – to win the support of the group \citep{Lapp99}. 
-Second, as the political inﬂuence of a social group can be assumed to be proportional to its size
+Second, as the political influence of a social group can be assumed to be proportional to its size
 \citep{SchrWinden1991}, the group as a whole is more likely to have a 
 non-negligible impact on the election outcome. 
 \end{quote}
@@ -203,7 +210,7 @@ The theory is more nuanced because it allows for the case where the optimal stra
 for a group is to abstain from voting \citep{geysreview, Fowler2005}. 
 Crucially, such group-based mobilization relies on the group being able to enforce 
 the voting norm within the group. This enforcement has been shown to depend on 
-factors that seem especially reflected within small-scale local elections. 
+factors that seem especially of interest in small-scale local elections. 
 \citet[p.25]{GrossmanHelpman} identify three such factors: the 
 frequency of interactions within the group, the risk of social isolation resulting 
 from deviating from the group's behavior, and the ability of group members to 
@@ -213,19 +220,15 @@ transmitter of social pressure. These leaders have incentives to increase turnou
 as increasing their influence with elected officianls, and voters wanting to build 
 credibility with these leaders find that turning out to vote is important. In the case 
 of school board elections such local effects might be amplified in communities with 
-strong local organizations where monitoring costs are low. \footnote{\citet{Morton91} finds that there is an equilibrium 
+strong local organizations where monitoring costs are low.\footnote{\citet{Morton91} finds that there is an equilibrium 
 with positive turnout if at least one leader has a strict preference for a single candidate.}
 
 Notably missing from this summary is the influence that candidates and campaigns 
 have on voter turnout. While there is some evidence that education messages used 
-by candidates can be a mobilizing force for some voters and of the role campaign 
-expenditures in local elections can play in mobilizing voters \citep{SidesKarch2008, 
-Holbrook15072013}, 
-the impact of candidate campaigning and voter mobilization in school board 
-elections is likely marginal. In the most recent survey of school board members, over 
+by candidates and campaign expenditures in local elections can play in mobilizing voters \citep{SidesKarch2008, Holbrook15072013}, 
+the impact of these in school board elections is likely marginal. In the most recent survey of school board members, over 
 two-thirds of board members report their last election as being ``easy'' or ``somewhat 
-easy'', and in small districts this percentage is even higher \citep{RefWorks:322}.
-\footnote{What's more, it is hard to know how much mobilization or advertising 
+easy'', and in small districts this percentage is even higher \citep{RefWorks:322}.\footnote{Moreover, it is hard to know how much mobilization or advertising 
 candidates can do when nearly 75\% of survey respondents report spending less than 
 \$1,000 on their last campaign, and in small districts over 95\% of candidates 
 reported spending less than \$1,000 on their campaign.\citep{RefWorks:322}}
@@ -242,51 +245,53 @@ school board elections.
 \subsection{The Role of Information}
 An important addition to this theoretical base came by adding the influence of 
 limited voter information to voter turnout \citep{Matsusaka}. Voters' uncertainty 
-around the B term, the policy difference between candidates, makes voting a riskier 
+around the policy benefits, due to a dearth of information on the policy difference between candidates, makes voting a riskier 
 decision even for voters with a high predisposition for voting. The better informed 
 a voter is, the more certainty they have that their vote will increase the likelihood 
 of their policy preferences being realized. Partisan cues play an important role 
 in this framework by reducing the cost of acquiring certainty about policy preferences and
 at times drawing clear distinctions between them \citep{aldrich1993}.\footnote{
-\citet{Larcinese} adapted \citet{Matsusaka} by showing that non-partisan citizens are most 
-likely to acquire information, and thereby increase their likelihood to vote. WHY?!?!} 
+\citet{Larcinese} extended the work of \citet{Matsusaka} by showing that non-partisan citizens are most likely to acquire information, and thereby increase their likelihood to vote.} 
 
-An important feature of this school of thought is that much of the empirical testing 
-of these theories has been done in situations where voters have a high chance of being 
-incidentally, that is without incurring costs, exposed to information about the election 
-because of the high profile nature of these races \citep{aldrich1993}. The informational 
-cues provided by partisan signals in such races even further reduces this. School board
-races, for the most part, feature neither of these cost reducing features. It seems unlikely 
+An important feature of this theory is that much of the empirical testing 
+has occurred in situations where voters have a high chance of being 
+incidentally, that is without incurring costs, exposed to information about the election because of the high profile nature of these races \citep{aldrich1993}. The informational cues provided by partisan signals in such races even further reduces 
+information gaps among voters. School board races, for the most part, feature neither of these cost reducing features. It seems unlikely 
 that these higher costs are accompanied by higher benefits in such elections. Though 
 voters are assured a higher likelihood of casting the deciding vote, they are much less certain 
 that the election of candidate A over candidate B will make much of a difference in 
 their quality of life in the immediate or medium term. 
 
-% School boards may prove to be the electoral unit for which the Downsian hypothesis 
-% is the most strained. In many state school boards are sub-county administrative 
-% entities without partisan office holders and who often elect multiple members in 
-% one election cycle. Furthermore, the low level of information about school board 
-% candidates, their positions on issues, their likely vote share in an election, and 
-% the voters' own feelings on issues facing the school board make this environment 
-% dramatically different than the presidential election. What's more, the likelihood 
-% that the vote of any single voter matters in a school district is orders of 
-% magnitude larger than for state wide or nation wide office. 
+Interestingly, some studies of local elections have found that voters in these 
+elections -- though fewer -- are much more informed and engaged than non-voters 
+\citep{oliver12}. The causal direction of this relationship is not clear, but 
+there is some suggestion that the electorate in these non-partisan local races 
+has a stronger estimate of the expected benefit of their candidate winning than 
+non-voters.
 
-%%%%%%%%%%% CITES %%%%%%%%%%%%%%%%%
+School boards are a fascinating lens through which we can explore the Downsian 
+hypothesis and its extensions. In many states school boards are sub-county 
+administrative entities without partisan office holders and who often elect multiple members in 
+one election cycle. Furthermore, the low level of information about school board 
+candidates, their positions on issues, their likely vote share in an election, and 
+the voters' own feelings on issues facing the school board make this environment 
+dramatically different than the presidential election. What's more, the likelihood 
+that the vote of any single voter matters in a school district is orders of 
+magnitude larger than for state wide or nation wide office. 
 
 \subsection{Voter Socialization}
 
-Other scholars have found that the D term can be endogenous for individuals from 
+Other scholars have found that the D term can be endogenous within individuals from 
 election to election \citep{Plutzer2002}. Experimental 
-evidence has found that ``Voting and abstention, in other words, are habit forming'' 
+evidence has found that ``voting and abstention, in other words, are habit forming'' 
 \citep[p.540]{Gerber2003} This is related to the group mobilization arguments 
 above because social groups may well be the mechanism by which the habit is 
 formed \citep{Kanazawa2000}. Particularly in groups that interact frequently or 
-in tight knit communities social rewards may be found for voting and sanctions 
+small communities with low monitoring costs, social rewards may be found for 
+voting and sanctions 
 may be made for those who abstain \citep{Fowler2005}. Then, citizens who are 
 rewarded for their vote (via the election of their preferred candidate) or punished for their abstention
-(through the election of a less-preferred candidate) acquire an increased prefer-
-ence for voting. In contrast, if their voting is punished or their abstention is
+(through the election of a less-preferred candidate) acquire an increased preference for voting. Conversely, if their voting is punished or their abstention is
 rewarded, they lose some of their preference for voting. This has been considered 
 in other cases by political scientists as well \citep{ParticAnnReview2004}.\footnote{
 Other scholars have found that not just the depth and frequency of interactions with 
@@ -309,7 +314,7 @@ influx of turnout in the prior election has influenced the current election.
 
 \subsection{Dissatisfaction Theory}
 
-In Chapter \ref{chap:intro} we introduced dissatisfaction theory as the 
+In Chapter \ref{chap:intro} I introduced dissatisfaction theory as the 
 dominant theoretical paradigm for understanding school board elections.
 This theory traces its roots back to \citet{RefWorks:348}'s concept of critical 
 elections and \citet{RefWorks:319}'s conception of pluralism. It describes an electoral system with relative stability and little 
@@ -323,33 +328,12 @@ participation in the election. Incumbents are defeated because new voters enter
 the game. Yet, until now, voter turnout in school board elections has not been 
 used to test dissatisfaction theory explicitly, though it has received limited 
 attention in understanding other phenomena of local education politics \citep{RefWorks:248, 
-RefWorks:249, RefWorks:207, RefWorks:218}. \footnote{Taxpayers also have another 
+RefWorks:249, RefWorks:207, RefWorks:218}.\footnote{Taxpayers also have another 
 option for expressing their dissatisfaction, which is to move jurisdictions \citep{MinkoffLyons}. 
 In Wisconsin, yet another option of expressing dissatisfaction with the school board 
 is available to parents - open-enrolling out of the school district. Both of these 
 forms of dissatisfaction are decidedly higher cost than voting in a school board 
-election, though their benefit is more immediate and obvious.}
-
-
-Low-salience and low-participation elections thus can be democratic, if there is 
-evidence that they are punctuated by periods of electoral activity when needed. 
-
-
-\section{School Boards and Voter Turnout}
-
-The current project adds importantly to the puzzle of voter turnout in two important ways. 
-First, it provides an important update to the prior literature on school board 
-election participation by explicitly measuring voter turnout in school board 
-elections and investigating several hypothesized drivers of voter participation 
-in such elections \citep{RefWorks:311,RefWorks:243,RefWorks:340}. Second, this study 
-explores the linkage between state level politics and local electoral participation. 
-Thus, the study represents an attempt to estimate the causal effect of a state 
-level policy shock on voter turnout in local elections by leveraging the unique 
-conditions in Wisconsin from 2010-2012. The present study presents an important 
-oppotunity to test theories of participation and cross-level linkages in a federal 
-system that previously were not available to political scientists. 
-
-\subsection{Voter Turnout in School Board Elections}
+election, though their benefit is more immediate and selective.}
 
 While some rational choice models have been adapted to the school board contest, 
 there exist no large scale studies of voter turnout in school board elections 
@@ -361,10 +345,8 @@ Yet, it might be argued, that such studies are jumping the gun. The conventional
 wisdom about school board elections is that they are minor affairs, settled on 
 obscure issues, and conducted among large public apathy. Off-cycle school board 
 elections are decidedly low turnout affairs. If boards have competitive elections 
-that lead to consequential decisions like superintendent turnover (ala Dissatisfaction 
-Theory \citep{RefWorks:297}), what does it matter if those hotly contested electoral 
-defeats of incumbents came at the hand of 10\% of the electorate? The overwhelming 
-majority has indeed cast a vote of indifference. 
+that lead to consequential decisions like superintendent turnover as expected 
+by Dissatisfaction Theory \citep{RefWorks:297}, what does it matter if those hotly contested electoral defeats of incumbents came at the hand of 10\% of the electorate? The overwhelming majority has indeed cast a vote of indifference. 
 
 By leaving out the question of turnout, Dissatisfaction Theory has left out an 
 important strategic actor in the act of expressing dissatisfaction with the 
@@ -379,6 +361,21 @@ ground for examining voter turnout trends in school board elections as well as e
 possible opportunities for voters to express dissatisfaction with academic, fiscal, 
 or the policy performance of the local school district. 
 
+% 
+% Low-salience and low-participation elections thus can be considered democratic, 
+% if there is evidence that they are punctuated by periods of electoral activity 
+% when needed. 
+
+\section{School Boards and Voter Turnout}
+
+The current project adds importantly to the puzzle of voter turnout in two important ways. First, it creates test conditions for competing theories of voter turnout 
+in one of the most common election types in America -- non-partisan school board 
+elections. Second, it provides an important update to the prior literature on school board election participation by explicitly measuring voter turnout in school board 
+elections and investigating several hypothesized drivers of voter participation 
+in such elections \citep{RefWorks:311,RefWorks:243,RefWorks:340}.  
+
+\subsection{Voter Turnout in School Board Elections}
+
 Several competing conceptions of voter turnout can be explored at the local level 
 through the lens of turnout in school board elections. Table \ref{turnoutH} lists 
 the evidence in school board turnout that would be consistent with the dominant 
@@ -390,7 +387,7 @@ theories of voter turnout.
 \begin{small}
 \caption{Theories of Turnout and Expected Evidence}
 \label{turnoutH}
-\begin{tabular}{| p{.15\textwidth} | p{.2\textwidth} | p{.6\textwidth} |}
+\begin{tabular}{| p{.25\textwidth} | p{.2\textwidth} | p{.375\textwidth} |}
 \hline
 \textbf{Theory}  & \textbf{Citation} & \textbf{Expected Finding} \\ \hline
 Habit-forming voters  & \citet{Plutzer2002} & High autocorrelation in turnout\\ \hline
@@ -403,36 +400,83 @@ Social group led voting &\citet{Fowler2005} & Polarized communities have higher 
 \end{center}
 \end{table}
 
-%-------------------------------------------------------------------------------
-% Measures of competitiveness in seats as dependent variables
-% One method is the Laakso & Taagepera count of real candidates, Laakso-Taagepera index
-% ENP = 1 / sum(votes_share[candidate] ^2)
-% Expectation of M+1 serious candidates in an M seat district (Cox electoral rules)
-% Extension of Duverger's Law
-% Droop quota = (total votes / total seats + 1) + 1
-% Hagenbach-Bischoff Quota (total votes/ total seats + 1)
-% Create psuedo-districts Jackman Winsky
-% Consider partial versus full contestation
-%------------------------------------------------------------------------------
 
 \section{Data}
 \label{sec:turnData}
 
-%% Standard data writeup here
+This study tests competing theories of voter turnout on a dataset representing 
+school board elections in the state of Wisconsin from 2002-2012. The data come 
+from approximately 310 of Wisconsin's 424 school districts and are described in 
+detail in Chapter \ref{chap:wisco} and Appendix \ref{app:data}.
 
+\subsection{Dependent Variables}
+
+I start by describing the two unique dependent variables used in this chapter. 
+The first is a straightforward estimate of the voter turnout in Wisconsin spring 
+school board elections. The next variable represents the distance between turnout 
+for the top ticket spring race and the school board race. This variable is an 
+attempt to separate out the influence of statewide races in the spring elections 
+on any measurement of the effect of key variables on school board election 
+participation.
+
+\subsubsection{Spring Turnout}
 As we saw in Chapter \ref{chap:wisco}, the spring elections in Wisconsin are decidedly low turnout affairs. Estimating school board election turnout is decidedly difficult because it requires 
 both a reliable assessment of the votes cast in the election and a reliable 
 estimate of the voting age population in the school district. Due to the fact that 
-school districts have diverse organizational structure above, and no requirements 
+school districts have diverse electoral structure and no requirements 
 on election reporting to a central authority, it is often difficult to ascertain 
-the number of votes cast by voters within the school district. To determine the voting 
-age population (VAP) of the school district in Wisconsin, I employ the finest resolution 
+the number of votes cast by voters within the school district. 
+To determine the voting age population (VAP) of the school district in Wisconsin, I employ the finest resolution 
 estimate of voting age population available -- VAP estimates by minor civil division (MCD) 
-conducted by the Wisconsin Department of Administration described in Chapter \ref{chap:wisco} Section \ref{subsec:turnout}.\footnote{Available online: \url{http://gab.wi.gov/elections-voting/results}. Statistics for Wisconsin Minor Civil Divisions are maintained by the Department of Administration Demographic Services Center: \url{http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9}}
-
-With the method described in that section, I am able to estimate the voter turnout for 
+conducted by the Wisconsin Department of Administration described in Chapter \ref{chap:wisco} Section \ref{subsec:turnout}.\footnote{Available online: \url{http://gab.wi.gov/elections-voting/results}. Statistics for Wisconsin Minor Civil Divisions are maintained by the Department of Administration Demographic Services Center: \url{http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9}} With the method described in that section, I am able to estimate the voter turnout for 
 each school district in Wisconsin on school board elections as well as on presidential, 
 gubernatorial, and non-partisan spring elections. 
+
+\subsubsection{Voter Rolloff}
+
+Another dependent variable to look at is school board vote independent of turnout 
+higher up the ticket known as the undervote or rolloff \citep{wattenberg00}. As 
+voters move down the ballot, many of them simply stop voting and turn in an incomplete 
+ballot, a decision based on the increasing discomfort of voters with making decisions 
+on races for which they have little to no interest and/or information. As I showed 
+in Section
+\ref{subsec:undervote}, rolloff varies year to year in districts providing hope that some of this variation can be explained by theories of voter turnout. This variable 
+has another advantage. As I showed in Section \ref{subsec:turnout}, turnout rose in 2011 due to the heightened interest in the state supreme court election between David Prosser and Joanne Kloppenburg. This makes it difficult to attribute heightened school board voter turnout year to year to school boards when 
+the turnout for the top ticket race changes year to year and can do dramatically. 
+The estimated difference in school board turnout to top ticket turnout can be one 
+way to measure the political interest of voters in school boards in particular. 
+A disadvantage of this measure is that school board is not the only down-ticket race and undervote does not measure voter interest as many voters do not abstain. 
+
+For the 2007-2012 period, I estimate the top ticket 
+turnout in each school district. Importantly, in this period, several different 
+office types were the top ticket due to the pattern of statewide office terms 
+in Wisconsin. These consist of primarily state supreme court races, but as there 
+seven justices elected to ten-year terms, the state supreme court does not have 
+an election every spring: 
+
+\begin{myitemize}
+  \item 2007 - State Supreme Court Race
+  \item 2008 - State Supreme Court Race and presidential primary
+  \item 2009 - State Superintendent of Public Instruction
+  \item 2010 - None. Wisconsin Appeals Courts (3 of 4)
+  \item 2011 - State Supreme Court Race
+  \item 2012 - Presidential Preference Primary
+\end{myitemize}
+
+If top ticket races drive voter turnout, then examining the degree to which school 
+board turnout leads or lags top ticket races may provide some insight into the 
+political activity in school board races independent of such races. Voter rolloff 
+after the top ticket arises for a number of reasons including ballot design, 
+lack of information, and the complexity of choices facing the voter in a given 
+election \citep{wattenberg00}. In the non-partisan context of judicial elections, 
+there is evidence that rolloff is lessened in competitive races where information 
+is increased \citep{streb09}.\footnote{For further details on how undervote was 
+calculated and the imputation methods used for estimating rolloff in districts 
+without a top ticket race, see Section \ref{subsec:undervote} in Chapter \ref{chap:wisco}}
+
+% Citations on rolloff 
+
+\subsection{Key Independent Variables}
 
 <<modelsetup>>=
 races <- as.data.frame(races)
@@ -533,8 +577,6 @@ dist_turn$fallTwoPartyShareDem <- (dist_turn$govTwoPartyShareDem + dist_turn$pre
 rm(dist_turn1, dist_turn2, races.tmp, row_counts)
 @
 
-
-
 <<turnoutComparison, echo=FALSE, fig.cap="Comparison of Fall and Spring Turnout in Wisconsin Elections">>=
 
 qplot(fallTurnout, turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.95,])) + facet_wrap(~year) + 
@@ -557,12 +599,13 @@ qplot(fallTwoPartyShareDem, turnout, data = na.omit(dist_turn[dist_turn$turnout 
 @
 
 <<turnoutCompetitive, echo=FALSE, fig.cap="Turnout in School Board Elections based on Contestation">>=
-dist_turn$contest <- "Uncontested"
+dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc != 0] <- "Incumbent Uncontested"
+dist_turn$contest[dist_turn$nrealcand <= dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Uncontested"
 dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Contested"
 dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc ==0] <- "Open Contested"
 
-
-qplot(turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.95,]), fill = contest, 
+tempdf <- dist_turn[!is.na(dist_turn$turnout) & dist_turn$turnout < 0.95,]
+qplot(turnout, data = tempdf, fill = contest, 
       color = I("gray90")) +  
   theme_dpi() + 
   facet_wrap(~contest, ncol = 1) +
@@ -571,6 +614,7 @@ qplot(turnout, data = na.omit(dist_turn[dist_turn$turnout < 0.95,]), fill = cont
        y = "Count of Races",
        title = "Turnout and Race Typology in School Board Elections") + 
   theme(legend.position = c(0.8, 0.85))
+rm(tempdf)
 
 @
 
@@ -613,8 +657,6 @@ qplot(turnoutLag2, turnout,
   labs(x = "Lagged School Board Turnout (2 year lag)", y = "School Board Turnout", 
        title = "Comparing Lagged Turnout")
 @
-
-
 % Turnout and group membership
 
 <<unionInf, echo=FALSE, fig.cap="Turnout in School Board Elections based on School Staff Share">>=
@@ -718,9 +760,7 @@ qplot(minBlaisLago, turnout, data = dist_turn[dist_turn$turnout < 0.95 & !is.na(
 
 @
 
-I begin with the explanations in Table \ref{turnoutH} and explore them using the Wisconsin 
-data. I start with the models based on electorate size and explore if at the 
-extremely small electorate sizes common in school board elections there is evidence 
+I begin with the explanations in Table \ref{turnoutH} and explore them using the Wisconsin data. I start with the models based on electorate size and explore if at the  small electorate sizes common in school board elections there is evidence 
 that voters are more likely to turnout than in larger school board races. Figure 
 \ref{fig:turnoutSize} shows that there is a consistent negative relationship 
 between electorate size and school board election turnout across the years of data 
@@ -733,7 +773,8 @@ thus increase the potential benefits associated with voting
 \citep{Mueller3, aldrich1993, Downs57}. However, this does not represent a full test 
 of this theory, as voters are also voting up ticket in statewide non-partisan races 
 such as Supreme Court and State Superintendent, and school board turnout may be 
-driven by these races. 
+driven by these races.\footnote{They may not though because upticket races have 
+a statewide electorate and little chance for influence by individual voters.} 
 
 Having competitive races is critical in driving voter turnout, as voters have 
 very little reason to vote if they are not presented with a meaningful choice \citep{Downs57}. 
@@ -742,15 +783,37 @@ described in Chapter \ref{chap:wisco} with a clear pattern of higher turnout in 
 featuring an incumbent and a serious challenger. Open seats also appear to feature higher 
 turnout than uncontested races. The turnout in uncontested races in the bottom panel 
 is very likely being driven by the presence of other contested races on the ticket. 
-Using a statistical model we will be able to explore this in greater detail. 
+Using a statistical model I explore this in greater detail below. 
 
+A related measure of contestation is that higher turnout is expected when races 
+are more competitive. Measuring competitiveness in conjunction 
+with turnout is a difficult methodological task, but often some measure of the final 
+election margin is used as a proxy for the pre-election competitiveness of the race 
+anticipated by voters. Following the argument of \citet{cox88}, I avoid using the 
+percentage margin of victory due to the fact that it shares a denominator with 
+the dependent variable, voter turnout. Instead, I use the Blais-Lago quotient used in 
+Chapters \ref{chap:wisco} and \ref{chap:candidacy} which uses the total votes cast 
+as the denominator. Figure \ref{fig:competition} shows all the races for which 
+records are available with the competitiveness measures on the x-axis and the 
+turnout in the corresponding school board race on the y-axis. There is a very 
+slight negative effect of less competitive (higher value on the X-axis) races on 
+voter turnout.\footnote{This figure excludes races with turnout greater than 95\% 
+which are likely due to extremely low numbers of voters or recording error.}
+How informed voters are about the 
+competitiveness of their school board races prior to the election is unclear. 
+There are many reasons to believe voters have little to no pre-election information 
+about the closeness of their board races -- due to a lack of polling information and the 
+low-level campaigning common in school board races \citep{RefWorks:321, RefWorks:217, RefWorks:322}. 
+However, the electorate in Wisconsin school board elections is very different than 
+the fall partisan electorate, and evidence from other jurisdictions suggests such 
+off-cycle local voters are much more engaged, informed, and politically active 
+than general election voters \citep{oliver12}. 
 
 Figure \ref{fig:turnoutAutocorrelation} explores how habit forming turnout may be 
 in spring elections in school districts \citep{Plutzer2002}. Using a two-year lag 
 of turnout, Figure \ref{fig:turnoutAutocorrelation} shows a consistently high 
 positive correlation between lagged and current turnout, averaging 
-\Sexpr{iNum2(cor(dist_turn$turnout, dist_turn$turnoutLag2, use = "pairwise.complete.obs"))}.
-\footnote{For a single year lag, the corresponding correlation is 
+\Sexpr{iNum2(cor(dist_turn$turnout, dist_turn$turnoutLag2, use = "pairwise.complete.obs"))}.\footnote{For a single year lag, the corresponding correlation is 
 \Sexpr{iNum2(cor(dist_turn$turnout, dist_turn$turnoutLag1, use = "pairwise.complete.obs"))} and the 
 year to year pattern is largely similar.} A robust linear model is used to show 
 the smoothed relationship between lagged and current turnout. Of note is the pattern 
@@ -767,54 +830,33 @@ provides the premise that cohesive social groups can increase turnout by activat
 their members to vote. \citet{RefWorks:207} suggests that unionized teachers are 
 just one such group and provides evidence of school board elections being influenced 
 substantially by such groups. To evaluate this, Figure \ref{fig:unionInf} shows 
-the turnout in the school board election compared to the percentage of the twice lagged 
-school board electorate that licensed teachers would make up if they all voted. 
+the turnout in the school board election compared to the percentage of the voting 
+age population in the school district that are teacher currently licensed and 
+employed in that school district.\footnote{This data comes from the DPI PI-1202 
+Fall Staffing Report. Another measure, the share of electorate in the lagged or 
+twice lagged school board turnout that is made of teachers will also be explored.
 This comparison illustrates how large of a voting block a cohesive teacher union 
-might estimate they possess based on the number of votes cast in previous elections. 
+might estimate they possess based on the number of votes cast in previous elections.}
 The relationship shown in Figure \ref{fig:unionInf} is not what theory would expect. 
 Here a higher teacher share of the prior school board turnout is associated with depressed turnout rates, 
 instead of elevated turnout. The average correlation across years is 
-\Sexpr{iNum(cor(dist_turn$teachShareofVoters, dist_turn$turnout, use = "pairwise.complete.obs"))}. 
+\Sexpr{iNum2(cor(dist_turn$teachShareofVoters, dist_turn$turnout, use = "pairwise.complete.obs"))}. 
 I will pursue this finding further with statistical models, 
 but it is worth noting that there may be limits on the impact social groups can have 
 on driving up turnout before they capture the electorate and thus reduce competitiveness 
 and turnout. In fact, for \citet{RefWorks:207} this would represent the ideal condition 
 for a union, freeing their members from the need to be politically active and influencing 
-the school board through the nomination and campaign process instead. 
+the school board through the candidate recruitment and nomination process instead. 
 
 % Here rewrite
 % TODO: Fix paragraph about competitiveness
 % Competitiveness has a very modest positive effect on turnout across 
 % all observations
 
-A final element that is important to consider is the phenomenon that voter turnout 
-is higher when races are more competitive. Measuring competitiveness in conjunction 
-with turnout is a difficult methodological task, but often some measure of the final 
-election margin is used as a proxy for the pre-election competitiveness of the race 
-anticipated by voters. Following the argument of \citet{cox88}, I avoid using the 
-percentage margin of victory due to the fact that it shares a denominator with 
-the dependent variable, voter turnout. Instead, I use the Blais-Lago quotient used in 
-Chapters \ref{chap:wisco} and \ref{chap:candidacy} which uses the total votes cast 
-as the denominator. Figure \ref{fig:competition} shows all the races for which 
-records are available with the competitiveness measures on the x-axis and the 
-turnout in the corresponding school board race on the y-axis. There is a very 
-slight negative effect of less competitive (higher value on the X-axis) races on 
-voter turnout. \footnote{This figure excludes races with turnout greater than 95\% 
-which are likely due to extremely low numbers of voters or recording error.}
-one another in votes do exhibit higher turnout. How informed voters are about the 
-competitiveness of their school board races prior to the election is unclear. 
-There are many reasons to believe voters have little to no pre-election information 
-about the closeness of their board races -- due to a lack of polling information and the 
-low-level campaigning common in school board races \citep{RefWorks:321, RefWorks:217, RefWorks:322}. 
-However, the electorate in Wisconsin school board elections is very different than 
-the fall partisan electorate, and evidence from other jurisdictions suggests such 
-off-cycle local voters are much more engaged, informed, and politically active 
-than general election voters \citep{oliver12}. 
-
 Figure \ref{fig:partyDivision} takes a different approach to this problem by looking 
 at the information voters may have about their community -- the level of partisan 
 polarization. Using the average Democratic share of the two-party vote from the prior 
-Gubernatorial and Presidential election, I explore the variation in school board election 
+Gubernatorial and Presidential election combined, I explore the variation in school board election 
 turnout. Theory would suggest that the more divided a community is on partisan issues, the 
 greater the impetus to vote \citep{Fowler2005}. Thus in Figure \ref{fig:partyDivision} we 
 should expect to see an inverted U shape representing higher turnout around 50\% share of 
@@ -824,7 +866,7 @@ partisan unity and turnout. Figure \ref{fig:partisan2} shows the linear relation
 between higher partisan unity and turnout. In most years there is almost no relationship, 
 but in 2011 and 2012 there appears to be an uptick in school board turnout associated 
 with more strongly partisan school districts. The correlation is 
-\Sexpr{iNum2(cor(dist_turn$turnout, abs(dist_turn$fallTwoPartyShareDem - .5), use = 'pairwise.complete.obs'))}. 
+\Sexpr{iNum2(cor(dist_turn$turnout, abs(dist_turn$fallTwoPartyShareDem - .5), use = 'pairwise.complete.obs'))} across all years. 
 
 <<partisan2, fig.cap="Another Look at Relationship Between Turnout and Partisanship">>=
 
@@ -838,22 +880,10 @@ qplot(abs(fallTwoPartyShareDem-.5), turnout,
 
 @
 
-Taken alone, these figures do not suggest that any of the theories in Table \ref{turnoutH} 
-are confirmed or denied, but it does help illustrate the diversity of school board 
+Taken alone, these figures do not suggest that any of the theories in Table \ref{turnoutH} are confirmed or denied, but it does help illustrate the diversity of school board 
 elections in Wisconsin and the need for statistical models to help separate out 
 competing explanations that may themselves be highly correlated or confound 
 one another. 
-
-%TODO Fix this
-A key factor to control for in the case of school boards is the fiscal issue dimension. 
-Researchers have studied the impact of economic conditions on voting before, and 
-have found some evidence that economic conditions influence voting patterns 
-\citep{EconandOutcomes2000}. 
-If we reduce school boards to a two-dimensional game with incumbents and non-incumbents 
-along one dimension and the relative fiscal performance along the other, ceteris 
-paribus we would expect that incumbents are at an advantage (and turnout is lower) 
-when fiscal performance is strong. To measure fiscal performance we use the share 
-of the revenue limit a district is spending.
 
 \clearpage
 
@@ -1878,23 +1908,9 @@ rm(partyRLM1, partyRLM2, partyRLM3, partyRLM4, teachRLM, teachRLM2,
 
 \subsection{School Board Vote Roll Off}
 
-Another dependent variable to look at is school board vote independent of turnout 
-higher up the ticket. As we saw in Section \ref{subsec:undervote}, the extent 
-of undervote is variable across districts across years. I explore whether 
-any of the models above explain the difference between top ticket turnout and 
-school board turnout. As much as undervote coincides with political relevance of
-the school board race to the electorate, the relationships observed above should 
-also be observed in the measure of undervote. 
+Next, I examine the same models above applied to voter rolloff in the spring 
+elections. I explore whether any of the models above explain the difference between top ticket turnout and school board turnout. As much as undervote coincides with political relevance of the school board race to the electorate, the relationships observed above should also be observed in the measure of undervote. 
 
-Undervote has another advantage. As we saw in Section \ref{subsec:turnout}, turnout 
-rose in 2011 due to the heightened interest in the state supreme court election 
-between David Prosser and Joanne Kloppenburg. This makes it hard to attribute 
-heightened school board voter turnout year to year to school boards when 
-the turnout for the top ticket race changes year to year. The estimated difference in 
-school board turnout to top ticket turnout can be one way to measure the political 
-interest of voters in school boards. A disadvantage of this measure is that 
-school board is not the only down-ticket race and undervote does not measure 
-voter interest as many voters do not abstain. 
 
 <<cleanundervotedata, results='hide'>>=
 load("../../data/cache/springElectionVotes.rda")
