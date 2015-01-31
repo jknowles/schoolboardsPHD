@@ -1495,7 +1495,8 @@ or by incumbents have no detectable difference on turnout.  % Note: need to inte
 Again, the Blais-Lago quotient matters and is in the expected direction -- less 
 competitive elections result in less turnout. However, the expectation that the 
 relationship between competitiveness and district size would have an effect on 
-turnout is not confirmed here. %TODO: Include footnotes about differences in 
+turnout is not confirmed here - the interaction term is not statisticall significant 
+although it is in the right direction. %TODO: Include footnotes about differences in 
 % fixed effect specification
 
 \begin{tiny}
@@ -1645,17 +1646,23 @@ teachTab1 <- apsrtable(teachRLM3, teachRLM4, se="robust", label="tab:teachmods",
           Sweave=FALSE)
 @
 
-
 Table \ref{tab:meInf} shows that there is some evidence to support that teacher 
 share of the electorate has an effect on the turnout. Again, the control variables 
-appear the same as before. THe key variables here are the teacher share of voters 
+appear the same as before. The key variables here are the teacher share of voters 
 and its interaction with the voting age population. The main effects of the share 
 of voters who are teachers is not significant, but it suggests the more teachers 
-make up the voting age population the lower the turnout. THe interaction suggests 
+make up the voting age population the lower the turnout. The interaction suggests 
 that as the voting age population increases and the teacher share of voting age 
 population increases, turnout decreases. 
 
-This is counter to the theoretical expectations above, but it is understandable. 
+Including the square of the VAP increases the main effect, but it reduces the 
+interaction effect to being non-significant. Judging statistical significance 
+of interaction predictors, however, is notoriously difficult -- particularly in 
+mixed-effect models. I return to demonstrating the effect of these variables later 
+using simulation methods to show their substantive impact on voter turnout as 
+predicted by the model. 
+
+This result is counter to the theoretical expectations above, but it is understandable. 
 If voters believe the school board election to be captured by a large interest 
 group, they have  less of an incentive to vote. The threat of controlling the 
 spring electorate for an interest group is enough to deter unorganized voters 
@@ -1707,6 +1714,9 @@ teachLRT$callSmall <- m.slope@call
 
 \subsubsection{Partisanship}
 
+%TODO: Drop fall turnout from models where not necessary and explain it has 
+% little additional explanatory power and is highly correlated with demographics
+
 Table \ref{tab:mePartisan} provides no evidence for a partisan dimension in school 
 board turnout. While other variables hold their relationship from the tables 
 above, the new variables for partisanship and party divide in the electorate are 
@@ -1714,7 +1724,9 @@ not statistically significant. If parties played an important role in the vote
 in spring elections than either the interaction between the party division or the 
 proportion Democrats and the population of the district should be statistically 
 significant and positive. The lack of a relationship provides evidence that parties 
-do not
+do not influence school board turnout as a social group in a meaningful way. This 
+seems clear, boards are not proving grounds for candidates for higher office and as 
+they are non-partisan the party leadership has little incentive to prioritize them. 
 
 <<partyMods, results ='hide'>>=
 dist_turn$fallPartyDivision <- abs(dist_turn$fallTwoPartyShareDem - 0.5)
@@ -1926,10 +1938,9 @@ For undervote data, I use the spring elections in from 2007-2012. To calculate
 rolloff, I take the difference in the turnout for the top ticket in the spring 
 election and the turnout for the highest turnout school board election in the 
 school district. The greater this number, the greater the share of voters who 
-failed to complete their ballots. The median district has \Sexpr{iPer(mean(dist_turn$turnoutDiff, na.rm=TRUE)*100)} percentage point difference in their turnout, meaning that if the 
-turnout in the school board election was 1,810, then the turnout for the top ticket 
-race would be \Sexpr{iNum2(1810 + 1810*mean(dist_turn$turnoutDiff, na.rm=TRUE))}. 
-Thus ballot fatigue is not that uncommon in Wisconsin. %cite rolloff papers
+failed to complete their ballots. The median district has \Sexpr{iPer(mean(dist_turn$turnoutDiff, na.rm=TRUE)*100)} percentage point difference in their turnout, meaning that if the turnout in the school board election was 1,810, then the turnout for the 
+top ticket race would be \Sexpr{iNum2(1810 + 1810*mean(dist_turn$turnoutDiff, na.rm=TRUE))}. Thus ballot fatigue is not that uncommon and matches findings in other 
+elections elsewhere \citep{streb09,wattenberg00}. %cite rolloff papers
 
 
 \begin{tiny}
@@ -2001,20 +2012,6 @@ above for turnout. Note that here the sign is flipped -- the smaller the depende
 variable, the more turnout for school board in relation to the top ticket turnout 
 in the spring election. 
 
-% Lagged turnout being higher, results in lower turnout differential
-% higher fall turnout results in higher turnout differential
-% bigger size = higher turnout differential
-% whiter = higher turnout differential
-% older - no difference
-% more educated = higher turnout differential (more rolloff)
-% higher income = lower turnout differential
-% higher OOH share = higher voter rolloff
-% imputation model dummy adjusts rolloff downward
-% uncontested seat = higher rolloff
-% less competitive seat = more rolloff, but only in smaller jurisdictions
-
-
-
 \begin{tiny}
 <<undervoteMMfits2, results='asis'>>=
 coefNamesUnd2 <- c("Intercept", "Teacher Share VAP", "Fall Turnout", 
@@ -2048,13 +2045,28 @@ significance here -- suggesting that as communities get larger and more Democrat
 voter rolloff lessens. 
 
 \clearpage
+% Table summarizing all model results for both dependent variables
+
+% Lagged turnout being higher, results in lower turnout differential
+% higher fall turnout results in higher turnout differential
+% bigger size = higher turnout differential
+% whiter = higher turnout differential
+% older - no difference
+% more educated = higher turnout differential (more rolloff)
+% higher income = lower turnout differential
+% higher OOH share = higher voter rolloff
+% imputation model dummy adjusts rolloff downward
+% uncontested seat = higher rolloff
+% less competitive seat = more rolloff, but only in smaller jurisdictions
+
 
 \subsection{Model Fit}
 
 Assessing model fit in a mixed model framework is not as straightforward as with 
 a standard OLS regression. 
 
-<<modFitplot1, eval = FALSE>>=
+<<modFitplot1, eval = TRUE, fig.cap="Comparing Model Fit for Competitiveness Model. Black represents observed value, purple represents fixed effect estimate, and the red dots are the estimate from the full model.>>=
+library(broom)
 plotdf <- augment(mixedModcloseC)
 plotdf$yUnscale <- (plotdf$turnout * 2 * moddatScaleClose["turnout", 2]) + 
    moddatScaleClose["turnout", 1]
@@ -2071,24 +2083,13 @@ plotInt <- coefficients(lm(yUnscale ~ x1Unscale, data = plotdf))[1]
 cases <- sample(unique(plotdf$distid), 12)
 plotdf <- plotdf[plotdf$distid %in% cases, ]
 
-
-ggplot(plotdf, aes(x = x1Unscale, y = yUnscale)) +
+ggplot(plotdf, aes(x = year, y = yUnscale/100)) +
          geom_point() + 
-  geom_point(aes(x = x1Unscale, y = yhatUnscale), color = I("red")) + 
-  geom_point(aes(x = x1Unscale, y = yhatFixed), color = I("purple")) +
-  geom_smooth(aes(x = x1Unscale, y = yUnscale), method = "lm", 
-              se = FALSE, color = I("black")) + 
-  geom_smooth(aes(x = x1Unscale, y = yhatUnscale), method = "lm", 
-              se = FALSE, color = I("red")) + 
-  geom_smooth(aes(x = x1Unscale, y = yhatFixed), method = "lm", 
-              se = FALSE, color = I("purple")) +
+  geom_point(aes(x = year, y = yhatFixed/100), color = I("purple")) +
+  geom_point(aes(x = year, y = yhatUnscale/100), color = I("red")) + 
   facet_wrap(~distid) + 
-  geom_abline(intercept = plotInt, slope = plotSlope, linetype=2) +
-  xlim(c(0, quantile(plotdf$x1Unscale, prob = 0.9))) + 
-  theme_bw()
-
-
-
+  scale_y_continuous(label = percent) +
+  theme_bw() + labs(x= "Year", y = "Turnout", title = "Comparing Model Fit")
 @
 
 
