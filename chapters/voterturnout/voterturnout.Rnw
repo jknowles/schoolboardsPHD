@@ -599,16 +599,22 @@ qplot(fallTwoPartyShareDem, turnout, data = na.omit(dist_turn[dist_turn$turnout 
 @
 
 <<turnoutCompetitive, echo=FALSE, fig.cap="Turnout in School Board Elections based on Contestation">>=
-dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc != 0] <- "Incumbent Uncontested"
-dist_turn$contest[dist_turn$nrealcand <= dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Uncontested"
-dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Contested"
-dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc ==0] <- "Open Contested"
+dist_turn$contestINC[dist_turn$nrealcand <= dist_turn$nwins & dist_turn$ninc == 0] <- "Open Uncontested"
+dist_turn$contestINC[dist_turn$nrealcand <= dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Uncontested"
+dist_turn$contestINC[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Contested"
+dist_turn$contestINC[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc ==0] <- "Open Contested"
+
+dist_turn$incumbent <- "Open"
+dist_turn$incumbent[dist_turn$ninc > 0] <- "Incumbent"
+dist_turn$contest <- "Open"
+dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins] <- "Contested"
+
 
 tempdf <- dist_turn[!is.na(dist_turn$turnout) & dist_turn$turnout < 0.95,]
 qplot(turnout, data = tempdf, fill = contest, 
       color = I("gray90")) +  
   theme_dpi() + 
-  facet_wrap(~contest, ncol = 1) +
+  facet_wrap(~contestINC, ncol = 1) +
   scale_x_continuous(label = percent) + 
   labs(x = "Turnout in School Board Elections", fill = "Type of Contestation", 
        y = "Count of Races",
@@ -901,20 +907,22 @@ population of Wisconsin school districts.
 
 <<demog1, fig.cap="Pairs Plot of Demographic Variables and Turnout in 2012", fig.height = 8, fig.width=8>>=
 library(GGally)
-
 dist_turn$median_incomeLOG <- log(dist_turn$median_income)
-
 pairLabels <- c("Turnout", "Fall Turnout", "% 65 Older", "% Bach. +", "OOH %", 
-                "NonPublicPupil %", "Median Income")
-
-ggpairs(dist_turn[dist_turn$turnout < 0.95 & 
+                "Median Income", "Log VAP")
+tmpdf <- dist_turn[dist_turn$turnout < 0.95 & 
                             dist_turn$year == 2012 & 
-                            !is.na(dist_turn$turnout),], 
-        columns = c(25, 26, 38:40, 88, 157), 
+                            !is.na(dist_turn$turnout), ]
+tmpdf <- tmpdf[, c("turnout", "fallTurnout", "per65o", "PerBachelorOrAbove", 
+                   "OOH_share", "median_incomeLOG", "VAP_adj")]
+
+tmpdf$VAP_adj <- log(tmpdf$VAP_adj)
+ggpairs(tmpdf, 
         columnLabels = pairLabels,
         lower = list(continuous = "smooth"), 
         upper = list(continuous = 'cor'), 
         title = "Pairs Plot of Key Control Variables")
+rm(tmpdf)
 @
 
 Figure \ref{fig:demog1} uses a ``pairs plot" to examine the relationships between 
@@ -1405,7 +1413,7 @@ then this becomes more problematic.
 
 <<closeModRLM, results ='asis'>>=
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", 
-                        "VAP_adjLOG", "distid", 
+                        "VAP_adjLOG", "distid", "incumbent",
                         "per_white_all", "per65o", "PerBachelorOrAbove", 
                         "OOH_share", "median_incomeLOG", "districtwide", 
                         "contest", "minBlaisLago")]
@@ -1446,12 +1454,12 @@ closeRLM2 <- ols(turnout ~ VAP_adjLOG + VAP_adjLOG_sq + per_white_all +
 closeRLM2$se <- sqrt(diag(vcov(robcov(closeRLM2, cluster = moddat$distid))))
 closeRLM3 <- ols(turnout ~ VAP_adjLOG + VAP_adjLOG_sq+ per_white_all + 
                   per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-                   districtwide + minBlaisLago + factor(year) + factor(distid), 
+                   districtwide + incumbent + contest * VAP_adjLOG + factor(year) + factor(distid), 
               data = moddat, x = TRUE, y = TRUE)
 closeRLM3$se <- sqrt(diag(vcov(robcov(closeRLM3, cluster = moddat$distid))))
 closeRLM4 <- ols(turnout ~ VAP_adjLOG + VAP_adjLOG_sq+ minBlaisLago*VAP_adjLOG + per_white_all + 
                   per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-                   districtwide + minBlaisLago + factor(year) + factor(distid), 
+                   districtwide + incumbent + minBlaisLago + factor(year) + factor(distid), 
               data = moddat, x = TRUE, y = TRUE)
 closeRLM4$se <- sqrt(diag(vcov(robcov(closeRLM4, cluster = moddat$distid))))
 
@@ -1459,8 +1467,9 @@ closeRLM4$se <- sqrt(diag(vcov(robcov(closeRLM4, cluster = moddat$distid))))
 closeCoefs1 <- c("Intercept", "ln(VAP)", 
                   "$ln(VAP)^{2}$", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Blais-Lago", 
-                 "VAP x Blais-Lago")
+                "ln(MedianIncome)", "District-wide", "No Incumbent",
+                "Uncontested Seat", "VAP x Uncontested", 
+                 "Blais-Lago", "VAP x Blais-Lago")
 
 closeModTab <- apsrtable(closeRLM3, closeRLM4, se="robust", 
           label="tab:closemods", 
@@ -1501,29 +1510,35 @@ although it is in the right direction. %TODO: Include footnotes about difference
 
 \begin{tiny}
 <<closeModMM, results='asis'>>=
-mixedModclose <- lmer(turnout ~  minBlaisLago + VAP_adjLOG + VAP_adjLOG_sq +
-                    minBlaisLago*VAP_adjLOG + per_white_all + 
+mixedModclose <- lmer(turnout ~  VAP_adjLOG + VAP_adjLOG_sq +
+                     per_white_all + 
                     per65o + PerBachelorOrAbove + OOH_share + 
-                    median_incomeLOG + districtwide + 
-                  contest  + (1|year) + (1|distid), 
+                    median_incomeLOG + districtwide + incumbent +
+                  contest *VAP_adjLOG  + (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
 mixedModcloseB <- lmer(turnout ~  VAP_adjLOG +  VAP_adjLOG_sq + 
-                     fallTurnout +
                      per_white_all + 
                      per65o + PerBachelorOrAbove + OOH_share + 
-                     median_incomeLOG + districtwide + contest + 
+                     median_incomeLOG + districtwide + incumbent + 
+                       contest * VAP_adjLOG + 
                    (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
-mixedModcloseC <- update(mixedModcloseB, . ~ . - contest + 
-                           minBlaisLago * VAP_adjLOG)
+mixedModcloseC <- lmer(turnout ~  VAP_adjLOG +  VAP_adjLOG_sq + 
+                     per_white_all + 
+                     per65o + PerBachelorOrAbove + OOH_share + 
+                     median_incomeLOG + districtwide + incumbent + 
+                       minBlaisLago * VAP_adjLOG + 
+                   (1|year) + (1|distid), 
+              data = moddat, REML = TRUE)
 
 closeCoefs2 <- c("Intercept", "ln(VAP)", 
-                  "$ln(VAP)^{2}$", "Fall Turnout", "\\% White", 
+                  "$ln(VAP)^{2}$", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Open Contested", 
-                 "Uncontested", "Blais-Lago", "VAP x Blais-Lago")
+                  "ln(MedianIncome)", "District-wide", "No Incumbent", 
+                 "Uncontested Seat", "VAP x Uncontested", 
+                 "Blais-Lago", "VAP x Blais-Lago")
 
 
 # summary(mixedMod2)
@@ -1532,6 +1547,9 @@ apsrtable(mixedModcloseB, mixedModcloseC, caption = "Partial Pooling Models of C
             label = "tab:meClose", notes = list(tabnote, stars.note), 
           coef.names = closeCoefs2, 
           Sweave = FALSE)
+
+# Results with fallTurnout are largely similar but demographic variables are not 
+# significant and less impactful due to collinearity with fall turnout
 @
 \end{tiny}
 
@@ -1565,7 +1583,7 @@ previous models in an attempt to find evidence of such an effect.
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", 
                         "VAP_adjLOG", "distid", "per_white_all", "per65o", 
                         "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
-                        "teachShareofVoters", "districtwide", 
+                        "teachShareofVoters", "districtwide", "incumbent",
                         "contest", "minBlaisLago")]
 moddat <- na.omit(moddat)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -1608,19 +1626,21 @@ teachRLM2 <- ols(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago +
 teachRLM2$se <- sqrt(diag(vcov(robcov(teachRLM2, cluster = moddat$distid))))
 
 
-teachRLM3 <- ols(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago + VAP_adjLOG +
+teachRLM3 <- ols(turnout ~ teachShareofVoters + turnoutLag2 + 
+                   minBlaisLago + VAP_adjLOG +
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + contest + 
+                   OOH_share + median_incomeLOG + districtwide + incumbent + 
                    distid + factor(year), 
               data = moddat, x = TRUE, y = TRUE)
 
 teachRLM3$se <- sqrt(diag(vcov(robcov(teachRLM3, cluster = moddat$distid))))
 
 # Interaction model
-teachRLM4 <- ols(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago + 
+teachRLM4 <- ols(turnout ~ teachShareofVoters +  
+                   turnoutLag2 + minBlaisLago + 
                    VAP_adjLOG +  VAP_adjLOG_sq +
-                     + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + contest + 
+                    per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide + incumbent + 
                    teachShareofVoters * VAP_adjLOG + factor(year) +
                    distid, 
               data = moddat, x = TRUE, y = TRUE)
@@ -1628,11 +1648,11 @@ teachRLM4 <- ols(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago +
 teachRLM4$se <- sqrt(diag(vcov(robcov(teachRLM4, cluster = moddat$distid))))
 
 
-teachCoefnames <- c("Intercept", "Teacher \\% VAP", "Fall Turnout", 
+teachCoefnames <- c("Intercept", "Teacher \\% VAP", "Lag Turnout", 
                  "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Open Seat Contested", 
-                 "Uncontested Seat", "Teacher \\% X VAP")
+                  "ln(MedianIncome)", "District-wide", "No Incumbent", 
+                  "Teacher \\% X VAP")
 
 teachTab1 <- apsrtable(teachRLM3, teachRLM4, se="robust", label="tab:teachmods", 
           model.names=c("RLM + District FE", "+ Interaction"), 
@@ -1674,22 +1694,22 @@ from participating.
 teachCoefnames2 <- c("Intercept", "Teacher \\% VAP",  
                  "Blais-Lago", "Lag Turnout 2", "ln(VAP)", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide",
-                 "Teacher \\% x VAP", 
-                 "Fall Turnout",  "$ln(VAP)^{2}$")
+                  "ln(MedianIncome)", "District-wide", "No Incumbent",
+                 "Teacher \\% x VAP", "$ln(VAP)^{2}$")
 
 
 mixedModteach <- lmer(turnout ~ teachShareofVoters +  minBlaisLago +  turnoutLag2 + 
                     VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide +  
+                   OOH_share + median_incomeLOG + districtwide +  incumbent +
                    teachShareofVoters * VAP_adjLOG + (1|year) +  (1|distid), 
               data = moddat, REML = TRUE)
 
-mixedModteachB <- lmer(turnout ~ teachShareofVoters + fallTurnout + minBlaisLago +  
-                         VAP_adjLOG + VAP_adjLOG_sq + per_white_all + per65o + 
-                         PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-                         districtwide +  
-                         teachShareofVoters * VAP_adjLOG + 
+mixedModteachB <- lmer(turnout ~ teachShareofVoters +  
+                   turnoutLag2 + minBlaisLago + 
+                   VAP_adjLOG +  VAP_adjLOG_sq +
+                    per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide + incumbent + 
+                   teachShareofVoters * VAP_adjLOG + 
                          (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
@@ -1699,6 +1719,7 @@ apsrtable(mixedModteach, mixedModteachB, caption = "Partial Pooling Model of Sta
           coef.names = teachCoefnames2, 
           Sweave = FALSE)
 
+# Same results when including fall turnout
 @
 \end{tiny}
 
@@ -1731,7 +1752,7 @@ they are non-partisan the party leadership has little incentive to prioritize th
 <<partyMods, results ='hide'>>=
 dist_turn$fallPartyDivision <- abs(dist_turn$fallTwoPartyShareDem - 0.5)
 
-moddat <- dist_turn[, c("turnout", "year", "fallTurnout", 
+moddat <- dist_turn[, c("turnout", "year", "fallTurnout", "incumbent",
                         "VAP_adjLOG", "distid", "per_white_all", "per65o", 
                         "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
                         "fallTwoPartyShareDem", "fallPartyDivision", 
@@ -1751,7 +1772,6 @@ centr <- mean(moddat$turnout)
 stddev <- sd(moddat$turnout)
 moddat$outflag <- (moddat$turnout - centr) / stddev
 moddat <- moddat[moddat$outflag <=5 & moddat$outflag >= -5,]
-
 nums <- sapply(moddat, is.numeric)
 # nums <- nums[!names(nums) %in% c("fallPartyDivision")]
 ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
@@ -1761,45 +1781,46 @@ moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 dd <<- datadist(moddat)
 options(datadist="dd")
 
-partyRLM1 <- ols(turnout ~ fallPartyDivision + fallTurnout + minBlaisLago + 
-                    VAP_adjLOG + per_white_all + per65o + 
+partyRLM1 <- ols(turnout ~ fallTurnout + minBlaisLago + 
+                    VAP_adjLOG + VAP_adjLOG_sq  + per_white_all + per65o + 
                    PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-                   districtwide + contest + year + distid,
+                   districtwide + incumbent + fallPartyDivision + year + distid,
               data = moddat, x= TRUE, y = TRUE)
 
 partyRLM1$se <- sqrt(diag(vcov(robcov(partyRLM1, cluster = moddat$distid))))
 
 
 partyRLM2 <- ols(turnout ~ fallTwoPartyShareDem + fallTurnout + minBlaisLago + 
-                    VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + contest + 
+                    VAP_adjLOG + VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide + incumbent + 
                    distid + factor(year), 
               data = moddat, x = TRUE, y = TRUE)
 
 partyRLM2$se <- sqrt(diag(vcov(robcov(partyRLM2, cluster = moddat$distid))))
 
 partyRLM3 <- ols(turnout ~ fallPartyDivision*VAP_adjLOG + fallTurnout + minBlaisLago + 
-                    VAP_adjLOG + per_white_all + per65o + 
+                    VAP_adjLOG + VAP_adjLOG_sq+ per_white_all + per65o + 
                    PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-                   districtwide + contest + year + distid,
+                   districtwide + incumbent + year + distid,
               data = moddat, x= TRUE, y = TRUE)
 
 partyRLM3$se <- sqrt(diag(vcov(robcov(partyRLM3, cluster = moddat$distid))))
 
 
 partyRLM4 <- ols(turnout ~ fallTwoPartyShareDem*VAP_adjLOG + fallTurnout + minBlaisLago + 
-                    VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + contest + 
+                    VAP_adjLOG + VAP_adjLOG_sq+ per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide + incumbent + 
                    distid + factor(year), 
               data = moddat, x = TRUE, y = TRUE)
 
 partyRLM4$se <- sqrt(diag(vcov(robcov(partyRLM4, cluster = moddat$distid))))
 
-partyCoefNames <- c("Intercept", "Fall Party Divide", "Fall Turnout", 
-                 "Blais-Lago", "ln(VAP)", "\\% White", 
+partyCoefNames <- c("Intercept", "Fall Turnout", 
+                 "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Open Seat Contested", 
-                  "Uncontested Seat", "Fall 2 Party Dem.", "Party Division x VAP", 
+                  "ln(MedianIncome)", "District-wide", "No Incumbent", 
+                  "Fall Party Divide", "Fall 2 Party Dem.", 
+                 "Party Division x VAP", 
                  "2 Party Dem x VAP")
 
 partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4, se="robust", label="tab:partymods", 
@@ -1820,13 +1841,14 @@ partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4, se="robust"
 partyCoefNames2 <- c("Intercept", "Fall Party Divide", "Fall Turnout", 
                  "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Party Division x VAP", 
+                  "ln(MedianIncome)", "District-wide", "No Incumbent", 
+                 "Party Division x VAP", 
                  "Fall 2 Party Dem.", "$2 Party Dem^{2}$","2 Party Dem x VAP")
 
 mixedModP <- lmer(turnout ~ fallPartyDivision + fallTurnout + minBlaisLago + 
                     VAP_adjLOG + VAP_adjLOG_sq +per_white_all + per65o + 
                    PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-                   districtwide + fallPartyDivision * VAP_adjLOG + 
+                   districtwide + incumbent + fallPartyDivision * VAP_adjLOG + 
                     (1|distid) + (1|year), 
               data = moddat, REML = TRUE)
 
@@ -1835,7 +1857,7 @@ mixedModPb <- lmer(turnout ~ VAP_adjLOG + VAP_adjLOG_sq + fallTwoPartyShareDem +
                      fallTurnout + 
                      minBlaisLago + 
                     VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + 
+                   OOH_share + median_incomeLOG + districtwide + incumbent +
                      fallTwoPartyShareDem * VAP_adjLOG +
                      (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
@@ -1844,7 +1866,6 @@ apsrtable(mixedModP, mixedModPb, caption = "Partial Pooling Model of Partisanshi
           model.names = c("Model 1","Model 2"),
             label = "tab:mePartisan", notes = list(tabnote, stars.note), 
           Sweave = FALSE, coef.names = partyCoefNames2)
-
 @
 \end{tiny}
 
@@ -1883,7 +1904,7 @@ dist_turn <- merge(dist_turn, springVotes,
 dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
 dist_turn$turnoutDiff <- dist_turn$topTicketTurnoutSpring - dist_turn$turnout
 
-vars2 <- c("turnout", "turnoutLag2", "year", "fallTurnout", 
+vars2 <- c("turnout", "turnoutLag2", "year", "fallTurnout", "incumbent",
                         "VAP_adjLOG", "distid", "per_white_all", "per65o", 
                         "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
                         "teachShareofVoters", "districtwide", 
@@ -1948,7 +1969,7 @@ elections elsewhere \citep{streb09,wattenberg00}. %cite rolloff papers
 undervoteMMlag <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + 
                          VAP_adjLOG + VAP_adjLOG_sq + per_white_all + 
                          per65o + PerBachelorOrAbove + OOH_share + 
-                         median_incomeLOG + districtwide + 
+                         median_incomeLOG + districtwide + incumbent +
                          ImputedFlag + minBlaisLago + 
                          (1|year) + (1|distid), 
               data = moddat, REML = FALSE)
@@ -1956,7 +1977,7 @@ undervoteMMclose <- lmer(turnoutDiff ~  minBlaisLago + VAP_adjLOG +
                            VAP_adjLOG_sq + per_white_all + 
                     per65o + PerBachelorOrAbove + OOH_share + 
                       ImputedFlag + minBlaisLago * VAP_adjLOG +
-                    median_incomeLOG + districtwide + 
+                    median_incomeLOG + districtwide + incumbent +
                     (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMcloseB <- lmer(turnoutDiff ~ VAP_adjLOG +  VAP_adjLOG_sq + 
@@ -1964,27 +1985,27 @@ undervoteMMcloseB <- lmer(turnoutDiff ~ VAP_adjLOG +  VAP_adjLOG_sq +
                      VAP_adjLOG + per_white_all + 
                      per65o + PerBachelorOrAbove + OOH_share + 
                        ImputedFlag +
-                     median_incomeLOG + districtwide + contest + 
+                     median_incomeLOG + districtwide + contest + incumbent +
                    (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMteach <- lmer(turnoutDiff ~ teachShareofVoters + fallTurnout + 
                            minBlaisLago + VAP_adjLOG + VAP_adjLOG_sq +
                            per_white_all + per65o + PerBachelorOrAbove +
-                  OOH_share + median_incomeLOG + districtwide + 
+                  OOH_share + median_incomeLOG + districtwide + incumbent +
                     ImputedFlag+  
                    teachShareofVoters * VAP_adjLOG + (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMparty <- lmer(turnoutDiff ~ fallTwoPartyShareDem*VAP_adjLOG + VAP_adjLOG_sq +
                            fallTurnout + minBlaisLago +
                   VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + 
+                   OOH_share + median_incomeLOG + districtwide + incumbent +
                     ImputedFlag + 
                       (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMpartyB <- lmer(turnoutDiff ~ fallPartyDivision*VAP_adjLOG +  VAP_adjLOG_sq+ 
                            fallTurnout + minBlaisLago +
                   VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide +
+                   OOH_share + median_incomeLOG + districtwide +incumbent +
                     ImputedFlag +
                       (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
@@ -1992,10 +2013,9 @@ undervoteMMpartyB <- lmer(turnoutDiff ~ fallPartyDivision*VAP_adjLOG +  VAP_adjL
 coefNamesUnd1 <- c("Intercept", "Turnout Lag (2)","Fall Turnout", 
                  "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Imputed",
+                  "ln(MedianIncome)", "District-wide", "No Incumbent","Imputed",
                  "Blais-Lago", "Blais-Lago x VAP", 
-                 "Open Seat Contested", 
-                  "Uncontested Seat")
+                 "Uncontested Seat")
 
 
 apsrtable(undervoteMMlag, undervoteMMclose,  undervoteMMcloseB,
@@ -2017,7 +2037,7 @@ in the spring election.
 coefNamesUnd2 <- c("Intercept", "Teacher Share VAP", "Fall Turnout", 
                    "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "Imputed", 
+                  "ln(MedianIncome)", "District-wide", "No Incumbent","Imputed", 
                  "Teacher Share x VAP", "Fall Dem.", "Fall Dem. X VAP", 
                  "Fall Partisan", "Fall Partisan x VAP")
 apsrtable(undervoteMMteach, undervoteMMparty, undervoteMMpartyB,
@@ -2217,10 +2237,15 @@ increase in expected voter turnout -- but much less substantial than the effect
 of teacher voter share or competitiveness. 
 
 
-<<fixefSub1, fig.cap="Substantive Effect on School Board Turnout Across Cases">>=
+<<fixefSub1, eval=TRUE, fig.cap="Substantive Effect on School Board Turnout Across Cases">>=
 library(gridExtra)
-seplotdf <- substEffSimFE(mixedModP, "fallPartyDivision", ncases = 4L, 
-                          unscale = moddatScaleParty, re = FALSE)
+
+seplotdf <- 1
+while(class(seplotdf) != "data.frame"){
+  seplotdf <- try(substEffSimFE(mixedModP, "fallPartyDivision", ncases = 4L, 
+                          unscale = moddatScaleParty, re = FALSE), 
+                  silent = TRUE)
+}
 
 lowerBar <- ((quantile(fitted(mixedModP), prob = 0.25) * 2 * moddatScaleParty["turnout", 2]) + 
       moddatScaleParty["turnout", 1]) / 100
@@ -2244,9 +2269,12 @@ p1 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   labs(x = "Partisan Division", y = "School Board Turnout")+ 
   scale_y_continuous(label = percent, limits = c(0, .50))
 
-seplotdf <- substEffSimFE(mixedModteach, "teachShareofVoters", ncases = 4L, 
-                          unscale = moddatScaleTeach, re = TRUE)
-
+seplotdf <- 1
+while(class(seplotdf) != "data.frame"){
+  seplotdf <- try(substEffSimFE(mixedModteach, "teachShareofVoters", ncases = 4L, 
+                          unscale = moddatScaleTeach, re = TRUE), 
+                  silent = TRUE)
+}
 lowerBar <- ((quantile(fitted(mixedModteach), prob = 0.25) * 2 * moddatScaleTeach["turnout", 2]) + 
       moddatScaleTeach["turnout", 1]) /100
 upperBar <- ((quantile(fitted(mixedModteach), prob = 0.75) * 2 * moddatScaleTeach["turnout", 2]) + 
@@ -2269,10 +2297,12 @@ p2 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   labs(x = "Teacher Share of Voters", y = "School Board Turnout") + 
   scale_y_continuous(label = percent, limits = c(0, .50)) + 
   scale_x_continuous(label = percent)
-
-
-seplotdf <- substEffSimFE(mixedModcloseC, "minBlaisLago", ncases = 4L, 
-                          unscale = moddatScaleClose, re = TRUE)
+seplotdf <- 1
+while(class(seplotdf) != "data.frame"){
+  seplotdf <- try(substEffSimFE(mixedModcloseC, "minBlaisLago", ncases = 4L, 
+                          unscale = moddatScaleClose, re = TRUE), 
+                  silent = TRUE)
+}
 
 lowerBar <- ((quantile(fitted(mixedModcloseC), prob = 0.25) * 2 * moddatScaleClose["turnout", 2]) + 
       moddatScaleClose["turnout", 1]) /100
@@ -2295,11 +2325,12 @@ p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   theme_dpi(base_size=12) + 
   labs(x = "Blais-Lago Competitiveness", y = "School Board Turnout") + 
   scale_y_continuous(label = percent, limits = c(0, .50))
-
-
-seplotdf <- substEffSimFE(mixedMod1lagsb, "turnoutLag2", ncases = 4L, 
-                          unscale = moddatScaleLag, re = TRUE)
-
+seplotdf <- 1
+while(class(seplotdf) != "data.frame"){
+  seplotdf <- try(substEffSimFE(mixedMod1lagsb, "turnoutLag2", ncases = 4L, 
+                          unscale = moddatScaleLag, re = TRUE), 
+                  silent = TRUE)
+}
 lowerBar <- ((quantile(fitted(mixedMod1lagsb), prob = 0.25) * 2 * moddatScaleLag["turnout", 2]) + 
       moddatScaleLag["turnout", 1]) /100
 upperBar <- ((quantile(fitted(mixedMod1lagsb), prob = 0.75) * 2 * moddatScaleLag["turnout", 2]) + 
@@ -2326,10 +2357,13 @@ p4 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
 grid.arrange(p1, p2, p3, p4, main = "Simulated Effects on School Board Turnout")
 @
 
-<<fixefSub2, results='hide'>>=
-seplotdf <- substEffSimFE(mixedModteachB, "teachShareofVoters", ncases = 64L, 
-                          unscale = moddatScaleTeach, re = TRUE)
-
+<<fixefSub2, eval=TRUE, results='hide'>>=
+seplotdf <- 1
+while(class(seplotdf) != "data.frame"){
+  seplotdf <- try( substEffSimFE(mixedModteachB, "teachShareofVoters", ncases = 64L, 
+                          unscale = moddatScaleTeach, re = TRUE), 
+                  silent = TRUE)
+}
 lowerBar <- ((quantile(fitted(mixedModteachB), prob = 0.25) * 2 * moddatScaleTeach["turnout", 2]) + 
       moddatScaleTeach["turnout", 1]) /100
 upperBar <- ((quantile(fitted(mixedModteachB), prob = 0.75) * 2 * moddatScaleTeach["turnout", 2]) + 
@@ -2360,9 +2394,12 @@ TeachInteractPlot <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
 
 <<fixefSub3, results='hide'>>=
 # mixedModPb
-seplotdf <- substEffSimFE(mixedModPb, "fallTwoPartyShareDem", ncases = 64L, 
-                          unscale = moddatScaleParty, re = TRUE)
-
+seplotdf <- 1
+while(class(seplotdf) != "data.frame"){
+  seplotdf <- try(substEffSimFE(mixedModPb, "fallTwoPartyShareDem", ncases = 64L, 
+                          unscale = moddatScaleParty, re = TRUE), 
+                  silent = TRUE)
+}
 lowerBar <- ((quantile(fitted(mixedModPb), prob = 0.25) * 2 * moddatScaleParty["turnout", 2]) + 
       moddatScaleParty["turnout", 1]) /100
 upperBar <- ((quantile(fitted(mixedModPb), prob = 0.75) * 2 * moddatScaleParty["turnout", 2]) + 
@@ -2410,9 +2447,13 @@ school district deviates from the average for all districts in the model.
 
 
 <<randomEffectplot1, eval=TRUE, fig.cap="Comparing District Intercepts on Standardized Coefficient Scale">>=
-replotdf <- substEffSimRE(mixedModP, "distid", ncases = 3, alpha = 0.1)
-replotdf$distid <- as.character(replotdf$distid)
+replotdf <- 1
+while(class(replotdf) != "data.frame"){
+  replotdf <- try(substEffSimRE(mixedModP, "distid", ncases = 3, alpha = 0.1), 
+                  silent = TRUE)
+}
 
+replotdf$distid <- as.character(replotdf$distid)
 replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
 replotdf$yhatUnscale <- replotdf$yhatUnscale / 100
 replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
@@ -2480,20 +2521,25 @@ district-average effects) were in 2011 and 2012 after the election of Governor S
 and the introduction of Act 10. 
 
 <<randomEffectplot2, eval=TRUE, fig.cap="Comparing Year Intercepts of Year Effects">>=
-replotdf <- substEffSimRE(mixedModP, "year", ncases = 1, alpha = 0.1)
-replotdf$year <- as.character(replotdf$year)
-
-replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
-replotdf$yhatUnscale <- replotdf$yhatUnscale / 100
-replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
-replotdf$lwrUnscale <- replotdf$lwrUnscale / 100
-replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
-replotdf$uprUnscale <- replotdf$uprUnscale / 100
-
-lowerBar <- ((quantile(fitted(mixedModP), prob = 0.2) * 2 * moddatScaleParty["turnout", 2]) + 
-      moddatScaleParty["turnout", 1]) /100
-upperBar <- ((quantile(fitted(mixedModP), prob = 0.8) * 2 * moddatScaleParty["turnout", 2]) + 
-      moddatScaleParty["turnout", 1]) / 100
+# replotdf <- 1
+# while(class(replotdf) != "data.frame"){
+#   replotdf <- try(substEffSimRE(mixedModP, "year", ncases = 1, alpha = 0.1), 
+#                   silent = TRUE)
+# }
+# 
+# replotdf$year <- as.character(replotdf$year)
+# 
+# replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+# replotdf$yhatUnscale <- replotdf$yhatUnscale / 100
+# replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+# replotdf$lwrUnscale <- replotdf$lwrUnscale / 100
+# replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+# replotdf$uprUnscale <- replotdf$uprUnscale / 100
+# 
+# lowerBar <- ((quantile(fitted(mixedModP), prob = 0.2) * 2 * moddatScaleParty["turnout", 2]) + 
+#       moddatScaleParty["turnout", 1]) /100
+# upperBar <- ((quantile(fitted(mixedModP), prob = 0.8) * 2 * moddatScaleParty["turnout", 2]) + 
+#       moddatScaleParty["turnout", 1]) / 100
 # 
 # ggplot(data = replotdf, aes(x = year, y = yhatUnscale, 
 #                             ymin = lwrUnscale, ymax = uprUnscale)) + 
@@ -2545,9 +2591,12 @@ grid.arrange(p1, p2, p3, p4, main = "Variance in Year Intercepts Across Models")
 
 <<fixefSubUndv, results='hide'>>=
 library(gridExtra)
-seplotdf <- substEffSimFE(undervoteMMlag, "turnoutLag2", ncases = 4L, 
-                          unscale = moddatScaleUndervote, re = FALSE)
-
+seplotdf <- 1
+while(class(seplotdf) != "data.frame"){
+  seplotdf <- try(substEffSimFE(undervoteMMlag, "turnoutLag2", ncases = 4L, 
+                          unscale = moddatScaleUndervote, re = FALSE), 
+                  silent = TRUE)
+}
 lowerBar <- ((quantile(fitted(undervoteMMlag), prob = 0.2) * 2 * moddatScaleUndervote["turnoutDiff", 2]) + 
       moddatScaleUndervote["turnoutDiff", 1]) / 100
 upperBar <- ((quantile(fitted(undervoteMMlag), prob = 0.8) * 2 * moddatScaleUndervote["turnoutDiff", 2]) + 
@@ -2572,9 +2621,12 @@ p1 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   scale_y_continuous(limits = c(-.2, .2))
 
 # -----------------------------------------------------------------
-
-seplotdf <- substEffSimFE(undervoteMMpartyB, "fallPartyDivision", ncases = 64L, 
-                          unscale = moddatScaleUndervote, re = TRUE)
+seplotdf <- 1
+while(class(seplotdf) != "data.frame"){
+  seplotdf <- try(substEffSimFE(undervoteMMpartyB, "fallPartyDivision", ncases = 64L, 
+                          unscale = moddatScaleUndervote, re = TRUE), 
+                  silent = TRUE)
+}
 
 lowerBar <- ((quantile(fitted(undervoteMMpartyB), prob = 0.2) * 2 *
                 moddatScaleUndervote["turnoutDiff", 2]) + 
@@ -2603,10 +2655,12 @@ p2 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   labs(x = "Fall Party Division", y = "Voter Rolloff") 
 
 # -------------------------------------------------------------------------------
-
-seplotdf <- substEffSimFE(undervoteMMteach, "teachShareofVoters", ncases = 64L, 
-                          unscale = moddatScaleUndervote, re = TRUE)
-
+seplotdf <- 1
+while(class(seplotdf) != "data.frame"){
+  seplotdf <- try(substEffSimFE(undervoteMMteach, "teachShareofVoters", ncases = 64L, 
+                          unscale = moddatScaleUndervote, re = TRUE), 
+                  silent = TRUE)
+}
 lowerBar <- ((quantile(fitted(undervoteMMteach), prob = 0.2) * 2 * 
                 moddatScaleUndervote["turnoutDiff", 2]) + 
       moddatScaleUndervote["turnoutDiff", 1]) /100
@@ -2634,9 +2688,12 @@ p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   labs(x = "Teacher Share of VAP", y = "Voter Rolloff") 
 
 # -------------------------------------------------------------------------------
-
-seplotdf <- substEffSimFE(undervoteMMclose, "minBlaisLago", ncases = 64L, 
-                          unscale = moddatScaleUndervote, re = TRUE)
+seplotdf <- 1
+while(class(seplotdf) != "data.frame"){
+  seplotdf <- try(substEffSimFE(undervoteMMclose, "minBlaisLago", ncases = 64L, 
+                          unscale = moddatScaleUndervote, re = TRUE), 
+                  silent = TRUE)
+}
 
 lowerBar <- ((quantile(fitted(undervoteMMclose), prob = 0.2) * 2 * 
                 moddatScaleUndervote["turnoutDiff", 2]) + 
