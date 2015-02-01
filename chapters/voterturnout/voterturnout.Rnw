@@ -2064,8 +2064,6 @@ completing the school board vote. An interaction effect just misses statistical
 significance here -- suggesting that as communities get larger and more Democratic, 
 voter rolloff lessens. 
 
-\clearpage
-% Table summarizing all model results for both dependent variables
 
 % Lagged turnout being higher, results in lower turnout differential
 % higher fall turnout results in higher turnout differential
@@ -2079,6 +2077,26 @@ voter rolloff lessens.
 % uncontested seat = higher rolloff
 % less competitive seat = more rolloff, but only in smaller jurisdictions
 
+\clearpage
+
+
+\begin{table}[h!]
+\begin{center}
+\begin{small}
+\caption{Summary of Evidence for All Models on Both Outcomes}
+\label{turnoutRESULTS}
+\begin{tabular}{| p{.25\textwidth} | p{.25\textwidth} | p{.1\textwidth} | p{.1\textwidth} | p{.1\textwidth} |} 
+\hline
+\textbf{Theory}  & \textbf{Evidence} & \textbf{Turnout?} & \textbf{Rolloff?} & \textbf{Magnitude}\\ \hline
+Habit-forming voters  & Predictive lagged turnout & Yes & Yes & Moderate \\ \hline
+Rational Voters & District size decreases turnout & Yes & Yes & Moderate \\ \hline
+Strategic Voters & Small electorate and close election drives turnout up  & No & Yes  & Small \\ \hline
+Teacher Influence &  Union membership as share of electorate drives up turnout & Some & Some & Small \\ \hline
+Partisan Influence & Partisan division increases turnout & No & Some & Small \\ \hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
 
 \subsection{Model Fit}
 
