@@ -6,7 +6,7 @@
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
                fig.path="../../phd_figs/chap3-",
-               warning=FALSE, echo=FALSE, dev='pdf')
+               warning=FALSE, echo=FALSE, dev=c('pdf', 'png'))
 
 setwd("../../")
 source("data/dataAssemble.R")

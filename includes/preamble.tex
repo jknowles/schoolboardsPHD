@@ -260,9 +260,16 @@
 \definecolor{errorcolor}{rgb}{1, 0, 0}
 \newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
 
+% Don't overspace lists
 \newenvironment{myitemize}
 { \begin{itemize}
     \setlength{\itemsep}{0pt}
     \setlength{\parskip}{0pt}
     \setlength{\parsep}{0pt}     }
 { \end{itemize}                  } 
+
+% Fix graphics to be PDF first, then png if no pdf found, etc. 
+\DeclareGraphicsExtensions{%
+    .pdf,.PDF,%
+    .png,.PNG,%
+    .jpg,.jpeg}
