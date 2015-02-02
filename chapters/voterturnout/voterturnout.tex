@@ -652,18 +652,19 @@ population of Wisconsin school districts.
 \end{knitrout}
 
 Figure \ref{fig:demog1} uses a ``pairs plot" to examine the relationships between 
-these dependent variables and the outcome for the year 2012. Turnout is 
-indeed positively correlated with all of these demographic controls to differing degrees as judged by the linear smoother fit in each scatterplot in the first column. There are also strong relationships between these individual demographic categories, with particularly strong relationships between education, age, and income, as well as a strong negative between age and owner occupied housing and age and education level.\footnote{This pairs plot is produced using the \texttt{GGally} package in R \citep{ggally}.} 
+these dependent variables and the outcome for the year 2012. This shows a series 
+of scatterplots relating the two variables, as well as the distribution of each 
+variable, and the pairwise correlation of the variables in the upper diagonal. 
+Turnout is indeed positively correlated with all of these demographic controls, except 
+district size, to differing degrees. There are also strong relationships between these individual demographic categories, with particularly strong relationships between education, age, and income, as well as a strong negative between age and owner occupied housing and age and education level.\footnote{This pairs plot is produced using the \texttt{GGally} package in R \citep{ggally}.} 
 
-% Write up findings
-% OOH_share and median income are highly correlated
-% Per 65 older and OOH are highly correlated (-)
-% Per 65 older and income are highly correlated (-)
-% Turnout is lowly correlated with all of these measures
-% What about adding fall turnout?
-% ALl of these controls are much more strongly correlated with the fall turnout 
-% than with the school board election turnout
-% Evidence school board electorate is different than regular electorate
+The strongest correlations are among income, percentage of population over 65, and 
+percentage of owner occupied housing -- these variables are negatively correlated. 
+Turnout only has a weak correlation with these measures. It is important to 
+note that all of these variables are much more highly correlated with fall 
+turnout than with spring turnout. This provides some evidence that the school 
+board electorate is different than the general election electorate -- a finding 
+previously shown by \citet{oliver12}. 
 
 \clearpage
 \section{Methods}
@@ -748,7 +749,7 @@ school district is observed between two and ten times and the assumption of inde
 and identically distributed random variables is violated. To correct for this, 
 I adjust the standard errors by using the Huber-White estimator of the covariance 
 matrix through the \texttt{robcov} function implemented in \citet{rms}'s \texttt{rms} 
-package. This estimator will correct for the clustering of school districts
+package. This will correct for the clustering of school districts
 between the observations and avoid overly optimistic standard errors for 
 the $\beta$ coefficients \citep{hwhite,hwhite2,pjhuber}.
 
@@ -756,10 +757,11 @@ Results from these models are placed in Appendix \ref{sec:appendixT}.
 However, there are many reasons to doubt the validity of the fixed effect 
 specification. First, the district fixed effects are overly conservative as 
 many of the key underlining predictors are not highly variable year to year 
-within districts and number of observations per district varies. Second, there are 
-other signs of specification problems including highly inflated standard errors for 
-other parameters and highly inflated coefficients for other parameters. The district estimates themselves are problematic, the model is likely underpowered to fit them properly and they are likely too sensitive to outliers and therefore overfit. 
-There are two approaches to adjusting for this -- penalized estimation or partial pooling approach using a mixed effect model. With over 300 grouping parameters 
+within districts and number of observations per district varies. The district 
+estimates themselves are problematic, the model is likely underpowered to fit 
+them properly and they are likely too sensitive to outliers and therefore overfit. 
+There are two approaches to adjusting for this -- penalized estimation or partial 
+pooling approach using a mixed effect model. With over 300 grouping parameters 
 to estimate, it is better to turn to a partial pooling approach that allows 
 estimates of the district effect to be shrunk toward the pooled grand estimate 
 in order to avoid overfit. A partial pooling approach is also known as a mixed 
@@ -768,28 +770,24 @@ using the \texttt{lme4} package \citep{lme4, gelhill}. I employ the same
 specification as the fixed effect model before, but now model the district effects 
 as random effects in order to avoid overfit. 
 
-
-In addition to robust fixed effect models described above, I also fit multi-level 
-regressions. The multilevel approach is not common in longitudinal applications in political science, but has been used by \citet{oliver} to understand the relationship between 
+This multilevel approach is not common in longitudinal applications in political science, but has been used by \citet{oliver} to understand the relationship between 
 individual survey respondents and their communities in a study of local elections. 
 The choice between these two approaches is as much theoretical as it is econometric, 
 and as a result I run my analyses with both approaches.\footnote{The Hausman test 
 can be used to formally test the specification of random or fixed effects and the 
 results of this test for all models is included in the Methodological Appendix 
-\ref{sec:appendixT} \citep{haustest}.} 
-However, I prefer the multi-level approach because the panel here is not balanced, 
-the observations within districts are not evenly spaced due to the fact that districts 
-may not have open seats on their board each year. Furthermore, my data does not 
+\ref{sec:appendixT} \citep{haustest}.} The formal econometric results suggest 
+that the random effects of the multilevel model are appropriate. 
+It is also useful because this approach is flexible for cases with unbalanced 
+repeated measures and allows the analyst to disentangle the effects of time 
+specific variables from the overall variability among individual units, e.g. school 
+districts \cite{mlmod,raudbryk}. Furthermore, my data does not 
 include all Wisconsin school districts, but instead a large sample of districts. 
 This makes the ability to model the variation between districts of interest to 
 understand the range of plausible district variation across the broader population 
 of school districts. 
 
-The multilevel modeling approach, also known as hierarchical linear modeling (HLM), 
-is flexible for cases with unbalanced repeated measures and allows the analyst to 
-disentangle the effects of time specific variables from the overall variability 
-among individual units, e.g. school districts \cite{mlmod,raudbryk}. One way to depict 
-this approach is in the equation:
+The equation below depicts the multilevel framework:
 
 \begin{align*} 
 VP_{i} &= \alpha + \gamma_{j} + \beta X_{ij} + \lambda Z_{ij} + \epsilon_{ij}  \\ 
@@ -799,7 +797,8 @@ VP_{i} &= \alpha + \gamma_{j} + \beta X_{ij} + \lambda Z_{ij} + \epsilon_{ij}  \
 The only difference between this approach the linear models with equations above 
 is the presence of a unique intercept for each school district \emph{j}. 
 Here the $\gamma_{j}$ terms represent independent intercepts for each school 
-district as predicted by $\alpha_{j}$, a unique intercept for each school district. $X_{ij}$ is a vector of time variant school district 
+district as predicted by $\alpha_{j}$, a unique intercept for each school district. 
+$X_{ij}$ is a vector of time variant school district 
 characteristics such as prior turnout. In the mixed-effect 
 framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
 is explained by the linear combination of $\alpha$ and $\zeta$. The equation above 
@@ -814,8 +813,6 @@ fixed effects for years in the $X$ vector. However, the multilevel approach is
 flexible enough to allow for a third group -- years, to be included in the model. 
 The model below includes a third grouping level for years. 
 
-
-
 \begin{align*} 
 VP_{t} &= \alpha + \gamma_{j} + \psi{t} + \beta X_{ijt} + \lambda Z_{ijt} + \epsilon_{ijt}  \\ 
 \gamma_{jt} &=  \alpha_{j} + \epsilon_{j} \\
@@ -829,20 +826,18 @@ the model to reflect secular effects of specific elections in the data.
 The proper model of the random effects is important. Using the \texttt{RLRsim} 
 package in R, I test the specification of the random effects using an exact 
 likelihood ratio test and an exact restricted likelihood ratio test \cite{RLRsim}. 
-The first test is used to examine whether the random effects are the appropriate specification. The restricted likelihood ratio test is used to compare 
-two nested models with different random effect specifications to determine the appropriate specification. In this case, a model with random effects for district and year was compared against a model with random effects only for district. The 
+The first test is used to examine whether the random effects are the appropriate 
+specification. The restricted likelihood ratio test is used to compare 
+two nested models with different random effect specifications to determine the 
+appropriate specification. In this case, a model with random effects for district 
+and year was compared against a model with random effects only for district. The 
 results of these tests for all of the models is included in the Appendix \ref{sec:appendixT}. 
 
 \subsection{Computation}
 
 %Demonstrate outliers
 % Talk about penalized maximum likelhood
-% Talk about the problem of overfit with fixed effects in large amount
-% Talk about mixed effect regression 
 % Bayesian and tobit regression options
-% Triangulating 
-%TODO: Add Blais-Lago to the calulation
-%TODO: 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -853,7 +848,8 @@ results of these tests for all of the models is included in the Appendix \ref{se
 \end{knitrout}
 
 Diagnostics from the simple pooled linear regression without fixed effects or 
-clustered standard errors are shown in Figure \ref{fig:simpleModel}. The key result here is that there are a number of high leverage 
+clustered standard errors are shown in Figure \ref{fig:simpleModel}. The key result 
+here is that there are a number of high leverage 
 observations that appear to be extreme outliers. Additionally, the upper left 
 quadrant of Figure \ref{fig:simpleModel} suggests the presence of some level of 
 heteroskedacticity in the results, a likely result of the clustering and repeated 
@@ -869,11 +865,18 @@ the value of the dependent variable is more than five standard deviations above
 the group average. This is less than half of 1\% of the observations and is unlikely 
 to be influential, however, it is also likely that such deviations are due to 
 measurement error either in the VAP denominator or in the aggregation of district 
-board election vote counts themselves. Due to the suspicion of measurement issues in the key estimate of turnout, I use the approach taken by \citet{berry2} on administrative data and exclude all observations that fall outside of five standard deviations of the normal values for the dependent variable. In addition, I adopt the strategies outlined in 
-Subsection \ref{subsec:spec} - year fixed effects, district fixed effects, and 
-clustered standard errors to provide a more robust view of the effects in school 
-board turnout. The results for these alternative specifications are displayed 
-alongside the initial model in Table \ref{tab:lagmods}. 
+board election vote counts themselves. Due to the suspicion of measurement issues 
+in the key estimate of turnout, I use the approach taken by \citet{berry2} on 
+administrative data and exclude all observations that fall outside of five standard 
+deviations of the normal values for the dependent variable. Additionally, I 
+grand-center and rescale all of my continuous variables in order to speed model 
+convergence and avoid computational problems associated with widely varying scales 
+in the underlying data. The coefficients reported in the tables below then can be 
+interpreted as the effect on the dependent variable in standard deviation terms 
+of moving the predictor variable two standard deviations. This standardized 
+regression approach is recommended in multilevel modeling, particularly in cases 
+with underlying predictors with scales that vary by orders of magnitude like in 
+the present case \citep{gelhill}. 
 
 \clearpage
 \section{Results}
@@ -894,25 +897,19 @@ these characteristics might be on school board election turnout.
 
 Table \ref{tab:meTurnout} confirms the theoretical expectations from above to a 
 large extent. The higher the prior school board election turnout, the higher 
-the turnout in the current school board election. Larger districts have lower 
-turnout. When seats are less competitive, the election has lower turnout. 
+the turnout in the current school board election. The effect is largely the same 
+even when controlling for fall turnout and the competitiveness of the races. 
+Additionally, as expected, larger districts have lower turnout. Other variables 
+are also as expected with more affluent, older, and more educated communities 
+showing higher voter turnout in school board elections. These effects are reduced 
+once controlling for fall turnout due to the strong relationship between them 
+and fall turnout previously noted.\footnote{These relationships are slightly 
+different in the fixed effect models in the appendix.}
 
-The random effect specification allows me to measure the variation between years 
-and between districts. As Table \ref{tab:meTurnout} shows, there is substantial 
-between district and across year variation in turnout for spring non-partisan 
-school board elections. 
-
-% Lagged turnout increases turnout
-% district size decreases turnout
-% whiter communities vote slightly less, not sig
-% older communities vote more, sig.
-% education vote more, not sig. 
-% OOH does not appear to matter
-% income leads to more voting, except with fall turnout, is sig.
-% district wide dummy does not matter
-% less competitive the seat, the less turnout (higher BL = less turnout)
-% Fall turnout related to spring turnout
-% squared relationship with VAP?
+An additional benefit of the random effect specification is that it allows me to 
+measure the variation between years and between districts. As Table 
+\ref{tab:meTurnout} shows, there is substantial between district and across year 
+variation in turnout for spring non-partisan school board elections. 
 
 % Footnote about fixed effect models
 % in non district fixed effects, relationship is same with lag1 and lag2
@@ -980,10 +977,10 @@ and turnout, and electorate size, margin of victory and turnout. I use an adjust
 of the voting age population - the denominator in the turnout variable - to serve as 
 an estimate of the electorate size.\footnote{Address possible endogeneity here with 
 the dependent variable.} This is a conservative estimate of the actual electorate 
-size in school board elections, which as we have seen can be as low as 15\% of the voting 
-age population. If we assume that voters adjust the electorate size equally across jurisdictions 
+size in school board elections, which as can be as low as 15\% of the voting 
+age population. If is is assumed that voters adjust the electorate size equally across jurisdictions 
 when making their assessment of the perceived uiltity of voting, then this is not a factor. 
-If we have evidence that voters in different jurisdicstions have more information about the 
+If there is evidence that voters in different jurisdicstions have more information about the 
 likely electorate size in a school board election, and this varies across jurisdictions, 
 then this becomes more problematic. 
 
@@ -993,21 +990,23 @@ then this becomes more problematic.
 
 
 
-Table \ref{tab:meClose} shows the partial-pooling results for the competitiveness 
-of elections. The control variables are the same from Table \ref{tab:meTurnout}. 
-These models include two separate measures of the closeness of elections. The first 
-builds on the coding schema in Chapter \ref{chap:candidacy} to label races as 
-contested or uncontested based on the presence of candidates. As expected, uncontested 
-races have much lower turnout than contested races. Races contested as open seats 
-or by incumbents have no detectable difference on turnout.  % Note: need to interact 
-% these with VAP
+Table \ref{tab:meClose} shows the partial-pooling results for two different 
+models of competitiveness in school board elections. In the first model, races 
+are coded as competitive following the schema in Chapter \ref{chap:candidacy} -- 
+that is there are more serious candidates than seats available. In the second, I 
+use the continuous measure of the Blais-Lago quotient to represent how competitive 
+the races are, with a higher values corresponding to less competitive races. The 
+control variables are the same from those in Table \ref{tab:meTurnout}. As 
+expected, uncontested races have much lower turnout than contested races. Somewhat 
+surprisingly, there is no detectable effect of incumbency on turnout. 
 
-Again, the Blais-Lago quotient matters and is in the expected direction -- less 
-competitive elections result in less turnout. However, the expectation that the 
-relationship between competitiveness and district size would have an effect on 
-turnout is not confirmed here - the interaction term is not statisticall significant 
-although it is in the right direction. %TODO: Include footnotes about differences in 
-% fixed effect specification
+In the continuous model the Blais-Lago quotient is statistically significant and 
+in the expected direction -- less competitive elections result in less turnout. 
+However, the expectation that the relationship between competitiveness and district 
+size would have an effect on turnout is not confirmed here - the interaction term 
+is not statistically significant for either the uncontested dummy variable or the 
+Blais-Lago quotient although it is in the right direction.\footnote{The fixed 
+effect models are largely the same?}
 
 \begin{tiny}
 \begin{table}[!ht]
@@ -1064,6 +1063,8 @@ Sigma              & 0.341         & 0.3582        \\ \hline
 
 
 
+\clearpage
+
 \subsection{Social Groups}
 
 To test the argument that voter turnout may be influenced by the share of the 
@@ -1075,27 +1076,29 @@ previous models in an attempt to find evidence of such an effect.
 \subsubsection{Teachers' Unions}
 
 
-Table \ref{tab:meInf} shows that there is some evidence to support that teacher 
-share of the electorate has an effect on the turnout. Again, the control variables 
-appear the same as before. The key variables here are the teacher share of voters 
+Table \ref{tab:meInf} provides some evidence to support that teacher's unions 
+may have an effect on the turnout. The key variables here are the teacher share of voters 
 and its interaction with the voting age population. The main effects of the share 
-of voters who are teachers is not significant, but it suggests the more teachers 
-make up the voting age population the lower the turnout. The interaction suggests 
-that as the voting age population increases and the teacher share of voting age 
-population increases, turnout decreases. 
+of voters who are teachers is not significant and is quite small. However, 
+the interaction suggests that as the voting age population increases and the 
+teacher share of voting age population increases, turnout decreases. Including the 
+square of the VAP reduces the interaction effect to being non-significant. Judging 
+statistical significance of interaction predictors, however, is notoriously 
+difficult -- particularly in mixed-effect models. I return to demonstrating the 
+effect of these variables later using simulation methods to show their substantive 
+impact on voter turnout as predicted by the model. Other variables follow their 
+expected signs, although some like competitiveness have a smaller effect than 
+in prior models. 
 
-Including the square of the VAP increases the main effect, but it reduces the 
-interaction effect to being non-significant. Judging statistical significance 
-of interaction predictors, however, is notoriously difficult -- particularly in 
-mixed-effect models. I return to demonstrating the effect of these variables later 
-using simulation methods to show their substantive impact on voter turnout as 
-predicted by the model. 
-
-This result is counter to the theoretical expectations above, but it is understandable. 
-If voters believe the school board election to be captured by a large interest 
-group, they have  less of an incentive to vote. The threat of controlling the 
-spring electorate for an interest group is enough to deter unorganized voters 
-from participating. 
+This result is counter to the theoretical expectations described above where more 
+union membership would drive turnout up as a greater share of the population would 
+have a stronger interest in school board outcomes. Despite this, the effect is 
+understandable. If voters believe the school board election to be captured by a 
+large interest group, they have  less of an incentive to vote. The threat of 
+controlling the spring electorate for an interest group is enough to deter 
+unorganized voters from participating. This type of behavior is the type of behavior 
+that worries critics of special purpose governments like school districts 
+\citep{fosterK,burnsN,berry2}. 
 
 
 \begin{tiny}
@@ -1154,13 +1157,11 @@ Sigma              & 0.361         & 0.3606        \\ \hline
 
 \subsubsection{Partisanship}
 
-%TODO: Drop fall turnout from models where not necessary and explain it has 
-% little additional explanatory power and is highly correlated with demographics
-
 Table \ref{tab:mePartisan} provides no evidence for a partisan dimension in school 
 board turnout. While other variables hold their relationship from the tables 
 above, the new variables for partisanship and party divide in the electorate are 
-not statistically significant. If parties played an important role in the vote 
+not statistically significant and their interaction with the size of the community 
+is also not significant. If parties played an important role in the vote 
 in spring elections than either the interaction between the party division or the 
 proportion Democrats and the population of the district should be statistically 
 significant and positive. The lack of a relationship provides evidence that parties 
@@ -1172,60 +1173,57 @@ they are non-partisan the party leadership has little incentive to prioritize th
 
 
 \begin{tiny}
-\begin{table}[!ht]
-\caption{Partial Pooling Model of Partisanship}
-\label{tab:mePartisan} 
+ 
 \begin{tabular}{ l D{.}{.}{2}D{.}{.}{2} } 
 \hline 
-  & \multicolumn{ 1 }{ c }{ Model 1 } & \multicolumn{ 1 }{ c }{ Model 2 } \\ \hline
- %                    & Model 1       & Model 2      \\ 
-Intercept            & -0.02         & -0.03        \\ 
-                     & (0.07)        & (0.07)       \\ 
-Fall Party Divide    & 0.02          &              \\ 
-                     & (0.03)        &              \\ 
-Fall Turnout         & 0.18 ^*       & 0.18 ^*      \\ 
-                     & (0.04)        & (0.04)       \\ 
-Blais-Lago           & -0.10 ^*      & -0.10 ^*     \\ 
-                     & (0.02)        & (0.02)       \\ 
-ln(VAP)              & -1.93 ^*      & -2.13 ^*     \\ 
-                     & (0.32)        & (0.38)       \\ 
-$ln(VAP)^{2}$        & 1.63 ^*       & 1.83 ^*      \\ 
-                     & (0.32)        & (0.38)       \\ 
-\% White            & -0.02         & -0.01        \\ 
-                     & (0.04)        & (0.04)       \\ 
-\% Over 65          & 0.22 ^*       & 0.21 ^*      \\ 
-                     & (0.04)        & (0.04)       \\ 
-\% Bach. +          & 0.02          & 0.01         \\ 
-                     & (0.04)        & (0.04)       \\ 
-\% OOH              & -0.01         & -0.02        \\ 
-                     & (0.04)        & (0.04)       \\ 
-ln(MedianIncome)     & 0.09          & 0.10         \\ 
-                     & (0.05)        & (0.05)       \\ 
-District-wide        & 0.02          & 0.02         \\ 
-                     & (0.03)        & (0.03)       \\ 
-No Incumbent         & 0.02          & 0.02         \\ 
-                     & (0.02)        & (0.02)       \\ 
-Party Division x VAP & 0.01          &              \\ 
-                     & (0.04)        &              \\ 
-Fall 2 Party Dem.    &               & -0.01        \\ 
-                     &               & (0.03)       \\ 
-$2 Party Dem^{2}$    &               & 0.03         \\ 
-                     &               & (0.04)       \\ 
-2 Party Dem x VAP    &               & -0.05        \\ 
-                     &               & (0.05)        \\
- $N$                  & 3009          & 3009         \\ 
-AIC                  & 2972.01       & 2975.26      \\ 
-N Groups             & 310 | 11      & 310 | 11     \\ 
-Group Names          & distid | year & distid | year\\ 
-Group:distid Effs.   & (Intercept)   & (Intercept)  \\ 
-Group:year Effs.     & (Intercept)   & (Intercept)  \\ 
-Group:distid Var.    & 0.21          & 0.21         \\ 
-Group:year Var.      & 0.21          & 0.21         \\ 
-Sigma                & 0.3626        & 0.3625        \\ \hline
+  & \multicolumn{ 1 }{ c }{ Party Divide } & \multicolumn{ 1 }{ c }{ Share Democrat } \\ \hline
+ %                    & Party Divide   & Share Democrat\\ 
+Intercept            & -0.02          & -0.03         \\ 
+                     & (0.07)         & (0.07)        \\ 
+Fall Party Divide    & 0.02           &               \\ 
+                     & (0.03)         &               \\ 
+Fall Turnout         & 0.18 ^*        & 0.18 ^*       \\ 
+                     & (0.04)         & (0.04)        \\ 
+Blais-Lago           & -0.10 ^*       & -0.10 ^*      \\ 
+                     & (0.02)         & (0.02)        \\ 
+ln(VAP)              & -1.93 ^*       & -2.13 ^*      \\ 
+                     & (0.32)         & (0.38)        \\ 
+$ln(VAP)^{2}$        & 1.63 ^*        & 1.83 ^*       \\ 
+                     & (0.32)         & (0.38)        \\ 
+\% White            & -0.02          & -0.01         \\ 
+                     & (0.04)         & (0.04)        \\ 
+\% Over 65          & 0.22 ^*        & 0.21 ^*       \\ 
+                     & (0.04)         & (0.04)        \\ 
+\% Bach. +          & 0.02           & 0.01          \\ 
+                     & (0.04)         & (0.04)        \\ 
+\% OOH              & -0.01          & -0.02         \\ 
+                     & (0.04)         & (0.04)        \\ 
+ln(MedianIncome)     & 0.09           & 0.10          \\ 
+                     & (0.05)         & (0.05)        \\ 
+District-wide        & 0.02           & 0.02          \\ 
+                     & (0.03)         & (0.03)        \\ 
+No Incumbent         & 0.02           & 0.02          \\ 
+                     & (0.02)         & (0.02)        \\ 
+Party Division x VAP & 0.01           &               \\ 
+                     & (0.04)         &               \\ 
+Fall 2 Party Dem.    &                & -0.01         \\ 
+                     &                & (0.03)        \\ 
+$2 Party Dem^{2}$    &                & 0.03          \\ 
+                     &                & (0.04)        \\ 
+2 Party Dem x VAP    &                & -0.05         \\ 
+                     &                & (0.05)         \\
+ $N$                  & 3009           & 3009          \\ 
+AIC                  & 2972.01        & 2975.26       \\ 
+N Groups             & 310 | 11       & 310 | 11      \\ 
+Group Names          & distid | year  & distid | year \\ 
+Group:distid Effs.   & (Intercept)    & (Intercept)   \\ 
+Group:year Effs.     & (Intercept)    & (Intercept)   \\ 
+Group:distid Var.    & 0.21           & 0.21          \\ 
+Group:year Var.      & 0.21           & 0.21          \\ 
+Sigma                & 0.3626         & 0.3625         \\ \hline
  \multicolumn{3}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
 \multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
- \end{table}
 
 \end{tiny}
 
@@ -1240,7 +1238,10 @@ Sigma                & 0.3626        & 0.3625        \\ \hline
 \subsection{School Board Vote Roll Off}
 
 Next, I examine the same models above applied to voter rolloff in the spring 
-elections. I explore whether any of the models above explain the difference between top ticket turnout and school board turnout. As much as undervote coincides with political relevance of the school board race to the electorate, the relationships observed above should also be observed in the measure of undervote. 
+elections. I explore whether any of the models above explain the difference between 
+top ticket turnout and school board turnout. As much as undervote coincides with 
+political relevance of the school board race to the electorate, the relationships 
+observed above shouldalso be observed in the measure of undervote. 
 
 
 
@@ -1251,13 +1252,11 @@ election and the turnout for the highest turnout school board election in the
 school district. The greater this number, the greater the share of voters who 
 failed to complete their ballots. The median district has 3.63\% percentage point difference in their turnout, meaning that if the turnout in the school board election was 1,810, then the turnout for the 
 top ticket race would be 1,876. Thus ballot fatigue is not that uncommon and matches findings in other 
-elections elsewhere \citep{streb09,wattenberg00}. %cite rolloff papers
+elections elsewhere \citep{streb09,wattenberg00}.
 
 
 \begin{tiny}
-\begin{table}[!ht]
-\caption{Partial Pooling Model of School Board Undervote}
-\label{tab:meUndv1} 
+ 
 \begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Close Race } & \multicolumn{ 1 }{ c }{ Close Race 2 } \\ \hline
@@ -1266,21 +1265,21 @@ Intercept          & 0.40 ^*       & 0.41 ^*       & 0.29 ^*      \\
                    & (0.10)        & (0.10)        & (0.10)       \\ 
 Turnout Lag (2)    & -0.06 ^*      &               &              \\ 
                    & (0.02)        &               &              \\ 
-Fall Turnout       & 0.12 ^*       &               & 0.11 ^*      \\ 
-                   & (0.05)        &               & (0.05)       \\ 
-ln(VAP)            & 1.68 ^*       & 1.71 ^*       & 1.94 ^*      \\ 
-                   & (0.38)        & (0.40)        & (0.39)       \\ 
-$ln(VAP)^{2}$      & -1.43 ^*      & -1.44 ^*      & -1.62 ^*     \\ 
-                   & (0.39)        & (0.41)        & (0.40)       \\ 
+Fall Turnout       & 0.12 ^*       & 0.10          & 0.11 ^*      \\ 
+                   & (0.05)        & (0.05)        & (0.05)       \\ 
+ln(VAP)            & 1.68 ^*       & 1.65 ^*       & 1.96 ^*      \\ 
+                   & (0.38)        & (0.40)        & (0.41)       \\ 
+$ln(VAP)^{2}$      & -1.43 ^*      & -1.37 ^*      & -1.63 ^*     \\ 
+                   & (0.39)        & (0.40)        & (0.41)       \\ 
 \% White          & 0.08          & 0.08          & 0.08         \\ 
                    & (0.04)        & (0.05)        & (0.05)       \\ 
-\% Over 65        & -0.00         & 0.00          & -0.01        \\ 
+\% Over 65        & -0.00         & -0.01         & -0.01        \\ 
                    & (0.04)        & (0.05)        & (0.05)       \\ 
-\% Bach. +        & 0.04          & 0.11 ^*       & 0.03         \\ 
-                   & (0.06)        & (0.05)        & (0.06)       \\ 
-\% OOH            & 0.12 ^*       & 0.13 ^*       & 0.14 ^*      \\ 
+\% Bach. +        & 0.04          & 0.05          & 0.03         \\ 
+                   & (0.06)        & (0.06)        & (0.06)       \\ 
+\% OOH            & 0.12 ^*       & 0.13 ^*       & 0.13 ^*      \\ 
                    & (0.05)        & (0.05)        & (0.05)       \\ 
-ln(MedianIncome)   & -0.17 ^*      & -0.15 ^*      & -0.19 ^*     \\ 
+ln(MedianIncome)   & -0.17 ^*      & -0.18 ^*      & -0.19 ^*     \\ 
                    & (0.07)        & (0.07)        & (0.07)       \\ 
 District-wide      & -0.03         & -0.03         & -0.02        \\ 
                    & (0.04)        & (0.04)        & (0.04)       \\ 
@@ -1293,26 +1292,38 @@ Blais-Lago         & 0.01          & 0.03          &              \\
 Blais-Lago x VAP   &               & 0.16 ^*       &              \\ 
                    &               & (0.05)        &              \\ 
 Uncontested Seat   &               &               & 0.23 ^*      \\ 
-                   &               &               & (0.02)        \\
+                   &               &               & (0.02)       \\ 
+Uncon. Seat. x VAP &               &               & -0.01        \\ 
+                   &               &               & (0.04)        \\
  $N$                & 1700          & 1700          & 1700         \\ 
-AIC                & 1822.87       & 1842.78       & 1721.30      \\ 
+AIC                & 1822.87       & 1843.35       & 1725.77      \\ 
 N Groups           & 310 | 6       & 310 | 6       & 310 | 6      \\ 
 Group Names        & distid | year & distid | year & distid | year\\ 
 Group:distid Effs. & (Intercept)   & (Intercept)   & (Intercept)  \\ 
 Group:year Effs.   & (Intercept)   & (Intercept)   & (Intercept)  \\ 
-Group:distid Var.  & 0.24          & 0.26          & 0.26         \\ 
+Group:distid Var.  & 0.24          & 0.25          & 0.26         \\ 
 Group:year Var.    & 0.19          & 0.2           & 0.21         \\ 
-Sigma              & 0.3644        & 0.3618        & 0.3474        \\ \hline
+Sigma              & 0.3644        & 0.3622        & 0.3475        \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
- \end{table}
 
 \end{tiny}
 
 Table \ref{tab:meUndv1} shows the results of the first three types of models investigated 
 above for turnout. Note that here the sign is flipped -- the smaller the dependent 
 variable, the more turnout for school board in relation to the top ticket turnout 
-in the spring election. 
+in the spring election. Prior turnout continues to matter in the lagged model, 
+the higher the prior turnout the less the gap between top ticket and school board 
+races in the present spring election. In the measures of the closeness of seats 
+the less competitive a race is the greater the gap between the top ticket and the 
+board race -- but this effect is only in interaction with larger district sizes. 
+In small communities this relationship does not matter. This could be for a couple 
+of reasons -- information costs to voters are less in small communities meaning 
+voters reaching the polls in the spring election are more likely to feel informed 
+enough to complete the ballot. Another reason could be that in large communities 
+school boards are even further down the ballot due to more county and municipality 
+elections and voters get tired out more quickly unless the race is likely competitive 
+and then they persevere. 
 
 \begin{tiny}
 \begin{table}[!ht]
@@ -1391,8 +1402,8 @@ completing the school board vote. An interaction effect just misses statistical
 significance here -- suggesting that as communities get larger and more Democratic, 
 voter rolloff lessens. 
 
-\clearpage
-% Table summarizing all model results for both dependent variables
+
+
 
 % Lagged turnout being higher, results in lower turnout differential
 % higher fall turnout results in higher turnout differential
@@ -1406,11 +1417,36 @@ voter rolloff lessens.
 % uncontested seat = higher rolloff
 % less competitive seat = more rolloff, but only in smaller jurisdictions
 
+\clearpage
+
+
+\begin{table}[h!]
+\begin{center}
+\begin{small}
+\caption{Summary of Evidence for All Models on Both Outcomes}
+\label{turnoutRESULTS}
+\begin{tabular}{| p{.25\textwidth} | p{.25\textwidth} | p{.1\textwidth} | p{.1\textwidth} | p{.1\textwidth} |} 
+\hline
+\textbf{Theory}  & \textbf{Evidence} & \textbf{Turnout?} & \textbf{Rolloff?} & \textbf{Magnitude}\\ \hline
+Habit-forming voters  & Predictive lagged turnout & Yes & Yes & Moderate \\ \hline
+Rational Voters & District size decreases turnout & Yes & Yes & Moderate \\ \hline
+Strategic Voters & Small electorate and close election drives turnout up  & No & Yes  & Small \\ \hline
+Teacher Influence &  Union membership as share of electorate drives up turnout & Some & Some & Small \\ \hline
+Partisan Influence & Partisan division increases turnout & No & Some & Small \\ \hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
 
 \subsection{Model Fit}
 
 Assessing model fit in a mixed model framework is not as straightforward as with 
-a standard OLS regression. 
+a standard OLS regression. I use a boostrapped estimate of the Root Mean Squared 
+Error (RMSE) to assess how close the predicted values are to the fitted values across 
+models. All of the models fit relatively well. Figure \ref{fig:modFitplot1} 
+demonstrates how the multilevel model improves on the pooled fixed effect model 
+fit by showing the original data, predicted values, and predicted values under 
+the fixed effect model for the model of competitiveness predicting turnout.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -1421,8 +1457,10 @@ a standard OLS regression.
 \end{knitrout}
 
 
-% ---------------------------------------------
-% --------------------------------------------
+
+
+
+
 
 
 
@@ -1654,7 +1692,27 @@ their vote mattering, and influenced by social group mechanisms.
 
 Sensitivity checks and further table analysis. 
 
-\subsection{Additional Effect Plot}
+\subsection{Model Fit Comparisons}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-rmsePlot1-1} \caption[Bootstrapped RMSE for Various Models of School Board Turnout]{Bootstrapped RMSE for Various Models of School Board Turnout}\label{fig:rmsePlot1}
+\end{figure}
+
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-rmsePlot2-1} \caption[Bootstrapped RMSE for Various Models of School Board Rolloff]{Bootstrapped RMSE for Various Models of School Board Rolloff}\label{fig:rmsePlot2}
+\end{figure}
+
+
+\end{knitrout}
+
+\clearpage
+
+\subsection{Additional Effect Plots}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -1688,6 +1746,7 @@ Sensitivity checks and further table analysis.
 
 \end{knitrout}
 
+\clearpage
 \subsection{Random Effect Specification Tests}
 
 \begin{knitrout}

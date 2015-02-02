@@ -10,6 +10,13 @@
 # library(scales); 
 # library(stargazer)
 
+detachPkgs <- function(){
+  pkgs = names(sessionInfo()$otherPkgs)  
+  pkgs = paste('package:', pkgs, sep = "")
+  lapply(pkgs, detach, character.only = TRUE, unload = TRUE)
+}
+
+
 iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
                               digits = 3)}
 

@@ -3,25 +3,26 @@ library(knitr)
 setwd("chapters")
 setwd("aboutwisconsin")
 knit("aboutwisconsin.Rnw", envir=new.env())
-rm(list=ls())
+rm(list=ls()); source("../../R/thesis_functions.R"); detachPkgs(); library(knitr)
 setwd("../")
 setwd("candidacy")
 knit("candidacy.Rnw", envir=new.env())
-rm(list=ls())
+rm(list=ls()); source("../../R/thesis_functions.R"); detachPkgs(); library(knitr)
 setwd("../")
 setwd("voterturnout")
 knit("voterturnout.Rnw", envir=new.env())
-rm(list=ls())
+rm(list=ls()); source("../../R/thesis_functions.R"); detachPkgs(); library(knitr)
 setwd("../")
 setwd("policy")
 knit("policy.Rnw", envir=new.env())
-rm(list=ls())
+rm(list=ls()); source("../../R/thesis_functions.R"); detachPkgs(); library(knitr)
 setwd("../")
 setwd("walker")
 knit("walker.Rnw", envir=new.env())
 rm(list=ls())
 
 setwd("../..")
+
 
 # Set texenv
 BIBINPUTS=paste0(getwd(),"/","bib") #Path to tex file in Windows
@@ -55,7 +56,7 @@ cleantex("dissertation", keepPDF=TRUE)
 # choco install imagemagick.app
 # SWconvurl <- "http://biostat.mc.vanderbilt.edu/wiki/pub/Main/SweaveConvert/sweave2html"
 # download.file(SWconvurl,dest="bin/sweave2html")
-# Sys.chmod(c("tth_exe","sweave2html"),mode="0755") ## ???
+#  Sys.chmod(c("tth_exe","sweave2html"),mode="0755") ## ???
 # system("bin/sweave2html chapters/aboutwisconsin/aboutwisconsin.tex")
 # system("tth -a -d /chapters/aboutwisconsin.tex")
 ## Make word docs
