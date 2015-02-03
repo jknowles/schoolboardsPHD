@@ -1330,7 +1330,9 @@ voters reaching the polls in the spring election are more likely to feel informe
 enough to complete the ballot. Another reason could be that in large communities 
 school boards are even further down the ballot due to more county and municipality 
 elections and voters get tired out more quickly unless the race is likely competitive 
-and then they persevere. 
+and then they persevere. This interpretation is further bolstered by the large 
+effect that district size has on rolloff -- larger districts have significantly 
+more rolloff for school board races. 
 
 \begin{tiny}
 \begin{table}[!ht]
@@ -1394,31 +1396,47 @@ Sigma               & 0.3635            & 0.3631            & 0.3631            
 \end{tiny}
 
 
-Table \ref{tab:meUndv2} looks at interest group influence and how it affects 
-voter roll-off. The results for the control variables are largely the same as 
-in Table \ref{tab:meUndv1}, but here the undervote results are different than 
-the results for total turnout. In all three cases I find evidence of group influence 
-in the completion of spring ballots. In the case of partisan division, this effect 
-is only present in larger communities -- as communities and division get larger, 
-the turnout gap for school board races widens. 
+Table \ref{tab:meUndv2} which shows the models for interest group influence on 
+school board rolloff provides the most interesting results. The results for the 
+control variables are largely the same as in Table \ref{tab:meUndv1}, but here the 
+undervote results are different than the results for total turnout. In all three 
+cases I find evidence of group influence in the completion of spring ballots. In 
+the case of partisan division, this effect is only present in larger communities -- 
+as communities and division get larger, the turnout gap for school board races widens. 
 
 In the case of teachers, as teachers make up a greater share of the electorate 
-fewer voters cast a vote for school board -- paralleling the finding from above 
-for overall turnout. Democratic party strength is also related with fewer voters 
-completing the school board vote. An interaction effect just misses statistical 
-significance here -- suggesting that as communities get larger and more Democratic, 
-voter rolloff lessens. 
+fewer spring election voters who go to the polls bother to cast a vote for school 
+board -- paralleling the finding from above for overall turnout. However, in the 
+case of rolloff the effect is not detectably differential by community size. There 
+is also evidence in Table \ref{tab:meUndv2} that parties play a role or are related 
+to voter rolloff in school board elections as well. Democratic party strength is 
+also related with fewer voters completing the school board vote. An interaction 
+effect just misses statistical significance here -- suggesting that as 
+communities get larger and more Democratic, voter rolloff lessens. Partisan division 
+exhibits the same behavior -- as communities get larger and party division is stronger, 
+rolloff grows. One possible explanation is that parties may be doing organizing for 
+the top ticket spring race -- such as State Superintendent or Supreme Court -- and 
+increasing voter turnout for these races by providing information to voters on 
+policy preferences of the candidates. If parties are successful in organizing voters 
+for top ticket races, then more voters with less interest in down-ticket races like 
+school board may find themselves at the polls and thus not interested in casting 
+a vote in school board races. 
 
 \clearpage
 \subsection{Model Fit}
 
-Assessing model fit in a mixed model framework is not as straightforward as with 
-a standard OLS regression. I use a boostrapped estimate of the Root Mean Squared 
-Error (RMSE) to assess how close the predicted values are to the fitted values across 
-models. All of the models fit relatively well. Figure \ref{fig:modFitplot1} 
-demonstrates how the multilevel model improves on the pooled fixed effect model 
-fit by showing the original data, predicted values, and predicted values under 
-the fixed effect model for the model of competitiveness predicting turnout.
+After reviewing the generally favorable results above, it is important to evaluate 
+how well the models actually fit the data at hand. Assessing model fit in a mixed 
+model framework is not as straightforward as with a standard OLS regression. Instead 
+of a more sample-dependent model fit statistics like the Akaike's An Information Criterion, 
+I prefer an estimate of the predictive power of the model for the observations 
+in the sample. To assess this, I use a boostrapped estimate of the Root Mean Squared 
+Error (RMSE) to demonstrate how close the predicted values are to the fitted values across 
+models across many resamples of the data. All of the models fit relatively well. 
+Figure \ref{fig:modFitplot1} demonstrates how the multilevel model improves on 
+the pooled fixed effect model fit by showing the original data, predicted values, 
+and predicted values under the fixed effect model for the model of competitiveness 
+predicting turnout.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -1442,15 +1460,22 @@ the fixed effect model for the model of competitiveness predicting turnout.
 After finding evidence in favor of voters behaving as theory might expect, I now 
 turn my attention to exploring the magnitude of these effects. Table \ref{tab:turnoutRESULTS}
 summarizes the substantive findings for all variables across both turnout and 
-rolloff. In order to estimate 
-the substantive impact, I conduct simulations to show the change in the dependent 
+rolloff. In this section, I conduct simulations to show the change in the dependent 
 variable holding all else constant and manipulating an independent variable of 
-interest. While this type of simulation does not represent the interrelated 
+interest. I then plot the result to give a visual representation of the findings 
+of the models above. While this type of simulation does not represent the interrelated 
 nature of the independent variables in the models above, it does allow me to 
 demonstrate the maximum possible effect predicted by the models described above -- 
 assuming the independent variable is changing while all other variables remain 
 constant.\footnote{Simulations are conducted using a modification of the \texttt{sim} 
 function in the \texttt{arm} package for R.}
+
+In addition to demonstrating the effect of the key variables of interest, I use 
+simulations to illustrate the election and school district specific effects to 
+provide a sense of the scale of year to year and district to district variation 
+captured in the models. This simulation technique presents caterpillar plots of 
+the estimated values of the impact the unobservable characteristics of these 
+grouping variables have on turnout and rolloff. 
 
 
 % Lagged turnout being higher, results in lower turnout differential
@@ -1469,6 +1494,7 @@ function in the \texttt{arm} package for R.}
 % \item Board elections unlikely to be competitive \item Mean board tenure is 6.7 years 
 % \item Boards self identify as moderate or conservative, only 1 in 5 self-identify as liberal 
 % \end{itemize} \vspace{-4mm}
+
 
 \renewcommand\arraystretch{1.4}
 \begin{table}[h!]
@@ -1500,7 +1526,6 @@ Partisan Influence & Dem. Share & No & 7\% point $\uparrow$ Democrats = 4.71\% p
 \end{small}
 \end{center}
 \end{table}
-
 % Lag effect is .057 mm % increasing 10% of prior turnout increases 1% of CY turnout
 % Lag effect is .06 for dfe
 % -.11 blais-lago for dfe 
@@ -1550,7 +1575,7 @@ Partisan Influence & Dem. Share & No & 7\% point $\uparrow$ Democrats = 4.71\% p
 % For 8.5 % point more partisan gap between republicans and dems
 
 
-\subsubsection{Turnout}
+\subsubsection{Turnout Models}
 
 
 
@@ -1609,21 +1634,26 @@ for each of the four models. These plots can be interpreted as the deviation of
 the intercept of a school district from the average district. This figure arranges 
 the estimate of the individual intercept for each school, and its corresponding 
 95\% confidence interval, from lowest to highest to depict the variability in 
-district intercepts. This is known as a caterpillar plot and is useful in demonstrating 
-the variability among units in a mixed-effect model. 
+district intercepts. The red line represents the median district or year.\footnote{
+Extracting the parameter estimates from random effect models is not straightforward 
+and there are many ways to estimate the resulting confidence intervals. Here I use 
+the simulation method proposed by \citet{gelhill} and implemented in the excellent 
+\texttt{arm} package \citep{armpkg}.}
 
 The results in \ref{fig:randomEffectplot1} show large and consistent variance 
 between the four models with a number of individual districts deviating from the 
 average district even with their confidence intervals. The height of the points 
 can be interpreted as the number of standard deviations in election turnout the 
-school district deviates from the average for all districts in the model. 
+school district deviates from the average for all districts in the model with the 
+lines representing the range of the 5th to 95th quantile of the simulated estimates 
+for the district intercept. 
 
 %TODO: check this and review wording
 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap4-randomEffectplot1-1} \caption[Comparing District Intercepts on Standardized Coefficient Scale]{Comparing District Intercepts on Standardized Coefficient Scale}\label{fig:randomEffectplot1}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-randomEffectplot1-1} \caption[Comparing District Intercepts on Standardized Coefficient Scale for Turnout]{Comparing District Intercepts on Standardized Coefficient Scale for Turnout}\label{fig:randomEffectplot1}
 \end{figure}
 
 
@@ -1641,7 +1671,7 @@ and the introduction of Act 10.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap4-randomEffectplot2-1} \caption[Comparing Year Intercepts of Year Effects]{Comparing Year Intercepts of Year Effects}\label{fig:randomEffectplot2}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-randomEffectplot2-1} \caption[Comparing Year Intercepts of Year Effects for Turnout]{Comparing Year Intercepts of Year Effects for Turnout}\label{fig:randomEffectplot2}
 \end{figure}
 
 
@@ -1653,24 +1683,41 @@ and the introduction of Act 10.
 
 
 
-I now review the substantive impact of key independent variables on voter rolloff. 
-Figure \ref{fig:teachUndEff} shows the variation in the impact of the teacher share 
-of voters on voter rolloff across four quartiles of district VAP. For the smallest 
-districts, the teacher share of voters does not affect voter rolloff -- voters 
-complete their ballots at the same rate whether teachers comprise 1\% or 5\% of the 
-electorate. 
+There are many interesting findings in the models of rolloff. However, the main 
+findings about district size and prior turnout are broadly similar to those found 
+for overall spring election turnout. Here I focus on the evidence that voter rolloff 
+appears more strategic and more influenced by interest groups than overall 
+turnout. 
 
-As districts get larger, the impact of teachers grows stronger and in the second 
-and third quartile, the impact of moving from 2\% to 3\% teachers in the VAP can 
-increase voter rolloff in school board elections by nearly as much as the interquartile 
-range for the variable. The simulation in the final panel, for the largest districts,
-is unlikely as it is very unlikely that very large VAP district would ever have 5\% 
-teachers. 
+Figure \ref{fig:compUndEff} provides same look at an interactive effect with 
+district size, but for school board seat competitiveness. Each panel represents 
+one quartile of the voting age population variable. Competitiveness has an 
+almost imperceptible role in small districts in the top left, but as districts 
+get larger toward the bottom right, less competitive races inspire more voter 
+rolloff. There are a number of possible explanations for this effect. One is that 
+in small communities, as we saw, voter turnout is influenced more by competitiveness 
+in these races and thus voters have made their decision on whether to vote for 
+school board before showing up at the poll. In larger communities, turnout may 
+be driven by other factors aside from the competitiveness of the board race, 
+indeed the effect is quite modest for turnout, and thus may be influenced to not 
+complete their ballot for school board when they have not heard anything about the 
+race because it is not seriously contested. 
 
-Figure \ref{fig:compUndEff} provides the same look at an interactive effect with 
-district size, but for school board seat competitiveness. Competitiveness plays no 
-role in voter turnout for smaller school districts, but as districts get larger, 
-less competitive elections see much greater voter rolloff. 
+Teacher share of the voting age population has an even more substantial impact 
+on the rolloff of voters for school board races. Figure \ref{fig:teachUndEff} 
+shows the variation in the impact of the teacher share of voters on voter rolloff 
+across four quartiles of district VAP. For the smallest districts, the teacher share 
+of voters does not affect voter rolloff -- voters complete their ballots at the 
+same rate whether teachers comprise 1\% or 5\% of the electorate. As districts get 
+larger, the impact of teachers grows stronger and in the second and third quartile, 
+the impact of moving from 2\% to 3\% teachers in the VAP can increase voter rolloff 
+in school board elections by nearly as much as the interquartile range for the 
+variable. Though this effect is quite striking it is important to remember that 
+these are simulations and have their limitations -- the simulation in the final 
+panel, for the largest districts, depicts the very unlikely scenario in which 
+the most populated Wisconsins school districts have a population consisting of 
+5\% teachers employed in public schools. 
+
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -1691,41 +1738,69 @@ less competitive elections see much greater voter rolloff.
 
 %TODO: add random effect plots for undervote to the appendix as well
 \clearpage
+
 \section{Discussion}
 
-I find strong evidence that, like voters in other elections, school board voters 
-are highly habit-forming, appear to evaluate their voting decision somewhat rationally, 
-and appear to be shaped by social group voting. It bears repeating that school board 
-voters are a subset of the total electorate and the fall electorate in Wisconsin 
-school districts, but it appears that they too appear to behave in accordance 
-with voter theories. 
+In all, I find strong evidence of voters in school board elections behaving as 
+predicted by the major theories of voting. Table \ref{tab:turnoutRESULTS} summarizes 
+the substantive impact of the key variables. It also provides a sense of the relative 
+magnitude of these effects across the differing models. 
 
-% Evidence for habit forming voters
-% Evidence for rational voters
-% Evidence for social group voters
-% Evidence for discontent among voters
+Voters in school board elections are largely habit-forming -- a variable with a 
+large impact even after controlling for observable and unobservable district and 
+election characteristics. This means that communities with higher historical spring 
+election participation will have smaller rolloff on school board ballots and overall 
+higher turnout in the spring election. Though non-partisan spring elections have 
+much lower levels of turnout, they appear to be behaving similarly to other electorates. 
+This effect was strong and statistically significant in both the random and district 
+fixed effect specifications.
 
-Table \ref{tab:meTurnout} provides strong evidence that 
-in Wisconsin spring elections voters are habit forming. The electorate in these 
-elections is smaller and highly autocorrelated. As the electorate size increases, 
-the less prior turnout matters. This is exactly in line with the theoretical 
-expectation that smaller electorates are more habit forming than larger electorates. 
-Though school boards are experiencing much less voter turnout, they appear to be 
-behaving within the expectations of other electorates.
-
-Table \ref{tab:meClose} demonstrates that competitive races matter for turnout in
-school board elections as well. Uncontested races have lower voter turnout than races 
+Voters also appear to behave rationally. The larger the electorate, the lower the 
+turnout and the less likely voters are to complete their ballots. Voters are also 
+more likely to participate in elections when their chance of influencing the outcome is 
+greatest. Uncontested races have lower voter turnout than races 
 with contestation. Little difference exists between races for open seats and races 
 featuring an incumbent. Competitiveness matters as well, with races that are contested 
-but include a non-competitive candidate having depressed turnout as well. This 
+but include a non-competitive candidate having depressed turnout as well.This 
 suggests that, despite a lack of campaigning by candidates or major media coverage, 
 voters in school board elections are able to assess whether or not to vote based 
 on an assessment of how contested a race will be. 
 
-A school board specific effects were explored in Table \ref{tab:meInf} and Table 
-\ref{tab:mePartisan}. In this, the larger the teacher share of voters in the district, 
-the lower the voter turnout. This is in line with the theory of regulatory capture -- 
-the nomination process being strongly controlled by the teacher union. 
+This is strong support that while the overall electorate in spring 
+elections may not be behaving strategically with regard to school board races, 
+the subset of the electorate participating in the spring election is more likely 
+to participate in the board election when the race is close and their probability 
+of influencing the outcome is greatest. This effect, however, is modest. 
+
+Interest groups play a role in spring elections and school board races. More modest effects are found in the form of the influence of interest groups. 
+The greater the share of teachers in the electorate, the less overall turnout 
+there is for school board. This effect is modest, but it is larger in small 
+districts. This is important -- voters in small school districts face lower 
+information costs for school board races, and the deterrent effect of teacher 
+preferences may encourage voters to stay away from the polls if they believe 
+the nomination process or the election will have little chance of reflecting 
+their policy preferences. The same disinterest for school board races is found 
+in rolloff when teacher share of the electorate is greater, the rolloff is more. 
+
+There was no evidence of parties playing a role in turnout in non-partisan spring 
+elections. However, parties do appear to influence voter rolloff for school board 
+races in the spring election -- sometimes to a large degree. Democratic vote in 
+prior elections is strongly related with increased rolloff in school board races. 
+This is probably also highly correlated with teacher share of voters and the strength 
+of labor unions, and so this suggests that there is potential influence in spring 
+voting patterns by the parties. This influence is perhaps realized through mitigating 
+competitiveness of races or controlling the nominating process, decreasing the 
+motivation of voters in these communities for school board voting. 
+
+Partisan divides also increase rolloff, but to a much lower extent. In small communities, 
+partisan divide does not lead to much rolloff on the part of voters. However, in larger 
+communities rolloff is more influenced by party division. This suggests that as 
+communities are more polarized, voters rolloff more. This effect is small, but it 
+is notably smaller in small communities. This raises interesting questions of whether 
+or not smaller in smaller communities partisan polarization motivates voters more 
+because of the information it might confer about non-partisan candidates, or whether 
+better informed spring election voters view board elections as more important to 
+complete than a comparison electorate in a less polarized community. 
 
 This study is not without its limits. A first limitation is the question of how 
 much spring election voter turnout can be considered to be driven by local 
@@ -1750,11 +1825,24 @@ their decision to vote or not vote in local school board elections like the work
 of \citet{oliver12}. Thus, readers should be cautious in overinterpreting the
 results here. 
 
-Unlike the results in Chapter \ref{chap:candidacy}, the results in this chapter 
-broadly reflect the theoretical expectations for elections. This suggests that 
-although the school board electorate is different than the general election electorate, 
-that electorate behaves in expected ways -- that is, habit forming, selective about 
-their vote mattering, and influenced by social group mechanisms. 
+Third, there is a limited ability to draw causal inferences from the results 
+presented here. While all of the results presented are net of a set of strong 
+control variables and after conditioning out unobservable election and school 
+district specific effects, there may be a large set of potential omitted variables 
+responsible for the patterns shown here. Luckily, Chapter \ref{chap:walker} will 
+leverage an exogenous statewide shock to school board elections to investigate 
+the causal impact of some of these variables on turnout and lend more support to 
+the initial findings here. 
+
+Overall, unlike the results in Chapter \ref{chap:candidacy}, the results in this chapter 
+reflect theoretical expectations for election behavior. Applying these theories 
+to non-partisan spring elections, particularly local elections, provides an interesting 
+new context to apply these theories. This suggests that although the school board 
+electorate is different than the general election electorate, that electorate behaves 
+in expected ways -- that is, habit forming, selective about their vote mattering, 
+and influenced by social group mechanisms. 
+
+
 
 \clearpage
 
@@ -1764,6 +1852,14 @@ their vote mattering, and influenced by social group mechanisms.
 Sensitivity checks and further table analysis. 
 
 \subsection{Model Fit Comparisons}
+
+The RMSE here is standardized to represent the percentage of the range of the 
+dependent variable the average observation is mis-predicted. A lower figure is 
+better. The red points represent the non-bootstrapped error and the black point 
+and line represent the bootstrapped RMSE plus or minus two standard deviations 
+of all of the resampled RMSE values. Overall the rolloff models perform better 
+than the turnout models, but none of the models are significantly better fitting 
+than any of the others within each dependent variable. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -1855,6 +1951,7 @@ Sensitivity checks and further table analysis.
 \end{kframe}
 \end{knitrout}
 
+\clearpage
 
 \subsection{District and Year Fixed Effect Results}
 
