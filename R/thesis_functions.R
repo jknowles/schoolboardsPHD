@@ -376,7 +376,7 @@ easyPredCI <- function(model, newdata, alpha=0.05, re = NULL) {
   if(missing(re)){
     pred0 <- predict(model, re.form = NA, newdata=newdata)
   } else{
-    pred0 <- predict(model, newdata=newdata)
+    pred0 <- predict(model, re.form = re, newdata=newdata)
   }
   ## fixed-effects model matrix for new data
   X <- model.matrix(formula(model,fixed.only=TRUE)[-2],

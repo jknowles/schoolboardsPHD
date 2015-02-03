@@ -8,7 +8,7 @@
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
                fig.path="../../phd_figs/chap3-", 
                cache.path = "../../phd_cache/chap3-",
-               warning=FALSE, echo=FALSE, dev='pdf')
+               warning=FALSE, echo=FALSE, dev = c('pdf','png'))
 
 setwd("../../")
 library(eeptools)
