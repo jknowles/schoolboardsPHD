@@ -2257,6 +2257,7 @@ function in the \texttt{arm} package for R.}
 % \item Boards self identify as moderate or conservative, only 1 in 5 self-identify as liberal 
 % \end{itemize} \vspace{-4mm}
 
+
 \renewcommand\arraystretch{1.4}
 \begin{table}[h!]
 \begin{center}
@@ -2266,28 +2267,27 @@ function in the \texttt{arm} package for R.}
 \begin{tabular}{| p{.15\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.15\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.325\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.325\textwidth} |} 
 \hline
 \textbf{Theory}  & \textbf{Variable} & \textbf{Turnout?} & \textbf{Rolloff?} \\[2ex] \hline
-Habit-forming voters  & Lagged turnout & 10 point turnout $\uparrow = 1$ point turnout $\uparrow $& 5\% $\uparrow$ lagged turnout = $\downarrow$ 0.3\% point rolloff \\[1.25ex] \hline
-Rational Voters & VAP & 8.5\% point $\downarrow$ decrease for VAP $\uparrow$ of 3,000 to 12,000 & No rolloff to 9.3\% point rolloff for same VAP $\uparrow$  \\[1.25ex] \hline
+Habit-forming voters  & Lagged turnout & 10 point turnout $\uparrow = 1$ point turnout $\uparrow $& 5\% $\uparrow$ lagged turnout = $\downarrow$ 0.3\% point rolloff \\ \hline
+Rational Voters & VAP & 8.5\% point $\downarrow$ decrease for VAP $\uparrow$ of 3,000 to 12,000 & No rolloff to 9.3\% point rolloff for same VAP $\uparrow$  \\ \hline
 Rational Voters & Blais-Lago &  0.54\% $\downarrow$ decrease for $\uparrow$ in BL from 2 to 24 & 
-None. \\[1.25ex] \hline
+None. \\ \hline
 Strategic Voters & VAP x Blais-Lago & No & \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
 \item Large district: 0.38\% point rolloff $\downarrow$ when competitiveness $\downarrow$ 2.1 to 24
 \item Small district:  0.12\% point rolloff $\downarrow$ 
-\end{itemize} \vspace{-4mm} \\[1.25ex] \hline
+\end{itemize} \vspace{-4mm} \\ \hline
 Teacher Influence & Teacher \% of VAP &   \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
 \item Large district: 0.43\% point turnout $\downarrow$ when teacher VAP $\uparrow$ 1.45\% to 2.13\%
 \item Small district:  0.55\% point turnout $\downarrow$ for same increase
-\end{itemize} \vspace{-4mm} & $\uparrow$ 1.4\% of teachers to 2.1\% teachers = $\uparrow$  0.55\% point of rolloff \\[1.25ex] \hline
+\end{itemize} \vspace{-4mm} & $\uparrow$ 1.4\% of teachers to 2.1\% teachers = $\uparrow$  0.55\% point of rolloff \\ \hline
 Partisan Influence & Party Divide & No &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
 \item Large district: 0.9\% $\uparrow$ as party division $\uparrow$ 8.5\% point
 \item Small district:  0.2\% point $\uparrow$ for same gap
-\end{itemize} \vspace{-4mm} \\[1.25ex] \hline
-Partisan Influence & Dem. Share & No & 7\% point $\uparrow$ Democrats = 4.71\% point $\uparrow$ rolloff \\[1.25ex] \hline
+\end{itemize} \vspace{-4mm} \\ \hline
+Partisan Influence & Dem. Share & No & 7\% point $\uparrow$ Democrats = 4.71\% point $\uparrow$ rolloff \\ \hline
 \end{tabular}
 \end{small}
 \end{center}
 \end{table}
-
 % Lag effect is .057 mm % increasing 10% of prior turnout increases 1% of CY turnout
 % Lag effect is .06 for dfe
 % -.11 blais-lago for dfe 
