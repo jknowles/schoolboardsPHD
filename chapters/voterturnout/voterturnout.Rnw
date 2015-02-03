@@ -1260,8 +1260,8 @@ coefnamesLag <- c("Intercept","Lagged Turnout (2)", "Fall Turnout", "ln(VAP)",
 
 lagmodTab <- apsrtable(dumbRLM1, dumbRLMbest, dumbRLM2, se="robust", 
           label="tab:lagmods", 
-          model.names=c("Simple RLM",  "Interaction", 
-                        "RLM + District FE"), 
+          model.names=c("Simple", "Fall Turnout", 
+                        "Dist/Year FE"), 
           order = "longest",
           caption = "Models of Lagged Turnout in School Board Elections",
           notes = list("Standard errors clustered at the school district.", 
@@ -1271,7 +1271,7 @@ lagmodTab <- apsrtable(dumbRLM1, dumbRLMbest, dumbRLM2, se="robust",
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
-          Sweave=FALSE, coef.names = coefnamesLag,
+          Sweave=FALSE, coef.names = coefnamesLag, digits = 3,
           float = "sidewaystable")
 
 @
@@ -1325,7 +1325,7 @@ coefnamesLag2 <- c("Intercept","Lagged Turnout (1)", "Fall Turnout", "ln(VAP)",
                   "ln(MedianIncome)", "District-wide", "Blais-Lago")
 appA1 <- apsrtable(dumbRLM1b, dumbRLMbestb, dumbRLM2b, se="robust", 
           label="tab:lagmods2", 
-          model.names=c("Simple",  "Dist/Year FE", 
+          model.names=c("Simple", "Fall Turnout", 
                         "Dist/Year FE"), 
           order = "longest",
           caption = "Models of Lagged Turnout in School Board Elections",
@@ -1336,7 +1336,7 @@ appA1 <- apsrtable(dumbRLM1b, dumbRLMbestb, dumbRLM2b, se="robust",
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
-          Sweave=FALSE, coef.names = coefnamesLag2,
+          Sweave=FALSE, coef.names = coefnamesLag2, digits = 3,
           float = "sidewaystable")
 @
 
@@ -1477,7 +1477,7 @@ closeModTab <- apsrtable(closeRLM3, closeRLM4, se="robust",
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))),
-          coef.names = closeCoefs1,
+          coef.names = closeCoefs1, digits = 3,
           Sweave=FALSE)
 @
 
@@ -1544,7 +1544,7 @@ closeCoefs2 <- c("Intercept", "ln(VAP)",
 apsrtable(mixedModcloseB, mixedModcloseC, caption = "Partial Pooling Models of Competitiveness",
           model.names = c("Qualitative", "Blais-Lago"),
             label = "tab:meClose", notes = list(tabnote, stars.note), 
-          coef.names = closeCoefs2, 
+          coef.names = closeCoefs2, digits = 3,
           Sweave = FALSE)
 
 # Results with fallTurnout are largely similar but demographic variables are not 
@@ -1663,7 +1663,7 @@ teachTab1 <- apsrtable(teachRLM3, teachRLM4, se="robust", label="tab:teachmods",
                         expression(grep("distid", coefnames, value=TRUE)), 
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))),
-          coef.names = teachCoefnames,
+          coef.names = teachCoefnames, digits = 3,
           Sweave=FALSE)
 @
 
@@ -1719,7 +1719,7 @@ mixedModteachB <- lmer(turnout ~ teachShareofVoters +
 apsrtable(mixedModteach, mixedModteachB, caption = "Partial Pooling Model of Staff Influence",
           model.names = c("Model 1","Model 2"),
             label = "tab:meInf", notes = list(stars.note), 
-          coef.names = teachCoefnames2, 
+          coef.names = teachCoefnames2, digits = 3,
           Sweave = FALSE)
 
 # Same results when including fall turnout
@@ -1864,9 +1864,9 @@ mixedModPb <- lmer(turnout ~ VAP_adjLOG + VAP_adjLOG_sq + fallTwoPartyShareDem +
               data = moddat, REML = TRUE)
 
 apsrtable(mixedModP, mixedModPb, caption = "Partial Pooling Model of Partisanship",
-          model.names = c("Party Divide", "Share Democrat"),
+          model.names = c("Division", "Democrat"),
             label = "tab:mePartisan", notes = list(tabnote, stars.note), 
-          Sweave = TRUE, coef.names = partyCoefNames2)
+          Sweave = FALSE, coef.names = partyCoefNames2, digits = 3)
 @
 \end{tiny}
 
@@ -2027,9 +2027,10 @@ apsrtable(undervoteMMlag, undervoteMMclose,  undervoteMMcloseB,
           caption = "Partial Pooling Model of School Board Undervote",
            model.names = c("Lag", "Close Race", "Close Race 2"),
             label = "tab:meUndv1", notes = list(stars.note), 
-          Sweave = TRUE, 
+          Sweave = FALSE, digits = 3, 
           coef.names = coefNamesUnd1)
 @
+
 \end{tiny}
 
 Table \ref{tab:meUndv1} shows the results of the first three types of models investigated 
@@ -2108,18 +2109,65 @@ voter rolloff lessens.
 \begin{small}
 \caption{Summary of Evidence for All Models on Both Outcomes}
 \label{turnoutRESULTS}
-\begin{tabular}{| p{.25\textwidth} | p{.25\textwidth} | p{.1\textwidth} | p{.1\textwidth} | p{.1\textwidth} |} 
+\begin{tabular}{| p{.25\textwidth} | p{.15\textwidth} | p{.25\textwidth} | p{.25\textwidth} |} 
 \hline
-\textbf{Theory}  & \textbf{Evidence} & \textbf{Turnout?} & \textbf{Rolloff?} & \textbf{Magnitude}\\ \hline
-Habit-forming voters  & Predictive lagged turnout & Yes & Yes & Moderate \\ \hline
-Rational Voters & District size decreases turnout & Yes & Yes & Moderate \\ \hline
-Strategic Voters & Small electorate and close election drives turnout up  & No & Yes  & Small \\ \hline
-Teacher Influence &  Union membership as share of electorate drives up turnout & Some & Some & Small \\ \hline
-Partisan Influence & Partisan division increases turnout & No & Some & Small \\ \hline
+\textbf{Theory}  & \textbf{Variable} & \textbf{Turnout?} & \textbf{Rolloff?} \\ \hline
+Habit-forming voters  & Lagged turnout & 10\% lagged turnout $\uparrow = 1\%$ turnout $\uparrow $& 5\% $\uparrow$ lagged turnout = $\downarrow$ 0.3\% points rolloff \\ \hline
+Rational Voters & District size & No & For large district 0.38\% point rolloff
+$\downarrow$ when competitiveness $\downarrow$ 2.1 to 24;  for small district  0.12\% point rolloff $\downarrow$ \\ \hline
+Strategic Voters & VAP x Competitiveness & No & For large district 0.38\% point rolloff
+$\downarrow$ when competitiveness $\downarrow$ 2.1 to 24;  for small district  0.12\% point rolloff $\downarrow$ \\ \hline
+Teacher Influence & Teacher \% of VAP & None & $\uparrow$ 1.4\% of teachers to 2.1\% teachers = $\uparrow$  0.55\% points of rolloff \\ \hline
+Partisan Influence & Party Divide & No & Small district 0.2\% point $\uparrow$ as party division $\uparrow$ 8.5\% points; Large district 0.9\% $\uparrow$ for same gap \\ \hline
+Partisan Influence & Dem. Share & No & 7\% point $\uparrow$ Democrats = 4.71\% points $\uparrow$ rolloff \\ \hline
 \end{tabular}
 \end{small}
 \end{center}
 \end{table}
+
+% Lag effect is .057 mm % increasing 10% of prior turnout increases 1% of CY turnout
+% Lag effect is .06 for dfe
+% -.11 blais-lago for dfe 
+% -.09 blais-lago for MM % decrease competition by 1-10, decrease turnout by .2%
+% -.03 vap x blais-lago for MM (not sig)
+% -.25 uncontested seat for MM % uncontested seat are 4.55% lower turnout
+% -.01 for teacher influence for MM ( not sig)
+% -.15 for teacher inf. x VAP for MM (not sig)
+%%%% Control for VAP^2 and it falls to -.02 (not sig)
+% -.03 vap x blais-lago for dfe
+% .11 to .14 teacher influence for dfe (not sig)
+% .07 teacher VAP for dfe (not sig)
+% Party divide .024 for MM (not sig)
+% party divide x VAP .009 for MM (not sig)
+% Dem share -.010 for MM (not sig)
+% Dem share ^2 .032 for MM (not sig)
+% 2 party dem x VAP -.048 for MM (not sig)
+% partisan division .05 for dfe (not sig)
+% dem share .02 for dfe (not sig)
+% partisan division x VAP .02 (not sig)
+% dem share x vap -.24 (not sig)
+
+% -------------------------------------
+% -------------------------------------
+% Now undervote
+
+% Lag -.06  -- increasing lagged turnout from 10-15% decreases undervote from 3.3 to 3%
+% Blais-Lago .03 main, .16 interact w/ VAP -- increasing Blais-Lago from 10 to 20, no effect
+%%  -- explore interaction median size district 1.174% point rolloff for 
+%%  -- Blais-Lago from 2.1 to 24 for median district
+%% ---- For large district 0.38% point rolloff
+%% ---- for small district  0.12% point rolloff
+
+% .23 for uncontested seat, no interaction, uncontested seats have 3.8% points more rolloff
+% teachshare .15 main effect, .15 interact w/ VAP (not sig) move from 1.4% of teachers to 2.1% teachers leads to  0.550942% points of rolloff
+
+% dem share .12 main effect, -.1 interact w/ VAP (not sig) (4.71 points more rolloff) 
+% going from 42% democrat to 55% democrat leads to that much more rolloff
+
+% party divide .06 main effect (not sig), .12 by VAP (sig)
+% For a small district, .2% point increase in rolloff as party division increases
+% for a large district .9% increase in rolloff
+% For 8.5 % point more partisan gap between republicans and dems
 
 \subsection{Model Fit}
 
