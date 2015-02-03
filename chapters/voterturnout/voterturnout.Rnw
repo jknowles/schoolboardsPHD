@@ -1138,7 +1138,7 @@ dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest",
                         "fallTurnout", "VAP_adjLOG", "distid", "districtwide",
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", 
-                        "median_incomeLOG", "minBlaisLago", "contest")]
+                        "median_incomeLOG", "minBlaisLago", "incumbent")]
 #moddat <- na.omit(moddat)
 moddat <- subset(moddat, turnout < 0.95,)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -2081,94 +2081,7 @@ completing the school board vote. An interaction effect just misses statistical
 significance here -- suggesting that as communities get larger and more Democratic, 
 voter rolloff lessens. 
 
-
-
-
-% Lagged turnout being higher, results in lower turnout differential
-% higher fall turnout results in higher turnout differential
-% bigger size = higher turnout differential
-% whiter = higher turnout differential
-% older - no difference
-% more educated = higher turnout differential (more rolloff)
-% higher income = lower turnout differential
-% higher OOH share = higher voter rolloff
-% imputation model dummy adjusts rolloff downward
-% uncontested seat = higher rolloff
-% less competitive seat = more rolloff, but only in smaller jurisdictions
-
 \clearpage
-
-
-% For this table add fixed and mixed effect model evidence
-% Substantive effect approximately (1-3 % move in IV leads to 1 % move in DV)
-% Qualitative effect (is this actionable?)
-% Add rows for rolloff and for turnout
-
-\begin{table}[h!]
-\begin{center}
-\begin{small}
-\caption{Summary of Evidence for All Models on Both Outcomes}
-\label{turnoutRESULTS}
-\begin{tabular}{| p{.25\textwidth} | p{.15\textwidth} | p{.25\textwidth} | p{.25\textwidth} |} 
-\hline
-\textbf{Theory}  & \textbf{Variable} & \textbf{Turnout?} & \textbf{Rolloff?} \\ \hline
-Habit-forming voters  & Lagged turnout & 10\% lagged turnout $\uparrow = 1\%$ turnout $\uparrow $& 5\% $\uparrow$ lagged turnout = $\downarrow$ 0.3\% points rolloff \\ \hline
-Rational Voters & District size & No & For large district 0.38\% point rolloff
-$\downarrow$ when competitiveness $\downarrow$ 2.1 to 24;  for small district  0.12\% point rolloff $\downarrow$ \\ \hline
-Strategic Voters & VAP x Competitiveness & No & For large district 0.38\% point rolloff
-$\downarrow$ when competitiveness $\downarrow$ 2.1 to 24;  for small district  0.12\% point rolloff $\downarrow$ \\ \hline
-Teacher Influence & Teacher \% of VAP & None & $\uparrow$ 1.4\% of teachers to 2.1\% teachers = $\uparrow$  0.55\% points of rolloff \\ \hline
-Partisan Influence & Party Divide & No & Small district 0.2\% point $\uparrow$ as party division $\uparrow$ 8.5\% points; Large district 0.9\% $\uparrow$ for same gap \\ \hline
-Partisan Influence & Dem. Share & No & 7\% point $\uparrow$ Democrats = 4.71\% points $\uparrow$ rolloff \\ \hline
-\end{tabular}
-\end{small}
-\end{center}
-\end{table}
-
-% Lag effect is .057 mm % increasing 10% of prior turnout increases 1% of CY turnout
-% Lag effect is .06 for dfe
-% -.11 blais-lago for dfe 
-% -.09 blais-lago for MM % decrease competition by 1-10, decrease turnout by .2%
-% -.03 vap x blais-lago for MM (not sig)
-% -.25 uncontested seat for MM % uncontested seat are 4.55% lower turnout
-% -.01 for teacher influence for MM ( not sig)
-% -.15 for teacher inf. x VAP for MM (not sig)
-%%%% Control for VAP^2 and it falls to -.02 (not sig)
-% -.03 vap x blais-lago for dfe
-% .11 to .14 teacher influence for dfe (not sig)
-% .07 teacher VAP for dfe (not sig)
-% Party divide .024 for MM (not sig)
-% party divide x VAP .009 for MM (not sig)
-% Dem share -.010 for MM (not sig)
-% Dem share ^2 .032 for MM (not sig)
-% 2 party dem x VAP -.048 for MM (not sig)
-% partisan division .05 for dfe (not sig)
-% dem share .02 for dfe (not sig)
-% partisan division x VAP .02 (not sig)
-% dem share x vap -.24 (not sig)
-
-% -------------------------------------
-% -------------------------------------
-% Now undervote
-
-% Lag -.06  -- increasing lagged turnout from 10-15% decreases undervote from 3.3 to 3%
-% Blais-Lago .03 main, .16 interact w/ VAP -- increasing Blais-Lago from 10 to 20, no effect
-%%  -- explore interaction median size district 1.174% point rolloff for 
-%%  -- Blais-Lago from 2.1 to 24 for median district
-%% ---- For large district 0.38% point rolloff
-%% ---- for small district  0.12% point rolloff
-
-% .23 for uncontested seat, no interaction, uncontested seats have 3.8% points more rolloff
-% teachshare .15 main effect, .15 interact w/ VAP (not sig) move from 1.4% of teachers to 2.1% teachers leads to  0.550942% points of rolloff
-
-% dem share .12 main effect, -.1 interact w/ VAP (not sig) (4.71 points more rolloff) 
-% going from 42% democrat to 55% democrat leads to that much more rolloff
-
-% party divide .06 main effect (not sig), .12 by VAP (sig)
-% For a small district, .2% point increase in rolloff as party division increases
-% for a large district .9% increase in rolloff
-% For 8.5 % point more partisan gap between republicans and dems
-
 \subsection{Model Fit}
 
 Assessing model fit in a mixed model framework is not as straightforward as with 
@@ -2314,7 +2227,9 @@ rmsePlot2 <- ggplot(out, aes(x = mod, y = bootMed, ymax = bootMed + (bootSE *2),
 \subsection{Substantive Effects}
 
 After finding evidence in favor of voters behaving as theory might expect, I now 
-turn my attention to exploring the magnitude of these effects. In order to estimate 
+turn my attention to exploring the magnitude of these effects. Table \ref{tab:turnoutRESULTS}
+summarizes the substantive findings for all variables across both turnout and 
+rolloff. In order to estimate 
 the substantive impact, I conduct simulations to show the change in the dependent 
 variable holding all else constant and manipulating an independent variable of 
 interest. While this type of simulation does not represent the interrelated 
@@ -2323,6 +2238,103 @@ demonstrate the maximum possible effect predicted by the models described above 
 assuming the independent variable is changing while all other variables remain 
 constant.\footnote{Simulations are conducted using a modification of the \texttt{sim} 
 function in the \texttt{arm} package for R.}
+
+
+% Lagged turnout being higher, results in lower turnout differential
+% higher fall turnout results in higher turnout differential
+% bigger size = higher turnout differential
+% whiter = higher turnout differential
+% older - no difference
+% more educated = higher turnout differential (more rolloff)
+% higher income = lower turnout differential
+% higher OOH share = higher voter rolloff
+% imputation model dummy adjusts rolloff downward
+% uncontested seat = higher rolloff
+% less competitive seat = more rolloff, but only in smaller jurisdictions
+%  \vspace{-6mm} \begin{itemize} \setlength\itemsep{-2pt}
+% \item Over 90\% of boards are elected 
+% \item Board elections unlikely to be competitive \item Mean board tenure is 6.7 years 
+% \item Boards self identify as moderate or conservative, only 1 in 5 self-identify as liberal 
+% \end{itemize} \vspace{-4mm}
+
+\renewcommand\arraystretch{1.4}
+\begin{table}[h!]
+\begin{center}
+\begin{small}
+\caption{Summary of Evidence for All Models on Both Outcomes}
+\label{tab:turnoutRESULTS}
+\begin{tabular}{| p{.15\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.15\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.325\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.325\textwidth} |} 
+\hline
+\textbf{Theory}  & \textbf{Variable} & \textbf{Turnout?} & \textbf{Rolloff?} \\[2ex] \hline
+Habit-forming voters  & Lagged turnout & 10 point turnout $\uparrow = 1$ point turnout $\uparrow $& 5\% $\uparrow$ lagged turnout = $\downarrow$ 0.3\% point rolloff \\[1.25ex] \hline
+Rational Voters & VAP & 8.5\% point $\downarrow$ decrease for VAP $\uparrow$ of 3,000 to 12,000 & No rolloff to 9.3\% point rolloff for same VAP $\uparrow$  \\[1.25ex] \hline
+Rational Voters & Blais-Lago &  0.54\% $\downarrow$ decrease for $\uparrow$ in BL from 2 to 24 & 
+None. \\[1.25ex] \hline
+Strategic Voters & VAP x Blais-Lago & No & \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+\item Large district: 0.38\% point rolloff $\downarrow$ when competitiveness $\downarrow$ 2.1 to 24
+\item Small district:  0.12\% point rolloff $\downarrow$ 
+\end{itemize} \vspace{-4mm} \\[1.25ex] \hline
+Teacher Influence & Teacher \% of VAP &   \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+\item Large district: 0.43\% point turnout $\downarrow$ when teacher VAP $\uparrow$ 1.45\% to 2.13\%
+\item Small district:  0.55\% point turnout $\downarrow$ for same increase
+\end{itemize} \vspace{-4mm} & $\uparrow$ 1.4\% of teachers to 2.1\% teachers = $\uparrow$  0.55\% point of rolloff \\[1.25ex] \hline
+Partisan Influence & Party Divide & No &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+\item Large district: 0.9\% $\uparrow$ as party division $\uparrow$ 8.5\% point
+\item Small district:  0.2\% point $\uparrow$ for same gap
+\end{itemize} \vspace{-4mm} \\[1.25ex] \hline
+Partisan Influence & Dem. Share & No & 7\% point $\uparrow$ Democrats = 4.71\% point $\uparrow$ rolloff \\[1.25ex] \hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+% Lag effect is .057 mm % increasing 10% of prior turnout increases 1% of CY turnout
+% Lag effect is .06 for dfe
+% -.11 blais-lago for dfe 
+% -.09 blais-lago for MM % decrease competition by 1-10, decrease turnout by .2%
+% -.03 vap x blais-lago for MM (not sig)
+% -.25 uncontested seat for MM % uncontested seat are 4.55% lower turnout
+% -.01 for teacher influence for MM ( not sig)
+% -.15 for teacher inf. x VAP for MM 
+%%% For size
+%%   1Q district = 22.61633%; bigger drops to 14.1225 for increase from 3,000 to 12,000
+%%   BL = decrease from 19.10245 to 18.56772 for incgreas in BL 2 to 24
+%%   %%%%
+%%   For undervote
+%%   1Q district = No rolloff to 9.3% point rolloff for increase from 3,000 to 12,000
+%%   BL = small district: 4.00 to 3.87 % point rolloff increase for comp. decrease 2 to 24
+%%        big district: 3.75 for close to 3.88 % point rolloff for less competitive
+%%%% Control for VAP^2 and it falls to -.02 (not sig)
+% -.03 vap x blais-lago for dfe
+% interpret
+% For small district: 18.06 - 18.62% turnout; for big district 18.22 to 18.65
+%  run from 1.45% to 2.13%
+% .11 to .14 teacher influence for dfe (not sig)
+% .07 teacher VAP for dfe (not sig)
+% Party divide .024 for MM (not sig)
+% party divide x VAP .009 for MM (not sig)
+% Dem share -.010 for MM (not sig)
+% Dem share ^2 .032 for MM (not sig)
+% 2 party dem x VAP -.048 for MM (not sig)
+% partisan division .05 for dfe (not sig)
+% dem share .02 for dfe (not sig)
+% partisan division x VAP .02 (not sig)
+% dem share x vap -.24 (not sig)
+% Now undervote
+% Lag -.06  -- increasing lagged turnout from 10-15% decreases undervote from 3.3 to 3%
+% Blais-Lago .03 main, .16 interact w/ VAP -- increasing Blais-Lago from 10 to 20, no effect
+%%  -- explore interaction median size district 1.174% point rolloff for 
+%%  -- Blais-Lago from 2.1 to 24 for median district
+%% ---- For large district 0.38% point rolloff
+%% ---- for small district  0.12% point rolloff
+% .23 for uncontested seat, no interaction, uncontested seats have 3.8% points more rolloff
+% teachshare .15 main effect, .15 interact w/ VAP (not sig) move from 1.4% of teachers to 2.1% teachers leads to  0.550942% points of rolloff
+% dem share .12 main effect, -.1 interact w/ VAP (not sig) (4.71 points more rolloff) 
+% going from 42% democrat to 55% democrat leads to that much more rolloff
+% party divide .06 main effect (not sig), .12 by VAP (sig)
+% For a small district, .2% point increase in rolloff as party division increases
+% for a large district .9% increase in rolloff
+% For 8.5 % point more partisan gap between republicans and dems
 
 
 \subsubsection{Turnout}
