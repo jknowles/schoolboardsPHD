@@ -264,7 +264,8 @@ moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year",
                         "NonWhitePublicPupilPer", "NonPublicPupilPer", 
                         "teachShareofVoters", "locale2", 
                         "member_delta_per", "GovTwoPartyShareDem_recall",
-                        "turnout_overall_werc",
+                        "GovTwoPartyShareRep_recall",
+                        "turnout_overall_werc", "minBlaisLago",
                         "eligvoters_werc", 
                         "loss_werc", "worst_margin_werc", "WERC_elec", 
                         "GovTurnout_recall")]
@@ -284,7 +285,7 @@ moddat$per65o <- moddat$per65o * 100
 moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
 moddat$OOH_share <- moddat$OOH_share * 100
 # moddat$fallTurnout <- moddat$fallTurnout * 100
-moddat$RecallPolarization <- abs(moddat$GovTwoPartyShareDem_recall - 0.5)
+moddat$RecallPolarization <- abs(moddat$GovTwoPartyShareDem_recall - moddat$GovTwoPartyShareRep_recall)
 moddat$RecallPolarization <- moddat$RecallPolarization * 100
 moddat$turnout_overall_werc <- moddat$turnout_overall_werc * 100
 moddat$topTicketTurnoutSpring <- moddat$topTicketTurnoutSpring * 100
@@ -305,6 +306,13 @@ qplot(contestMinor, RecallPolarization, data = moddat, geom = 'boxplot') +
   theme_dpi()
 
 qplot(RecallPolarization, turnout, data = moddat[moddat$turnout < 80,], 
+      color = factor(contestSer)) + 
+  facet_wrap(~year) + geom_smooth(method = 'lm', aes(group = 1)) +
+  scale_y_continuous() +
+  theme_dpi()
+
+# Bigger the number, less polarization there is
+qplot(RecallPolarization, minBlaisLago, data = moddat[moddat$turnout < 80,], 
       color = factor(contestSer)) + 
   facet_wrap(~year) + geom_smooth(method = 'lm', aes(group = 1)) +
   scale_y_continuous() +

@@ -149,36 +149,55 @@ rm(dist_turn.tmp)
 dist_turn <- merge(dist_turn, distAttr, by = c("distid", "year"))
 
 cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
-votes.tmp <- merge(cand.tmp, as.data.frame(races)[races$nwins >0, c("raceid2", "votes", 
-                                                                    "districtwide", "ninc",
-                                                                    "nminor","nwins", "ncand",
-                                                                    "nrealcand")], 
+votes.tmp <- merge(cand.tmp, 
+                   as.data.frame(races)[races$nwins >0, 
+                                        c("raceid2", "votes", "districtwide", "ninc",
+                                          "nminor","nwins", "ncand", "nrealcand")], 
                    by = c("raceid2"), suffixes = c(".cand", ".race"))
 
 votes.tmp$vote_share <- votes.tmp$votes.cand / votes.tmp$votes.race
 votes.tmp$vote_share[is.na(votes.tmp$vote_share)] <- 0
-plotdf2 <- as.data.table(votes.tmp)[, list(cand = .N, 
+votes.tmp$hareQuota <- votes.tmp$votes.race / (votes.tmp$nwins + 1)
+
+plotdf2 <- as.data.table(votes.tmp)[, list(cand = length(winner), 
                                            distid = distid[1],
                                            year = year[1],
                                            winners = sum(winner),
-                                           votescast = sum(votes.cand),
-                                           winshare = sum(vote_share[winner ==1]),
-                                           winmargin = sum(vote_share[winner == 1]) - sum(vote_share[winner == 0]),
-                                           winmargin2 = mean(vote_share[winner==1]) - mean(vote_share[winner == 0])), 
+                                           votescast = sum(votes.cand, na.rm=TRUE),
+                                           minWinVotes = min(votes.cand[winner == 1], na.rm=TRUE),
+                                           maxLoseVotes = max(votes.cand[winner == 0], na.rm=TRUE),
+                                           winnerVotes = sum(votes.cand[winner == 1], na.rm=TRUE),
+                                           winshare = sum(vote_share[winner ==1], na.rm=TRUE),
+                                           totalvoteshare = sum(vote_share, na.rm=TRUE), 
+                                           hareQuotaDeltaWinners = mean(votes.cand[winner ==1] - hareQuota[winner==1])),
                                     by = c("raceid2")]
-plotdf2$winmargin3 <- plotdf2$winshare - (1/plotdf2$cand * plotdf2$winners)
-plotdf2$winmargin3[plotdf2$cand == plotdf2$winners] <- .5
+
+plotdf2$minWinVotes[!is.finite(plotdf2$minWinVotes)] <- 0
+plotdf2$maxLoseVotes[!is.finite(plotdf2$maxLoseVotes)] <- 0
+plotdf2$voteMargin <- plotdf2$minWinVotes - plotdf2$maxLoseVotes
+plotdf2$blaisLago <- 100 * (plotdf2$voteMargin / plotdf2$votescast / plotdf2$winners)
+plotdf2$hareQuota <- plotdf2$votescast / (plotdf2$winners + 1)
+plotdf2$hareQuotaDelta2 <- plotdf2$winnerVotes - (plotdf2$hareQuota * plotdf2$winners)
 
 plotdf2$closeRace <- 0
-plotdf2$closeRace[plotdf2$winmargin2 < .15] <- 1
+plotdf2$closeRace[plotdf2$blaisLago < 
+                    quantile(plotdf2$blaisLago[plotdf2$blaisLago >0], 
+                             breaks = c(0.25), na.rm=TRUE)] <- 1
 
-errors <- subset(plotdf2, winmargin < 0)
+errors <- subset(plotdf2, blaisLago < 0)
 
 plot.tmp <- ddply(plotdf2, .(distid, year), summarise, 
                   races = length(distid), 
+                  minBlaisLago = min(blaisLago, na.rm=TRUE), 
+                  avgBlaisLago = mean(blaisLago, na.rm=TRUE),
+                  minHareQuotaDelta = min(hareQuotaDelta2, na.rm=TRUE),
+                  avgHareQuotaDelta = mean(hareQuotaDelta2, na.rm=TRUE),
                   closeRaces = sum(closeRace))
 
-
+plot.tmp$minBlaisLago[!is.finite(plot.tmp$minBlaisLago)] <- 100
+plot.tmp$avgBlaisLago[!is.finite(plot.tmp$avgBlaisLago)] <- 100
+plot.tmp$minHareQuotaDelta[!is.finite(plot.tmp$minHareQuotaDelta)] <- NA
+plot.tmp$avgHareQuotaDelta[!is.finite(plot.tmp$avgHareQuotaDelta)] <- NA
 dist_turn <- merge(dist_turn, plot.tmp, all.x=TRUE)
 rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
 
@@ -239,6 +258,8 @@ load("data/cache/WalkerRecall.rda")
 distvotes12r <- distvotes12r[, -2]
 distvotes12r$GovTwoPartyShareDem <- distvotes12r$GOVDEM / (distvotes12r$GOVDEM + 
                                                              distvotes12r$GOVREP)
+distvotes12r$GovTwoPartyShareRep <- distvotes12r$GOVREP / (distvotes12r$GOVDEM + 
+                                                             distvotes12r$GOVREP)
 
 names(distvotes12r) <- paste(names(distvotes12r), "recall", sep ="_")
 
@@ -266,6 +287,7 @@ dist_turn$eqv_adj_tifoutLOG <- log(dist_turn$eqv_adj_tifout)
 dist_turn$ADJ_MEDIAN_FRINGE_TEACH[dist_turn$ADJ_MEDIAN_FRINGE_TEACH == 0] <- 1
 dist_turn$ADJ_MEDIAN_FRINGE_TEACHlog <- log(dist_turn$ADJ_MEDIAN_FRINGE_TEACH)
 dist_turn$ADJ_MEDIAN_SALARY_TEACHlog <- log(dist_turn$ADJ_MEDIAN_SALARY_TEACH)
+#TODO: Fix this
 dist_turn$partyDivision <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
 dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
 dist_turn$incumRun <- ifelse(dist_turn$ninc > 0, 1, 0)

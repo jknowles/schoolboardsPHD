@@ -200,5 +200,5 @@ dist_turn <- merge(dist_turn, ADMIN, by.x = c("DISTID", "year"),
                    by.y =c("DISTID", "YEAR"))
 
 dist_turn$teachShareofVoters <- round(dist_turn$FTE_TEACH,0) / round(dist_turn$VAP_adj,0)
-
+# add lagged turnout measure here too
 rm(ADMIN)

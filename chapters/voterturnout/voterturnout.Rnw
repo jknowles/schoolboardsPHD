@@ -1751,6 +1751,7 @@ seems clear, boards are not proving grounds for candidates for higher office and
 they are non-partisan the party leadership has little incentive to prioritize them. 
 
 <<partyMods, results ='hide'>>=
+#TODO: Fix this -- make it the division between two-party share of these
 dist_turn$fallPartyDivision <- abs(dist_turn$fallTwoPartyShareDem - 0.5)
 
 moddat <- dist_turn[, c("turnout", "year", "fallTurnout", "incumbent",
