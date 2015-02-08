@@ -1351,12 +1351,11 @@ mixedModlags <- lmer(turnout ~ turnoutLag2 +  VAP_adjLOG +
                minBlaisLago + (1|year) + (1|distid), 
               data = moddat, REML = FALSE)
 
-mixedMod1lagsb <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq +
-                    per_white_all + 
-                       per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-               districtwide + 
-               minBlaisLago + (1|year) + (1|distid), 
-              data = moddat, REML = FALSE)
+mixedMod1lagsb <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
+                         VAP_adjLOG_sq + per_white_all + per65o + 
+                         PerBachelorOrAbove + OOH_share + median_incomeLOG + 
+                         districtwide + minBlaisLago + (1|year) + (1|distid), 
+                       data = moddat, REML = FALSE)
 
 coefnamesLag3 <- c("Intercept","Lagged Turnout (2)", "ln(VAP)", 
                  "\\% White", 

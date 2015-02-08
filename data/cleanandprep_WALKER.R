@@ -312,6 +312,31 @@ dist_turn <- merge(dist_turn, springVotes, by = c("distid", "year"))
 dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
 dist_turn$turnoutDiff <- dist_turn$topTicketTurnoutSpring - dist_turn$turnout
 
+#### ---------------------------------------------
+# Create some further variables
+dist_turn$recentTwoPartyShareDem <- NA
+dist_turn$recentFallTurnout <- NA
+
+for(i in unique(dist_turn$distid)){
+  for(j in unique(dist_turn$year)){
+    if(j %in% c("2003", "2004", "2007", "2008", "2011", "2012")){
+      dist_turn$recentTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$govTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i]
+      dist_turn$recentFallTurnout[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$topGovTurnoutPrior[dist_turn$year == j & dist_turn$distid == i]
+    } else if(j %in% c("2001", "2002", "2005", "2006", "2009", "2010", "2013")) {
+      dist_turn$recentTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$presTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i]
+      dist_turn$recentFallTurnout[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$topPresTurnoutPrior[dist_turn$year == j & dist_turn$distid == i]
+    }
+  }
+}
+
+dist_turn$partyDivisionFall <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
+dist_turn$partyDivisionRecent <- abs(0.5 - dist_turn$recentTwoPartyShareDem)
+dist_turn$schoolMillShare <- dist_turn$millrate  / (dist_turn$NonSDMill + dist_turn$millrate)
+
 ################################################################################
 # Read in contract extension data
 ################################################################################

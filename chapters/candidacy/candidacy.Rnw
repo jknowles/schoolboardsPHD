@@ -1718,9 +1718,9 @@ glmBLQtab <- apsrtable(demogsBLQ, politicBLQ, fiscalBLQ, policyBLQ, fullmodBLQ, 
 
 \begin{tiny}
 <<blqMMmods, eval=TRUE, results='asis'>>=
-demogsMMblq <- lmer(minBlaisLago ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
-              OOH_share + locale2 + contestSerLag + year + (1|distid), 
-              data = moddat4) 
+demogsMMblq <- lmer(minBlaisLago ~ VAP_adjLOG + per65o + PerBachelorOrAbove + 
+                      per_white_all + OOH_share + locale2 + contestSerLag + 
+                      year + (1|distid), data = moddat4) 
 
 politicMMblq <- update(demogsMMblq, . ~ . + incumShare +  overrideYesPer +  
                        partyDivisionRecent +
