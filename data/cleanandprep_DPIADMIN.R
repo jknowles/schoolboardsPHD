@@ -1,13 +1,6 @@
 ## Clean and reshape DPI R data
 
 load("data/cache/KnowlesDissData092014.rda")
-
-zeroInf <- function(x){
-  x[!is.finite(x)] <- 0
-}
-
-
-
 AllSalary <- AllSalary[, c(1:23)]
 AdminSalary <- AdminSalary[, c(1:23)]
 TeachSalary <- TeachSalary[, c(1:23)]
@@ -215,20 +208,15 @@ ADMIN <- merge(ADMIN, WSAS, by = c("DISTID", "YEAR", "SCHOOL_YEAR"), all.x = TRU
 
 rm(WSAS, compFunds, sparsity)
 
-zeroNA <- function(x){
-  x[is.na(x)] <- 0
-  return(x)
-}
+zeroVars <- c("overridePass", "debtQues", "debtPass", "offCycle", "yesVotes", 
+              "noVotes", "priorR", "priorRpass", "priorD", "priorDpass", "overrideFail", 
+              "debtFail", "elecFail", "DEBT_ATTEMPT_CUMUL93", "DEBT_PASS_CUMUL93", 
+              "OVERRIDE_ATTEMPT_CUMUL93", "OVERRIDE_PASS_CUMUL93")
 
-ADMIN[, 55] <- zeroNA(ADMIN[, 55])
-ADMIN[, 56] <- zeroNA(ADMIN[, 56])
-ADMIN[, 57] <- zeroNA(ADMIN[, 57])
-ADMIN[, 58] <- zeroNA(ADMIN[, 58])
+ADMIN[, zeroVars] <- apply(ADMIN[, zeroVars], 2, zeroNA)
+
 ADMIN$NonPublicPupilPer <- zeroNA(ADMIN$NonPublicPupilPer)
-
-
 # Create some membership data
-
 ADMIN$TEC_MEMBER <- ADMIN$TEC / ADMIN$MEMBERSHIP
 ADMIN$TCEC_MEMBER <- ADMIN$TCEC / ADMIN$MEMBERSHIP
 ADMIN$TDC_MEMBER <- ADMIN$TDC / ADMIN$MEMBERSHIP

@@ -17,15 +17,10 @@ distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill",
 
 distAttr$balance_member_lag <- distAttr$balance_lag / distAttr$member_datayear
 distAttr$member_delta_per <- distAttr$member_delta / distAttr$member_datayear
-
-
 rm(tmp)
-
 distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation
-
 ## reshape school district by year
 # How to calculate total votes in elections with multiple winners...
-
 races <- as.data.frame(races)
 races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
 
@@ -87,20 +82,15 @@ races.tmp <- subset(races.tmp, electiontype == 1)
 races.tmp <- subset(races.tmp, districtwide == 0)
 races.tmp <- subset(races.tmp, nrealcand > 0)
 races.tmp <- races.tmp[!is.na(races.tmp$distid),]
-
 # collapse to the district level
-
 dist.tmp <- ddply(races.tmp, .(distid, year), summarise, 
                   ncand = sum(ncand), nrealcand = sum(nrealcand), 
                   nwins = sum(nwins), ninc = sum(ninc), 
                   nminor = sum(nminor), votes = sum(votes), 
                   VAP_adj = statamode(VAP_adj), 
                   nraces = length(distid))
-
 dist.tmp$districtwide <- 0
-
 dist_turn <- rbind(dist_turn, dist.tmp)
-
 row_counts <- ddply(dist_turn, .(distid, year), nrow)
 dist_turn <- merge(dist_turn, row_counts, all.x=TRUE)
 dist_turn$recs <- dist_turn$V1; dist_turn$V1 <- NULL
@@ -120,14 +110,10 @@ dist_turn$turnout <- dist_turn$voters / dist_turn$VAP_adj
 # Fall turnout 
 dist_turn$fallTurnout <- (dist_turn$topGovTurnoutPrior + dist_turn$topPresTurnoutPrior) / 2
 dist_turn$fallTwoPartyShareDem <- (dist_turn$govTwoPartyShareDem + dist_turn$presTwoPartyShareDem) /2
-
 rm(dist_turn1, dist_turn2, races.tmp, row_counts)
-
-
 dist_turn$contest <- "Uncontested"
 dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Contested"
 dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc ==0] <- "Open Contested"
-
 
 lg  <- function(x) c(NA, x[1:length(x)-1])
 lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
@@ -200,9 +186,7 @@ plot.tmp$minHareQuotaDelta[!is.finite(plot.tmp$minHareQuotaDelta)] <- NA
 plot.tmp$avgHareQuotaDelta[!is.finite(plot.tmp$avgHareQuotaDelta)] <- NA
 dist_turn <- merge(dist_turn, plot.tmp, all.x=TRUE)
 rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
-
 dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
-
 source("data/cleanandprep_DPIADMIN.R")
 
 dist_turn$DISTID <- FORMATdistid(dist_turn$distid)
@@ -308,7 +292,7 @@ rm(distAttr, distvotes12r, dvp, govTurn, presTurn, wercDatALL, wercDatTeachers)
 load("data/cache/springElectionVotes.rda")
 springVotes$votesTopTicketSpring <- springVotes$VotesCast
 springVotes$VotesCast <- NULL
-dist_turn <- merge(dist_turn, springVotes, by = c("distid", "year"))
+dist_turn <- merge(dist_turn, springVotes, by = c("distid", "year"), all.x=TRUE)
 dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
 dist_turn$turnoutDiff <- dist_turn$topTicketTurnoutSpring - dist_turn$turnout
 
