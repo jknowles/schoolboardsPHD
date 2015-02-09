@@ -548,7 +548,7 @@ apsrtable(demogsMMblq, politicMMblq, policyMMblq, fullmodMMblq,
 @
 
 
-Table \ref{tab:causmod1} shows good things. 
+Table \ref{tab:meBLQ} shows good things. 
 
 <<walkerPartialPool, results='asis', echo = FALSE, eval=FALSE>>=
 ctrl <- glmerControl(optimizer = "optimx", optCtrl = list(method = "nlminb", 
@@ -588,7 +588,7 @@ theoretical contribution is that the polarization of the electorate should matte
 more after the passage of Act 10, when party lines for education issues became 
 clear. 
 
-<<walkerDataPrep2, results='asis', echo = FALSE>>=
+<<walkerDataPrep2, results='asis', echo = FALSE, eval=FALSE>>=
 ## Grab Walker recall results
 moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
                         "balance_member_lag", "turnout", "VAP_adjLOG_sq",
@@ -663,7 +663,7 @@ qplot(RecallPolarization, turnout/100, data = moddat) + geom_smooth(method = "lm
 @
 
 
-<<walkerOLSmodT, results='asis'>>=
+<<walkerOLSmodT, results='asis', eval=FALSE>>=
 mixedMod1lagsb <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                          per_white_all + per65o + PerBachelorOrAbove + 
                          OOH_share + median_incomeLOG + minBlaisLago + 
@@ -698,7 +698,7 @@ apsrtable(causal1, causal2, se = "robust", label="tab:causmod1",
 
 Table \ref{tab:causmod1} shows good things. 
 
-<<walkerPartialPoolT, results='asis', echo = FALSE>>=
+<<walkerPartialPoolT, results='asis', echo = FALSE, eval=FALSE>>=
 mixedModCaus <- lmer(turnout ~turnoutLag2 + fallTurnout + VAP_adjLOG + per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + CLOSE + 
                districtwide + contest + RecallPolarization*treatment + 
