@@ -38,7 +38,7 @@ races.tmp <- merge(races.tmp, govTurn, by = c("distid", "year"), all.x=TRUE)
 races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
                                           "nrealcand", "nwins", "ninc", "raceid",
                                           "nminor", "votes", "districtwide", 
-                                          "electiontype", "VAP", "VAP_adj", 
+                                          "electiontype", "VAP", "VAP_adj", "nincDefInd", 
                                           "topPresVotesPrior", "presTwoPartyShareDem", 
                                           "topGovVotesPrior", "govTwoPartyShareDem"))
 
@@ -61,6 +61,7 @@ dist_turn <- ddply(races.tmp, .(distid, year), summarise,
                    nwins = sum(nwins), ninc = sum(ninc), 
                    nminor = sum(nminor), votes = sum(votes), 
                    VAP_adj = statamode(VAP_adj), 
+                   incDefeats = sum(nincDefInd),
                    nraces = length(distid))
 
 dist_turn$districtwide <- 1
@@ -72,7 +73,7 @@ races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
 
 races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
                                           "nrealcand", "nwins", "ninc", "raceid",
-                                          "nminor", "votes", "districtwide", 
+                                          "nminor", "votes", "districtwide",  "nincDefInd", 
                                           "electiontype", "VAP_adj"))
 
 races.tmp <- subset(races.tmp, raceid!=0)
@@ -87,6 +88,7 @@ dist.tmp <- ddply(races.tmp, .(distid, year), summarise,
                   ncand = sum(ncand), nrealcand = sum(nrealcand), 
                   nwins = sum(nwins), ninc = sum(ninc), 
                   nminor = sum(nminor), votes = sum(votes), 
+                  incDefeats = sum(nincDefInd),
                   VAP_adj = statamode(VAP_adj), 
                   nraces = length(distid))
 dist.tmp$districtwide <- 0
@@ -166,12 +168,8 @@ plotdf2$hareQuota <- plotdf2$votescast / (plotdf2$winners + 1)
 plotdf2$hareQuotaDelta2 <- plotdf2$winnerVotes - (plotdf2$hareQuota * plotdf2$winners)
 
 plotdf2$closeRace <- 0
-plotdf2$closeRace[plotdf2$blaisLago < 
-                    quantile(plotdf2$blaisLago[plotdf2$blaisLago >0], 
-                             breaks = c(0.25), na.rm=TRUE)] <- 1
-
-errors <- subset(plotdf2, blaisLago < 0)
-
+plotdf2$closeRace <- ifelse(plotdf2$blaisLago >  quantile(plotdf2$blaisLago, 
+                                                          breaks = c(0.25), na.rm=TRUE)[2], 1, 0)
 plot.tmp <- ddply(plotdf2, .(distid, year), summarise, 
                   races = length(distid), 
                   minBlaisLago = min(blaisLago, na.rm=TRUE), 
@@ -233,9 +231,6 @@ dist_turn$no_votes_avg_werc <- NAzero(dist_turn$no_votes_avg_werc)
 dist_turn$abst_votes_avg_werc <- NAzero(dist_turn$abst_votes_avg_werc)
 dist_turn$best_margin_werc <- NAzero(dist_turn$best_margin_werc)
 dist_turn$worst_margin_werc <- NAzero(dist_turn$worst_margin_werc)
-
-
-
 load("data/cache/WalkerRecall.rda")
 # load("data/cache/WalkerRecall.rda")
 ## Bolt them on
@@ -250,9 +245,6 @@ names(distvotes12r) <- paste(names(distvotes12r), "recall", sep ="_")
 dist_turn <- merge(dist_turn, distvotes12r, by.x = "distid", 
                    by.y = "distid_recall")
 dist_turn$GovTurnout_recall <- dist_turn$RECTOT_recall / dist_turn$VAP_adj 
-
-
-
 dist_turn$ADMIN_SHARE_COMP <- (dist_turn$SALARY_TOTAL_ADMIN + dist_turn$FRINGE_TOTAL_ADMIN) / 
   (dist_turn$FRINGE_TOTAL_ALL + dist_turn$SALARY_TOTAL_ALL)
 dist_turn$ADMIN_SHARE_FTE <- (dist_turn$FTE_ADMIN / dist_turn$FTE_ALL)
@@ -271,8 +263,7 @@ dist_turn$eqv_adj_tifoutLOG <- log(dist_turn$eqv_adj_tifout)
 dist_turn$ADJ_MEDIAN_FRINGE_TEACH[dist_turn$ADJ_MEDIAN_FRINGE_TEACH == 0] <- 1
 dist_turn$ADJ_MEDIAN_FRINGE_TEACHlog <- log(dist_turn$ADJ_MEDIAN_FRINGE_TEACH)
 dist_turn$ADJ_MEDIAN_SALARY_TEACHlog <- log(dist_turn$ADJ_MEDIAN_SALARY_TEACH)
-#TODO: Fix this
-dist_turn$partyDivision <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
+dist_turn$partyDivision <- 1- abs(0.5 - dist_turn$fallTwoPartyShareDem)
 dist_turn$overrideYesPer <- dist_turn$yesVotes / dist_turn$VAP_adj
 dist_turn$incumRun <- ifelse(dist_turn$ninc > 0, 1, 0)
 dist_turn$incumShare <- dist_turn$ninc / (dist_turn$nrealcand)
@@ -317,8 +308,8 @@ for(i in unique(dist_turn$distid)){
   }
 }
 
-dist_turn$partyDivisionFall <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
-dist_turn$partyDivisionRecent <- abs(0.5 - dist_turn$recentTwoPartyShareDem)
+dist_turn$partyDivisionFall <- 1 - abs(0.5 - dist_turn$fallTwoPartyShareDem)
+dist_turn$partyDivisionRecent <- 1 - abs(0.5 - dist_turn$recentTwoPartyShareDem)
 dist_turn$schoolMillShare <- dist_turn$millrate  / (dist_turn$NonSDMill + dist_turn$millrate)
 
 ################################################################################
