@@ -205,6 +205,9 @@ drawn from results of Wisconsin's historic recall election.
 
 \end{knitrout}
 
+% turnout_overall_werc
+% Need to explain this variable and its effect
+
 \clearpage
 
 \section{Methods}
@@ -404,6 +407,16 @@ Sigma                          & 1           & 1           & 1           & 1    
 
 \end{tiny}
 
+% Serious contestation like in Chapter 3 does not show promise
+% polarization is associated with greater contestation 
+% Post-recall has greater contestation
+% recall turnout ^ is associated with a decrease in serious contestation
+% effect is magnified post recall
+% none of these effects are statistically significant
+% Models appear to fit poorly
+% TODO: Consider refitting to demographics only + groups of interactions
+
+
 \begin{tiny}
  
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
@@ -485,6 +498,16 @@ Sigma                          & 1           & 1           & 1           & 1    
 
 \end{tiny}
 
+% Sign on recall polarization flips from seriousness
+% Recall polarization ^ associated with less contestation nominally
+% polarization is associated with greater contestation 
+% Post-recall has greater contestation
+% recall turnout ^ is associated with a decrease in serious contestation
+% effect is magnified post recall
+% none of these effects are statistically significant
+% Models appear to fit poorly
+% TODO: Consider refitting to demographics only + groups of interactions
+
 \subsection{Incumbent Defeat}
 
 As in Chapter \ref{chap:candidacy} I fit incumbent defeat models on a subset of 
@@ -493,59 +516,74 @@ where there are more candidates than incumbents in the race.
 
 
 
+\begin{tiny}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{verbatim}
 ##  
-## \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+## \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 ## \hline 
-##   & \multicolumn{ 1 }{ c }{ 1 } & \multicolumn{ 1 }{ c }{ 2 } & \multicolumn{ 1 }{ c }{ 3 } \\ \hline
-##  %                              & 1           & 2           & 3          \\ 
-## (Intercept)                    & -1.377 ^*   & -1.345 ^*   & -1.391 ^*  \\ 
-##                                & (0.233)     & (0.231)     & (0.238)    \\ 
-## turnoutLag2                    & -0.071      & -0.062      &            \\ 
-##                                & (0.205)     & (0.202)     &            \\ 
-## VAP\_adjLOG                   & 4.186       & 3.967       & 4.286      \\ 
-##                                & (2.658)     & (2.562)     & (2.630)    \\ 
-## VAP\_adjLOG\_sq              & -3.902      & -3.683      & -3.991     \\ 
-##                                & (2.664)     & (2.567)     & (2.642)    \\ 
-## per\_white\_all              & 0.092       & 0.106       & 0.091      \\ 
-##                                & (0.331)     & (0.314)     & (0.329)    \\ 
-## per65o                         & 0.224       & 0.207       & 0.215      \\ 
-##                                & (0.255)     & (0.226)     & (0.253)    \\ 
-## PerBachelorOrAbove             & -0.460      & -0.472      & -0.471     \\ 
-##                                & (0.304)     & (0.279)     & (0.302)    \\ 
-## OOH\_share                    & 0.033       &             & 0.032      \\ 
-##                                & (0.285)     &             & (0.285)    \\ 
-## median\_incomeLOG             & 0.681       & 0.683       & 0.696      \\ 
-##                                & (0.456)     & (0.416)     & (0.453)    \\ 
-## districtwide1                  & 0.333       & 0.325       & 0.329      \\ 
-##                                & (0.241)     & (0.234)     & (0.241)    \\ 
-## RecallPolarization             & -0.236      & -0.230      & -0.232     \\ 
-##                                & (0.229)     & (0.223)     & (0.229)    \\ 
-## treatment1                     & -0.334      & -0.326      & -0.327     \\ 
-##                                & (0.172)     & (0.170)     & (0.170)    \\ 
-## GovTurnout\_recall            & -0.473      & -0.453      & -0.488     \\ 
-##                                & (0.330)     & (0.320)     & (0.326)    \\ 
-## RecallPolarization:treatment1  & 0.784 ^*    & 0.781 ^*    & 0.775 ^*   \\ 
-##                                & (0.379)     & (0.375)     & (0.378)    \\ 
-## treatment1:GovTurnout\_recall & 0.444       & 0.443       & 0.446      \\ 
-##                                & (0.396)     & (0.391)     & (0.396)    \\ 
-## contestSerLag1                 &             &             & 0.038      \\ 
-##                                &             &             & (0.164)     \\
-##  $N$                            & 935         & 935         & 935        \\ 
-## AIC                            & 1065.117    & 1062.708    & 1065.145   \\ 
-## N Groups                       & 300         & 300         & 300        \\ 
-## Group Names                    & distid      & distid      & distid     \\ 
-## Group:distid Effs.             & (Intercept) & (Intercept) & (Intercept)\\ 
-## Group:distid Var.              & 0.441       & 0.302       & 0.435      \\ 
-## Sigma                          & 1           & 1           & 1           \\ \hline
-##  \multicolumn{4}{l}{\footnotesize{All variables scaled and mean centered by year.}}\\
-## \multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+##   & \multicolumn{ 1 }{ c }{ 1 } & \multicolumn{ 1 }{ c }{ 2 } & \multicolumn{ 1 }{ c }{ 3 } & \multicolumn{ 1 }{ c }{ 4 } \\ \hline
+##  %                                   & 1           & 2           & 3           & 4          \\ 
+## (Intercept)                         & -1.377 ^*   & -1.345 ^*   & -1.391 ^*   & -1.390 ^*  \\ 
+##                                     & (0.233)     & (0.231)     & (0.238)     & (0.238)    \\ 
+## turnoutLag2                         & -0.071      & -0.062      &             &            \\ 
+##                                     & (0.205)     & (0.202)     &             &            \\ 
+## VAP\_adjLOG                        & 4.186       & 3.967       & 4.286       & 3.936      \\ 
+##                                     & (2.658)     & (2.562)     & (2.630)     & (2.642)    \\ 
+## VAP\_adjLOG\_sq                   & -3.902      & -3.683      & -3.991      & -3.688     \\ 
+##                                     & (2.664)     & (2.567)     & (2.642)     & (2.656)    \\ 
+## per\_white\_all                   & 0.092       & 0.106       & 0.091       & 0.116      \\ 
+##                                     & (0.331)     & (0.314)     & (0.329)     & (0.327)    \\ 
+## per65o                              & 0.224       & 0.207       & 0.215       & 0.239      \\ 
+##                                     & (0.255)     & (0.226)     & (0.253)     & (0.251)    \\ 
+## PerBachelorOrAbove                  & -0.460      & -0.472      & -0.471      & -0.397     \\ 
+##                                     & (0.304)     & (0.279)     & (0.302)     & (0.303)    \\ 
+## OOH\_share                         & 0.033       &             & 0.032       & 0.064      \\ 
+##                                     & (0.285)     &             & (0.285)     & (0.283)    \\ 
+## median\_incomeLOG                  & 0.681       & 0.683       & 0.696       & 0.644      \\ 
+##                                     & (0.456)     & (0.416)     & (0.453)     & (0.453)    \\ 
+## districtwide1                       & 0.333       & 0.325       & 0.329       & 0.325      \\ 
+##                                     & (0.241)     & (0.234)     & (0.241)     & (0.241)    \\ 
+## RecallPolarization                  & -0.236      & -0.230      & -0.232      & 0.027      \\ 
+##                                     & (0.229)     & (0.223)     & (0.229)     & (0.195)    \\ 
+## treatment1                          & -0.334      & -0.326      & -0.327      & -0.340 ^*  \\ 
+##                                     & (0.172)     & (0.170)     & (0.170)     & (0.172)    \\ 
+## GovTurnout\_recall                 & -0.473      & -0.453      & -0.488      & -0.383     \\ 
+##                                     & (0.330)     & (0.320)     & (0.326)     & (0.310)    \\ 
+## RecallPolarization:treatment1       & 0.784 ^*    & 0.781 ^*    & 0.775 ^*    &            \\ 
+##                                     & (0.379)     & (0.375)     & (0.378)     &            \\ 
+## treatment1:GovTurnout\_recall      & 0.444       & 0.443       & 0.446       &            \\ 
+##                                     & (0.396)     & (0.391)     & (0.396)     &            \\ 
+## contestSerLag1                      &             &             & 0.038       & 0.046      \\ 
+##                                     &             &             & (0.164)     & (0.164)    \\ 
+## turnout\_overall\_werc            &             &             &             & 0.121      \\ 
+##                                     &             &             &             & (0.196)    \\ 
+## turnout\_overall\_werc:treatment1 &             &             &             & 0.356      \\ 
+##                                     &             &             &             & (0.347)     \\
+##  $N$                                 & 935         & 935         & 935         & 935        \\ 
+## AIC                                 & 1065.117    & 1062.708    & 1065.145    & 1066.664   \\ 
+## N Groups                            & 300         & 300         & 300         & 300        \\ 
+## Group Names                         & distid      & distid      & distid      & distid     \\ 
+## Group:distid Effs.                  & (Intercept) & (Intercept) & (Intercept) & (Intercept)\\ 
+## Group:distid Var.                   & 0.441       & 0.302       & 0.435       & 0.434      \\ 
+## Sigma                               & 1           & 1           & 1           & 1           \\ \hline
+##  \multicolumn{5}{l}{\footnotesize{All variables scaled and mean centered by year.}}\\
+## \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 ## \end{tabular}
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+\end{tiny}
+
+% Note models built on a smaller subset
+% Problems with convergence
+% incumbent defeat seems to go down post recall
+% Recall polarization negatively related to incumbent defeat
+% incumbent defeat increases with polarization post election
+% recall turnout negatively related to incumbent defeat
+% recall turnout post recall positively related with incumbent defeat
+% WERC does not matter, but sample size is small
 
 \subsection{Competitiveness}
 
@@ -556,50 +594,60 @@ Uncompetitive races are dropped.
 
 \begin{tiny}
  
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
-  & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Polar } & \multicolumn{ 1 }{ c }{ Both } \\ \hline
- %                              & Turnout     & Polar       & Both       \\ 
-(Intercept)                    & -0.073      & -0.069      & -0.070     \\ 
-                               & (0.130)     & (0.131)     & (0.131)    \\ 
-VAP\_adjLOG                   & -0.220      & -0.215      & -0.214     \\ 
-                               & (0.537)     & (0.543)     & (0.544)    \\ 
-VAP\_adjLOG\_sq              & 0.043       & 0.034       & 0.036      \\ 
-                               & (0.561)     & (0.568)     & (0.568)    \\ 
-per65o                         & -0.006      & 0.008       & -0.003     \\ 
-                               & (0.053)     & (0.051)     & (0.053)    \\ 
-PerBachelorOrAbove             & 0.048       & 0.087 ^*    & 0.050      \\ 
-                               & (0.054)     & (0.041)     & (0.055)    \\ 
-per\_white\_all              & -0.004      & 0.004       & -0.004     \\ 
-                               & (0.045)     & (0.045)     & (0.046)    \\ 
-OOH\_share                    & -0.067      & -0.050      & -0.068     \\ 
-                               & (0.056)     & (0.053)     & (0.056)    \\ 
-locale2exurb                   & 0.063       & 0.067       & 0.063      \\ 
-                               & (0.138)     & (0.139)     & (0.139)    \\ 
-locale2rural                   & 0.048       & 0.045       & 0.044      \\ 
-                               & (0.136)     & (0.137)     & (0.137)    \\ 
-treatment1                     & 0.069 ^*    & 0.066 ^*    & 0.069 ^*   \\ 
-                               & (0.022)     & (0.022)     & (0.022)    \\ 
-GovTurnout\_recall            & 0.055       &             & 0.062      \\ 
-                               & (0.055)     &             & (0.059)    \\ 
-treatment1:GovTurnout\_recall & 0.021       &             & -0.004     \\ 
-                               & (0.045)     &             & (0.049)    \\ 
-RecallPolarization             &             & 0.002       & 0.019      \\ 
-                               &             & (0.043)     & (0.046)    \\ 
-RecallPolarization:treatment1  &             & -0.063      & -0.066     \\ 
-                               &             & (0.044)     & (0.047)     \\
- $N$                            & 1553        & 1553        & 1553       \\ 
-AIC                            & 2012.816    & 2012.607    & 2019.561   \\ 
-N Groups                       & 308         & 308         & 308        \\ 
-Group Names                    & distid      & distid      & distid     \\ 
-Group:distid Effs.             & (Intercept) & (Intercept) & (Intercept)\\ 
-Group:distid Var.              & 0.281       & 0.281       & 0.282      \\ 
-Sigma                          & 0.4052      & 0.405       & 0.4051      \\ \hline
- \multicolumn{4}{l}{\footnotesize{All variables scaled and mean centered by sample.}}\\
-\multicolumn{4}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+  & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Polar } & \multicolumn{ 1 }{ c }{ Both } & \multicolumn{ 1 }{ c }{ WERC } \\ \hline
+ %                                   & Turnout     & Polar       & Both        & WERC       \\ 
+(Intercept)                         & -0.073      & -0.069      & -0.070      & -0.068     \\ 
+                                    & (0.130)     & (0.131)     & (0.131)     & (0.131)    \\ 
+VAP\_adjLOG                        & -0.220      & -0.215      & -0.214      & -0.216     \\ 
+                                    & (0.537)     & (0.543)     & (0.544)     & (0.544)    \\ 
+VAP\_adjLOG\_sq                   & 0.043       & 0.034       & 0.036       & 0.041      \\ 
+                                    & (0.561)     & (0.568)     & (0.568)     & (0.569)    \\ 
+per65o                              & -0.006      & 0.008       & -0.003      & -0.001     \\ 
+                                    & (0.053)     & (0.051)     & (0.053)     & (0.053)    \\ 
+PerBachelorOrAbove                  & 0.048       & 0.087 ^*    & 0.050       & 0.052      \\ 
+                                    & (0.054)     & (0.041)     & (0.055)     & (0.055)    \\ 
+per\_white\_all                   & -0.004      & 0.004       & -0.004      & -0.003     \\ 
+                                    & (0.045)     & (0.045)     & (0.046)     & (0.046)    \\ 
+OOH\_share                         & -0.067      & -0.050      & -0.068      & -0.067     \\ 
+                                    & (0.056)     & (0.053)     & (0.056)     & (0.056)    \\ 
+locale2exurb                        & 0.063       & 0.067       & 0.063       & 0.060      \\ 
+                                    & (0.138)     & (0.139)     & (0.139)     & (0.139)    \\ 
+locale2rural                        & 0.048       & 0.045       & 0.044       & 0.043      \\ 
+                                    & (0.136)     & (0.137)     & (0.137)     & (0.137)    \\ 
+treatment1                          & 0.069 ^*    & 0.066 ^*    & 0.069 ^*    & 0.069 ^*   \\ 
+                                    & (0.022)     & (0.022)     & (0.022)     & (0.022)    \\ 
+GovTurnout\_recall                 & 0.055       &             & 0.062       & 0.060      \\ 
+                                    & (0.055)     &             & (0.059)     & (0.058)    \\ 
+treatment1:GovTurnout\_recall      & 0.021       &             & -0.004      &            \\ 
+                                    & (0.045)     &             & (0.049)     &            \\ 
+RecallPolarization                  &             & 0.002       & 0.019       & -0.007     \\ 
+                                    &             & (0.043)     & (0.046)     & (0.044)    \\ 
+RecallPolarization:treatment1       &             & -0.063      & -0.066      &            \\ 
+                                    &             & (0.044)     & (0.047)     &            \\ 
+turnout\_overall\_werc            &             &             &             & -0.033     \\ 
+                                    &             &             &             & (0.042)    \\ 
+treatment1:turnout\_overall\_werc &             &             &             & 0.035      \\ 
+                                    &             &             &             & (0.044)     \\
+ $N$                                 & 1553        & 1553        & 1553        & 1553       \\ 
+AIC                                 & 2012.816    & 2012.607    & 2019.561    & 2021.256   \\ 
+N Groups                            & 308         & 308         & 308         & 308        \\ 
+Group Names                         & distid      & distid      & distid      & distid     \\ 
+Group:distid Effs.                  & (Intercept) & (Intercept) & (Intercept) & (Intercept)\\ 
+Group:distid Var.                   & 0.281       & 0.281       & 0.282       & 0.282      \\ 
+Sigma                               & 0.4052      & 0.405       & 0.4051      & 0.4052      \\ \hline
+ \multicolumn{5}{l}{\footnotesize{All variables scaled and mean centered by sample.}}\\
+\multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
 \end{tabular} 
 
 \end{tiny}
+
+% Competitiveness appears to have increased post recall
+% Increase was universal and not conditional on the polarization 
+% or the participation in the recall
+% Competition was steady across districts regardless of WERC election 
+% Not much else is significant
 
 Table \ref{tab:meBLQ} shows good things. 
 
@@ -623,7 +671,7 @@ clear.
 
 
 
-Table \ref{tab:causmod1} shows good things. 
+Table \ref{tab:meTurnout} shows good things. 
 
 \begin{table}[!ht]
 \caption{Partial Pooling Model of Post-Election Turnout}
@@ -686,6 +734,17 @@ Sigma                               & 0.3685      & 0.3635      & 0.3627      & 
 
 
 Table \ref{tab:meTurnout} shows the results here.
+
+% turnout definitely increases post recall
+% more polarized communites had a relative decrease in turnout uptick
+% prior to the recall, no effect of polarization
+% Recall turnout positively related to turnout
+% post recall, recall turnout leads to even greater increase in turnout
+% WERC membership does not matter, post-recall WERC membership small 
+% increase in turnout
+
+% These effects are net of turnout lagged and fall turnout
+
 
 \clearpage
 
@@ -755,6 +814,13 @@ Sigma                               & 0.3752      & 0.3713      & 0.3707      & 
 \end{tabular} 
  \end{table}
 
+
+% rolloff increases post recall
+% WERC turnout decreases rolloff (no differentiation post recall)
+% Recall polarization has no effect on turnout, and none post recall
+% recall turnout increases rolloff, post recall this is magnified
+% Net of increased turnout, recall polarization leads to increased 
+% voter rolloff
 
 \section{Conclusion}
 
