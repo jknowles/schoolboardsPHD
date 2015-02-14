@@ -210,6 +210,8 @@ names(wercDatTeachers) <- paste(names(wercDatTeachers), "werc", sep = "_")
 dist_turn <- merge(dist_turn, wercDatTeachers, by.x = "distid", by.y = "distid_werc", 
                    all.x = TRUE)
 
+# TODO: Check overlap here - why can we assume these are 0 and not missing?
+
 NAzero <- function(x){
   x <- as.numeric(x)
   x[is.na(x)] <- 0 
