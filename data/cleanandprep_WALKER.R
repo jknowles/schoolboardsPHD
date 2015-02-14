@@ -196,16 +196,22 @@ dist_turn$teachShareofVoters <- round(dist_turn$FTE_TEACH,0) / round(dist_turn$V
 
 rm(ADMIN)
 
-
 ################################################################################
 # Read in WERC data and clean it
 ################################################################################
-
 # All WERC union certification elections as of July 2013
 
 load("data/cache/WERC.rda")
 # load("data/cache/WERC.rda")
 names(wercDatTeachers) <- paste(names(wercDatTeachers), "werc", sep = "_")
+
+# DTkey <- unique(dist_turn$distid)
+# wercKey <- unique(wercDatTeachers$distid)
+# length(DTkey[DTkey %in% wercKey])
+# length(DTkey[!DTkey %in% wercKey])
+# length(wercKey[wercKey %in% DTkey])
+
+wercDatTeachers$distid_werc <- as.character(wercDatTeachers$distid_werc)
 
 dist_turn <- merge(dist_turn, wercDatTeachers, by.x = "distid", by.y = "distid_werc", 
                    all.x = TRUE)

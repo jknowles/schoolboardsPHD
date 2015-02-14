@@ -180,11 +180,11 @@ when it comes to electoral behavior.
 \begin{small}
 \caption{Expected Relationships between Key Independent and Dependent Variables}
 \label{act10hypo}
-\begin{tabular}{| p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |
+\begin{tabular}{| p{.16\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |
                 p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |} \hline
-\textbf{DV / Variable}  & \textbf{treatment} & \textbf{treatment x polarization} & 
-  \textbf{treatment x turnout} & \textbf{treatment x WERC} &\textbf{polariztion} & 
-  \textbf{WERC} \\ \hline
+DV / Variable & treatment & treatment x polarization & 
+  treatment x turnout & treatment x WERC & polarization & 
+  WERC \\ \hline
 Contested Race & + & + & null & + & null & null \\ \hline
 Competitiveness & + & + & null & + & + & - \\ \hline
 Turnout & + & + & + & + & null & - \\ \hline
@@ -194,11 +194,16 @@ Rolloff & - & - & - & - & null & + \\ \hline
 \end{center}
 \end{table}
 
-
-
+% 
+% Second, this study 
+% explores the linkage between state level politics and local electoral participation. 
+% Thus, the study represents an attempt to estimate the causal effect of a state 
+% level policy shock on voter turnout in local elections by leveraging the unique 
+% conditions in Wisconsin from 2010-2012. The present study presents an important 
+% oppotunity to test theories of participation and cross-level linkages in a federal 
+% system that previously were not available to political scientists.
 
 \section{Literature Review}
-
 
 \subsection{Exogenous State Level Policy Shocks and Voter Turnout}
 
@@ -279,19 +284,6 @@ This follows along the work of \citet{Lassen2005} who leveraged an exogenous sho
 of an information campaign in some electoral districts and found that 
 increasing voters' information also produced a sizeable effect on the propensity 
 to vote. 
-% 
-% Second, this study 
-% explores the linkage between state level politics and local electoral participation. 
-% Thus, the study represents an attempt to estimate the causal effect of a state 
-% level policy shock on voter turnout in local elections by leveraging the unique 
-% conditions in Wisconsin from 2010-2012. The present study presents an important 
-% oppotunity to test theories of participation and cross-level linkages in a federal 
-% system that previously were not available to political scientists.
-
-%% Consider partisan preferences revealed by recall petition -- anecdotal evidence 
-%% that this influenced voters in school board elections
-%% Can a subsample of school districts be chosen to look up recall petition activity 
-%% Among incumbents and candidates?
 
 \section{Data}
  A final feature of this data set is that the years of the panel span 
@@ -338,6 +330,18 @@ qplot(contestSer, RecallPolarization, data = plotdf, geom = 'boxplot') +
   labs(x= "Serious Contestation", y = "Polarization from 2012 Gov. Recall")
 @
 
+Figures \ref{fig:minorContestPlot} and \ref{fig:serContestPlot} show the relationship 
+between the community polarization in the Gubernatorial recall vote and contestation. 
+There appears to be consistently little difference in the distribution of 
+polarization between districts with contested and uncontested races across the 
+years. 
+
+Figure \ref{fig:blPlot} explores this same relationship but for the continuous 
+measure of seat competitiveness -- the Blais-Lago quotient. Here there is a pattern 
+of elevated contestation in 2011, and an increase in competitiveness, a lower 
+B-L quotient, as seat polarization increases in year 2012. There is a similar 
+pattern, though weaker in 2007 and 2010 as well. 
+
 <<blPlot, fig.cap="Polarization and Seat Competitiveness">>=
 plotdf <- dist_turn[dist_turn$year > 2006, ]
 plotdf <- plotdf[!is.na(plotdf$turnout), ]
@@ -349,9 +353,15 @@ qplot(RecallPolarization, minBlaisLago, data = plotdf) +
   labs(y= "Seat Competitiveness", x = "Polarization from 2012 Gov. Recall")
 @
 
+Figures \ref{fig:turnoutPlot1} and \ref{fig:turnoutPlot2} show the relationship 
+between polarization and school board turnout and voter rolloff. In 2011 and 2012 
+there appears to be a negative relationship between increasing polarization and 
+decreased turnout. For rolloff, the relationship appears to be the same across 
+all the years. 
+
 <<turnoutPlot1, fig.cap="Polarization and School Board Turnout">>=
 qplot(RecallPolarization, turnout, data = plotdf, alpha = I(0.6)) + 
-  facet_wrap(~year) + geom_smooth() +
+  facet_wrap(~year) + geom_smooth(method='lm') +
   scale_y_continuous(label=percent) +
   theme_dpi() + 
   labs(y = "School Board Turnout", x = "Polarization from 2012 Gov. Recall")
@@ -359,7 +369,7 @@ qplot(RecallPolarization, turnout, data = plotdf, alpha = I(0.6)) +
 
 <<turnoutPlot2, fig.cap="Polarization and Spring Rolloff">>=
 qplot(RecallPolarization, turnoutDiff, data = plotdf, alpha = I(0.6)) + 
-  geom_smooth() + 
+  geom_smooth(method='lm') + 
    facet_wrap(~year) + 
    scale_y_continuous(label = percent) +
    theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall", "School Board Rolloff")
@@ -371,36 +381,44 @@ qplot(RecallPolarization, turnoutDiff, data = plotdf, alpha = I(0.6)) +
 #    theme_dpi()
 @
 
-
 \subsection{Independent Variables}
 
 In addition to the suite of independent variables found in Chapters \ref{chap:candidacy} 
 and \ref{chap:turnout}, this chapter features some additional key dependent variables 
 drawn from results of Wisconsin's historic recall election. 
 
+Figure \ref{fig:ivPlot1} shows the relationship between recall polarization and 
+other variables for the year 2012. THe relationship between fall and recall election 
+turnout and polarization is virtually identical. The top right panel shows the 
+relationship between recall polarization and the Democratic share of the most 
+recent presidential two-party vote - aside from a handful of outliers it follows 
+in the expected direction. Finally, spring election turnout is fairly similar to 
+the other turnout variables, but at a lower level with about half the turnout 
+on average of the other elections. 
+
 <<ivPlot1, fig.cap="Polarization and Other Variables">>=
 plotdf <- dist_turn[dist_turn$year == 2012, ]
 
 p1 <- qplot(RecallPolarization, GovTurnout_recall, data = plotdf) + 
-  geom_smooth() + 
+  geom_smooth(method = 'lm') + 
    facet_wrap(~year) + 
    scale_y_continuous(label = percent) +
    theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall", y="Recall Turnout")
 
 p2 <- qplot(RecallPolarization, presTwoPartyShareDem, data = plotdf) + 
-  geom_smooth() + 
+  geom_smooth(method = 'lm') + 
    facet_wrap(~year) + 
    scale_y_continuous(label = percent) +
    theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall", y="Pres. Two Party Dem Share")
 
 p3 <- qplot(RecallPolarization, recentFallTurnout, data = plotdf) + 
-  geom_smooth() + 
+  geom_smooth(method = 'lm') + 
    facet_wrap(~year) + 
    scale_y_continuous(label = percent) +
    theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall", y="Recent Fall Turnout")
 
 p4 <- qplot(RecallPolarization, topTicketTurnoutSpring, data = plotdf) + 
-  geom_smooth() + 
+  geom_smooth(method = 'lm') + 
    facet_wrap(~year) + 
    scale_y_continuous(label = percent) +
    theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall",y= "Spring 2012 Turnout")
@@ -408,37 +426,98 @@ p4 <- qplot(RecallPolarization, topTicketTurnoutSpring, data = plotdf) +
 grid.arrange(p1, p2, p3, p4)
 @
 
+Figure \ref{fig:ivPlot2} explores the relationship between recall polarization 
+and demographic variables to understand the ways party-polarization in the recall 
+is similar to or different than partisan polarization in other elections. In the 
+top left there is a strong relationship between the logged median income and 
+polarization with higher polarization more strongly associated with lower income. 
+Polarization appears to be consistent across the size of the Voting Age Population 
+(VAP). There is a slight increase in polarization as the percentage of VAP over 
+65 increases. 
+
 <<ivPlot2, fig.cap="Polarization and Population Control Variables">>=
-p1 <- qplot(RecallPolarization, median_incomeLOG, data = plotdf) + 
-  geom_smooth() + 
+p1 <- qplot(median_incomeLOG, RecallPolarization, data = plotdf) + 
+  geom_smooth(method = 'lm') + 
    facet_wrap(~year) + 
-   scale_y_continuous() +
-   theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall",y= "Median Income (log)")
+   scale_x_continuous(limits = c(9.5, 11.5)) + scale_y_continuous(limits=c(0, 100)) +
+   theme_dpi() + labs(y= "Polarization from 2012 Gov. Recall", x= "Median Income (log)")
 
-p2 <- qplot(RecallPolarization, VAP_adjLOG, data = plotdf) + 
-  geom_smooth() + 
+p2 <- qplot(VAP_adjLOG, RecallPolarization, data = plotdf) + 
+  geom_smooth(method = 'lm') + 
    facet_wrap(~year) + 
-   scale_y_continuous() +
-   theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall",y= "VAP (log)")
+   scale_x_continuous() +
+   theme_dpi() + labs(y= "Polarization from 2012 Gov. Recall", x= "VAP (log)")
 
-p3 <- qplot(RecallPolarization, PerBachelorOrAbove, data = plotdf) + 
-  geom_smooth() + 
+p3 <- qplot(PerBachelorOrAbove, RecallPolarization, data = plotdf) + 
+  geom_smooth(method = 'lm') + 
    facet_wrap(~year) + 
-   scale_y_continuous(label = percent) +
-   theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall", y="Per Bach. +")
+   scale_x_continuous(label = percent) +
+   theme_dpi() + labs(y= "Polarization from 2012 Gov. Recall", x="Per Bach. +")
 
 
-p4 <- qplot(RecallPolarization, per65o, data = plotdf) + 
-  geom_smooth() + 
+p4 <- qplot(per65o, RecallPolarization, data = plotdf) + 
+  geom_smooth(method = 'lm') + 
    facet_wrap(~year) + 
-   scale_y_continuous(label = percent) +
-   theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall", y="% VAP 65+")
+   scale_x_continuous(label = percent) +
+   theme_dpi() + labs(y= "Polarization from 2012 Gov. Recall", x="% VAP 65+")
 
 grid.arrange(p1, p2, p3, p4)
 @
 
-% turnout_overall_werc
-% Need to explain this variable and its effect
+\subsubsection{WERC Elections}
+
+This chapter introduces a new data source, the results of union certification 
+elections. The Wisconsin Employment Relations Commission (WERC) maintains records of the 
+annual recertification of unions. I use WERC records from each year following 
+the passage of Act 10. After Act 10, unions in school districts had to recertify 
+in waves as their existing union contracts expired. I take WERC election results 
+from 2011, 2012, 2013, and 2014. After recertifying the first time, unions must 
+hold an annual recertification election. I collapse the recertifcation elections 
+for all unions in the district available in all years as a measure of union 
+strength over time. I explore two separate measures of union strength -- the 
+turnout in all union elections in the district, and turnout in teacher union 
+only elections. 
+
+Turnout is a strong proxy for union strength because such vote records are public 
+record. % explain this
+
+
+Figure \ref{fig:ivPlot3} shows the relationship between independent variables and 
+the turnout in school district union certification elections after the passage 
+of Act 10. Polarization is slightly negatively related with WERC turnout. 
+Median income is slightly positively related with WERC turnout. VAP and \% of 
+VAP over 65 are not really related to this. 
+
+<<ivPlot3, fig.cap = "Polarization and WERC Elections">>=
+p1 <- qplot(RecallPolarization, turnout_overall_werc, data = plotdf) + 
+  geom_smooth(method='lm') + 
+  facet_wrap(~year) + 
+  scale_y_continuous(label = percent) + theme_dpi() + 
+  labs(y = "WERC Election Turnout", x = "Polarization from 2012 Gov. Recall")
+
+p2 <- qplot(median_incomeLOG, turnout_overall_werc, data = plotdf) + 
+  geom_smooth(method='lm') + 
+  facet_wrap(~year) + 
+  scale_y_continuous(label = percent) + theme_dpi() + 
+  scale_x_continuous(limits = c(9.5, 11.5)) +
+  labs(y = "WERC Election Turnout", x = "Median Income Log")
+
+p3 <- qplot(per65o, turnout_overall_werc, data = plotdf) + 
+  geom_smooth(method='lm') + 
+  facet_wrap(~year) + 
+  scale_y_continuous(label = percent) + theme_dpi() + 
+  scale_x_continuous(label = percent) +
+  labs(y = "WERC Election Turnout", x = "% VAP 65+")
+
+p4 <- qplot(VAP_adjLOG, turnout_overall_werc, data = plotdf) + 
+  geom_smooth(method = 'lm') + 
+   facet_wrap(~year) + 
+   scale_x_continuous() + scale_y_continuous(label = percent) +
+   theme_dpi() + labs(y= "WERC Election Turnout", x= "VAP (log)")
+
+grid.arrange(p1, p2, p3, p4)
+@
+
 
 \clearpage
 
