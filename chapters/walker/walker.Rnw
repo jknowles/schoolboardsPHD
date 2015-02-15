@@ -194,6 +194,48 @@ Rolloff & - & - & - & - & null & + \\ \hline
 \end{center}
 \end{table}
 
+Policy evaluations have often used state level policy implementation dates as 
+a way to evaluate the impact of policies on outcomes. Political scientists have 
+also have used state level policy to study the impacts of state level policies 
+on voter and candidate behavior. % CITATION NEEDED
+
+\citet{RefWorks:210} looks at the impact of school district consolidation on 
+student outcomes. 
+
+\citet{RefWorks:214} look at the impact of state accountability policy on school 
+board elections results. They leverage the introduction of a state level policy 
+revealing school performance on subsequent school board elections. 
+
+\citet{RefWorks:318} focuses on the impact that Federal policy making has on 
+states and school districts and explores federalism. 
+
+This study is trying to measure the impact of a state level policy change on the 
+politics of local elections. Instead of investigating the impact of Wisconsin 
+Act 10, this study looks for evidence that Act 10 changed the politics of local 
+communities, and to what degree. 
+
+Scholars of special jurisdiction governments have looked at the relationship 
+between local governments and higher levels of government such as county and 
+state government. This literature has not focused explicitly on the political 
+conditions within special district governments, but predominantly on the puzzle 
+of why they are created \citep{fosterK}. \citet{berry2} is an exception and uses 
+internal politics as an explanation of why these governments are created, but 
+also how they perform. However, for the most part, this literature does not directly 
+explore the effect that changing state level conditions can have on the politics 
+within local jurisdictions. 
+
+Some exceptions to this work have come from scholars seeking to explore the role 
+that state level rules about elections can have on the politics and participation 
+in the elections of the local governments those rules are changed about. \citet{adrian08} 
+describes the impact that the adoption of non-partisan ballots, like the non-partisan 
+Wisconsin spring general election, for local offices has on voter participation. 
+The adoption of this state level policy shift is considered quasi-experimental. 
+Others have also looked at the impact of moving from appointed to elected 
+school boards in Virginia and the change in interest group activity that resulted 
+\citep{RefWorks:242}. \citet{anzia11} explores the timing of school board elections 
+set by state legislatures, and the impact that changing the timing has on voter 
+participation, and ultimately on compensation policies for school district employees. 
+
 % 
 % Second, this study 
 % explores the linkage between state level politics and local electoral participation. 
@@ -284,6 +326,80 @@ This follows along the work of \citet{Lassen2005} who leveraged an exogenous sho
 of an information campaign in some electoral districts and found that 
 increasing voters' information also produced a sizeable effect on the propensity 
 to vote. 
+
+\section{Methods}
+
+I now describe the models fit to the data and how to understand parameter. 
+
+\subsection{Causal Inference}
+
+To credibly claim that the estimate of the effect of Act 10 and the power granted 
+to school boards, I must explain both how this impact is exogenous and how I 
+will operationalize it into a variable. Above, I have already described how the 
+events surrounding the passage of Act 10 were unforeseen by the electorate and 
+therefore not endogenous to school board elections post Act 10. 
+
+To operationalize this exogenous shock I code all observations that occur after 
+the passage of Act 10 as having a treatment condition of 1, and all of those 
+observations in periods before Act 10 as having a treatment condition of 0. If 
+this was a randomized experiment and exposure to Act 10 had been randomly distributed 
+to school districts and years, I could stop and simply compute the average levels 
+of the dependent variables for these two groups and perform a t-test. However, 
+as the prior chapters have shown, there exist substantial observable characteristics 
+that affect candidate and voter participation. Not taking these variables into 
+account risks allowing them to confound the estimation of the treatment effect 
+and bias estimates away from the true impact \cite{gelhill}. 
+
+Though school districts in Wisconsin were not randomly assigned to greater power 
+and more engaged voters at different time periods, they were all assigned to this 
+treatment at exactly the same moment with perfect fidelity. This eliminates one 
+potential bias to estimating the causal impact of the treatment -- assignment 
+bias. Now, by comparing districts to themselves pre and post assignment, we can 
+be more sure that we are picking up the impact of the treatment. 
+
+\subsection{Modeling Strategy}
+
+However, I still need to control for the effects that lead to variation in participation 
+from election to election that are observable. To do this, and to make comparisons 
+within districts, I employ a multi-level modeling strategy that was employed 
+in previous chapters. Multi-level modeling allows me to estimate the effect 
+of treatment across the sample of districts while simultaneously controlling for 
+unobservable changes going on within districts during this time period. 
+The equation below depicts this approach with the \emph{i}'s representing individual 
+observations and the \emph{j}'s representing the individual districts in the 
+sample. $\lambda$ represents the conditional estimate of the treatment, taking 
+into account the within district variation and conditional on the control 
+variables in $X_{ij}$. 
+
+\begin{align*} 
+VP_{i} &= \alpha + \gamma_{j} + \beta X_{ij} + \lambda T_{ij} + \epsilon_{ij}  \\ 
+\gamma_{j} &=  \alpha_{j} + \epsilon_{j}
+\end{align*}
+
+The multilevel approach also proves important because of the temporal nature of 
+the data. Every district in the data has two to three observations per treatment 
+period and two observations post-treatment. Fitting this model the way traditionally 
+done would involve conditioning the post-treatment observations on post-treatment 
+$X_{i}$ which has the potential of biasing $T_{ij}$.
+
+For robustness, I also provide results using district fixed effect estimation 
+and clustered standard errors (at the school district level) in the Appendix. 
+
+\subsection{Threats to Validity}
+
+Claims of causality rest on assumptions. In addition to the assumption that the 
+passage of Act 10 was exogenous, unforeseen, and universal, this approach also 
+assumes that all confounding covariates are observable and included in the model 
+and that no omitted variables may bias the estimation of the treatment effect 
+\cite{gelhill}. In practice, this assumption is not empirically verifiable. I 
+argue that instead that the treatment effect is a valid estimate given the 
+inclusion of terms to capture within district variance, a lagged 
+dependent variable, and substantively important predictors of 
+each of the dependent variables as demonstrated in previous chapters. 
+
+% Citations: Shadish and Cook
+
+
 
 \section{Data}
  A final feature of this data set is that the years of the panel span 
@@ -521,84 +637,7 @@ grid.arrange(p1, p2, p3, p4)
 
 \clearpage
 
-\section{Methods}
 
-\subsection{Causal Inference Using Natural Experiments}
-
-The approach here is to leverage the passage of Act 10 as an exogenous shock which 
-allows us to reasonably assume that differences between the period prior to the shock 
-and after the shock are causally attributable to the shock itself. 
-
-% Citations: Shadish and Cook
-
-\subsection{Candidacy}
-
-Combining this information with returns from the late spring recall election of 
-the Governor--certain to be a statewide referendum on the Governor's education policies--it is 
-possible using data from all 424 school districts in the state to directly to test 
-whether divided communities see greater participation by challenger candidates than 
-unified communities. This would represent the first comprehensive test of the public 
-choice theory of school board elections and represent the first test of Dissatisfaction 
-Theory across an entire state using actual election results instead of self-reports 
-of school board members and superintendents \citep{RefWorks:243,RefWorks:297}. The 
-empirical model of candidate emergence (CE) would look something like: \\
-
-\[ (2) \hspace{0.25 in}  CE_{t} = \alpha + \beta X_{t-1} + \gamma Z_{t} + \epsilon \] \\
-
-Where $CE_{t}$ represents a measure of the number of candidates greater than one per seat, 
-$\alpha$ is an intercept, $X_{t-1}$ is a vector of lagged covariates such as prior 
-levels of contestation and district size, and $Z_{t}$ is the absolute value of the 
-deviation from 50\% of the vote share for the Governor in a recall election aggregated 
-to the school district from ward level returns.\footnote{Depending on the data and 
-the prevalence of incumbent retirements candidate emergence may need to be measured a 
-number of additional ways. \citet{RefWorks:337} discuss a number of possibilities for 
-turnover that could be adapted to candidate emergence including: Seats available 
-divided by incumbents + challengers minus retired candidates; seats available divided 
-by all candidates; or seats available divided by challengers.} Thus, when $Z_{t} = 0$ 
-the community is completely divided on the Governor. When $Z_{t}=.5$ the community is 
-either united for or against the Governor. Thus, all things equal, we would expect 
-$\gamma$ to have a negative value--as $Z_{t}$ increases, the number of challengers, 
-$Y_{t}$ should decrease because the community is fairly homogeneous and the school 
-board should reflect existing preferences for or against the Governor's reforms. 
-
-\subsection{Turnout}
-
-\subsection{The Impact of Salience and Information on Voter Turnout}
-
-While the equations above can prove useful for providing evidence of various theories 
-of voter turnout in non-partisan local elections, they cannot test some theories and 
-they do not shed any light on causes of voter turnout. Table \ref{turnoutH2} demonstrates 
-how two such models can be explicitly tested by leveraging the exogenous shock of 
-the passage of Act 10. To estimate these effects, we estimate an equation like below: \\
-
-\[(6) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{lag} + \gamma W_{t} + \lambda P_{lag} +
-      \tau 1- |W_{t} * P_{lag}| + \theta I_{lag} + \psi Ce_{t}+\epsilon \] \\
-
-Here $VP_{t}$ is voter turnout in either the 2011 or 2012 Spring Elections by school 
-district in Wisconsin. $\alpha$, $X_{lag}$ remain the same as above though now 
-including some measure of prior turnout in the district such as turnout in the 
-Gubernatorial election in 2010.  $Z_{t}$ is the absolute value of the deviation 
-from 50\% of the vote share for the Governor. $I_{lag}$ representing an indicator 
-of the strength of teachers' unions in the district--likely the most salient and 
-relevant interest group in the spring elections \citep{RefWorks:320, RefWorks:207, RefWorks:218}.
-Voters are unlikely to participate if presented with no choice, so $Ce_{t}$ represents 
-a measure of the number of candidates per seat. $W_{t}$ represents the vote share 
-for Governor Walker in the recall election--a measure of community support or opposition 
-to the Governor's education policy. Thus it would be expected that $\theta$ should 
-be positive--strong interest groups should drive political activity. The inclusion 
-of partisanship predictors of voter turnout could also be explored here. The 
-effects of $\gamma$  and $\lambda$ alone are uninteresting, but the interaction 
-of $W_{t} * P_{lag}$ is of great interest. This essentially represents a measure 
-of board policy alignment with voter preferences--taking the absolute value simplifies 
-interpretation. As such, it should be expected that for large values of $W_{t} * P_{lag}$, 
-voter participation would be small as the board policy and the community 
-preferences would be aligned. As $W_{t} * P_{lag}$ approaches zero, voter 
-participation will increase as predicted by \citep{RefWorks:243}--voters seeing 
-dissonance between their preferences and board policy are more likely to vote. 
-Thus $\tau$ should be negative.  %Add detail here
-
-
-\clearpage
 \section{Results}
 
 <<walkerDataPrep1, results='asis', echo = FALSE>>=
