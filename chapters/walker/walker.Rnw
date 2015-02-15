@@ -5,7 +5,7 @@
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
                fig.path="../../phd_figs/chap6-",
-               warning=FALSE, echo=FALSE, dev='pdf')
+               warning=FALSE, echo=FALSE, dev='Cairo_pdf')
 
 setwd("../../")
 library(scales)
@@ -311,7 +311,7 @@ for a change in the patterns of candidate contestation and seat competitiveness
 after the passage of Act 10 and the granting of additional powers to school boards. 
 For voters, I look for changes in voter turnout and decreases in voter rolloff. 
 
-<<minorContestPlot, fig.cap="Polarization and Contestation - Minor Contestation">>=
+<<minorContestPlot, fig.cap="Polarization and Contestation - Minor Contestation", out.height='3.8in'>>=
 plotdf <- dist_turn[dist_turn$year > 2006, ]
 
 qplot(contestMinor, RecallPolarization, data = plotdf, geom = 'boxplot') + 
@@ -322,7 +322,7 @@ qplot(contestMinor, RecallPolarization, data = plotdf, geom = 'boxplot') +
 @
 
 
-<<serContestPlot, fig.cap="Polarization and Contestation - Serious Contestation">>=
+<<serContestPlot, fig.cap="Polarization and Contestation - Serious Contestation", out.height='3.8in'>>=
 qplot(contestSer, RecallPolarization, data = plotdf, geom = 'boxplot') + 
   facet_wrap(~year) +
   scale_y_continuous() +
@@ -816,7 +816,7 @@ apsrtable(demogsMMserBIN, politicMMserBIN, policyMMserBIN, fullmodMMserBIN,
             label = "tab:meSer",  
            notes = list("All variables scaled and mean centered by year.", 
                        stars.note), 
-          Sweave = TRUE, digits = 3) #, coef.names = coefnamesLag3)
+          Sweave = TRUE, digits = 3, float = "longtable") #, coef.names = coefnamesLag3)
 @
 \end{tiny}
 
@@ -866,7 +866,7 @@ apsrtable(demogsMMminBIN, politicMMminBIN, policyMMminBIN, fullmodMMminBIN,
             label = "tab:meMin",  
            notes = list("All variables scaled and mean centered by year.", 
                        stars.note), 
-          Sweave = TRUE, digits = 3) #, coef.names = coefnamesLag3)
+          Sweave = TRUE, digits = 3, float = "longtable") #, coef.names = coefnamesLag3)
 @
 \end{tiny}
 
@@ -994,7 +994,7 @@ incDefGLMtable2 <- apsrtable(glmIncDeffisc, glmIncDefpolitic, glmIncDefPoly,
 @
 
 \begin{tiny}
-<<defeatMerMod>>=
+<<defeatMerMod, results='asis'>>=
 IncDef1mm <- glmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
                  per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
                    median_incomeLOG + districtwide + RecallPolarization*treatment + 
@@ -1177,7 +1177,7 @@ apsrtable(demogsMMblq1, demogsMMblq2, demogsMMblq3, demogsMMblq4,
             label = "tab:meBLQ",  
            notes = list("All variables scaled and mean centered by sample.", 
                        stars.note), 
-          Sweave = TRUE, digits = 3) #, coef.names = coefnamesLag3)
+          Sweave = TRUE, digits = 3, float = "longtable") #, coef.names = coefnamesLag3)
 @
 \end{tiny}
 
@@ -1306,6 +1306,7 @@ lmTurnoutTable <- apsrtable(demogsMod1, demogsMod2, demogsMod3, demogsMod4,
 
 Table \ref{tab:meTurnout} shows good things. 
 
+\begin{tiny}
 <<turnoutMM, results='asis', echo = FALSE, eval=TRUE>>=
 demogsMod1mm <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
@@ -1337,6 +1338,7 @@ apsrtable(demogsMod1mm, demogsMod2mm, demogsMod3mm, demogsMod4mm,
           label = "tab:meTurnout", notes = list(tabnote, stars.note), 
           Sweave = FALSE, digits = 3)
 @
+\end{tiny}
 
 Table \ref{tab:meTurnout} shows the results here.
 
@@ -1456,7 +1458,7 @@ lmRolloffTable <- apsrtable(demogsMod1ro, demogsMod2ro,
 
 @
 
-
+\begin{tiny}
 <<rolloffMerMod, results='asis'>>=
 demogsMod1roMM <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
@@ -1486,6 +1488,7 @@ apsrtable(demogsMod1roMM, demogsMod2roMM, demogsMod3roMM, demogsMod4roMM,
           label = "tab:meRolloff", notes = list(tabnote, stars.note), 
           Sweave = FALSE, digits = 3)
 @
+\end{tiny}
 
 % rolloff increases post recall
 % WERC turnout decreases rolloff (no differentiation post recall)

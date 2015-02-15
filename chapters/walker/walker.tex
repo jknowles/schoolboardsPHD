@@ -281,7 +281,7 @@ For voters, I look for changes in voter turnout and decreases in voter rolloff.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap6-minorContestPlot-1} \caption[Polarization and Contestation - Minor Contestation]{Polarization and Contestation - Minor Contestation}\label{fig:minorContestPlot}
+\includegraphics[width=\maxwidth,height=3.8in]{../../phd_figs/chap6-minorContestPlot-1} \caption[Polarization and Contestation - Minor Contestation]{Polarization and Contestation - Minor Contestation}\label{fig:minorContestPlot}
 \end{figure}
 
 
@@ -290,7 +290,7 @@ For voters, I look for changes in voter turnout and decreases in voter rolloff.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap6-serContestPlot-1} \caption[Polarization and Contestation - Serious Contestation]{Polarization and Contestation - Serious Contestation}\label{fig:serContestPlot}
+\includegraphics[width=\maxwidth,height=3.8in]{../../phd_figs/chap6-serContestPlot-1} \caption[Polarization and Contestation - Serious Contestation]{Polarization and Contestation - Serious Contestation}\label{fig:serContestPlot}
 \end{figure}
 
 
@@ -530,10 +530,12 @@ the Blais-Lago quotient.
 
 
 \begin{tiny}
- 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
+\caption{Partial Pooling Model of Serious Contestation}
+\label{tab:meSer}\\ 
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
+\endhead
  %                              & Demog.      & Politic     & Policy      & Full       \\ 
 (Intercept)                    & -0.313      & -0.599      & -0.178      & -0.416     \\ 
                                & (0.511)     & (0.490)     & (0.498)     & (0.480)    \\ 
@@ -606,7 +608,7 @@ Group:distid Var.              & 0.762       & 0.601       & 0.692       & 0.512
 Sigma                          & 1           & 1           & 1           & 1           \\ \hline
  \multicolumn{5}{l}{\footnotesize{All variables scaled and mean centered by year.}}\\
 \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
-\end{tabular} 
+\end{longtable} 
 
 \end{tiny}
 
@@ -621,10 +623,12 @@ Sigma                          & 1           & 1           & 1           & 1    
 
 
 \begin{tiny}
- 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
+\caption{Partial Pooling Model of Any Contestation}
+\label{tab:meMin}\\ 
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
+\endhead
  %                              & Demog.      & Politic     & Policy      & Full       \\ 
 (Intercept)                    & 1.008       & 0.944       & 1.190 ^*    & 1.111 ^*   \\ 
                                & (0.572)     & (0.565)     & (0.564)     & (0.534)    \\ 
@@ -697,7 +701,7 @@ Group:distid Var.              & 0.588       & 0.432       & 0.5         & 0    
 Sigma                          & 1           & 1           & 1           & 1           \\ \hline
  \multicolumn{5}{l}{\footnotesize{All variables scaled and mean centered by year.}}\\
 \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
-\end{tabular} 
+\end{longtable} 
 
 \end{tiny}
 
@@ -720,63 +724,58 @@ where there are more candidates than incumbents in the race.
 
 
 \begin{tiny}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-##  
-## \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
-## \hline 
-##   & \multicolumn{ 1 }{ c }{ 1 } & \multicolumn{ 1 }{ c }{ 2 } & \multicolumn{ 1 }{ c }{ 3 } & \multicolumn{ 1 }{ c }{ 4 } \\ \hline
-##  %                                   & 1           & 2           & 3           & 4          \\ 
-## (Intercept)                         & -1.471 ^*   & -1.433 ^*   & -1.521 ^*   & -1.540 ^*  \\ 
-##                                     & (0.233)     & (0.231)     & (0.240)     & (0.242)    \\ 
-## turnoutLag2                         & -0.079      & -0.070      &             &            \\ 
-##                                     & (0.199)     & (0.197)     &             &            \\ 
-## VAP\_adjLOG                        & 4.266       & 4.029       & 4.350       & 4.344      \\ 
-##                                     & (2.548)     & (2.457)     & (2.509)     & (2.531)    \\ 
-## VAP\_adjLOG\_sq                   & -3.941      & -3.704      & -4.044      & -4.053     \\ 
-##                                     & (2.547)     & (2.454)     & (2.516)     & (2.539)    \\ 
-## per\_white\_all                   & 0.089       & 0.075       & 0.076       & 0.104      \\ 
-##                                     & (0.334)     & (0.314)     & (0.331)     & (0.335)    \\ 
-## per65o                              & 0.161       & 0.178       & 0.148       & 0.180      \\ 
-##                                     & (0.255)     & (0.227)     & (0.254)     & (0.254)    \\ 
-## PerBachelorOrAbove                  & -0.422      & -0.403      & -0.435      & -0.399     \\ 
-##                                     & (0.300)     & (0.275)     & (0.298)     & (0.301)    \\ 
-## OOH\_share                         & -0.061      &             & -0.069      & -0.051     \\ 
-##                                     & (0.280)     &             & (0.279)     & (0.278)    \\ 
-## median\_incomeLOG                  & 0.643       & 0.598       & 0.667       & 0.639      \\ 
-##                                     & (0.459)     & (0.420)     & (0.454)     & (0.456)    \\ 
-## districtwide1                       & 0.433       & 0.423       & 0.430       & 0.445      \\ 
-##                                     & (0.242)     & (0.234)     & (0.241)     & (0.243)    \\ 
-## RecallPolarization                  & -0.249      & -0.239      & -0.247      & -0.140     \\ 
-##                                     & (0.226)     & (0.220)     & (0.226)     & (0.194)    \\ 
-## treatment1                          & -0.234      & -0.233      & -0.237      & -0.285     \\ 
-##                                     & (0.168)     & (0.166)     & (0.168)     & (0.172)    \\ 
-## GovTurnout\_recall                 & -0.446      & -0.436      & -0.455      & -0.378     \\ 
-##                                     & (0.329)     & (0.319)     & (0.324)     & (0.308)    \\ 
-## RecallPolarization:treatment1       & 0.390       & 0.384       & 0.375       &            \\ 
-##                                     & (0.375)     & (0.371)     & (0.375)     &            \\ 
-## treatment1:GovTurnout\_recall      & 0.351       & 0.340       & 0.337       &            \\ 
-##                                     & (0.395)     & (0.390)     & (0.395)     &            \\ 
-## contestSerLag1                      &             &             & 0.143       & 0.146      \\ 
-##                                     &             &             & (0.164)     & (0.164)    \\ 
-## turnout\_overall\_werc            &             &             &             & -0.102     \\ 
-##                                     &             &             &             & (0.197)    \\ 
-## turnout\_overall\_werc:treatment1 &             &             &             & 0.758 ^*   \\ 
-##                                     &             &             &             & (0.354)     \\
-##  $N$                                 & 936         & 936         & 936         & 936        \\ 
-## AIC                                 & 1075.557    & 1073.140    & 1074.881    & 1071.008   \\ 
-## N Groups                            & 296         & 296         & 296         & 296        \\ 
-## Group Names                         & distid      & distid      & distid      & distid     \\ 
-## Group:distid Effs.                  & (Intercept) & (Intercept) & (Intercept) & (Intercept)\\ 
-## Group:distid Var.                   & 0.426       & 0.276       & 0.414       & 0.428      \\ 
-## Sigma                               & 1           & 1           & 1           & 1           \\ \hline
-##  \multicolumn{5}{l}{\footnotesize{All variables scaled and mean centered by year.}}\\
-## \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
-## \end{tabular}
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+ 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ 1 } & \multicolumn{ 1 }{ c }{ 2 } & \multicolumn{ 1 }{ c }{ 3 } & \multicolumn{ 1 }{ c }{ 4 } \\ \hline
+ %                                   & 1           & 2           & 3           & 4          \\ 
+(Intercept)                         & -1.471 ^*   & -1.433 ^*   & -1.521 ^*   & -1.540 ^*  \\ 
+                                    & (0.233)     & (0.231)     & (0.240)     & (0.242)    \\ 
+turnoutLag2                         & -0.079      & -0.070      &             &            \\ 
+                                    & (0.199)     & (0.197)     &             &            \\ 
+VAP\_adjLOG                        & 4.266       & 4.029       & 4.350       & 4.344      \\ 
+                                    & (2.548)     & (2.457)     & (2.509)     & (2.531)    \\ 
+VAP\_adjLOG\_sq                   & -3.941      & -3.704      & -4.044      & -4.053     \\ 
+                                    & (2.547)     & (2.454)     & (2.516)     & (2.539)    \\ 
+per\_white\_all                   & 0.089       & 0.075       & 0.076       & 0.104      \\ 
+                                    & (0.334)     & (0.314)     & (0.331)     & (0.335)    \\ 
+per65o                              & 0.161       & 0.178       & 0.148       & 0.180      \\ 
+                                    & (0.255)     & (0.227)     & (0.254)     & (0.254)    \\ 
+PerBachelorOrAbove                  & -0.422      & -0.403      & -0.435      & -0.399     \\ 
+                                    & (0.300)     & (0.275)     & (0.298)     & (0.301)    \\ 
+OOH\_share                         & -0.061      &             & -0.069      & -0.051     \\ 
+                                    & (0.280)     &             & (0.279)     & (0.278)    \\ 
+median\_incomeLOG                  & 0.643       & 0.598       & 0.667       & 0.639      \\ 
+                                    & (0.459)     & (0.420)     & (0.454)     & (0.456)    \\ 
+districtwide1                       & 0.433       & 0.423       & 0.430       & 0.445      \\ 
+                                    & (0.242)     & (0.234)     & (0.241)     & (0.243)    \\ 
+RecallPolarization                  & -0.249      & -0.239      & -0.247      & -0.140     \\ 
+                                    & (0.226)     & (0.220)     & (0.226)     & (0.194)    \\ 
+treatment1                          & -0.234      & -0.233      & -0.237      & -0.285     \\ 
+                                    & (0.168)     & (0.166)     & (0.168)     & (0.172)    \\ 
+GovTurnout\_recall                 & -0.446      & -0.436      & -0.455      & -0.378     \\ 
+                                    & (0.329)     & (0.319)     & (0.324)     & (0.308)    \\ 
+RecallPolarization:treatment1       & 0.390       & 0.384       & 0.375       &            \\ 
+                                    & (0.375)     & (0.371)     & (0.375)     &            \\ 
+treatment1:GovTurnout\_recall      & 0.351       & 0.340       & 0.337       &            \\ 
+                                    & (0.395)     & (0.390)     & (0.395)     &            \\ 
+contestSerLag1                      &             &             & 0.143       & 0.146      \\ 
+                                    &             &             & (0.164)     & (0.164)    \\ 
+turnout\_overall\_werc            &             &             &             & -0.102     \\ 
+                                    &             &             &             & (0.197)    \\ 
+turnout\_overall\_werc:treatment1 &             &             &             & 0.758 ^*   \\ 
+                                    &             &             &             & (0.354)     \\
+ $N$                                 & 936         & 936         & 936         & 936        \\ 
+AIC                                 & 1075.557    & 1073.140    & 1074.881    & 1071.008   \\ 
+N Groups                            & 296         & 296         & 296         & 296        \\ 
+Group Names                         & distid      & distid      & distid      & distid     \\ 
+Group:distid Effs.                  & (Intercept) & (Intercept) & (Intercept) & (Intercept)\\ 
+Group:distid Var.                   & 0.426       & 0.276       & 0.414       & 0.428      \\ 
+Sigma                               & 1           & 1           & 1           & 1           \\ \hline
+ \multicolumn{5}{l}{\footnotesize{All variables scaled and mean centered by year.}}\\
+\multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
+\end{tabular} 
+
 \end{tiny}
 
 % Note models built on a smaller subset
@@ -796,10 +795,12 @@ Uncompetitive races are dropped.
 
 
 \begin{tiny}
- 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
+\caption{Partial Pooling Model of Competitiveness}
+\label{tab:meBLQ}\\ 
 \hline 
   & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Polar } & \multicolumn{ 1 }{ c }{ Both } & \multicolumn{ 1 }{ c }{ WERC } \\ \hline
+\endhead
  %                                   & Turnout     & Polar       & Both        & WERC       \\ 
 (Intercept)                         & -0.085      & -0.087      & -0.087      & -0.087     \\ 
                                     & (0.131)     & (0.132)     & (0.132)     & (0.132)    \\ 
@@ -842,7 +843,7 @@ Group:distid Var.                   & 0.282       & 0.282       & 0.283       & 
 Sigma                               & 0.4052      & 0.4055      & 0.4054      & 0.4052      \\ \hline
  \multicolumn{5}{l}{\footnotesize{All variables scaled and mean centered by sample.}}\\
 \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}} 
-\end{tabular} 
+\end{longtable} 
 
 \end{tiny}
 
@@ -876,6 +877,7 @@ clear.
 
 Table \ref{tab:meTurnout} shows good things. 
 
+\begin{tiny}
 \begin{table}[!ht]
 \caption{Partial Pooling Model of Post-Election Turnout}
 \label{tab:meTurnout} 
@@ -935,6 +937,7 @@ Sigma                               & 0.3764      & 0.3701      & 0.3693      & 
 \end{tabular} 
  \end{table}
 
+\end{tiny}
 
 Table \ref{tab:meTurnout} shows the results here.
 
@@ -957,7 +960,7 @@ Table \ref{tab:meTurnout} shows the results here.
 
 
 
-
+\begin{tiny}
 \begin{table}[!ht]
 \caption{Partial Pooling Model of Post-Election Turnout}
 \label{tab:meRolloff} 
@@ -1017,6 +1020,7 @@ Sigma                               & 0.3834      & 0.3797      & 0.3792      & 
 \end{tabular} 
  \end{table}
 
+\end{tiny}
 
 % rolloff increases post recall
 % WERC turnout decreases rolloff (no differentiation post recall)
