@@ -179,7 +179,7 @@ when it comes to electoral behavior.
 \begin{center}
 \begin{small}
 \caption{Expected Relationships between Key Independent and Dependent Variables}
-\label{act10hypo}
+\label{tab:act10hypo}
 \begin{tabular}{| p{.16\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |
                 p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |} \hline
 DV / Variable & treatment & treatment x polarization & 
@@ -628,6 +628,8 @@ moddat <- na.omit(moddat)
 moddat <- moddat[moddat$year >= 2006,]
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$treatment <- ifelse(moddat$year > 2010, 1, 0)
+moddat$minBlaisLago <- ifelse(moddat$minBlaisLago == 0, .1, moddat$minBlaisLago)
+moddat$minBlaisLago <- log(moddat$minBlaisLago)
 moddat$treatment <- factor(moddat$treatment)
 moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
@@ -1124,7 +1126,7 @@ apsrtable(IncDef1mm, IncDef2mm, IncDef3mm, IncDef4mm,
             label = "tab:meIncDef",  
            notes = list("All variables scaled and mean centered by year.", 
                        stars.note), 
-          Sweave = TRUE, digits = 3)
+          Sweave = TRUE, digits = 3, float="longtable")
 @
 \end{tiny}
 
@@ -1153,11 +1155,13 @@ decision, which has a clear impact on the behavior and results of local official
 Looking at incumbent defeat as a binary measure of competitiveness downplays 
 the significance of challenges that result in a narrow defeat by a challenger 
 to an incumbent -- which would be coded as a 0 in Table \ref{meIncDef}. Using 
-a consistent measure of competitiveness, 
+a general measure of competitiveness across districts, I examine if races 
+become more or less competitive after the recall election, and if the impact 
+of any recall related variables changes after the election. These models are 
+again fit on a subset of models, those in which a competitive race is possible 
+because voters are presented with a choice. 
 
 <<blqLM, eval=TRUE, results='hide'>>=
-moddat4 <- moddat[moddat$minBlaisLago < max(moddat$minBlaisLago), ]
-
 demogsLMblq <- lm(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
                       per65o + PerBachelorOrAbove + 
                       per_white_all + OOH_share + locale2 +  
@@ -1211,13 +1215,13 @@ demogsMMblq1 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq +
                       per65o + PerBachelorOrAbove + 
                       per_white_all + OOH_share + incumShare + locale2 + 
                       treatment*GovTurnout_recall + 
-                       (1|distid), data = moddat4, control = ctrl) 
+                       (1|distid), data = moddat, control = ctrl) 
 
 demogsMMblq2 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
                       per65o + PerBachelorOrAbove + 
                       per_white_all + OOH_share + incumShare + locale2 +  
                        RecallPolarization*treatment +
-                       (1|distid), data = moddat4, control = ctrl) 
+                       (1|distid), data = moddat, control = ctrl) 
 
 
 demogsMMblq3 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
@@ -1225,7 +1229,7 @@ demogsMMblq3 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq +
                       per_white_all + OOH_share + incumShare + locale2 +  
                        RecallPolarization*treatment + 
                        treatment*GovTurnout_recall + 
-                       (1|distid), data = moddat4, control = ctrl) 
+                       (1|distid), data = moddat, control = ctrl) 
 
 demogsMMblq4 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
                       per65o + PerBachelorOrAbove + 
@@ -1233,7 +1237,7 @@ demogsMMblq4 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq +
                        RecallPolarization + 
                        GovTurnout_recall + 
                        treatment * turnout_overall_werc + WERC_elec + 
-                       (1|distid), data = moddat4, control = ctrl) 
+                       (1|distid), data = moddat, control = ctrl) 
 
 politicMMblq <- update(demogsMMblq1, . ~ . + incumShare + 
                          overrideYesPer +  
@@ -1267,13 +1271,16 @@ apsrtable(demogsMMblq1, demogsMMblq2, demogsMMblq3, demogsMMblq4,
 @
 \end{tiny}
 
-% Competitiveness appears to have increased post recall
-% Increase was universal and not conditional on the polarization 
-% or the participation in the recall
-% Competition was steady across districts regardless of WERC election 
-% Not much else is significant
+Table \ref{tab:meBLQ} shows that there is little evidence that the events of 
+2011 had an impact on the competitiveness of school board races in Wisconsin, and 
+there is no evidence of differential impact between school districts. The only 
+variables that show some impact are the measures of union strength, which show 
+that unions that held a recertification election had less competitive races 
+over the observation period, and those that had high turnout post Act 10 had 
+more competitive races over the period. 
 
-Table \ref{tab:meBLQ} shows good things. 
+% Why might this be?
+
 
 \clearpage
 
@@ -1318,6 +1325,8 @@ moddat <- na.omit(moddat)
 moddat <- moddat[moddat$year >= 2007,]
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$treatment <- ifelse(moddat$year > 2010, 1, 0)
+moddat$minBlaisLago <- ifelse(moddat$minBlaisLago == 0, .5, moddat$minBlaisLago)
+moddat$minBlaisLago <- log(moddat$minBlaisLago)
 moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -1391,7 +1400,21 @@ lmTurnoutTable <- apsrtable(demogsMod1, demogsMod2, demogsMod3, demogsMod4,
           Sweave=FALSE, digits = 3)
 @
 
-Table \ref{tab:meTurnout} shows good things. 
+Table \ref{tab:meTurnout} shows the results for the impact of the Wisconsin recall 
+on turnout in school board elections. First, there is a statistically significant 
+and consistently positive effect post-recall on turnout. Pre-recall, neither 
+polarization nor WERC election turnout seem to matter much. Post-recall, polarization 
+is associated with a decrease in turnout and turnout in WERC certification elections 
+is associated with a modest increase in turnout. Thus, polarization can be seen 
+as mediating the impact of increased voter turnout overall -- with more divided 
+communities having slightly less spring turnout. Turnout for the recall continues 
+to exhibit that turnout is sticky -- even after controlling for both the previous 
+fall turnout and the spring election turnout twice-lagged, recall turnout is 
+still positively associated with higher turnout overall, and this effect is stronger 
+in the post-recall period. WERC strength, measured by WERC election turnout in the 
+post-recall period, is not associated with overall increased turnout, but in the 
+post-recall period it is associated with a modest increase in school board election 
+turnout. 
 
 \begin{tiny}
 <<turnoutMM, results='asis', echo = FALSE, eval=TRUE>>=
@@ -1415,35 +1438,31 @@ demogsMod4mm <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG +
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
                    OOH_share + median_incomeLOG + minBlaisLago + 
                    districtwide + GovTurnout_recall +
-                    RecallPolarization + 
+                    RecallPolarization + WERC_elec +
                    turnout_overall_werc*treatment + (1|distid), data = moddat)
 
 tabnote <- "Model includes district random effects modeled as intercepts."
 
 apsrtable(demogsMod1mm, demogsMod2mm, demogsMod3mm, demogsMod4mm,
           caption = "Partial Pooling Model of Post-Election Turnout",
+          model.names = c("Polarization", "Turnout", "Both", "WERC"),
           label = "tab:meTurnout", notes = list(tabnote, stars.note), 
-          Sweave = TRUE, digits = 3)
+          Sweave = TRUE, digits = 3, stars = "default")
 @
 \end{tiny}
 
-Table \ref{tab:meTurnout} shows the results here.
-
-% turnout definitely increases post recall
-% more polarized communites had a relative decrease in turnout uptick
-% prior to the recall, no effect of polarization
-% Recall turnout positively related to turnout
-% post recall, recall turnout leads to even greater increase in turnout
-% WERC membership does not matter, post-recall WERC membership small 
-% increase in turnout
-
-% These effects are net of turnout lagged and fall turnout
+These results are a strong confirmation of the expectations described in Table 
+\ref{tab:act10hypo}. However, as with the turnout models from Chapter \ref{chap:turnout}, 
+these models do not capture solely turnout for school board elections as there 
+are other key races which are higher profile in the spring. In order to better 
+isolate the impact on school board elections themselves, I next isolate the effect 
+on the gap between turnout on the top ticket race and school board turnout. 
 
 \clearpage
 
 \subsubsection{Rolloff}
 
-<<rolloffDataSetup>>=
+<<walkerDataPrep3>>=
 moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
                         "balance_member_lag", "turnout", "VAP_adjLOG_sq",
                         "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
@@ -1456,7 +1475,7 @@ moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year",
                         "overrideYesPer", "partyDivisionRecent", "turnoutLag2",
                         "teachShareofVoters", "fallTurnout", 
                         "nraces", "schoolMillShare", "PROPERTYTAX_REV_SHARE", 
-                        "TCEC_MEMBER", "millrate_delta", 
+                        "TCEC_MEMBER", "millrate_delta", "ImputedFlag",
                         "ADMIN_SHARE_COMP", "NEW_SUP", 
                         "DEBT_ATTEMPT_CUMUL93", "OVERRIDE_ATTEMPT_CUMUL93", 
                         "member_delta_per", "RecallPolarization",
@@ -1464,11 +1483,14 @@ moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year",
                         "eligvoters_werc", "fallTwoPartyShareDem",
                         "loss_werc", "worst_margin_werc", "WERC_elec", 
                         "GovTurnout_recall")]
-
+moddat$ImputedFlag[is.na(moddat$ImputedFlag)] <- "No"
+moddat$ImputedFlag <- ifelse(moddat$ImputedFlag == "Imputed2010", "Yes", "No")
 moddat <- na.omit(moddat)
 moddat <- moddat[moddat$year >= 2007,]
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$treatment <- ifelse(moddat$year > 2010, 1, 0)
+moddat$minBlaisLago <- ifelse(moddat$minBlaisLago == 0, .5, moddat$minBlaisLago)
+moddat$minBlaisLago <- log(moddat$minBlaisLago)
 moddat$distid <- factor(moddat$distid)
 moddat$year <- factor(moddat$year)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -1477,6 +1499,7 @@ moddat$year <- factor(moddat$year)
 moddat$turnout <- moddat$turnout * 100
 moddat$districtwide <- factor(moddat$districtwide)
 moddat$treatment <- factor(moddat$treatment)
+moddat$WERC_elec <- factor(moddat$WERC_elec)
 # moddat$turnoutLag2 <- moddat$turnoutLag2 * 100
 # moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
 # moddat$per_white_all <- moddat$per_white_all * 100
@@ -1490,6 +1513,10 @@ centr <- mean(moddat$turnout)
 stddev <- sd(moddat$turnout)
 moddat$outflag <- (moddat$turnout - centr) / stddev
 moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
+centr <- mean(moddat$turnoutDiff)
+stddev <- sd(moddat$turnoutDiff)
+moddat$outflag <- (moddat$turnoutDiff - centr) / stddev
+moddat <- moddat[moddat$outflag <= 4 & moddat$outflag >= -4,]
 
 library(rms)
 dd <<- datadist(moddat)
@@ -1507,21 +1534,21 @@ moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 <<rolloffLM, results='hide'>>=
 demogsMod1ro <- lm(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
+                   OOH_share + median_incomeLOG + minBlaisLago + ImputedFlag +
                    districtwide + RecallPolarization * treatment + 
                    turnout_overall_werc, data = moddat)
 demogsMod1roSE <- get_CL_vcov(demogsMod1ro, moddat$distid)
 demogsMod1ro$se <- sqrt(diag(demogsMod1roSE))
 demogsMod2ro <- lm(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
+                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
                    districtwide + GovTurnout_recall * treatment + 
                    turnout_overall_werc, data = moddat)
 demogsMod2roSE <- get_CL_vcov(demogsMod2ro, moddat$distid)
 demogsMod2ro$se <- sqrt(diag(demogsMod2roSE))
 demogsMod3ro <- lm(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
+                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
                    districtwide + GovTurnout_recall * treatment + 
                     RecallPolarization * treatment + 
                    turnout_overall_werc, data = moddat)
@@ -1529,7 +1556,7 @@ demogsMod3roSE <- get_CL_vcov(demogsMod3ro, moddat$distid)
 demogsMod3ro$se <- sqrt(diag(demogsMod3roSE))
 demogsMod4ro <- lm(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
+                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
                    districtwide + GovTurnout_recall +
                     RecallPolarization + 
                    turnout_overall_werc*treatment, data = moddat)
@@ -1544,35 +1571,53 @@ lmRolloffTable <- apsrtable(demogsMod1ro, demogsMod2ro,
 
 @
 
+Table \ref{tab:meRolloff} depicts the results for voter rolloff. The dependent 
+variable is the gap between school board votes and top ticket votes -- the bigger 
+the number, the fewer voters bothered to complete their ballot for school board and 
+ostensibly were indifferent about school board and turned out to vote for another 
+reason. First, the recall led to increased voter rolloff in the post-recall 
+periods. This suggests that the spring elections post Act 10 had more voter 
+activity, but these voters were less likely to complete their ballots. 
+
+Second, recall polarization does not seem to matter. Polarized communities 
+completed their ballots at roughly the same rate, though there is slight evidence 
+of a small increase in ballot rolloff post-recall. Increased turnout for the recall 
+leads to an increase in voter rolloff as well. This effect becomes sharper post-recall. 
+The only dampening effect observed on rolloff is the strength of teacher's unions. 
+In all periods, stronger unions exhibit a slight negative effect on rolloff. 
+Unions that had a WERC election show a strong effect at dampening rolloff, but 
+the stronger the union result in the election, the greater the rolloff. Neither 
+of these effects was changed post-recall. 
+
 \begin{tiny}
 <<rolloffMerMod, results='asis'>>=
 demogsMod1roMM <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
+                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
                    districtwide + RecallPolarization * treatment + 
                    turnout_overall_werc + (1|distid), data = moddat)
 demogsMod2roMM <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
+                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
                    districtwide + GovTurnout_recall * treatment + 
                    turnout_overall_werc + (1|distid), data = moddat)
 demogsMod3roMM <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
+                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
                    districtwide + GovTurnout_recall * treatment + 
                      RecallPolarization * treatment + 
                    turnout_overall_werc + (1|distid), data = moddat)
 demogsMod4roMM <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
+                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
                    districtwide + GovTurnout_recall +
-                     RecallPolarization + WERC_elec + 
+                     RecallPolarization + WERC_elec*treatment + 
                    turnout_overall_werc * treatment + (1|distid), data = moddat)
 
 apsrtable(demogsMod1roMM, demogsMod2roMM, demogsMod3roMM, demogsMod4roMM,
           caption = "Partial Pooling Model of Post-Election Turnout",
           label = "tab:meRolloff", notes = list(tabnote, stars.note), 
-          Sweave = TRUE, digits = 3)
+          Sweave = TRUE, digits = 3, stars = "default")
 @
 \end{tiny}
 
@@ -1583,12 +1628,31 @@ apsrtable(demogsMod1roMM, demogsMod2roMM, demogsMod3roMM, demogsMod4roMM,
 % Net of increased turnout, recall polarization leads to increased 
 % voter rolloff
 
+These findings are remarkable because they indicate that while political activity 
+in spring non-partisan elections was fundamentally altered by the events of 2011, 
+school board elections themselves were not specifically affected. 
+
 \clearpage
 
 \subsection{Substantive Effects}
 
 Next I demonstrate the substantive magnitude of the state level policy shock to 
 contextualize the influence that state government can have on local elections. 
+
+<<substEff1, eval=FALSE>>=
+
+
+@
+
+% Which models to simulate
+% No models of contestation -- no results!
+% WERC model for incumbent defeat IncDef4mm
+% Treatment effect on competitiveness demogsMMblq1
+%  Treatment effect on turnout demogsMod1mm
+%  Polarization damper on turnout demogsMod3mm
+%  Rolloff
+% demogsMod3roMM for post-recall polarization impact
+% demogsMod4roMM for post-recall WERC impact
 
 \section{Conclusion}
 
