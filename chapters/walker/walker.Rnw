@@ -5,7 +5,7 @@
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
                fig.path="../../phd_figs/chap6-",
-               warning=FALSE, echo=FALSE, dev='Cairo_pdf')
+               warning=FALSE, echo=FALSE, dev='pdf')
 
 setwd("../../")
 library(scales)
@@ -311,22 +311,22 @@ for a change in the patterns of candidate contestation and seat competitiveness
 after the passage of Act 10 and the granting of additional powers to school boards. 
 For voters, I look for changes in voter turnout and decreases in voter rolloff. 
 
-<<minorContestPlot, fig.cap="Polarization and Contestation - Minor Contestation", out.height='3.8in'>>=
+<<minorContestPlot, fig.cap="Polarization and Contestation - Minor Contestation", out.height='3.18in'>>=
 plotdf <- dist_turn[dist_turn$year > 2006, ]
 
 qplot(contestMinor, RecallPolarization, data = plotdf, geom = 'boxplot') + 
   facet_wrap(~year) +
   scale_y_continuous() +
-  theme_dpi() + coord_flip() + 
+  theme_dpi(base_size=10) + coord_flip() + 
   labs(x= "Minor Contestation", y = "Polarization from 2012 Gov. Recall")
 @
 
 
-<<serContestPlot, fig.cap="Polarization and Contestation - Serious Contestation", out.height='3.8in'>>=
+<<serContestPlot, fig.cap="Polarization and Contestation - Serious Contestation", out.height='3.18in'>>=
 qplot(contestSer, RecallPolarization, data = plotdf, geom = 'boxplot') + 
   facet_wrap(~year) +
   scale_y_continuous() +
-  theme_dpi() + coord_flip()+ 
+  theme_dpi(base_size=10) + coord_flip()+ 
   labs(x= "Serious Contestation", y = "Polarization from 2012 Gov. Recall")
 @
 
@@ -645,6 +645,7 @@ moddat$turnout <- moddat$turnout * 100
 moddat$GovTurnout_recall <- moddat$GovTurnout_recall * 100
 moddat$GovTwoPartyShareDem_recall <- moddat$GovTwoPartyShareDem_recall *100
 moddat$member_delta_per <- moddat$member_delta_per * 100
+moddat$WERC_elec <- factor(moddat$WERC_elec)
 moddat$contestSer <- factor(moddat$contestSer)
 moddat$contestMinor <- factor(moddat$contestMinor)
 moddat$contestSerLag <- factor(moddat$contestSerLag)
@@ -783,42 +784,55 @@ ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
 moddat2 <- moddat[moddat$incumShare != max(moddat$incumShare) & 
                     !is.na(moddat$contestSerLag), ]
 
-demogsMMserBIN <- glmer(contestSer ~ VAP_adjLOG + VAP_adjLOG_sq + 
+mod1MMserBIN <- glmer(contestSer ~ VAP_adjLOG + VAP_adjLOG_sq + 
                       per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 +  
-                       RecallPolarization*treatment + treatment*GovTurnout_recall + 
+                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
+                        incumShare + nraces + 
+                       RecallPolarization*treatment +
                        (1|distid), data = moddat2, family = "binomial", 
                       control = ctrl2) 
 
-politicMMserBIN <- update(demogsMMserBIN, . ~ . + incumShare +  contestSerLag + 
-                            overrideYesPer +  partyDivisionRecent + 
-                            teachShareofVoters + fallTurnout + nraces) 
+mod2MMserBIN <-  glmer(contestSer ~ VAP_adjLOG + VAP_adjLOG_sq + 
+                      per65o + PerBachelorOrAbove + 
+                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
+                        incumShare + nraces + treatment*GovTurnout_recall + 
+                        (1|distid), data = moddat2, family = "binomial", 
+                      control = ctrl2)
 
-policyMMserBIN <- update(demogsMMserBIN, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + 
-                        NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+mod3MMserBIN <- update(mod2MMserBIN, . ~ . +  RecallPolarization*treatment)
 
-fullmodMMserBIN <- update(politicMMserBIN, . ~ . +  schoolMillShare + 
-                         PROPERTYTAX_REV_SHARE + TCEC_MEMBER + 
-                         balance_member_lag + millrate_delta + 
-                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-
+mod4MMserBIN <-  glmer(contestSer ~ VAP_adjLOG + VAP_adjLOG_sq + 
+                      per65o + PerBachelorOrAbove + 
+                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
+                        incumShare + nraces + 
+                       turnout_overall_werc*treatment + WERC_elec + 
+                       (1|distid), data = moddat2, family = "binomial", 
+                      control = ctrl2)
 # coefnamesLag3 <- c("Intercept","Lagged Turnout (2)", "ln(VAP)", 
 #                  "\\% White", 
 #                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
 #                   "ln(MedianIncome)", "District-wide", "Blais-Lago", 
 #                   "Fall Turnout",  "$ln(VAP)^{2}$")
 
-apsrtable(demogsMMserBIN, politicMMserBIN, policyMMserBIN, fullmodMMserBIN, 
+apsrtable(mod1MMserBIN, mod2MMserBIN, mod3MMserBIN, mod4MMserBIN, 
           caption = "Partial Pooling Model of Serious Contestation",
-          model.names = c("Demog.", "Politic", "Policy", "Full"), 
+          model.names = c("Polarization", "Turnout", "Both", "WERC"), 
             label = "tab:meSer",  
            notes = list("All variables scaled and mean centered by year.", 
                        stars.note), 
           Sweave = TRUE, digits = 3, float = "longtable") #, coef.names = coefnamesLag3)
 @
 \end{tiny}
+
+The results in Table \ref{tab:meSer} does not show much promise, like in Chapter 
+\ref{chap:candidacy}. The models do not fit well, and though the effects of 
+polarization and the post-recall effect are in the direction hypothesized, they 
+are not statistically significant. There is evidence that polarization leads to 
+greater contestation, and post-recall recall turnout is more strongly associated 
+with increased contestation. One prediction that is in the wrong direction is that 
+the effect of polarization decreases post-recall. Few other predictors are statistically 
+significant and there is not much to conclude about a change in contested seats 
+post recall, as shown above in Figure \ref{fig:serContestPlot}. 
 
 % Serious contestation like in Chapter 3 does not show promise
 % polarization is associated with greater contestation 
@@ -829,46 +843,93 @@ apsrtable(demogsMMserBIN, politicMMserBIN, policyMMserBIN, fullmodMMserBIN,
 % Models appear to fit poorly
 % TODO: Consider refitting to demographics only + groups of interactions
 
+<<walkerMixedModhide, eval=FALSE, results='hide'>>=
+
+# politicMMserBIN <- update(demogsMMserBIN, . ~ . + incumShare +  contestSerLag + 
+#                             overrideYesPer +  partyDivisionRecent + 
+#                             teachShareofVoters + fallTurnout + nraces) 
+# 
+# policyMMserBIN <- update(demogsMMserBIN, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + 
+#                         NonPublicPupilPer + 
+#                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+# 
+# fullmodMMserBIN <- update(politicMMserBIN, . ~ . +  schoolMillShare + 
+#                          PROPERTYTAX_REV_SHARE + TCEC_MEMBER + 
+#                          balance_member_lag + millrate_delta + 
+#                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+#                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+# demogsMMminBIN <- glmer(contestMinor ~ VAP_adjLOG + VAP_adjLOG_sq + 
+#                       per65o + PerBachelorOrAbove + 
+#                       per_white_all + OOH_share + locale2 +  
+#                        RecallPolarization*treatment + treatment*GovTurnout_recall + 
+#                        (1|distid), data = moddat2, family = "binomial", 
+#                       control = ctrl2) 
+
+# politicMMminBIN <- update(demogsMMminBIN, . ~ . + incumShare +  overrideYesPer +  
+#                        partyDivisionRecent + contestMinorLag + 
+#                     teachShareofVoters + fallTurnout + nraces) 
+# 
+# policyMMminBIN <- update(demogsMMminBIN, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + 
+#                         NonPublicPupilPer + 
+#                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+# 
+# fullmodMMminBIN <- update(politicMMminBIN, . ~ . +  schoolMillShare + 
+#                          PROPERTYTAX_REV_SHARE + TCEC_MEMBER + 
+#                          balance_member_lag + millrate_delta + 
+#                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+#                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+
+@
 
 \begin{tiny}
-<<walkerMixeMod2, results='asis'>>=
-demogsMMminBIN <- glmer(contestMinor ~ VAP_adjLOG + VAP_adjLOG_sq + 
+<<walkerMixedMod2, results='asis'>>=
+mod1MMminBIN <- glmer(contestMinor ~ VAP_adjLOG + VAP_adjLOG_sq + 
                       per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 +  
-                       RecallPolarization*treatment + treatment*GovTurnout_recall + 
+                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
+                        incumShare + nraces + 
+                       RecallPolarization*treatment +
                        (1|distid), data = moddat2, family = "binomial", 
                       control = ctrl2) 
 
-politicMMminBIN <- update(demogsMMminBIN, . ~ . + incumShare +  overrideYesPer +  
-                       partyDivisionRecent + contestMinorLag + 
-                    teachShareofVoters + fallTurnout + nraces) 
+mod2MMminBIN <-  glmer(contestMinor ~ VAP_adjLOG + VAP_adjLOG_sq + 
+                      per65o + PerBachelorOrAbove + 
+                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
+                        incumShare + nraces + treatment*GovTurnout_recall + 
+                        (1|distid), data = moddat2, family = "binomial", 
+                      control = ctrl2)
 
-policyMMminBIN <- update(demogsMMminBIN, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + 
-                        NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+mod3MMminBIN <- update(mod2MMminBIN, . ~ . +  RecallPolarization*treatment)
 
-fullmodMMminBIN <- update(politicMMminBIN, . ~ . +  schoolMillShare + 
-                         PROPERTYTAX_REV_SHARE + TCEC_MEMBER + 
-                         balance_member_lag + millrate_delta + 
-                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-
-
+mod4MMminBIN <-  glmer(contestMinor ~ VAP_adjLOG + VAP_adjLOG_sq + 
+                      per65o + PerBachelorOrAbove + 
+                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
+                        incumShare + nraces + 
+                       turnout_overall_werc*treatment + WERC_elec + 
+                       (1|distid), data = moddat2, family = "binomial", 
+                      control = ctrl2)
 # coefnamesLag3 <- c("Intercept","Lagged Turnout (2)", "ln(VAP)", 
 #                  "\\% White", 
 #                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
 #                   "ln(MedianIncome)", "District-wide", "Blais-Lago", 
 #                   "Fall Turnout",  "$ln(VAP)^{2}$")
 
-apsrtable(demogsMMminBIN, politicMMminBIN, policyMMminBIN, fullmodMMminBIN,
+apsrtable(mod1MMminBIN, mod2MMminBIN, mod3MMminBIN, mod4MMminBIN,
           caption = "Partial Pooling Model of Any Contestation",
-          model.names = c("Demog.", "Politic", "Policy", "Full"), 
+          model.names = c("Polarization", "Turnout", "Both", "WERC"),
             label = "tab:meMin",  
            notes = list("All variables scaled and mean centered by year.", 
                        stars.note), 
           Sweave = TRUE, digits = 3, float = "longtable") #, coef.names = coefnamesLag3)
 @
 \end{tiny}
+
+In Table \ref{tab:meMin} the results are largely the same, suggesting nominal 
+contestation is no easier to predict. Here, polarization is related to slightly 
+decreasing contestation, but contestation is predicted to increase after the recall. 
+Post-recall, polarization has a stronger effect, as projected. Recall turnout 
+is related to reducted contestation, but this relationship changes post-recall. 
+However, none of these effects are statistically significant. 
 
 % Sign on recall polarization flips from seriousness
 % Recall polarization ^ associated with less contestation nominally
@@ -880,11 +941,22 @@ apsrtable(demogsMMminBIN, politicMMminBIN, policyMMminBIN, fullmodMMminBIN,
 % Models appear to fit poorly
 % TODO: Consider refitting to demographics only + groups of interactions
 
+The models in Tables \ref{tab:meMin} and \ref{tab:meSer} are disappointing, but 
+this is in part due to the small sample size involved and the fact that few 
+variables at all have been shown to be predictive of this measure of contestation. 
+It is unsurprising that an effect on contestation was detectable in the small 
+sample here. I now turn to models that have more promise. 
+
 \subsection{Incumbent Defeat}
 
 As in Chapter \ref{chap:candidacy} I fit incumbent defeat models on a subset of 
 elections for which an incumbent is facing the possibility of defeat -- that is 
-where there are more candidates than incumbents in the race. 
+where there are more candidates than incumbents in the race. These models are the only 
+models that show some promise. However, as was the case in Chapter \ref{chap:candidacy}, 
+the sample size decreases as I restrict the data to cases where incumbents are 
+running, but also a challenger is present as well. This reduced sample size 
+is problematic for fitting a random-effect model as the number of group terms 
+is approaching the number of observations. 
 
 <<glmincDefeatmods, eval=TRUE, results='hide'>>=
 moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
@@ -938,7 +1010,7 @@ glmIncDefpolitic <- glm(incDefeats ~ contestSerLag + VAP_adjLOG + VAP_adjLOG_sq 
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
                 incumShare + overrideYesPer +  partyDivisionRecent +
                     teachShareofVoters + fallTurnout + nraces +
-               districtwide + RecallPolarization*treatment + 
+               districtwide + RecallPolarization*treatment + WERC_elec + 
                  treatment*GovTurnout_recall, 
               data = moddat3, family = 'binomial', 
               control = glm.control(maxit = 4000))
@@ -997,46 +1069,46 @@ incDefGLMtable2 <- apsrtable(glmIncDeffisc, glmIncDefpolitic, glmIncDefPoly,
 <<defeatMerMod, results='asis'>>=
 IncDef1mm <- glmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
                  per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
-                   median_incomeLOG + districtwide + RecallPolarization*treatment + 
-                   treatment*GovTurnout_recall + (1|distid),
+                   median_incomeLOG + districtwide + RecallPolarization*treatment +
+                   (1|distid),
               data = moddat3, family = 'binomial', control = ctrl2)
 
 library(blme)
 IncDef1mm <-bglmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
                  per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
                    median_incomeLOG + districtwide + 
-                   RecallPolarization*treatment + treatment*GovTurnout_recall + 
+                   treatment*RecallPolarization + 
                  (1|distid),
               data = moddat3, family = 'binomial', control = ctrl2)
 
 IncDef2mm <- glmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + per65o + PerBachelorOrAbove +  
-                    median_incomeLOG + districtwide + 
-                 RecallPolarization*treatment + treatment*GovTurnout_recall + 
+                 per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
+                   median_incomeLOG + districtwide + 
+                   treatment*GovTurnout_recall + 
                  (1|distid),
               data = moddat3, family = 'binomial')
 
-IncDef3mm <- glmer(incDefeats ~ contestSerLag + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               districtwide + RecallPolarization*treatment + 
-                 treatment*GovTurnout_recall + (1|distid), 
+IncDef3mm <- glmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
+                 per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
+                   median_incomeLOG + districtwide + 
+                   treatment*GovTurnout_recall + RecallPolarization*treatment +
+                 (1|distid), 
               data = moddat3, family = 'binomial', 
               control = ctrl2)
 
 
-IncDef3mm <- bglmer(incDefeats ~ contestSerLag + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               districtwide + RecallPolarization*treatment + 
-                 treatment*GovTurnout_recall + (1|distid), 
+IncDef3mm <- bglmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
+                 per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
+                   median_incomeLOG + districtwide + 
+                   treatment*GovTurnout_recall + RecallPolarization*treatment +
+                 (1|distid), 
               data = moddat3, family = 'binomial', 
               control = ctrl2)
 
-IncDef4mm <- bglmer(incDefeats ~ contestSerLag + VAP_adjLOG + VAP_adjLOG_sq + 
+IncDef4mm <- bglmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
                   per_white_all + 
                per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               districtwide + turnout_overall_werc*treatment + 
+               districtwide + turnout_overall_werc*treatment + WERC_elec + 
                  RecallPolarization +
                  GovTurnout_recall + (1|distid), 
               data = moddat3, family = 'binomial', 
@@ -1048,13 +1120,25 @@ class(IncDef4mm) <- "merMod"
 
 apsrtable(IncDef1mm, IncDef2mm, IncDef3mm, IncDef4mm,
           caption = "Partial Pooling Model of Incumbent Defeat",
-          model.names = c("1", "2", "3", "4"), 
+          model.names = c("Polar.", "Turnout", "Both", "WERC"), 
             label = "tab:meIncDef",  
            notes = list("All variables scaled and mean centered by year.", 
                        stars.note), 
           Sweave = TRUE, digits = 3)
 @
 \end{tiny}
+
+The results in table \ref{tab:meIncDef} show a consistent negative effect of 
+post-recall years on incumbent defeat, but this effect is not statistically 
+significant. This is counter to expectations, but is perhaps offset by the 
+specific effects of the recall results. Recall polarization is associated with 
+greater incumbent defeat post-recall and recall turnout is as well -- but these 
+effects are also not statistically significant. Turnout in union certification 
+elections is positively related with incumbent defeat post-recall -- exactly as 
+expected. This effect is statistically significnt, providing some evidence that 
+union activity post-recall was active in both organizing union members and participating 
+in school board elections. This effect can be attributed to a state-level policy 
+decision, which has a clear impact on the behavior and results of local officials. 
 
 % Note models built on a smaller subset
 % Problems with convergence
@@ -1063,11 +1147,13 @@ apsrtable(IncDef1mm, IncDef2mm, IncDef3mm, IncDef4mm,
 % incumbent defeat increases with polarization post election
 % recall turnout negatively related to incumbent defeat
 % recall turnout post recall positively related with incumbent defeat
-% WERC does not matter, but sample size is small
 
 \subsection{Competitiveness}
 
-Uncompetitive races are dropped. 
+Looking at incumbent defeat as a binary measure of competitiveness downplays 
+the significance of challenges that result in a narrow defeat by a challenger 
+to an incumbent -- which would be coded as a 0 in Table \ref{meIncDef}. Using 
+a consistent measure of competitiveness, 
 
 <<blqLM, eval=TRUE, results='hide'>>=
 moddat4 <- moddat[moddat$minBlaisLago < max(moddat$minBlaisLago), ]
@@ -1123,31 +1209,31 @@ ctrl <- lmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
 
 demogsMMblq1 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
                       per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 +  
+                      per_white_all + OOH_share + incumShare + locale2 + 
                       treatment*GovTurnout_recall + 
-                       (1|distid), data = moddat, control = ctrl) 
+                       (1|distid), data = moddat4, control = ctrl) 
 
 demogsMMblq2 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
                       per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 +  
+                      per_white_all + OOH_share + incumShare + locale2 +  
                        RecallPolarization*treatment +
-                       (1|distid), data = moddat, control = ctrl) 
+                       (1|distid), data = moddat4, control = ctrl) 
 
 
 demogsMMblq3 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
                       per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 +  
+                      per_white_all + OOH_share + incumShare + locale2 +  
                        RecallPolarization*treatment + 
                        treatment*GovTurnout_recall + 
-                       (1|distid), data = moddat, control = ctrl) 
+                       (1|distid), data = moddat4, control = ctrl) 
 
 demogsMMblq4 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
                       per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 +  
+                      per_white_all + OOH_share + incumShare + locale2 +  
                        RecallPolarization + 
                        GovTurnout_recall + 
-                       treatment * turnout_overall_werc +
-                       (1|distid), data = moddat, control = ctrl) 
+                       treatment * turnout_overall_werc + WERC_elec + 
+                       (1|distid), data = moddat4, control = ctrl) 
 
 politicMMblq <- update(demogsMMblq1, . ~ . + incumShare + 
                          overrideYesPer +  
@@ -1177,7 +1263,7 @@ apsrtable(demogsMMblq1, demogsMMblq2, demogsMMblq3, demogsMMblq4,
             label = "tab:meBLQ",  
            notes = list("All variables scaled and mean centered by sample.", 
                        stars.note), 
-          Sweave = TRUE, digits = 3, float = "longtable") #, coef.names = coefnamesLag3)
+          Sweave = TRUE, digits = 3, float = "longtable", stars="default") #, coef.names = coefnamesLag3)
 @
 \end{tiny}
 
@@ -1249,6 +1335,7 @@ moddat$treatment <- factor(moddat$treatment)
 # moddat$fallTurnout <- moddat$fallTurnout * 100
 # moddat$VAP_adj <- log(moddat$VAP_adj)
 # moddat$median_income <- log(moddat$median_income)
+moddat$WERC_elec <- factor(moddat$WERC_elec)
 centr <- mean(moddat$turnout)
 stddev <- sd(moddat$turnout)
 moddat$outflag <- (moddat$turnout - centr) / stddev
@@ -1336,7 +1423,7 @@ tabnote <- "Model includes district random effects modeled as intercepts."
 apsrtable(demogsMod1mm, demogsMod2mm, demogsMod3mm, demogsMod4mm,
           caption = "Partial Pooling Model of Post-Election Turnout",
           label = "tab:meTurnout", notes = list(tabnote, stars.note), 
-          Sweave = FALSE, digits = 3)
+          Sweave = TRUE, digits = 3)
 @
 \end{tiny}
 
@@ -1351,7 +1438,6 @@ Table \ref{tab:meTurnout} shows the results here.
 % increase in turnout
 
 % These effects are net of turnout lagged and fall turnout
-
 
 \clearpage
 
@@ -1480,13 +1566,13 @@ demogsMod4roMM <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG +
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
                    OOH_share + median_incomeLOG + minBlaisLago + 
                    districtwide + GovTurnout_recall +
-                     RecallPolarization + 
+                     RecallPolarization + WERC_elec + 
                    turnout_overall_werc * treatment + (1|distid), data = moddat)
 
 apsrtable(demogsMod1roMM, demogsMod2roMM, demogsMod3roMM, demogsMod4roMM,
           caption = "Partial Pooling Model of Post-Election Turnout",
           label = "tab:meRolloff", notes = list(tabnote, stars.note), 
-          Sweave = FALSE, digits = 3)
+          Sweave = TRUE, digits = 3)
 @
 \end{tiny}
 
@@ -1496,6 +1582,13 @@ apsrtable(demogsMod1roMM, demogsMod2roMM, demogsMod3roMM, demogsMod4roMM,
 % recall turnout increases rolloff, post recall this is magnified
 % Net of increased turnout, recall polarization leads to increased 
 % voter rolloff
+
+\clearpage
+
+\subsection{Substantive Effects}
+
+Next I demonstrate the substantive magnitude of the state level policy shock to 
+contextualize the influence that state government can have on local elections. 
 
 \section{Conclusion}
 
