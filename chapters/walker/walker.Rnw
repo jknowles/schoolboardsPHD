@@ -93,6 +93,7 @@ in the context of existing theories of school board governance.
 % TODO: Add conclusion
 
 
+
 \section{Literature Review}
 
 \subsection{Dissatisfaction Theory}
@@ -133,6 +134,9 @@ likely rely on an assessment of citizen preferences and school board actions on 
 number of education policy issues to assess the drift between community and government 
 preferences on these issues. 
 
+"The number of challengers is a reasonable operational indicator of public 
+dissatisfaction." \citep{RefWorks:337}
+
 As I have shown previously in Chapter \ref{chap:candidacy}, district demographics 
 do not predict emergence of challengers or incumbent defeat, although across the 
 sample school districts vary in the level of contestation they exhibit net of 
@@ -140,7 +144,36 @@ these factors. However, to truly test dissatisfaction theory we need a way to
 assess the division within the community on issues of importance to education 
 governance. 
 
+\subsection{Empirical Tests}
 
+\citet{RefWorks:259} attempted to predict school board turnover using socioeconomic 
+factors on school board elections in Ohio but was unsuccessful. A re-analysis of 
+this data by \citet{RefWorks:337} considers recalculating the dependent and independent variables 
+of interest and finds that dissatisfaction is predictive. They key innovation is 
+using the level of contestation as a predictor of the non-retirement incumbent 
+defeat. 
+
+The problem with both of these studies is that they ignore the endogeneity inherent 
+in predicting incumbent defeat by using the number of challengers available. This 
+is doubly problematic because with more choices available, the win expectancy of 
+the incumbent decreases as the number of other candidates increases. More problematic, 
+the same forces that cause candidates to emerge for office (strategic candidates) 
+are strongly associated with the likely defeat of an incumbent. These issues are 
+addressed in Chapter \ref{chap:candidacy}. The other studies of incumbent school 
+board defeat also rely on outdated statistical methods or substantial 
+identification issues \citep{RefWorks:311,RefWorks:245,RefWorks:247,RefWorks:341}. Thus the empirical rigor of this literature is weak. 
+
+However, the literature is rich in theory and description. An important consensus 
+emerges from these studies about the need to distinguish between incumbent defeat and 
+retirement. Unfortunately, the way retirement is coded is not consistent across studies 
+and coding retirement is not something possible at large scale as the decision to 
+retire may be encouraged politically. Another problem with the literature is that 
+voter turnout is not considered in these studies. Though voter dissatisfaction is 
+talked about as an ``upwelling'' or `rising tide'' of discontent, the most direct 
+measure of this -- increased voter participation is not used as an explicit measure. 
+Chapter \ref{chap:turnout} takes up this issue and finds some evidence that 
+voter turnout is linked to measures of community dissatisfaction with local 
+education policy. 
 
 
 
@@ -149,19 +182,87 @@ governance.
 % illustrated. 
 
 
-There is one specific theory about voter turnout that this data can test is the 
-linkage between voter turnout in school board elections and state level policy 
-shocks. While there has recently been more attention on the linkage between 
-national political trends and state level election returns (CITATION NEEDED), these 
-studies have not been extended to the local level. However, the local level provides 
-an interesting level of analysis because local elections are much more diverse than 
-their state level counterparts in terms of the timing, partisanship of office, and 
-structure of the elections. Where it is difficult to disentangle relationships between 
-national legislature and state legislature composition from national trends in 
-partisanship and strategic redistricting (CITATION NEEDED), the diversity of local 
-elections allows more opportunities for exogenous variation to explore the causal 
-transmission of voter preferences at the state level being expressed in local 
-elections. 
+
+
+\subsection{Theory and Wisconsin Context}
+
+\subsubsection{Democracy}
+
+I suggest a reframing of dissatisfaction theory to provide more testable hypotheses 
+and a stronger linkage to other theories of democracy. Specifically, I conceptualize 
+democracy of having two distinct states -- potential and actualized democracy. 
+Potential democracy describes the existence of conditions that allow citizens to 
+voice their opinion, select their leaders, and influence policy. A democratic system can 
+be considered to have high democratic potential when it has open and free elections, 
+transparency in decision making, and high levels of information about candidate 
+and citizen policy and preferences. However, a government may have these features, 
+but they may not be being utilized at the moment. Actualized democracy describes 
+the usage of these systems in the form of citizen participation, candidate choice, 
+and information levels available to make decisions \citep{RefWorks:319}. 
+
+I focus on several sources of \emph{friction} which inhibit citizens from converting 
+the potential of their democratic institutions into actualized democratic actions. 
+The most important is the lack of information. Obtaining information about candidates 
+is expensive and the more specialized the policy making, the more expensive the 
+acquisition of knowledge on preferences of candidates can be \citep{RefWorks:351}. 
+In this framework, the narrow and specialized issue brief of school boards makes 
+the actualization of democratic potential difficult for individual citizens. 
+
+I consider three special interest groups that seek to fill this void: district 
+employees, property taxpayers, and parents. Each of these groups are different in 
+their size, core issues, and preferences. They also overlap. 
+
+% Table
+\begin{table}[h!]
+\begin{center}
+\begin{small}
+\caption{Potential Interest Groups in School Board Elections}
+\label{interests}
+\begin{tabular}{| p{.15\textwidth} | p{.2\textwidth} | p{.2\textwidth} | p{.2\textwidth} |}
+\hline
+\textbf{Group}  & \textbf{Benefit} & \textbf{Cost} & \textbf{Cohesion} \\ \hline
+Teachers  & Highest & Lowest & Concentrated \\ \hline
+Parents & High & Moderate & Diffuse \\ \hline
+Property Tax Payers & Low & High & Diffuse \\ \hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+Teachers are the most cohesive group with the biggest benefit from district policies 
+as the school district is their employer and provider of benefits. Thus teachers 
+have the strongest incentives to participate in school board elections, organize 
+others, and express their voice. Parents, on the other hand, are a diffuse group 
+with generally lower resources (parents have less wealth and income than the other 
+two groups in most communities), but a large connection to the benefit of schools 
+through the provision of better education for their children. Property tax payers 
+have an interest in school boards because of their ability to set a substantial 
+portion of property tax rates. However, property tax payers face the greatest 
+coordination problem because they are the most diffuse group and their coordination 
+costs are the highest. 
+
+Thus, while organized interest groups can be conceptualized as a way to overcome 
+the friction involved in actualizing democracy, the incentives for these groups 
+varies. Thus, school board elections can be interpreted as reflecting the preferences 
+of those voters mobilized by these groups based on the intensity and homogeneity 
+of each of their preferences multiplied by their size -- Dahl's polyarchy \citep{RefWorks:351}.
+
+Propoents of dissatisfaction theory would agree with this reframing of the power 
+structures of school boards and suggest that periodically if the board strays too 
+far from the preferences of less represented groups, voters will punish them and 
+adjust the board to reflect the preferences of the community. If this is the case, 
+then if more individuals actualized their democratic behavior, voters would largely 
+retain their current board members but with greater numbers. That is, if we could 
+exogenously eliminate the coordination and information costs for each interest group, 
+we should not expect to see great changes in school board membership. 
+
+I now turn to describing the political conditions in Wisconsin from 2010-2012 that 
+created such an exogenous provision of information to voters. This allows me to 
+explore whether the status quo prior to the exogenous shock reflected the will 
+of voters, or the will of a well-organized subset of voters who were not representative 
+of the broader community interests. 
+
+\subsubsection{Wisconsin from 2010-2012}
 
 Wisconsin from 2010-2012 provides an ideal test case for the transmission of 
 state level political preferences to local non-partisan office. As discussed in 
@@ -226,9 +327,6 @@ This follows along the work of \citet{Lassen2005} who leveraged an exogenous sho
 of an information campaign in some electoral districts and found that 
 increasing voters' information also produced a sizeable effect on the propensity 
 to vote. 
-
-
-\subsection{Wisconsin Context}
 
 There are two reasons to believe that the policy shock associated with the passage 
 of Wisconsin Act 10 would lead to an increase in voter and candidate participation 
@@ -328,37 +426,6 @@ and communities on both the changes to collective bargaining, but also reduction
 in school funding. 
 
 
-\section{Theory}
-
-The case of Wisconsin school boards can be framed two ways. First, school boards 
-can be considered like any other elected office with elections that are responsive 
-to the provision of information. Prior chapters have taken this approach. In those 
-chapters, for the most part, I considered the school board election as an autonomous 
-event without explicitly considering factors in neighboring local governments or 
-state level policy directly. This follows somewhat the strategy of \citet{oliver12} 
-in investigating local electoral influences. 
-
-This approach, however, is not a complete picture. Special jurisdiction governments 
-are indeed constrained by other governments. Legally, their existence is dependent 
-upon authority granted by the state government. Fiscally, their existence is 
-dependent on their ability to compete for tax revenues with other local governments. 
-
-Another approach, however, is to view school boards as nested within a political 
-system. When considering the influence of school boards on policy, it is common 
-to consider them as constrained actors within a federal system. However, this 
-same constraint is not accounted for when investigating the electoral behavior 
-of these units. Within the larger literature on special district governments there 
-is some consideration of the constraints of layered governments, but not particularly 
-when it comes to electoral behavior. 
-
-% Discussion of federalism, special district governance, and local elections
-
-Federalism is an important feature of the American political linkage. Aside from 
-viewing more local levels of government as proving grounds for candidates and party 
-leaders, the federal system ensures that the political risks and rewards of policy 
-making are spread across levels of the system. 
-
-
 \begin{table}[h!]
 \begin{center}
 \begin{small}
@@ -378,56 +445,6 @@ Rolloff & - & - & - & - & null & + \\ \hline
 \end{center}
 \end{table}
 
-Policy evaluations have often used state level policy implementation dates as 
-a way to evaluate the impact of policies on outcomes. Political scientists have 
-also have used state level policy to study the impacts of state level policies 
-on voter and candidate behavior. % CITATION NEEDED
-
-\citet{RefWorks:210} looks at the impact of school district consolidation on 
-student outcomes. 
-
-\citet{RefWorks:214} look at the impact of state accountability policy on school 
-board elections results. They leverage the introduction of a state level policy 
-revealing school performance on subsequent school board elections. 
-
-\citet{RefWorks:318} focuses on the impact that Federal policy making has on 
-states and explores federalism. 
-
-This study is trying to measure the impact of a state level policy change on the 
-politics of local elections. Instead of investigating the impact of Wisconsin 
-Act 10, this study looks for evidence that Act 10 changed the politics of local 
-communities, and to what degree. 
-
-Scholars of special jurisdiction governments have looked at the relationship 
-between local governments and higher levels of government such as county and 
-state government. This literature has not focused explicitly on the political 
-conditions within special district governments, but predominantly on the puzzle 
-of why they are created \citep{fosterK}. \citet{berry2} is an exception and uses 
-internal politics as an explanation of why these governments are created, but 
-also how they perform. However, for the most part, this literature does not directly 
-explore the effect that changing state level conditions can have on the politics 
-within local jurisdictions. 
-
-Some exceptions to this work have come from scholars seeking to explore the role 
-that state level rules about elections can have on the politics and participation 
-in the elections of the local governments those rules are changed about. \citet{adrian08} 
-describes the impact that the adoption of non-partisan ballots, like the non-partisan 
-Wisconsin spring general election, for local offices has on voter participation. 
-The adoption of this state level policy shift is considered quasi-experimental. 
-Others have also looked at the impact of moving from appointed to elected 
-school boards in Virginia and the change in interest group activity that resulted 
-\citep{RefWorks:242}. \citet{anzia11} explores the timing of school board elections 
-set by state legislatures, and the impact that changing the timing has on voter 
-participation, and ultimately on compensation policies for school district employees. 
-
-% 
-% Second, this study 
-% explores the linkage between state level politics and local electoral participation. 
-% Thus, the study represents an attempt to estimate the causal effect of a state 
-% level policy shock on voter turnout in local elections by leveraging the unique 
-% conditions in Wisconsin from 2010-2012. The present study presents an important 
-% oppotunity to test theories of participation and cross-level linkages in a federal 
-% system that previously were not available to political scientists.
 
 \section{Methods}
 
