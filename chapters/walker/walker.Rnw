@@ -1,4 +1,4 @@
-\chapter{Assessing the Causal Impact of Policy Shocks}
+\chapter{Assessing School Board Responsiveness to Voter Dissatisfaction}
 \label{chap:walker}
 \chapterstyle{deposit}
 
@@ -39,17 +39,196 @@ library(gridExtra)
 
 \section{Introduction}
 
-While the previous chapters have explored whether understanding of national and 
-state level electoral activity can explain school board electoral activity, this 
-chapter uses a different approach. I leverage a natural experiment created by 
-the unprecedented policy shock of the passage of Act 10 in Wisconsin following the 
-election of Governor Scott Walker to test whether or not local electoral activity 
-can be influenced directly by state level policy. This question falls into a broader 
-literature unpacking the federalist entanglements of the multi-level system of 
-government in the US. The question of whether a policy shock at a higher level of 
-government can influence electoral activity at lower levels of government is 
-directly relevant to studies of the policy making process and the system of feedback 
-and interaction between policy and electoral activity. 
+The previous two chapters do not make a strong case for the democratic nature 
+of school boards. In Wisconsin from 2002-2012 it was nearly impossible to predict 
+the emergence of challengers or competitive elections using measures of school 
+district fiscal, political, or policy pressure. Turnout was more easily predicted 
+by demographics and community factors, but rarely moved above 20-30\% and was 
+not strongly responsive to fiscal, political, or policy inputs either. Thus, 
+in many communities, school board elections consist of 20-30\% of voters unanimously 
+approving unopposed incumbents. 
+
+Defenders of the democratic nature of school boards have three responses. First, 
+measuring conditions for changes in turnout and contestation with the kind of 
+statewide measures used will not work -- the issues that spark controversy for 
+boards are local, idiosyncratic, and unpredictable. Whether it is a protest over 
+eliminating an AP course in the high school, or a scandal involving an employee, 
+wedge issues in school boards campaigns are based on crises. \footnote{\citet{oliver} 
+finds this to be the case exactly in suburban mayoral elections.} %TODO: add details on stories here
+Second, turnout and contestation in the period of study chosen here may be low, but 
+turnout and contestation increase when they need to -- the cornerstone of dissatisfaction 
+theory. Thus, perhaps it is the case that in the period of study, school boards 
+were not under much pressure from community and were generally assessed as providing 
+good stewardship of public schools. Only over a longer time period and a larger 
+sample might we expect to find systematic patterns of voter dissatisfaction with 
+boards. Finally, voters are more likely to participate when they are informed on 
+the issues. Like the argument about non-voting in American presidential races, 
+defenders of school boards might suggest that the preferences of voters and 
+non-voters are not different, and thus despite the low turnout, the appropriate 
+values and goals of the electorate are advanced by a subset of voters. 
+
+This chapter seeks to answer these challenges directly. I use the political turmoil 
+that resulted from the passage of Wisconsin Act 10, the elimination of collective 
+bargaining for public employees in the state, as a lever to explore these objections 
+to the findings of the prior chapters. I argue that WI Act 10 served as an exogenous 
+policy shock which a) raised awareness about school boards by putting them in partisan 
+crosshairs over their labor union contracts, b) increased attention and scrutiny on boards 
+due to an increase in power given to boards freed from labor agreements, and c) 
+created a unified, contentious, and widely debated statewide issue on which all 
+school board cnadidates and voters were focused across the state. While I still 
+contend that the decade in this study ranks as one of the most contentious decades 
+in the history of education politics, this chapter sets that debate aside. Instead, 
+I focus on examining the change in turnout and contestation immediately before and 
+after the passage of Act 10. As I will show, the political focus on education politics 
+and school boards provides a pure test of dissatisfaction theory on a statewide 
+scale. 
+
+This chapter proceeds as follows. First, I review the literature on dissatisfaction 
+theory and its descendants to identify testable hypotheses. Next, I establish the 
+Wisconsin context and describe the statewide political conditions in the period 
+surrounding the passage of Wisconsin Act 10. Next, I establish the data and methods 
+used to test dissatisfaction theory in Wisconsin. Finally, I assess the results 
+in the context of existing theories of school board governance. 
+
+% TODO: Add conclusion
+
+
+\section{Literature Review}
+
+\subsection{Dissatisfaction Theory}
+
+Dissatisfaction theory grows out of \citet{RefWorks:348}'s concept of critical elections, 
+stating that the politics of school boards is characterized by long stretches of 
+equilibrium punctuated by periods of upheaval, contentious elections, and 
+incumbent defeats \citep{RefWorks:297}. 
+
+Iannaconne and Lutz argue that the lack of two-party politics creates a closed 
+system between administrators and the board to make decisions without strong 
+feedback from the community. As the distance between the community and the school 
+district grows, eventually a fracture occurs and an outpouring of political activity 
+leads to upheaval, incumbent defeat, and board and superintendent turnover. 
+\citet{RefWorks:297} identify a dimension of institutional control 
+they label the secular-to-sacred. Sacred communities are insular, skeptical of 
+outside expertise, and consensus driven. Secular communities are less monolithic, 
+marked by more conflict and competition. Dissatisfaction theory, thus, seeks to 
+explain the transition of communities when the monolithic power of the insular 
+political community decays and is replaced by a new power structure before 
+restabilizing. 
+
+Much of the work supporting this conception is qualitative and relies on participant 
+observation, interviews, and thick description of the mechanisms in place in these 
+communities. \citet{RefWorks:297} allude to some quantitative measures that may be associated 
+with communities in transition though -- including school district size, urbanization, 
+geographic mobility, the extent the district is coterminous with other local 
+government units, the cosmopolitan character of the residents, and the political associations 
+within the community. The authors suggest that communities in transition in these 
+ways may move along the secular-to-sacred continuum. 
+
+For several decades the only tests of these theories tended to be qualitative 
+case study examinations of a single board or set of school boards. Furthermore, 
+it remained unclear what testable hypotheses could be extracted from dissatisfaction 
+theory about the timing and ultimate outcome of citizen dissatisfaction with school 
+board performance. This was further complicated by the fact that such studies would 
+likely rely on an assessment of citizen preferences and school board actions on a 
+number of education policy issues to assess the drift between community and government 
+preferences on these issues. 
+
+As I have shown previously in Chapter \ref{chap:candidacy}, district demographics 
+do not predict emergence of challengers or incumbent defeat, although across the 
+sample school districts vary in the level of contestation they exhibit net of 
+these factors. However, to truly test dissatisfaction theory we need a way to 
+assess the division within the community on issues of importance to education 
+governance. 
+
+
+
+
+
+%THus one specific tenet should be that injecting partisan politics into the process 
+% should lead to an exogenous increase in contentiousness as this fracture is 
+% illustrated. 
+
+
+There is one specific theory about voter turnout that this data can test is the 
+linkage between voter turnout in school board elections and state level policy 
+shocks. While there has recently been more attention on the linkage between 
+national political trends and state level election returns (CITATION NEEDED), these 
+studies have not been extended to the local level. However, the local level provides 
+an interesting level of analysis because local elections are much more diverse than 
+their state level counterparts in terms of the timing, partisanship of office, and 
+structure of the elections. Where it is difficult to disentangle relationships between 
+national legislature and state legislature composition from national trends in 
+partisanship and strategic redistricting (CITATION NEEDED), the diversity of local 
+elections allows more opportunities for exogenous variation to explore the causal 
+transmission of voter preferences at the state level being expressed in local 
+elections. 
+
+Wisconsin from 2010-2012 provides an ideal test case for the transmission of 
+state level political preferences to local non-partisan office. As discussed in 
+Chapter \ref{chap:theoryreview} and illustrated in Figure \ref{fig:wiscotimeline} 
+the election of Scott Walker to Governor and the subsequent passage of Act 10, the 
+2011-13 biennial budget, and the mass protests in Madison, WI, state level politics 
+in Wisconsin became suddenly extremely polarized.\footnote{Perhaps the most salient 
+issue is the requirement under the law that any wage increase greater than a cost 
+of living adjustment pegged to CPI be approved by a district wide referenda - 
+effectively placing a firm ceiling on any salary negotiations2011 Wisconsin Act 10: 
+https://docs.legis.wisconsin.gov/2011/related/acts/10} In addition to the sudden 
+polarization, much of the rhetoric, protest, and contentiousness surrounding 
+the Walker administration was focused squarely on education politics and labor 
+relations - issues that school boards have great local influence over. In fact, 
+Act 10 represented a sweeping expansion of the power of school boards away from 
+local teachers' unions. Thus, the composition of the school board mattered more 
+than ever after Act 10. Importantly, the passage of Act 10 was completely unforeseen 
+by political observers and the public and represent an exogenous shock to the 
+state political system. \footnote{This last point is somewhat disputed by some 
+political observers and Scott Walker himself, but the consensus has been that 
+this was not the case according to the \href{http://www.politifact.com/wisconsin/statements/2011/feb/22/scott-walker/wisconsin-gov-scott-walker-says-he-campaigned-his-/}{Milwaukee Journal Sentinel}.}
+
+This paper leverages the unexpected passage of Act 10 as providing a natural 
+experiment of the effect of state level policy shocks on local level electoral 
+participation. In fact, in this case, the policy shock and surrounding political 
+polarization was directly related to the powers of school boards, a locally 
+elected non-partisan office. Even more interestingly, school board elections are 
+held off-cycle in Wisconsin in the spring on the $2^{nd}$ Tuesday each April. This 
+combination of non-partisan off-cycle elections and a wide and deeply salient policy 
+shock provide an ideal test of whether or not state level policy actions can spur 
+voters in local elections. Specifically, following \citet{Matsusaka}, the state 
+level policy shock should have increased dramatically the information available to 
+voters about school boards, school board members, and the impact of Act 10 on their 
+community. Thus, turnout should have increased above historical levels. 
+If there is no impact on voter turnout in the wake of such a broad expansion of 
+school board power over an issue as polarizing as collective bargaining rights 
+for local employees, we would expect smaller policy shocks to have no effect either. 
+This would represent a rejection of the applicability of information theory to 
+explain turnout in low-salience non-partisan elections. This would also provide 
+evidence in support of dissatisfaction theory - with heightened stakes for board 
+policy preferences.\footnote{One concern might be that the polarization was so 
+extreme and the state so saturated with negative campaigning of all forms that 
+voter turnout was suppressed even in the case of spring school board elections 
+\citep{NegativeCamp1999}.}
+
+\begin{table}[h!]
+\begin{center}
+\begin{small}
+\caption{Theories of Turnout and Expected Evidence: Causal}
+\label{turnoutH2}
+\begin{tabular}{| p{.15\textwidth} | p{.2\textwidth} | p{.6\textwidth} |}
+\hline
+\textbf{Theory}  & \textbf{Citation} & \textbf{Expected Finding} \\ \hline
+Information theory  & \citet{Matsusaka} & Large turnout increases after passage of Act 10\\ \hline
+Dissatisfaction theory & \citet{RefWorks:297,RefWorks:271} & Large turnout increase after Act 10 \\ \hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+This follows along the work of \citet{Lassen2005} who leveraged an exogenous shock 
+of an information campaign in some electoral districts and found that 
+increasing voters' information also produced a sizeable effect on the propensity 
+to vote. 
+
+
+\subsection{Wisconsin Context}
 
 There are two reasons to believe that the policy shock associated with the passage 
 of Wisconsin Act 10 would lead to an increase in voter and candidate participation 
@@ -249,88 +428,6 @@ participation, and ultimately on compensation policies for school district emplo
 % conditions in Wisconsin from 2010-2012. The present study presents an important 
 % oppotunity to test theories of participation and cross-level linkages in a federal 
 % system that previously were not available to political scientists.
-
-\section{Literature Review}
-
-\subsection{Exogenous State Level Policy Shocks and Voter Turnout}
-
-There is one specific theory about voter turnout that this data can test is the 
-linkage between voter turnout in school board elections and state level policy 
-shocks. While there has recently been more attention on the linkage between 
-national political trends and state level election returns (CITATION NEEDED), these 
-studies have not been extended to the local level. However, the local level provides 
-an interesting level of analysis because local elections are much more diverse than 
-their state level counterparts in terms of the timing, partisanship of office, and 
-structure of the elections. Where it is difficult to disentangle relationships between 
-national legislature and state legislature composition from national trends in 
-partisanship and strategic redistricting (CITATION NEEDED), the diversity of local 
-elections allows more opportunities for exogenous variation to explore the causal 
-transmission of voter preferences at the state level being expressed in local 
-elections. 
-
-Wisconsin from 2010-2012 provides an ideal test case for the transmission of 
-state level political preferences to local non-partisan office. As discussed in 
-Chapter \ref{chap:theoryreview} and illustrated in Figure \ref{fig:wiscotimeline} 
-the election of Scott Walker to Governor and the subsequent passage of Act 10, the 
-2011-13 biennial budget, and the mass protests in Madison, WI, state level politics 
-in Wisconsin became suddenly extremely polarized.\footnote{Perhaps the most salient 
-issue is the requirement under the law that any wage increase greater than a cost 
-of living adjustment pegged to CPI be approved by a district wide referenda - 
-effectively placing a firm ceiling on any salary negotiations2011 Wisconsin Act 10: 
-https://docs.legis.wisconsin.gov/2011/related/acts/10} In addition to the sudden 
-polarization, much of the rhetoric, protest, and contentiousness surrounding 
-the Walker administration was focused squarely on education politics and labor 
-relations - issues that school boards have great local influence over. In fact, 
-Act 10 represented a sweeping expansion of the power of school boards away from 
-local teachers' unions. Thus, the composition of the school board mattered more 
-than ever after Act 10. Importantly, the passage of Act 10 was completely unforeseen 
-by political observers and the public and represent an exogenous shock to the 
-state political system. \footnote{This last point is somewhat disputed by some 
-political observers and Scott Walker himself, but the consensus has been that 
-this was not the case according to the \href{http://www.politifact.com/wisconsin/statements/2011/feb/22/scott-walker/wisconsin-gov-scott-walker-says-he-campaigned-his-/}{Milwaukee Journal Sentinel}.}
-
-This paper leverages the unexpected passage of Act 10 as providing a natural 
-experiment of the effect of state level policy shocks on local level electoral 
-participation. In fact, in this case, the policy shock and surrounding political 
-polarization was directly related to the powers of school boards, a locally 
-elected non-partisan office. Even more interestingly, school board elections are 
-held off-cycle in Wisconsin in the spring on the $2^{nd}$ Tuesday each April. This 
-combination of non-partisan off-cycle elections and a wide and deeply salient policy 
-shock provide an ideal test of whether or not state level policy actions can spur 
-voters in local elections. Specifically, following \citet{Matsusaka}, the state 
-level policy shock should have increased dramatically the information available to 
-voters about school boards, school board members, and the impact of Act 10 on their 
-community. Thus, turnout should have increased above historical levels. 
-If there is no impact on voter turnout in the wake of such a broad expansion of 
-school board power over an issue as polarizing as collective bargaining rights 
-for local employees, we would expect smaller policy shocks to have no effect either. 
-This would represent a rejection of the applicability of information theory to 
-explain turnout in low-salience non-partisan elections. This would also provide 
-evidence in support of dissatisfaction theory - with heightened stakes for board 
-policy preferences.\footnote{One concern might be that the polarization was so 
-extreme and the state so saturated with negative campaigning of all forms that 
-voter turnout was suppressed even in the case of spring school board elections 
-\citep{NegativeCamp1999}.}
-
-\begin{table}[h!]
-\begin{center}
-\begin{small}
-\caption{Theories of Turnout and Expected Evidence: Causal}
-\label{turnoutH2}
-\begin{tabular}{| p{.15\textwidth} | p{.2\textwidth} | p{.6\textwidth} |}
-\hline
-\textbf{Theory}  & \textbf{Citation} & \textbf{Expected Finding} \\ \hline
-Information theory  & \citet{Matsusaka} & Large turnout increases after passage of Act 10\\ \hline
-Dissatisfaction theory & \citet{RefWorks:297,RefWorks:271} & Large turnout increase after Act 10 \\ \hline
-\end{tabular}
-\end{small}
-\end{center}
-\end{table}
-
-This follows along the work of \citet{Lassen2005} who leveraged an exogenous shock 
-of an information campaign in some electoral districts and found that 
-increasing voters' information also produced a sizeable effect on the propensity 
-to vote. 
 
 \section{Methods}
 
