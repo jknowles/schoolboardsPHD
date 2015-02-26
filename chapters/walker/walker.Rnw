@@ -807,6 +807,345 @@ rolloff. In the next section, I then step away from the causal framework and
 fit longitudinal models which seek to explore evidence, if any, that this causal 
 impact was mediated. 
 
+\subsection{Causal Estimates}
+
+I provide three sets of results for each dependent variable. The first is a 
+regression with a lagged dependent variable and demographic controls, the second 
+is a differences in differences estimate, and the third is a difference in 
+differences estimate with district level random effects. 
+
+<<contestDID, eval=TRUE, results = 'asis'>>=
+outdata <- dist_turn[, c("distid", "year", "contestMinor", "VAP_adjLOG_sq", 
+                         "VAP_adjLOG", "per65o", "NonPublicPupilPer", 
+                         "incumShare", "teachShareofVoters", 
+                         "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
+                         "PerBachelorOrAbove", 
+                         "PROPERTYTAX_REV_SHARE", "minBlaisLago", "per_white_all",
+                         "GovTurnout_recall", "RecallPolarization", "locale2", 
+                         "econ_disadv_per")]
+
+preTreat <- outdata[outdata$year <= 2010,]
+preTreat$year <- preTreat$year + 1
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+
+# Repeat 2010 data as pre-treatment for 2012
+tmp <- preTreat[preTreat$year_lag == 2011,]
+tmp$year_lag <- 2012
+preTreat <- rbind(preTreat, tmp)
+rm(tmp)
+
+outdata <- outdata[, c("contestMinor", "distid", "year")]
+outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
+                 by.y = c("distid", "year"))
+
+outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+
+# outdata <- outdata[outdata$year > 2007, ]
+
+lagModcontest <- glm(contestMinor ~ contestMinor_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               PerBachelorOrAbove_lag +  locale2_lag, data = outdata, 
+             family = "binomial")
+lagModcontestSE <- get_CL_vcov(lagModcontest, outdata$distid)
+lagModcontest$se <- sqrt(diag(lagModcontestSE))
+
+DIDmodContest <- glm(contestMinor ~ contestMinor_lag * treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag +
+             locale2_lag, data = outdata, family = "binomial")
+DIDmodContestSE <- get_CL_vcov(DIDmodContest, outdata$distid)
+DIDmodContest$se <- sqrt(diag(DIDmodContestSE))
+
+library(lme4)
+library(optimx)
+ctrl2 <- glmerControl(optimizer = "optimx", calc.derivs = FALSE, 
+                     optCtrl = list(method = "nlminb", starttests = FALSE, 
+                                    kkt = FALSE, maxit = 10000))
+ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
+
+MermodContest <- glmer(contestMinor ~ contestMinor_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag + locale2_lag + (1|distid_lag), 
+             data = outdata, family = "binomial", control = ctrl)
+
+apsrtable(lagModcontest, DIDmodContest, MermodContest, se = "robust", 
+          model.names = c("Lag", "Diff in Diff", "Multilevel"), 
+          stars = "default", 
+          caption = "Causal Estimates of Act 10 Period on Minor Contestation", 
+          label = "tab:causMinorCon", notes = stars.note, digits = 3, 
+          Sweave = FALSE)
+@
+
+<<contestDID2, eval=TRUE, results = 'asis'>>=
+outdata <- dist_turn[, c("distid", "year", "contestSer", "VAP_adjLOG_sq", 
+                         "VAP_adjLOG", "per65o", "NonPublicPupilPer", 
+                         "incumShare", "teachShareofVoters", 
+                         "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
+                         "PerBachelorOrAbove", 
+                         "PROPERTYTAX_REV_SHARE", "minBlaisLago", "per_white_all",
+                         "GovTurnout_recall", "RecallPolarization", "locale2", 
+                         "econ_disadv_per")]
+
+preTreat <- outdata[outdata$year <= 2010,]
+preTreat$year <- preTreat$year + 1
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+
+# Repeat 2010 data as pre-treatment for 2012
+tmp <- preTreat[preTreat$year_lag == 2011,]
+tmp$year_lag <- 2012
+preTreat <- rbind(preTreat, tmp)
+rm(tmp)
+
+outdata <- outdata[, c("contestSer", "distid", "year")]
+outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
+                 by.y = c("distid", "year"))
+
+outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+
+# outdata <- outdata[outdata$year > 2007, ]
+
+lagModcontest2 <- glm(contestSer ~ contestSer_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               PerBachelorOrAbove_lag +  locale2_lag, data = outdata, 
+             family = "binomial")
+lagModcontestSE <- get_CL_vcov(lagModcontest2, outdata$distid)
+lagModcontest2$se <- sqrt(diag(lagModcontestSE))
+
+DIDmodContest2 <- glm(contestSer ~ contestSer_lag * treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag +
+             locale2_lag, data = outdata, family = "binomial")
+DIDmodContestSE <- get_CL_vcov(DIDmodContest2, outdata$distid)
+DIDmodContest2$se <- sqrt(diag(DIDmodContestSE))
+
+MermodContest2 <- glmer(contestSer ~ contestSer_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag + locale2_lag + (1|distid_lag), 
+             data = outdata, family = "binomial", control = ctrl)
+
+apsrtable(lagModcontest2, DIDmodContest2, MermodContest2, se = "robust", 
+          model.names = c("Lag", "Diff in Diff", "Multilevel"), 
+          stars = "default", 
+          caption = "Causal Estimates of Act 10 Period on Serious Contestation", 
+          label = "tab:causSerCon", notes = stars.note, digits = 3, 
+          Sweave = FALSE))
+
+@
+
+<<blDIDandLag, eval=TRUE, results = 'asis'>>=
+outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq", "VAP_adjLOG", 
+                         "per65o", "NonPublicPupilPer", "incumShare", 
+                         "teachShareofVoters", 
+                         "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
+                         "PerBachelorOrAbove", 
+                         "PROPERTYTAX_REV_SHARE", "minBlaisLago", "per_white_all",
+                         "GovTurnout_recall", "RecallPolarization", "locale2", 
+                         "econ_disadv_per")]
+
+preTreat <- outdata[outdata$year <= 2010,]
+preTreat$year <- preTreat$year + 1
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+
+# Repeat 2010 data as pre-treatment for 2012
+tmp <- preTreat[preTreat$year_lag == 2011,]
+tmp$year_lag <- 2012
+preTreat <- rbind(preTreat, tmp)
+rm(tmp)
+
+outdata <- outdata[, c("minBlaisLago", "distid", "year")]
+outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
+                 by.y = c("distid", "year"))
+
+outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+
+outdata$minBlaisLago <- ifelse(outdata$minBlaisLago == 0, 0.003, outdata$minBlaisLago)
+outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag == 0, 0.003, 
+                                   outdata$minBlaisLago_lag)
+outdata$minBlaisLago <- log(outdata$minBlaisLago)
+outdata$minBlaisLago_lag <- log(outdata$minBlaisLago_lag)
+
+# outdata <- outdata[outdata$year > 2007, ]
+
+lagModBL <- lm(minBlaisLago ~ minBlaisLago_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               PerBachelorOrAbove_lag + 
+             locale2_lag, data = outdata)
+lagModBLSE <- get_CL_vcov(lagModBL, outdata$distid)
+lagModBL$se <- sqrt(diag(lagModBLSE))
+
+DIDmodBL <- lm(minBlaisLago ~ minBlaisLago_lag * treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag +
+             locale2_lag, data = outdata)
+DIDmodBLSE <- get_CL_vcov(DIDmodBL, outdata$distid)
+DIDmodBL$se <- sqrt(diag(DIDmodBLSE))
+
+merModBL <- lmer(minBlaisLago ~ minBlaisLago_lag * treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag +
+             locale2_lag + (1|distid_lag), data = outdata)
+
+apsrtable(lagModBL, DIDmodBL, merModBL, se = "robust", 
+          model.names = c("Lag", "Diff in Diff"), stars = "default", 
+          caption = "Causal Estimates of Act 10 Period on Competitiveness", 
+          label = "tab:causBL", notes = stars.note, digits = 3, 
+          Sweave = FALSE)))
+
+@
+
+<<turnoutDIDandLag, eval=TRUE, results = 'asis'>>=
+outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq", "VAP_adjLOG", 
+                         "PerBachelorOrAbove", "ImputedFlag", "median_incomeLOG", 
+                         "per65o", "NonPublicPupilPer", "incumShare", 
+                         "teachShareofVoters", 
+                         "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
+                         "PROPERTYTAX_REV_SHARE", "per_white_all",
+                         "GovTurnout_recall", "RecallPolarization", "locale2", 
+                         "econ_disadv_per")]
+
+outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
+outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
+
+preTreat <- outdata[outdata$year <= 2010,]
+preTreat$year <- preTreat$year + 1
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+
+# Repeat 2010 data as pre-treatment for 2012
+tmp <- preTreat[preTreat$year_lag == 2011,]
+tmp$year_lag <- 2012
+preTreat <- rbind(preTreat, tmp)
+rm(tmp)
+
+outdata <- outdata[, c("turnout", "distid", "year")]
+outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
+                 by.y = c("distid", "year"))
+
+outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+
+outdata <- outdata[!is.na(outdata$turnout_lag), ]
+outdata <- outdata[!is.na(outdata$turnout), ]
+outdata <- outdata[outdata$turnout > 0,]
+outdata <- outdata[outdata$turnout_lag > 0,]
+centr <- mean(outdata$turnout)
+stddev <- sd(outdata$turnout)
+outdata$outflag <- (outdata$turnout - centr) / stddev
+outdata$outflag2 <- (outdata$turnout_lag - centr) / stddev
+outdata <- outdata[outdata$outflag <= 5 & outdata$outflag >= -5,]
+outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
+# outdata <- outdata[outdata$year > 2007, ]
+outdata$turnout <- log(outdata$turnout)
+outdata$turnout_lag <- log(outdata$turnout_lag)
+
+
+lagModturn <- lm(turnout ~ turnout_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               median_incomeLOG_lag +
+             locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
+             data = outdata)
+lagModturnSE <- get_CL_vcov(lagModturn, outdata$distid)
+lagModturn$se <- sqrt(diag(lagModturnSE))
+
+DIDmodturn <- lm(turnout ~ turnout_lag * treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               median_incomeLOG_lag+
+             locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
+             data = outdata)
+DIDmodturnSE <- get_CL_vcov(DIDmodturn, outdata$distid)
+DIDmodturn$se <- sqrt(diag(DIDmodturnSE))
+
+merModturn <- lmer(turnout ~ turnout_lag * treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               median_incomeLOG_lag+
+             locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag + 
+               (1|distid_lag), data = outdata)
+
+apsrtable(lagModturn, DIDmodturn, merModturn, se = "robust", 
+          model.names = c("Lag", "Diff in Diff", "Multilevel"), 
+          stars = "default", 
+          caption = "Causal Estimates of Act 10 Period on Turnout", 
+          label = "tab:causTurn", notes = stars.note, digits = 3, 
+          Sweave = FALSE))))
+
+@
+
+<<rolloffDIDandLag, eval=TRUE, results = 'asis'>>=
+outdata <- dist_turn[, c("distid", "year", "turnoutDiff", "VAP_adjLOG_sq", "VAP_adjLOG", 
+                         "PerBachelorOrAbove", "ImputedFlag", "median_incomeLOG", 
+                         "per65o", "NonPublicPupilPer", "incumShare", "teachShareofVoters", 
+                         "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
+                         "PROPERTYTAX_REV_SHARE", "per_white_all", "turnout", 
+                         "GovTurnout_recall", "RecallPolarization", "locale2", 
+                         "econ_disadv_per")]
+
+outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
+outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
+
+preTreat <- outdata[outdata$year <= 2010,]
+preTreat$year <- preTreat$year + 1
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+
+# Repeat 2010 data as pre-treatment for 2012
+tmp <- preTreat[preTreat$year_lag == 2011,]
+tmp$year_lag <- 2012
+preTreat <- rbind(preTreat, tmp)
+rm(tmp)
+
+outdata <- outdata[, c("turnoutDiff", "distid", "year")]
+outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
+                 by.y = c("distid", "year"))
+
+outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata <- outdata[!is.na(outdata$turnoutDiff), ]
+outdata <- outdata[!is.na(outdata$turnoutDiff_lag), ]
+centr <- mean(outdata$turnoutDiff)
+stddev <- sd(outdata$turnoutDiff)
+outdata$outflag <- (outdata$turnoutDiff - centr) / stddev
+outdata$outflag2 <- (outdata$turnoutDiff_lag - centr) / stddev
+outdata <- outdata[outdata$outflag <= 5 & outdata$outflag >= -5,]
+outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
+# outdata <- outdata[outdata$year > 2007, ]
+
+lagModroll <- lm(turnoutDiff ~ turnoutDiff_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               median_incomeLOG_lag + ImputedFlag_lag + 
+             locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
+             data = outdata)
+lagModrollSE <- get_CL_vcov(lagModroll, outdata$distid)
+lagModroll$se <- sqrt(diag(lagModrollSE))
+
+DIDmodroll <- lm(turnoutDiff ~ turnoutDiff_lag * treatment + 
+                   VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               median_incomeLOG_lag+ ImputedFlag_lag +
+             locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
+             data = outdata)
+DIDmodrollSE <- get_CL_vcov(DIDmodroll, outdata$distid)
+DIDmodroll$se <- sqrt(diag(DIDmodrollSE))
+
+merModroll <- lmer(turnoutDiff ~ turnoutDiff_lag * treatment + 
+                   VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               median_incomeLOG_lag+ ImputedFlag_lag +
+             locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag + 
+               (1|distid_lag), data = outdata)
+
+apsrtable(lagModroll, DIDmodroll, merModroll, se = "robust", 
+          model.names = c("Lag", "Diff in Diff", "Multilevel"), 
+          stars = "default", 
+          caption = "Causal Estimates of Act 10 Period on Rolloff", 
+          label = "tab:causTurn", notes = stars.note, digits = 3, 
+          Sweave = FALSE)))))
+
+@
+
+\subsection{Mediation Analysis}
+
+While the results above can be interpreted as the causal estimate of the political 
+upheaval surrounding Act 10 on democratic activity in school boards, questions 
+remain. Most importantly, it is important to explore the potential for mediating 
+factors on the causal estimate. 
+
+
 \subsection{Contestation}
 
 To test the effect of the passage of Act 10 on participation in school board elections, 
@@ -935,177 +1274,7 @@ over the observation period, and those that had high turnout post Act 10 had
 more competitive races over the period. 
 
 % Why might this be?
-<<blDIDandLag, eval=FALSE, results = 'asis'>>=
-outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq", "VAP_adjLOG", 
-                         "per65o", "NonPublicPupilPer", "incumShare", "teachShareofVoters", 
-                         "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
-                         "PerBachelorOrAbove", 
-                         "PROPERTYTAX_REV_SHARE", "minBlaisLago", "per_white_all",
-                         "GovTurnout_recall", "RecallPolarization", "locale2", 
-                         "econ_disadv_per")]
 
-preTreat <- outdata[outdata$year <= 2010,]
-preTreat$year <- preTreat$year + 1
-names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
-
-# Repeat 2010 data as pre-treatment for 2012
-tmp <- preTreat[preTreat$year_lag == 2011,]
-tmp$year_lag <- 2012
-preTreat <- rbind(preTreat, tmp)
-rm(tmp)
-
-outdata <- outdata[, c("minBlaisLago", "distid", "year")]
-outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
-                 by.y = c("distid", "year"))
-
-outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
-
-outdata$minBlaisLago <- ifelse(outdata$minBlaisLago == 0, 0.003, outdata$minBlaisLago)
-outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag == 0, 0.003, outdata$minBlaisLago_lag)
-outdata$minBlaisLago <- log(outdata$minBlaisLago)
-outdata$minBlaisLago_lag <- log(outdata$minBlaisLago_lag)
-
-# outdata <- outdata[outdata$year > 2007, ]
-
-lagModBL <- lm(minBlaisLago ~ minBlaisLago_lag + treatment + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + PerBachelorOrAbove_lag + 
-             locale2_lag, data = outdata)
-lagModBLSE <- get_CL_vcov(lagModBL, outdata$distid)
-lagModBL$se <- sqrt(diag(lagModBLSE))
-
-DIDmodBL <- lm(minBlaisLago ~ minBlaisLago_lag * treatment + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  PerBachelorOrAbove_lag +
-             locale2_lag, data = outdata)
-DIDmodBLSE <- get_CL_vcov(DIDmodBL, outdata$distid)
-DIDmodBL$se <- sqrt(diag(DIDmodBLSE))
-
-apsrtable(lagModBL, DIDmodBL, se = "robust", 
-          model.names = c("Lag", "Diff in Diff"))
-
-@
-
-<<turnoutDIDandLag, eval=FALSE, results = 'asis'>>=
-outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq", "VAP_adjLOG", 
-                         "PerBachelorOrAbove", "ImputedFlag", "median_incomeLOG", 
-                         "per65o", "NonPublicPupilPer", "incumShare", "teachShareofVoters", 
-                         "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
-                         "PROPERTYTAX_REV_SHARE", "per_white_all",
-                         "GovTurnout_recall", "RecallPolarization", "locale2", 
-                         "econ_disadv_per")]
-
-outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
-outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
-
-preTreat <- outdata[outdata$year <= 2010,]
-preTreat$year <- preTreat$year + 1
-names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
-
-# Repeat 2010 data as pre-treatment for 2012
-tmp <- preTreat[preTreat$year_lag == 2011,]
-tmp$year_lag <- 2012
-preTreat <- rbind(preTreat, tmp)
-rm(tmp)
-
-outdata <- outdata[, c("turnout", "distid", "year")]
-outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
-                 by.y = c("distid", "year"))
-
-outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
-
-outdata <- outdata[!is.na(outdata$turnout_lag), ]
-outdata <- outdata[!is.na(outdata$turnout), ]
-outdata <- outdata[outdata$turnout > 0,]
-outdata <- outdata[outdata$turnout_lag > 0,]
-centr <- mean(outdata$turnout)
-stddev <- sd(outdata$turnout)
-outdata$outflag <- (outdata$turnout - centr) / stddev
-outdata$outflag2 <- (outdata$turnout_lag - centr) / stddev
-outdata <- outdata[outdata$outflag <= 5 & outdata$outflag >= -5,]
-outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
-# outdata <- outdata[outdata$year > 2007, ]
-outdata$turnout <- log(outdata$turnout)
-outdata$turnout_lag <- log(outdata$turnout_lag)
-
-
-lagModturn <- lm(turnout ~ turnout_lag + treatment + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
-               median_incomeLOG_lag +
-             locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
-             data = outdata)
-lagModturnSE <- get_CL_vcov(lagModturn, outdata$distid)
-lagModturn$se <- sqrt(diag(lagModturnSE))
-
-DIDmodturn <- lm(turnout ~ turnout_lag * treatment + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
-               median_incomeLOG_lag+
-             locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
-             data = outdata)
-DIDmodturnSE <- get_CL_vcov(DIDmodturn, outdata$distid)
-DIDmodturn$se <- sqrt(diag(DIDmodturnSE))
-
-apsrtable(lagModturn, DIDmodturn, se = "robust", 
-          model.names = c("Lag", "Diff in Diff"))
-
-@
-
-<<rolloffDIDandLag, eval=FALSE, results = 'asis'>>=
-outdata <- dist_turn[, c("distid", "year", "turnoutDiff", "VAP_adjLOG_sq", "VAP_adjLOG", 
-                         "PerBachelorOrAbove", "ImputedFlag", "median_incomeLOG", 
-                         "per65o", "NonPublicPupilPer", "incumShare", "teachShareofVoters", 
-                         "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
-                         "PROPERTYTAX_REV_SHARE", "per_white_all", "turnout", 
-                         "GovTurnout_recall", "RecallPolarization", "locale2", 
-                         "econ_disadv_per")]
-
-outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
-outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
-
-preTreat <- outdata[outdata$year <= 2010,]
-preTreat$year <- preTreat$year + 1
-names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
-
-# Repeat 2010 data as pre-treatment for 2012
-tmp <- preTreat[preTreat$year_lag == 2011,]
-tmp$year_lag <- 2012
-preTreat <- rbind(preTreat, tmp)
-rm(tmp)
-
-outdata <- outdata[, c("turnoutDiff", "distid", "year")]
-outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
-                 by.y = c("distid", "year"))
-
-outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
-outdata <- outdata[!is.na(outdata$turnoutDiff), ]
-outdata <- outdata[!is.na(outdata$turnoutDiff_lag), ]
-centr <- mean(outdata$turnoutDiff)
-stddev <- sd(outdata$turnoutDiff)
-outdata$outflag <- (outdata$turnoutDiff - centr) / stddev
-outdata$outflag2 <- (outdata$turnoutDiff_lag - centr) / stddev
-outdata <- outdata[outdata$outflag <= 5 & outdata$outflag >= -5,]
-outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
-# outdata <- outdata[outdata$year > 2007, ]
-
-lagModroll <- lm(turnoutDiff ~ turnoutDiff_lag + factor(treatment) + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
-               median_incomeLOG_lag + ImputedFlag_lag + 
-             locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
-             data = outdata)
-lagModrollSE <- get_CL_vcov(lagModroll, outdata$distid)
-lagModroll$se <- sqrt(diag(lagModrollSE))
-
-DIDmodroll <- lm(turnoutDiff ~ turnoutDiff_lag * factor(treatment) + 
-                   VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
-               median_incomeLOG_lag+ ImputedFlag_lag +
-             locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
-             data = outdata)
-DIDmodrollSE <- get_CL_vcov(DIDmodroll, outdata$distid)
-DIDmodroll$se <- sqrt(diag(DIDmodrollSE))
-
-apsrtable(lagModroll, DIDmodroll, se = "robust", 
-          model.names = c("Lag", "Diff in Diff"))
-
-@
 \clearpage
 
 \subsection{Turnout}
