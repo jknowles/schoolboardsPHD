@@ -16,7 +16,7 @@ source("data/cleanandprep_WALKER.R")
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 # Set up tables
 library(devtools)
-install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
+# install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
 library(apsrtable)
 stars.note <- apsrtable:::stars.note
 # Quick variable transform
@@ -835,8 +835,8 @@ preTreat <- rbind(preTreat, tmp)
 rm(tmp)
 
 outdata <- outdata[, c("contestMinor", "distid", "year")]
-outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
-                 by.y = c("distid", "year"))
+outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
 
 outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
 
@@ -865,14 +865,14 @@ ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
 
 MermodContest <- glmer(contestMinor ~ contestMinor_lag + treatment + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
-               PerBachelorOrAbove_lag + locale2_lag + (1|distid_lag), 
+               PerBachelorOrAbove_lag + locale2_lag + (1|distid), 
              data = outdata, family = "binomial", control = ctrl)
 
 apsrtable(lagModcontest, DIDmodContest, MermodContest, se = "robust", 
           model.names = c("Lag", "Diff in Diff", "Multilevel"), 
           stars = "default", 
           caption = "Causal Estimates of Act 10 Period on Minor Contestation", 
-          label = "tab:causMinorCon", notes = stars.note, digits = 3, 
+          label = "tab:causMinorCon", notes = list(stars.note), digits = 3, 
           Sweave = FALSE)
 @
 
@@ -897,9 +897,8 @@ preTreat <- rbind(preTreat, tmp)
 rm(tmp)
 
 outdata <- outdata[, c("contestSer", "distid", "year")]
-outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
-                 by.y = c("distid", "year"))
-
+outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
 outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
 
 # outdata <- outdata[outdata$year > 2007, ]
@@ -920,15 +919,15 @@ DIDmodContest2$se <- sqrt(diag(DIDmodContestSE))
 
 MermodContest2 <- glmer(contestSer ~ contestSer_lag + treatment + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
-               PerBachelorOrAbove_lag + locale2_lag + (1|distid_lag), 
+               PerBachelorOrAbove_lag + locale2_lag + (1|distid), 
              data = outdata, family = "binomial", control = ctrl)
 
 apsrtable(lagModcontest2, DIDmodContest2, MermodContest2, se = "robust", 
           model.names = c("Lag", "Diff in Diff", "Multilevel"), 
           stars = "default", 
           caption = "Causal Estimates of Act 10 Period on Serious Contestation", 
-          label = "tab:causSerCon", notes = stars.note, digits = 3, 
-          Sweave = FALSE))
+          label = "tab:causSerCon", notes = list(stars.note), digits = 3, 
+          Sweave = FALSE)
 
 @
 
@@ -953,8 +952,8 @@ preTreat <- rbind(preTreat, tmp)
 rm(tmp)
 
 outdata <- outdata[, c("minBlaisLago", "distid", "year")]
-outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
-                 by.y = c("distid", "year"))
+outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
 
 outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
 
@@ -983,13 +982,13 @@ DIDmodBL$se <- sqrt(diag(DIDmodBLSE))
 merModBL <- lmer(minBlaisLago ~ minBlaisLago_lag * treatment + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag +
-             locale2_lag + (1|distid_lag), data = outdata)
+             locale2_lag + (1|distid), data = outdata)
 
 apsrtable(lagModBL, DIDmodBL, merModBL, se = "robust", 
           model.names = c("Lag", "Diff in Diff"), stars = "default", 
           caption = "Causal Estimates of Act 10 Period on Competitiveness", 
-          label = "tab:causBL", notes = stars.note, digits = 3, 
-          Sweave = FALSE)))
+          label = "tab:causBL", notes = list(stars.note), digits = 3, 
+          Sweave = FALSE)
 
 @
 
@@ -1017,9 +1016,8 @@ preTreat <- rbind(preTreat, tmp)
 rm(tmp)
 
 outdata <- outdata[, c("turnout", "distid", "year")]
-outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
-                 by.y = c("distid", "year"))
-
+outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
 outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
 
 outdata <- outdata[!is.na(outdata$turnout_lag), ]
@@ -1057,14 +1055,14 @@ merModturn <- lmer(turnout ~ turnout_lag * treatment + VAP_adjLOG_sq_lag +
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                median_incomeLOG_lag+
              locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag + 
-               (1|distid_lag), data = outdata)
+               (1|distid), data = outdata)
 
 apsrtable(lagModturn, DIDmodturn, merModturn, se = "robust", 
           model.names = c("Lag", "Diff in Diff", "Multilevel"), 
           stars = "default", 
           caption = "Causal Estimates of Act 10 Period on Turnout", 
-          label = "tab:causTurn", notes = stars.note, digits = 3, 
-          Sweave = FALSE))))
+          label = "tab:causTurn", notes = list(stars.note), digits = 3, 
+          Sweave = FALSE)
 
 @
 
@@ -1091,8 +1089,8 @@ preTreat <- rbind(preTreat, tmp)
 rm(tmp)
 
 outdata <- outdata[, c("turnoutDiff", "distid", "year")]
-outdata <- merge(preTreat, outdata, by.x = c("distid_lag", "year_lag"), 
-                 by.y = c("distid", "year"))
+outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
 
 outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
 outdata <- outdata[!is.na(outdata$turnoutDiff), ]
@@ -1127,14 +1125,14 @@ merModroll <- lmer(turnoutDiff ~ turnoutDiff_lag * treatment +
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                median_incomeLOG_lag+ ImputedFlag_lag +
              locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag + 
-               (1|distid_lag), data = outdata)
+               (1|distid), data = outdata)
 
 apsrtable(lagModroll, DIDmodroll, merModroll, se = "robust", 
           model.names = c("Lag", "Diff in Diff", "Multilevel"), 
           stars = "default", 
           caption = "Causal Estimates of Act 10 Period on Rolloff", 
-          label = "tab:causTurn", notes = stars.note, digits = 3, 
-          Sweave = FALSE)))))
+          label = "tab:causTurn", notes = list(stars.note), digits = 3, 
+          Sweave = FALSE)
 
 @
 
@@ -1143,7 +1141,15 @@ apsrtable(lagModroll, DIDmodroll, merModroll, se = "robust",
 While the results above can be interpreted as the causal estimate of the political 
 upheaval surrounding Act 10 on democratic activity in school boards, questions 
 remain. Most importantly, it is important to explore the potential for mediating 
-factors on the causal estimate. 
+factors on the causal estimate. To do this, I fit longitudinal models as above, 
+but I include mediating factors as interactions with the treatment indicator. 
+
+These mediating measures were observed post-treatment, but I argue that they 
+can be interpreted as a consistent measure of school district attributes that 
+existed pre-treatment. There is no empirical way to validate this assumption, but 
+using this assumption allows me to explore a rich set of potential mediating 
+factors to understand what conditions exacerbated or attenuated the actualization 
+of political activity in school boards. 
 
 
 \subsection{Contestation}
