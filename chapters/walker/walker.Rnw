@@ -468,6 +468,13 @@ leaves the elections post Act 10 as really a referendum on the opinion of voters
 and communities on both the changes to collective bargaining, but also reductions 
 in school funding. 
 
+As in Chapter \ref{chap:candidacy}, I use three separate measures of contestation. 
+First, I use the presence of any challenger either appearing on the ballot or receiving 
+more than 10 votes as a write-in candidate. I code these races as ``minorly contested'' 
+because they have a nominal level of contestation at a minimum. Next, I use a higher 
+threshold where only races with challengers who receive 20 or more votes are 
+considered as ``seriously contested''. Finally, I use a measure of race competitiveness, 
+the Blais-Lago quotient. 
 
 \begin{table}[h!]
 \begin{center}
@@ -480,6 +487,7 @@ DV / Variable & treatment & treatment x polarization &
   treatment x turnout & treatment x WERC & polarization & 
   WERC \\ \hline
 Contested Race & + & + & null & + & null & null \\ \hline
+Incumbent Defeat & + & + & + & - & - \\ \hline 
 Competitiveness & + & + & null & + & + & - \\ \hline
 Turnout & + & + & + & + & null & - \\ \hline
 Rolloff & - & - & - & - & null & + \\ \hline
@@ -812,7 +820,9 @@ impact was mediated.
 I provide three sets of results for each dependent variable. The first is a 
 regression with a lagged dependent variable and demographic controls, the second 
 is a differences in differences estimate, and the third is a difference in 
-differences estimate with district level random effects. 
+differences estimate with district level random effects.\footnote{I tested the 
+models on a restricted sample with only years after 2007, but this had no 
+substantive impact on the results.}
 
 <<contestDID, eval=TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "VAP_adjLOG_sq", 
@@ -839,8 +849,6 @@ outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"),
                  by.x = c("distid", "year"))
 
 outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
-
-# outdata <- outdata[outdata$year > 2007, ]
 
 lagModcontest <- glm(contestMinor ~ contestMinor_lag + treatment + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
@@ -990,6 +998,64 @@ apsrtable(lagModBL, DIDmodBL, merModBL, se = "robust",
           label = "tab:causBL", notes = list(stars.note), digits = 3, 
           Sweave = FALSE)
 
+plotPred <- predict(DIDmodBL, newdata = outdata, type = "response")
+plotdf2 <- cbind(outdata, plotPred)
+
+@
+
+<<incdefDIDandLag, eval = TRUE, results = 'asis'>>=
+outdata <- dist_turn[, c("distid", "year", "incDefeats", "VAP_adjLOG_sq", "VAP_adjLOG", 
+                         "per65o", "NonPublicPupilPer", "incumShare", 
+                         "teachShareofVoters", "fallTurnout", "nraces", 
+                         "schoolMillShare", "OOH_share", "PerBachelorOrAbove", 
+                         "PROPERTYTAX_REV_SHARE", "per_white_all",
+                         "GovTurnout_recall", "RecallPolarization", "locale2", 
+                         "econ_disadv_per")]
+
+preTreat <- outdata[outdata$year <= 2010,]
+preTreat$year <- preTreat$year + 1
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+
+# Repeat 2010 data as pre-treatment for 2012
+tmp <- preTreat[preTreat$year_lag == 2011,]
+tmp$year_lag <- 2012
+preTreat <- rbind(preTreat, tmp)
+rm(tmp)
+
+outdata <- outdata[, c("incDefeats", "distid", "year")]
+outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
+
+outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata2 <- outdata[outdata$incumShare != max(outdata$incumShare) & 
+                      outdata$incumShare != min(outdata$incumShare) & 
+                      !is.na(outdata$incumShare_lag), ]
+
+lagModID <- glm(incDefeats ~ incDefeats_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               PerBachelorOrAbove_lag + incumShare_lag + 
+             locale2_lag, data = outdata, family = "binomial")
+
+lagModIDSE <- get_CL_vcov(lagModID, outdata$distid)
+lagModID$se <- sqrt(diag(lagModIDSE))
+
+DIDmodID <- glm(incDefeats ~ incDefeats_lag * treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag + incumShare_lag +
+             locale2_lag, data = outdata, family = "binomial")
+DIDmodIDSE <- get_CL_vcov(DIDmodID, outdata$distid)
+DIDmodID$se <- sqrt(diag(DIDmodIDSE))
+
+merModID <- glmer(incDefeats ~ incDefeats_lag * treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag + incumShare_lag +
+             locale2_lag + (1|distid), data = outdata, family = "binomial")
+
+apsrtable(lagModID, DIDmodID, merModID, se = "robust", 
+          model.names = c("Lag", "Diff in Diff", "Multilevel"), stars = "default", 
+          caption = "Causal Estimates of Act 10 Period on Incumbent Defeat", 
+          label = "tab:causID", notes = list(stars.note), digits = 3, 
+          Sweave = FALSE)
 @
 
 <<turnoutDIDandLag, eval=TRUE, results = 'asis'>>=
@@ -1133,7 +1199,39 @@ apsrtable(lagModroll, DIDmodroll, merModroll, se = "robust",
           caption = "Causal Estimates of Act 10 Period on Rolloff", 
           label = "tab:causTurn", notes = list(stars.note), digits = 3, 
           Sweave = FALSE)
+@
 
+\begin{table}[h!]
+\begin{center}
+\begin{small}
+\caption{Summary of Causal Relationship of Act 10 Reforms on Board Elections}
+\label{tab:act10resSummary}
+\begin{tabular}{| p{.24\textwidth} | p{.12\textwidth} | p{.12\textwidth} | 
+      p{.24\textwidth} |} \hline
+DV / Variable & expected & observed & evidence \\ \hline
+Contested Race & + & null & no statistical significance, correct sign \\ \hline
+Contesed Race (ser) & + & null & no statistical significance, correct sign on interaction \\ \hline
+Incumbent Defeat & + & - & weakly negative, positive effect in diff-in-diff  \\ \hline 
+Competitiveness & + & +  & weakly positive, weakly statistically significant \\ \hline
+Turnout & + & - & diff in diff weakly negative, overall effect positive \\ \hline
+Rolloff & - & null & correct sign, no statistical significance \\ \hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+Table \ref{tab:act10resSummary} summarizes the results in comparison to the 
+expectations from Table \ref{tab:act10hypo}. 
+
+<<bldiffindiff, fig.cap="Average Fitted Value over Realistic Value">>=
+summPlot <- ddply(plotdf2, .(year), summarize, 
+                  meanEff = mean(plotPred))
+
+qplot(factor(year), exp(plotPred), data = plotdf2, geom = 'boxplot') + 
+  geom_line(data = summPlot, aes(x = factor(year), y = exp(meanEff), group = 1)) + 
+  theme_dpi() + 
+  scale_y_sqrt(limits = c(0, 100)) + 
+  labs(x = "Year", y = "Blais-Lago")
 @
 
 \subsection{Mediation Analysis}
@@ -1151,20 +1249,242 @@ using this assumption allows me to explore a rich set of potential mediating
 factors to understand what conditions exacerbated or attenuated the actualization 
 of political activity in school boards. 
 
+I now analyze the impact of each mediating factor. 
+
+\subsubsection{Polarization}
+
+Polarization should matter. 
+
+<<polarizationMediation>>=
+outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
+                         "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
+                         "RecallPolarization", 
+                         "VAP_adjLOG", "per65o", "NonPublicPupilPer", 
+                         "incumShare", "teachShareofVoters", 
+                         "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
+                         "PerBachelorOrAbove", 
+                         "PROPERTYTAX_REV_SHARE", "minBlaisLago", "per_white_all",
+                         "GovTurnout_recall", "locale2", 
+                         "econ_disadv_per")]
+
+preTreat <- outdata[outdata$year <= 2010,]
+preTreat$year <- preTreat$year + 1
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+
+# Repeat 2010 data as pre-treatment for 2012
+tmp <- preTreat[preTreat$year_lag == 2011,]
+tmp$year_lag <- 2012
+preTreat <- rbind(preTreat, tmp)
+rm(tmp)
+outdata <- outdata[, c("contestMinor", "contestSer", "turnout", "turnoutDiff", 
+                       "minBlaisLago","distid", "year")]
+outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
+
+outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata <- outdata[outdata$year > 2007, ]
+outdata <- na.omit(outdata)
+outdata <- outdata[!is.na(outdata$turnout_lag), ]
+outdata <- outdata[!is.na(outdata$turnout), ]
+outdata <- outdata[outdata$turnout > 0,]
+outdata <- outdata[outdata$turnout_lag > 0,]
+centr <- mean(outdata$turnout)
+stddev <- sd(outdata$turnout)
+outdata$outflag <- (outdata$turnout - centr) / stddev
+outdata$outflag2 <- (outdata$turnout_lag - centr) / stddev
+outdata <- outdata[outdata$outflag <= 5 & outdata$outflag >= -5,]
+outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
+# outdata <- outdata[outdata$year > 2007, ]
+outdata$turnout <- log(outdata$turnout)
+outdata$turnout_lag <- log(outdata$turnout_lag)
+outdata$minBlaisLago <- ifelse(outdata$minBlaisLago == 0, 0.003, outdata$minBlaisLago)
+outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag == 0, 0.003, 
+                                   outdata$minBlaisLago_lag)
+outdata$minBlaisLago <- log(outdata$minBlaisLago)
+outdata$minBlaisLago_lag <- log(outdata$minBlaisLago_lag)
+library(arm)
+nums <- sapply(outdata, is.numeric)
+# nums["treatment"] <- FALSE
+outdata[, nums] <- apply(outdata[, nums], 2, rescale)
+
+simp1 <- glm(contestSer ~ contestSer_lag + treatment * RecallPolarization_lag, 
+             data = outdata, family = 'binomial')
+simp1$se <- sqrt(diag(get_CL_vcov(simp1, outdata$distid)))
+
+simp2 <- glm(contestMinor ~ contestMinor_lag + treatment * RecallPolarization_lag, 
+             data = outdata, family = 'binomial')
+simp2$se <- sqrt(diag(get_CL_vcov(simp2, outdata$distid)))
+
+simp3 <- lm(minBlaisLago ~ minBlaisLago_lag + treatment * RecallPolarization_lag, 
+             data = outdata)
+simp3$se <- sqrt(diag(get_CL_vcov(simp3, outdata$distid)))
+
+simp4 <- lm(turnout ~ turnout_lag + treatment * RecallPolarization_lag, 
+             data = outdata)
+simp4$se <- sqrt(diag(get_CL_vcov(simp4, outdata$distid)))
+
+simp5 <- lm(turnoutDiff ~ turnoutDiff_lag + treatment * RecallPolarization_lag, 
+             data = outdata)
+simp5$se <- sqrt(diag(get_CL_vcov(simp5, outdata$distid)))
+
+full1 <- glmer(contestMinor ~ contestMinor_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatment * RecallPolarization_lag + (1|distid), 
+             data = outdata, family = "binomial", control = ctrl)
+
+full2 <- glmer(contestSer ~ contestSer_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatment * RecallPolarization_lag + (1|distid), 
+             data = outdata, family = "binomial", control = ctrl)
+
+full3 <- lmer(minBlaisLago ~ minBlaisLago_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatment * RecallPolarization_lag + (1|distid), 
+             data = outdata)
+
+full4 <- lmer(turnout ~ turnout_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatment * RecallPolarization_lag + (1|distid), 
+             data = outdata)
+
+full5 <- lmer(turnoutDiff ~ turnoutDiff_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatment * RecallPolarization_lag + (1|distid), 
+             data = outdata)
+
+apsrtable(simp1, simp2, simp3, simp4, simp5, se = "robust", digits = 3, 
+          model.names = c("Ser. Cont.", "Min. Cont.", "Compet.", 
+                          "Turnout", "Rolloff"), stars = "default")
+
+apsrtable(full1, full2, full3, full4, full5, se = "robust", digits = 3, 
+          model.names = c("Ser. Cont.", "Min. Cont.", "Compet.", 
+                          "Turnout", "Rolloff"), stars = "default")
+@
+
+
+\subsubsection{Union Strength}
+
+
+<<unionStrength>>=
+outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
+                         "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
+                         "turnout_overall_werc", 
+                         "VAP_adjLOG", "per65o", "NonPublicPupilPer", 
+                         "incumShare", "teachShareofVoters", 
+                         "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
+                         "PerBachelorOrAbove", 
+                         "PROPERTYTAX_REV_SHARE", "minBlaisLago", "per_white_all",
+                         "GovTurnout_recall", "locale2", 
+                         "econ_disadv_per")]
+outdata$WERC_str <- outdata$turnout_overall_werc
+outdata$turnout_overall_werc <- NULL
+
+preTreat <- outdata[outdata$year <= 2010,]
+preTreat$year <- preTreat$year + 1
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+
+# Repeat 2010 data as pre-treatment for 2012
+tmp <- preTreat[preTreat$year_lag == 2011,]
+tmp$year_lag <- 2012
+preTreat <- rbind(preTreat, tmp)
+rm(tmp)
+outdata <- outdata[, c("contestMinor", "contestSer", "turnout", "turnoutDiff", 
+                       "minBlaisLago","distid", "year")]
+outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
+
+outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata <- outdata[outdata$year > 2007, ]
+outdata <- na.omit(outdata)
+outdata <- outdata[!is.na(outdata$turnout_lag), ]
+outdata <- outdata[!is.na(outdata$turnout), ]
+outdata <- outdata[outdata$turnout > 0,]
+outdata <- outdata[outdata$turnout_lag > 0,]
+centr <- mean(outdata$turnout)
+stddev <- sd(outdata$turnout)
+outdata$outflag <- (outdata$turnout - centr) / stddev
+outdata$outflag2 <- (outdata$turnout_lag - centr) / stddev
+outdata <- outdata[outdata$outflag <= 5 & outdata$outflag >= -5,]
+outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
+# outdata <- outdata[outdata$year > 2007, ]
+outdata$turnout <- log(outdata$turnout)
+outdata$turnout_lag <- log(outdata$turnout_lag)
+outdata$minBlaisLago <- ifelse(outdata$minBlaisLago == 0, 0.003, outdata$minBlaisLago)
+outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag == 0, 0.003, 
+                                   outdata$minBlaisLago_lag)
+outdata$minBlaisLago <- log(outdata$minBlaisLago)
+outdata$minBlaisLago_lag <- log(outdata$minBlaisLago_lag)
+library(arm)
+nums <- sapply(outdata, is.numeric)
+# nums["treatment"] <- FALSE
+outdata[, nums] <- apply(outdata[, nums], 2, rescale)
+
+simp1 <- glm(contestSer ~ contestSer_lag + treatment * WERC_str_lag, 
+             data = outdata, family = 'binomial')
+simp1$se <- sqrt(diag(get_CL_vcov(simp1, outdata$distid)))
+
+simp2 <- glm(contestMinor ~ contestMinor_lag + treatment * WERC_str_lag, 
+             data = outdata, family = 'binomial')
+simp2$se <- sqrt(diag(get_CL_vcov(simp2, outdata$distid)))
+
+simp3 <- lm(minBlaisLago ~ minBlaisLago_lag + treatment * WERC_str_lag, 
+             data = outdata)
+simp3$se <- sqrt(diag(get_CL_vcov(simp3, outdata$distid)))
+
+simp4 <- lm(turnout ~ turnout_lag + treatment * WERC_str_lag, 
+             data = outdata)
+simp4$se <- sqrt(diag(get_CL_vcov(simp4, outdata$distid)))
+
+simp5 <- lm(turnoutDiff ~ turnoutDiff_lag + treatment * WERC_str_lag, 
+             data = outdata)
+simp5$se <- sqrt(diag(get_CL_vcov(simp5, outdata$distid)))
+
+full1 <- glmer(contestMinor ~ contestMinor_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatment * WERC_str_lag + (1|distid), 
+             data = outdata, family = "binomial", control = ctrl)
+
+full2 <- glmer(contestSer ~ contestSer_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatment * WERC_str_lag + (1|distid), 
+             data = outdata, family = "binomial", control = ctrl)
+
+full3 <- lmer(minBlaisLago ~ minBlaisLago_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatment * WERC_str_lag + (1|distid), 
+             data = outdata)
+
+full4 <- lmer(turnout ~ turnout_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatment * WERC_str_lag + (1|distid), 
+             data = outdata)
+
+full5 <- lmer(turnoutDiff ~ turnoutDiff_lag + treatment + VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatment * WERC_str_lag + (1|distid), 
+             data = outdata)
+
+apsrtable(simp1, simp2, simp3, simp4, simp5, se = "robust", digits = 3, 
+          model.names = c("Ser. Cont.", "Min. Cont.", "Compet.", 
+                          "Turnout", "Rolloff"), stars = "default")
+
+apsrtable(full1, full2, full3, full4, full5, se = "robust", digits = 3, 
+          model.names = c("Ser. Cont.", "Min. Cont.", "Compet.", 
+                          "Turnout", "Rolloff"), stars = "default")
+@
+
 
 \subsection{Contestation}
-
-To test the effect of the passage of Act 10 on participation in school board elections, 
-we fit a simple longitudinal model of school districts. In this model, school district 
-elections are treated as repeated measures, nested within the school districts 
-themselves. Using this repeated measures framework allows us to estimate cross 
-district and within district effects. Act 10 represented a statewide intervention 
-in the relative power of school boards in Wisconsin by giving school boards much 
-more authority and control over the compensation of teachers and staff, and by 
-dramatically restricting the ability of the districts' employees to bargain over 
-wages, working conditions, and benefits. This shift in power, in essence, raised 
-the stakes for school board elections substantially and should have increased the 
-overall contestation of school board elections. 
 
 To evaluate this, a series of models of school board election contestation over 
 time are fit to attempt to detect changes in contestation levels relative to the 
@@ -1173,16 +1493,6 @@ Act 10. If levels of contestation increase after the introduction of Act 10, eve
 after controlling for the factors that influenced this above, it would be strong 
 evidence that the statewide policy lever pulled by Act 10 did spur a response 
 from candidates in terms of increasing the attractiveness of school board seats. 
-
-As in Chapter \ref{chap:candidacy}, I use three separate measures of contestation. 
-First, I use the presence of any challenger either appearing on the ballot or receiving 
-more than 10 votes as a write-in candidate. I code these races as ``minorly contested'' 
-because they have a nominal level of contestation at a minimum. Next, I use a higher 
-threshold where only races with challengers who receive 20 or more votes are 
-considered as ``seriously contested`. Finally, I use a measure of race competitiveness, 
-the Blais-Lago quotient. 
-
-
 
 The results in Table \ref{tab:meSer} does not show much promise, like in Chapter 
 \ref{chap:candidacy}. The models do not fit well, and though the effects of 
