@@ -824,8 +824,8 @@ differences estimate with district level random effects.\footnote{I tested the
 models on a restricted sample with only years after 2007, but this had no 
 substantive impact on the results.}
 
-<<contestDID, eval=TRUE, results = 'asis'>>=
-
+%tab:causMinorCon
+<<contestDID, eval=TRUE, results = 'hide'>>=
 library(lme4)
 library(optimx)
 ctrl2 <- glmerControl(optimizer = "optimx", calc.derivs = FALSE, 
@@ -879,14 +879,18 @@ MermodContest <- glmer(contestMinor ~ contestMinor_lag * treatment +
                PerBachelorOrAbove_lag + locale2_lag + (1|distid), 
              data = outdata, family = "binomial", control = ctrl)
 
-apsrtable(lagModcontest, DIDmodContest, MermodContest, se = "robust", 
+causMinorConTab <- apsrtable(lagModcontest, DIDmodContest, 
+                             MermodContest, se = "robust", 
           model.names = c("Lag", "Diff in Diff", "Multilevel"), 
           stars = "default", 
           caption = "Causal Estimates of Act 10 Period on Minor Contestation", 
           label = "tab:causMinorCon", notes = list(stars.note), digits = 3, 
-          Sweave = FALSE)
+          Sweave = TRUE)
 @
 
+
+%tab:causSerCon
+\begin{small}
 <<contestDID2, eval=TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "contestSer", "VAP_adjLOG_sq", 
                          "VAP_adjLOG", "per65o", "NonPublicPupilPer", 
@@ -939,9 +943,12 @@ apsrtable(lagModcontest2, DIDmodContest2, MermodContest2, se = "robust",
           stars = "default", 
           caption = "Causal Estimates of Act 10 Period on Serious Contestation", 
           label = "tab:causSerCon", notes = list(stars.note), digits = 3, 
-          Sweave = FALSE)
-
+          Sweave = TRUE)
 @
+\end{small}
+
+%tab:causBL
+\begin{small}
 
 <<blDIDandLag, eval=TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq", "VAP_adjLOG", 
@@ -1000,12 +1007,17 @@ apsrtable(lagModBL, DIDmodBL, merModBL, se = "robust",
           model.names = c("Lag", "Diff in Diff"), stars = "default", 
           caption = "Causal Estimates of Act 10 Period on Competitiveness", 
           label = "tab:causBL", notes = list(stars.note), digits = 3, 
-          Sweave = FALSE)
+          Sweave = TRUE)
 
 plotPred <- predict(DIDmodBL, newdata = outdata, type = "response")
 plotdf2 <- cbind(outdata, plotPred)
 
 @
+
+\end{small}
+
+%tab:causID
+\begin{small}
 
 <<incdefDIDandLag, eval = TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "incDefeats", "VAP_adjLOG_sq", 
@@ -1063,6 +1075,10 @@ apsrtable(lagModID, DIDmodID, merModID, se = "robust",
           Sweave = FALSE)
 @
 
+\end{small}
+
+%tab:causTurn
+\begin{small}
 <<turnoutDIDandLag, eval=TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq", 
                          "VAP_adjLOG", 
@@ -1134,9 +1150,12 @@ apsrtable(lagModturn, DIDmodturn, merModturn, se = "robust",
           stars = "default", 
           caption = "Causal Estimates of Act 10 Period on Turnout", 
           label = "tab:causTurn", notes = list(stars.note), digits = 3, 
-          Sweave = FALSE)
+          Sweave = TRUE)
 @
+\end{small}
 
+%tab:causRoll
+\begin{small}
 <<rolloffDIDandLag, eval=TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "turnoutDiff", "VAP_adjLOG_sq", 
                          "VAP_adjLOG", 
@@ -1204,9 +1223,10 @@ apsrtable(lagModroll, DIDmodroll, merModroll, se = "robust",
           model.names = c("Lag", "Diff in Diff", "Multilevel"), 
           stars = "default", 
           caption = "Causal Estimates of Act 10 Period on Rolloff", 
-          label = "tab:causTurn", notes = list(stars.note), digits = 3, 
-          Sweave = FALSE)
+          label = "tab:causRoll", notes = list(stars.note), digits = 3, 
+          Sweave = TRUE)
 @
+\end{small}
 
 \begin{table}[h!]
 \begin{center}
@@ -1241,6 +1261,8 @@ qplot(factor(year), exp(plotPred), data = plotdf2, geom = 'boxplot') +
   labs(x = "Year", y = "Blais-Lago")
 @
 
+\clearpage
+
 \subsection{Mediation Analysis}
 
 While the results above can be interpreted as the causal estimate of the political 
@@ -1262,7 +1284,9 @@ I now analyze the impact of each mediating factor.
 
 Polarization should matter. 
 
-<<polarizationMediation>>=
+%tab:polarMed
+\begin{small}
+<<polarizationMediation, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
                          "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
                          "RecallPolarization", "incDefeats", "ImputedFlag", 
@@ -1385,21 +1409,26 @@ full6 <- glmer(incDefeats ~ incDefeats_lag + treatment + VAP_adjLOG_sq_lag +
 apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3, 
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
-          stars = "default")
+          stars = "default", 
+          caption = "Mediation Estimates of Polarization on Board Elections", 
+          label = "tab:polarMed", notes = list(stars.note), Sweave = TRUE)
 
-apsrtable(full1, full3, full4, full5, full6, se = "robust", digits = 3, 
+polarMedTable <- apsrtable(full1, full3, full4, full5, full6, 
+                           se = "robust", digits = 3, 
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
+caption = "Mediation Estimates of Polarization on Board Elections - Multilevel Models",           label = "tab:polarMedHLM", notes = list(stars.note), Sweave = TRUE, 
           stars = "default")
 @
-
+\end{small}
 
 % Only evidence of mediation on turnout, where higher polarization attenuates the 
 % turnout boost post-recall
 
 \subsubsection{Union Strength}
 
-
+%tab:unionMed
+\begin{small}
 <<unionStrength>>=
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
                          "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
@@ -1534,20 +1563,28 @@ full6 <- glmer(incDefeats ~ incDefeats_lag + treatment + VAP_adjLOG_sq_lag +
 apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3, 
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
-          stars = "default")
+           stars = "default", 
+          caption = "Mediation Estimates of Union Strength on Board Elections", 
+          label = "tab:unionMed", notes = list(stars.note), Sweave = TRUE)
 
-apsrtable(full1, full3, full4, full5, full6, se = "robust", digits = 3, 
-          model.names = c("Ser. Cont.", "Compet.", 
+unionMedtable <- apsrtable(full1, full3, full4, full5, full6, 
+                           se = "robust", digits = 3, 
+                  model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
+          caption = "Mediation Estimates of Union Strength on Board Elections - Multilevel Models",           
+          label = "tab:unionMedHLM", notes = list(stars.note), Sweave = TRUE, 
           stars = "default")
 @
+\end{small}
 
 % Some evidence of union strength mediating turnout and incumbent defeat
 
 
 \subsection{Recall Turnout}
 
-<<recallTurnout>>=
+%tab:recallTurnMed
+\begin{small}
+<<recallTurnout, results='asis'>>=
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
                          "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
                          "GovTurnout_recall", "incDefeats", 
@@ -1672,21 +1709,32 @@ full6 <- glmer(incDefeats ~ incDefeats_lag + treatment + VAP_adjLOG_sq_lag +
 
 apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3, 
           model.names = c("Ser. Cont.", "Compet.", 
-                          "Turnout", "Rolloff", "Inc. Def."), stars = "default")
+                          "Turnout", "Rolloff", "Inc. Def."), 
+           stars = "default", 
+          caption = "Mediation Estimates of Recall Turnout on Board Elections", 
+          label = "tab:recallTurnMed", notes = list(stars.note), Sweave = TRUE)
 
-apsrtable(full1, full3, full4, full5, full6, se = "robust", digits = 3, 
+recallTurnMedTable <- apsrtable(full1, full3, full4, full5, full6, 
+                                se = "robust", digits = 3, 
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
-          stars = "default")
+          stars = "default", 
+          caption = "Mediation Estimates of Recall Turnout on Board Elections - HLM", 
+          label = "tab:recallTurnMedHLM", notes = list(stars.note), Sweave = TRUE)
 @
+\end{small}
 
 % Turnout and rolloff see increased effect for turnout recall
+
+
 
 \subsubsection{Full Mediation}
 
 Least likely to work. 
 
-<<turnandpolarRecall>>=
+%tab:recallAllMed
+\begin{small}
+<<turnandpolarRecall, results='asis'>>=
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
                          "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
                          "GovTurnout_recall", "incDefeats", 
@@ -1826,15 +1874,32 @@ full6 <- glmer(incDefeats ~ incDefeats_lag + treatment + VAP_adjLOG_sq_lag +
 
 apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3, 
           model.names = c("Ser. Cont.", "Compet.", 
-                          "Turnout", "Rolloff", "Inc. Def."), stars = "default")
+                          "Turnout", "Rolloff", "Inc. Def."),
+           stars = "default", 
+          caption = "Mediation Estimates of Recall on Board Elections", 
+          label = "tab:recallAllMed", notes = list(stars.note), Sweave = TRUE)
 
-apsrtable(full1, full3, full4, full5, full6, se = "robust", digits = 3, 
+recallMedTable <- apsrtable(full1, full3, full4, full5, full6, 
+                            se = "robust", digits = 3, 
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
-          stars = "default")
+          stars = "default", 
+          caption = "Mediation Estimates of Recall on Board Elections - Multilevel Models",           
+          label = "tab:recallAllMedHLM", notes = list(stars.note), 
+          Sweave = TRUE)
+@
+\end{small}
+% Rolloff and turnout evidence for polarization and turnout on treatment
+
+\subsection{Substantive Impact Size}
+
+
+<<substEff1, eval=FALSE>>=
+
+
 @
 
-% Rolloff and turnout evidence
+
 
 \subsection{Contestation}
 
@@ -2024,11 +2089,6 @@ school board elections themselves were not specifically affected.
 Next I demonstrate the substantive magnitude of the state level policy shock to 
 contextualize the influence that state government can have on local elections. 
 
-<<substEff1, eval=FALSE>>=
-
-
-@
-
 % Which models to simulate
 % No models of contestation -- no results!
 % WERC model for incumbent defeat IncDef4mm
@@ -2041,889 +2101,44 @@ contextualize the influence that state government can have on local elections.
 
 \section{Conclusion}
 
+\clearpage
 
 \section{Appendix}
 
+\subsection{Minor Contestation Models}
+
+\begin{small}
+<<causModelminor, results='asis'>>=
+causMinorConTab
+@
+\end{small}
+
 \subsection{Full Mediation Models}
 
-<<walkerDataPrep1, results='asis', echo = FALSE>>=
-moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
-                        "balance_member_lag", "turnout", "VAP_adjLOG_sq",
-                        "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
-                        "districtwide", "turnoutLag1", "topTicketTurnoutSpring",
-                        "OOH_share", "median_incomeLOG", "per65o", 
-                        "NonWhitePublicPupilPer", "NonPublicPupilPer", 
-                         "locale2", "incumShare", "contestMinorLag", 
-                        "contestSerLag", "incDefeats", "nonincumbRun", 
-                        "onlyIncum",
-                        "overrideYesPer", "partyDivisionRecent", "turnoutLag2",
-                        "teachShareofVoters", "fallTurnout", 
-                        "nraces", "schoolMillShare", "PROPERTYTAX_REV_SHARE", 
-                        "TCEC_MEMBER", "millrate_delta", 
-                        "ADMIN_SHARE_COMP", "NEW_SUP", 
-                        "DEBT_ATTEMPT_CUMUL93", "OVERRIDE_ATTEMPT_CUMUL93", 
-                        "member_delta_per", "GovTwoPartyShareDem_recall",
-                        "GovTwoPartyShareRep_recall", "RecallPolarization",
-                        "turnout_overall_werc", "minBlaisLago",
-                        "eligvoters_werc", "fallTwoPartyShareDem",
-                        "loss_werc", "worst_margin_werc", "WERC_elec", 
-                        "GovTurnout_recall")]
-# contestSerLag
-moddat <- na.omit(moddat)
-moddat <- moddat[moddat$year >= 2006,]
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$treatment <- ifelse(moddat$year > 2010, 1, 0)
-moddat$minBlaisLago <- ifelse(moddat$minBlaisLago == 0, .1, moddat$minBlaisLago)
-moddat$minBlaisLago <- log(moddat$minBlaisLago)
-moddat$treatment <- factor(moddat$treatment)
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
-moddat$districtwide <- factor(moddat$districtwide)
-moddat$per_white_all <- moddat$per_white_all * 100
-moddat$per65o <- moddat$per65o * 100
-moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
-moddat$OOH_share <- moddat$OOH_share * 100
-# moddat$fallTurnout <- moddat$fallTurnout * 100
-moddat$turnout_overall_werc <- moddat$turnout_overall_werc * 100
-moddat$topTicketTurnoutSpring <- moddat$topTicketTurnoutSpring * 100
-moddat$turnout <- moddat$turnout * 100
-moddat$GovTurnout_recall <- moddat$GovTurnout_recall * 100
-moddat$GovTwoPartyShareDem_recall <- moddat$GovTwoPartyShareDem_recall *100
-moddat$member_delta_per <- moddat$member_delta_per * 100
-moddat$WERC_elec <- factor(moddat$WERC_elec)
-moddat$contestSer <- factor(moddat$contestSer)
-moddat$contestMinor <- factor(moddat$contestMinor)
-moddat$contestSerLag <- factor(moddat$contestSerLag)
-moddat$contestMinorLag <- factor(moddat$contestMinorLag)
-moddat$incDefeats <- factor(moddat$incDefeats)
-moddat$districtwide <- factor(moddat$districtwide)
-library(arm)
-nums <- sapply(moddat, is.numeric)
-#   for(i in unique(moddat$year)){
-#     moddat[moddat$year == i, nums] <- 
-#       apply(moddat[moddat$year == i, nums], 2, rescale)
-#   }
-moddat[, nums] <- apply(moddat[, nums], 2, rescale)
+HLM mediation models. 
+
+\begin{small}
+<<unionMedtable, results='asis'>>=
+unionMedtable
 @
+\end{small}
 
-<<walkerGLM, results='hide'>>=
-glmContestSer1 <- glm(contestSer ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                 per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               districtwide + 
-                 RecallPolarization*treatment + treatment*GovTurnout_recall,
-              data = moddat, family = 'binomial')
-
-glmContestSer1SE <- get_CL_vcov(glmContestSer1, moddat$distid)
-glmContestSer1$se <- sqrt(diag(glmContestSer1SE))
-
-glmContestSer2 <- glm(contestSer ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + per65o + PerBachelorOrAbove +  
-                    median_incomeLOG +
-               districtwide + 
-                 RecallPolarization*treatment + treatment*GovTurnout_recall,
-              data = moddat, family = 'binomial')
-
-glmContestSer2SE <- get_CL_vcov(glmContestSer2, moddat$distid)
-glmContestSer2$se <- sqrt(diag(glmContestSer2SE))
-
-glmContestSer3 <- glm(contestSer ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               districtwide + 
-                 RecallPolarization*treatment + treatment*GovTurnout_recall + distid, 
-              data = moddat, family = 'binomial')
-
-glmContestSer3SE <- get_CL_vcov(glmContestSer3, moddat$distid)
-glmContestSer3$se <- sqrt(diag(glmContestSer3SE))
-
-seriousGLMtable <- apsrtable(glmContestSer1, glmContestSer2, glmContestSer3, 
-          se = "robust", label="tab:serMod", 
-          model.names=c("Naive Causal Model", "Overvote Model"), 
-          caption = "Model of Causal Impact of Act 10 on School Board Candidacy",
-          omitcoef=list("year", 
-                        expression(grep("year", coefnames, value = TRUE)), 
-                        "distid", expression(grep("distid", coefnames, 
-                                                  value = TRUE))), 
-          Sweave=TRUE)
+\begin{small}
+<<polarMedTable, results='asis'>>=
+polarMedTable
 @
-<<walkerGLM2, results='hide'>>=
-glmContestMinor1 <- glm(contestMinor ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                 per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               districtwide + 
-                 RecallPolarization*treatment + treatment*GovTurnout_recall, 
-              data = moddat, family = 'binomial')
+\end{small}
 
-glmContestMinor1SE <- get_CL_vcov(glmContestMinor1, moddat$distid)
-glmContestMinor1$se <- sqrt(diag(glmContestMinor1SE))
-
-glmContestMinor2 <- glm(contestMinor ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + per65o + PerBachelorOrAbove +  
-                    median_incomeLOG + districtwide + 
-                 RecallPolarization*treatment + treatment*GovTurnout_recall, 
-              data = moddat, family = 'binomial')
-
-glmContestMinor2SE <- get_CL_vcov(glmContestMinor2, moddat$distid)
-glmContestMinor2$se <- sqrt(diag(glmContestMinor2SE))
-
-glmContestMinor3 <- glm(contestMinor ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + 
-                  per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               districtwide + 
-                 RecallPolarization*treatment + treatment*GovTurnout_recall + 
-                 distid, 
-              data = moddat, family = 'binomial')
-
-glmContestMinor3SE <- get_CL_vcov(glmContestMinor3, moddat$distid)
-glmContestMinor3$se <- sqrt(diag(glmContestMinor3SE))
-
-minorGLMtable <- apsrtable(glmContestMinor1, glmContestMinor2, glmContestMinor3, 
-          se = "robust", label="tab:minMod", 
-            caption = "Model of Causal Impact of Act 10 on School Board Candidacy",
-          omitcoef=list("year", 
-                        expression(grep("year", coefnames, value = TRUE)), 
-                        "distid", expression(grep("distid", coefnames, 
-                                                  value = TRUE))), 
-          Sweave=TRUE)
+\begin{small}
+<<recallTurnMedTable, results='asis'>>=
+recallTurnMedTable
 @
+\end{small}
 
-\begin{tiny}
-<<walkerMixedMod, results='asis'>>=
-library(optimx)
-ctrl2 <- glmerControl(optimizer = "optimx", calc.derivs = FALSE, 
-                     optCtrl = list(method = "nlminb", starttests = FALSE, 
-                                    kkt = FALSE, maxit = 10000))
-ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
-moddat2 <- moddat[moddat$incumShare != max(moddat$incumShare) & 
-                    !is.na(moddat$contestSerLag), ]
 
-mod1MMserBIN <- glmer(contestSer ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
-                        incumShare + nraces + 
-                       RecallPolarization*treatment +
-                       (1|distid), data = moddat2, family = "binomial", 
-                      control = ctrl2) 
-
-mod2MMserBIN <-  glmer(contestSer ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
-                        incumShare + nraces + treatment*GovTurnout_recall + 
-                        (1|distid), data = moddat2, family = "binomial", 
-                      control = ctrl2)
-
-mod3MMserBIN <- update(mod2MMserBIN, . ~ . +  RecallPolarization*treatment)
-
-mod4MMserBIN <-  glmer(contestSer ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
-                        incumShare + nraces + 
-                       turnout_overall_werc*treatment + WERC_elec + 
-                       (1|distid), data = moddat2, family = "binomial", 
-                      control = ctrl2)
-# coefnamesLag3 <- c("Intercept","Lagged Turnout (2)", "ln(VAP)", 
-#                  "\\% White", 
-#                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-#                   "ln(MedianIncome)", "District-wide", "Blais-Lago", 
-#                   "Fall Turnout",  "$ln(VAP)^{2}$")
-
-apsrtable(mod1MMserBIN, mod2MMserBIN, mod3MMserBIN, mod4MMserBIN, 
-          caption = "Partial Pooling Model of Serious Contestation",
-          model.names = c("Polarization", "Turnout", "Both", "WERC"), 
-            label = "tab:meSer",  
-           notes = list("All variables scaled and mean centered by year.", 
-                       stars.note), 
-          Sweave = TRUE, digits = 3, float = "longtable") #, coef.names = coefnamesLag3)
+\begin{small}
+<<recallMedTable, results='asis'>>=
+recallMedTable
 @
-\end{tiny}
+\end{small}
 
-<<walkerMixedModhide, eval=FALSE, results='hide'>>=
-
-# politicMMserBIN <- update(demogsMMserBIN, . ~ . + incumShare +  contestSerLag + 
-#                             overrideYesPer +  partyDivisionRecent + 
-#                             teachShareofVoters + fallTurnout + nraces) 
-# 
-# policyMMserBIN <- update(demogsMMserBIN, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + 
-#                         NonPublicPupilPer + 
-#                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-# 
-# fullmodMMserBIN <- update(politicMMserBIN, . ~ . +  schoolMillShare + 
-#                          PROPERTYTAX_REV_SHARE + TCEC_MEMBER + 
-#                          balance_member_lag + millrate_delta + 
-#                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
-#                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-# demogsMMminBIN <- glmer(contestMinor ~ VAP_adjLOG + VAP_adjLOG_sq + 
-#                       per65o + PerBachelorOrAbove + 
-#                       per_white_all + OOH_share + locale2 +  
-#                        RecallPolarization*treatment + treatment*GovTurnout_recall + 
-#                        (1|distid), data = moddat2, family = "binomial", 
-#                       control = ctrl2) 
-
-# politicMMminBIN <- update(demogsMMminBIN, . ~ . + incumShare +  overrideYesPer +  
-#                        partyDivisionRecent + contestMinorLag + 
-#                     teachShareofVoters + fallTurnout + nraces) 
-# 
-# policyMMminBIN <- update(demogsMMminBIN, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + 
-#                         NonPublicPupilPer + 
-#                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-# 
-# fullmodMMminBIN <- update(politicMMminBIN, . ~ . +  schoolMillShare + 
-#                          PROPERTYTAX_REV_SHARE + TCEC_MEMBER + 
-#                          balance_member_lag + millrate_delta + 
-#                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
-#                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-@
-
-\begin{tiny}
-<<walkerMixedMod2, results='asis'>>=
-mod1MMminBIN <- glmer(contestMinor ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
-                        incumShare + nraces + 
-                       RecallPolarization*treatment +
-                       (1|distid), data = moddat2, family = "binomial", 
-                      control = ctrl2) 
-
-mod2MMminBIN <-  glmer(contestMinor ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
-                        incumShare + nraces + treatment*GovTurnout_recall + 
-                        (1|distid), data = moddat2, family = "binomial", 
-                      control = ctrl2)
-
-mod3MMminBIN <- update(mod2MMminBIN, . ~ . +  RecallPolarization*treatment)
-
-mod4MMminBIN <-  glmer(contestMinor ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 + PROPERTYTAX_REV_SHARE + 
-                        incumShare + nraces + 
-                       turnout_overall_werc*treatment + WERC_elec + 
-                       (1|distid), data = moddat2, family = "binomial", 
-                      control = ctrl2)
-# coefnamesLag3 <- c("Intercept","Lagged Turnout (2)", "ln(VAP)", 
-#                  "\\% White", 
-#                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-#                   "ln(MedianIncome)", "District-wide", "Blais-Lago", 
-#                   "Fall Turnout",  "$ln(VAP)^{2}$")
-
-apsrtable(mod1MMminBIN, mod2MMminBIN, mod3MMminBIN, mod4MMminBIN,
-          caption = "Partial Pooling Model of Any Contestation",
-          model.names = c("Polarization", "Turnout", "Both", "WERC"),
-            label = "tab:meMin",  
-           notes = list("All variables scaled and mean centered by year.", 
-                       stars.note), 
-          Sweave = TRUE, digits = 3, float = "longtable") #, coef.names = coefnamesLag3)
-@
-\end{tiny}
-
-<<glmincDefeatmods, eval=TRUE, results='hide'>>=
-moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
-                              moddat$incumShare != min(moddat$incumShare) & 
-                    !is.na(moddat$contestSerLag),]
-
-glmIncDef1 <- glm(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                 per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               districtwide + 
-                 RecallPolarization*treatment + treatment*GovTurnout_recall,
-              data = moddat3, family = 'binomial')
-
-glmIncDef1SE <- get_CL_vcov(glmIncDef1, moddat3$distid)
-glmIncDef1$se <- sqrt(diag(glmIncDef1SE))
-
-glmIncDef2 <- glm(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + per65o + PerBachelorOrAbove +  
-                    median_incomeLOG +
-               districtwide + 
-                 RecallPolarization*treatment + treatment*GovTurnout_recall,
-              data = moddat3, family = 'binomial')
-
-glmIncDef2SE <- get_CL_vcov(glmIncDef2, moddat3$distid)
-glmIncDef2$se <- sqrt(diag(glmIncDef2SE))
-
-moddat3$distid <- factor(as.character(moddat3$distid))
-glmIncDef3 <- glm(incDefeats ~ contestSerLag + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               districtwide + RecallPolarization*treatment + 
-                 treatment*GovTurnout_recall, 
-              data = moddat3, family = 'binomial', 
-              control = glm.control(maxit = 4000))
-
-glmIncDef3SE <- get_CL_vcov(glmIncDef3, moddat3$distid)
-glmIncDef3$se <- sqrt(diag(glmIncDef3SE))
-
-incDefGLMtable <- apsrtable(glmIncDef1, glmIncDef2, glmIncDef3, 
-          se = "robust", label="tab:incDefMod", 
-          model.names=c("Naive Causal Model", "Overvote Model"), 
-          caption = "Model of Causal Impact of Act 10 on Incumbent Defeat",
-          omitcoef=list("year", 
-                        expression(grep("year", coefnames, value = TRUE)), 
-                        "distid", expression(grep("distid", coefnames, 
-                                                  value = TRUE))), 
-          Sweave=TRUE)
-
-glmIncDefpolitic <- glm(incDefeats ~ contestSerLag + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-                incumShare + overrideYesPer +  partyDivisionRecent +
-                    teachShareofVoters + fallTurnout + nraces +
-               districtwide + RecallPolarization*treatment + WERC_elec + 
-                 treatment*GovTurnout_recall, 
-              data = moddat3, family = 'binomial', 
-              control = glm.control(maxit = 4000))
-
-glmIncDefpoliticSE <- get_CL_vcov(glmIncDefpolitic, moddat3$distid)
-glmIncDefpolitic$se <- sqrt(diag(glmIncDefpoliticSE))
-
-glmIncDeffisc <- glm(incDefeats ~ contestSerLag + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               schoolMillShare + PROPERTYTAX_REV_SHARE + 
-                TCEC_MEMBER + balance_member_lag + millrate_delta +
-               districtwide + RecallPolarization*treatment + 
-                 treatment*GovTurnout_recall, 
-              data = moddat3, family = 'binomial', 
-            control = glm.control(maxit = 4000))
-
-glmIncDeffiscSE <- get_CL_vcov(glmIncDeffisc, moddat3$distid)
-glmIncDeffisc$se <- sqrt(diag(glmIncDeffiscSE))
-
-glmIncDefPoly <- glm(incDefeats ~ contestSerLag + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-                 ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93 + 
-               districtwide + RecallPolarization*treatment + 
-                 treatment*GovTurnout_recall, 
-              data = moddat3, family = 'binomial', 
-            control = glm.control(maxit = 4000))
-
-glmIncDefPolySE <- get_CL_vcov(glmIncDefPoly, moddat3$distid)
-glmIncDefPoly$se <- sqrt(diag(glmIncDefPolySE))
-
-rescalenote <- "All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations."
-stars.note <- apsrtable:::stars.note
-
-# coefnames3 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-#                "\\% White", "\\% OOH", "Exurb", "Rural", "Lagged Contestation", 
-#                "\\% Incumbents", "\\% Yes Rev. Limit", 
-#                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
-#                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
-#                "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
-#                "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
-#                "Cumul. Override Att.")
-
-incDefGLMtable2 <- apsrtable(glmIncDeffisc, glmIncDefpolitic, glmIncDefPoly, 
-                     se = "robust", float = "longtable", label="tab:glmModsD", 
-                     model.names=c("Fiscal", "Politic", "Policy"), 
-          caption = "Logit Models of Incumbent Defeat in School Board Elections",
-          notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3)#, coef.names = coefnames3)
-@
-
-\begin{tiny}
-<<defeatMerMod, results='asis'>>=
-IncDef1mm <- glmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                 per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
-                   median_incomeLOG + districtwide + RecallPolarization*treatment +
-                   (1|distid),
-              data = moddat3, family = 'binomial', control = ctrl2)
-
-library(blme)
-IncDef1mm <-bglmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                 per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
-                   median_incomeLOG + districtwide + 
-                   treatment*RecallPolarization + 
-                 (1|distid),
-              data = moddat3, family = 'binomial', control = ctrl2)
-
-IncDef2mm <- glmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                 per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
-                   median_incomeLOG + districtwide + 
-                   treatment*GovTurnout_recall + 
-                 (1|distid),
-              data = moddat3, family = 'binomial')
-
-IncDef3mm <- glmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                 per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
-                   median_incomeLOG + districtwide + 
-                   treatment*GovTurnout_recall + RecallPolarization*treatment +
-                 (1|distid), 
-              data = moddat3, family = 'binomial', 
-              control = ctrl2)
-
-
-IncDef3mm <- bglmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                 per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
-                   median_incomeLOG + districtwide + 
-                   treatment*GovTurnout_recall + RecallPolarization*treatment +
-                 (1|distid), 
-              data = moddat3, family = 'binomial', 
-              control = ctrl2)
-
-IncDef4mm <- bglmer(incDefeats ~ turnoutLag2 + VAP_adjLOG + VAP_adjLOG_sq + 
-                  per_white_all + 
-               per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-               districtwide + turnout_overall_werc*treatment + WERC_elec + 
-                 RecallPolarization +
-                 GovTurnout_recall + (1|distid), 
-              data = moddat3, family = 'binomial', 
-              control = ctrl2)
-
-class(IncDef3mm) <- "merMod"
-class(IncDef1mm) <- "merMod"
-class(IncDef4mm) <- "merMod"
-
-apsrtable(IncDef1mm, IncDef2mm, IncDef3mm, IncDef4mm,
-          caption = "Partial Pooling Model of Incumbent Defeat",
-          model.names = c("Polar.", "Turnout", "Both", "WERC"), 
-            label = "tab:meIncDef",  
-           notes = list("All variables scaled and mean centered by year.", 
-                       stars.note), 
-          Sweave = TRUE, digits = 3, float="longtable")
-@
-\end{tiny}
-
-<<blqLM, eval=TRUE, results='hide'>>=
-demogsLMblq <- lm(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + locale2 +  
-                       RecallPolarization*treatment + treatment*GovTurnout_recall, 
-                    data = moddat) 
-demogsLMblqSE <- get_CL_vcov(demogsLMblq, moddat$distid)
-demogsLMblq$se <- sqrt(diag(demogsLMblqSE))
-
-politicLMblq <- update(demogsLMblq, . ~ . + incumShare +  overrideYesPer +  
-                       partyDivisionRecent +
-                    teachShareofVoters + fallTurnout + nraces) 
-politicLMblqSE <- get_CL_vcov(politicLMblq, moddat$distid)
-politicLMblq$se <- sqrt(diag(politicLMblqSE))
-
-policyLMblq <- update(demogsLMblq, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + 
-                        NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-policyLMblqSE <- get_CL_vcov(policyLMblq, moddat$distid)
-policyLMblq$se <- sqrt(diag(policyLMblqSE))
-fullmodLMblq <- update(politicLMblq, . ~ . +  schoolMillShare + 
-                         PROPERTYTAX_REV_SHARE + TCEC_MEMBER + 
-                         balance_member_lag + millrate_delta + 
-                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-fullmodLMblqSE <- get_CL_vcov(fullmodLMblq, moddat$distid)
-fullmodLMblq$se <- sqrt(diag(fullmodLMblqSE))
-
-# coefnamesLag3 <- c("Intercept","Lagged Turnout (2)", "ln(VAP)", 
-#                  "\\% White", 
-#                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-#                   "ln(MedianIncome)", "District-wide", "Blais-Lago", 
-#                   "Fall Turnout",  "$ln(VAP)^{2}$")
-
-lmBLQtable <- apsrtable(demogsLMblq, politicLMblq, policyLMblq, fullmodLMblq, 
-                        se="robust",
-          caption = "Linear Models of Competitiveness",
-          model.names = c("Demog.", "Politic", "Policy", "Full"), 
-            label = "tab:lmBLQ",  
-           notes = list("All variables scaled and mean centered by sample.", 
-                       stars.note), 
-          Sweave = TRUE, digits = 3) #, coef.names = coefnamesLag3)
-
-@
-
-
-\begin{tiny}
-<<blqMods1, results='asis'>>=
-ctrl <- lmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
-
-demogsMMblq1 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + incumShare + locale2 + 
-                      treatment*GovTurnout_recall + 
-                       (1|distid), data = moddat, control = ctrl) 
-
-demogsMMblq2 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + incumShare + locale2 +  
-                       RecallPolarization*treatment +
-                       (1|distid), data = moddat, control = ctrl) 
-
-
-demogsMMblq3 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + incumShare + locale2 +  
-                       RecallPolarization*treatment + 
-                       treatment*GovTurnout_recall + 
-                       (1|distid), data = moddat, control = ctrl) 
-
-demogsMMblq4 <- lmer(minBlaisLago ~ VAP_adjLOG + VAP_adjLOG_sq + 
-                      per65o + PerBachelorOrAbove + 
-                      per_white_all + OOH_share + incumShare + locale2 +  
-                       RecallPolarization + 
-                       GovTurnout_recall + 
-                       treatment * turnout_overall_werc + WERC_elec + 
-                       (1|distid), data = moddat, control = ctrl) 
-
-politicMMblq <- update(demogsMMblq1, . ~ . + incumShare + 
-                         overrideYesPer +  
-                       partyDivisionRecent +
-                    teachShareofVoters + fallTurnout + nraces) 
-
-policyMMblq <- update(demogsMMblq1, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + 
-                        NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-
-fullmodMMblq <- update(politicMMblq, . ~ . +  schoolMillShare + 
-                         PROPERTYTAX_REV_SHARE + TCEC_MEMBER + 
-                         balance_member_lag + millrate_delta + 
-                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
-                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
-
-
-# coefnamesLag3 <- c("Intercept","Lagged Turnout (2)", "ln(VAP)", 
-#                  "\\% White", 
-#                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-#                   "ln(MedianIncome)", "District-wide", "Blais-Lago", 
-#                   "Fall Turnout",  "$ln(VAP)^{2}$")
-
-apsrtable(demogsMMblq1, demogsMMblq2, demogsMMblq3, demogsMMblq4,
-          caption = "Partial Pooling Model of Competitiveness",
-          model.names = c("Turnout", "Polar", "Both", "WERC"), 
-            label = "tab:meBLQ",  
-           notes = list("All variables scaled and mean centered by sample.", 
-                       stars.note), 
-          Sweave = TRUE, digits = 3, float = "longtable", stars="default") #, coef.names = coefnamesLag3)
-@
-\end{tiny}
-
-
-<<walkerDataPrep2, results='asis', echo = FALSE, eval=FALSE>>=
-## Grab Walker recall results
-moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
-                        "balance_member_lag", "turnout", "VAP_adjLOG_sq",
-                        "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
-                        "districtwide", "turnoutLag1", "topTicketTurnoutSpring",
-                        "OOH_share", "median_incomeLOG", "per65o", 
-                        "NonWhitePublicPupilPer", "NonPublicPupilPer", 
-                         "locale2", "incumShare", "contestMinorLag", 
-                        "contestSerLag", "incDefeats", "nonincumbRun", 
-                        "onlyIncum",
-                        "overrideYesPer", "partyDivisionRecent", "turnoutLag2",
-                        "teachShareofVoters", "fallTurnout", 
-                        "nraces", "schoolMillShare", "PROPERTYTAX_REV_SHARE", 
-                        "TCEC_MEMBER", "millrate_delta", 
-                        "ADMIN_SHARE_COMP", "NEW_SUP", 
-                        "DEBT_ATTEMPT_CUMUL93", "OVERRIDE_ATTEMPT_CUMUL93", 
-                        "member_delta_per", "RecallPolarization",
-                        "turnout_overall_werc", "minBlaisLago",
-                        "eligvoters_werc", "fallTwoPartyShareDem",
-                        "loss_werc", "worst_margin_werc", "WERC_elec", 
-                        "GovTurnout_recall")]
-
-moddat <- na.omit(moddat)
-moddat <- moddat[moddat$year >= 2007,]
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$treatment <- ifelse(moddat$year > 2010, 1, 0)
-moddat$minBlaisLago <- ifelse(moddat$minBlaisLago == 0, .5, moddat$minBlaisLago)
-moddat$minBlaisLago <- log(moddat$minBlaisLago)
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-moddat$turnout <- moddat$turnout * 100
-moddat$districtwide <- factor(moddat$districtwide)
-moddat$treatment <- factor(moddat$treatment)
-# moddat$turnoutLag2 <- moddat$turnoutLag2 * 100
-# moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
-# moddat$per_white_all <- moddat$per_white_all * 100
-# moddat$per65o <- moddat$per65o * 100
-# moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
-# moddat$OOH_share <- moddat$OOH_share * 100
-# moddat$fallTurnout <- moddat$fallTurnout * 100
-# moddat$VAP_adj <- log(moddat$VAP_adj)
-# moddat$median_income <- log(moddat$median_income)
-moddat$WERC_elec <- factor(moddat$WERC_elec)
-centr <- mean(moddat$turnout)
-stddev <- sd(moddat$turnout)
-moddat$outflag <- (moddat$turnout - centr) / stddev
-moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
-
-library(rms)
-dd <<- datadist(moddat)
-options(datadist="dd")
-
-nums <- sapply(moddat, is.numeric)
-#   for(i in unique(moddat$year)){
-#     moddat[moddat$year == i, nums] <- 
-#       apply(moddat[moddat$year == i, nums], 2, rescale)
-#   }
-moddat[, nums] <- apply(moddat[, nums], 2, rescale)
-@
-
-<<walkerTurnMod, results='hide', eval=TRUE>>=
-demogsMod1 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
-                   districtwide + RecallPolarization * treatment + 
-                   turnout_overall_werc, data = moddat)
-demogsMod1SE <- get_CL_vcov(demogsMod1, moddat$distid)
-demogsMod1$se <- sqrt(diag(demogsMod1SE))
-demogsMod2 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
-                   districtwide + GovTurnout_recall * treatment + 
-                   turnout_overall_werc, data = moddat)
-demogsMod2SE <- get_CL_vcov(demogsMod2, moddat$distid)
-demogsMod2$se <- sqrt(diag(demogsMod2SE))
-demogsMod3 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
-                   districtwide + GovTurnout_recall * treatment + 
-                    RecallPolarization * treatment + 
-                   turnout_overall_werc, data = moddat)
-demogsMod3SE <- get_CL_vcov(demogsMod3, moddat$distid)
-demogsMod3$se <- sqrt(diag(demogsMod3SE))
-demogsMod4 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
-                   districtwide + GovTurnout_recall +
-                    RecallPolarization + 
-                   turnout_overall_werc*treatment, data = moddat)
-demogsMod4SE <- get_CL_vcov(demogsMod4, moddat$distid)
-demogsMod4$se <- sqrt(diag(demogsMod4SE))
-
-lmTurnoutTable <- apsrtable(demogsMod1, demogsMod2, demogsMod3, demogsMod4, 
-          se = "robust", label="tab:lmTurnoutmod", 
-          caption = "Model of Causal Impact of Act 10 on School Board Turnout",
-          Sweave=FALSE, digits = 3)
-@
-
-
-\begin{tiny}
-<<turnoutMM, results='asis', echo = FALSE, eval=TRUE>>=
-demogsMod1mm <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
-                   districtwide + RecallPolarization * treatment + 
-                   turnout_overall_werc + (1|distid), data = moddat)
-demogsMod2mm <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
-                   districtwide + GovTurnout_recall * treatment + 
-                   turnout_overall_werc+ (1|distid), data = moddat)
-demogsMod3mm <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
-                   districtwide + GovTurnout_recall * treatment + 
-                    RecallPolarization * treatment + 
-                   turnout_overall_werc + (1|distid), data = moddat)
-demogsMod4mm <- lmer(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + 
-                   districtwide + GovTurnout_recall +
-                    RecallPolarization + WERC_elec +
-                   turnout_overall_werc*treatment + (1|distid), data = moddat)
-
-tabnote <- "Model includes district random effects modeled as intercepts."
-
-apsrtable(demogsMod1mm, demogsMod2mm, demogsMod3mm, demogsMod4mm,
-          caption = "Partial Pooling Model of Post-Election Turnout",
-          model.names = c("Polarization", "Turnout", "Both", "WERC"),
-          label = "tab:meTurnout", notes = list(tabnote, stars.note), 
-          Sweave = TRUE, digits = 3, stars = "default")
-@
-\end{tiny}
-
-
-<<walkerDataPrep3>>=
-moddat <- dist_turn[, c("contestSer", "contestMinor", "distid","year", 
-                        "balance_member_lag", "turnout", "VAP_adjLOG_sq",
-                        "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
-                        "districtwide", "turnoutLag1", "topTicketTurnoutSpring",
-                        "OOH_share", "median_incomeLOG", "per65o", 
-                        "NonWhitePublicPupilPer", "NonPublicPupilPer", 
-                         "locale2", "incumShare", "contestMinorLag", 
-                        "contestSerLag", "incDefeats", "nonincumbRun", 
-                        "onlyIncum", "turnoutDiff", "topTicketTurnoutSpring",
-                        "overrideYesPer", "partyDivisionRecent", "turnoutLag2",
-                        "teachShareofVoters", "fallTurnout", 
-                        "nraces", "schoolMillShare", "PROPERTYTAX_REV_SHARE", 
-                        "TCEC_MEMBER", "millrate_delta", "ImputedFlag",
-                        "ADMIN_SHARE_COMP", "NEW_SUP", 
-                        "DEBT_ATTEMPT_CUMUL93", "OVERRIDE_ATTEMPT_CUMUL93", 
-                        "member_delta_per", "RecallPolarization",
-                        "turnout_overall_werc", "minBlaisLago",
-                        "eligvoters_werc", "fallTwoPartyShareDem",
-                        "loss_werc", "worst_margin_werc", "WERC_elec", 
-                        "GovTurnout_recall")]
-moddat$ImputedFlag[is.na(moddat$ImputedFlag)] <- "No"
-moddat$ImputedFlag <- ifelse(moddat$ImputedFlag == "Imputed2010", "Yes", "No")
-moddat <- na.omit(moddat)
-moddat <- moddat[moddat$year >= 2007,]
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$treatment <- ifelse(moddat$year > 2010, 1, 0)
-moddat$minBlaisLago <- ifelse(moddat$minBlaisLago == 0, .5, moddat$minBlaisLago)
-moddat$minBlaisLago <- log(moddat$minBlaisLago)
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-moddat$turnout <- moddat$turnout * 100
-moddat$districtwide <- factor(moddat$districtwide)
-moddat$treatment <- factor(moddat$treatment)
-moddat$WERC_elec <- factor(moddat$WERC_elec)
-# moddat$turnoutLag2 <- moddat$turnoutLag2 * 100
-# moddat$turnoutLag1 <- moddat$turnoutLag1 * 100
-# moddat$per_white_all <- moddat$per_white_all * 100
-# moddat$per65o <- moddat$per65o * 100
-# moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
-# moddat$OOH_share <- moddat$OOH_share * 100
-# moddat$fallTurnout <- moddat$fallTurnout * 100
-# moddat$VAP_adj <- log(moddat$VAP_adj)
-# moddat$median_income <- log(moddat$median_income)
-centr <- mean(moddat$turnout)
-stddev <- sd(moddat$turnout)
-moddat$outflag <- (moddat$turnout - centr) / stddev
-moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
-centr <- mean(moddat$turnoutDiff)
-stddev <- sd(moddat$turnoutDiff)
-moddat$outflag <- (moddat$turnoutDiff - centr) / stddev
-moddat <- moddat[moddat$outflag <= 4 & moddat$outflag >= -4,]
-
-library(rms)
-dd <<- datadist(moddat)
-options(datadist="dd")
-
-nums <- sapply(moddat, is.numeric)
-#   for(i in unique(moddat$year)){
-#     moddat[moddat$year == i, nums] <- 
-#       apply(moddat[moddat$year == i, nums], 2, rescale)
-#   }
-moddat[, nums] <- apply(moddat[, nums], 2, rescale)
-
-@
-
-<<rolloffLM, results='hide'>>=
-demogsMod1ro <- lm(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago + ImputedFlag +
-                   districtwide + RecallPolarization * treatment + 
-                   turnout_overall_werc, data = moddat)
-demogsMod1roSE <- get_CL_vcov(demogsMod1ro, moddat$distid)
-demogsMod1ro$se <- sqrt(diag(demogsMod1roSE))
-demogsMod2ro <- lm(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
-                   districtwide + GovTurnout_recall * treatment + 
-                   turnout_overall_werc, data = moddat)
-demogsMod2roSE <- get_CL_vcov(demogsMod2ro, moddat$distid)
-demogsMod2ro$se <- sqrt(diag(demogsMod2roSE))
-demogsMod3ro <- lm(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
-                   districtwide + GovTurnout_recall * treatment + 
-                    RecallPolarization * treatment + 
-                   turnout_overall_werc, data = moddat)
-demogsMod3roSE <- get_CL_vcov(demogsMod3ro, moddat$distid)
-demogsMod3ro$se <- sqrt(diag(demogsMod3roSE))
-demogsMod4ro <- lm(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
-                   districtwide + GovTurnout_recall +
-                    RecallPolarization + 
-                   turnout_overall_werc*treatment, data = moddat)
-demogsMod4roSE <- get_CL_vcov(demogsMod4ro, moddat$distid)
-demogsMod4ro$se <- sqrt(diag(demogsMod4roSE))
-
-lmRolloffTable <- apsrtable(demogsMod1ro, demogsMod2ro, 
-                            demogsMod3ro, demogsMod4ro, 
-          se = "robust", label="tab:lmTurnoutmod", 
-          caption = "Model of Causal Impact of Act 10 on School Board Rolloff",
-          Sweave=FALSE, digits = 3)
-
-@
-
-
-\begin{tiny}
-<<rolloffMerMod, results='asis'>>=
-demogsMod1roMM <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
-                   districtwide + RecallPolarization * treatment + 
-                   turnout_overall_werc + (1|distid), data = moddat)
-demogsMod2roMM <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
-                   districtwide + GovTurnout_recall * treatment + 
-                   turnout_overall_werc + (1|distid), data = moddat)
-demogsMod3roMM <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
-                   districtwide + GovTurnout_recall * treatment + 
-                     RecallPolarization * treatment + 
-                   turnout_overall_werc + (1|distid), data = moddat)
-demogsMod4roMM <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + VAP_adjLOG + 
-                   VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove + 
-                   OOH_share + median_incomeLOG + minBlaisLago +  ImputedFlag +
-                   districtwide + GovTurnout_recall +
-                     RecallPolarization + WERC_elec*treatment + 
-                   turnout_overall_werc * treatment + (1|distid), data = moddat)
-
-apsrtable(demogsMod1roMM, demogsMod2roMM, demogsMod3roMM, demogsMod4roMM,
-          caption = "Partial Pooling Model of Post-Election Turnout",
-          label = "tab:meRolloff", notes = list(tabnote, stars.note), 
-          Sweave = TRUE, digits = 3, stars = "default")
-@
-\end{tiny}
-
-
-\subsection{Fixed Effect Models}
-
-\begin{tiny}
-<<seriousGLMtable, results='asis'>>=
-seriousGLMtable
-@
-\end{tiny}
-
-\begin{tiny}
-<<minorGLMtable, results='asis'>>=
-minorGLMtable
-@
-\end{tiny}
-
-
-\begin{tiny}
-<<incDef2table, results='asis'>>=
-incDefGLMtable
-@
-\end{tiny}
-
-\begin{tiny}
-<<incDef2table2, results='asis'>>=
-incDefGLMtable2
-@
-\end{tiny}
-
-\begin{tiny}
-<<lmBLQtable, results='asis'>>=
-lmBLQtable
-@
-\end{tiny}
-
-
-\begin{tiny}
-<<lmTurnoutTable, results='asis'>>=
-lmTurnoutTable
-@
-\end{tiny}
-
-\begin{tiny}
-<<lmRolloffTable, results='asis'>>=
-lmRolloffTable
-@
-\end{tiny}
