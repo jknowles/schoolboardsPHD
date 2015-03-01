@@ -503,22 +503,25 @@ I now describe the models fit to the data and how to understand parameter.
 
 \subsection{Causal Inference}
 
-To credibly claim that the estimate of the effect of Act 10 and the power granted 
-to school boards, I must explain both how this impact is exogenous and how I 
-will operationalize it into a variable. Above, I have already described how the 
-events surrounding the passage of Act 10 were unforeseen by the electorate and 
-therefore not endogenous to school board elections post Act 10. 
+Extraordinary claims require extraordinary evidence, and there is no more 
+extraordinary claim a quantitative analyst can make than causality from 
+observational data. To credibly claim that the estimate of the effect of Act 10 
+and the power granted to school boards, I must demonstrate both how this impact 
+is exogenous and how I will operationalize it into a variable. Above, I have 
+already described how the events surrounding the passage of Act 10 were 
+unforeseen by the electorate and therefore not endogenous to school board 
+elections post Act 10. 
 
 To operationalize this exogenous shock I code all observations that occur after 
 the passage of Act 10 as having a treatment condition of 1, and all of those 
 observations in periods before Act 10 as having a treatment condition of 0. If 
-this was a randomized experiment and exposure to Act 10 had been randomly distributed 
-to school districts and years, I could stop and simply compute the average levels 
-of the dependent variables for these two groups and perform a t-test. However, 
-as the prior chapters have shown, there exist substantial observable characteristics 
-that affect candidate and voter participation. Not taking these variables into 
-account risks allowing them to confound the estimation of the treatment effect 
-and bias estimates away from the true impact \cite{gelhill}. 
+this was a randomized experiment and exposure to Act 10 had been randomly 
+distributed to school districts and years, I could stop and simply compute 
+the average levels of the dependent variables for these two groups and perform 
+a t-test. However, as the prior chapters have shown, there exist substantial observable characteristics that affect candidate and voter participation. Not 
+taking these variables into account risks allowing them to confound the 
+estimation of the treatment effect and bias estimates away from the true 
+impact \cite{gelhill}. 
 
 Though school districts in Wisconsin were not randomly assigned to greater power 
 and more engaged voters at different time periods, they were all assigned to this 
@@ -529,28 +532,31 @@ be more sure that we are picking up the impact of the treatment.
 
 \subsection{Modeling Strategy}
 
-However, I still need to control for the effects that lead to variation in participation 
-from election to election that are observable. To do this, and to make comparisons 
-within districts, I employ a multi-level modeling strategy that was employed 
-in previous chapters. Multi-level modeling allows me to estimate the effect 
-of treatment across the sample of districts while simultaneously controlling for 
-unobservable changes going on within districts during this time period. 
-The equation below depicts this approach with the \emph{i}'s representing individual 
-observations and the \emph{j}'s representing the individual districts in the 
-sample. $\lambda$ represents the conditional estimate of the treatment, taking 
-into account the within district variation and conditional on the control 
-variables in $X_{ij}$. 
+I use multiple methods to triangulate the causal impact under different 
+identifying assumptions. Leveraging the panel nature of my data, I can use 
+two different methods to control for unobservable characteristics in the 
+data. Using a lagged dependent variable I can control for time-variant 
+unobservables that have the potential to bias causal estimates. Using unit 
+fixed effects, for school districts, I can control for time-invariant 
+unobservable characteristics. \citet{mhecon} demonstrate how under certain 
+assumptions a lagged dependent variable and an individual fixed effect model 
+can serve as a lower and upper bounds on the causal effect respectively. 
+
+
+However, I still need to control for the effects that lead to variation in 
+participation from election to election that are observable. To do this, 
+and to make comparisons within districts, I employ a fixed effect strategy.
+
+
+The equation below depicts this approach with the \emph{i}'s representing 
+individual observations and the \emph{j}'s representing the individual 
+districts in the sample. $\lambda$ represents the conditional estimate 
+of the treatment, taking into account the within district variation and 
+conditional on the control variables in $X_{ij}$. 
 
 \begin{align*} 
-VP_{i} &= \alpha + \gamma_{j} + \beta X_{ij} + \lambda T_{ij} + \epsilon_{ij}  \\ 
-\gamma_{j} &=  \alpha_{j} + \epsilon_{j}
+y_{it} &= \alpha + \gamma_{i} + \beta X_{it} + \lambda T_{it} + \epsilon_{it}  \\ 
 \end{align*}
-
-The multilevel approach also proves important because of the temporal nature of 
-the data. Every district in the data has two to three observations per treatment 
-period and two observations post-treatment. Fitting this model the way traditionally 
-done would involve conditioning the post-treatment observations on post-treatment 
-$X_{i}$ which has the potential of biasing $T_{ij}$.
 
 For robustness, I also provide results using district fixed effect estimation 
 and clustered standard errors (at the school district level) in the Appendix. 
@@ -749,7 +755,8 @@ grid.arrange(p1, p2, p3, p4)
 \subsubsection{WERC Elections}
 
 This chapter introduces a new data source, the results of union certification 
-elections. The Wisconsin Employment Relations Commission (WERC) maintains records of the 
+elections. The Wisconsin Employment Relations Commission (WERC) maintains 
+records of the 
 annual recertification of unions. I use WERC records from each year following 
 the passage of Act 10. After Act 10, unions in school districts had to recertify 
 in waves as their existing union contracts expired. I take WERC election results 
@@ -855,37 +862,60 @@ rm(tmp)
 outdata <- outdata[, c("contestMinor", "distid", "year")]
 outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
                  by.x = c("distid", "year"))
+outdata$treatmentDose <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata$treatmentFactor <- ifelse(outdata$year >= 2011, 1, 0)
+outdata$treatmentDiff <- ifelse(outdata$year >= 2011, abs(outdata$year - 2010), 0)
+outdata$treatmentDiff <- factor(outdata$treatmentDiff)
+partialPanel <- names(table(outdata$distid)[table(outdata$distid) == 1])
+outdata <- outdata[!outdata$distid %in% partialPanel, ]
 
-outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
-
-lagModcontest <- glm(contestMinor ~ contestMinor_lag + treatment + 
-                       VAP_adjLOG_sq_lag + 
+lagModcontest <- glm(contestMinor ~ contestMinor_lag + treatmentDiff + 
+                       VAP_adjLOG_sq_lag + incumShare_lag +
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                PerBachelorOrAbove_lag +  locale2_lag, data = outdata, 
              family = "binomial")
 lagModcontestSE <- get_CL_vcov(lagModcontest, outdata$distid)
 lagModcontest$se <- sqrt(diag(lagModcontestSE))
 
-DIDmodContest <- glm(contestMinor ~ contestMinor_lag * treatment + VAP_adjLOG_sq_lag + 
+DIDmodContest <- glm(contestMinor ~ contestMinor_lag * treatmentDiff + 
+                       VAP_adjLOG_sq_lag + incumShare_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag +
              locale2_lag, data = outdata, family = "binomial")
 DIDmodContestSE <- get_CL_vcov(DIDmodContest, outdata$distid)
 DIDmodContest$se <- sqrt(diag(DIDmodContestSE))
 
-MermodContest <- glmer(contestMinor ~ contestMinor_lag * treatment + 
-                         VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
-               PerBachelorOrAbove_lag + locale2_lag + (1|distid), 
-             data = outdata, family = "binomial", control = ctrl)
+FEmodContest <- glm(contestMinor ~ treatmentDiff + nraces_lag +
+                      incumShare_lag + distid, 
+                    data = outdata, family = "binomial")
+FEmodContest$se <- sqrt(diag(get_CL_vcov(FEmodContest, outdata$distid)))
 
-causMinorConTab <- apsrtable(lagModcontest, DIDmodContest, 
-                             MermodContest, se = "robust", 
-          model.names = c("Lag", "Diff in Diff", "Multilevel"), 
-          stars = "default", 
-          caption = "Causal Estimates of Act 10 Period on Minor Contestation", 
-          label = "tab:causMinorCon", notes = list(stars.note), digits = 3, 
-          Sweave = TRUE)
+
+# 
+# MermodContest <- glmer(contestMinor ~ contestMinor_lag * treatmentDiff + 
+#                          VAP_adjLOG_sq_lag + incumShare_lag + 
+#              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+#                PerBachelorOrAbove_lag + locale2_lag + (1|distid), 
+#              data = outdata, family = "binomial", control = ctrl)
+
+# causMinorConTab <- apsrtable(lagModcontest, DIDmodContest, 
+#                              MermodContest, se = "robust", 
+#           model.names = c("Lag", "Diff in Diff", "Multilevel"), 
+#           stars = "default", 
+#           caption = "Causal Estimates of Act 10 Period on Minor Contestation", 
+#           label = "tab:causMinorCon", notes = list(stars.note), digits = 3, 
+#           Sweave = TRUE)
+
+omitNote <- "Fixed effect model includes district fixed effects - not reported."
+causMinorConTab <- apsrtable(lagModcontest, DIDmodContest, FEmodContest, 
+                             se = "robust", 
+          stars = "default", digits = 3, model.names = c("Lag", "DnD", "FE"), 
+          caption = "Causal Estimates of Act 10 Period on Contestation", 
+          label = "tab:causBL", notes = list(stars.note, omitNote), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))))
+
 @
 
 
@@ -914,36 +944,57 @@ rm(tmp)
 outdata <- outdata[, c("contestSer", "distid", "year")]
 outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
                  by.x = c("distid", "year"))
-outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata$treatmentDose <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata$treatmentFactor <- ifelse(outdata$year >= 2011, 1, 0)
+outdata$treatmentDiff <- ifelse(outdata$year >= 2011, abs(outdata$year - 2010), 0)
+outdata$treatmentDiff <- factor(outdata$treatmentDiff)
 
-# outdata <- outdata[outdata$year > 2007, ]
+partialPanel <- names(table(outdata$distid)[table(outdata$distid) == 1])
+outdata <- outdata[!outdata$distid %in% partialPanel, ]
 
-lagModcontest2 <- glm(contestSer ~ contestSer_lag + treatment + VAP_adjLOG_sq_lag + 
+
+lagModcontest2 <- glm(contestSer ~ contestSer_lag + treatmentDiff + 
+                        VAP_adjLOG_sq_lag + incumShare_lag +
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                PerBachelorOrAbove_lag +  locale2_lag, data = outdata, 
              family = "binomial")
 lagModcontestSE <- get_CL_vcov(lagModcontest2, outdata$distid)
 lagModcontest2$se <- sqrt(diag(lagModcontestSE))
 
-DIDmodContest2 <- glm(contestSer ~ contestSer_lag * treatment + VAP_adjLOG_sq_lag + 
+DIDmodContest2 <- glm(contestSer ~ contestSer_lag * treatmentDiff + 
+                        VAP_adjLOG_sq_lag + incumShare_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag +
              locale2_lag, data = outdata, family = "binomial")
 DIDmodContestSE <- get_CL_vcov(DIDmodContest2, outdata$distid)
 DIDmodContest2$se <- sqrt(diag(DIDmodContestSE))
 
-MermodContest2 <- glmer(contestSer ~ contestSer_lag * treatment + 
-                          VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
-               PerBachelorOrAbove_lag + locale2_lag + (1|distid), 
-             data = outdata, family = "binomial", control = ctrl)
+FEmodContest2 <- glm(contestSer ~ treatmentDiff + nraces_lag + incumShare_lag + 
+                       distid, data = outdata, family = "binomial")
+FEmodContest2$se <- sqrt(diag(get_CL_vcov(FEmodContest2, outdata$distid)))
 
-apsrtable(lagModcontest2, DIDmodContest2, MermodContest2, se = "robust", 
-          model.names = c("Lag", "Diff in Diff", "Multilevel"), 
-          stars = "default", 
-          caption = "Causal Estimates of Act 10 Period on Serious Contestation", 
-          label = "tab:causSerCon", notes = list(stars.note), digits = 3, 
-          Sweave = TRUE)
+# MermodContest2 <- glmer(contestSer ~ contestSer_lag * treatmentDiff + 
+#                           VAP_adjLOG_sq_lag + incumShare_lag +
+#              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+#                PerBachelorOrAbove_lag + locale2_lag + (1|distid), 
+#              data = outdata, family = "binomial", control = ctrl)
+# 
+# apsrtable(lagModcontest2, DIDmodContest2, MermodContest2, se = "robust", 
+#           model.names = c("Lag", "Diff in Diff", "Multilevel"), 
+#           stars = "default", 
+#           caption = "Causal Estimates of Act 10 Period on Serious Contestation", 
+#           label = "tab:causSerCon", notes = list(stars.note), digits = 3, 
+#           Sweave = TRUE)
+
+apsrtable(lagModcontest2, DIDmodContest2, FEmodContest2, 
+                             se = "robust", 
+          stars = "default", digits = 3, model.names = c("Lag", "DnD", "FE"), 
+          caption = "Causal Estimates of Act 10 Period on Contestation", 
+          label = "tab:causBL", notes = list(stars.note, omitNote), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))))
+
 @
 \end{small}
 
@@ -973,44 +1024,62 @@ rm(tmp)
 outdata <- outdata[, c("minBlaisLago", "distid", "year")]
 outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
                  by.x = c("distid", "year"))
-
-outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
-
+outdata$treatmentDose <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata$treatmentFactor <- ifelse(outdata$year >= 2011, 1, 0)
+outdata$treatmentDiff <- ifelse(outdata$year >= 2011, abs(outdata$year - 2010), 0)
+outdata$treatmentDiff <- factor(outdata$treatmentDiff)
 outdata$minBlaisLago <- ifelse(outdata$minBlaisLago == 0, 0.003, outdata$minBlaisLago)
 outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag == 0, 0.003, 
                                    outdata$minBlaisLago_lag)
 outdata$minBlaisLago <- log(outdata$minBlaisLago)
 outdata$minBlaisLago_lag <- log(outdata$minBlaisLago_lag)
+partialPanel <- names(table(outdata$distid)[table(outdata$distid) == 1])
+outdata <- outdata[!outdata$distid %in% partialPanel, ]
 
-# outdata <- outdata[outdata$year > 2007, ]
-
-lagModBL <- lm(minBlaisLago ~ minBlaisLago_lag + treatment + VAP_adjLOG_sq_lag + 
+lagModBL <- lm(minBlaisLago ~ minBlaisLago_lag + treatmentDiff + 
+                 VAP_adjLOG_sq_lag + incumShare_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                PerBachelorOrAbove_lag + 
              locale2_lag, data = outdata)
 lagModBLSE <- get_CL_vcov(lagModBL, outdata$distid)
 lagModBL$se <- sqrt(diag(lagModBLSE))
 
-DIDmodBL <- lm(minBlaisLago ~ minBlaisLago_lag * treatment + VAP_adjLOG_sq_lag + 
+DIDmodBL <- lm(minBlaisLago ~ minBlaisLago_lag * treatmentDiff + 
+                 VAP_adjLOG_sq_lag + incumShare_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag +
              locale2_lag, data = outdata)
 DIDmodBLSE <- get_CL_vcov(DIDmodBL, outdata$distid)
 DIDmodBL$se <- sqrt(diag(DIDmodBLSE))
 
-merModBL <- lmer(minBlaisLago ~ minBlaisLago_lag * treatment + VAP_adjLOG_sq_lag + 
+FEmodBL <- lm(minBlaisLago ~ treatmentDiff +  nraces_lag + incumShare_lag +
+                distid, 
+              data = outdata)
+FEmodBL$se <- sqrt(diag(get_CL_vcov(FEmodBL, outdata$distid)))
+
+merModBL <- lmer(minBlaisLago ~ minBlaisLago_lag * treatmentDiff +
+                   VAP_adjLOG_sq_lag + incumShare_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag +
              locale2_lag + (1|distid), data = outdata)
 
-apsrtable(lagModBL, DIDmodBL, merModBL, se = "robust", 
-          model.names = c("Lag", "Diff in Diff"), stars = "default", 
-          caption = "Causal Estimates of Act 10 Period on Competitiveness", 
-          label = "tab:causBL", notes = list(stars.note), digits = 3, 
-          Sweave = TRUE)
+# apsrtable(lagModBL, DIDmodBL, merModBL, se = "robust", 
+#           model.names = c("Lag", "Diff in Diff"), stars = "default", 
+#           caption = "Causal Estimates of Act 10 Period on Competitiveness", 
+#           label = "tab:causBL", notes = list(stars.note), digits = 3, 
+#           Sweave = TRUE)
 
 plotPred <- predict(DIDmodBL, newdata = outdata, type = "response")
 plotdf2 <- cbind(outdata, plotPred)
+
+
+apsrtable(lagModBL, DIDmodBL, FEmodBL, se = "robust", stars = "default", 
+          digits = 3, model.names = c("Lag", "DnD", "FE"), 
+          caption = "Causal Estimates of Act 10 Period on Competitiveness", 
+          label = "tab:causBL", notes = list(stars.note, omitNote), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))))
 
 @
 
@@ -1043,12 +1112,17 @@ outdata <- outdata[, c("incDefeats", "distid", "year")]
 outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
                  by.x = c("distid", "year"))
 
-outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata$treatmentDose <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata$treatmentFactor <- ifelse(outdata$year >= 2011, 1, 0)
+outdata$treatmentDiff <- ifelse(outdata$year >= 2011, abs(outdata$year - 2010), 0)
+outdata$treatmentDiff <- factor(outdata$treatmentDiff)
+partialPanel <- names(table(outdata$distid)[table(outdata$distid) == 1])
+outdata <- outdata[!outdata$distid %in% partialPanel, ]
 outdata2 <- outdata[outdata$incumShare != max(outdata$incumShare) & 
                       outdata$incumShare != min(outdata$incumShare) & 
                       !is.na(outdata$incumShare_lag), ]
 
-lagModID <- glm(incDefeats ~ incDefeats_lag + treatment + VAP_adjLOG_sq_lag + 
+lagModID <- glm(incDefeats ~ incDefeats_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                PerBachelorOrAbove_lag + incumShare_lag + 
              locale2_lag, data = outdata, family = "binomial")
@@ -1056,23 +1130,36 @@ lagModID <- glm(incDefeats ~ incDefeats_lag + treatment + VAP_adjLOG_sq_lag +
 lagModIDSE <- get_CL_vcov(lagModID, outdata$distid)
 lagModID$se <- sqrt(diag(lagModIDSE))
 
-DIDmodID <- glm(incDefeats ~ incDefeats_lag * treatment + VAP_adjLOG_sq_lag + 
+DIDmodID <- glm(incDefeats ~ incDefeats_lag * treatmentDiff + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag + incumShare_lag +
              locale2_lag, data = outdata, family = "binomial")
 DIDmodIDSE <- get_CL_vcov(DIDmodID, outdata$distid)
 DIDmodID$se <- sqrt(diag(DIDmodIDSE))
 
-merModID <- glmer(incDefeats ~ incDefeats_lag * treatment + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
-               PerBachelorOrAbove_lag + incumShare_lag +
-             locale2_lag + (1|distid), data = outdata, family = "binomial")
+FEmodID <- glm(incDefeats ~ treatmentDiff + nraces_lag +   
+               incumShare_lag +distid, 
+             family = "binomial", data = outdata)
+FEmodID$se <- sqrt(diag(get_CL_vcov(FEmodID, outdata$distid)))
 
-apsrtable(lagModID, DIDmodID, merModID, se = "robust", 
-          model.names = c("Lag", "Diff in Diff", "Multilevel"), stars = "default", 
+# merModID <- glmer(incDefeats ~ incDefeats_lag * treatmentDiff + VAP_adjLOG_sq_lag + 
+#              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+#                PerBachelorOrAbove_lag + incumShare_lag +
+#              locale2_lag + (1|distid), data = outdata, family = "binomial")
+# 
+# apsrtable(lagModID, DIDmodID, merModID, se = "robust", 
+#           model.names = c("Lag", "Diff in Diff", "Multilevel"), stars = "default", 
+#           caption = "Causal Estimates of Act 10 Period on Incumbent Defeat", 
+#           label = "tab:causID", notes = list(stars.note), digits = 3, 
+#           Sweave = FALSE)
+
+ apsrtable(lagModID, DIDmodID, FEmodID, se = "robust", stars = "default", 
+          digits = 3, model.names = c("Lag", "DnD", "FE"), 
           caption = "Causal Estimates of Act 10 Period on Incumbent Defeat", 
-          label = "tab:causID", notes = list(stars.note), digits = 3, 
-          Sweave = FALSE)
+          label = "tab:causID", notes = list(stars.note, omitNote), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))))
 @
 
 \end{small}
@@ -1106,8 +1193,10 @@ rm(tmp)
 outdata <- outdata[, c("turnout", "ImputedFlag", "distid", "year")]
 outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
                  by.x = c("distid", "year"))
-outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
-
+outdata$treatmentDose <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata$treatmentFactor <- ifelse(outdata$year >= 2011, 1, 0)
+outdata$treatmentDiff <- ifelse(outdata$year >= 2011, abs(outdata$year - 2010), 0)
+outdata$treatmentDiff <- factor(outdata$treatmentDiff)
 outdata <- outdata[!is.na(outdata$turnout_lag), ]
 outdata <- outdata[!is.na(outdata$turnout), ]
 outdata <- outdata[outdata$turnout > 0,]
@@ -1121,9 +1210,11 @@ outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
 # outdata <- outdata[outdata$year > 2007, ]
 outdata$turnout <- log(outdata$turnout)
 outdata$turnout_lag <- log(outdata$turnout_lag)
+partialPanel <- names(table(outdata$distid)[table(outdata$distid) == 1])
+outdata <- outdata[!outdata$distid %in% partialPanel, ]
 
 
-lagModturn <- lm(turnout ~ turnout_lag + treatment + VAP_adjLOG_sq_lag + 
+lagModturn <- lm(turnout ~ turnout_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                median_incomeLOG_lag + ImputedFlag +
              locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
@@ -1131,7 +1222,7 @@ lagModturn <- lm(turnout ~ turnout_lag + treatment + VAP_adjLOG_sq_lag +
 lagModturnSE <- get_CL_vcov(lagModturn, outdata$distid)
 lagModturn$se <- sqrt(diag(lagModturnSE))
 
-DIDmodturn <- lm(turnout ~ turnout_lag * treatment + VAP_adjLOG_sq_lag + 
+DIDmodturn <- lm(turnout ~ turnout_lag * treatmentDiff + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                median_incomeLOG_lag+ ImputedFlag + 
              locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
@@ -1139,18 +1230,34 @@ DIDmodturn <- lm(turnout ~ turnout_lag * treatment + VAP_adjLOG_sq_lag +
 DIDmodturnSE <- get_CL_vcov(DIDmodturn, outdata$distid)
 DIDmodturn$se <- sqrt(diag(DIDmodturnSE))
 
-merModturn <- lmer(turnout ~ turnout_lag * treatment + VAP_adjLOG_sq_lag + 
+merModturn <- lmer(turnout ~ turnout_lag * treatmentDiff + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                median_incomeLOG_lag + ImputedFlag +
              locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag + 
                (1|distid), data = outdata)
 
-apsrtable(lagModturn, DIDmodturn, merModturn, se = "robust", 
-          model.names = c("Lag", "Diff in Diff", "Multilevel"), 
-          stars = "default", 
+FEmodTurn <- lm(turnout ~ treatmentDiff + VAP_adjLOG_sq_lag + 
+                  VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+                  median_incomeLOG_lag + ImputedFlag + locale2_lag + 
+                  PerBachelorOrAbove_lag +
+                  fallTurnout_lag + distid, data = outdata)
+FEmodTurn$se <- sqrt(diag(get_CL_vcov(FEmodTurn, outdata$distid)))
+
+# apsrtable(lagModturn, DIDmodturn, merModturn, se = "robust", 
+#           model.names = c("Lag", "Diff in Diff", "Multilevel"), 
+#           stars = "default", 
+#           caption = "Causal Estimates of Act 10 Period on Turnout", 
+#           label = "tab:causTurn", notes = list(stars.note), digits = 3, 
+#           Sweave = TRUE)
+
+ apsrtable(lagModturn, DIDmodturn, FEmodTurn, se = "robust", stars = "default", 
+          digits = 3, model.names = c("Lag", "DnD", "FE"), 
           caption = "Causal Estimates of Act 10 Period on Turnout", 
-          label = "tab:causTurn", notes = list(stars.note), digits = 3, 
-          Sweave = TRUE)
+          label = "tab:causTurn", notes = list(stars.note, omitNote), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))))
+
 @
 \end{small}
 
@@ -1184,7 +1291,10 @@ outdata <- outdata[, c("turnoutDiff", "ImputedFlag", "distid", "year")]
 outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
                  by.x = c("distid", "year"))
 
-outdata$treatment <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata$treatmentDose <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
+outdata$treatmentFactor <- ifelse(outdata$year >= 2011, 1, 0)
+outdata$treatmentDiff <- ifelse(outdata$year >= 2011, abs(outdata$year - 2010), 0)
+outdata$treatmentDiff <- factor(outdata$treatmentDiff)
 outdata <- outdata[!is.na(outdata$turnoutDiff), ]
 outdata <- outdata[!is.na(outdata$turnoutDiff_lag), ]
 centr <- mean(outdata$turnoutDiff)
@@ -1193,9 +1303,12 @@ outdata$outflag <- (outdata$turnoutDiff - centr) / stddev
 outdata$outflag2 <- (outdata$turnoutDiff_lag - centr) / stddev
 outdata <- outdata[outdata$outflag <= 5 & outdata$outflag >= -5,]
 outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
-# outdata <- outdata[outdata$year > 2007, ]
+partialPanel <- names(table(outdata$distid)[table(outdata$distid) == 1])
+outdata <- outdata[!outdata$distid %in% partialPanel, ]
 
-lagModroll <- lm(turnoutDiff ~ turnoutDiff_lag + treatment + VAP_adjLOG_sq_lag + 
+
+lagModroll <- lm(turnoutDiff ~ turnoutDiff_lag + treatmentDiff + 
+                   VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                median_incomeLOG_lag + ImputedFlag + 
              locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
@@ -1203,7 +1316,7 @@ lagModroll <- lm(turnoutDiff ~ turnoutDiff_lag + treatment + VAP_adjLOG_sq_lag +
 lagModrollSE <- get_CL_vcov(lagModroll, outdata$distid)
 lagModroll$se <- sqrt(diag(lagModrollSE))
 
-DIDmodroll <- lm(turnoutDiff ~ turnoutDiff_lag * treatment + 
+DIDmodroll <- lm(turnoutDiff ~ turnoutDiff_lag * treatmentDiff + 
                    VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                median_incomeLOG_lag+ ImputedFlag +
@@ -1212,19 +1325,35 @@ DIDmodroll <- lm(turnoutDiff ~ turnoutDiff_lag * treatment +
 DIDmodrollSE <- get_CL_vcov(DIDmodroll, outdata$distid)
 DIDmodroll$se <- sqrt(diag(DIDmodrollSE))
 
-merModroll <- lmer(turnoutDiff ~ turnoutDiff_lag * treatment + 
+merModroll <- lmer(turnoutDiff ~ turnoutDiff_lag * treatmentDiff + 
                    VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
                median_incomeLOG_lag+ ImputedFlag +
              locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag + 
                (1|distid), data = outdata)
 
-apsrtable(lagModroll, DIDmodroll, merModroll, se = "robust", 
-          model.names = c("Lag", "Diff in Diff", "Multilevel"), 
-          stars = "default", 
+FEmodRoll <- lm(turnoutDiff ~ treatmentDiff  + 
+                   VAP_adjLOG_sq_lag + 
+             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag + 
+               median_incomeLOG_lag + ImputedFlag +
+               PerBachelorOrAbove_lag + fallTurnout_lag +
+               distid, data = outdata)
+FEmodRoll$se <- sqrt(diag(get_CL_vcov(FEmodRoll, outdata$distid)))
+# 
+# apsrtable(lagModroll, DIDmodroll, merModroll, se = "robust", 
+#           model.names = c("Lag", "Diff in Diff", "Multilevel"), 
+#           stars = "default", 
+#           caption = "Causal Estimates of Act 10 Period on Rolloff", 
+#           label = "tab:causRoll", notes = list(stars.note), digits = 3, 
+#           Sweave = TRUE)
+
+apsrtable(lagModroll, DIDmodroll, FEmodRoll, se = "robust", stars = "default", 
+          digits = 3, model.names = c("Lag", "DnD", "FE"), 
           caption = "Causal Estimates of Act 10 Period on Rolloff", 
-          label = "tab:causRoll", notes = list(stars.note), digits = 3, 
-          Sweave = TRUE)
+          label = "tab:causRoll", notes = list(stars.note, omitNote), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))))
 @
 \end{small}
 
@@ -1248,7 +1377,10 @@ Rolloff & - & null & correct sign, no statistical significance \\ \hline
 \end{table}
 
 Table \ref{tab:act10resSummary} summarizes the results in comparison to the 
-expectations from Table \ref{tab:act10hypo}. 
+expectations from Table \ref{tab:act10hypo}. Overall, there is some evidence 
+of an effect of Act 10 on school board election activity. Specifically, the 
+post-Act 10 period showed evidence of an increase in competitiveness, a 
+decrease in turnout, and an increase in rolloff. 
 
 <<bldiffindiff, fig.cap="Average Fitted Value over Realistic Value">>=
 summPlot <- ddply(plotdf2, .(year), summarize, 

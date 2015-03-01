@@ -74,30 +74,6 @@ get_CL_vcov<-function(model, cluster){
   return(vcovCL)
 }
 
-get_CL_vcov_robust <- function(model, cluster){
-  # Make clustered standard errors robust to AC
-  # cluster is an actual vector of clusters from data passed to model
-  # from: http://rforpublichealth.blogspot.com/2014/10/easy-clustered-standard-errors-in-r.html
-  require(sandwich, quietly = TRUE)
-  require(lmtest, quietly = TRUE)
-  
-  # NA
-  cluster <- as.character(cluster)
-  
-  #calculate degree of freedom adjustment
-  M <- length(unique(cluster))
-  N <- length(cluster)
-  K <- model$rank
-  dfc <- (M/(M-1))*((N-1)/(N-K))
-  
-  #calculate the uj's
-  uj  <- apply(estfun(model), 2, function(x) tapply(x, cluster, sum))
-  
-  #use sandwich to get the var-covar matrix
-  vcovCL <- dfc*sandwich(model, meat=crossprod(uj)/N)
-  return(vcovCL)
-}
-
 
 confusionMatrixTmp <- function(data, model) {
   prediction <- ifelse(predict(model, data, type='response') > 0.5, TRUE, FALSE)
