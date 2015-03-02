@@ -741,10 +741,10 @@ reflection on how strongly those voters felt about Act 10 in the first place.}
 A second measure that arises from this period is the level of turnout for the 
 recall election itself. As with any election, voters without a strong preference 
 either way were able to stay home. What's more, the election was at an unconventional 
-time -- neither during the fall or the spring general election. Turnout was specifically 
-driven by a desire to express support or opposition to the Governor. As such, 
-it can be seen as an indication of the intensity with which a community was in 
-favor of or against the policies of the Governor. \footnote{The recall election 
+time -- neither during the fall or the spring general election. Turnout was 
+specifically driven by a desire to express support or opposition to the Governor. 
+As such, it can be seen as an indication of the intensity with which a community 
+was in favor of or against the policies of the Governor. \footnote{The recall election 
 took place on June $5^{th}$, 2012. Turnout was 57.4\% with 2,516,065 voters 
 casting votes for Governor out of a voting age population of 4,378,741. For more 
 information see \url{http://gab.wi.gov/sites/default/files/Statewide\%20Percentage\%20Results_6.5.12\%20Recall\%20Election\_PRE\%20SEN21\%20RECOUNT.pdf}}
@@ -757,10 +757,13 @@ members, not just of those who voted, must vote in favor of recertifying for
 the union to continue to operate. The results of these elections -- the margin 
 by which the union recertified -- can be seen as a measure of latent union 
 strength. While the vast majority of unions recertified, in many cases the 
-elections were close. 
+elections were close.\footnote{Details on state law surrounding this.}
 
 Each of these measures was made available \emph{after} the exogenous shock and 
-as such can be considered to be \emph{post-treatment} variables. 
+as such can be considered to be \emph{post-treatment} variables. As I will argue 
+below, I believe these measures can be interpreted as measuring latent traits 
+within the communities and thus serve as \emph{pre-treatment} proxies of community 
+traits which would not have been measured statewide without intervention. 
 
 \subsubsection{Polarization}
 
@@ -844,21 +847,23 @@ grid.arrange(p1, p2, p3, p4)
 
 \subsubsection{WERC Elections}
 
-This chapter introduces a new data source, the results of union certification 
-elections. The Wisconsin Employment Relations Commission (WERC) maintains 
-records of the 
-annual recertification of unions. I use WERC records from each year following 
-the passage of Act 10. After Act 10, unions in school districts had to recertify 
-in waves as their existing union contracts expired. I take WERC election results 
-from 2011, 2012, 2013, and 2014. After recertifying the first time, unions must 
-hold an annual recertification election. I collapse the recertifcation elections 
-for all unions in the district available in all years as a measure of union 
-strength over time. I explore two separate measures of union strength -- the 
-turnout in all union elections in the district, and turnout in teacher union 
-only elections. 
+The Act 10 period forced teachers' unions to show their strength through 
+recertification elections. Statewide, most unions recertified sometime in the 
+period from 2011-2013. While previously the proportion of the electorate composed 
+of teachers was used as a proxy for teacher union strength in Chapter 
+\ref{chap:turnout}, this measure is a measure of the cohesiveness and political
+strength of teachers' unions. The Wisconsin Employment Relations Commission (WERC) maintains records of the annual recertification of unions. I use WERC records 
+from each year following the passage of Act 10. After Act 10, unions in school
+districts had to recertify in waves as their existing union contracts expired. 
+I take WERC election results from 2011, 2012, 2013, and 2014. After recertifying 
+the first time, unions must hold an annual recertification election. I collapse 
+the recertifcation elections for all unions in the district available in all years 
+as a measure of union strength over time. 
 
 Turnout is a strong proxy for union strength because such vote records are public 
-record. % explain this
+record. Teachers have little financial incentive to participate in the union 
+post Act 10 as the union is barred legally from bargaining for anything other 
+than an inflation indexed wage increase. 
 
 
 Figure \ref{fig:ivPlot3} shows the relationship between independent variables and 
@@ -904,7 +909,7 @@ grid.arrange(p1, p2, p3, p4)
 
 \section{Methods}
 
-I now describe the models fit to the data and how to understand parameter. 
+I now describe the models fit to the data and how to understand parameters.  
 
 \subsection{Causal Inference}
 
@@ -947,12 +952,9 @@ unobservable characteristics. \citet{mhecon} demonstrate how under certain
 assumptions a lagged dependent variable and an individual fixed effect model 
 can serve as a lower and upper bounds on the causal effect respectively. 
 
-
 However, I still need to control for the effects that lead to variation in 
 participation from election to election that are observable. To do this, 
 and to make comparisons within districts, I employ a fixed effect strategy.
-
-
 The equation below depicts this approach with the \emph{i}'s representing 
 individual observations and the \emph{j}'s representing the individual 
 districts in the sample. $\lambda$ represents the conditional estimate 
@@ -963,8 +965,6 @@ conditional on the control variables in $X_{ij}$.
 y_{it} &= \alpha + \gamma_{i} + \beta X_{it} + \lambda T_{it} + \epsilon_{it}  \\ 
 \end{align*}
 
-For robustness, I also provide results using district fixed effect estimation 
-and clustered standard errors (at the school district level) in the Appendix. 
 
 \subsection{Threats to Validity}
 
@@ -984,8 +984,6 @@ each of the dependent variables as demonstrated in previous chapters.
 % TODO: Describe a lagged observational model
 % TODO: Difference in difference strategy
 % TODO: Interrupted time series with district random effects
-
-
 
 
 \section{Results}
@@ -1540,7 +1538,7 @@ apsrtable(lagModroll, DIDmodroll, FEmodRoll, se = "robust", stars = "default",
 \caption{Summary of Causal Relationship of Act 10 Reforms on Board Elections}
 \label{tab:act10resSummary}
 \begin{tabular}{| p{.24\textwidth} | p{.12\textwidth} | p{.12\textwidth} | 
-      p{.24\textwidth} |} \hline
+      p{.4\textwidth} |} \hline
 DV / Variable & expected & observed & evidence \\ \hline
 Contested Race & + & null & no statistical significance, correct sign \\ \hline
 Contesed Race (ser) & + & null & no statistical significance, correct sign on interaction \\ \hline
@@ -1738,7 +1736,7 @@ caption = "Mediation Estimates of Polarization on Board Elections - Multilevel M
 
 %tab:unionMed
 \begin{small}
-<<unionStrength>>=
+<<unionStrength, results="asis">>=
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
                          "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
                          "RecallPolarization", "incDefeats", "ImputedFlag", 
@@ -2393,21 +2391,6 @@ school board elections themselves were not specifically affected.
 
 \clearpage
 
-\subsection{Substantive Effects}
-
-Next I demonstrate the substantive magnitude of the state level policy shock to 
-contextualize the influence that state government can have on local elections. 
-
-% Which models to simulate
-% No models of contestation -- no results!
-% WERC model for incumbent defeat IncDef4mm
-% Treatment effect on competitiveness demogsMMblq1
-%  Treatment effect on turnout demogsMod1mm
-%  Polarization damper on turnout demogsMod3mm
-%  Rolloff
-% demogsMod3roMM for post-recall polarization impact
-% demogsMod4roMM for post-recall WERC impact
-
 \section{Conclusion}
 
 \clearpage
@@ -2426,28 +2409,28 @@ causMinorConTab
 
 HLM mediation models. 
 
-\begin{small}
+\begin{tiny}
 <<unionMedtable, results='asis'>>=
 unionMedtable
 @
-\end{small}
+\end{tiny}
 
-\begin{small}
+\begin{tiny}
 <<polarMedTable, results='asis'>>=
 polarMedTable
 @
-\end{small}
+\end{tiny}
 
-\begin{small}
+\begin{tiny}
 <<recallTurnMedTable, results='asis'>>=
 recallTurnMedTable
 @
-\end{small}
+\end{tiny}
 
 
-\begin{small}
+\begin{tiny}
 <<recallMedTable, results='asis'>>=
 recallMedTable
 @
-\end{small}
+\end{tiny}
 
