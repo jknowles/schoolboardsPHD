@@ -481,88 +481,107 @@ and school board preferences are posited. The first is the level of support for
 Governor Walker's education policies in the Act 10 period. Second is the strength 
 of support in the community for those preferences. Third is the relative strength 
 of interest groups in the community -- specifically in this case teachers' 
-unions. 
+unions. The next section describes these measures in more detail. 
 
-Table \ref{tab:act10hypo} summarizes these expectations. 
+To measure the impact on the actualized democracy in school districts, I use 
+five separate measures of democratic activity. The first three are related 
+measures of contestation. I use two categorizations of elections as either 
+uncontested, ``minorly contested'', and ``seriously contested''. Races with 
+challengers receiving 20 or more votes are considered ``seriously contested'', 
+while races with at least a nominal challenger are considered ``minorly contested''. 
+In addition to these categories, I employ a continuous measure of the 
+competitiveness of a race that accounts for the number of seats available, number 
+of voters casting ballots, and the number of votes necessary for at least one 
+candidate to move from being a winner to a loser \citep{blaislago}. This measure 
+is known as the Blais-Lago quotient and was also used in Chapters \ref{chap:candidacy} 
+and \ref{chap:turnout}. Finally, I use two separate measures of voter turnout. 
+The first captures the raw turnout for school board races out of the total voting 
+age population of the school district. The second captures the proportion of voters 
+who rolloff, or fail to cast a ballot for school board but voted in the spring 
+election \citep{wattenberg00}. 
 
-As in Chapter \ref{chap:candidacy}, I use three separate measures of contestation. 
-First, I use the presence of any challenger either appearing on the ballot or receiving 
-more than 10 votes as a write-in candidate. I code these races as ``minorly contested'' 
-because they have a nominal level of contestation at a minimum. Next, I use a higher 
-threshold where only races with challengers who receive 20 or more votes are 
-considered as ``seriously contested''. Finally, I use a measure of race competitiveness, 
-the Blais-Lago quotient. 
+Table \ref{tab:act10hypo} summarizes the expected relationships between these 
+variables. Shock refers to the main effect of the Act 10 period on the election activity in a school district, relative to its prior school board election 
+activity. Both continuous participation and dissatisfaction theory have the same expectation. However, evidence for dissatisfaction theory comes from the expectation 
+that the interaction of mediating factors and the policy shock should have 
+an impact on some of the dependent variables. 
+
+% 
+% \caption[Close up of \textit{Hemidactylus} sp.]
+%    {Close up of \textit{Hemidactylus} sp., which is
+%    part the genus of the gecko family. It is the
+%    second most speciose genus in the family.}
 
 \begin{table}[h!]
 \begin{center}
 \begin{small}
-\caption{Expected Relationships between Key Independent and Dependent Variables}
+\caption[Expected Effects of Act 10 Period and Mediating Factors on Actualized 
+Democracy]{Expected effect of Act 10 shock and mediating factors on key measures 
+of actualized democratic activity in school districts. Shock refers to elections 
+during the Act 10 period, polarization refers to the community divide in support 
+of Governor Walker, recall refers to the level of participation in the recall 
+election, and IG refers to the strength of the teachers' union in the school 
+district.}
 \label{tab:act10hypo}
-\begin{tabular}{| p{.16\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |
-                p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |} \hline
-DV / Variable & treatment & treatment x polarization & 
-  treatment x turnout & treatment x WERC & polarization & 
-  WERC \\ \hline
-Contested Race & + & + & null & + & null & null \\ \hline
-Incumbent Defeat & + & + & + & - & + & - \\ \hline 
-Blais-Lago & + & + & null & + & + & - \\ \hline
-Turnout & + & + & + & + & null & - \\ \hline
-Rolloff & - & - & - & - & null & + \\ \hline
+\begin{tabular}{| p{.16\textwidth} | p{.12\textwidth} | p{.12\textwidth} | 
+ p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |} \hline
+variable & shock & shock x polarization & shock x recall & shock x IG & 
+      polarization & IG strength \\ \hline
+Cont. Race & + & + & null & - & null & - \\ \hline
+Inc. Def.  & + & + & +    & - & +    & - \\ \hline 
+Blais-Lago & + & + & null & + & +    & - \\ \hline
+Turnout    & + & + & +    & - & null & - \\ \hline
+Rolloff    & - & - & -    & - & null & + \\ \hline
 \end{tabular}
 \end{small}
 \end{center}
 \end{table}
 
-If there is no impact on voter turnout in the wake of such a broad expansion of 
-school board power over an issue as polarizing as collective bargaining rights 
-for local employees, we would expect smaller policy shocks to have no effect either. 
-This would represent a rejection of the applicability of information theory to 
-explain turnout in low-salience non-partisan elections. This would also provide 
-evidence in support of dissatisfaction theory - with heightened stakes for board 
-policy preferences.\footnote{One concern might be that the polarization was so 
-extreme and the state so saturated with negative campaigning of all forms that 
-voter turnout was suppressed even in the case of spring school board elections 
-\citep{NegativeCamp1999}.} This follows along the work of \citet{Lassen2005} who leveraged an exogenous shock 
+For example, both dissatisfaction theory and continuous participation theory 
+anticipate that the Act 10 period should result in increases in all electoral 
+activity and a decrease in rolloff, or spring election voters who do not 
+cast a ballot for school board. Dissatisfaction theory suggests that the impact 
+of the shock is larger in communities with greater polarization around Governor 
+Walker. However, if teacher union strength is high, the impact of the Act 10 
+shock should be attenuated as unions work to protect incumbents, deter 
+challengers, and keep races close relative to communities with weaker teachers' 
+union strength. 
+
+Turnout should increase in the Act 10 period, and should increase even more in 
+communities divided in their support of Governor Walker.\footnote{One concern 
+might be that the polarization was so extreme and the state so saturated with 
+negative campaigning of all forms that voter turnout was suppressed even in the 
+case of spring school board elections \citep{NegativeCamp1999}.} This matches 
+studies of other elections by \citet{Lassen2005} who leveraged an exogenous shock 
 of an information campaign in some electoral districts and found that 
 increasing voters' information also produced a sizeable effect on the propensity 
-to vote. 
-% 
-% \begin{table}[h!]
-% \begin{center}
-% \begin{small}
-% \caption{Theories of Turnout and Expected Evidence: Causal}
-% \label{turnoutH2}
-% \begin{tabular}{| p{.15\textwidth} | p{.2\textwidth} | p{.6\textwidth} |}
-% \hline
-% \textbf{Theory}  & \textbf{Citation} & \textbf{Expected Finding} \\ \hline
-% Information theory  & \citet{Matsusaka} & Large turnout increases after passage of Act 10\\ \hline
-% Dissatisfaction theory & \citet{RefWorks:297,RefWorks:271} & Large turnout increase after Act 10 \\ \hline
-% \end{tabular}
-% \end{small}
-% \end{center}
-% \end{table}
+to vote. However, if interest group activity is strong, in the pre-shock period 
+we should see voter turnout be suppressed, but in the post-shock period we should 
+see turnout increase as teachers' unions attempt to mobilize a show of force 
+at the ballot box in support of their candidates locally. 
 
+\subsection{Threats to Validity}
 
+The argument above is not without its counterpoints. Critics might counter that 
+though voters were mobilized in the Act 10 period, it had nothing to do with 
+school boards. The 2011 spring election was also marked by a highly contested 
+statewide Supreme Court election and the ultimate impact of Act 10 was in doubt 
+due to multiple legal challenges. Voters in this period may have been motivated 
+almost entirely by the statewide Supreme Court race and any participation in 
+school board elections was purely incidental. By the 2012 spring election, Act 10 
+was ruled as constitutional and there was no policy shock. Moreover, though Act 10 
+now gave school boards more power, it came coupled with historical cuts in 
+state aid and a freeze on school district revenue limits. In practice this 
+meant that though compensation policy may have been freed up, school boards had 
+very little flexibility to innovate under such fiscal constraint and school board 
+office may have appeared particularly unappealing to potential candidates. 
 
-The 2011 election was also marked by a highly contested statewide Supreme Court 
-election and the ultimate effect of Act 10 was in doubt due to multiple legal 
-challenges. By the 2012 election, Act 10 had been ruled constitutional and there 
-was no state supreme court seat up for election. 
+This study addresses these concerns through a number of methods. 
 
-
-Unfortunately, the present study cannot distinguish between these two mechanism. 
-More to the point, the study is limited by the reality that though school boards 
-were given this freedom, it came coupled with historical cuts in state aid and 
-a freeze on school district revenue limits. In practice this meant that though 
-compensation policy may have been freed up, school boards had very little 
-flexibility to innovate under such fiscal constraint. In some sense then, this 
-leaves the elections post Act 10 as really a referendum on the opinion of voters 
-and communities on both the changes to collective bargaining, but also reductions 
-in school funding. 
-
-
-
-
+% Multiple measures of actualized democracy
+% Multiple measures of treatment separating 2011 and 2012 as distinct
+% A panel study to provide within district comparisons
+% Mediation measures
 
 \section{Data}
 
