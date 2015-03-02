@@ -474,11 +474,6 @@ activity. Both continuous participation and dissatisfaction theory have the same
 that the interaction of mediating factors and the policy shock should have 
 an impact on some of the dependent variables. 
 
-% 
-% \caption[Close up of \textit{Hemidactylus} sp.]
-%    {Close up of \textit{Hemidactylus} sp., which is
-%    part the genus of the gecko family. It is the
-%    second most speciose genus in the family.}
 
 \begin{table}[h!]
 \begin{center}
@@ -544,12 +539,23 @@ meant that though compensation policy may have been freed up, school boards had
 very little flexibility to innovate under such fiscal constraint and school board 
 office may have appeared particularly unappealing to potential candidates. 
 
-This study addresses these concerns through a number of methods. 
+I believe this study addresses these concerns in several ways. First, instead of 
+focusing on a single measure of actualized democracy, I apply multiple measures. 
+For example, while turnout may be subjected to political forces like statewide 
+interest in a Supreme Court race, school board incumbent defeat and school board 
+ballot rolloff are not. In addition to multiple outcome measures, I measure the 
+policy shock of the Act 10 period as two distinct events, instead of averaging 
+across the 2011 and 2012 elections. This has two benefits. First, it more closely 
+reflects the reality that different conditions were in place in each election. 
+More importantly, it allows for the effect of the Act 10 period to be measured 
+with more nuance and the persistence of the effect to be explored. I also test 
+for mediation effects. While it is not possible to measure and model all 
+possible biasing omitted variables, I can search for some that theory suggests 
+may explicitly be modifying the impact of the Act 10 period. For the rest, 
+I can employ the panel nature of the data to focus on within district comparisons 
+which difference out all time invariant unobservable characteristics. 
 
-% Multiple measures of actualized democracy
-% Multiple measures of treatment separating 2011 and 2012 as distinct
-% A panel study to provide within district comparisons
-% Mediation measures
+I now turn to describing the data and methods I employ to achieve this. 
 
 \section{Data}
 
@@ -562,58 +568,68 @@ demographic, and educational dimensions.
 \subsection{Dependent Variables}
 
 In this section I outline the key dependent variables for this investigation. 
-Broadly, I am looking for evidence of the causal impact of state level policy 
-shocks on the behavior of both candidates and voters. For candidates, I look 
+Broadly, I am looking for evidence of the causal impact of the Act 10 period
+on the behavior of both candidates and voters. For candidates, I look 
 for a change in the patterns of candidate contestation and seat competitiveness 
 after the passage of Act 10 and the granting of additional powers to school boards. 
 For voters, I look for changes in voter turnout and decreases in voter rolloff. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth,height=3.18in]{../../phd_figs/chap6-minorContestPlot-1} \caption[Polarization and Contestation - Minor Contestation]{Polarization and Contestation - Minor Contestation}\label{fig:minorContestPlot}
+\includegraphics[width=\maxwidth,height=3.18in]{../../phd_figs/chap6-blaisLagoplot-1} \caption[Lagged Competitiveness Across Years]{Lagged Competitiveness Across Years}\label{fig:blaisLagoplot}
 \end{figure}
 
 
 \end{knitrout}
 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth,height=3.18in]{../../phd_figs/chap6-serContestPlot-1} \caption[Polarization and Contestation - Serious Contestation]{Polarization and Contestation - Serious Contestation}\label{fig:serContestPlot}
-\end{figure}
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Mon Mar 02 01:12:21 2015
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrr}
+  \hline
+ & No Serious Contestation & Serious Contestation \\ 
+  \hline
+2007 & 188 & 108 \\ 
+  2008 & 206 & 92 \\ 
+  2009 & 200 & 96 \\ 
+  2010 & 188 & 109 \\ 
+  2011 & 195 & 108 \\ 
+  2012 & 201 & 101 \\ 
+   \hline
+\end{tabular}
+\caption{Frequency of Incumbency and Contestation.} 
+\label{tab:serConyear}
+\end{table}
 
 
-\end{knitrout}
 
-Figures \ref{fig:minorContestPlot} and \ref{fig:serContestPlot} show the relationship 
-between the community polarization in the Gubernatorial recall vote and contestation. 
-There appears to be consistently little difference in the distribution of 
-polarization between districts with contested and uncontested races across the 
-years. 
+Figure \ref{fig:blaisLagoplot} shows the relationship between lagged district 
+competitiveness and district competitiveness changes slightly in 2011 and 2012 
+from the global linear model represented by the dashed line. 
+Table \ref{tab:serConyear} shows the number of districts with serious 
+contestation for school board by year since 2006. The sample is relatively 
+consistent over this period and there appears to be no change in the number 
+of districts with seriously contested races across the years. 
 
-Figure \ref{fig:blPlot} explores this same relationship but for the continuous 
-measure of seat competitiveness -- the Blais-Lago quotient. Here there is a pattern 
-of elevated contestation in 2011, and an increase in competitiveness, a lower 
-B-L quotient, as seat polarization increases in year 2012. There is a similar 
-pattern, though weaker in 2007 and 2010 as well. 
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap6-blPlot-1} \caption[Polarization and Seat Competitiveness]{Polarization and Seat Competitiveness}\label{fig:blPlot}
-\end{figure}
-
-
-\end{knitrout}
 
 Figures \ref{fig:turnoutPlot1} and \ref{fig:turnoutPlot2} show the relationship 
-between polarization and school board turnout and voter rolloff. In 2011 and 2012 
-there appears to be a negative relationship between increasing polarization and 
-decreased turnout. For rolloff, the relationship appears to be the same across 
-all the years. 
+between school board turnout and voter rolloff and their respective lags. In 
+2011 and 2012 the relationship deviates from the pooled across year relationship 
+represented by the dashed line. In 2011 the slope looks the same, but the intercept 
+is much higher suggesting higher overall turnout. In 2012, the slope is steeper, 
+but the intercept is close to the same. This looks like a good argument for 
+considering a twice lagged measure as the strange year to year relationships may 
+be due to the cyclical nature of these elections. 
+
+For rolloff, 2011 is clearly a standout year, while 2012 appears to fall right 
+in line with the pooled across year relationship represented by the dashed line. 
+
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap6-turnoutPlot1-1} \caption[Polarization and School Board Turnout]{Polarization and School Board Turnout}\label{fig:turnoutPlot1}
+\includegraphics[width=\maxwidth,height=3.18in]{../../phd_figs/chap6-turnoutPlot1-1} \caption[Lagged School Board Turnout Across Years]{Lagged School Board Turnout Across Years}\label{fig:turnoutPlot1}
 \end{figure}
 
 
@@ -621,7 +637,24 @@ all the years.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap6-turnoutPlot2-1} \caption[Polarization and Spring Rolloff]{Polarization and Spring Rolloff}\label{fig:turnoutPlot2}
+\includegraphics[width=\maxwidth,height=3.18in]{../../phd_figs/chap6-turnoutPlot2-1} \caption[Lagged Spring Rolloff Across Years]{Lagged Spring Rolloff Across Years}\label{fig:turnoutPlot2}
+\end{figure}
+
+
+\end{knitrout}
+
+
+\subsection{Independent Variables}
+
+Figure \ref{fig:pairsPlot} shows the relationships among some key control variables 
+and is similar to the plot introduced in Chapter \ref{chap:turnout}. These 
+variables are related to the key independent variables identified by 
+\citet{RefWorks:297} as indicators of school districts in transition from insular 
+to competitive in their politics. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-pairsPlot-1} \caption[Pairs Plot of Demographic Variables and Turnout in 2012]{Pairs Plot of Demographic Variables and Turnout in 2012}\label{fig:pairsPlot}
 \end{figure}
 
 
@@ -630,25 +663,25 @@ all the years.
 
 \subsection{New Measures}
 
-An additional advantage of this exogenous shock for the study of school board 
-elections is that it creates three unique measures available statewide to peer 
-into the preferences of communities. First, the level of polarization in the 
-community in the recall election of Scott Walker. The result of this election can 
-be seen largely as an opinion poll of voters on the issues of Act 10 and education 
-funding in the state -- the two largest issues in the campaign.\footnote{While some have 
-argued that another issue, the legitimacy of recalling the Governor in the first 
-place was also important, this may also be a reflection on how strongly those 
-voters felt about Act 10 in the first place.} All else equal, more polarized 
-communities should exhibit greater contestation and turnout in school board 
-elections due to the deeper conflict over the best way to manage public schools. 
+In addition to the suite of independent variables found in Chapters 
+\ref{chap:candidacy} and \ref{chap:turnout}, this chapter features some additional 
+key dependent variables drawn from results of Wisconsin's historic recall election. 
+The Act 10 period itself created three unique measures available statewide to 
+provide a window into the preferences of communities. First, the level of 
+polarization in the community in the recall election of Scott Walker. The result 
+of this election can be seen largely as an opinion poll of voters on the issues of 
+Act 10 and education funding in the state -- the two largest issues in the 
+campaign.\footnote{While some have argued that another issue, the legitimacy of
+recalling the Governor in the first place was also important, this may also be a
+reflection on how strongly those voters felt about Act 10 in the first place.} 
 
 A second measure that arises from this period is the level of turnout for the 
 recall election itself. As with any election, voters without a strong preference 
 either way were able to stay home. What's more, the election was at an unconventional 
-time -- neither during the fall or the spring general election. Turnout was specifically 
-driven by a desire to express support or opposition to the Governor. As such, 
-it can be seen as an indication of the intensity with which a community was in 
-favor of or against the policies of the Governor. \footnote{The recall election 
+time -- neither during the fall or the spring general election. Turnout was 
+specifically driven by a desire to express support or opposition to the Governor. 
+As such, it can be seen as an indication of the intensity with which a community 
+was in favor of or against the policies of the Governor. \footnote{The recall election 
 took place on June $5^{th}$, 2012. Turnout was 57.4\% with 2,516,065 voters 
 casting votes for Governor out of a voting age population of 4,378,741. For more 
 information see \url{http://gab.wi.gov/sites/default/files/Statewide\%20Percentage\%20Results_6.5.12\%20Recall\%20Election\_PRE\%20SEN21\%20RECOUNT.pdf}}
@@ -661,13 +694,15 @@ members, not just of those who voted, must vote in favor of recertifying for
 the union to continue to operate. The results of these elections -- the margin 
 by which the union recertified -- can be seen as a measure of latent union 
 strength. While the vast majority of unions recertified, in many cases the 
-elections were close. 
+elections were close.\footnote{Details on state law surrounding this.}
 
-\subsection{Independent Variables}
+Each of these measures was made available \emph{after} the exogenous shock and 
+as such can be considered to be \emph{post-treatment} variables. As I will argue 
+below, I believe these measures can be interpreted as measuring latent traits 
+within the communities and thus serve as \emph{pre-treatment} proxies of community 
+traits which would not have been measured statewide without intervention. 
 
-In addition to the suite of independent variables found in Chapters \ref{chap:candidacy} 
-and \ref{chap:turnout}, this chapter features some additional key dependent variables 
-drawn from results of Wisconsin's historic recall election. 
+\subsubsection{Polarization}
 
 Figure \ref{fig:ivPlot1} shows the relationship between recall polarization and 
 other variables for the year 2012. THe relationship between fall and recall election 
@@ -677,6 +712,7 @@ recent presidential two-party vote - aside from a handful of outliers it follows
 in the expected direction. Finally, spring election turnout is fairly similar to 
 the other turnout variables, but at a lower level with about half the turnout 
 on average of the other elections. 
+
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -705,21 +741,23 @@ Polarization appears to be consistent across the size of the Voting Age Populati
 
 \subsubsection{WERC Elections}
 
-This chapter introduces a new data source, the results of union certification 
-elections. The Wisconsin Employment Relations Commission (WERC) maintains 
-records of the 
-annual recertification of unions. I use WERC records from each year following 
-the passage of Act 10. After Act 10, unions in school districts had to recertify 
-in waves as their existing union contracts expired. I take WERC election results 
-from 2011, 2012, 2013, and 2014. After recertifying the first time, unions must 
-hold an annual recertification election. I collapse the recertifcation elections 
-for all unions in the district available in all years as a measure of union 
-strength over time. I explore two separate measures of union strength -- the 
-turnout in all union elections in the district, and turnout in teacher union 
-only elections. 
+The Act 10 period forced teachers' unions to show their strength through 
+recertification elections. Statewide, most unions recertified sometime in the 
+period from 2011-2013. While previously the proportion of the electorate composed 
+of teachers was used as a proxy for teacher union strength in Chapter 
+\ref{chap:turnout}, this measure is a measure of the cohesiveness and political
+strength of teachers' unions. The Wisconsin Employment Relations Commission (WERC) maintains records of the annual recertification of unions. I use WERC records 
+from each year following the passage of Act 10. After Act 10, unions in school
+districts had to recertify in waves as their existing union contracts expired. 
+I take WERC election results from 2011, 2012, 2013, and 2014. After recertifying 
+the first time, unions must hold an annual recertification election. I collapse 
+the recertifcation elections for all unions in the district available in all years 
+as a measure of union strength over time. 
 
 Turnout is a strong proxy for union strength because such vote records are public 
-record. % explain this
+record. Teachers have little financial incentive to participate in the union 
+post Act 10 as the union is barred legally from bargaining for anything other 
+than an inflation indexed wage increase. 
 
 
 Figure \ref{fig:ivPlot3} shows the relationship between independent variables and 
@@ -743,7 +781,7 @@ VAP over 65 are not really related to this.
 
 \section{Methods}
 
-I now describe the models fit to the data and how to understand parameter. 
+I now describe the models fit to the data and how to understand parameters.  
 
 \subsection{Causal Inference}
 
@@ -786,12 +824,9 @@ unobservable characteristics. \citet{mhecon} demonstrate how under certain
 assumptions a lagged dependent variable and an individual fixed effect model 
 can serve as a lower and upper bounds on the causal effect respectively. 
 
-
 However, I still need to control for the effects that lead to variation in 
 participation from election to election that are observable. To do this, 
 and to make comparisons within districts, I employ a fixed effect strategy.
-
-
 The equation below depicts this approach with the \emph{i}'s representing 
 individual observations and the \emph{j}'s representing the individual 
 districts in the sample. $\lambda$ represents the conditional estimate 
@@ -802,8 +837,6 @@ conditional on the control variables in $X_{ij}$.
 y_{it} &= \alpha + \gamma_{i} + \beta X_{it} + \lambda T_{it} + \epsilon_{it}  \\ 
 \end{align*}
 
-For robustness, I also provide results using district fixed effect estimation 
-and clustered standard errors (at the school district level) in the Appendix. 
 
 \subsection{Threats to Validity}
 
@@ -823,8 +856,6 @@ each of the dependent variables as demonstrated in previous chapters.
 % TODO: Describe a lagged observational model
 % TODO: Difference in difference strategy
 % TODO: Interrupted time series with district random effects
-
-
 
 
 \section{Results}
@@ -1104,7 +1135,7 @@ Resid. sd                        & 0.059             & 0.059             & 0.050
 \caption{Summary of Causal Relationship of Act 10 Reforms on Board Elections}
 \label{tab:act10resSummary}
 \begin{tabular}{| p{.24\textwidth} | p{.12\textwidth} | p{.12\textwidth} | 
-      p{.24\textwidth} |} \hline
+      p{.4\textwidth} |} \hline
 DV / Variable & expected & observed & evidence \\ \hline
 Contested Race & + & null & no statistical significance, correct sign \\ \hline
 Contesed Race (ser) & + & null & no statistical significance, correct sign on interaction \\ \hline
@@ -1200,48 +1231,43 @@ Resid. sd                          &                  & 0.480            & 0.402
 
 %tab:unionMed
 \begin{small}
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-##  
-## \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
-## \hline 
-##   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
-##  %                          & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
-## (Intercept)                & -1.094 ^{***}     & 0.000             & 0.023 ^\dagger   & -0.010            & -1.732 ^{***}    \\ 
-##                            & (0.076)           & (0.015)           & (0.013)           & (0.016)           & (0.085)          \\ 
-## contestSer\_lag1          & 1.045 ^{***}      &                   &                   &                   &                  \\ 
-##                            & (0.128)           &                   &                   &                   &                  \\ 
-## treatment                  & 0.015             & 0.009             & 0.535 ^{***}      & 0.372 ^{***}      & -0.155           \\ 
-##                            & (0.116)           & (0.023)           & (0.022)           & (0.023)           & (0.147)          \\ 
-## WERC\_str\_lag           & 0.140             & 0.160             & -0.047            & 0.232             & 0.047            \\ 
-##                            & (0.604)           & (0.113)           & (0.079)           & (0.143)           & (0.534)          \\ 
-## WERC\_elec\_lag          & -0.055            & -0.193            & 0.061             & -0.264 ^\dagger  & 0.156            \\ 
-##                            & (0.651)           & (0.121)           & (0.087)           & (0.152)           & (0.579)          \\ 
-## treatment:WERC\_str\_lag & 0.193             & -0.026            & 0.106 ^{**}       & 0.033             & 0.605 ^*         \\ 
-##                            & (0.241)           & (0.044)           & (0.039)           & (0.051)           & (0.301)          \\ 
-## minBlaisLago\_lag         &                   & 0.282 ^{***}      &                   &                   &                  \\ 
-##                            &                   & (0.032)           &                   &                   &                  \\ 
-## turnout\_lag              &                   &                   & 0.307 ^{***}      &                   &                  \\ 
-##                            &                   &                   & (0.026)           &                   &                  \\ 
-## ImputedFlagYes             &                   &                   & -0.352 ^{***}     & 0.148 ^*          &                  \\ 
-##                            &                   &                   & (0.051)           & (0.065)           &                  \\ 
-## turnoutDiff\_lag          &                   &                   &                   & 0.286 ^{***}      &                  \\ 
-##                            &                   &                   &                   & (0.048)           &                  \\ 
-## incDefeats\_lag1          &                   &                   &                   &                   & 0.281            \\ 
-##                            &                   &                   &                   &                   & (0.178)           \\
-##  $N$                        & 1428              & 1428              & 1428              & 1428              & 1428             \\ 
-## AIC                        & 1749.392          &                   &                   &                   & 1254.962         \\ 
-## BIC                        & 1875.728          &                   &                   &                   & 1381.298         \\ 
-## $\log L$                  & -850.696          &                   &                   &                   & -603.481         \\ 
-## $R^2$                      &                   & 0.084             & 0.346             & 0.194             &                  \\ 
-## adj. $R^2$                 &                   & 0.081             & 0.343             & 0.191             &                  \\ 
-## Resid. sd                  &                   & 0.479             & 0.405             & 0.450             &                   \\ \hline
-##  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-## \end{tabular}
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+ 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
+ %                          & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+(Intercept)                & -1.094 ^{***}     & 0.000             & 0.023 ^\dagger   & -0.010            & -1.732 ^{***}    \\ 
+                           & (0.076)           & (0.015)           & (0.013)           & (0.016)           & (0.085)          \\ 
+contestSer\_lag1          & 1.045 ^{***}      &                   &                   &                   &                  \\ 
+                           & (0.128)           &                   &                   &                   &                  \\ 
+treatment                  & 0.015             & 0.009             & 0.535 ^{***}      & 0.372 ^{***}      & -0.155           \\ 
+                           & (0.116)           & (0.023)           & (0.022)           & (0.023)           & (0.147)          \\ 
+WERC\_str\_lag           & 0.140             & 0.160             & -0.047            & 0.232             & 0.047            \\ 
+                           & (0.604)           & (0.113)           & (0.079)           & (0.143)           & (0.534)          \\ 
+WERC\_elec\_lag          & -0.055            & -0.193            & 0.061             & -0.264 ^\dagger  & 0.156            \\ 
+                           & (0.651)           & (0.121)           & (0.087)           & (0.152)           & (0.579)          \\ 
+treatment:WERC\_str\_lag & 0.193             & -0.026            & 0.106 ^{**}       & 0.033             & 0.605 ^*         \\ 
+                           & (0.241)           & (0.044)           & (0.039)           & (0.051)           & (0.301)          \\ 
+minBlaisLago\_lag         &                   & 0.282 ^{***}      &                   &                   &                  \\ 
+                           &                   & (0.032)           &                   &                   &                  \\ 
+turnout\_lag              &                   &                   & 0.307 ^{***}      &                   &                  \\ 
+                           &                   &                   & (0.026)           &                   &                  \\ 
+ImputedFlagYes             &                   &                   & -0.352 ^{***}     & 0.148 ^*          &                  \\ 
+                           &                   &                   & (0.051)           & (0.065)           &                  \\ 
+turnoutDiff\_lag          &                   &                   &                   & 0.286 ^{***}      &                  \\ 
+                           &                   &                   &                   & (0.048)           &                  \\ 
+incDefeats\_lag1          &                   &                   &                   &                   & 0.281            \\ 
+                           &                   &                   &                   &                   & (0.178)           \\
+ $N$                        & 1428              & 1428              & 1428              & 1428              & 1428             \\ 
+AIC                        & 1749.392          &                   &                   &                   & 1254.962         \\ 
+BIC                        & 1875.728          &                   &                   &                   & 1381.298         \\ 
+$\log L$                  & -850.696          &                   &                   &                   & -603.481         \\ 
+$R^2$                      &                   & 0.084             & 0.346             & 0.194             &                  \\ 
+adj. $R^2$                 &                   & 0.081             & 0.343             & 0.191             &                  \\ 
+Resid. sd                  &                   & 0.479             & 0.405             & 0.450             &                   \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular} 
+
 \end{small}
 
 % Some evidence of union strength mediating turnout and incumbent defeat
@@ -1530,21 +1556,6 @@ school board elections themselves were not specifically affected.
 
 \clearpage
 
-\subsection{Substantive Effects}
-
-Next I demonstrate the substantive magnitude of the state level policy shock to 
-contextualize the influence that state government can have on local elections. 
-
-% Which models to simulate
-% No models of contestation -- no results!
-% WERC model for incumbent defeat IncDef4mm
-% Treatment effect on competitiveness demogsMMblq1
-%  Treatment effect on turnout demogsMod1mm
-%  Polarization damper on turnout demogsMod3mm
-%  Rolloff
-% demogsMod3roMM for post-recall polarization impact
-% demogsMod4roMM for post-recall WERC impact
-
 \section{Conclusion}
 
 \clearpage
@@ -1603,7 +1614,7 @@ $\log L$                          & -1678.660         & -1672.520         & -519
 
 HLM mediation models. 
 
-\begin{small}
+\begin{tiny}
  
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
@@ -1657,9 +1668,9 @@ Sigma                      & 1                 & 0.4133            & 0.3597     
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
-\end{small}
+\end{tiny}
 
-\begin{small}
+\begin{tiny}
  
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
@@ -1711,9 +1722,9 @@ Sigma                              & 1                 & 0.4133            & 0.3
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
-\end{small}
+\end{tiny}
 
-\begin{small}
+\begin{tiny}
  
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
@@ -1765,10 +1776,10 @@ Sigma                         & 1                 & 0.4132            & 0.3567  
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
-\end{small}
+\end{tiny}
 
 
-\begin{small}
+\begin{tiny}
  
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
@@ -1824,5 +1835,5 @@ Sigma                              & 1                 & 0.413             & 0.3
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
-\end{small}
+\end{tiny}
 
