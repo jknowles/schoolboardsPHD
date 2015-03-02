@@ -5,7 +5,7 @@
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
                fig.path="../../phd_figs/chap6-",
-               warning=FALSE, echo=FALSE, dev='pdf')
+               warning=FALSE, echo=FALSE, dev=c('pdf', 'png'))
 
 setwd("../../")
 library(scales)
@@ -506,11 +506,6 @@ activity. Both continuous participation and dissatisfaction theory have the same
 that the interaction of mediating factors and the policy shock should have 
 an impact on some of the dependent variables. 
 
-% 
-% \caption[Close up of \textit{Hemidactylus} sp.]
-%    {Close up of \textit{Hemidactylus} sp., which is
-%    part the genus of the gecko family. It is the
-%    second most speciose genus in the family.}
 
 \begin{table}[h!]
 \begin{center}
@@ -576,12 +571,23 @@ meant that though compensation policy may have been freed up, school boards had
 very little flexibility to innovate under such fiscal constraint and school board 
 office may have appeared particularly unappealing to potential candidates. 
 
-This study addresses these concerns through a number of methods. 
+I believe this study addresses these concerns in several ways. First, instead of 
+focusing on a single measure of actualized democracy, I apply multiple measures. 
+For example, while turnout may be subjected to political forces like statewide 
+interest in a Supreme Court race, school board incumbent defeat and school board 
+ballot rolloff are not. In addition to multiple outcome measures, I measure the 
+policy shock of the Act 10 period as two distinct events, instead of averaging 
+across the 2011 and 2012 elections. This has two benefits. First, it more closely 
+reflects the reality that different conditions were in place in each election. 
+More importantly, it allows for the effect of the Act 10 period to be measured 
+with more nuance and the persistence of the effect to be explored. I also test 
+for mediation effects. While it is not possible to measure and model all 
+possible biasing omitted variables, I can search for some that theory suggests 
+may explicitly be modifying the impact of the Act 10 period. For the rest, 
+I can employ the panel nature of the data to focus on within district comparisons 
+which difference out all time invariant unobservable characteristics. 
 
-% Multiple measures of actualized democracy
-% Multiple measures of treatment separating 2011 and 2012 as distinct
-% A panel study to provide within district comparisons
-% Mediation measures
+I now turn to describing the data and methods I employ to achieve this. 
 
 \section{Data}
 
@@ -594,96 +600,143 @@ demographic, and educational dimensions.
 \subsection{Dependent Variables}
 
 In this section I outline the key dependent variables for this investigation. 
-Broadly, I am looking for evidence of the causal impact of state level policy 
-shocks on the behavior of both candidates and voters. For candidates, I look 
+Broadly, I am looking for evidence of the causal impact of the Act 10 period
+on the behavior of both candidates and voters. For candidates, I look 
 for a change in the patterns of candidate contestation and seat competitiveness 
 after the passage of Act 10 and the granting of additional powers to school boards. 
 For voters, I look for changes in voter turnout and decreases in voter rolloff. 
 
-<<minorContestPlot, fig.cap="Polarization and Contestation - Minor Contestation", out.height='3.18in'>>=
+<<blaisLagoplot, fig.cap="Lagged Competitiveness Across Years", out.height='3.18in'>>=
 plotdf <- dist_turn[dist_turn$year > 2006, ]
-
-qplot(contestMinor, RecallPolarization, data = plotdf, geom = 'boxplot') + 
-  facet_wrap(~year) +
-  scale_y_continuous() +
-  theme_dpi(base_size=10) + coord_flip() + 
-  labs(x= "Minor Contestation", y = "Polarization from 2012 Gov. Recall")
+# lg  <- function(x) c(NA, x[1:length(x)-1])
+# lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
+plotdf <- as.data.table(plotdf)[, blaisLagoLag1:= lg(minBlaisLago), by = "distid"]
+plotdf$minBlaisLago <- log(plotdf$minBlaisLago)
+plotdf$blaisLagoLag1 <- log(plotdf$blaisLagoLag1)
+plotdf$blaisLagoLag1[!is.finite(plotdf$blaisLagoLag1)] <- -4
+plotdf$minBlaisLago[!is.finite(plotdf$minBlaisLago)] <- -4
+plotdf <- as.data.frame(plotdf)
+plotdf <- na.omit(plotdf[, c("blaisLagoLag1", "minBlaisLago", "year")])
+plotdf <- plotdf[plotdf$year > 2008,]
+qplot(blaisLagoLag1, minBlaisLago, data = plotdf, group = year) + 
+  facet_wrap(~year) + geom_smooth(method = 'lm') + 
+  geom_abline(intercept = 1.7439, slope = 0.1414, linetype = 2) +
+  scale_x_continuous(limits = c(-3, 5)) +
+  scale_y_continuous(limits = c(-3, 5)) +
+  theme_dpi(base_size=10) +
+  labs(x= "Lagged Blais-Lago", y = "Blais-Lago")
 @
 
 
-<<serContestPlot, fig.cap="Polarization and Contestation - Serious Contestation", out.height='3.18in'>>=
-qplot(contestSer, RecallPolarization, data = plotdf, geom = 'boxplot') + 
-  facet_wrap(~year) +
-  scale_y_continuous() +
-  theme_dpi(base_size=10) + coord_flip()+ 
-  labs(x= "Serious Contestation", y = "Polarization from 2012 Gov. Recall")
-@
-
-Figures \ref{fig:minorContestPlot} and \ref{fig:serContestPlot} show the relationship 
-between the community polarization in the Gubernatorial recall vote and contestation. 
-There appears to be consistently little difference in the distribution of 
-polarization between districts with contested and uncontested races across the 
-years. 
-
-Figure \ref{fig:blPlot} explores this same relationship but for the continuous 
-measure of seat competitiveness -- the Blais-Lago quotient. Here there is a pattern 
-of elevated contestation in 2011, and an increase in competitiveness, a lower 
-B-L quotient, as seat polarization increases in year 2012. There is a similar 
-pattern, though weaker in 2007 and 2010 as well. 
-
-<<blPlot, fig.cap="Polarization and Seat Competitiveness">>=
+<<serContestPlot, results = 'asis'>>=
 plotdf <- dist_turn[dist_turn$year > 2006, ]
-plotdf <- plotdf[!is.na(plotdf$turnout), ]
-plotdf <- plotdf[plotdf$turnout < 0.8, ]
-qplot(RecallPolarization, minBlaisLago, data = plotdf) + 
-  facet_wrap(~year) + geom_smooth(method = 'lm', aes(group = 1)) +
-  scale_y_continuous() +
-  theme_dpi()+ 
-  labs(y= "Seat Competitiveness", x = "Polarization from 2012 Gov. Recall")
+tab1 <- table(plotdf$year, plotdf$contestSer)
+colnames(tab1) <- c("No Serious Contestation", "Serious Contestation")
+
+tmp.cap   <- "Frequency of Incumbency and Contestation."
+tmp.label <- "tab:serConyear"
+
+print(xtable(tab1, caption = tmp.cap, 
+             label = tmp.label, digits = 0), include.rownames=TRUE, 
+      format.args = list(big.mark= ","))
 @
+
+
+Figure \ref{fig:blaisLagoplot} shows the relationship between lagged district 
+competitiveness and district competitiveness changes slightly in 2011 and 2012 
+from the global linear model represented by the dashed line. 
+Table \ref{tab:serConyear} shows the number of districts with serious 
+contestation for school board by year since 2006. The sample is relatively 
+consistent over this period and there appears to be no change in the number 
+of districts with seriously contested races across the years. 
+
 
 Figures \ref{fig:turnoutPlot1} and \ref{fig:turnoutPlot2} show the relationship 
-between polarization and school board turnout and voter rolloff. In 2011 and 2012 
-there appears to be a negative relationship between increasing polarization and 
-decreased turnout. For rolloff, the relationship appears to be the same across 
-all the years. 
+between school board turnout and voter rolloff and their respective lags. In 
+2011 and 2012 the relationship deviates from the pooled across year relationship 
+represented by the dashed line. In 2011 the slope looks the same, but the intercept 
+is much higher suggesting higher overall turnout. In 2012, the slope is steeper, 
+but the intercept is close to the same. This looks like a good argument for 
+considering a twice lagged measure as the strange year to year relationships may 
+be due to the cyclical nature of these elections. 
 
-<<turnoutPlot1, fig.cap="Polarization and School Board Turnout">>=
-qplot(RecallPolarization, turnout, data = plotdf, alpha = I(0.6)) + 
-  facet_wrap(~year) + geom_smooth(method='lm') +
-  scale_y_continuous(label=percent) +
-  theme_dpi() + 
-  labs(y = "School Board Turnout", x = "Polarization from 2012 Gov. Recall")
+For rolloff, 2011 is clearly a standout year, while 2012 appears to fall right 
+in line with the pooled across year relationship represented by the dashed line. 
+
+
+<<turnoutPlot1, fig.cap="Lagged School Board Turnout Across Years", out.height='3.18in'>>=
+plotdf <- dist_turn[dist_turn$year >= 2006, ]
+plotdf <- as.data.table(plotdf)[, turnoutLag1:= lg(turnout), by = "distid"]
+plotdf$turnout <- log(plotdf$turnout)
+plotdf$turnoutLag1 <- log(plotdf$turnoutLag1)
+plotdf <- as.data.frame(plotdf)
+plotdf <- na.omit(plotdf[, c("turnoutLag1", "turnout", "year")])
+plotdf <- plotdf[plotdf$year >= 2007,]
+qplot(turnoutLag1, turnout, data = plotdf, group = year) + 
+  facet_wrap(~year) + geom_smooth(method = 'lm') + 
+  geom_abline(intercept = -1.3192, slope = 0.2615, linetype = 2) +
+  scale_x_continuous(limits = c(-3, 0)) +
+  scale_y_continuous(limits = c(-3, 0)) +
+  theme_dpi(base_size=10) +
+  labs(x= "School Board Turnout Lag (log) ", y = "School Board Turnout (log)")
 @
 
-<<turnoutPlot2, fig.cap="Polarization and Spring Rolloff">>=
-qplot(RecallPolarization, turnoutDiff, data = plotdf, alpha = I(0.6)) + 
-  geom_smooth(method='lm') + 
-   facet_wrap(~year) + 
-   scale_y_continuous(label = percent) +
-   theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall", "School Board Rolloff")
+<<turnoutPlot2, fig.cap="Lagged Spring Rolloff Across Years", out.height='3.18in'>>=
+plotdf <- dist_turn[dist_turn$year > 2006, ]
+plotdf <- as.data.table(plotdf)[, turnoutDiffLag1:= lg(turnoutDiff), by = "distid"]
+plotdf <- as.data.frame(plotdf)
+plotdf <- na.omit(plotdf[, c("turnoutDiffLag1", "turnoutDiff", "year")])
+plotdf <- plotdf[plotdf$year > 2008,]
 
-# qplot(RecallPolarization, turnoutDiff/topTicketTurnoutSpring, data =plotdf) + 
-#   geom_smooth(method = "lm") + 
-#    facet_wrap(~year) + scale_x_continuous(label = percent) + 
-#    scale_y_continuous(label = percent) +
-#    theme_dpi()
+qplot(turnoutDiffLag1, turnoutDiff, data = plotdf, group = year) + 
+  facet_wrap(~year) + geom_smooth(method = 'rlm') + 
+  geom_abline(intercept = .02617, slope = 0.33217, linetype = 2) +
+  theme_dpi(base_size=10) +
+  labs(x= "School Board Rolloff Lag (log) ", y = "School Board Rolloff (log)")
+@
+
+
+\subsection{Independent Variables}
+
+Figure \ref{fig:pairsPlot} shows the relationships among some key control variables 
+and is similar to the plot introduced in Chapter \ref{chap:turnout}. These 
+variables are related to the key independent variables identified by 
+\citet{RefWorks:297} as indicators of school districts in transition from insular 
+to competitive in their politics. 
+
+<<pairsPlot, fig.cap="Pairs Plot of Demographic Variables and Turnout in 2012", fig.height = 8, fig.width=8>>=
+library(GGally)
+dist_turn$median_incomeLOG <- log(dist_turn$median_income)
+pairLabels <- c("Turnout", "% Incumbents", "% 65 Older", "% Bach. +", "OOH %", 
+                "Median Income", "Log VAP")
+tmpdf <- dist_turn[dist_turn$turnout < 0.95 & 
+                            dist_turn$year == 2012 & 
+                            !is.na(dist_turn$turnout), ]
+tmpdf <- tmpdf[, c("turnout", "incumShare", "per65o", "PerBachelorOrAbove", 
+                   "OOH_share", "median_incomeLOG", "VAP_adjLOG")]
+
+ggpairs(tmpdf, 
+        columnLabels = pairLabels,
+        lower = list(continuous = "smooth"), 
+        upper = list(continuous = 'cor'), 
+        title = "Pairs Plot of Key Control Variables")
+rm(tmpdf)
 @
 
 
 \subsection{New Measures}
 
-An additional advantage of this exogenous shock for the study of school board 
-elections is that it creates three unique measures available statewide to peer 
-into the preferences of communities. First, the level of polarization in the 
-community in the recall election of Scott Walker. The result of this election can 
-be seen largely as an opinion poll of voters on the issues of Act 10 and education 
-funding in the state -- the two largest issues in the campaign.\footnote{While some have 
-argued that another issue, the legitimacy of recalling the Governor in the first 
-place was also important, this may also be a reflection on how strongly those 
-voters felt about Act 10 in the first place.} All else equal, more polarized 
-communities should exhibit greater contestation and turnout in school board 
-elections due to the deeper conflict over the best way to manage public schools. 
+In addition to the suite of independent variables found in Chapters 
+\ref{chap:candidacy} and \ref{chap:turnout}, this chapter features some additional 
+key dependent variables drawn from results of Wisconsin's historic recall election. 
+The Act 10 period itself created three unique measures available statewide to 
+provide a window into the preferences of communities. First, the level of 
+polarization in the community in the recall election of Scott Walker. The result 
+of this election can be seen largely as an opinion poll of voters on the issues of 
+Act 10 and education funding in the state -- the two largest issues in the 
+campaign.\footnote{While some have argued that another issue, the legitimacy of
+recalling the Governor in the first place was also important, this may also be a
+reflection on how strongly those voters felt about Act 10 in the first place.} 
 
 A second measure that arises from this period is the level of turnout for the 
 recall election itself. As with any election, voters without a strong preference 
@@ -706,11 +759,10 @@ by which the union recertified -- can be seen as a measure of latent union
 strength. While the vast majority of unions recertified, in many cases the 
 elections were close. 
 
-\subsection{Independent Variables}
+Each of these measures was made available \emph{after} the exogenous shock and 
+as such can be considered to be \emph{post-treatment} variables. 
 
-In addition to the suite of independent variables found in Chapters \ref{chap:candidacy} 
-and \ref{chap:turnout}, this chapter features some additional key dependent variables 
-drawn from results of Wisconsin's historic recall election. 
+\subsubsection{Polarization}
 
 Figure \ref{fig:ivPlot1} shows the relationship between recall polarization and 
 other variables for the year 2012. THe relationship between fall and recall election 
@@ -720,6 +772,7 @@ recent presidential two-party vote - aside from a handful of outliers it follows
 in the expected direction. Finally, spring election turnout is fairly similar to 
 the other turnout variables, but at a lower level with about half the turnout 
 on average of the other elections. 
+
 
 <<ivPlot1, fig.cap="Polarization and Other Variables">>=
 plotdf <- dist_turn[dist_turn$year == 2012, ]

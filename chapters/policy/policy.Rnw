@@ -6,8 +6,8 @@
 #setwd("../../../Data/Raw Files/Election Data")
 #setwd("../Data/Raw Files/Election Data")
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
-               fig.path="../../phd_figs/chap5-",
-               warning=FALSE, echo=FALSE, dev='pdf')
+               fig.path="../../phd_figs/chap6-",
+               warning=FALSE, echo=FALSE, dev=c('pdf', 'png'))
 
 setwd("../../")
 library(eeptools)
