@@ -966,6 +966,9 @@ y_{it} &= \alpha + \gamma_{i} + \beta X_{it} + \lambda T_{it} + \epsilon_{it}  \
 \end{align*}
 
 
+To avoid problems with endogeneity, and because of the long panel nature of the 
+data, I use twice lagged predictors for all control variables. 
+
 \subsection{Threats to Validity}
 
 Claims of causality rest on assumptions. In addition to the assumption that the 
@@ -1087,7 +1090,7 @@ causMinorConTab <- apsrtable(lagModcontest, DIDmodContest, FEmodContest,
           stars = "default", digits = 3, model.names = c("Lag", "DnD", "FE"), 
           caption = "Causal Estimates of Act 10 Period on Contestation", 
           label = "tab:causBL", notes = list(stars.note, omitNote), 
-          Sweave = TRUE, 
+          Sweave = FALSE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))))
 
@@ -1202,8 +1205,8 @@ outdata$treatmentDose <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 
 outdata$treatmentFactor <- ifelse(outdata$year >= 2011, 1, 0)
 outdata$treatmentDiff <- ifelse(outdata$year >= 2011, abs(outdata$year - 2010), 0)
 outdata$treatmentDiff <- factor(outdata$treatmentDiff)
-outdata$minBlaisLago <- ifelse(outdata$minBlaisLago == 0, 0.003, outdata$minBlaisLago)
-outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag == 0, 0.003, 
+outdata$minBlaisLago <- ifelse(outdata$minBlaisLago < 1, 1, outdata$minBlaisLago)
+outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag < 1, 1, 
                                    outdata$minBlaisLago_lag)
 outdata$minBlaisLago <- log(outdata$minBlaisLago)
 outdata$minBlaisLago_lag <- log(outdata$minBlaisLago_lag)
@@ -1474,7 +1477,8 @@ outdata <- outdata[outdata$outflag <= 5 & outdata$outflag >= -5,]
 outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
 partialPanel <- names(table(outdata$distid)[table(outdata$distid) == 1])
 outdata <- outdata[!outdata$distid %in% partialPanel, ]
-
+outdata$turnoutDiff <- outdata$turnoutDiff^2 * 10
+outdata$turnoutDiff_lag <- outdata$turnoutDiff_lag^2 * 10
 
 lagModroll <- lm(turnoutDiff ~ turnoutDiff_lag + treatmentDiff + 
                    VAP_adjLOG_sq_lag + 
@@ -1522,6 +1526,8 @@ apsrtable(lagModroll, DIDmodroll, FEmodRoll, se = "robust", stars = "default",
 @
 \end{small}
 
+\clearpage
+
 \begin{table}[h!]
 \begin{center}
 \begin{small}
@@ -1530,11 +1536,11 @@ apsrtable(lagModroll, DIDmodroll, FEmodRoll, se = "robust", stars = "default",
 \begin{tabular}{| p{.24\textwidth} | p{.12\textwidth} | p{.12\textwidth} | 
       p{.4\textwidth} |} \hline
 DV / Variable & expected & observed & evidence \\ \hline
-Contested Race & + & - & no statistical significance, wrong sign \\ \hline
-Contesed Race (ser) & + & - & no statistical significance, wrong sign \\ \hline
-Incumbent Defeat & + & - & weakly negative, weak statistical significance, only one year\\ \hline 
-Competitiveness & + & +  & weakly positive, statistically significant for one year in 
+Contested Race & + & null & no statistical significance, wrong sign \\ \hline
+Contesed Race (ser) & + & null & no statistical significance, wrong sign \\ \hline
+Competitiveness & + & -  & weakly positive, statistically significant for one year in 
 diff in diff, not for FE\\ \hline
+Incumbent Defeat & + & - & weakly negative, weak statistical significance, only one year\\ \hline 
 Turnout & + & + & diff in diff weakly negative, overall effect positive in both 
 years \\ \hline
 Rolloff & - & + & decrease in year 2, but incorrect sign, statistical significance 
@@ -1545,11 +1551,71 @@ in FE models\\ \hline
 \end{table}
 
 Table \ref{tab:act10resSummary} summarizes the results in comparison to the 
-expectations from Table \ref{tab:act10hypo}. Overall, there is some evidence 
-of an effect of Act 10 on school board election activity. Specifically, the 
-post-Act 10 period showed evidence of an increase in competitiveness, a 
-decrease in turnout, and an increase in rolloff. However, these results are 
-often conflicting with the theoretical expectations. Specifically, 
+expectations from Table \ref{tab:act10hypo}. First, there is no evidence of an 
+increase in the probability of a race being contested either nominally or more 
+seriously in the post Act 10 period across any of the models in Table 
+\ref{tab:causSerCon}. The sign of the treatment in both years one and two is 
+negative across the models, and the interaction effect with the lagged variable, 
+the estimate of the regime change in the post Act 10 period, is close to zero 
+and non-significant. Given what was demonstrated in Chapter \ref{chap:candidacy} 
+about the difficulty in predicting contestation, this is not surprising. 
+
+Competitiveness, measured by the Blais-Lago quotient, is only slightly more 
+promising. Here it is important to note that a positive coefficient is associated 
+with less competitiveness, as the Blais-Lago quotient is a measure from zero to 
+one hundred with zero representing a tie and one hundred representing a 
+unanimous victory. The results in Table \ref{tab:causBL} show the lagged model and 
+the fixed effect model disagree on the signs of the Act 10 period and have no 
+statistically significant results. The difference in differences model shows 
+weak evidence that in 2012 there was an increase in competitiveness. Figure 
+\ref{fig:bldiffindiff} provides a visual analysis of this effect. Competitiveness 
+decreased in 2011, but then increased in 2012. This is also counter to expectations, 
+where theory suggested that competitiveness should increase as the voting pool 
+expanded and the dividing lines between candidates was sharpened. This will be 
+explored further in seeking out mediating factors that might explain this result. 
+
+Incumbent defeat is next. Table \ref{tab:causID} provides some weak evidence 
+that counter to expectations, in the 2011 election incumbents were reinforced 
+instead of defeated as a result of the Act 10 shock. In 2012, there is no 
+evidence of such an effect. The difference in difference estimates follow this 
+pattern, but are not statistically significant. This too suggests the presence of 
+a mediating factor that explains the protection of incumbents in 2011 and not in 
+2012, and the weak nature of this relationship. 
+
+Turnout and rolloff provide the most exciting results. Table \ref{tab:causTurn} 
+shows broad agreement that the level of turnout was increased in 2011 and to a 
+lesser degree in 2012 with the lagged and fixed effect models agreeing in their 
+estimates. The difference in difference model suggests that in 2011 the increase 
+was across the board, while in the 2012 election, districts with higher turnout 
+prior to Act 10 saw a diminished turnout in 2012. Thus, while Act 10 rose turnout 
+in all districts in the spring of 2011, districts with higher turnout prior to 
+Act 10 saw a decrease in their turnout in the spring of 2012. This suggests some 
+regression to the mean or disengagement by voters in communities that were previously 
+engaged. 
+
+The rolloff results in Table \ref{tab:causRoll} help shed some more light on this 
+phenomenon. Counter to expectations, rolloff increases post Act 10 in both the 
+lagged and fixed effect models. This suggests that while more voters were going 
+to the polls in these spring elections than normal, they were not going to cast 
+ballots for school boards as the share of voters completing their school board 
+ballot decreased. The difference in differences model shows that rolloff was 
+even higher in districts with high pre-treatment rates of rolloff in 2011, but 
+in 2012, high pre-treatment levels of rolloff were associated with a decreased 
+amount of rolloff in 2012. Rolloff was elevated in 2012, but less so than in 2011, 
+and this finding suggests that voters were less likely to rolloff in 2012 in 
+districts that had previously had higher levels of rolloff -- suggesting some 
+level of voter learning was possible. 
+
+Overall, these findings are not very consistent with the expectations of 
+existing theory which would suggest that if voters are exogenously activated 
+the division between them and their relatively insulated school boards should 
+result in an adjustment through more incumbent defeat and more contested seats. 
+Without exploring mediating factors it is difficult to conclude whether this means 
+incumbent school board members were satisfactorily aligned with the preferences 
+of their communities, or that voters failed to receive enough additional information 
+from the Act 10 shock to lead to turnover and change in school boards. Now, I 
+turn my attention to the mediation analysis to attempt to unpack these questions. 
+
 
 <<bldiffindiff, fig.cap="Average Fitted Value over Realistic Value">>=
 summPlot <- ddply(plotdf2, .(year), summarize, 
@@ -1561,6 +1627,7 @@ qplot(factor(year), exp(plotPred), data = plotdf2, geom = 'boxplot') +
   scale_y_sqrt(limits = c(0, 100)) + 
   labs(x = "Year", y = "Blais-Lago")
 @
+
 
 \clearpage
 
@@ -1583,7 +1650,26 @@ I now analyze the impact of each mediating factor.
 
 \subsubsection{Polarization}
 
-Polarization should matter. 
+The first mediating factor I explore is the divide within the community over 
+Walker's education policies. I argue that the level of polarization seen in the 
+vote to recall Walker at the school district level represents the preferences of 
+likely voters in that community with respect to Act 10 and the Governor's education 
+policies. As such, more divided communities should see a post Act 10 increase in 
+their levels of contestation, and less divided communities should not see such 
+an increase -- in other words, the interaction term between the shock and the 
+Act 10 measure should be positive and statistically significant. 
+
+Table \ref{tab:polarMed} presents these results using simple models with a lagged 
+dependent variable and the treatment indicator as well as an interaction for 
+recall polarization with the treatment indicator. Full models with within district 
+estimates are provided in the Appendix. Both sets of models agree that there is 
+little evidence of any mediating effect of recall polarization for any democratic 
+activity except for voter turnout. In this case, voter turnout in both 2011 and 
+2012 was \emph{negatively} impacted by recall polarization. In other words, 
+voters were less likely to participate in spring elections in polarized communities 
+than they were in less polarized communities in both 2011 and 2012. This could 
+be due to voter fatigue, or voter disengagement due to negative campaigning, 
+both of which were prevalent in this period \citep{NegativeCamp1999}. 
 
 %tab:polarMed
 \begin{small}
@@ -1637,8 +1723,8 @@ outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
 # outdata <- outdata[outdata$year > 2007, ]
 outdata$turnout <- log(outdata$turnout)
 outdata$turnout_lag <- log(outdata$turnout_lag)
-outdata$minBlaisLago <- ifelse(outdata$minBlaisLago == 0, 0.003, outdata$minBlaisLago)
-outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag == 0, 0.003, 
+outdata$minBlaisLago <- ifelse(outdata$minBlaisLago < 1, 1, outdata$minBlaisLago)
+outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag <1, 1, 
                                    outdata$minBlaisLago_lag)
 outdata$minBlaisLago <- log(outdata$minBlaisLago)
 outdata$minBlaisLago_lag <- log(outdata$minBlaisLago_lag)
@@ -1723,19 +1809,40 @@ polarMedTable <- apsrtable(full1, full3, full4, full5, full6,
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
 caption = "Mediation Estimates of Polarization on Board Elections - Multilevel Models",           label = "tab:polarMedHLM", notes = list(stars.note), 
-        Sweave = FALSE, 
+        Sweave = TRUE, 
           stars = "default")
 @
 \end{small}
 
-% Only evidence of mediation on turnout, where higher polarization attenuates the 
-% turnout boost post-recall
-
 \subsubsection{Union Strength}
+
+Table \ref{tab:unionMed} shows the mediating effect of union strength. Two measures 
+of union strength are included -- first whether the union had a recertification 
+election in the 2011-2014 period, and second, the result of that election. There 
+is no evidence of mediating effects of union strength on contestation, 
+competitiveness, or rolloff. There is some evidence that overall, stronger unions 
+saw higher rolloff across all elections in the sample, and that districts with 
+unions forced to recertify post Act 10 had lower rolloff.\footnote{This result 
+is backward and may need further analysis.} 
+
+Turnout has evidence of being higher in districts with strong unions post Act 10. 
+In the pre-Act 10 period turnout was not affected by union strength. Post Act 10, 
+districts with stronger unions exhibited higher turnout. There are two interpretations 
+of this finding. First, that unions organized their members to go to the polls 
+in the Act 10 period and drove turnout up in support of their preferred candidates. 
+Alternatively, voters in communities with historically strong unions may have 
+been motivated to go to the polls to defeat union backed candidates. 
+
+There is weak evidence of this second interpretation by the fact that stronger 
+unions are associated with higher rates of incumbent defeat post Act 10 relative 
+to pre Act 10 with a statistically significant effect in 2012. 
 
 %tab:unionMed
 \begin{small}
 <<unionStrength, results="asis">>=
+# TODO: subset analysis only on districts with WERC election results
+# TODO: interact werc elec with werc elec strength. 
+# TODO: Consider modeling rolloff as squared
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
                          "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
                          "RecallPolarization", "incDefeats", "ImputedFlag", 
@@ -1788,8 +1895,8 @@ outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
 # outdata <- outdata[outdata$year > 2007, ]
 outdata$turnout <- log(outdata$turnout)
 outdata$turnout_lag <- log(outdata$turnout_lag)
-outdata$minBlaisLago <- ifelse(outdata$minBlaisLago == 0, 0.003, outdata$minBlaisLago)
-outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag == 0, 0.003, 
+outdata$minBlaisLago <- ifelse(outdata$minBlaisLago < 1, 1, outdata$minBlaisLago)
+outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag < 1, 1, 
                                    outdata$minBlaisLago_lag)
 outdata$minBlaisLago <- log(outdata$minBlaisLago)
 outdata$minBlaisLago_lag <- log(outdata$minBlaisLago_lag)
@@ -1882,19 +1989,13 @@ unionMedtable <- apsrtable(full1, full3, full4, full5, full6,
                   model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
           caption = "Mediation Estimates of Union Strength on Board Elections - Multilevel Models",           
-          label = "tab:unionMedHLM", notes = list(stars.note), Sweave = FALSE, 
+          label = "tab:unionMedHLM", notes = list(stars.note), Sweave = TRUE, 
           stars = "default")
 @
 \end{small}
 
-% Some evidence of union strength mediating turnout and incumbent defeat
-
-
-\subsection{Recall Turnout}
-
 %tab:recallTurnMed
-\begin{small}
-<<recallTurnout, results='asis'>>=
+<<recallTurnout, results='hide'>>=
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
                          "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
                          "GovTurnout_recall", "incDefeats", 
@@ -2020,7 +2121,9 @@ full6 <- glmer(incDefeats ~ incDefeats_lag + treatmentDiff + VAP_adjLOG_sq_lag +
                treatmentDiff * RecallTurnout_lag + (1|distid), 
              data = outdata, family = "binomial")
 
-apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3, 
+recallTurnMedTable2 <- apsrtable(simp1, simp3, simp4, 
+                                 simp5, simp6, 
+                                 se = "robust", digits = 3, 
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
            stars = "default", 
@@ -2034,17 +2137,28 @@ recallTurnMedTable <- apsrtable(full1, full3, full4, full5, full6,
           stars = "default", 
           caption = "Mediation Estimates of Recall Turnout on Board Elections - HLM", 
           label = "tab:recallTurnMedHLM", notes = list(stars.note), 
-          Sweave = FALSE)
+          Sweave = TRUE)
 @
-\end{small}
-
-% Turnout and rolloff see increased effect for turnout recall
-
-
 
 \subsubsection{Full Mediation}
 
-Least likely to work. 
+Finally, I look at the impact of recall turnout and recall polarization together 
+as mediating factors. The polarization story is unchanged with the inclusion 
+of recall turnout, but recall turnout appears to have a strong moderating effect 
+in the post-Act 10 period. More turnout in the recall election is associated with 
+changes in election activity in 2011 -- specifically less competition for school 
+board seats, higher voter turnout, and greater voter rolloff. This is net of any 
+polarization effects. 
+
+There is some evidence that greater turnout is associated with greater incumbent 
+defeat in the 2012 period. In general, both recall polarization and recall turnout 
+are associated with increased incumbent defeat post Act 10, but only in the second 
+period does this effect reach statistical signficance. This effect is a bit hard 
+to place, because in the causal models in Table \ref{tab:causID}, there was a 
+negative effect on incumbent defeat in the 2011 period. That effect shows up 
+here, but is no longer statistically significant, and instead an increase in 
+incumbent defeat in 2012 period is found to exist in communities that saw more 
+participation in the recall election. 
 
 %tab:recallAllMed
 \begin{small}
@@ -2052,15 +2166,16 @@ Least likely to work.
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
                          "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
                          "GovTurnout_recall", "incDefeats", 
+                         "turnout_overall_werc",
                          "RecallPolarization", "ImputedFlag",
                          "VAP_adjLOG", "per65o", "NonPublicPupilPer", 
                          "incumShare", "teachShareofVoters", 
                          "fallTurnout", "nraces", "schoolMillShare",
                          "OOH_share", "PerBachelorOrAbove", 
                          "PROPERTYTAX_REV_SHARE", "minBlaisLago", 
-                         "per_white_all", "GovTurnout_recall", 
-                         "locale2", "econ_disadv_per")]
-
+                         "per_white_all", "locale2", "econ_disadv_per")]
+outdata$WERC_str <- outdata$turnout_overall_werc
+outdata$turnout_overall_werc <- NULL
 outdata$RecallTurnout <- outdata$GovTurnout_recall
 outdata$GovTurnout_recall <- NULL
 outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
@@ -2100,8 +2215,8 @@ outdata <- outdata[outdata$outflag2 <= 5 & outdata$outflag2 >= -5,]
 # outdata <- outdata[outdata$year > 2007, ]
 outdata$turnout <- log(outdata$turnout)
 outdata$turnout_lag <- log(outdata$turnout_lag)
-outdata$minBlaisLago <- ifelse(outdata$minBlaisLago == 0, 0.003, outdata$minBlaisLago)
-outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag == 0, 0.003, 
+outdata$minBlaisLago <- ifelse(outdata$minBlaisLago < 1, 1, outdata$minBlaisLago)
+outdata$minBlaisLago_lag <- ifelse(outdata$minBlaisLago_lag <1, 1, 
                                    outdata$minBlaisLago_lag)
 outdata$minBlaisLago <- log(outdata$minBlaisLago)
 outdata$minBlaisLago_lag <- log(outdata$minBlaisLago_lag)
@@ -2208,197 +2323,7 @@ recallMedTable <- apsrtable(full1, full3, full4, full5, full6,
 \end{small}
 % Rolloff and turnout evidence for polarization and turnout on treatment
 
-\subsection{Substantive Impact Size}
-
-
-<<substEff1, eval=FALSE>>=
-
-
-@
-
-
-
-\subsection{Contestation}
-
-To evaluate this, a series of models of school board election contestation over 
-time are fit to attempt to detect changes in contestation levels relative to the 
-levels of contestation observed in school districts prior to the passage of 
-Act 10. If levels of contestation increase after the introduction of Act 10, even 
-after controlling for the factors that influenced this above, it would be strong 
-evidence that the statewide policy lever pulled by Act 10 did spur a response 
-from candidates in terms of increasing the attractiveness of school board seats. 
-
-The results in Table \ref{tab:meSer} does not show much promise, like in Chapter 
-\ref{chap:candidacy}. The models do not fit well, and though the effects of 
-polarization and the post-recall effect are in the direction hypothesized, they 
-are not statistically significant. There is evidence that polarization leads to 
-greater contestation, and post-recall recall turnout is more strongly associated 
-with increased contestation. One prediction that is in the wrong direction is that 
-the effect of polarization decreases post-recall. Few other predictors are statistically 
-significant and there is not much to conclude about a change in contested seats 
-post recall, as shown above in Figure \ref{fig:serContestPlot}. 
-
-% Serious contestation like in Chapter 3 does not show promise
-% polarization is associated with greater contestation 
-% Post-recall has greater contestation
-% recall turnout ^ is associated with a decrease in serious contestation
-% effect is magnified post recall
-% none of these effects are statistically significant
-% Models appear to fit poorly
-% TODO: Consider refitting to demographics only + groups of interactions
-
-
-In Table \ref{tab:meMin} the results are largely the same, suggesting nominal 
-contestation is no easier to predict. Here, polarization is related to slightly 
-decreasing contestation, but contestation is predicted to increase after the recall. 
-Post-recall, polarization has a stronger effect, as projected. Recall turnout 
-is related to reducted contestation, but this relationship changes post-recall. 
-However, none of these effects are statistically significant. 
-
-% Sign on recall polarization flips from seriousness
-% Recall polarization ^ associated with less contestation nominally
-% polarization is associated with greater contestation 
-% Post-recall has greater contestation
-% recall turnout ^ is associated with a decrease in serious contestation
-% effect is magnified post recall
-% none of these effects are statistically significant
-% Models appear to fit poorly
-% TODO: Consider refitting to demographics only + groups of interactions
-
-The models in Tables \ref{tab:meMin} and \ref{tab:meSer} are disappointing, but 
-this is in part due to the small sample size involved and the fact that few 
-variables at all have been shown to be predictive of this measure of contestation. 
-It is unsurprising that an effect on contestation was detectable in the small 
-sample here. I now turn to models that have more promise. 
-
-\subsection{Incumbent Defeat}
-
-As in Chapter \ref{chap:candidacy} I fit incumbent defeat models on a subset of 
-elections for which an incumbent is facing the possibility of defeat -- that is 
-where there are more candidates than incumbents in the race. These models are the only 
-models that show some promise. However, as was the case in Chapter \ref{chap:candidacy}, 
-the sample size decreases as I restrict the data to cases where incumbents are 
-running, but also a challenger is present as well. This reduced sample size 
-is problematic for fitting a random-effect model as the number of group terms 
-is approaching the number of observations. 
-
-
-The results in table \ref{tab:meIncDef} show a consistent negative effect of 
-post-recall years on incumbent defeat, but this effect is not statistically 
-significant. This is counter to expectations, but is perhaps offset by the 
-specific effects of the recall results. Recall polarization is associated with 
-greater incumbent defeat post-recall and recall turnout is as well -- but these 
-effects are also not statistically significant. Turnout in union certification 
-elections is positively related with incumbent defeat post-recall -- exactly as 
-expected. This effect is statistically significnt, providing some evidence that 
-union activity post-recall was active in both organizing union members and participating 
-in school board elections. This effect can be attributed to a state-level policy 
-decision, which has a clear impact on the behavior and results of local officials. 
-
-% Note models built on a smaller subset
-% Problems with convergence
-% incumbent defeat seems to go down post recall
-% Recall polarization negatively related to incumbent defeat
-% incumbent defeat increases with polarization post election
-% recall turnout negatively related to incumbent defeat
-% recall turnout post recall positively related with incumbent defeat
-
-\subsection{Competitiveness}
-
-Looking at incumbent defeat as a binary measure of competitiveness downplays 
-the significance of challenges that result in a narrow defeat by a challenger 
-to an incumbent -- which would be coded as a 0 in Table \ref{meIncDef}. Using 
-a general measure of competitiveness across districts, I examine if races 
-become more or less competitive after the recall election, and if the impact 
-of any recall related variables changes after the election. These models are 
-again fit on a subset of models, those in which a competitive race is possible 
-because voters are presented with a choice. 
-
-
-Table \ref{tab:meBLQ} shows that there is little evidence that the events of 
-2011 had an impact on the competitiveness of school board races in Wisconsin, and 
-there is no evidence of differential impact between school districts. The only 
-variables that show some impact are the measures of union strength, which show 
-that unions that held a recertification election had less competitive races 
-over the observation period, and those that had high turnout post Act 10 had 
-more competitive races over the period. 
-
-% Why might this be?
-
-\clearpage
-
-\subsection{Turnout}
-
-Using the election of Governor Walker and passage of Act 10 as an exogenous shock that 
-increased the relevance and power of school boards, the following models seek to 
-test the causal impact on turnout. In Figure \ref{fig:walkerplot} I examine the 
-relationship between partisan polarization and turnout before and after the passage 
-of Act 10. To test this relationship I restrict the sample to the two spring 
-elections prior to the passage of Act 10 -- 2009 and 2010 -- and the two elections 
-immediately after the passage of Act 10 -- 2011 and 2012. I code these latter 
-years with a dummy variable indicating they are in the post-Act 10 era. The key 
-theoretical contribution is that the polarization of the electorate should matter 
-more after the passage of Act 10, when party lines for education issues became 
-clear. 
-
-Table \ref{tab:meTurnout} shows the results for the impact of the Wisconsin recall 
-on turnout in school board elections. First, there is a statistically significant 
-and consistently positive effect post-recall on turnout. Pre-recall, neither 
-polarization nor WERC election turnout seem to matter much. Post-recall, polarization 
-is associated with a decrease in turnout and turnout in WERC certification elections 
-is associated with a modest increase in turnout. Thus, polarization can be seen 
-as mediating the impact of increased voter turnout overall -- with more divided 
-communities having slightly less spring turnout. Turnout for the recall continues 
-to exhibit that turnout is sticky -- even after controlling for both the previous 
-fall turnout and the spring election turnout twice-lagged, recall turnout is 
-still positively associated with higher turnout overall, and this effect is stronger 
-in the post-recall period. WERC strength, measured by WERC election turnout in the 
-post-recall period, is not associated with overall increased turnout, but in the 
-post-recall period it is associated with a modest increase in school board election 
-turnout. 
-
-
-These results are a strong confirmation of the expectations described in Table 
-\ref{tab:act10hypo}. However, as with the turnout models from Chapter \ref{chap:turnout}, 
-these models do not capture solely turnout for school board elections as there 
-are other key races which are higher profile in the spring. In order to better 
-isolate the impact on school board elections themselves, I next isolate the effect 
-on the gap between turnout on the top ticket race and school board turnout. 
-
-\clearpage
-
-\subsubsection{Rolloff}
-
-Table \ref{tab:meRolloff} depicts the results for voter rolloff. The dependent 
-variable is the gap between school board votes and top ticket votes -- the bigger 
-the number, the fewer voters bothered to complete their ballot for school board and 
-ostensibly were indifferent about school board and turned out to vote for another 
-reason. First, the recall led to increased voter rolloff in the post-recall 
-periods. This suggests that the spring elections post Act 10 had more voter 
-activity, but these voters were less likely to complete their ballots. 
-
-Second, recall polarization does not seem to matter. Polarized communities 
-completed their ballots at roughly the same rate, though there is slight evidence 
-of a small increase in ballot rolloff post-recall. Increased turnout for the recall 
-leads to an increase in voter rolloff as well. This effect becomes sharper post-recall. 
-The only dampening effect observed on rolloff is the strength of teacher's unions. 
-In all periods, stronger unions exhibit a slight negative effect on rolloff. 
-Unions that had a WERC election show a strong effect at dampening rolloff, but 
-the stronger the union result in the election, the greater the rolloff. Neither 
-of these effects was changed post-recall. 
-
-% rolloff increases post recall
-% WERC turnout decreases rolloff (no differentiation post recall)
-% Recall polarization has no effect on turnout, and none post recall
-% recall turnout increases rolloff, post recall this is magnified
-% Net of increased turnout, recall polarization leads to increased 
-% voter rolloff
-
-These findings are remarkable because they indicate that while political activity 
-in spring non-partisan elections was fundamentally altered by the events of 2011, 
-school board elections themselves were not specifically affected. 
-
-\clearpage
+\clearpage 
 
 \section{Conclusion}
 
@@ -2409,44 +2334,52 @@ is often untapped due to a lack of candidates, lack of voter interest, and a
 lack of information about the policy implications of those choices among 
 candidates. 
 
+Some stuff about framing results. 
+
 \clearpage
 
 \section{Appendix}
 
 \subsection{Minor Contestation Models}
 
-\begin{small}
+\begin{footnotesize}
 <<causModelminor, results='asis'>>=
 causMinorConTab
 @
-\end{small}
+\end{footnotesize}
+
+\clearpage
 
 \subsection{Full Mediation Models}
 
 HLM mediation models. 
 
-\begin{tiny}
-<<unionMedtable, results='asis'>>=
-unionMedtable
-@
-\end{tiny}
+\begin{footnotesize}
 
-\begin{tiny}
 <<polarMedTable, results='asis'>>=
 polarMedTable
 @
-\end{tiny}
 
-\begin{tiny}
+
+
+
+<<unionMedtable, results='asis'>>=
+unionMedtable
+@
+
+
+
+
 <<recallTurnMedTable, results='asis'>>=
 recallTurnMedTable
 @
-\end{tiny}
 
 
-\begin{tiny}
+
+
 <<recallMedTable, results='asis'>>=
 recallMedTable
 @
-\end{tiny}
+
+\end{footnotesize}
 
