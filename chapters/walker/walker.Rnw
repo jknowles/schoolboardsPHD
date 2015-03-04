@@ -2232,7 +2232,7 @@ outdata$turnout_overall_werc <- NULL
 outdata$RecallTurnout <- outdata$GovTurnout_recall
 outdata$GovTurnout_recall <- NULL
 outdata$RecallRep <- outdata$GovTwoPartyShareRep_recall
-outdata$GovTwoPartyShareRep_recall
+outdata$GovTwoPartyShareRep_recall <- NULL
 outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
 outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
 

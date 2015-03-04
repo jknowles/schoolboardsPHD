@@ -378,8 +378,12 @@ races$incumbOnly <- ifelse(races$nrealcand == races$ninc, 1, 0)
 
 # table(dist_turn$contestSer, dist_turn$incDefeats)
 
-tab1 <- table(dist_turn$onlyIncum, dist_turn$contestSer)
-
+tab1 <- table(races$incumbOnly, races$contestSer)
+dist_turn$contestSer <- 0
+dist_turn$contestSer[(dist_turn$nrealcand - dist_turn$nminor) > dist_turn$nwins] <- 1
+dist_turn$contestMinor <- 0
+dist_turn$contestMinor[dist_turn$nrealcand > dist_turn$nwins] <- 1
+dist_turn$incumbOnly <- ifelse(dist_turn$nrealcand == dist_turn$ninc, 1, 0)
 
 
 rownames(tab1) <- c("Non-Incumbents Run", "Only Incumbents")
