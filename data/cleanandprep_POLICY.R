@@ -1,8 +1,7 @@
-
 source("data/dataAssemble.R")
 load("data/cache/DataMergeVAP.rda")
 load("data/cache/fullDataSep2014.rda")
-
+load("data/cache/boardSize.rda")
 
 distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", 
                     "AdjPopulation",
@@ -14,13 +13,10 @@ distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill",
                     "ref_share", "member_aidyear", "total_cat_aids_member",  
                     "tax_price", "totalincome_count", "eqv_adj_tifout", 
                     "econ_disadv_per")]
-
+# Scale data to be per member
 distAttr$balance_member_lag <- distAttr$balance_lag / distAttr$member_datayear
 distAttr$member_delta_per <- distAttr$member_delta / distAttr$member_datayear
-
-
 rm(tmp)
-
 distAttr$per_white_all <- distAttr$PopWhiteAlone / distAttr$TotalPopulation
 
 ## reshape school district by year
@@ -35,49 +31,44 @@ presTurn$presTwoPartyShareDem <- presTurn$presDemVotes / presTurn$presTwoPartyVo
 govTurn$govTwoPartyVote <- govTurn$govDemVotes + govTurn$govRepVotes
 govTurn$govTwoPartyShareDem <- govTurn$govDemVotes / govTurn$govTwoPartyVote
 
-
 # turnout over the prior presidential election
 races.tmp <- merge(races.tmp, presTurn, by = c("distid", "year"), all.x=TRUE)
 races.tmp <- merge(races.tmp, govTurn, by = c("distid", "year"), all.x=TRUE)
-
 races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
                                           "nrealcand", "nwins", "ninc", "raceid",
                                           "nminor", "votes", "districtwide", 
-                                          "electiontype", "VAP", "VAP_adj", 
+                                          "electiontype", "VAP", "VAP_adj", "nincDefInd",
                                           "topPresVotesPrior", "presTwoPartyShareDem", 
                                           "topGovVotesPrior", "govTwoPartyShareDem"))
-
 races.tmp <- subset(races.tmp, raceid!=0)
 # look at general
 races.tmp <- subset(races.tmp, electiontype == 1)
-
 # Look at districtwide only
 races.tmp <- subset(races.tmp, districtwide == 1)
 races.tmp <- subset(races.tmp, nrealcand > 0)
 races.tmp <- subset(races.tmp, nwins > 0)
-
 races.tmp <- races.tmp[!is.na(races.tmp$distid),]
 races.tmp$voters <- races.tmp$votes / races.tmp$nwins
 races.tmp$turnout <- races.tmp$voters/races.tmp$VAP_adj
 ## Convert to district average somehow
-
 dist_turn <- ddply(races.tmp, .(distid, year), summarise, 
                    ncand = sum(ncand), nrealcand = sum(nrealcand), 
                    nwins = sum(nwins), ninc = sum(ninc), 
                    nminor = sum(nminor), votes = sum(votes), 
                    VAP_adj = statamode(VAP_adj), 
+                   incDefeats = sum(nincDefInd),
                    nraces = length(distid))
-
 dist_turn$districtwide <- 1
+
 ############
 # Non district-wide
 ############
+
 races <- as.data.frame(races)
 races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
-
 races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
                                           "nrealcand", "nwins", "ninc", "raceid",
-                                          "nminor", "votes", "districtwide", 
+                                          "nminor", "votes", "districtwide", "nincDefInd", 
                                           "electiontype", "VAP_adj"))
 
 races.tmp <- subset(races.tmp, raceid!=0)
@@ -89,24 +80,20 @@ races.tmp <- subset(races.tmp, nrealcand > 0)
 races.tmp <- races.tmp[!is.na(races.tmp$distid),]
 
 # collapse to the district level
-
 dist.tmp <- ddply(races.tmp, .(distid, year), summarise, 
                   ncand = sum(ncand), nrealcand = sum(nrealcand), 
                   nwins = sum(nwins), ninc = sum(ninc), 
                   nminor = sum(nminor), votes = sum(votes), 
                   VAP_adj = statamode(VAP_adj), 
+                  incDefeats = sum(nincDefInd),
                   nraces = length(distid))
-
 dist.tmp$districtwide <- 0
-
 dist_turn <- rbind(dist_turn, dist.tmp)
-
 row_counts <- ddply(dist_turn, .(distid, year), nrow)
 dist_turn <- merge(dist_turn, row_counts, all.x=TRUE)
 dist_turn$recs <- dist_turn$V1; dist_turn$V1 <- NULL
 dist_turn1 <- dist_turn[dist_turn$recs >= 1 & dist_turn$districtwide > 0,]
 dist_turn2 <- dist_turn[dist_turn$recs == 1 & dist_turn$districtwide == 0,]
-
 dist_turn <- rbind(dist_turn1, dist_turn2)
 dist_turn$recs <- NULL
 
@@ -120,23 +107,18 @@ dist_turn$turnout <- dist_turn$voters / dist_turn$VAP_adj
 # Fall turnout 
 dist_turn$fallTurnout <- (dist_turn$topGovTurnoutPrior + dist_turn$topPresTurnoutPrior) / 2
 dist_turn$fallTwoPartyShareDem <- (dist_turn$govTwoPartyShareDem + dist_turn$presTwoPartyShareDem) /2
-
+# Cleanup
 rm(dist_turn1, dist_turn2, races.tmp, row_counts)
-
-
+# Code contestation
 dist_turn$contest <- "Uncontested"
 dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc > 0] <- "Incumbent Contested"
 dist_turn$contest[dist_turn$nrealcand > dist_turn$nwins & dist_turn$ninc ==0] <- "Open Contested"
-
-
 lg  <- function(x) c(NA, x[1:length(x)-1])
 lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
 
 dist_turn$year <- as.numeric(dist_turn$year)
 dist_turn.tmp <- dist_turn[, c("distid", "year", "voters", "turnout")]
-
 dist_turn.tmp <- dist_turn.tmp[order(dist_turn.tmp$distid, dist_turn.tmp$year),]
-
 dist_turn.tmp <- as.data.table(dist_turn.tmp)[, votersLag1:= lg(voters), by = "distid"]
 dist_turn.tmp <- as.data.table(dist_turn.tmp)[, votersLag2:= lg2(voters), by = "distid"]
 dist_turn.tmp <- as.data.table(dist_turn.tmp)[, turnoutLag1:= lg(turnout), by = "distid"]
@@ -168,40 +150,28 @@ plotdf2 <- as.data.table(votes.tmp)[, list(cand = .N,
                                     by = c("raceid2")]
 plotdf2$winmargin3 <- plotdf2$winshare - (1/plotdf2$cand * plotdf2$winners)
 plotdf2$winmargin3[plotdf2$cand == plotdf2$winners] <- .5
-
 plotdf2$closeRace <- 0
 plotdf2$closeRace[plotdf2$winmargin2 < .15] <- 1
-
 errors <- subset(plotdf2, winmargin < 0)
-
 plot.tmp <- ddply(plotdf2, .(distid, year), summarise, 
                   races = length(distid), 
                   closeRaces = sum(closeRace))
-
-
 dist_turn <- merge(dist_turn, plot.tmp, all.x=TRUE)
 rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
-
 dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
-
+# Administrative data
 source("data/cleanandprep_DPIADMIN.R")
 
 dist_turn$DISTID <- FORMATdistid(dist_turn$distid)
-
 dist_turn <- merge(dist_turn, ADMIN, by.x = c("DISTID", "year"), 
                    by.y =c("DISTID", "YEAR"))
-
 dist_turn$teachShareofVoters <- round(dist_turn$FTE_TEACH,0) / round(dist_turn$VAP_adj,0)
-
 rm(ADMIN)
-
 
 ################################################################################
 # Read in WERC data and clean it
 ################################################################################
-
-# All WERC union certification elections as of July 2013
-
+# All WERC union certification elections as of July 2014
 load("data/cache/WERC.rda")
 # load("data/cache/WERC.rda")
 names(wercDatTeachers) <- paste(names(wercDatTeachers), "werc", sep = "_")
@@ -231,8 +201,6 @@ dist_turn$abst_votes_avg_werc <- NAzero(dist_turn$abst_votes_avg_werc)
 dist_turn$best_margin_werc <- NAzero(dist_turn$best_margin_werc)
 dist_turn$worst_margin_werc <- NAzero(dist_turn$worst_margin_werc)
 
-
-
 load("data/cache/WalkerRecall.rda")
 # load("data/cache/WalkerRecall.rda")
 ## Bolt them on
@@ -246,13 +214,11 @@ dist_turn <- merge(dist_turn, distvotes12r, by.x = "distid",
                    by.y = "distid_recall")
 dist_turn$GovTurnout_recall <- dist_turn$RECTOT_recall / dist_turn$VAP_adj 
 
-
-
 dist_turn$ADMIN_SHARE_COMP <- (dist_turn$SALARY_TOTAL_ADMIN + dist_turn$FRINGE_TOTAL_ADMIN) / 
   (dist_turn$FRINGE_TOTAL_ALL + dist_turn$SALARY_TOTAL_ALL)
 dist_turn$ADMIN_SHARE_FTE <- (dist_turn$FTE_ADMIN / dist_turn$FTE_ALL)
 
-# habit
+# contestation
 dist_turn$contestMinor <- 0
 dist_turn$contestMinor[dist_turn$nrealcand > dist_turn$nwins] <- 1
 dist_turn$contestSer <- 0
@@ -282,6 +248,11 @@ dist_turn <- as.data.table(dist_turn)[, contestSerLag2:= lg2(contestSer), by = "
 dist_turn <- as.data.frame(dist_turn)
 
 rm(distAttr, distvotes12r, dvp, govTurn, presTurn, wercDatALL, wercDatTeachers)
+
+dist_turn <- merge(dist_turn, boardSize, by.x = c("distid", "year"), 
+                   by.y = c("agency", "year"), all.x=TRUE)
+rm(boardSize)
+###########################################################################
 # load("../../data/cache/springElectionVotes.rda")
 # # load("data/cache/springElectionVotes.rda")
 # springVotes$votesTopTicketSpring <- springVotes$VotesCast
@@ -297,7 +268,3 @@ rm(distAttr, distvotes12r, dvp, govTurn, presTurn, wercDatALL, wercDatTeachers)
 # table(cont$contract112)
 # table(cont$contract1213)
 # table(cont$recert)
-
-################################################################################
-# Read in achievement data
-################################################################################

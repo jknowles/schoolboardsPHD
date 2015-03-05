@@ -31,9 +31,7 @@ for(i in 1:length(struc)){
   rm(f)
 }
 
-
 rm(i, struc)
-
 ## Parse the column types
 table(dat$electiontype)
 dat$electiontype <- as.numeric(dat$electiontype)
