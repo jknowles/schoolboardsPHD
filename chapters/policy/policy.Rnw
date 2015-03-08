@@ -110,129 +110,6 @@ dist_turn <- as.data.frame(dist_turn)
 #                  "NEW_SUP_FW", "READ_PROFADV_PER", "READ_PROFADV_PER_LAG")], 25)
 @
 
-<<test, eval=FALSE>>=
-# summary(glm(NEW_SUP ~ incsDefeatedLag, data = dist_turn, family = 'binomial'))
-# summary(glm(millrate ~ incsDefeatedLag, data = dist_turn))
-# summary(glm(incsDefeated ~ READ_PROFADV_PER_LAG, data = dist_turn))
-# # summary(glm(READ_PROFADV_PER ~ incsDefeated, data = dist_turn))
-@
-
-
-
-<<zedzed, results='asis'>>=
-moddat <- dist_turn[, c("distid","year", "incsDefeatedLag", "incsDefeated",
-                        "balance_member_lag", "incumShare", "nrealcand",
-                        "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
-                        "districtwide",  "TEC_MEMBER", "TCEC_MEMBER","TDC_MEMBER",
-                        "PROPERTYTAX_REV_SHARE", "elecFail",
-                        "ADMIN_SHARE_COMP", "ADMIN_SHARE_FTE", "econ_disadv_per", 
-                        "tax_price", "eqv_adj_tifoutLOG", "totalincome_count", 
-                        "total_cat_aids_member", "eqv_adj_tifout",
-                        "OOH_share", "median_incomeLOG", "per65o", 
-                        "NonWhitePublicPupilPer", "NonPublicPupilPer", 
-                        "teachShareofVoters", "locale2", 
-                        "member_delta_per", "overrideQues", 
-                        "debtQues", "overrideYesPer",
-                        "overrideFail",  "debtPass", 
-                        "fallTurnout", "SUP_TURNOVER_PRIOR_YEAR", 
-                        "DEBT_ATTEMPT_CUMUL93", "balance_member_lagLOG",
-                        "OVERRIDE_ATTEMPT_CUMUL93", 
-                        "SUP_TURNOVER_PRIOR_YEAR", "teachSalDiff", "NEW_SUP", 
-                        "turnoutLag2", "partyDivision", 
-                        "millrate", "NonSDMill", "refInPlace", "millrate_delta",
-                        "fallTwoPartyShareDem", 
-                        "READ_PROFADV_PER_LAG", "MATH_PROFADV_PER_LAG")]
-
-# rescale all continuous variables
-moddat$year <- factor(moddat$year)
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-moddat$districtwide <- factor(moddat$districtwide)
-moddat$incsDefeatedFac <- factor(ifelse(moddat$incsDefeated > 0, 1, 0))
-moddat$incsDefeatedLagFac <- factor(ifelse(moddat$incsDefeated > 0, 1, 0))
-moddat$NEW_SUP <- factor(moddat$NEW_SUP)
-moddat$SUP_TURNOVER_PRIOR_YEAR <- factor(moddat$SUP_TURNOVER_PRIOR_YEAR)
-moddat$debtPass <- factor(moddat$debtPass)
-# moddat$overridePass <- factor(moddat$overridePass)
-moddat$overrideFail <- factor(moddat$overrideFail)
-moddat$elecFail <- factor(moddat$elecFail)
-moddat$debtQues <- factor(moddat$debtQues)
-moddat$overrideQues <- factor(moddat$overrideQues)
-moddat$eqv_taxfiler <- moddat$eqv_adj_tifout / moddat$totalincome_count
-moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
-moddat$per_white_all <- moddat$per_white_all * 100
-moddat$OOH_share <- moddat$OOH_share * 100
-moddat$per65o <- moddat$per65o * 100
-moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
-moddat$member_delta_per <- moddat$member_delta_per * 100
-
-# Rescale
-library(arm)
-
-nums <- sapply(moddat, is.numeric)
-
-for(i in unique(moddat$year)){
-  moddat[moddat$year == i, nums] <- 
-    apply(moddat[moddat$year == i, nums], 2, rescale)
-}
-# moddat[, nums] <- apply(moddat[, nums], 2, rescale)
-
-library(lme4)
-library(blme)
-library(optimx)
-
-ctrl2 <- glmerControl(optimizer = "optimx", calc.derivs = FALSE, 
-                     optCtrl = list(method = "nlminb", starttests = FALSE, 
-                                    kkt = FALSE, maxit = 4000))
-
-
-ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
-
-
-noDistEff <- glm(incsDefeatedFac ~ VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + nrealcand+
-                    OOH_share +  per65o + median_incomeLOG + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC_MEMBER +  
-                   PROPERTYTAX_REV_SHARE +
-                    districtwide + econ_disadv_per+ 
-                     eqv_taxfiler + READ_PROFADV_PER_LAG + 
-                   DEBT_ATTEMPT_CUMUL93 +  
-                   teachSalDiff + partyDivision + 
-                    balance_member_lag + debtPass + debtQues + 
-                     NEW_SUP + elecFail + overrideQues, 
-                 data = moddat, family = "binomial")
-
-
-biggerMod <- glmer(incsDefeatedFac ~  VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + nrealcand+
-                    OOH_share +  per65o + median_incomeLOG + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC_MEMBER +  
-                   PROPERTYTAX_REV_SHARE +
-                    districtwide + econ_disadv_per+ 
-                     eqv_taxfiler + MATH_PROFADV_PER_LAG + 
-                   DEBT_ATTEMPT_CUMUL93 +  
-                   teachSalDiff + partyDivision + 
-                    balance_member_lag + debtPass + debtQues + 
-                     NEW_SUP + elecFail + overrideQues+ 
-                     (1|distid), data = moddat, family = "binomial" , 
-                    control = ctrl)
-
-rescalenote <- "All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations within each year."
-
-apsrtable(noDistEff, biggerMod, se = "vcov", 
-          float = "longtable",
-          label="tab:firstmods", 
-          caption = "Models of Incumbent Defeat in School Board Elections",
-          notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3)
-
-
-@
-
 \section{School Boards and Policy Change}
 
 The literature on school boards affecting policy change is dominated by a focus 
@@ -285,26 +162,88 @@ on the work in Chapters \ref{chap:turnout} and \ref{chap:candidacy}, this chapte
 combines the political conditions in school districts and the changes resulting 
 
 
-\section{Data and Methods}
+\section{Data}
+
+To study the impacts of incumbent defeat in Wisconsin school districts I employ 
+a panel data set of school board election outcomes matched to school district 
+administrative records. To code incumbent defeat, I matched a roster of known 
+school board members in a given school year against the victors in the following 
+school year to identify which candidates were incumbents. Though both the roster 
+and the election results require some judgment in assessing their accuracy, 
+this represents a strong measure of incumbency and electoral defeat for school 
+board members in 300 Wisconsin school districts from 2002-2012. 
+
+\subsection{Independent Variables}
+
+Previous chapters have established that school board incumbent defeat is rare 
+because incumbents are rarely challenged, and even more rarely is that challenge 
+serious. Incumbents often face no challenge or leave office without running for 
+re-election. As we have seen, previous research on school board incumbent 
+defeat has focused on correctly measuring political and apolitical turnover 
+by focusing on incumbents who are defeated, not simply those who do not return 
+to the board for another term. 
+
+Timing is of critical importance in assessing the \emph{impact} of school board 
+incumbent defeat. While school board members are elected in spring elections, 
+their term begins the following fall. It is not reasonable to expect school 
+board members to have time after taking office to affect student outcomes or 
+superintendent contracts. As such, I lag incumbent defeat to allow for an 
+additional year. 
+
+% Check measurement of incumbent defeat 
+% Measure share of board that turnsover, vs. any incumbent defeat, vs. count of
+% incumbent defeats -- which is best
+
+It is also insufficient to simply turn over a single board member and expect 
+broad policy change if consensus existed among the other board members. 
+
+% Triple check the timing of the board elections, spring of 2012 is merged with 
+% which year of administrative records? Document this decision
+
+\subsection{Outcomes}
+
+I am primarily interested in the effect of board turnover on two classes of 
+outcomes. First, and most directly, boards are charged with hiring and monitoring 
+the performance of a district administrator who manages the academic and 
+financial affairs of the district. The choice of superintendent is critical to 
+the board as the superintendent is the board's primary conduit of information 
+about the health of the district and the educational strategies in place for 
+students. Superintendent turnover is a primary prediction of dissatisfaction 
+theory, and rightfully so. If voters are unhappy with the state of affairs in 
+their school district, in all likelihood they are unhappy with the performance 
+of their district administrator. 
+
+More indirectly, school boards are responsible for setting policy and directing 
+the superintendent to provide quality education. Thus, incumbent defeat may 
+serve as a method by which the community can express its demand for higher 
+quality education as measured by accountability measures such as student 
+test scores and graduation rates. 
 
 
-\subsection{Wisconsin Data}
+\section{Methods}
+
+Measuring the impact of school board turnout on superintendent turnover and 
+student outcomes is difficult because of the large number of competing 
+forces shaping these outcomes. Student performance is largely predicted by 
+family income and parental education levels. Superintendent turnover may be 
+related to salary and the prestige associated with leading certain school 
+districts. In order to better understand the impact of school board turnover 
+net of these factors, I employ a regression strategy to control for as many 
+of these observable and unobservable factors as possible. 
 
 
-\subsection{Methods}
+I employ two distinct modeling strategies. The first is the most restrictive. 
+As in previous chapters, I employ the bounding strategy suggested by \citet{mhe} 
+to leverage the repeated observations in my data to compare, where possible, 
+school districts within themselves. The disadvantage of this strategy is that 
+for the outcomes in question, relatively little variance remains to be explained 
+after accounting for all between school district effects, because the within 
+school district variation is so small. 
 
-There are three measures of school board policy output that can be examined:
-1) union contract policy, 2) replacement of a superintendent, 
-3) spending override attempts, and 4) changes in student outcomes. 
-For each of these measures, we build on the work from Chapters \ref{chap:turnout} and \ref{chap:candidacy}
-to estimate the following equation:
-
-
-\[(1) \hspace{1.2 in} P_{i} = \alpha + \beta X_{lag} + \gamma Z_{t} + \theta I_{t} + \epsilon \] \\
-
-
-
-
+The second strategy is more susceptible to unobserved alternative explanatory 
+variables, but attempts to explain the variation in outcomes between school 
+districts by comparing school districts with similar demographic 
+charcteristics, but which differ on their incumbent defeat. 
 
 
 \section{Results}
@@ -312,8 +251,8 @@ to estimate the following equation:
 
 \subsection{Student Outcomes}
 
-<<testScores>>=
-modeldata <- dist_turn[, c("distid", "year", "incsDefeated", 
+<<testScoresR, results='asis'>>=
+modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "READ_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
                            "econ_disadv_per", "VAP_adj", "per65o", 
                            "PerBachelorOrAbove", "locale2")]
@@ -329,18 +268,20 @@ modeldata <- modeldata[modeldata$year > 2005, ]
 modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0, 
                                        modeldata$SUP_EXPERIENCE_lag)
 
-simpModRead <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + locale2_lag, 
+simpModRead <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + locale2_lag  +
+                    servingMembers_lag, 
                   data = modeldata)
 simpModRead$se <- sqrt(diag(get_CL_vcov(simpModRead, modeldata$distid)))
 lagModRead <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
-                   READ_PROFADV_PER_lag +
+                   READ_PROFADV_PER_lag + servingMembers_lag + 
                    log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
                    per65o_lag, data = modeldata)
-lagModRead$se <- sqrt(diag(get_CL_vcov(lagModRead, modeldata$distid)))
-
+lagModRead$se <- sqrt(diag(get_CL_vcov(lagModRead, 
+                   modeldata$distid[!is.na(modeldata$READ_PROFADV_PER_lag)])))
 lagModReadFE <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
                    log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
-                   per65o_lag + distid, data = modeldata)
+                      servingMembers_lag + per65o_lag + distid, 
+                   data = modeldata)
 lagModReadFE$se <- sqrt(diag(get_CL_vcov(lagModReadFE, modeldata$distid)))
 
 apsrtable(simpModRead, lagModRead, lagModReadFE, se = "robust", 
@@ -350,331 +291,95 @@ apsrtable(simpModRead, lagModRead, lagModReadFE, se = "robust",
           Sweave = TRUE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))))
-
-
-
 @
+
+
+
+<<testScoresM, results='asis'>>=
+modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
+                           "MATH_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
+                           "econ_disadv_per", "VAP_adj", "per65o", 
+                           "PerBachelorOrAbove", "locale2")]
+modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
+modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
+preTreat <- modeldata[modeldata$year <= 2010,]
+preTreat$year <- preTreat$year + 2
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+modeldata <- modeldata[, c("MATH_PROFADV_PER", "distid", "year")]
+modeldata <- merge(modeldata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
+modeldata <- modeldata[modeldata$year > 2005, ]
+modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0, 
+                                       modeldata$SUP_EXPERIENCE_lag)
+
+simpModMath <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + locale2_lag, 
+                  data = modeldata)
+simpModMath$se <- sqrt(diag(get_CL_vcov(simpModMath, modeldata$distid)))
+lagModMath <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
+                   MATH_PROFADV_PER_lag +
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag, data = modeldata)
+lagModMath$se <- sqrt(diag(get_CL_vcov(lagModMath, 
+                   modeldata$distid[!is.na(modeldata$MATH_PROFADV_PER_lag)])))
+lagModMathFE <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag + distid, data = modeldata)
+lagModMathFE$se <- sqrt(diag(get_CL_vcov(lagModMathFE, modeldata$distid)))
+
+apsrtable(simpModMath, lagModMath, lagModMathFE, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Lag"), 
+          caption = "Incumbent Defeat and Student Scores", 
+          label = "tab:readMod", notes = list(stars.note), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))))
+@
+
+% HSC 
 
 \subsection{Superintendent Turnover}
 
-<<supturn, results='asis'>>=
-moddat <- dist_turn[, c("distid","year", "incsDefeatedLag", "incsDefeated",
-                        "balance_member_lag", "incumShare", "nrealcandLag",
-                        "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
-                        "districtwide",  "TEC_MEMBER", "TCEC_MEMBER","TDC_MEMBER",
-                        "PROPERTYTAX_REV_SHARE",
-                        "ADMIN_SHARE_COMP", "ADMIN_SHARE_FTE", "econ_disadv_per", 
-                        "tax_price", "eqv_adj_tifoutLOG", "totalincome_count", 
-                        "total_cat_aids_member", "eqv_adj_tifout",
-                        "OOH_share", "median_incomeLOG", "per65o", 
-                        "NonWhitePublicPupilPer", "NonPublicPupilPer", 
-                        "teachShareofVoters", "locale2", "nrealcand", 
-                        "member_delta_per", "overrideQues", "elecFail",
-                        "debtQues", "overrideYesPer", "debtFail",
-                        "debtPass", "NEW_SUP_FW",
-                        "fallTurnout", "SUP_TURNOVER_PRIOR_YEAR", 
-                        "DEBT_ATTEMPT_CUMUL93", "balance_member_lagLOG",
-                        "OVERRIDE_ATTEMPT_CUMUL93", 
-                        "SUP_TURNOVER_PRIOR_YEAR", "teachSalDiff", "NEW_SUP", 
-                        "turnoutLag2", "partyDivision", 
-                        "millrate", "NonSDMill", "refInPlace", "millrate_delta",
-                        "fallTwoPartyShareDem", 
-                        "READ_PROFADV_PER_LAG", "MATH_PROFADV_PER_LAG")]
+<<newSup, results='asis'>>=
+modeldata <- dist_turn[, c("distid", "year", "incsDefeated", 
+                           "MATH_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
+                           "econ_disadv_per", "VAP_adj", "per65o", 
+                           "PerBachelorOrAbove", "locale2")]
+modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
+modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
+preTreat <- modeldata[modeldata$year <= 2010,]
+preTreat$year <- preTreat$year + 2
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+modeldata <- modeldata[, c("NEW_SUP", "distid", "year")]
+modeldata <- merge(modeldata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
+modeldata <- modeldata[modeldata$year > 2005, ]
+modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0, 
+                                       modeldata$SUP_EXPERIENCE_lag)
 
-
-# rescale all continuous variables
-moddat$year <- factor(moddat$year)
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-moddat$districtwide <- factor(moddat$districtwide)
-moddat$incsDefeatedFac <- factor(ifelse(moddat$incsDefeated > 0, 1, 0))
-moddat$incsDefeatedLagFac <- factor(ifelse(moddat$incsDefeated > 0, 1, 0))
-moddat$NEW_SUP <- factor(moddat$NEW_SUP)
-moddat$NEW_SUP_FW <- factor(moddat$NEW_SUP_FW)
-moddat$debtPass <- factor(moddat$debtPass)
-moddat$debtFail <- factor(moddat$debtFail)
-# moddat$overridePass <- factor(moddat$overridePass)
-moddat$elecFail <- factor(moddat$elecFail)
-moddat$debtQues <- factor(moddat$debtQues)
-moddat$overrideQues <- factor(moddat$overrideQues)
-moddat$eqv_taxfiler <- moddat$eqv_adj_tifout / moddat$totalincome_count
-moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
-moddat$per_white_all <- moddat$per_white_all * 100
-moddat$OOH_share <- moddat$OOH_share * 100
-moddat$per65o <- moddat$per65o * 100
-moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
-moddat$member_delta_per <- moddat$member_delta_per * 100
-
-# Rescale
+simpModSup <- glm(NEW_SUP ~ incsDefeatedFac_lag + locale2_lag, 
+                  data = modeldata, family = "binomial")
+simpModSup$se <- sqrt(diag(get_CL_vcov(simpModSup, modeldata$distid)))
+fullModSup <- glm(NEW_SUP ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag, data = modeldata, family = "binomial")
+fullModSup$se <- sqrt(diag(get_CL_vcov(fullModSup, modeldata$distid)))
 library(arm)
+fullModSupFE <- bayesglm(NEW_SUP ~ incsDefeatedFac_lag + 
+                      econ_disadv_per_lag + log(VAP_adj_lag) + 
+                      locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag + distid, data = modeldata, family = "binomial")
+fullModSupFE$se <- sqrt(diag(get_CL_vcov(fullModSupFE, modeldata$distid)))
 
-nums <- sapply(moddat, is.numeric)
-
-for(i in unique(moddat$year)){
-  moddat[moddat$year == i, nums] <- 
-    apply(moddat[moddat$year == i, nums], 2, rescale)
-}
-# moddat[, nums] <- apply(moddat[, nums], 2, rescale)
-
-noDistEff <- glm(NEW_SUP_FW ~  VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + 
-                    OOH_share +  per65o + median_incomeLOG + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC_MEMBER +  
-                   PROPERTYTAX_REV_SHARE +
-                    districtwide + econ_disadv_per + 
-                     eqv_taxfiler + MATH_PROFADV_PER_LAG + 
-                    teachSalDiff + partyDivision + 
-                    balance_member_lag + debtQues + 
-                      elecFail + overrideQues +
-                     incsDefeated * nrealcand, 
-                 data = moddat, family = "binomial")
-
-
-biggerMod <- glmer(NEW_SUP_FW ~  VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + 
-                    OOH_share +  per65o + median_incomeLOG + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC_MEMBER +  
-                   PROPERTYTAX_REV_SHARE +
-                    districtwide + econ_disadv_per + 
-                     eqv_taxfiler + MATH_PROFADV_PER_LAG + 
-                    teachSalDiff + partyDivision + 
-                    balance_member_lag + debtQues + 
-                      elecFail + overrideQues +
-                     incsDefeated * nrealcand + 
-                     (1|distid), data = moddat, family = "binomial" , 
-                    control = ctrl)
-
-apsrtable(noDistEff, biggerMod, se = "vcov", 
-          float = "longtable",
-          label="tab:supmods", 
-          caption = "Models of Superintendent Turnover in School Board Elections",
-          notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3)
+apsrtable(simpModSup, fullModSup, fullModSupFE, se = "robust", 
+          stars = "default", digits = 3, 
+          model.names = c("Simple", "Full", "Fixed Effect"), 
+          caption = "Incumbent Defeat and Student Scores", 
+          label = "tab:readMod", notes = list(stars.note), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))))
 @
 
-\clearpage
-
-\subsection{Revenue Limit Override}
-
-Some text
-\begin{small}
-
-<<Revenue, results='asis'>>=
-moddat <- dist_turn[, c("distid","year", "incsDefeatedLag", "incsDefeated",
-                        "balance_member_lag", "incumShare", "nrealcandLag",
-                        "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
-                        "districtwide",  "TEC_MEMBER", "TCEC_MEMBER","TDC_MEMBER",
-                        "PROPERTYTAX_REV_SHARE",
-                        "ADMIN_SHARE_COMP", "ADMIN_SHARE_FTE", "econ_disadv_per", 
-                        "tax_price", "eqv_adj_tifoutLOG", "totalincome_count", 
-                        "total_cat_aids_member", "eqv_adj_tifout",
-                        "OOH_share", "median_incomeLOG", "per65o", 
-                        "NonWhitePublicPupilPer", "NonPublicPupilPer", 
-                        "teachShareofVoters", "locale2", 
-                        "member_delta_per", "overrideQues", "elecFail",
-                        "debtQues", "overrideYesPer", "nrealcandLag",
-                        "overridePass",  "debtPass", 
-                        "fallTurnout", "SUP_TURNOVER_PRIOR_YEAR", 
-                        "DEBT_ATTEMPT_CUMUL93", "balance_member_lagLOG",
-                        "OVERRIDE_ATTEMPT_CUMUL93", 
-                        "SUP_TURNOVER_PRIOR_YEAR", "teachSalDiff", "NEW_SUP", 
-                        "turnoutLag2", "partyDivision", 
-                        "millrate", "NonSDMill", "refInPlace", "millrate_delta",
-                        "fallTwoPartyShareDem", 
-                        "READ_PROFADV_PER_LAG", "MATH_PROFADV_PER_LAG")]
-
-
-# rescale all continuous variables
-moddat$year <- factor(moddat$year)
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-moddat$districtwide <- factor(moddat$districtwide)
-moddat$incsDefeatedFac <- factor(ifelse(moddat$incsDefeated > 0, 1, 0))
-moddat$incsDefeatedLagFac <- factor(ifelse(moddat$incsDefeated > 0, 1, 0))
-moddat$NEW_SUP <- factor(moddat$NEW_SUP)
-moddat$SUP_TURNOVER_PRIOR_YEAR <- factor(moddat$SUP_TURNOVER_PRIOR_YEAR)
-moddat$debtPass <- factor(moddat$debtPass)
-moddat$overridePass <- factor(moddat$overridePass)
-moddat$elecFail <- factor(moddat$elecFail)
-moddat$debtQues <- factor(moddat$debtQues)
-moddat$overrideQues <- factor(moddat$overrideQues)
-moddat$eqv_taxfiler <- moddat$eqv_adj_tifout / moddat$totalincome_count
-moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
-moddat$per_white_all <- moddat$per_white_all * 100
-moddat$OOH_share <- moddat$OOH_share * 100
-moddat$per65o <- moddat$per65o * 100
-moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
-moddat$member_delta_per <- moddat$member_delta_per * 100
-
-# Rescale
-nums <- sapply(moddat, is.numeric)
-
-for(i in unique(moddat$year)){
-  moddat[moddat$year == i, nums] <- 
-    apply(moddat[moddat$year == i, nums], 2, rescale)
-}
-# moddat[, nums] <- apply(moddat[, nums], 2, rescale)
-
-noDistEff <- glm(millrate ~ VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + 
-                    OOH_share +  per65o + median_incomeLOG + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC_MEMBER + PROPERTYTAX_REV_SHARE +    
-                    districtwide + econ_disadv_per+ 
-                     eqv_taxfiler + READ_PROFADV_PER_LAG + 
-                     teachSalDiff + partyDivision + 
-                    balance_member_lag +
-                     incsDefeatedLag + nrealcandLag, 
-                 data = moddat)
-
-
-biggerMod <- lmer(millrate ~ VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + 
-                    OOH_share +  per65o + median_incomeLOG + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC_MEMBER + PROPERTYTAX_REV_SHARE +    
-                    districtwide + econ_disadv_per+ 
-                     eqv_taxfiler + READ_PROFADV_PER_LAG + 
-                     teachSalDiff + partyDivision + 
-                    balance_member_lag +
-                     incsDefeatedLag + nrealcandLag +
-                     (1|distid), data = moddat)
-
-apsrtable(noDistEff, biggerMod, se = "vcov", 
-          float = "longtable",
-          label="tab:millrate", 
-          caption = "Models of Tax Rates and Turnover in School Board Elections",
-          notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3)
-
-@
-\end{small}
-\clearpage
-
-\subsection{Change in Student Outcomes}
-
-\begin{tiny}
-<<studentScores, results='asis'>>=
-moddat <- dist_turn[, c("distid","year", "incsDefeatedLag", "incsDefeated",
-                        "balance_member_lag", "incumShare", "nrealcandLag",
-                        "PerBachelorOrAbove", "VAP_adjLOG", "per_white_all", 
-                        "districtwide",  "TEC_MEMBER", "TCEC_MEMBER","TDC_MEMBER",
-                        "PROPERTYTAX_REV_SHARE",
-                        "ADMIN_SHARE_COMP", "ADMIN_SHARE_FTE", "econ_disadv_per", 
-                        "tax_price", "eqv_adj_tifoutLOG", "totalincome_count", 
-                        "total_cat_aids_member", "eqv_adj_tifout",
-                        "OOH_share", "median_incomeLOG", "per65o", 
-                        "NonWhitePublicPupilPer", "NonPublicPupilPer", 
-                        "teachShareofVoters", "locale2", 
-                        "member_delta_per", "overrideQues", "elecFail",
-                        "debtQues", "overrideYesPer", "nrealcandLag",
-                        "overridePass",  "debtPass", 
-                        "fallTurnout", "SUP_TURNOVER_PRIOR_YEAR", 
-                        "DEBT_ATTEMPT_CUMUL93", "balance_member_lagLOG",
-                        "OVERRIDE_ATTEMPT_CUMUL93", 
-                        "SUP_TURNOVER_PRIOR_YEAR", "teachSalDiff", "NEW_SUP", 
-                        "turnoutLag2", "partyDivision", 
-                        "millrate", "NonSDMill", "refInPlace", "millrate_delta",
-                        "fallTwoPartyShareDem", 
-                        "READ_PROFADV_PER", "MATH_PROFADV_PER")]
-
-
-# rescale all continuous variables
-moddat$year <- factor(moddat$year)
-moddat <- moddat[order(moddat$distid, moddat$year),]
-moddat$distid <- factor(moddat$distid)
-moddat$year <- factor(moddat$year)
-moddat$districtwide <- factor(moddat$districtwide)
-moddat$incsDefeatedFac <- factor(ifelse(moddat$incsDefeated > 0, 1, 0))
-moddat$incsDefeatedLagFac <- factor(ifelse(moddat$incsDefeated > 0, 1, 0))
-moddat$NEW_SUP <- factor(moddat$NEW_SUP)
-moddat$SUP_TURNOVER_PRIOR_YEAR <- factor(moddat$SUP_TURNOVER_PRIOR_YEAR)
-moddat$debtPass <- factor(moddat$debtPass)
-moddat$overridePass <- factor(moddat$overridePass)
-moddat$elecFail <- factor(moddat$elecFail)
-moddat$debtQues <- factor(moddat$debtQues)
-moddat$overrideQues <- factor(moddat$overrideQues)
-moddat$eqv_taxfiler <- moddat$eqv_adj_tifout / moddat$totalincome_count
-moddat$PerBachelorOrAbove <- moddat$PerBachelorOrAbove * 100
-moddat$per_white_all <- moddat$per_white_all * 100
-moddat$OOH_share <- moddat$OOH_share * 100
-moddat$per65o <- moddat$per65o * 100
-moddat$teachShareofVoters <- moddat$teachShareofVoters * 100
-moddat$member_delta_per <- moddat$member_delta_per * 100
-
-nums <- sapply(moddat, is.numeric)
-
-for(i in unique(moddat$year)){
-  moddat[moddat$year == i, nums] <- 
-    apply(moddat[moddat$year == i, nums], 2, rescale)
-}
-
-
-noDistEffR <- lm(READ_PROFADV_PER ~ VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + 
-                    OOH_share +  per65o + median_incomeLOG + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC_MEMBER +   
-                    districtwide + econ_disadv_per+ 
-                     PROPERTYTAX_REV_SHARE +  
-                     teachSalDiff + partyDivision + 
-                    balance_member_lag +
-                     incsDefeatedLag*nrealcandLag, 
-                 data = moddat)
-
-
-biggerModR <- lmer(READ_PROFADV_PER ~ VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + 
-                    OOH_share +  per65o + median_incomeLOG + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC_MEMBER +   
-                    districtwide + econ_disadv_per+ 
-                     PROPERTYTAX_REV_SHARE +  
-                     teachSalDiff + partyDivision + 
-                    balance_member_lag +
-                     incsDefeatedLag*nrealcandLag + 
-                     (1|distid), data = moddat)
-
-noDistEffM <- lm(MATH_PROFADV_PER ~ VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + 
-                    OOH_share +  per65o + median_incomeLOG + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC_MEMBER +   
-                    districtwide + econ_disadv_per+ 
-                     PROPERTYTAX_REV_SHARE +  
-                     teachSalDiff + partyDivision + 
-                    balance_member_lag +
-                     incsDefeatedLag*nrealcandLag, 
-                 data = moddat)
-
-
-biggerModM <- lmer(MATH_PROFADV_PER ~ VAP_adjLOG + PerBachelorOrAbove + 
-                   per_white_all + 
-                    OOH_share +  per65o + median_incomeLOG + 
-                    NonWhitePublicPupilPer + NonPublicPupilPer + 
-                    ADMIN_SHARE_COMP + TCEC_MEMBER +   
-                    districtwide + econ_disadv_per+ 
-                     PROPERTYTAX_REV_SHARE +  
-                     teachSalDiff + partyDivision + 
-                    balance_member_lag +
-                     incsDefeatedLag*nrealcandLag + 
-                     (1|distid), data = moddat)
-
-
-apsrtable(noDistEffR, biggerModR, noDistEffM, biggerModM, se = "vcov", 
-          float = "longtable",
-          model.names = c("Reading OLS", "Reading ME", "Math OLS", "Math ME"),
-          label="tab:stuach", 
-          caption = "Models of Student Performance and Turnover in School Board Elections",
-          notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3)
-
-@
-\end{tiny}
 
 \clearpage
 
