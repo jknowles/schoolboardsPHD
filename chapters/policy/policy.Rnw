@@ -15,33 +15,24 @@ source("R/thesis_functions.R")
 source("data/cleanandprep_POLICY.R")
 library(scales)
 library(xtable)
-
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
-
-iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
-                                           digits = 3)}
-iPer <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
-                                                  digits = 3)),"\\%")}
-iPer2 <- function(x){paste0(as.character(prettyNum(x, big.mark = ",", 
-                                                   digits = 3)),"%")}
-
 library(devtools)
 install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
 library(apsrtable)
 stars.note <- apsrtable:::stars.note
-
 @
 
 \section{Introduction}
 
-School boards have considerable power over local issues in their community. We have 
-seen that school boards are often responsible for setting property tax levies, 
-labor relations with teachers and support staff within the school, and often serve 
-as the largest single employer in their community. The driving idea behind locally 
-elected school boards was to ensure that the local community retained some control 
-over the direction taken by the schools in their community and to ensure that 
-the school system was responsive to the preferences of that community. Until 
-now there have only been limited tests of school board responsiveness. 
+School boards have considerable power over local issues in their community. 
+We have seen that school boards are often responsible for setting property tax
+levies, labor relations with teachers and support staff within the school, and
+often serve as the largest single employer in their community. The driving idea
+behind locally elected school boards was to ensure that the local community
+retained some control over the direction taken by the schools in their community
+and to ensure that the school system was responsive to the preferences of that
+community. Until now there have only been limited tests of school board 
+responsiveness. 
 
 The challenge in testing school board responsiveness is great. First, in most 
 cases school boards are non-partisan offices and education issues do not fall 
@@ -55,6 +46,9 @@ Voter policy preferences were expressed and made clear through two elections in
 Wisconsin - the 2010 Gubernatorial election, and updated with the 2011 recall 
 election. 
 
+% Does board member turnout change anything? 
+% Does it change superintendents?
+% Does it change test scores?
 % Board turnover writ large = change
 % Incumbent defeat should change things
 
@@ -72,21 +66,22 @@ election.
 
 
 <<incdefeat, results='hide'>>=
+dist_turn$incDefeats <- NULL
 incDefeat <- ddply(dat[dat$electiontype == 1,], 
                    .(distid, year), 
                    summarise, 
                    incsDefeated = sum(incumbent[winner == 0]), 
                    incsTotal = sum(incumbent), 
                    winnersTotal = sum(winner))
-
+# TODO:
+# Why is this?
 # incumbents defeated can exceed number of winners, especially when races 
 # consolidate
-
 fw  <- function(x) c(x[2:length(x)], NA)
-lg  <- function(x) c(NA, x[1:length(x)-1])
-# lg  <- function(x) c(NA, x[2:length(x)])
 
 dist_turn <- merge(dist_turn, incDefeat, by = c("distid", "year")) 
+dist_turn$boardTurnover <- dist_turn$incsDefeated / dist_turn$servingMembers
+
 library(data.table)
 dist_turn <- dist_turn[order(dist_turn$distid, dist_turn$year),]
 dist_turn <- as.data.table(dist_turn)[, NEW_SUP_FW:= fw(NEW_SUP), by = "distid"]
@@ -240,18 +235,16 @@ apsrtable(noDistEff, biggerMod, se = "vcov",
 
 \section{School Boards and Policy Change}
 
-The literature on school boards affecting policy change is dominated by a focus on 
-three areas - 1) superintendent turnover as policy change, 2) setting tax levies, or 
-3) making direct policy changes about social issues, and 4) changes resulting in 
-student outcomes. 
+The literature on school boards affecting policy change is dominated by a focus 
+on three areas - 1) superintendent turnover as policy change, 2) setting tax
+levies, or 3) making direct policy changes about social issues, and 4) changes
+resulting in student outcomes. 
 
 Much of the work referred to in Chapter \ref{chap:intro} dealt with the impact 
-of school boards on policy change. In fact, both the dissatisfaction theory and the 
-public choice theories of school board politics include superintendent turnover 
-as key evidence \citep{RefWorks:297,RefWorks:271, RefWorks:351, RefWorks:339,RefWorks:340,RefWorks:243}. 
-Recently a key improvement in empirical tests of this work has focused on political 
-vs. apolitical turnover, typically retirement, among school board members and 
-superintendents \citep{RefWorks:311}. 
+of school boards on policy change. In fact, both the dissatisfaction theory and the public choice theories of school board politics include superintendent
+turnover as key evidence \citep{RefWorks:297,RefWorks:271, RefWorks:351, RefWorks:339,RefWorks:340,RefWorks:243}. Recently a key improvement in empirical tests 
+of this work has focused on political vs. apolitical turnover, typically 
+retirement, among school board members and superintendents \citep{RefWorks:311}. 
 
 There is a strong public economics literature that views school boards as agents 
 that set the price for the public good of education through property tax rates. % citations needed
@@ -316,7 +309,51 @@ to estimate the following equation:
 
 \section{Results}
 
-\subsection{Union Contract}
+
+\subsection{Student Outcomes}
+
+<<testScores>>=
+modeldata <- dist_turn[, c("distid", "year", "incsDefeated", 
+                           "READ_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
+                           "econ_disadv_per", "VAP_adj", "per65o", 
+                           "PerBachelorOrAbove", "locale2")]
+modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
+modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
+preTreat <- modeldata[modeldata$year <= 2010,]
+preTreat$year <- preTreat$year + 2
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+modeldata <- modeldata[, c("READ_PROFADV_PER", "distid", "year")]
+modeldata <- merge(modeldata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
+modeldata <- modeldata[modeldata$year > 2005, ]
+modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0, 
+                                       modeldata$SUP_EXPERIENCE_lag)
+
+simpModRead <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + locale2_lag, 
+                  data = modeldata)
+simpModRead$se <- sqrt(diag(get_CL_vcov(simpModRead, modeldata$distid)))
+lagModRead <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
+                   READ_PROFADV_PER_lag +
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag, data = modeldata)
+lagModRead$se <- sqrt(diag(get_CL_vcov(lagModRead, modeldata$distid)))
+
+lagModReadFE <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag + distid, data = modeldata)
+lagModReadFE$se <- sqrt(diag(get_CL_vcov(lagModReadFE, modeldata$distid)))
+
+apsrtable(simpModRead, lagModRead, lagModReadFE, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Lag"), 
+          caption = "Incumbent Defeat and Student Scores", 
+          label = "tab:readMod", notes = list(stars.note), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))))
+
+
+
+@
 
 \subsection{Superintendent Turnover}
 

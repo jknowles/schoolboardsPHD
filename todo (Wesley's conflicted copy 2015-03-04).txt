@@ -1,0 +1,37 @@
+# TO-DO
+* Include districtwide dummy in Walker models
+* Create school board race rule variables: 
+  * All at large seats (all districtwide)
+  * Consistent 3 year cycle?
+  * Average board term
+  * Board size
+* Add board size to regressions in turnout, candidacy, and walker chapters
+* User teacher share of voters as an alternative to WERC strength in walker chapter
+X * Investigate races with no winners
+* Check out Sturgeon Bay results (find more), find Sun Prairie
+* Post-dissertation publication plan (book + articles?)
+* Outreach to committee members plan
+* Find last committee member (meet w/ John, consider Jee-Sun)
+* Prepare a data codebook and prepare data for publication online
+* Integrate data into MasterText folder
+* Check all lags
+* Check DPI data
+* Add data on school closures
+* School board contract extension and school board turnover?
+* Update autoplot to na.omit after fortify
+* Fix eeptools plots
+* Update the bibliography to be Chicago and not McBride
+* Implement perl script for WordCount
+* build connectors and scrapers for data
+* Write unit tests for data module
+* Make final manual changes to dataAssemble.R to correct for data errors in the VAP data
+* Finalize chapter 4 policy implication review/motivation/theory draft
+* Ensure that years line up right in cleandandprep_CANDIDACY file
+  - Clean up data and drop unused variables
+
+########################
+# Data cleaning
+#########################
+* Check winners counts for sanity by calculating board size and comparing to number of winners
+* Get board size into the dataset, compare with winner lists
+* Look at Door County school districts using data received from County Clerk
