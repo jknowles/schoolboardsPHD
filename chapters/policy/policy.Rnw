@@ -52,18 +52,6 @@ election.
 % Board turnover writ large = change
 % Incumbent defeat should change things
 
-% %TODO Fix this
-% A key factor to control for in the case of school boards is the fiscal issue dimension. 
-% Researchers have studied the impact of economic conditions on voting before, and 
-% have found some evidence that economic conditions influence voting patterns 
-% \citep{EconandOutcomes2000}. 
-% If we reduce school boards to a two-dimensional game with incumbents and non-incumbents 
-% along one dimension and the relative fiscal performance along the other, ceteris 
-% paribus we would expect that incumbents are at an advantage (and turnout is lower) 
-% when fiscal performance is strong. To measure fiscal performance we use the share 
-% of the revenue limit a district is spending.
-
-
 
 <<incdefeat, results='hide'>>=
 dist_turn$incDefeats <- NULL
@@ -123,43 +111,55 @@ turnover as key evidence \citep{RefWorks:297,RefWorks:271, RefWorks:351, RefWork
 of this work has focused on political vs. apolitical turnover, typically 
 retirement, among school board members and superintendents \citep{RefWorks:311}. 
 
-There is a strong public economics literature that views school boards as agents 
-that set the price for the public good of education through property tax rates. % citations needed
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Find citations about public finance from Reschovsky work
-%
-
-
-\citet{RefWorks:347} represents the most thorough study of school boards as agents 
-of change in social issues. Some view school boards as potentially captured by 
-special interest groups \citep{RefWorks:320}. There is evidence that when 
-boards are elected, they become more responsive to interest groups than previously 
-when they were appointed \citep{RefWorks:242}. 
-
+\citet{RefWorks:347} represents the most thorough study of school boards as 
+agents of change in social issues. Some view school boards as potentially 
+captured by special interest groups \citep{RefWorks:320}. There is evidence that
+when boards are elected, they become more responsive to interest groups than
+previously when they were appointed \citep{RefWorks:242}. 
 
 Boards can influence student outcomes through a range of decisions - some direct 
 and some less direct. \citet{RefWorks:210} provides an example by examining the 
 relationship between board decisions to consolidate school districts and the 
-resulting changes in student achievement. On a more universal basis, \citet{RefWorks:214} 
-explores if boards change policies in response to public accountability for student 
-achivement, and if this results in improvements in student achievement.\footnote{This 
-argument assumes a certain level of effectiveness that is not captured by any 
-measures in the current study and may not be evenly distributed across boards \citep{RefWorks:237,RefWorks:261}.} 
+resulting changes in student achievement. On a more universal basis, 
+\citet{RefWorks:214} explores if boards change policies in response to public
+accountability for student achivement, and if this results in improvements in
+student achievement.\footnote{This argument assumes a certain level of 
+effectiveness that is not captured by any measures in the current study and 
+may not be evenly distributed across boards \citep{RefWorks:237,RefWorks:261}.} 
 In many cases, boards are criticized as being highly constrained actors with 
-little room to set policy after complying with state and federal mandates \citep{RefWorks:316}, 
-although the extent of this is not clear \citep{RefWorks:223}.\footnote{Note that this 
-argument can be reduced down ever further to the impact of district policies on schools 
-or school policies on classroom \citep{RefWorks:255}}
+little room to set policy after complying with state and federal mandates 
+\citep{RefWorks:316}, although the extent of this is not clear 
+\citep{RefWorks:223}.\footnote{Note that this argument can be reduced down ever
+further to the impact of district policies on schools or school policies on
+classroom \citep{RefWorks:255}}
 
 Yet boards allocate resources, and resources matter \citep{RefWorks:183}. 
 
 \section{Theory}
 
-Figure \ref{model} can be seen as the primary representation of the model of school 
-board politics and policy change that the present study seeks to evaluate. Building 
-on the work in Chapters \ref{chap:turnout} and \ref{chap:candidacy}, this chapter 
-combines the political conditions in school districts and the changes resulting 
+Figure \ref{fig:model} can be seen as the primary representation of the model of school board politics and policy change that the present study seeks to evaluate.
+Building on the work in Chapters \ref{chap:turnout} and \ref{chap:candidacy}, 
+this chapter combines the political conditions in school districts and the 
+changes that result in school outcomes. 
+
+While previous chapters examined the exercise of democratic control 
+of school board elections -- under what conditions did voters and candidates 
+participate, and was this participation sensitive to policy pressures -- this 
+chapter seeks to understand the result of such participation. In order for 
+democratic institutions to matter, the results of elections must also matter. 
+Challengers must represent a policy alternative to defeated incumbents. Policy 
+distinction must be seen among candidates. 
+
+Incumbent defeat provides a strong sign that citizens are dissatisfied with the 
+existing outputs of their school government and wish to see changes. Without 
+polling data or an in-depth study of the politics of each community, it is 
+difficult to understand what might be the source of this voter dissatisfaction 
+and what voters might wish to see change. In this study I look for evidence of 
+change along the two dimensions previously identified in the literature as 
+critical to voters -- the district administrator and student performance. If 
+voters are dissatisfied with their board and replace some board members with new 
+challengers, it is likely that they demand higher student performance, new 
+district management, or both. 
 
 
 \section{Data}
@@ -385,4 +385,8 @@ apsrtable(simpModSup, fullModSup, fullModSupFE, se = "robust",
 
 \section{Conclusion}
 
-Some text summing this up.
+This chapter has looked for evidence of the impact of school board electoral 
+defeat. 
+
+
+
