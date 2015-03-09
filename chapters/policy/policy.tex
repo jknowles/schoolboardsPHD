@@ -6,14 +6,15 @@
 
 \section{Introduction}
 
-School boards have considerable power over local issues in their community. We have 
-seen that school boards are often responsible for setting property tax levies, 
-labor relations with teachers and support staff within the school, and often serve 
-as the largest single employer in their community. The driving idea behind locally 
-elected school boards was to ensure that the local community retained some control 
-over the direction taken by the schools in their community and to ensure that 
-the school system was responsive to the preferences of that community. Until 
-now there have only been limited tests of school board responsiveness. 
+School boards have considerable power over local issues in their community. 
+We have seen that school boards are often responsible for setting property tax
+levies, labor relations with teachers and support staff within the school, and
+often serve as the largest single employer in their community. The driving idea
+behind locally elected school boards was to ensure that the local community
+retained some control over the direction taken by the schools in their community
+and to ensure that the school system was responsive to the preferences of that
+community. Until now there have only been limited tests of school board 
+responsiveness. 
 
 The challenge in testing school board responsiveness is great. First, in most 
 cases school boards are non-partisan offices and education issues do not fall 
@@ -27,118 +28,27 @@ Voter policy preferences were expressed and made clear through two elections in
 Wisconsin - the 2010 Gubernatorial election, and updated with the 2011 recall 
 election. 
 
+% Does board member turnout change anything? 
+% Does it change superintendents?
+% Does it change test scores?
 % Board turnover writ large = change
 % Incumbent defeat should change things
 
-% %TODO Fix this
-% A key factor to control for in the case of school boards is the fiscal issue dimension. 
-% Researchers have studied the impact of economic conditions on voting before, and 
-% have found some evidence that economic conditions influence voting patterns 
-% \citep{EconandOutcomes2000}. 
-% If we reduce school boards to a two-dimensional game with incumbents and non-incumbents 
-% along one dimension and the relative fiscal performance along the other, ceteris 
-% paribus we would expect that incumbents are at an advantage (and turnout is lower) 
-% when fiscal performance is strong. To measure fiscal performance we use the share 
-% of the revenue limit a district is spending.
 
-
-
-
-
-
-
-
-
-\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3} }
-\caption{Models of Incumbent Defeat in School Board Elections}
-\label{tab:firstmods}\\ 
-\hline 
-  & \multicolumn{ 1 }{ c }{ Model 1 } & \multicolumn{ 1 }{ c }{ Model 2 } \\ \hline
-\endhead
- %                          & Model 1     & Model 2    \\ 
-(Intercept)                & -2.263 ^*   & -2.282 ^*  \\ 
-                           & (0.200)     & (0.200)    \\ 
-VAP\_adjLOG               & 0.027       & 0.018      \\ 
-                           & (0.254)     & (0.253)    \\ 
-PerBachelorOrAbove         & -0.187      & -0.465     \\ 
-                           & (0.292)     & (0.276)    \\ 
-per\_white\_all          & -1.597 ^*   & -1.629 ^*  \\ 
-                           & (0.503)     & (0.500)    \\ 
-nrealcand                  & 1.639 ^*    & 1.650 ^*   \\ 
-                           & (0.145)     & (0.145)    \\ 
-OOH\_share                & -0.073      & -0.160     \\ 
-                           & (0.298)     & (0.296)    \\ 
-per65o                     & -0.128      & -0.205     \\ 
-                           & (0.253)     & (0.253)    \\ 
-median\_incomeLOG         & 0.078       & 0.008      \\ 
-                           & (0.523)     & (0.521)    \\ 
-NonWhitePublicPupilPer     & -1.483 ^*   & -1.360 ^*  \\ 
-                           & (0.507)     & (0.505)    \\ 
-NonPublicPupilPer          & 0.282       & 0.276      \\ 
-                           & (0.171)     & (0.170)    \\ 
-ADMIN\_SHARE\_COMP       & -0.118      & -0.084     \\ 
-                           & (0.193)     & (0.191)    \\ 
-TCEC\_MEMBER              & -0.275      & -0.321     \\ 
-                           & (0.260)     & (0.259)    \\ 
-PROPERTYTAX\_REV\_SHARE  & 0.380       & 0.352      \\ 
-                           & (0.286)     & (0.286)    \\ 
-districtwide1              & 0.454 ^*    & 0.476 ^*   \\ 
-                           & (0.207)     & (0.207)    \\ 
-econ\_disadv\_per        & 0.028       & 0.201      \\ 
-                           & (0.301)     & (0.304)    \\ 
-eqv\_taxfiler             & -0.286      & -0.277     \\ 
-                           & (0.285)     & (0.285)    \\ 
-READ\_PROFADV\_PER\_LAG & -0.421      &            \\ 
-                           & (0.262)     &            \\ 
-DEBT\_ATTEMPT\_CUMUL93   & -0.035      & -0.034     \\ 
-                           & (0.159)     & (0.159)    \\ 
-teachSalDiff               & -0.389      & -0.437     \\ 
-                           & (0.348)     & (0.345)    \\ 
-partyDivision              & -0.303      & -0.341     \\ 
-                           & (0.177)     & (0.177)    \\ 
-balance\_member\_lag     & 0.169       & 0.170      \\ 
-                           & (0.198)     & (0.197)    \\ 
-debtPass1                  & 0.137       & 0.125      \\ 
-                           & (0.574)     & (0.576)    \\ 
-debtQues1                  & -0.293      & -0.280     \\ 
-                           & (0.495)     & (0.497)    \\ 
-NEW\_SUP1                 & -0.062      & -0.044     \\ 
-                           & (0.192)     & (0.192)    \\ 
-elecFail1                  & 0.554       & 0.554      \\ 
-                           & (0.418)     & (0.419)    \\ 
-overrideQues1              & 0.073       & 0.083      \\ 
-                           & (0.262)     & (0.262)    \\ 
-MATH\_PROFADV\_PER\_LAG &             & 0.212      \\ 
-                           &             & (0.225)     \\
- $N$                        & 1748        & 1748       \\ 
-AIC                        & 1436.947    & 1440.655   \\ 
-BIC                        & 2005.434    &            \\ 
-$\log L$                  & -614.473    &            \\ 
-N Groups                   &             & 310        \\ 
-Group Names                &             & distid     \\ 
-Group:distid Effs.         &             & (Intercept)\\ 
-Group:distid Var.          &             & 0          \\ 
-Sigma                      &             & 1           \\ \hline
- \multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{3}{l}{\footnotesize{All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations within each year.}} 
-\end{longtable} 
 
 
 \section{School Boards and Policy Change}
 
-The literature on school boards affecting policy change is dominated by a focus on 
-three areas - 1) superintendent turnover as policy change, 2) setting tax levies, or 
-3) making direct policy changes about social issues, and 4) changes resulting in 
-student outcomes. 
+The literature on school boards affecting policy change is dominated by a focus 
+on three areas - 1) superintendent turnover as policy change, 2) setting tax
+levies, or 3) making direct policy changes about social issues, and 4) changes
+resulting in student outcomes. 
 
 Much of the work referred to in Chapter \ref{chap:intro} dealt with the impact 
-of school boards on policy change. In fact, both the dissatisfaction theory and the 
-public choice theories of school board politics include superintendent turnover 
-as key evidence \citep{RefWorks:297,RefWorks:271, RefWorks:351, RefWorks:339,RefWorks:340,RefWorks:243}. 
-Recently a key improvement in empirical tests of this work has focused on political 
-vs. apolitical turnover, typically retirement, among school board members and 
-superintendents \citep{RefWorks:311}. 
+of school boards on policy change. In fact, both the dissatisfaction theory and the public choice theories of school board politics include superintendent
+turnover as key evidence \citep{RefWorks:297,RefWorks:271, RefWorks:351, RefWorks:339,RefWorks:340,RefWorks:243}. Recently a key improvement in empirical tests 
+of this work has focused on political vs. apolitical turnover, typically 
+retirement, among school board members and superintendents \citep{RefWorks:311}. 
 
 There is a strong public economics literature that views school boards as agents 
 that set the price for the public good of education through property tax rates. % citations needed
@@ -154,273 +64,255 @@ special interest groups \citep{RefWorks:320}. There is evidence that when
 boards are elected, they become more responsive to interest groups than previously 
 when they were appointed \citep{RefWorks:242}. 
 
+\citet{RefWorks:347} represents the most thorough study of school boards as 
+agents of change in social issues. Some view school boards as potentially 
+captured by special interest groups \citep{RefWorks:320}. There is evidence that
+when boards are elected, they become more responsive to interest groups than
+previously when they were appointed \citep{RefWorks:242}. 
 
 Boards can influence student outcomes through a range of decisions - some direct 
 and some less direct. \citet{RefWorks:210} provides an example by examining the 
 relationship between board decisions to consolidate school districts and the 
-resulting changes in student achievement. On a more universal basis, \citet{RefWorks:214} 
-explores if boards change policies in response to public accountability for student 
-achivement, and if this results in improvements in student achievement.\footnote{This 
-argument assumes a certain level of effectiveness that is not captured by any 
-measures in the current study and may not be evenly distributed across boards \citep{RefWorks:237,RefWorks:261}.} 
+resulting changes in student achievement. On a more universal basis, 
+\citet{RefWorks:214} explores if boards change policies in response to public
+accountability for student achivement, and if this results in improvements in
+student achievement.\footnote{This argument assumes a certain level of 
+effectiveness that is not captured by any measures in the current study and 
+may not be evenly distributed across boards \citep{RefWorks:237,RefWorks:261}.} 
 In many cases, boards are criticized as being highly constrained actors with 
-little room to set policy after complying with state and federal mandates \citep{RefWorks:316}, 
-although the extent of this is not clear \citep{RefWorks:223}.\footnote{Note that this 
-argument can be reduced down ever further to the impact of district policies on schools 
-or school policies on classroom \citep{RefWorks:255}}
+little room to set policy after complying with state and federal mandates 
+\citep{RefWorks:316}, although the extent of this is not clear 
+\citep{RefWorks:223}.\footnote{Note that this argument can be reduced down ever
+further to the impact of district policies on schools or school policies on
+classroom \citep{RefWorks:255}}
 
 Yet boards allocate resources, and resources matter \citep{RefWorks:183}. 
 
 \section{Theory}
 
-Figure \ref{model} can be seen as the primary representation of the model of school 
-board politics and policy change that the present study seeks to evaluate. Building 
-on the work in Chapters \ref{chap:turnout} and \ref{chap:candidacy}, this chapter 
-combines the political conditions in school districts and the changes resulting 
+Figure \ref{fig:model} can be seen as the primary representation of the model of school board politics and policy change that the present study seeks to evaluate.
+Building on the work in Chapters \ref{chap:turnout} and \ref{chap:candidacy}, 
+this chapter combines the political conditions in school districts and the 
+changes that result in school outcomes. 
+
+While previous chapters examined the exercise of democratic control 
+of school board elections -- under what conditions did voters and candidates 
+participate, and was this participation sensitive to policy pressures -- this 
+chapter seeks to understand the result of such participation. In order for 
+democratic institutions to matter, the results of elections must also matter. 
+Challengers must represent a policy alternative to defeated incumbents. Policy 
+distinction must be seen among candidates. 
+
+Incumbent defeat provides a strong sign that citizens are dissatisfied with the 
+existing outputs of their school government and wish to see changes. Without 
+polling data or an in-depth study of the politics of each community, it is 
+difficult to understand what might be the source of this voter dissatisfaction 
+and what voters might wish to see change. In this study I look for evidence of 
+change along the two dimensions previously identified in the literature as 
+critical to voters -- the district administrator and student performance. If 
+voters are dissatisfied with their board and replace some board members with new 
+challengers, it is likely that they demand higher student performance, new 
+district management, or both. 
 
 
-\section{Data and Methods}
+\section{Data}
+
+To study the impacts of incumbent defeat in Wisconsin school districts I employ 
+a panel data set of school board election outcomes matched to school district 
+administrative records. To code incumbent defeat, I matched a roster of known 
+school board members in a given school year against the victors in the following 
+school year to identify which candidates were incumbents. Though both the roster 
+and the election results require some judgment in assessing their accuracy, 
+this represents a strong measure of incumbency and electoral defeat for school 
+board members in 300 Wisconsin school districts from 2002-2012. 
+
+\subsection{Independent Variables}
+
+Previous chapters have established that school board incumbent defeat is rare 
+because incumbents are rarely challenged, and even more rarely is that challenge 
+serious. Incumbents often face no challenge or leave office without running for 
+re-election. As we have seen, previous research on school board incumbent 
+defeat has focused on correctly measuring political and apolitical turnover 
+by focusing on incumbents who are defeated, not simply those who do not return 
+to the board for another term. 
+
+Timing is of critical importance in assessing the \emph{impact} of school board 
+incumbent defeat. While school board members are elected in spring elections, 
+their term begins the following fall. It is not reasonable to expect school 
+board members to have time after taking office to affect student outcomes or 
+superintendent contracts. As such, I lag incumbent defeat to allow for an 
+additional year. 
+
+% Check measurement of incumbent defeat 
+% Measure share of board that turnsover, vs. any incumbent defeat, vs. count of
+% incumbent defeats -- which is best
+
+It is also insufficient to simply turn over a single board member and expect 
+broad policy change if consensus existed among the other board members. 
+
+% Triple check the timing of the board elections, spring of 2012 is merged with 
+% which year of administrative records? Document this decision
+
+\subsection{Outcomes}
+
+I am primarily interested in the effect of board turnover on two classes of 
+outcomes. First, and most directly, boards are charged with hiring and monitoring 
+the performance of a district administrator who manages the academic and 
+financial affairs of the district. The choice of superintendent is critical to 
+the board as the superintendent is the board's primary conduit of information 
+about the health of the district and the educational strategies in place for 
+students. Superintendent turnover is a primary prediction of dissatisfaction 
+theory, and rightfully so. If voters are unhappy with the state of affairs in 
+their school district, in all likelihood they are unhappy with the performance 
+of their district administrator. 
+
+More indirectly, school boards are responsible for setting policy and directing 
+the superintendent to provide quality education. Thus, incumbent defeat may 
+serve as a method by which the community can express its demand for higher 
+quality education as measured by accountability measures such as student 
+test scores and graduation rates. 
 
 
-\subsection{Wisconsin Data}
+\section{Methods}
+
+Measuring the impact of school board turnout on superintendent turnover and 
+student outcomes is difficult because of the large number of competing 
+forces shaping these outcomes. Student performance is largely predicted by 
+family income and parental education levels. Superintendent turnover may be 
+related to salary and the prestige associated with leading certain school 
+districts. In order to better understand the impact of school board turnover 
+net of these factors, I employ a regression strategy to control for as many 
+of these observable and unobservable factors as possible. 
 
 
-\subsection{Methods}
+I employ two distinct modeling strategies. The first is the most restrictive. 
+As in previous chapters, I employ the bounding strategy suggested by \citet{mhe} 
+to leverage the repeated observations in my data to compare, where possible, 
+school districts within themselves. The disadvantage of this strategy is that 
+for the outcomes in question, relatively little variance remains to be explained 
+after accounting for all between school district effects, because the within 
+school district variation is so small. 
 
-There are three measures of school board policy output that can be examined:
-1) union contract policy, 2) replacement of a superintendent, 
-3) spending override attempts, and 4) changes in student outcomes. 
-For each of these measures, we build on the work from Chapters \ref{chap:turnout} and \ref{chap:candidacy}
-to estimate the following equation:
-
-
-\[(1) \hspace{1.2 in} P_{i} = \alpha + \beta X_{lag} + \gamma Z_{t} + \theta I_{t} + \epsilon \] \\
-
-
-
-
+The second strategy is more susceptible to unobserved alternative explanatory 
+variables, but attempts to explain the variation in outcomes between school 
+districts by comparing school districts with similar demographic 
+charcteristics, but which differ on their incumbent defeat. 
 
 
 \section{Results}
 
-\subsection{Union Contract}
+
+\subsection{Student Outcomes}
+
+ 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Model 2 } & \multicolumn{ 1 }{ c }{ Model 3 } \\ \hline
+ %                          & Lag           & Model 2       & Model 3      \\ 
+(Intercept)                & 0.399 ^{***}  & 0.089 ^{***}  & -0.608       \\ 
+                           & (0.033)       & (0.017)       & (0.447)      \\ 
+incsDefeatedFac\_lag1     & -0.010 ^*     & 0.001         & 0.000        \\ 
+                           & (0.005)       & (0.002)       & (0.002)      \\ 
+locale2\_lagexurb         & 0.032         & 0.001         & 0.407 ^{***} \\ 
+                           & (0.020)       & (0.004)       & (0.077)      \\ 
+locale2\_lagrural         & 0.020         & 0.004         & 0.406 ^{***} \\ 
+                           & (0.016)       & (0.004)       & (0.077)      \\ 
+servingMembers\_lag       & -0.007 ^*     & 0.000         & -0.002       \\ 
+                           & (0.004)       & (0.001)       & (0.003)      \\ 
+econ\_disadv\_per\_lag  &               & -0.001 ^{***} & 0.000        \\ 
+                           &               & (0.000)       & (0.000)      \\ 
+READ\_PROFADV\_PER\_lag &               & 0.786 ^{***}  &              \\ 
+                           &               & (0.022)       &              \\ 
+log(VAP\_adj\_lag)       &               & -0.002        & 0.084 ^*     \\ 
+                           &               & (0.001)       & (0.043)      \\ 
+PerBachelorOrAbove\_lag   &               & 0.122 ^{***}  & 0.085        \\ 
+                           &               & (0.026)       & (0.183)      \\ 
+per65o\_lag               &               & 0.011         & -0.069       \\ 
+                           &               & (0.033)       & (0.383)       \\
+ $N$                        & 1910          & 1418          & 1910         \\ 
+$R^2$                      & 0.026         & 0.851         & 0.908        \\ 
+adj. $R^2$                 & 0.024         & 0.850         & 0.890        \\ 
+Resid. sd                  & 0.081         & 0.032         & 0.027         \\ \hline
+ \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular} 
+
+
+
+
+ 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Model 2 } & \multicolumn{ 1 }{ c }{ Model 3 } \\ \hline
+ %                          & Lag               & Model 2           & Model 3          \\ 
+(Intercept)                & 0.432 ^{***}      & 0.077 ^{***}      & -3.142 ^{***}    \\ 
+                           & (0.019)           & (0.023)           & (0.848)          \\ 
+incsDefeatedFac\_lag1     & -0.012 ^\dagger  & 0.001             & -0.002           \\ 
+                           & (0.006)           & (0.003)           & (0.003)          \\ 
+locale2\_lagexurb         & 0.055 ^*          & 0.018 ^*          & 0.590 ^{***}     \\ 
+                           & (0.024)           & (0.008)           & (0.130)          \\ 
+locale2\_lagrural         & 0.036 ^\dagger   & 0.016 ^*          & 0.589 ^{***}     \\ 
+                           & (0.020)           & (0.007)           & (0.131)          \\ 
+econ\_disadv\_per\_lag  &                   & -0.001 ^{***}     & 0.001 ^{**}      \\ 
+                           &                   & (0.000)           & (0.000)          \\ 
+MATH\_PROFADV\_PER\_lag &                   & 0.775 ^{***}      &                  \\ 
+                           &                   & (0.019)           &                  \\ 
+log(VAP\_adj\_lag)       &                   & 0.004 ^\dagger   & 0.309 ^{***}     \\ 
+                           &                   & (0.002)           & (0.082)          \\ 
+PerBachelorOrAbove\_lag   &                   & 0.128 ^{***}      & 0.642 ^*         \\ 
+                           &                   & (0.032)           & (0.250)          \\ 
+per65o\_lag               &                   & -0.006            & 0.368            \\ 
+                           &                   & (0.036)           & (0.547)           \\
+ $N$                        & 1910              & 1418              & 1910             \\ 
+$R^2$                      & 0.011             & 0.846             & 0.900            \\ 
+adj. $R^2$                 & 0.009             & 0.846             & 0.881            \\ 
+Resid. sd                  & 0.109             & 0.042             & 0.038             \\ \hline
+ \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular} 
+
+
+% HSC 
+
+
+\subsection{Student Outcomes}
 
 \subsection{Superintendent Turnover}
 
-\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3} }
-\caption{Models of Superintendent Turnover in School Board Elections}
-\label{tab:supmods}\\ 
+ 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
-  & \multicolumn{ 1 }{ c }{ Model 1 } & \multicolumn{ 1 }{ c }{ Model 2 } \\ \hline
-\endhead
- %                          & Model 1     & Model 2    \\ 
-(Intercept)                & -1.565 ^*   & -1.565 ^*  \\ 
-                           & (0.177)     & (0.177)    \\ 
-VAP\_adjLOG               & 0.436       & 0.436      \\ 
-                           & (0.259)     & (0.259)    \\ 
-PerBachelorOrAbove         & -0.565      & -0.565     \\ 
-                           & (0.304)     & (0.304)    \\ 
-per\_white\_all          & 0.136       & 0.136      \\ 
-                           & (0.564)     & (0.564)    \\ 
-OOH\_share                & 0.010       & 0.010      \\ 
-                           & (0.309)     & (0.309)    \\ 
-per65o                     & -0.435      & -0.435     \\ 
-                           & (0.264)     & (0.264)    \\ 
-median\_incomeLOG         & 0.027       & 0.027      \\ 
-                           & (0.543)     & (0.543)    \\ 
-NonWhitePublicPupilPer     & -0.325      & -0.325     \\ 
-                           & (0.555)     & (0.555)    \\ 
-NonPublicPupilPer          & -0.194      & -0.194     \\ 
-                           & (0.205)     & (0.205)    \\ 
-ADMIN\_SHARE\_COMP       & -0.047      & -0.047     \\ 
-                           & (0.191)     & (0.191)    \\ 
-TCEC\_MEMBER              & 0.530 ^*    & 0.530 ^*   \\ 
-                           & (0.248)     & (0.248)    \\ 
-PROPERTYTAX\_REV\_SHARE  & 0.025       & 0.025      \\ 
-                           & (0.293)     & (0.293)    \\ 
-districtwide1              & -0.169      & -0.169     \\ 
-                           & (0.190)     & (0.190)    \\ 
-econ\_disadv\_per        & 0.427       & 0.427      \\ 
-                           & (0.329)     & (0.329)    \\ 
-eqv\_taxfiler             & 0.142       & 0.142      \\ 
-                           & (0.178)     & (0.178)    \\ 
-MATH\_PROFADV\_PER\_LAG & 0.108       & 0.108      \\ 
-                           & (0.233)     & (0.233)    \\ 
-teachSalDiff               & -0.145      & -0.145     \\ 
-                           & (0.362)     & (0.362)    \\ 
-partyDivision              & 0.086       & 0.086      \\ 
-                           & (0.188)     & (0.188)    \\ 
-balance\_member\_lag     & -0.194      & -0.194     \\ 
-                           & (0.211)     & (0.211)    \\ 
-debtQues1                  & -0.299      & -0.299     \\ 
-                           & (0.301)     & (0.301)    \\ 
-elecFail1                  & -0.169      & -0.169     \\ 
-                           & (0.358)     & (0.358)    \\ 
-overrideQues1              & 0.257       & 0.257      \\ 
-                           & (0.254)     & (0.254)    \\ 
-incsDefeated               & 0.088       & 0.088      \\ 
-                           & (0.191)     & (0.191)    \\ 
-nrealcand                  & 0.546 ^*    & 0.546 ^*   \\ 
-                           & (0.155)     & (0.155)    \\ 
-incsDefeated:nrealcand     & -0.196      & -0.196     \\ 
-                           & (0.247)     & (0.247)     \\
- $N$                        & 1438        & 1438       \\ 
-AIC                        & 1281.808    & 1283.808   \\ 
-BIC                        & 1808.909    &            \\ 
-$\log L$                  & -540.904    &            \\ 
-N Groups                   &             & 308        \\ 
-Group Names                &             & distid     \\ 
-Group:distid Effs.         &             & (Intercept)\\ 
-Group:distid Var.          &             & 0          \\ 
-Sigma                      &             & 1           \\ \hline
- \multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{3}{l}{\footnotesize{All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations within each year.}} 
-\end{longtable} 
+  & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Full } & \multicolumn{ 1 }{ c }{ Fixed Effect } \\ \hline
+ %                         & Simple           & Full             & Fixed Effect    \\ 
+(Intercept)               & -1.454 ^{***}    & -1.136           & -1.684 ^*       \\ 
+                          & (0.268)          & (0.948)          & (0.730)         \\ 
+incsDefeatedFac\_lag1    & 0.266 ^\dagger  & 0.241            & 0.099           \\ 
+                          & (0.159)          & (0.159)          & (0.204)         \\ 
+locale2\_lagexurb        & -0.462           & -0.335           & -0.320          \\ 
+                          & (0.319)          & (0.358)          & (0.279)         \\ 
+locale2\_lagrural        & -0.328           & -0.202           & -0.108          \\ 
+                          & (0.273)          & (0.355)          & (0.224)         \\ 
+econ\_disadv\_per\_lag &                  & 0.008 ^\dagger  & 0.021 ^*        \\ 
+                          &                  & (0.005)          & (0.008)         \\ 
+log(VAP\_adj\_lag)      &                  & 0.036            & 0.019           \\ 
+                          &                  & (0.081)          & (0.051)         \\ 
+PerBachelorOrAbove\_lag  &                  & -2.881 ^*        & -1.528          \\ 
+                          &                  & (1.333)          & (1.464)         \\ 
+per65o\_lag              &                  & -3.807 ^*        & -5.535 ^{**}    \\ 
+                          &                  & (1.846)          & (1.894)          \\
+ $N$                       & 1910             & 1910             & 1910            \\ 
+AIC                       & 1626.452         & 1620.601         & 1941.111        \\ 
+BIC                       & 1715.330         & 1798.357         & 8962.452        \\ 
+$\log L$                 & -797.226         & -778.301         & 293.444          \\ \hline
+ \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular} 
 
 
-\clearpage
-
-\subsection{Revenue Limit Override}
-
-Some text
-\begin{small}
-
-\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3} }
-\caption{Models of Tax Rates and Turnover in School Board Elections}
-\label{tab:millrate}\\ 
-\hline 
-  & \multicolumn{ 1 }{ c }{ Model 1 } & \multicolumn{ 1 }{ c }{ Model 2 } \\ \hline
-\endhead
- %                          & Model 1     & Model 2    \\ 
-(Intercept)                & -0.051 ^*   & 0.008      \\ 
-                           & (0.022)     & (0.032)    \\ 
-VAP\_adjLOG               & 0.162 ^*    & 0.218 ^*   \\ 
-                           & (0.029)     & (0.061)    \\ 
-PerBachelorOrAbove         & 0.058       & -0.307 ^*  \\ 
-                           & (0.035)     & (0.055)    \\ 
-per\_white\_all          & -0.077      & 0.035      \\ 
-                           & (0.063)     & (0.079)    \\ 
-OOH\_share                & 0.076 ^*    & 0.397 ^*   \\ 
-                           & (0.035)     & (0.063)    \\ 
-per65o                     & -0.164 ^*   & -0.414 ^*  \\ 
-                           & (0.030)     & (0.057)    \\ 
-median\_incomeLOG         & -0.246 ^*   & -0.301 ^*  \\ 
-                           & (0.064)     & (0.059)    \\ 
-NonWhitePublicPupilPer     & -0.283 ^*   & -0.053     \\ 
-                           & (0.062)     & (0.064)    \\ 
-NonPublicPupilPer          & -0.019      & -0.113 ^*  \\ 
-                           & (0.021)     & (0.038)    \\ 
-ADMIN\_SHARE\_COMP       & 0.077 ^*    & 0.026      \\ 
-                           & (0.023)     & (0.014)    \\ 
-TCEC\_MEMBER              & 0.420 ^*    & 0.235 ^*   \\ 
-                           & (0.029)     & (0.021)    \\ 
-PROPERTYTAX\_REV\_SHARE  & -0.123 ^*   & 1.014 ^*   \\ 
-                           & (0.033)     & (0.040)    \\ 
-districtwide1              & 0.063 ^*    & -0.015     \\ 
-                           & (0.024)     & (0.018)    \\ 
-econ\_disadv\_per        & -0.013      & 0.010      \\ 
-                           & (0.038)     & (0.024)    \\ 
-eqv\_taxfiler             & -0.532 ^*   & -0.675 ^*  \\ 
-                           & (0.021)     & (0.055)    \\ 
-READ\_PROFADV\_PER\_LAG & -0.038      & -0.094 ^*  \\ 
-                           & (0.032)     & (0.019)    \\ 
-teachSalDiff               & -0.181 ^*   & 0.022      \\ 
-                           & (0.045)     & (0.031)    \\ 
-partyDivision              & -0.010      & 0.004      \\ 
-                           & (0.021)     & (0.015)    \\ 
-balance\_member\_lag     & -0.203 ^*   & -0.211 ^*  \\ 
-                           & (0.024)     & (0.021)    \\ 
-incsDefeatedLag            & -0.048 ^*   & -0.002     \\ 
-                           & (0.019)     & (0.007)    \\ 
-nrealcandLag               & 0.029       & -0.000     \\ 
-                           & (0.020)     & (0.008)     \\
- $N$                        & 1748        & 1748       \\ 
-AIC                        & 1417.491    & -1122.537  \\ 
-BIC                        & 1876.654    &            \\ 
-$\log L$                  & -624.745    &            \\ 
-N Groups                   &             & 310        \\ 
-Group Names                &             & distid     \\ 
-Group:distid Effs.         &             & (Intercept)\\ 
-Group:distid Var.          &             & 0.496      \\ 
-Sigma                      &             & 0.1129      \\ \hline
- \multicolumn{3}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{3}{l}{\footnotesize{All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations within each year.}} 
-\end{longtable} 
-
-\end{small}
-\clearpage
-
-\subsection{Change in Student Outcomes}
-
-\begin{tiny}
-\begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
-\caption{Models of Student Performance and Turnover in School Board Elections}
-\label{tab:stuach}\\ 
-\hline 
-  & \multicolumn{ 1 }{ c }{ Reading OLS } & \multicolumn{ 1 }{ c }{ Reading ME } & \multicolumn{ 1 }{ c }{ Math OLS } & \multicolumn{ 1 }{ c }{ Math ME } \\ \hline
-\endhead
- %                            & Reading OLS & Reading ME  & Math OLS    & Math ME    \\ 
-(Intercept)                  & 0.013       & -0.025      & 0.021       & -0.013     \\ 
-                             & (0.016)     & (0.022)     & (0.018)     & (0.025)    \\ 
-VAP\_adjLOG                 & -0.006      & 0.021       & 0.046       & 0.033      \\ 
-                             & (0.021)     & (0.036)     & (0.024)     & (0.042)    \\ 
-PerBachelorOrAbove           & 0.468 ^*    & 0.400 ^*    & 0.380 ^*    & 0.395 ^*   \\ 
-                             & (0.023)     & (0.040)     & (0.026)     & (0.046)    \\ 
-per\_white\_all            & 0.052       & 0.034       & -0.061      & 0.155 ^*   \\ 
-                             & (0.045)     & (0.067)     & (0.052)     & (0.074)    \\ 
-OOH\_share                  & 0.133 ^*    & 0.168 ^*    & 0.063 ^*    & 0.063      \\ 
-                             & (0.024)     & (0.043)     & (0.028)     & (0.050)    \\ 
-per65o                       & 0.096 ^*    & 0.034       & 0.121 ^*    & 0.045      \\ 
-                             & (0.021)     & (0.039)     & (0.024)     & (0.045)    \\ 
-median\_incomeLOG           & 0.194 ^*    & 0.301 ^*    & 0.041       & 0.177 ^*   \\ 
-                             & (0.045)     & (0.059)     & (0.052)     & (0.065)    \\ 
-NonWhitePublicPupilPer       & -0.203 ^*   & -0.196 ^*   & -0.245 ^*   & -0.051     \\ 
-                             & (0.044)     & (0.063)     & (0.051)     & (0.069)    \\ 
-NonPublicPupilPer            & 0.009       & -0.007      & 0.054 ^*    & 0.045      \\ 
-                             & (0.015)     & (0.028)     & (0.017)     & (0.033)    \\ 
-ADMIN\_SHARE\_COMP         & -0.020      & 0.037 ^*    & -0.018      & 0.023      \\ 
-                             & (0.016)     & (0.016)     & (0.019)     & (0.017)    \\ 
-TCEC\_MEMBER                & 0.062 ^*    & 0.038       & 0.024       & 0.011      \\ 
-                             & (0.020)     & (0.024)     & (0.023)     & (0.025)    \\ 
-districtwide1                & -0.022      & 0.023       & -0.027      & 0.014      \\ 
-                             & (0.017)     & (0.021)     & (0.019)     & (0.022)    \\ 
-econ\_disadv\_per          & -0.242 ^*   & -0.113 ^*   & -0.302 ^*   & -0.108 ^*  \\ 
-                             & (0.026)     & (0.027)     & (0.029)     & (0.029)    \\ 
-PROPERTYTAX\_REV\_SHARE    & 0.071 ^*    & 0.156 ^*    & 0.035       & 0.024      \\ 
-                             & (0.023)     & (0.036)     & (0.027)     & (0.040)    \\ 
-teachSalDiff                 & 0.148 ^*    & 0.174 ^*    & -0.055      & 0.016      \\ 
-                             & (0.032)     & (0.037)     & (0.036)     & (0.039)    \\ 
-partyDivision                & 0.055 ^*    & 0.017       & 0.067 ^*    & 0.029      \\ 
-                             & (0.015)     & (0.018)     & (0.017)     & (0.020)    \\ 
-balance\_member\_lag       & 0.001       & -0.020      & 0.008       & -0.000     \\ 
-                             & (0.017)     & (0.022)     & (0.019)     & (0.023)    \\ 
-incsDefeatedLag              & -0.030      & -0.025 ^*   & 0.015       & 0.007      \\ 
-                             & (0.016)     & (0.010)     & (0.019)     & (0.011)    \\ 
-nrealcandLag                 & -0.005      & 0.009       & -0.000      & 0.013      \\ 
-                             & (0.014)     & (0.010)     & (0.016)     & (0.010)    \\ 
-incsDefeatedLag:nrealcandLag & 0.037       & 0.031 ^*    & 0.007       & 0.001      \\ 
-                             & (0.022)     & (0.014)     & (0.025)     & (0.015)     \\
- $N$                          & 2017        & 2017        & 2017        & 2017       \\ 
-$R^2$                        & 0.697       &             & 0.603       &            \\ 
-adj. $R^2$                   & 0.694       &             & 0.599       &            \\ 
-Resid. sd                    & 0.275       &             & 0.316       &            \\ 
-AIC                          &             & -670.322    &             & -449.778   \\ 
-N Groups                     &             & 310         &             & 310        \\ 
-Group Names                  &             & distid      &             & distid     \\ 
-Group:distid Effs.           &             & (Intercept) &             & (Intercept)\\ 
-Group:distid Var.            &             & 0.233       &             & 0.286      \\ 
-Sigma                        &             & 0.1635      &             & 0.1686      \\ \hline
- \multicolumn{5}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{5}{l}{\footnotesize{All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations within each year.}} 
-\end{longtable} 
-
-\end{tiny}
 
 \clearpage
 
 \section{Conclusion}
 
-Some text summing this up.
+This chapter has looked for evidence of the impact of school board electoral 
+defeat. 
+
+
+

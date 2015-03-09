@@ -20,14 +20,13 @@ setwd("voterturnout")
 knit("voterturnout.Rnw", envir=new.env())
 cleanUp()
 setwd("../")
-setwd("policy")
-knit("policy.Rnw", envir=new.env())
-cleanUp()
-setwd("../")
 setwd("walker")
 knit("walker.Rnw", envir=new.env())
+cleanUp()
+setwd("../")
+setwd("policy")
+knit("policy.Rnw", envir=new.env())
 rm(list=ls())
-
 setwd("../..")
 
 
