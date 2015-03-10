@@ -145,11 +145,23 @@ dist_turn <- rbind(dist_turn, dist.tmp)
 row_counts <- ddply(dist_turn, .(distid, year), nrow)
 dist_turn <- merge(dist_turn, row_counts, all.x=TRUE)
 dist_turn$recs <- dist_turn$V1; dist_turn$V1 <- NULL
-dist_turn1 <- dist_turn[dist_turn$recs >= 1 & dist_turn$districtwide > 0,]
-dist_turn2 <- dist_turn[dist_turn$recs == 1 & dist_turn$districtwide == 0,]
 
-dist_turn <- rbind(dist_turn1, dist_turn2)
-dist_turn$recs <- NULL
+# Have to collapse down to district level thoughtfully now
+
+dist_turn <- ddply(dist_turn, .(distid, year), summarize, 
+                    ncand = sum(ncand), nrealcand = sum(nrealcand), 
+                    nwins = sum(nwins), ninc = sum(ninc), 
+                    nminor = sum(nminor), votes = sum(votes), 
+                    VAP_adj = ceiling(as.numeric(VAP_adj)[1]), 
+                    incDefeats = sum(incDefeats),
+                    nraces = sum(nraces), 
+                    districtwide = max(districtwide), 
+                    distWidemix = max(recs))
+
+# dist_turn1 <- dist_turn[dist_turn$recs >= 1 & dist_turn$districtwide > 0,]
+# dist_turn2 <- dist_turn[dist_turn$recs == 1 & dist_turn$districtwide == 0,]
+# dist_turn <- rbind(dist_turn1, dist_turn2)
+# dist_turn$recs <- NULL
 
 ## Clean up metrics
 # turnout over the prior presidential election
@@ -184,7 +196,6 @@ dist_turn$fallTwoPartyShareDem <- (dist_turn$govTwoPartyShareDem + dist_turn$pre
 
 rm(dist_turn1, dist_turn2, races.tmp, row_counts)
 
-
 lg  <- function(x) c(NA, x[1:length(x)-1])
 lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
 
@@ -214,7 +225,6 @@ votes.tmp <- merge(cand.tmp, as.data.frame(races)[races$nwins >0, c("raceid2", "
 votes.tmp$vote_share <- votes.tmp$votes.cand / votes.tmp$votes.race
 votes.tmp$vote_share[is.na(votes.tmp$vote_share)] <- 0
 votes.tmp$hareQuota <- votes.tmp$votes.race / (votes.tmp$nwins + 1)
-
 plotdf2 <- as.data.table(votes.tmp)[, list(cand = length(winner), 
                   distid = distid[1],
                   year = year[1],
@@ -235,8 +245,6 @@ plotdf2$blaisLago <- 100 * (plotdf2$voteMargin / plotdf2$votescast / plotdf2$win
 plotdf2$hareQuota <- plotdf2$votescast / (plotdf2$winners + 1)
 plotdf2$hareQuotaDelta2 <- plotdf2$winnerVotes - (plotdf2$hareQuota * plotdf2$winners)
 
-
-
 plotdf2$closeRace <- 0
 plotdf2$closeRace[plotdf2$blaisLago < 
                     quantile(plotdf2$blaisLago[plotdf2$blaisLago >0], 
@@ -256,9 +264,13 @@ plot.tmp$minBlaisLago[!is.finite(plot.tmp$minBlaisLago)] <- 100
 plot.tmp$avgBlaisLago[!is.finite(plot.tmp$avgBlaisLago)] <- 100
 plot.tmp$minHareQuotaDelta[!is.finite(plot.tmp$minHareQuotaDelta)] <- NA
 plot.tmp$avgHareQuotaDelta[!is.finite(plot.tmp$avgHareQuotaDelta)] <- NA
+# key1 <- paste(plot.tmp$distid, plot.tmp$year, sep ="-")
+# key2 <- paste(dist_turn$distid, dist_turn$year, sep ="-")
+# key2[!key2 %in% key1]
+# key1[!key1 %in% key2]
+# Trevor-wilmot appears to drop here due to consolidation 
 dist_turn <- merge(dist_turn, plot.tmp, all.x=TRUE)
 rm(plot.tmp, plotdf2, votes.tmp, errors, cand.tmp)
-
 dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
 
 rm(govTurn, presTurn, dvp, dist.tmp, distAttr)

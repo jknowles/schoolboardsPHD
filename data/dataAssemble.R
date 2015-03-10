@@ -4,6 +4,8 @@
 ################################################################################
 
 library(data.table); library(plyr)
+library(tidyr)
+library(magrittr)
 struc <- list.dirs("../Data/sbelectionresults", recursive = FALSE)
 file.exists(Sys.glob(file.path(struc[5],"*.csv")))
 
@@ -128,10 +130,7 @@ print(paste0(length(dat$votes[is.na(dat$votes)]),
 print(paste0("Check districts: ", paste0(unique(dat$distid[is.na(dat$votes)]), collapse="|")))
 
 print(paste0(length(dat$votes[dat$votes > 20000 & !is.na(dat$votes)]), 
-             " observations with greater than 50,000 votes"))
-
-## Races
-# Make unique race ID by district and year
+             " observations with greater than 20,000 votes"))
 
 dat$raceid2 <- paste(dat$distid, dat$year, dat$raceid, dat$electiontype, sep = "-")
 length(unique(dat$raceid2))
@@ -165,7 +164,7 @@ print(paste0(paste0(unique(dat$distid[dat$winner == 1 & (is.na(dat$votes) | dat$
 
 zed <- ddply(dat, .(raceid2), summarise, 
       distid = distid[1], 
-      winners = sum(winner), 
+      winners = sum(winner, na.rm=TRUE), 
       votes = sum(votes, na.rm=TRUE), 
       candidates = length(distid))
 
@@ -289,7 +288,7 @@ print(paste0("Check districts: ", paste0(unique(distid), collapse="|")))
 length(dat$distid[dat$incumbent == 1 & dat$'repeat' == 0])
 length(dat$distid[dat$incumbent == 0 & dat$'repeat' == 1])
 
-dat[dat$incumbent == 1 & dat$'repeat' == 0,]
+# dat[dat$incumbent == 1 & dat$'repeat' == 0,]
 
 dat$'repeat'[dat$incumbent > 0] <- 1
 length(dat$distid[dat$incumbent == 1 & dat$'repeat' == 0])
@@ -309,7 +308,7 @@ dat$minor[dat$votes > 20 & dat$candidateid != 99] <- 0
 ## All scatter are minor candidates
 
 length(dat$distid[dat$candidateid == 99 & dat$minor == 0])
-dat[dat$candidateid == 99 & dat$minor == 0, ]
+# dat[dat$candidateid == 99 & dat$minor == 0, ]
 dat$minor[dat$candidateid == 99] <- 1
 
 rm(winsPer, check1, distid, extr, z)
@@ -331,7 +330,17 @@ dat$incDefeat[dat$incumbent == 1] <- 0
 dat$incDefeat[dat$incumbent == 1 & dat$winner == 0] <- 1
 
 
-races <- as.data.table(dat)[, list(ncand = .N,
+# If candidate is incumbent, cannot be a minor candidate
+dat$minor[dat$incumbent > 0] <- 0
+
+## Races
+# Make unique race ID by district and year
+# Ignore the scatter votes, assign them to races
+
+datScatter <- dat[dat$candidateid == 99 & !is.na(dat$candidateid),]
+datNoScatter <- dat[dat$candidateid != 99 & !is.na(dat$candidateid),]
+
+races <- as.data.table(datNoScatter)[, list(ncand = .N,
                                    nrealcand = length(winner[candidateid!=99]),
                                    nwins = sum(winner), 
                                    ninc = sum(incumbent), 
@@ -340,6 +349,58 @@ races <- as.data.table(dat)[, list(ncand = .N,
                                    votes = sum(votes), 
                                    districtwide = max(districtwide)), 
                             by = c("raceid2")]
+
+races <- races %>%
+  separate(raceid2, into = c("distid", "year", "raceid", "electiontype"), sep = "\\-") 
+
+races$raceid2 <- paste(races$distid, races$year, races$raceid, 
+                       races$electiontype, sep ="-")
+
+racesScatter <- as.data.table(datScatter)[, list(scatterVotes = sum(votes)), 
+                                          by = c("distid", "year", "raceid",
+                                                    "electiontype")]
+racesScatter$raceid2 <- paste(racesScatter$distid, racesScatter$year, 
+                              racesScatter$raceid, 
+                              racesScatter$electiontype, sep ="-")
+# Figure out proportion of total votes
+# Add scatter votes evenly across all races in district
+
+keys1 <- unique(racesScatter$raceid2)
+keys2 <- unique(races$raceid2)
+
+length(keys1[keys1 %in% keys2])
+length(keys1[!keys1 %in% keys2])
+
+# Less than .5% of votes are scatter votes
+racesScatter <- as.data.frame(racesScatter)
+races <- merge(races, racesScatter[, c("raceid2", "scatterVotes")], 
+               by = "raceid2", all.x = TRUE)
+races$scatterVotes[is.na(races$scatterVotes)] <- 0
+
+distVotes <- ddply(races, .(distid, year, electiontype), summarize, 
+                   distVotes = sum(votes, na.rm=TRUE))
+
+races <- merge(races, distVotes, by = c("distid", "year", "electiontype"), 
+               all.x=TRUE)
+
+races$raceVoteProp <- races$votes / races$distVotes
+racesScatter <- racesScatter[!racesScatter$raceid2 %in% unique(races$raceid2), ]
+racesScatter <- racesScatter[, c("distid", "year", "electiontype", "scatterVotes")]
+
+racesScatter$scatterVotesWIDE <- racesScatter$scatterVotes
+racesScatter$scatterVotes <- NULL
+races <- as.data.frame(races)
+races <- merge(races, racesScatter, by = c("distid", "year", "electiontype"), 
+               all.x=TRUE)
+races$scatterVotesWIDE[is.na(races$scatterVotesWIDE)] <- 0
+# Round down
+races$scatterVotesWIDE <- floor(races$scatterVotesWIDE * races$raceVoteProp)
+races$votes <- races$votes + races$scatterVotes + races$scatterVotesWIDE
+
+races$scatterVotes <- races$scatterVotes + races$scatterVotesWIDE
+races$scatterVotesWIDE <- NULL
+races$distVotes <- NULL
+races$raceVoteProp <- NULL
 
 races$nincDef[is.na(races$nincDef)] <- 0
 races$nincDefInd <- ifelse(races$nincDef > 0, 1, 0)
@@ -352,69 +413,66 @@ races$nincDefInd <- ifelse(races$nincDef > 0, 1, 0)
 ## Minimax
 
 # As.double allows data.table to proceed in cases of Inf
-check_dat <- as.data.table(dat)[, list(totalvotes = as.double(sum(votes, na.rm=T)), 
-                                       minvotes = as.double(min(votes, na.rm=T)),
-                                       maxvotes = as.double(max(votes, na.rm=T)),
-                                       candidates = .N, 
-                                       winners = as.double(sum(winner, na.rm=T)),
-                                       incumbents = as.double(sum(incumbent, na.rm=T)), 
-                                       minor = as.double(sum(minor, na.rm=TRUE))),
-                                      by = c("distid", "year", "electiontype")]
+# check_dat <- as.data.table(dat)[, list(totalvotes = as.double(sum(votes, na.rm=T)), 
+#                                        minvotes = as.double(min(votes, na.rm=T)),
+#                                        maxvotes = as.double(max(votes, na.rm=T)),
+#                                        candidates = .N, 
+#                                        winners = as.double(sum(winner, na.rm=T)),
+#                                        incumbents = as.double(sum(incumbent, na.rm=T)), 
+#                                        minor = as.double(sum(minor, na.rm=TRUE))),
+#                                       by = c("distid", "year", "electiontype")]
+# 
+# # Only focus on general elections for now
+# check_dat <- as.data.frame(check_dat[check_dat$electiontype==1,])
+# check_dat$electiontype <- NULL
+# 
+# #
+# check_dat$totalvotes[!is.finite(check_dat$totalvotes)] <- 0
+# check_dat$minvotes[!is.finite(check_dat$minvotes)] <- 0
+# check_dat$maxvotes[!is.finite(check_dat$maxvotes)] <- 0
+# summary(check_dat$maxvotes/check_dat$totalvotes)
+# 
+# # reshape wide by district to check within district consistency
+# 
+# check_dat_ts <- reshape(check_dat, idvar="distid", drop=c("minvotes", "maxvotes"),
+#                         v.names=c("totalvotes"),
+#                         timevar="year", direction="wide")
+# 
+# check_dat_ts <- check_dat_ts[!is.na(check_dat_ts$distid),]
+# 
+# check_dat_ts$totalvotes.max <- apply(check_dat_ts[ , 2:15], 1, max, na.rm=T)
+# check_dat_ts$totalvotes.min <- apply(check_dat_ts[ , 2:15], 1, min, na.rm=T)
+# check_dat_ts$totalvotes.med <- apply(check_dat_ts[ , 2:15], 1, median, na.rm=T)
+# 
+# # check for large within district swings
+# 
+# check_dat_ts$consist1 <- (check_dat_ts$totalvotes.max - check_dat_ts$totalvotes.min) / check_dat_ts$totalvotes.med 
+# check_dat_ts$consist1[is.na(check_dat_ts$consist1)] <- 0
+# 
+# check_dat_ts$consist2 <- (check_dat_ts$totalvotes.max) / check_dat_ts$totalvotes.med 
+# check_dat_ts$consist2[is.na(check_dat_ts$consist2)] <- 0
+# 
+# check_dat_ts$consist3 <- (check_dat_ts$totalvotes.min) / check_dat_ts$totalvotes.med 
+# check_dat_ts$consist3[is.na(check_dat_ts$consist3)] <- 0
+# 
+# check_dat_ts$flag <- 0
+# check_dat_ts$flag[check_dat_ts$consist1 > 3 & check_dat_ts$consist2 >3] <- 1
+# check_dat_ts$flag[check_dat_ts$consist1 > 3 & check_dat_ts$consist3 < 0.2] <- 1
+# check_dat_ts$flag[check_dat_ts$consist2 > 3 & check_dat_ts$consist3 < 0.2] <- 1
+# 
+# # View(check_dat_ts[check_dat_ts$consist1 > 3,])
+# # View(check_dat_ts[check_dat_ts$consist2 > 3,])
+# # View(check_dat_ts[check_dat_ts$consist3 < 0.2,])
+# 
+# ################################################################################
+# # Output checks
+# 
+# print(paste0("Total deviations: ", nrow(check_dat_ts[check_dat_ts$flag >0,])))
 
-# Only focus on general elections for now
-check_dat <- as.data.frame(check_dat[check_dat$electiontype==1,])
-check_dat$electiontype <- NULL
+# print(paste0("Check districts: ", paste0(unique(check_dat_ts$distid[check_dat_ts$flag >0]), collapse="|")))
 
 #
-check_dat$totalvotes[!is.finite(check_dat$totalvotes)] <- 0
-check_dat$minvotes[!is.finite(check_dat$minvotes)] <- 0
-check_dat$maxvotes[!is.finite(check_dat$maxvotes)] <- 0
-summary(check_dat$maxvotes/check_dat$totalvotes)
-
-# reshape wide by district to check within district consistency
-
-check_dat_ts <- reshape(check_dat, idvar="distid", drop=c("minvotes", "maxvotes"),
-                        v.names=c("totalvotes"),
-                        timevar="year", direction="wide")
-
-check_dat_ts <- check_dat_ts[!is.na(check_dat_ts$distid),]
-
-check_dat_ts$totalvotes.max <- apply(check_dat_ts[ , 2:15], 1, max, na.rm=T)
-check_dat_ts$totalvotes.min <- apply(check_dat_ts[ , 2:15], 1, min, na.rm=T)
-check_dat_ts$totalvotes.med <- apply(check_dat_ts[ , 2:15], 1, median, na.rm=T)
-
-# check for large within district swings
-
-check_dat_ts$consist1 <- (check_dat_ts$totalvotes.max - check_dat_ts$totalvotes.min) / check_dat_ts$totalvotes.med 
-check_dat_ts$consist1[is.na(check_dat_ts$consist1)] <- 0
-
-check_dat_ts$consist2 <- (check_dat_ts$totalvotes.max) / check_dat_ts$totalvotes.med 
-check_dat_ts$consist2[is.na(check_dat_ts$consist2)] <- 0
-
-check_dat_ts$consist3 <- (check_dat_ts$totalvotes.min) / check_dat_ts$totalvotes.med 
-check_dat_ts$consist3[is.na(check_dat_ts$consist3)] <- 0
-
-check_dat_ts$flag <- 0
-check_dat_ts$flag[check_dat_ts$consist1 > 3 & check_dat_ts$consist2 >3] <- 1
-check_dat_ts$flag[check_dat_ts$consist1 > 3 & check_dat_ts$consist3 < 0.2] <- 1
-check_dat_ts$flag[check_dat_ts$consist2 > 3 & check_dat_ts$consist3 < 0.2] <- 1
-
-# View(check_dat_ts[check_dat_ts$consist1 > 3,])
-# View(check_dat_ts[check_dat_ts$consist2 > 3,])
-# View(check_dat_ts[check_dat_ts$consist3 < 0.2,])
-
-################################################################################
-# Output checks
-
-print(paste0("Total deviations: ", nrow(check_dat_ts[check_dat_ts$flag >0,])))
-
-print(paste0("Check districts: ", paste0(unique(check_dat_ts$distid[check_dat_ts$flag >0]), collapse="|")))
-
 #
-#
-
-
-
 
 ################################################################################
 # Build checks between metadata and data
@@ -440,15 +498,12 @@ print(paste0("Check districts: ", paste0(unique(check_dat_ts$distid[check_dat_ts
 # 
 # dat$repeater <- dat$"repeat."
 # dat$"repeat." <- NULL
-
-rm(check_dat, check_dat_ts)
+# 
+# rm(check_dat, check_dat_ts)
 
 dat$repeater <- dat$'repeat'
 dat$'repeat' <- NULL
 
-
-tmp <- str_split(races$raceid2, "-")
-races$distid <- as.character(lapply(tmp, "[[", 1))
-races$year <- as.character(lapply(tmp, "[[", 2))
-races$raceid <- as.character(lapply(tmp, "[[", 3))
-races$electiontype <- as.character(lapply(tmp, "[[", 4))
+rm(distVotes, racesScatter, datScatter, datNoScatter, zed)
+detach("package:tidyr")
+detach("package:magrittr")
