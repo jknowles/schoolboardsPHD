@@ -302,7 +302,6 @@ row.names(ab) <- c("Var", rnames)
 @
 
 <<samplecomparisons, results='asis'>>=
-
 tabDigits <- c(0,0,2,2,1,1,1,0,0,0,0,0,2,2)
 tabDigitsMat <- cbind(rep(0, 14), tabDigits, tabDigits, tabDigits, tabDigits)
 tabDigitsMat <- as.matrix(tabDigitsMat, ncol = 5)
@@ -1257,23 +1256,25 @@ names(out2) <- c("year", "nAllRaces", "nAllDistricts")
 
 table2 <- merge(out1, out2)
 rm(out1, out2)
+table2 <- table2[table2$year != 2001, ]
+table2 <- table2[table2$year != 2002, ]
+table2 <- table2[table2$year != 2013, ]
 table2$difference <- table2[, 5] - table2[, 3]
 table2$difference2 <- table2[, 4] - table2[, 2]
 names(table2) <- c("Year", "Districtwide Races", "Districts with Districtwide", 
                    "All Board Races", "Total Districts", 
                    "Districts without Districtwide", "Non-districwide Races")
 
-
+table2 <- t(table2)
 table2 <- xtable(table2, label="tab:yearsample", 
              caption = "Comparing sample size for district wide vs. apportioned school board races." )
-align(table2) <- c('p{.2in}','p{.5in}',  'p{.8in}','p{.8in}','p{.8in}','p{.8in}',
-                   'p{.8in}','p{.8in}')
+# align(table2) <- c('p{.2in}','p{.5in}',  'p{.8in}','p{.8in}','p{.8in}','p{.8in}',
+#                    'p{.8in}','p{.8in}')
 
-print(t(table2), 
+print.xtable(table2, 
       include.colnames = FALSE, include.rownames = TRUE,
       format.args = list(big.mark = ",", decimal.mark = "."), 
       size = "footnotesize")
-
 @
 
 Estimating turnout in the roughly 50 districts annually, as shown in Table \ref{tab:yearsample}, which do not have a district wide school board race is a different matter. 
@@ -1412,15 +1413,17 @@ dist.tmp <- ddply(races.tmp, .(distid, year), summarize,
 dist.tmp$districtwide <- 0
 
 dist_turn <- rbind(dist_turn, dist.tmp)
-
 row_counts <- ddply(dist_turn, .(distid, year), nrow)
 dist_turn <- merge(dist_turn, row_counts, all.x=TRUE)
 dist_turn$recs <- dist_turn$V1; dist_turn$V1 <- NULL
-dist_turn1 <- dist_turn[dist_turn$recs >= 1 & dist_turn$districtwide > 0,]
-dist_turn2 <- dist_turn[dist_turn$recs == 1 & dist_turn$districtwide == 0,]
-
-dist_turn <- rbind(dist_turn1, dist_turn2)
-dist_turn$recs <- NULL
+dist_turn <- ddply(dist_turn, .(distid, year), summarize, 
+                    ncand = sum(ncand), nrealcand = sum(nrealcand), 
+                    nwins = sum(nwins), ninc = sum(ninc), 
+                    nminor = sum(nminor), votes = sum(votes), 
+                    VAP_adj = ceiling(as.numeric(VAP_adj)[1]), 
+                    nraces = sum(nraces), 
+                    districtwide = max(districtwide), 
+                    distWidemix = max(recs))
 
 ## Clean up metrics
 # turnout over the prior presidential election
@@ -1487,7 +1490,10 @@ dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$V
 
 springVotes.tmp <- springVotes[springVotes$year == 2020, ]
 springVotes.tmp$year <- 2010
-dist_turn.tmp <- merge(dist_turn[, 1:25], springVotes.tmp, 
+idx <- names(dist_turn)[!names(dist_turn) %in% 
+                          c("topTicketTurnoutSpring", 
+                            names(springVotes)[3:ncol(springVotes)])]
+dist_turn.tmp <- merge(dist_turn[, idx], springVotes.tmp, 
                    by = c("distid", "year"))
 dist_turn.tmp$topTicketTurnoutSpring <- dist_turn.tmp$votesTopTicketSpring / dist_turn.tmp$VAP_adj
 
