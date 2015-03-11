@@ -2,7 +2,14 @@
 \label{chap:policy}
 \chapterstyle{deposit}
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: package or namespace load failed for 'devtools'}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}install\_github"{}}}\end{kframe}
+\end{knitrout}
 
 \section{Introduction}
 
@@ -186,7 +193,7 @@ of these observable and unobservable factors as possible.
 
 
 I employ two distinct modeling strategies. The first is the most restrictive. 
-As in previous chapters, I employ the bounding strategy suggested by \citet{mhe} 
+As in previous chapters, I employ the bounding strategy suggested by \citet{mhecon} 
 to leverage the repeated observations in my data to compare, where possible, 
 school districts within themselves. The disadvantage of this strategy is that 
 for the outcomes in question, relatively little variance remains to be explained 
@@ -208,31 +215,31 @@ charcteristics, but which differ on their incumbent defeat.
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Model 2 } & \multicolumn{ 1 }{ c }{ Model 3 } \\ \hline
- %                          & Lag           & Model 2       & Model 3      \\ 
-(Intercept)                & 0.399 ^{***}  & 0.089 ^{***}  & -0.608       \\ 
-                           & (0.033)       & (0.017)       & (0.447)      \\ 
-incsDefeatedFac\_lag1     & -0.010 ^*     & 0.001         & 0.000        \\ 
-                           & (0.005)       & (0.002)       & (0.002)      \\ 
-locale2\_lagexurb         & 0.032         & 0.001         & 0.407 ^{***} \\ 
-                           & (0.020)       & (0.004)       & (0.077)      \\ 
-locale2\_lagrural         & 0.020         & 0.004         & 0.406 ^{***} \\ 
-                           & (0.016)       & (0.004)       & (0.077)      \\ 
-servingMembers\_lag       & -0.007 ^*     & 0.000         & -0.002       \\ 
-                           & (0.004)       & (0.001)       & (0.003)      \\ 
-econ\_disadv\_per\_lag  &               & -0.001 ^{***} & 0.000        \\ 
-                           &               & (0.000)       & (0.000)      \\ 
-READ\_PROFADV\_PER\_lag &               & 0.786 ^{***}  &              \\ 
-                           &               & (0.022)       &              \\ 
-log(VAP\_adj\_lag)       &               & -0.002        & 0.084 ^*     \\ 
-                           &               & (0.001)       & (0.043)      \\ 
-PerBachelorOrAbove\_lag   &               & 0.122 ^{***}  & 0.085        \\ 
-                           &               & (0.026)       & (0.183)      \\ 
-per65o\_lag               &               & 0.011         & -0.069       \\ 
-                           &               & (0.033)       & (0.383)       \\
- $N$                        & 1910          & 1418          & 1910         \\ 
-$R^2$                      & 0.026         & 0.851         & 0.908        \\ 
-adj. $R^2$                 & 0.024         & 0.850         & 0.890        \\ 
-Resid. sd                  & 0.081         & 0.032         & 0.027         \\ \hline
+ %                          & Lag               & Model 2           & Model 3          \\ 
+(Intercept)                & 0.393 ^{***}      & 0.086 ^{***}      & -0.621           \\ 
+                           & (0.033)           & (0.017)           & (0.447)          \\ 
+incsDefeatedFac\_lag1     & -0.010 ^*         & 0.001             & 0.000            \\ 
+                           & (0.005)           & (0.002)           & (0.002)          \\ 
+locale2\_lagexurb         & 0.033 ^\dagger   & 0.001             & 0.407 ^{***}     \\ 
+                           & (0.020)           & (0.004)           & (0.077)          \\ 
+locale2\_lagrural         & 0.022             & 0.005             & 0.406 ^{***}     \\ 
+                           & (0.016)           & (0.004)           & (0.077)          \\ 
+servingMembers\_lag       & -0.007 ^\dagger  & 0.000             & -0.002           \\ 
+                           & (0.004)           & (0.001)           & (0.003)          \\ 
+econ\_disadv\_per\_lag  &                   & -0.001 ^{***}     & 0.000            \\ 
+                           &                   & (0.000)           & (0.000)          \\ 
+READ\_PROFADV\_PER\_lag &                   & 0.784 ^{***}      &                  \\ 
+                           &                   & (0.022)           &                  \\ 
+log(VAP\_adj\_lag)       &                   & -0.001            & 0.085 ^*         \\ 
+                           &                   & (0.001)           & (0.043)          \\ 
+PerBachelorOrAbove\_lag   &                   & 0.126 ^{***}      & 0.091            \\ 
+                           &                   & (0.026)           & (0.182)          \\ 
+per65o\_lag               &                   & 0.011             & -0.068           \\ 
+                           &                   & (0.033)           & (0.383)           \\
+ $N$                        & 1918              & 1425              & 1918             \\ 
+$R^2$                      & 0.023             & 0.851             & 0.909            \\ 
+adj. $R^2$                 & 0.021             & 0.850             & 0.891            \\ 
+Resid. sd                  & 0.081             & 0.032             & 0.027             \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
@@ -244,28 +251,28 @@ Resid. sd                  & 0.081         & 0.032         & 0.027         \\ \h
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Model 2 } & \multicolumn{ 1 }{ c }{ Model 3 } \\ \hline
  %                          & Lag               & Model 2           & Model 3          \\ 
-(Intercept)                & 0.432 ^{***}      & 0.077 ^{***}      & -3.142 ^{***}    \\ 
-                           & (0.019)           & (0.023)           & (0.848)          \\ 
+(Intercept)                & 0.432 ^{***}      & 0.072 ^{**}       & -3.102 ^{***}    \\ 
+                           & (0.019)           & (0.025)           & (0.842)          \\ 
 incsDefeatedFac\_lag1     & -0.012 ^\dagger  & 0.001             & -0.002           \\ 
-                           & (0.006)           & (0.003)           & (0.003)          \\ 
-locale2\_lagexurb         & 0.055 ^*          & 0.018 ^*          & 0.590 ^{***}     \\ 
+                           & (0.007)           & (0.003)           & (0.003)          \\ 
+locale2\_lagexurb         & 0.055 ^*          & 0.019 ^*          & 0.581 ^{***}     \\ 
                            & (0.024)           & (0.008)           & (0.130)          \\ 
-locale2\_lagrural         & 0.036 ^\dagger   & 0.016 ^*          & 0.589 ^{***}     \\ 
-                           & (0.020)           & (0.007)           & (0.131)          \\ 
-econ\_disadv\_per\_lag  &                   & -0.001 ^{***}     & 0.001 ^{**}      \\ 
+locale2\_lagrural         & 0.036 ^\dagger   & 0.017 ^*          & 0.580 ^{***}     \\ 
+                           & (0.020)           & (0.007)           & (0.130)          \\ 
+econ\_disadv\_per\_lag  &                   & -0.001 ^{***}     & 0.001 ^*         \\ 
                            &                   & (0.000)           & (0.000)          \\ 
-MATH\_PROFADV\_PER\_lag &                   & 0.775 ^{***}      &                  \\ 
+MATH\_PROFADV\_PER\_lag &                   & 0.777 ^{***}      &                  \\ 
                            &                   & (0.019)           &                  \\ 
-log(VAP\_adj\_lag)       &                   & 0.004 ^\dagger   & 0.309 ^{***}     \\ 
-                           &                   & (0.002)           & (0.082)          \\ 
-PerBachelorOrAbove\_lag   &                   & 0.128 ^{***}      & 0.642 ^*         \\ 
+log(VAP\_adj\_lag)       &                   & 0.004 ^\dagger   & 0.305 ^{***}     \\ 
+                           &                   & (0.002)           & (0.081)          \\ 
+PerBachelorOrAbove\_lag   &                   & 0.128 ^{***}      & 0.657 ^{**}      \\ 
                            &                   & (0.032)           & (0.250)          \\ 
-per65o\_lag               &                   & -0.006            & 0.368            \\ 
-                           &                   & (0.036)           & (0.547)           \\
- $N$                        & 1910              & 1418              & 1910             \\ 
-$R^2$                      & 0.011             & 0.846             & 0.900            \\ 
-adj. $R^2$                 & 0.009             & 0.846             & 0.881            \\ 
-Resid. sd                  & 0.109             & 0.042             & 0.038             \\ \hline
+per65o\_lag               &                   & -0.004            & 0.356            \\ 
+                           &                   & (0.036)           & (0.545)           \\
+ $N$                        & 1918              & 1425              & 1918             \\ 
+$R^2$                      & 0.011             & 0.849             & 0.901            \\ 
+adj. $R^2$                 & 0.009             & 0.848             & 0.882            \\ 
+Resid. sd                  & 0.110             & 0.042             & 0.038             \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
@@ -282,26 +289,26 @@ Resid. sd                  & 0.109             & 0.042             & 0.038      
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Full } & \multicolumn{ 1 }{ c }{ Fixed Effect } \\ \hline
  %                         & Simple           & Full             & Fixed Effect    \\ 
-(Intercept)               & -1.454 ^{***}    & -1.136           & -1.684 ^*       \\ 
-                          & (0.268)          & (0.948)          & (0.730)         \\ 
-incsDefeatedFac\_lag1    & 0.266 ^\dagger  & 0.241            & 0.099           \\ 
+(Intercept)               & -1.455 ^{***}    & -1.245           & -1.806 ^*       \\ 
+                          & (0.268)          & (0.936)          & (0.721)         \\ 
+incsDefeatedFac\_lag1    & 0.271 ^\dagger  & 0.244            & 0.107           \\ 
                           & (0.159)          & (0.159)          & (0.204)         \\ 
-locale2\_lagexurb        & -0.462           & -0.335           & -0.320          \\ 
-                          & (0.319)          & (0.358)          & (0.279)         \\ 
-locale2\_lagrural        & -0.328           & -0.202           & -0.108          \\ 
-                          & (0.273)          & (0.355)          & (0.224)         \\ 
+locale2\_lagexurb        & -0.462           & -0.317           & -0.299          \\ 
+                          & (0.319)          & (0.356)          & (0.280)         \\ 
+locale2\_lagrural        & -0.329           & -0.176           & -0.076          \\ 
+                          & (0.273)          & (0.351)          & (0.221)         \\ 
 econ\_disadv\_per\_lag &                  & 0.008 ^\dagger  & 0.021 ^*        \\ 
                           &                  & (0.005)          & (0.008)         \\ 
-log(VAP\_adj\_lag)      &                  & 0.036            & 0.019           \\ 
-                          &                  & (0.081)          & (0.051)         \\ 
-PerBachelorOrAbove\_lag  &                  & -2.881 ^*        & -1.528          \\ 
-                          &                  & (1.333)          & (1.464)         \\ 
-per65o\_lag              &                  & -3.807 ^*        & -5.535 ^{**}    \\ 
-                          &                  & (1.846)          & (1.894)          \\
- $N$                       & 1910             & 1910             & 1910            \\ 
-AIC                       & 1626.452         & 1620.601         & 1941.111        \\ 
-BIC                       & 1715.330         & 1798.357         & 8962.452        \\ 
-$\log L$                 & -797.226         & -778.301         & 293.444          \\ \hline
+log(VAP\_adj\_lag)      &                  & 0.044            & 0.030           \\ 
+                          &                  & (0.080)          & (0.050)         \\ 
+PerBachelorOrAbove\_lag  &                  & -2.801 ^*        & -1.458          \\ 
+                          &                  & (1.308)          & (1.450)         \\ 
+per65o\_lag              &                  & -3.797 ^*        & -5.599 ^{**}    \\ 
+                          &                  & (1.840)          & (1.890)          \\
+ $N$                       & 1918             & 1918             & 1918            \\ 
+AIC                       & 1632.418         & 1626.880         & 1946.831        \\ 
+BIC                       & 1721.363         & 1804.770         & 8973.456        \\ 
+$\log L$                 & -800.209         & -781.440         & 290.584          \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 

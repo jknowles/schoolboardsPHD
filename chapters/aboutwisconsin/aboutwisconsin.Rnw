@@ -995,7 +995,7 @@ cases where an incumbent finds it not worth it to run for office. However, it do
 allow me to identify political turnover empriically and consistently across jurisdictions 
 and time within the state of Wisconsin -- a first in the literature. 
 
-<<incDefeat, results='asis'>>=
+<<incDefeat, fig.cap="Incumbent Defeat by Year by District">>=
 incDefeat <- ddply(dat[dat$electiontype == 1 & dat$year > 2001 & dat$year < 2013,], 
                    .(year), 
                    summarise, 
@@ -1012,15 +1012,15 @@ incDefeat <- ddply(dat[dat$electiontype == 1 & dat$year > 2001 & dat$year < 2013
 # 
 # print(table.tmp, include.rownames=TRUE, size = "small")
 
-qplot(year, incsDefeated/incsTotal, data = incDefeat, geom = 'bar', stat = 'identity', 
-      fill = I("gray60"), color = I("black")) + theme_dpi() + 
-  scale_x_continuous(breaks = 2002:2012, "Year") + 
-  scale_y_continuous(label = percent, "Percent of SB Races") + 
-  labs(title = "Percentage of Incumbents Defeated 2002-2012 Statewide")+ 
-  coord_cartesian(ylim = c(0, .25)) + 
-  geom_text(aes(label = paste0(round(incsDefeated/incsTotal*100, 1), "%")), 
-            vjust = 1) +
-  theme(axis.ticks.x = element_blank())
+# qplot(year, incsDefeated/incsTotal, data = incDefeat, geom = 'bar', stat = 'identity', 
+#       fill = I("gray60"), color = I("black")) + theme_dpi() + 
+#   scale_x_continuous(breaks = 2002:2012, "Year") + 
+#   scale_y_continuous(label = percent, "Percent of SB Races") + 
+#   labs(title = "Percentage of Incumbents Defeated 2002-2012 Statewide")+ 
+#   coord_cartesian(ylim = c(0, .25)) + 
+#   geom_text(aes(label = paste0(round(incsDefeated/incsTotal*100, 1), "%")), 
+#             vjust = 1) +
+#   theme(axis.ticks.x = element_blank())
 
 incDefeatDist <- ddply(dat[dat$electiontype == 1 & dat$year > 2001 & dat$year < 2013,], 
                    .(year), 
