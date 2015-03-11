@@ -362,7 +362,9 @@ I conceptualize the degree of candidate emergence for school boards as qualitati
 three distinct levels. The first, and lowest level, is whether any candidates other 
 than incumbents appear on the ballot. In lieu of partisanship, local elections are 
 often conceived of as races between incumbents and challengers \citep{oliver07,oliver12}. 
-However, merely having non-incumbents on the ballot does not mean voters have a full choice, 
+I refer to this variable as ``incumbent lockout'', when incumbents are the only 
+candidates, and I focus on predictors for when it does not occur. However, merely 
+having non-incumbents on the ballot does not mean voters have a full choice, 
 as non-incumbents often run unopposed so the second level of competitiveness is the 
 presence of more candidates than seats on the ballot. Finally, the ultimate measure of 
 competitivenss is whether or not any incumbents are defeated or at risk of defeat. 
@@ -424,7 +426,6 @@ Table \ref{tab:icbydef} shows that in races in which
 at least one of the candidates is not an incumbent incumbent defeat is rare. 
 
 <<nonincumbent3, results='asis'>>=
-# TODO: This table is problematic
 dist_turn$incDefeatFac <- ifelse(dist_turn$incDefeats > 0, 1, 0)
 
 tabdf <- dist_turn[dist_turn$ninc > 0, c("incumbOnly", "contestSer", "incDefeatFac")]
@@ -460,24 +461,27 @@ tablestruc <- ddply(races[races$nwins > 0,], .(year), summarize,
 tmp.cap   <- "Frequency of races with and without non-incumbents."
 tmp.label <- "tab:nifreq"
 
+tablestruc[, "nonIncumbents"] <- iPer2((tablestruc$nonIncumbents / tablestruc$races) * 100)
+tablestruc[, "incumbOnly"] <- iPer2((tablestruc$incumbOnly / tablestruc$races) * 100)
 tablestruc <- tablestruc[tablestruc$year > 2001 & tablestruc$year < 2013, ]
+
+colnames(tablestruc) <- c("Year", "Districts", "SB Races", 
+                          "Non-Incumb.", "Incumb. Only")
 
 print(xtable(tablestruc, 
              caption = tmp.cap, 
              label = tmp.label, digits = 0), include.colnames = TRUE, 
       include.rownames=FALSE)
-
 @
 
 A first condition of contestation is that someone other than incumbents run for 
 office. The least competitive of all elections is that in which voters not only 
 have no choice, but they have no choice and all candidates are incumbents -- the 
 status quo is maintained by default. Nearly 
-\Sexpr{iPer(sum(tablestruc$incumbOnly)/sum(tablestruc$races)*100)}, or between 100 and 
-150 races, of races each year feature all incumbents. Of these, 
+\Sexpr{iPer(sum(tablestruc$incumbOnly)/sum(tablestruc$races)*100)}, or between 
+100 and 150 races, of races each year feature all incumbents. Of these, 
 \Sexpr{nrow(races[races$incumbOnly ==1 & races$contestMinor == 1, ])} such races 
-are considered contested, and of these, only \Sexpr{nrow(races[races$incumbOnly ==1 & races$contestSer == 1, ])} are considered to be contested by serious candidates. 
-These races are excluded from the analysis that follows.
+are considered contested. 
 
 \subsubsection{Who Counts as a Candidate?}
 
@@ -522,15 +526,19 @@ a <- as.data.frame(a)
 a.tmp <- as.data.frame(a.tmp)
 a$Var1 <- as.numeric(as.character(a$Var1))
 a.tmp$Var1 <- as.numeric(as.character(a.tmp$Var1))
+a$Var2 <- ifelse(a$Var2 == 0, "No", "Yes")
+a$Var2 <- factor(a$Var2, levels = c("Yes", "No"))
+a.tmp$Var2 <- ifelse(a.tmp$Var2 == 0, "No", "Yes")
+a.tmp$Var2 <- factor(a.tmp$Var2, levels = c("Yes", "No"))
 
 p1 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Districts", title = "Excluding Minor Candidates", 
-       fill = "Contested") + theme_bw()
+       fill = "Contested?") + theme_bw()
 
 p1 <- qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013,], 
             geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Percent of Races", title = "Excluding Minor Candidates", 
-       fill = "Contested") + theme_bw() + scale_y_continuous(label = percent)
+       fill = "Contested?") + theme_bw() + scale_y_continuous(label = percent)
 
 
 a <- table(races$contested, races$year)
@@ -541,16 +549,19 @@ a <- as.data.frame(a)
 a.tmp <- as.data.frame(a.tmp)
 a$Var1 <- as.numeric(as.character(a$Var1))
 a.tmp$Var1 <- as.numeric(as.character(a.tmp$Var1))
-
+a$Var2 <- ifelse(a$Var2 == 0, "No", "Yes")
+a$Var2 <- factor(a$Var2, levels = c("Yes", "No"))
+a.tmp$Var2 <- ifelse(a.tmp$Var2 == 0, "No", "Yes")
+a.tmp$Var2 <- factor(a.tmp$Var2, levels = c("Yes", "No"))
 
 p2 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Races", title = "Including Minor Candidates", 
-       fill = "Contested")+ theme_bw()
+       fill = "Contested?")+ theme_bw()
 
 p2 <- qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013,], 
             geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Percent of Races", title = "Including Minor Candidates", 
-       fill = "Contested") + theme_bw() + scale_y_continuous(label = percent)
+       fill = "Contested?") + theme_bw() + scale_y_continuous(label = percent)
 
 
 grid.arrange(p1, p2, main = "Comparing School Board Contestation Measures")
@@ -562,9 +573,8 @@ grid.arrange(p1, p2, main = "Comparing School Board Contestation Measures")
 Figure \ref{fig:candidatedescriptives4} depicts the pattern of school board candidate 
 emergence over time. Contested elections are in blue and uncontested races are in 
 salmon. A slight trend toward fewer contested races is evident in both panels. 
-The bottom panel, excluding minor candidates, changes the share of elections 
+The top panel, excluding minor candidates, changes the share of elections 
 that are contested each year, but does not change the pattern across years. 
-
 
 
 <<perseatcontests,  echo=FALSE, fig.cap="Serious candidates per open seat by school year in Wisconsin school districts over time.">>=
@@ -588,9 +598,12 @@ differentiate between districts with wide spread contestation and those with
 simply a single contested seat. As Figure \ref{fig:perseatcontests} demonstrates, 
 the level of contestation per open seat does not change much across the years with 
 the median race having 1 candidate per seat, and the majority of races having between 
-1 and 2 candidates per seat. This measure does not appear to capture much information 
-beyond a binary indicator for the presence of more than one candidate per race.\footnote{
-Consider a sub-analysis using this measure instead in the appendix.} 
+1 and 2 candidates per seat. This means, for example, that a typical pattern 
+of competition in a Wisconsin school board election features four candidates vying 
+for three open seats, or one and a third candidates per open seat. This measure 
+does not appear to capture much information beyond a binary indicator for the 
+presence of more than one candidate per race.\footnote{Consider a sub-analysis 
+using this measure instead in the appendix.} 
 
 \subsubsection{District Competitiveness}
 
@@ -607,34 +620,38 @@ in Table \ref{tab:votemargincalc}. This metric has the advantage of better adjus
 the vote margin calculation for both the size of the electorate and the size of the 
 election slate, thus making meaningful comparisons across diverse districts possible. 
 While this method still focuses on the most competitive seat in the district, it 
-better enables comparisons across districts. As discussed in Section \ref{subsec:closeraces}, 
-in non-partisan races the Blais-Lago metric is less sharply defined because of the 
+better enables comparisons across districts. As discussed in Section 
+\ref{subsec:closeraces}, in non-partisan races the Blais-Lago metric is less 
+sharply defined because of the 
 inability to draw ideological distinctions or infer differing policy preferences 
 among candidates not running under a specific party. However, it still represents a 
 standardized metric for the number of votes needed to \emph{change the outcome of 
-a multi-member or single member seat's election.}
+a multi-member or single member seat's election.} Thus, the lower the Blais-Lago 
+Quotient, the more competitive the seat. 
 
-Figure \ref{fig:computeblaisLago} shows the distribution of the minimum (most competitive) 
-Blais-Lago Quotient for school districts for each year of the sample. This includes 
-races where no challenge is observed - where the quotient is 100. Figure \ref{fig:computeblaisLago2} 
-adjusts this and depicts only the \Sexpr{iPer((nrow(dist_turn[dist_turn$nrealcand > dist_turn$nwins,]) / nrow(dist_turn)) *100)} of seats where voters have a choice - as in the second panel 
-of Figure \ref{fig:candidatedescriptives4}. As I noted in Section \ref{subsec:closeraces}, 
+Figure \ref{fig:computeblaisLago1} shows the distribution of the minimum (most 
+competitive seat) Blais-Lago Quotient for school districts for each year of the 
+sample. The top panel shows this including races where no challenge is observed - 
+where the quotient is 100. The bottom panel adjust this and depicts only the 
+\Sexpr{iPer((nrow(dist_turn[dist_turn$nrealcand > dist_turn$nwins,]) / nrow(dist_turn)) *100)} of seats where voters have a choice - as in the second panel of Figure 
+\ref{fig:candidatedescriptives4}. As I noted in Section \ref{subsec:closeraces}, 
 school board races that are contested are generally much closer than the contested 
 multi-member districts for national legislatures that the Blais-Lago Quotient was 
 first developed to evaluate \citep{blaislago}. Although incumbent defeat may be 
 uncommon, races that can be decided by a handful of voters are not as uncommon. 
 
-<<computeblaisLago1, echo=FALSE, fig.cap="Annual competitiveness of most competitive seat in each school district as measured by the Blais-Lago quotient.",fig.width=7,fig.height=4>>=
+<<computeblaisLago1, echo=FALSE, fig.cap="Annual competitiveness of most competitive seat in each school district as measured by the Blais-Lago quotient.",fig.width=7,fig.height=8>>=
 
-qplot(factor(year), minBlaisLago, data = dist_turn[dist_turn$minBlaisLago > 0,], 
-      geom='boxplot') + theme_dpi() + labs(x = "Year", y = "Blais-Lago Quotient")
+p1 <- qplot(factor(year), minBlaisLago, data = dist_turn[dist_turn$minBlaisLago > 0,], 
+      geom='boxplot') + theme_dpi() + labs(x = "Year", y = "Blais-Lago Quotient", 
+                                           title = "All Seats")
 
-@
-
-<<computeblaisLago2, echo=FALSE, fig.cap="Annual competitiveness of most competitive seat in each school district with more candidates than seats as measured by the Blais-Lago quotient.",fig.width=7,fig.height=4>>=
-qplot(factor(year), minBlaisLago, data = dist_turn[dist_turn$minBlaisLago > 0 & 
+p2 <- qplot(factor(year), minBlaisLago, data = dist_turn[dist_turn$minBlaisLago > 0 & 
                                 dist_turn$nrealcand > dist_turn$nwins,], 
-      geom='boxplot') + theme_dpi() + labs(x = "Year", y = "Blais-Lago Quotient")
+      geom='boxplot') + theme_dpi() + labs(x = "Year", y = "Blais-Lago Quotient", 
+                                           title = "Contested Seats")
+
+grid.arrange(p1, p2, main = "Comparing Measures of Competitiveness Over Time")
 @
 
 
@@ -673,15 +690,14 @@ a <- as.data.frame(a)
 a.tmp <- as.data.frame(a.tmp)
 a$Var1 <- as.numeric(as.character(a$Var1))
 a.tmp$Var1 <- as.numeric(as.character(a.tmp$Var1))
-
+a.tmp$Var2 <- ifelse(a.tmp$Var2 == 0, "No", "Yes")
+a.tmp$Var2 <- factor(a.tmp$Var2, levels = c("Yes", "No"))
 qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013,], 
             geom='bar', stat='identity', fill=Var2, position='stack', 
       color = I("black")) + 
   labs(x= "Year", y = "Percent of Races", 
        title = "Percentage of Races with Incumbents Defeated", 
        fill = "Inc. Defeat") + theme_bw() + scale_y_continuous(label = percent)
-
-
 @
 
 Figure \ref{fig:incdefeat} shows the rate of incumbent defeat in Wisconsin. The 
@@ -701,11 +717,10 @@ in these dependent variables.
 
 \subsection{Independent Variables}
 
-A number of variables are available with which to test 
-the theories outlined above. The first set of variables I include are basic 
-demographic variables. As shown in \citet{oliver} these variables are important to 
-take into consideration when considering the factors that influence candidate 
-participation in local elections. 
+\subsubsection{Demographics}
+The first set of variables I include are basic demographic variables. As shown 
+in \citet{oliver} these variables are important to take into consideration when 
+considering the factors that influence candidate participation in local elections. 
 
 The first of these variables I consider is the voting age population (VAP) of 
 the school district. VAP represents the pool of voters and also of potential 
@@ -713,33 +728,34 @@ candidates for school board in a community. I expect this variable to be
 positively related to contestation of school board elections both because of the 
 larger pool of available candidates, but also the larger scope of influence in 
 larger school districts -- which is more attractive to potential candidates 
-\citep{oliver}. In addition to 
-size, the homogeneity of the community is an important indicator of the level 
-of electoral participation. I consider two types of homogeneity -- racial and 
-generational. First, I include a measure of the percentage of the adult population 
-in the school district that is white. While Wisconsin is an overwhelmingly white 
-state, I expect racial homogeneity to be negatively associated with more 
-school board contestation. Additionally, prior research has shown that voter 
-(and property tax payer) age is associated with support for local schools. The 
-greater the percentage of elderly in the school district, the more participation 
-I expect to see \citep{RefWorks:332}. 
+\citep{oliver}. In addition to size, the homogeneity of the community is an 
+important indicator of the level of electoral participation. I consider two types 
+of homogeneity -- racial and generational. First, I include a measure of the 
+percentage of the adult population in the school district that is white. While 
+Wisconsin is an overwhelmingly white state, I expect racial homogeneity to be 
+negatively associated with more school board contestation. Additionally, prior 
+research has shown that voter (and property tax payer) age is associated with 
+support for local schools. The greater the percentage of elderly in the school 
+district, the more participation I expect to see \citep{RefWorks:332}. 
 Additionally, given the results of surveys that indicate school board members 
 are more likely to be white and elderly, I expect that the increase in these 
 variables is an increase in supply of potential candidates, and thus should be 
 positively related to board contestation \citep{RefWorks:321, RefWorks:322, RefWorks:333}. 
 
-The last two demographic variables are fiscal. A 
-key feature of school boards is their ability to independently set property taxes. 
-Following \citet{berry2} and others, I include a measure of the percentage of 
-housing occupied by owners as a measure of both the permanency of the community 
-(following \citet{oliver}) and the 
+The last two demographic variables are measures of wealth and income. A key feature 
+of school boards is 
+their ability to independently set property taxes. Following \citet{berry2} and 
+others, I include a measure of the percentage of housing occupied by owners as a 
+measure of both the permanency of the community (following \citet{oliver}) and the 
 salience of property tax rates -- an important issue for single jurisdiction 
 governments like school boards \citep{berry2}. Homeowners are more directly aware 
 of property tax rates, longer term residents of the community, and thus expected 
 to be more sensitive to changes in the property tax rate that is under control 
-of school boards. As an additional control, I include a measure of median household income, but 
-as other studies have noted, this does not exhibit much variation within Wisconsin 
-as it does in other jurisdictions \citep{akrTax}.
+of school boards. As an additional control, I include a measure of median household 
+income, but as other studies have noted, this does not exhibit much variation 
+within Wisconsin as it does in other jurisdictions \citep{akrTax}.
+
+\subsubsection{Fiscal}
 
 Next, I consider variables measuring the scope of the school district relative 
 to other local governments. As \citet{berry2} finds stacking of local governments 
@@ -769,6 +785,7 @@ fiscal pressure. A final measure of fiscal health is the level of per pupil
 spending in the school district. I expect higher spending districts to have 
 higher levels of candidate contestation. %TODO: why
 
+\subsubsection{Political}
 Next, I look to explore the influence of political factors in the emergence of 
 challenges to incumbents. First, I include a variable to control for the 
 different structure of school board elections each year by controlling for the number of 
@@ -804,6 +821,7 @@ the less likely I expect candidates to emerge. A strong interest group presence
 in the community should ensure the the board reflects interest group preferences 
 and depress the need for electoral competition. 
 
+\subsubsection{Policy}
 A final set of total variables is policy related concerns. These variables 
 explore the idea that candidates may desire to emerge in response to underlying 
 policy changes in the district. Policy concerns allow me to test whether or not 
@@ -818,9 +836,10 @@ distinct policy evaluations from voters depending on the year they are up for el
 First, I assess the impact that a change in superintendent has on school board 
 challengers. Because theory suggests that board turnover often precedes 
 superintendent turnover, I posit that a new superintendent should signal a 
-decrease in candidate challenges to board members \cite{RefWorks:336, RefWorks:340}. 
+decrease in candidate challenges to board members as the citizen dissatisfaction 
+that sparked the turnover has been relieved \cite{RefWorks:336, RefWorks:340}. 
 I test for a new superintendent either in the prior year or two years prior. 
-
+% TODO: Test for superintendent churn for 5 years
 Next, I include measures of school district funding referenda. Wisconsin has 
 two common types of school referenda measures -- bond and override referenda. 
 Bond referenda are familiar across the United States as authority for a school 
@@ -844,10 +863,11 @@ percentage increases, competition for school boards will decrease due to a
 reduced interest among more educated and affluent families attending private 
 schools in shaping the policy of the local school board. I also look at measures 
 of student performance to test whether districts with higher or lower performance 
-are more likely to have candidates emerge. I do not expect a relationship here. 
-Finally, I include a measure of the share of district salaries spent on 
-administrators. All else equal, I expect more administrative school districts 
-to have fewer board challenges. % TODO: why
+are more likely to have candidates emerge. School districts with lower performing 
+students should, all else equal, have more candidates emerge as citizen dissatisfaction 
+with board and district performance should be higher. Finally, I include a measure 
+of the share of district salaries spent on administrators. All else equal, I expect 
+more administrative school districts to have fewer board challenges. % TODO: why
 
 Finally, I seek to control for autocorrelation in board contestation. If board 
 elections are competitive consecutively because of sustained community dissatisfaction 
@@ -860,10 +880,13 @@ variable to be unrelated in the models that follow.
 These expectations are summarized in Table \ref{tab:candIV}. 
 
 
-\begin{tiny}
+\begin{table}[h!]
 \begin{center}
+\begin{tiny}
+\caption{Available Variables and Expected Signs}
 \label{tab:candIV}
-\begin{longtable}{| p{.45\textwidth} | p{.12\textwidth} | p{.35\textwidth} |} \hline
+\begin{tabular}{| p{.45\textwidth} | p{.12\textwidth} | p{.35\textwidth} |} 
+\hline
 \textbf{Variable}  & \textbf{Expected Sign} & \textbf{Shortname} \\ \hline
 Demographics  &  & \\ \hline 
 Voting Age Population (VAP) & + & VAP \\
@@ -888,19 +911,17 @@ Partisan Division in Previous Fall & + & partyDivision \\
 Teacher Share of Voters & - & teachShareofVoters \\ \hline
 Policy & & \\ \hline
 New Superintendent & - & NEW\_SUP \\
-Math and Reading Performance & Null & MATH\_PROFADV\_PER READ\_PROFADV\_PER \\
+Math and Reading Performance & - & MATH\_PROFADV\_PER READ\_PROFADV\_PER \\
 Debt Referenda Attempt and Failure & + & debtFail; debtQues \\
 Override Referenda Attempt and Failure & + & overrideQues; overrideFail \\
 Cumulative Bond Attempts & + & cumulAttp \\
 Administrator Share of Salary & - & ADMIN\_SHARE \\
 Percentage of Pupils in Non-public schools & - & NonPublicPupilPer \\ 
-Serious Contestation in Prior election & None & contestSerLag \\ 
-\hline
-\caption{Available Variables and Expected Signs}
-\end{longtable}
-\end{center}
+Serious Contestation in Prior election & None & contestSerLag \\ \hline
+\end{tabular}
 \end{tiny}
-
+\end{center}
+\end{table}
 \clearpage
 
 
@@ -964,7 +985,7 @@ nopanel <- theme(panel.background=element_blank(),
                                axis.text = element_text(colour = "black"))
 @
 
-<<demog1, fig.cap="Correlations of Demographic Variables", fig.height=5.5, fig.width=7.5>>=
+<<demogCorr1, fig.cap="Correlations of Demographic Variables", fig.height=5.5, fig.width=7.5>>=
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% demogIdx)], use = "pairwise"), 3)) 
 
@@ -981,7 +1002,7 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray40")
   labs(x = "", y = "")
 @
 
-In Figure \ref{fig:demog1} we see a depiction of the correlations between key 
+In Figure \ref{fig:demogCorr1} we see a depiction of the correlations between key 
 demographic variables with dark red and green representing the highest negative 
 and positive correlations respectively.\footnote{These figures represent the correlation 
 matrix for the complete pooled dataset across years and school districts. Correlations 
@@ -1915,17 +1936,22 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
 
 The results of the above models are disappointing. The data do not provide much 
 evidence of many of the theoretical expectations despite an ample sample size. 
-This section seeks to explore the effects that do matter from the models to 
+Figure \ref{fig:fixefplot1} depicts a summary of the coefficients across all 
+models from the tables above along with the confidence intervals. Very few 
+effects are statisticall significant across the models, and the magnitudes of 
+these effects all appear quite small. 
+
+This section seeks to explore the effects that do matter from Figure 
+\ref{fig:fixefplot1} to 
 illustrate the magnitude of the effects that have been identified and explore 
-the findings of the models. 
+the findings of the models. Given the high number of observations available in 
+this data set, there is likely sufficient power to detect effects that are 
+substantively quite small yet remain statistically significant. In order to 
+better understand this, I use simulations to illustrate the substantive impact of 
+several of the key variables identified in the models above on school board 
+contestation and illustrat ethem here.  
 
-Given the high number of observations available in this data set, there is likely 
-sufficient power to detect effects that are substantively quite small yet remain 
-statistically significant. In order to better understand this, I use simulations 
-to illustrate the substantive impact of several of the key variables identified 
-in the models above on school board contestation and illustrat ethem here.  
-
-\subsubsection{Fixed Effects}
+\subsubsection{Main Effects}
 
 The tables above provide the coefficients and standard errors for the models, but 
 logistic regression coefficients can be difficult to interpret -- especially on 
@@ -1933,7 +1959,7 @@ data that has been rescaled. In order to better demonstrate the impact of key
 variables, I provide simulations from the models above that show the impact on the 
 probability of contestation conditional on changes in those variables. 
 
-<<fixefplot1, eval=TRUE, fig.cap="Coefficient Plot for Full Model Fixed Effects",fig.height=8.5, fig.width=8, results='hide'>>=
+<<fixefplot1, eval=TRUE, fig.cap="Coefficient Plot of Coefficients for Full Models",fig.height=9.5, fig.width=8, results='hide'>>=
 sim1 <- FEsim(fullmodMMCon, nsims = 1000); sim1$dv <- "Contest"
 sim2 <- FEsim(fullmodMMni, nsims = 1000); sim2$dv <- "No Incumb."
 sim3 <- FEsim(fullmodMMd, nsims = 1000); sim3$dv <- "Defeat"
@@ -1951,24 +1977,43 @@ simPlot$color <- ifelse(simPlot$lwr >0 | simPlot$upr < 0, "Sig", "Not Sig.")
 
 ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr, 
                     ymin = lwr, color = color)) + 
-  scale_color_brewer(palette = "Dark2") + 
+  scale_color_brewer(type = "div", palette = 3) + 
   geom_point() + geom_errorbar(h=1.5) +
   geom_hline(yintercept = 0, size = I(1.1), color = I("black"), linetype = 2, 
              alpha = I(0.6)) +
   coord_flip() + 
   facet_wrap(~dv) + 
-  theme_dpi(base_size=12) +theme(legend.position = "bottom") + 
+  theme_dpi(base_size=10) +theme(legend.position = "bottom") + 
   labs(x = "Variable", y = "Effect", color = "Stat. Sig.")
 
 # confint(fullmodMMni, method = "Wald", level = 0.9)
 @
+
+In Figure \ref{fig:fixefSub1} I provide a series of simulation results for three 
+variables. Each numbered panel represents a simulated case. Each column of panels 
+represents a dependent variable, in this case from left to right, the probability 
+of a contested seat, the probability of a contested seat, and the Blais-Lago 
+quotient. Each plot contains two dotted lines which represent the $25^{th}$ 
+and $75^{th}$ percentiles of the value of the dependent variable as fit by the 
+model. These lines are reference frames for examining the third solid line which 
+represents the simulated value of the dependent variable for each observation as the 
+independent variable changes across its full range. The movement of this line 
+in relation to the dotted lines helps depict how much variability can be explained 
+by increasing or decreasing the variable on the x-axis. Finally, uncertainty about 
+the predicted value at each value of the x-axis is represented by the gray shadow 
+around the solid line. The x-axis also contains a ``rug-plot'' for reference, which 
+shows the density of observed values of the x-variable. 
+
+Taken together, each panel shows the behavior of variables in the models on 
+specific observations and allows us to answer the question -- how would contestation 
+change if the x-variable increased or decreased? 
 
 % List of effects to make plots for
 % School mill share COntest / competitive
 % VAP Contest
 % TCEC_MEMBER Competitive
 
-<<fixefSub1, fig.cap="Substantive Effect on Contestation Across Cases">>=
+<<fixefSub1, fig.cap="Simulated Effect of Key Variables on Contestation Levels Across Models">>=
 seplotdf <- substEffSimFE(fullmodMMCon, "schoolMillShare", ncases = 4L, 
                           unscale = moddatScale, re = TRUE)
 
@@ -1977,11 +2022,11 @@ p1 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
     geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
                      alpha=0.4) + 
   facet_wrap(~caseID) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25)) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25), linetype = 2) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75), linetype = 2) + 
   geom_rug(data = dist_turn, aes(x = schoolMillShare, y = NULL)) + 
   theme_dpi(base_size=12) + 
-  labs(x = "School Millrate Share", y = "Pr(Contested)")
+  labs(x = "School Millrate Share", y = "Pr(Contested)", title = "Cont. Model")
 
 seplotdf <- substEffSimFE(fullmodMMCon, "VAP_adjLOG", ncases = 4L, 
                           unscale = moddatScale, re = TRUE)
@@ -1991,11 +2036,11 @@ p2 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
     geom_ribbon(aes(ymin=lwr, ymax=upr, group = caseID),
                      alpha=0.4) + 
   facet_wrap(~caseID) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25)) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25), linetype = 2) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75), linetype = 2) + 
   geom_rug(data = dist_turn, aes(x = VAP_adjLOG, y = NULL)) + 
   theme_dpi(base_size=12) + 
-  labs(x = "log(VAP)", y = "Pr(Contested)")
+  labs(x = "log(VAP)", y = "Pr(Contested)", title = "Cont. Model")
 
 seplotdf <- substEffSimFE(fullmodMMblq, "TCEC_MEMBER", ncases = 4L, 
                           unscale = moddatScale, re = TRUE)
@@ -2019,43 +2064,57 @@ p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = exp(yhatUnscale))) +
                     group = caseID), alpha=0.4) + 
   facet_wrap(~caseID) + 
   geom_rug(data = dist_turn, aes(x = TCEC_MEMBER, y = NULL)) + 
-  geom_hline(yintercept = lowerBar) + 
-  geom_hline(yintercept = upperBar) + 
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
   theme_dpi(base_size=12) + 
-  labs(x = "TCEC_MEMBER", y = "Blais-Lago") + scale_y_log10()
+  labs(x = "TCEC_MEMBER", y = "Blais-Lago", "BLQ Model") + 
+  scale_y_log10()
 
-grid.arrange(p1, p2, p3, nrow = 1, 
-             main = "Simulated Effect of Key Variables on Contestations Levels Across Models")
+grid.arrange(p1, p2, p3, nrow = 1)
 @
 
+\clearpage
 
-\subsubsection{District and Year Variation}
+\subsubsection{District Variation}
 
-By far the most variation is explained both by year effects across districts and 
-by district effects across years. These effects represent the sum of unobserved 
-characteristics that do not vary within districts over time, and of characteristics 
-that vary over time across all districts. 
-
+By far the most variation is explained by effects across districts. These effects 
+represent the sum of unobserved characteristics that do not vary within districts 
+over time. In this section, I employ a similar graphical technique as in the 
+previous section to depict the magnitude of the impact that year and district 
+effects have in the models for the outcome variables.
 
 Figure \ref{fig:randomEffectplot1} simulates the variance in the predicted 
-probabilities of each outcome across school districts. The horizontal lines in 
-each plot represent the IQR of the fitted values from the models to give a sense 
-of the variability in the predicted probabilities across cases. Each panel represents 
-a single case. Within that panel, the predicted probability for that case is 
-estimated if that case had been observed in that district. Thus, each panel can 
-be interpreted as, all else constant, how much would the probability of the outcome 
-change due to the estimated district intercept. 
+probabilities of each outcome across school districts. As in Figure 
+\ref{fig:fixefSub1}, each panel represents a single case. Within that panel, the 
+predicted probability for that case is estimated if that case had been observed 
+in each district, ordered by the impact each district has on the outcome. Thus, 
+the line in each panel be interpreted as, all else constant, how much would the 
+outcome change if the same observation was modified by each district intercept 
+estimate. The horizontal dashed lines in each panel represent the 
+interquartile-range (IQR) of the fitted values from the models to give a sense 
+of the variability in the predicted probabilities across cases. In other words, 
+each panel shows the magnitude of moving from the district that has the least 
+impact on the outcome to the district that has the most. While this is not a 
+realistic counterfactual in the sense that it is not possible to hold all else 
+constant while moving across districts, it does help graphically depict the 
+amount of variability that exists across districts that is captured by the 
+district-level intercepts estimated in each of the models.
 
 The first set of plots on the left represent the variability in incumbent defeat 
 probabilities that are explained by school districts. Given how little each case 
 changes across districts (the slope of the line formed by these probabilities), 
-it appears that the district effects provide very little explanation. The next 
-two panels, contestation and incumbent lockout, have much steeper slopes, suggesting 
+it appears that there is very little substantive variation between districts. The 
+next two panels, contestation and incumbent lockout, have much steeper slopes, suggesting 
 that the variability between the highest and lowest district effect is equivalent 
 to more than the the distance between the first and third quartiles in predicted 
 probabilities. The final panel shows the impact on the Blais-Lago quotient which 
 appears to be in some cases equivalent to a substantial portion of the interquartile 
 range of the predicted probabilities. 
+
+In general, it seems that between-district variation is much larger than the 
+substantive impact of independent variables. While some of the variables in 
+Figure \ref{fig:fixefSub1} had substantial variation, the estimates were noisier 
+in these cases.  
 
 <<randomEffectplot1, eval=TRUE, fig.cap="Substantive Impact of District Intercepts">>=
 replotdf <- substEffSimRE(fullmodMMni, "distid", ncases=6, alpha = 0.1)
@@ -2070,10 +2129,10 @@ NIre <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat,
                       strip.background = element_blank(), 
                       panel.grid.minor = element_blank(), 
                       panel.grid.major = element_blank()) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25)) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.25), linetype = 2) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMni), prob = 0.75), linetype = 2) + 
   facet_wrap(~caseID) + 
-  labs(x = "District", y = "Pr(No Incumbent)")
+  labs(x = "District", y = "Pr(No Incumbent)", title = "Inc. Lockout")
 
 replotdf <- substEffSimRE(fullmodMMCon, "distid", ncases=6, alpha = 0.1)
 replotdf$distid <- as.character(replotdf$distid)
@@ -2087,10 +2146,10 @@ NIcon <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat,
                       strip.background = element_blank(), 
                       panel.grid.minor = element_blank(), 
                       panel.grid.major = element_blank()) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25)) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.25), linetype = 2) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMCon), prob = 0.75), linetype = 2) + 
   facet_wrap(~caseID) + 
-  labs(x = "District", y = "Pr(Contested)")
+  labs(x = "District", y = "Pr(Contested)", title = "Contest")
 
 
 replotdf <- substEffSimRE(fullmodMMd, "distid", ncases=6, alpha = 0.1)
@@ -2105,10 +2164,10 @@ NIdef <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat,
                       strip.background = element_blank(), 
                       panel.grid.minor = element_blank(), 
                       panel.grid.major = element_blank()) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.25)) + 
-  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.75)) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.25), linetype = 2) + 
+  geom_hline(yintercept = quantile(fitted(fullmodMMd), prob = 0.75), linetype = 2) + 
   facet_wrap(~caseID) + 
-  labs(x = "District", y = "Pr(Incumb. Def.)")
+  labs(x = "District", y = "Pr(Incumb. Def.)", title = "Defeat")
 
 replotdf <- substEffSimRE(fullmodMMblq, "distid", ncases=6, alpha = 0.1)
 replotdf$yhatUnscale <- exp(replotdf[, "yhat"] * 2 * moddatScale["minBlaisLago", 2]) + 
@@ -2129,8 +2188,8 @@ NIblq <- ggplot(replotdf, aes(x = reorder(newvar, -yhatUnscale), y = yhatUnscale
   geom_line(aes(group = caseID)) + 
     geom_ribbon(aes(ymin=lwrUnscale, ymax=uprUnscale, group = caseID),
                      alpha=0.4) + 
-  geom_hline(yintercept = lowerBar) + 
-  geom_hline(yintercept = upperBar) + 
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
   facet_wrap(~caseID) +
   theme_dpi(base_size=12) + 
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
@@ -2138,21 +2197,28 @@ NIblq <- ggplot(replotdf, aes(x = reorder(newvar, -yhatUnscale), y = yhatUnscale
                       strip.background = element_blank(), 
                       panel.grid.minor = element_blank(), 
                       panel.grid.major = element_blank()) +
-  labs(x = "District", y = "Blais-Lago")
+  labs(x = "District", y = "Blais-Lago", title = "BLQ")
 
 
-grid.arrange(NIdef, NIcon, NIre, NIblq, nrow = 1, main = "Effect of School Districts on Measures of Contestation")
+grid.arrange(NIdef, NIcon, NIre, NIblq, nrow = 1)
 @
 
 \clearpage
-
-Figure \ref{fig:randomEffectplot1} makes it seem clear that between districts there 
-is much variability in the level of contestation between districts. 
 
 \subsection{Comparisons}
 
 After exploring these effects, the question stands -- which set of variables best 
 explain the pattern of contested elections and candidate emergence in Wisconsin. 
+Testing for the impact of individual variables is difficult because of the likelihood 
+of collinearity leading to overly pessimistic estimates of the impact of variables 
+on the outcome. Measures of goodness of fit provide a sense of the variation in 
+the data explained by the whole model, but are poor choices for cross-model comparison 
+and are on a scale that is hard to interpret. In the case of the main variables 
+of interest here -- binomial measures of contestation -- it is easier to report 
+the rate of correct classification for predictions from the model compared to 
+observed data. I graphically depict the results of these classification based 
+model fit metrics now.
+
 
 <<generateROC, eval=TRUE>>=
 library(ROCR)
@@ -2212,6 +2278,7 @@ roc$modType <- paste(roc$mod, roc$dv, sep ="-")
 ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = dv)) + 
   geom_line(size= I(1.1), se = FALSE, stat = "smooth") +
    geom_abline(intercept = 0, slope = 1, colour = "gray") + 
+  scale_color_brewer(type = "div", palette = 3) +
    ylab("Sensitivity") + 
    xlab("1 - Specificity") + 
   coord_cartesian(xlim=c(0, 1), ylim=c(0,1)) + theme_bw() + 
@@ -2231,6 +2298,7 @@ ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = d
 ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = mod)) + 
   geom_line(size= I(1.1), se = FALSE, stat = "smooth") +
    geom_abline(intercept = 0, slope = 1, colour = "gray") + 
+  scale_color_brewer(type = "div", palette = 3) +
    ylab("Sensitivity") + 
    xlab("1 - Specificity") + 
   coord_cartesian(xlim=c(0, 1), ylim=c(0,1)) + theme_bw() + 

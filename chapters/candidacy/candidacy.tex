@@ -301,7 +301,7 @@ with each race electing multiple winners.\footnote{See Appendix \ref{app:data} f
 details about the coding of races.}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Mar 10 13:46:39 2015
+% Wed Mar 11 00:23:00 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllllllllll}
@@ -344,7 +344,9 @@ I conceptualize the degree of candidate emergence for school boards as qualitati
 three distinct levels. The first, and lowest level, is whether any candidates other 
 than incumbents appear on the ballot. In lieu of partisanship, local elections are 
 often conceived of as races between incumbents and challengers \citep{oliver07,oliver12}. 
-However, merely having non-incumbents on the ballot does not mean voters have a full choice, 
+I refer to this variable as ``incumbent lockout'', when incumbents are the only 
+candidates, and I focus on predictors for when it does not occur. However, merely 
+having non-incumbents on the ballot does not mean voters have a full choice, 
 as non-incumbents often run unopposed so the second level of competitiveness is the 
 presence of more candidates than seats on the ballot. Finally, the ultimate measure of 
 competitivenss is whether or not any incumbents are defeated or at risk of defeat. 
@@ -354,7 +356,7 @@ level is predicted by theory.
 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Mar 10 13:46:39 2015
+% Wed Mar 11 00:23:01 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -394,7 +396,7 @@ Table \ref{tab:icbydef} shows that in races in which
 at least one of the candidates is not an incumbent incumbent defeat is rare. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Mar 10 13:46:39 2015
+% Wed Mar 11 00:23:01 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -417,24 +419,24 @@ explain the variation in these three degrees of contestation.
 \subsubsection{Non-incumbents}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Mar 10 13:46:39 2015
+% Wed Mar 11 00:23:01 2015
 \begin{table}[ht]
 \centering
-\begin{tabular}{lrrrr}
+\begin{tabular}{lrrll}
   \hline
-year & districts & races & nonIncumbents & incumbOnly \\ 
+Year & Districts & SB Races & Non-Incumb. & Incumb. Only \\ 
   \hline
-2002 & 221 & 289 & 196 & 93 \\ 
-  2003 & 242 & 336 & 240 & 96 \\ 
-  2004 & 256 & 343 & 245 & 98 \\ 
-  2005 & 255 & 341 & 239 & 102 \\ 
-  2006 & 271 & 370 & 248 & 122 \\ 
-  2007 & 298 & 410 & 281 & 129 \\ 
-  2008 & 299 & 383 & 241 & 142 \\ 
-  2009 & 299 & 402 & 251 & 151 \\ 
-  2010 & 300 & 401 & 256 & 145 \\ 
-  2011 & 305 & 397 & 260 & 137 \\ 
-  2012 & 305 & 410 & 259 & 151 \\ 
+2002 & 221 & 289 & 67.8\% & 32.2\% \\ 
+  2003 & 242 & 336 & 71.4\% & 28.6\% \\ 
+  2004 & 256 & 343 & 71.4\% & 28.6\% \\ 
+  2005 & 255 & 341 & 70.1\% & 29.9\% \\ 
+  2006 & 271 & 370 & 67\% & 33\% \\ 
+  2007 & 298 & 410 & 68.5\% & 31.5\% \\ 
+  2008 & 299 & 383 & 62.9\% & 37.1\% \\ 
+  2009 & 299 & 402 & 62.4\% & 37.6\% \\ 
+  2010 & 300 & 401 & 63.8\% & 36.2\% \\ 
+  2011 & 305 & 397 & 65.5\% & 34.5\% \\ 
+  2012 & 305 & 410 & 63.2\% & 36.8\% \\ 
    \hline
 \end{tabular}
 \caption{Frequency of races with and without non-incumbents.} 
@@ -446,11 +448,10 @@ A first condition of contestation is that someone other than incumbents run for
 office. The least competitive of all elections is that in which voters not only 
 have no choice, but they have no choice and all candidates are incumbents -- the 
 status quo is maintained by default. Nearly 
-33.5\%, or between 100 and 
-150 races, of races each year feature all incumbents. Of these, 
+NaN\%, or between 
+100 and 150 races, of races each year feature all incumbents. Of these, 
 30 such races 
-are considered contested, and of these, only 30 are considered to be contested by serious candidates. 
-These races are excluded from the analysis that follows.
+are considered contested. 
 
 \subsubsection{Who Counts as a Candidate?}
 
@@ -481,9 +482,8 @@ votes to secure victory, 20 votes seems sizable enough to exert influence on the
 Figure \ref{fig:candidatedescriptives4} depicts the pattern of school board candidate 
 emergence over time. Contested elections are in blue and uncontested races are in 
 salmon. A slight trend toward fewer contested races is evident in both panels. 
-The bottom panel, excluding minor candidates, changes the share of elections 
+The top panel, excluding minor candidates, changes the share of elections 
 that are contested each year, but does not change the pattern across years. 
-
 
 
 \begin{knitrout}
@@ -500,9 +500,12 @@ differentiate between districts with wide spread contestation and those with
 simply a single contested seat. As Figure \ref{fig:perseatcontests} demonstrates, 
 the level of contestation per open seat does not change much across the years with 
 the median race having 1 candidate per seat, and the majority of races having between 
-1 and 2 candidates per seat. This measure does not appear to capture much information 
-beyond a binary indicator for the presence of more than one candidate per race.\footnote{
-Consider a sub-analysis using this measure instead in the appendix.} 
+1 and 2 candidates per seat. This means, for example, that a typical pattern 
+of competition in a Wisconsin school board election features four candidates vying 
+for three open seats, or one and a third candidates per open seat. This measure 
+does not appear to capture much information beyond a binary indicator for the 
+presence of more than one candidate per race.\footnote{Consider a sub-analysis 
+using this measure instead in the appendix.} 
 
 \subsubsection{District Competitiveness}
 
@@ -519,18 +522,21 @@ in Table \ref{tab:votemargincalc}. This metric has the advantage of better adjus
 the vote margin calculation for both the size of the electorate and the size of the 
 election slate, thus making meaningful comparisons across diverse districts possible. 
 While this method still focuses on the most competitive seat in the district, it 
-better enables comparisons across districts. As discussed in Section \ref{subsec:closeraces}, 
-in non-partisan races the Blais-Lago metric is less sharply defined because of the 
+better enables comparisons across districts. As discussed in Section 
+\ref{subsec:closeraces}, in non-partisan races the Blais-Lago metric is less 
+sharply defined because of the 
 inability to draw ideological distinctions or infer differing policy preferences 
 among candidates not running under a specific party. However, it still represents a 
 standardized metric for the number of votes needed to \emph{change the outcome of 
-a multi-member or single member seat's election.}
+a multi-member or single member seat's election.} Thus, the lower the Blais-Lago 
+Quotient, the more competitive the seat. 
 
-Figure \ref{fig:computeblaisLago} shows the distribution of the minimum (most competitive) 
-Blais-Lago Quotient for school districts for each year of the sample. This includes 
-races where no challenge is observed - where the quotient is 100. Figure \ref{fig:computeblaisLago2} 
-adjusts this and depicts only the 55.9\% of seats where voters have a choice - as in the second panel 
-of Figure \ref{fig:candidatedescriptives4}. As I noted in Section \ref{subsec:closeraces}, 
+Figure \ref{fig:computeblaisLago1} shows the distribution of the minimum (most 
+competitive seat) Blais-Lago Quotient for school districts for each year of the 
+sample. The top panel shows this including races where no challenge is observed - 
+where the quotient is 100. The bottom panel adjust this and depicts only the 
+55.9\% of seats where voters have a choice - as in the second panel of Figure 
+\ref{fig:candidatedescriptives4}. As I noted in Section \ref{subsec:closeraces}, 
 school board races that are contested are generally much closer than the contested 
 multi-member districts for national legislatures that the Blais-Lago Quotient was 
 first developed to evaluate \citep{blaislago}. Although incumbent defeat may be 
@@ -539,14 +545,6 @@ uncommon, races that can be decided by a handful of voters are not as uncommon.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
 \includegraphics[width=\maxwidth]{../../phd_figs/chap3-computeblaisLago1-1} \caption[Annual competitiveness of most competitive seat in each school district as measured by the Blais-Lago quotient]{Annual competitiveness of most competitive seat in each school district as measured by the Blais-Lago quotient.}\label{fig:computeblaisLago1}
-\end{figure}
-
-
-\end{knitrout}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-computeblaisLago2-1} \caption[Annual competitiveness of most competitive seat in each school district with more candidates than seats as measured by the Blais-Lago quotient]{Annual competitiveness of most competitive seat in each school district with more candidates than seats as measured by the Blais-Lago quotient.}\label{fig:computeblaisLago2}
 \end{figure}
 
 
@@ -601,11 +599,10 @@ in these dependent variables.
 
 \subsection{Independent Variables}
 
-A number of variables are available with which to test 
-the theories outlined above. The first set of variables I include are basic 
-demographic variables. As shown in \citet{oliver} these variables are important to 
-take into consideration when considering the factors that influence candidate 
-participation in local elections. 
+\subsubsection{Demographics}
+The first set of variables I include are basic demographic variables. As shown 
+in \citet{oliver} these variables are important to take into consideration when 
+considering the factors that influence candidate participation in local elections. 
 
 The first of these variables I consider is the voting age population (VAP) of 
 the school district. VAP represents the pool of voters and also of potential 
@@ -613,33 +610,34 @@ candidates for school board in a community. I expect this variable to be
 positively related to contestation of school board elections both because of the 
 larger pool of available candidates, but also the larger scope of influence in 
 larger school districts -- which is more attractive to potential candidates 
-\citep{oliver}. In addition to 
-size, the homogeneity of the community is an important indicator of the level 
-of electoral participation. I consider two types of homogeneity -- racial and 
-generational. First, I include a measure of the percentage of the adult population 
-in the school district that is white. While Wisconsin is an overwhelmingly white 
-state, I expect racial homogeneity to be negatively associated with more 
-school board contestation. Additionally, prior research has shown that voter 
-(and property tax payer) age is associated with support for local schools. The 
-greater the percentage of elderly in the school district, the more participation 
-I expect to see \citep{RefWorks:332}. 
+\citep{oliver}. In addition to size, the homogeneity of the community is an 
+important indicator of the level of electoral participation. I consider two types 
+of homogeneity -- racial and generational. First, I include a measure of the 
+percentage of the adult population in the school district that is white. While 
+Wisconsin is an overwhelmingly white state, I expect racial homogeneity to be 
+negatively associated with more school board contestation. Additionally, prior 
+research has shown that voter (and property tax payer) age is associated with 
+support for local schools. The greater the percentage of elderly in the school 
+district, the more participation I expect to see \citep{RefWorks:332}. 
 Additionally, given the results of surveys that indicate school board members 
 are more likely to be white and elderly, I expect that the increase in these 
 variables is an increase in supply of potential candidates, and thus should be 
 positively related to board contestation \citep{RefWorks:321, RefWorks:322, RefWorks:333}. 
 
-The last two demographic variables are fiscal. A 
-key feature of school boards is their ability to independently set property taxes. 
-Following \citet{berry2} and others, I include a measure of the percentage of 
-housing occupied by owners as a measure of both the permanency of the community 
-(following \citet{oliver}) and the 
+The last two demographic variables are measures of wealth and income. A key feature 
+of school boards is 
+their ability to independently set property taxes. Following \citet{berry2} and 
+others, I include a measure of the percentage of housing occupied by owners as a 
+measure of both the permanency of the community (following \citet{oliver}) and the 
 salience of property tax rates -- an important issue for single jurisdiction 
 governments like school boards \citep{berry2}. Homeowners are more directly aware 
 of property tax rates, longer term residents of the community, and thus expected 
 to be more sensitive to changes in the property tax rate that is under control 
-of school boards. As an additional control, I include a measure of median household income, but 
-as other studies have noted, this does not exhibit much variation within Wisconsin 
-as it does in other jurisdictions \citep{akrTax}.
+of school boards. As an additional control, I include a measure of median household 
+income, but as other studies have noted, this does not exhibit much variation 
+within Wisconsin as it does in other jurisdictions \citep{akrTax}.
+
+\subsubsection{Fiscal}
 
 Next, I consider variables measuring the scope of the school district relative 
 to other local governments. As \citet{berry2} finds stacking of local governments 
@@ -669,6 +667,7 @@ fiscal pressure. A final measure of fiscal health is the level of per pupil
 spending in the school district. I expect higher spending districts to have 
 higher levels of candidate contestation. %TODO: why
 
+\subsubsection{Political}
 Next, I look to explore the influence of political factors in the emergence of 
 challenges to incumbents. First, I include a variable to control for the 
 different structure of school board elections each year by controlling for the number of 
@@ -704,6 +703,7 @@ the less likely I expect candidates to emerge. A strong interest group presence
 in the community should ensure the the board reflects interest group preferences 
 and depress the need for electoral competition. 
 
+\subsubsection{Policy}
 A final set of total variables is policy related concerns. These variables 
 explore the idea that candidates may desire to emerge in response to underlying 
 policy changes in the district. Policy concerns allow me to test whether or not 
@@ -718,9 +718,10 @@ distinct policy evaluations from voters depending on the year they are up for el
 First, I assess the impact that a change in superintendent has on school board 
 challengers. Because theory suggests that board turnover often precedes 
 superintendent turnover, I posit that a new superintendent should signal a 
-decrease in candidate challenges to board members \cite{RefWorks:336, RefWorks:340}. 
+decrease in candidate challenges to board members as the citizen dissatisfaction 
+that sparked the turnover has been relieved \cite{RefWorks:336, RefWorks:340}. 
 I test for a new superintendent either in the prior year or two years prior. 
-
+% TODO: Test for superintendent churn for 5 years
 Next, I include measures of school district funding referenda. Wisconsin has 
 two common types of school referenda measures -- bond and override referenda. 
 Bond referenda are familiar across the United States as authority for a school 
@@ -744,10 +745,11 @@ percentage increases, competition for school boards will decrease due to a
 reduced interest among more educated and affluent families attending private 
 schools in shaping the policy of the local school board. I also look at measures 
 of student performance to test whether districts with higher or lower performance 
-are more likely to have candidates emerge. I do not expect a relationship here. 
-Finally, I include a measure of the share of district salaries spent on 
-administrators. All else equal, I expect more administrative school districts 
-to have fewer board challenges. % TODO: why
+are more likely to have candidates emerge. School districts with lower performing 
+students should, all else equal, have more candidates emerge as citizen dissatisfaction 
+with board and district performance should be higher. Finally, I include a measure 
+of the share of district salaries spent on administrators. All else equal, I expect 
+more administrative school districts to have fewer board challenges. % TODO: why
 
 Finally, I seek to control for autocorrelation in board contestation. If board 
 elections are competitive consecutively because of sustained community dissatisfaction 
@@ -760,10 +762,13 @@ variable to be unrelated in the models that follow.
 These expectations are summarized in Table \ref{tab:candIV}. 
 
 
-\begin{tiny}
+\begin{table}[h!]
 \begin{center}
+\begin{tiny}
+\caption{Available Variables and Expected Signs}
 \label{tab:candIV}
-\begin{longtable}{| p{.45\textwidth} | p{.12\textwidth} | p{.35\textwidth} |} \hline
+\begin{tabular}{| p{.45\textwidth} | p{.12\textwidth} | p{.35\textwidth} |} 
+\hline
 \textbf{Variable}  & \textbf{Expected Sign} & \textbf{Shortname} \\ \hline
 Demographics  &  & \\ \hline 
 Voting Age Population (VAP) & + & VAP \\
@@ -788,19 +793,17 @@ Partisan Division in Previous Fall & + & partyDivision \\
 Teacher Share of Voters & - & teachShareofVoters \\ \hline
 Policy & & \\ \hline
 New Superintendent & - & NEW\_SUP \\
-Math and Reading Performance & Null & MATH\_PROFADV\_PER READ\_PROFADV\_PER \\
+Math and Reading Performance & - & MATH\_PROFADV\_PER READ\_PROFADV\_PER \\
 Debt Referenda Attempt and Failure & + & debtFail; debtQues \\
 Override Referenda Attempt and Failure & + & overrideQues; overrideFail \\
 Cumulative Bond Attempts & + & cumulAttp \\
 Administrator Share of Salary & - & ADMIN\_SHARE \\
 Percentage of Pupils in Non-public schools & - & NonPublicPupilPer \\ 
-Serious Contestation in Prior election & None & contestSerLag \\ 
-\hline
-\caption{Available Variables and Expected Signs}
-\end{longtable}
-\end{center}
+Serious Contestation in Prior election & None & contestSerLag \\ \hline
+\end{tabular}
 \end{tiny}
-
+\end{center}
+\end{table}
 \clearpage
 
 
@@ -817,13 +820,13 @@ impact.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-demog1-1} \caption[Correlations of Demographic Variables]{Correlations of Demographic Variables}\label{fig:demog1}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-demogCorr1-1} \caption[Correlations of Demographic Variables]{Correlations of Demographic Variables}\label{fig:demogCorr1}
 \end{figure}
 
 
 \end{knitrout}
 
-In Figure \ref{fig:demog1} we see a depiction of the correlations between key 
+In Figure \ref{fig:demogCorr1} we see a depiction of the correlations between key 
 demographic variables with dark red and green representing the highest negative 
 and positive correlations respectively.\footnote{These figures represent the correlation 
 matrix for the complete pooled dataset across years and school districts. Correlations 
@@ -1528,17 +1531,22 @@ Sigma                  & 1           & 1           & 1           & 1           &
 
 The results of the above models are disappointing. The data do not provide much 
 evidence of many of the theoretical expectations despite an ample sample size. 
-This section seeks to explore the effects that do matter from the models to 
+Figure \ref{fig:fixefplot1} depicts a summary of the coefficients across all 
+models from the tables above along with the confidence intervals. Very few 
+effects are statisticall significant across the models, and the magnitudes of 
+these effects all appear quite small. 
+
+This section seeks to explore the effects that do matter from Figure 
+\ref{fig:fixefplot1} to 
 illustrate the magnitude of the effects that have been identified and explore 
-the findings of the models. 
+the findings of the models. Given the high number of observations available in 
+this data set, there is likely sufficient power to detect effects that are 
+substantively quite small yet remain statistically significant. In order to 
+better understand this, I use simulations to illustrate the substantive impact of 
+several of the key variables identified in the models above on school board 
+contestation and illustrat ethem here.  
 
-Given the high number of observations available in this data set, there is likely 
-sufficient power to detect effects that are substantively quite small yet remain 
-statistically significant. In order to better understand this, I use simulations 
-to illustrate the substantive impact of several of the key variables identified 
-in the models above on school board contestation and illustrat ethem here.  
-
-\subsubsection{Fixed Effects}
+\subsubsection{Main Effects}
 
 The tables above provide the coefficients and standard errors for the models, but 
 logistic regression coefficients can be difficult to interpret -- especially on 
@@ -1548,11 +1556,30 @@ probability of contestation conditional on changes in those variables.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefplot1-1} \caption[Coefficient Plot for Full Model Fixed Effects]{Coefficient Plot for Full Model Fixed Effects}\label{fig:fixefplot1}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefplot1-1} \caption[Coefficient Plot of Coefficients for Full Models]{Coefficient Plot of Coefficients for Full Models}\label{fig:fixefplot1}
 \end{figure}
 
 
 \end{knitrout}
+
+In Figure \ref{fig:fixefSub1} I provide a series of simulation results for three 
+variables. Each numbered panel represents a simulated case. Each column of panels 
+represents a dependent variable, in this case from left to right, the probability 
+of a contested seat, the probability of a contested seat, and the Blais-Lago 
+quotient. Each plot contains two dotted lines which represent the $25^{th}$ 
+and $75^{th}$ percentiles of the value of the dependent variable as fit by the 
+model. These lines are reference frames for examining the third solid line which 
+represents the simulated value of the dependent variable for each observation as the 
+independent variable changes across its full range. The movement of this line 
+in relation to the dotted lines helps depict how much variability can be explained 
+by increasing or decreasing the variable on the x-axis. Finally, uncertainty about 
+the predicted value at each value of the x-axis is represented by the gray shadow 
+around the solid line. The x-axis also contains a ``rug-plot'' for reference, which 
+shows the density of observed values of the x-variable. 
+
+Taken together, each panel shows the behavior of variables in the models on 
+specific observations and allows us to answer the question -- how would contestation 
+change if the x-variable increased or decreased? 
 
 % List of effects to make plots for
 % School mill share COntest / competitive
@@ -1561,40 +1588,54 @@ probability of contestation conditional on changes in those variables.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefSub1-1} \caption[Substantive Effect on Contestation Across Cases]{Substantive Effect on Contestation Across Cases}\label{fig:fixefSub1}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefSub1-1} \caption[Simulated Effect of Key Variables on Contestation Levels Across Models]{Simulated Effect of Key Variables on Contestation Levels Across Models}\label{fig:fixefSub1}
 \end{figure}
 
 
 \end{knitrout}
 
+\clearpage
 
-\subsubsection{District and Year Variation}
+\subsubsection{District Variation}
 
-By far the most variation is explained both by year effects across districts and 
-by district effects across years. These effects represent the sum of unobserved 
-characteristics that do not vary within districts over time, and of characteristics 
-that vary over time across all districts. 
-
+By far the most variation is explained by effects across districts. These effects 
+represent the sum of unobserved characteristics that do not vary within districts 
+over time. In this section, I employ a similar graphical technique as in the 
+previous section to depict the magnitude of the impact that year and district 
+effects have in the models for the outcome variables.
 
 Figure \ref{fig:randomEffectplot1} simulates the variance in the predicted 
-probabilities of each outcome across school districts. The horizontal lines in 
-each plot represent the IQR of the fitted values from the models to give a sense 
-of the variability in the predicted probabilities across cases. Each panel represents 
-a single case. Within that panel, the predicted probability for that case is 
-estimated if that case had been observed in that district. Thus, each panel can 
-be interpreted as, all else constant, how much would the probability of the outcome 
-change due to the estimated district intercept. 
+probabilities of each outcome across school districts. As in Figure 
+\ref{fig:fixefSub1}, each panel represents a single case. Within that panel, the 
+predicted probability for that case is estimated if that case had been observed 
+in each district, ordered by the impact each district has on the outcome. Thus, 
+the line in each panel be interpreted as, all else constant, how much would the 
+outcome change if the same observation was modified by each district intercept 
+estimate. The horizontal dashed lines in each panel represent the 
+interquartile-range (IQR) of the fitted values from the models to give a sense 
+of the variability in the predicted probabilities across cases. In other words, 
+each panel shows the magnitude of moving from the district that has the least 
+impact on the outcome to the district that has the most. While this is not a 
+realistic counterfactual in the sense that it is not possible to hold all else 
+constant while moving across districts, it does help graphically depict the 
+amount of variability that exists across districts that is captured by the 
+district-level intercepts estimated in each of the models.
 
 The first set of plots on the left represent the variability in incumbent defeat 
 probabilities that are explained by school districts. Given how little each case 
 changes across districts (the slope of the line formed by these probabilities), 
-it appears that the district effects provide very little explanation. The next 
-two panels, contestation and incumbent lockout, have much steeper slopes, suggesting 
+it appears that there is very little substantive variation between districts. The 
+next two panels, contestation and incumbent lockout, have much steeper slopes, suggesting 
 that the variability between the highest and lowest district effect is equivalent 
 to more than the the distance between the first and third quartiles in predicted 
 probabilities. The final panel shows the impact on the Blais-Lago quotient which 
 appears to be in some cases equivalent to a substantial portion of the interquartile 
 range of the predicted probabilities. 
+
+In general, it seems that between-district variation is much larger than the 
+substantive impact of independent variables. While some of the variables in 
+Figure \ref{fig:fixefSub1} had substantial variation, the estimates were noisier 
+in these cases.  
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -1606,13 +1647,20 @@ range of the predicted probabilities.
 
 \clearpage
 
-Figure \ref{fig:randomEffectplot1} makes it seem clear that between districts there 
-is much variability in the level of contestation between districts. 
-
 \subsection{Comparisons}
 
 After exploring these effects, the question stands -- which set of variables best 
 explain the pattern of contested elections and candidate emergence in Wisconsin. 
+Testing for the impact of individual variables is difficult because of the likelihood 
+of collinearity leading to overly pessimistic estimates of the impact of variables 
+on the outcome. Measures of goodness of fit provide a sense of the variation in 
+the data explained by the whole model, but are poor choices for cross-model comparison 
+and are on a scale that is hard to interpret. In the case of the main variables 
+of interest here -- binomial measures of contestation -- it is easier to report 
+the rate of correct classification for predictions from the model compared to 
+observed data. I graphically depict the results of these classification based 
+model fit metrics now.
+
 
 
 
@@ -2078,7 +2126,7 @@ represented by the horizontal lines in each panel.
 \subsection{Model Specification Tests}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Mar 10 13:59:46 2015
+% Wed Mar 11 00:35:48 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{llrrr}
