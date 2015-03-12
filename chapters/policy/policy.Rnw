@@ -225,8 +225,31 @@ Timing is of critical importance in assessing the \emph{impact} of school board
 incumbent defeat. While school board members are elected in spring elections, 
 their term begins the following fall. It is not reasonable to expect school 
 board members to have time after taking office to affect student outcomes or 
-superintendent contracts. As such, I lag incumbent defeat to allow for an 
-additional year. 
+superintendent contracts. As such, I lag incumbent defeat to account for this and 
+to attempt to disentangle the endogeneity of board defeat with a shift in outcomes. 
+
+<<incDefeatMeasure, fig.cap="Incumbent Defeat Year to Year in Wisconsin 2002-2012">>=
+library(gridExtra)
+plotdf <- ddply(dist_turn, .(year), summarise, 
+                incsDefeated = sum(incsDefeated), 
+                incsRunning = sum(incsTotal),
+                challengers = sum(candTotal) - sum(incsTotal), 
+                races = sum(winnersTotal))
+
+p1 <- qplot(year, incsDefeated/incsRunning, data = plotdf, 
+      geom = "bar", stat = "identity") + 
+  scale_x_continuous(breaks = c(2001:2012)) + theme_bw() + 
+  scale_y_continuous(label = percent) + 
+  labs(x = "Year", y = "% Defeated")
+
+p2 <- qplot(year, incsDefeated, data = plotdf, 
+      geom = "bar", stat = "identity") + 
+  scale_x_continuous(breaks = c(2001:2012)) + theme_bw() + 
+  scale_y_continuous() + 
+  labs(x = "Year", y = "n Defeated")
+
+grid.arrange(p1, p2, nrow = 2, main = "Incumbent Defeats in Data over Time")
+@
 
 % Check measurement of incumbent defeat 
 % Measure share of board that turnsover, vs. any incumbent defeat, vs. count of
@@ -234,6 +257,13 @@ additional year.
 
 It is also insufficient to simply turn over a single board member and expect 
 broad policy change if consensus existed among the other board members. 
+
+<<incTurnover, eval=FALSE>>=
+qplot(factor(year), boardSeatsUp, data = dist_turn, geom = 'boxplot')
+qplot(factor(year), challengRate, data = dist_turn, geom = 'boxplot')
+qplot(factor(year), boardTurnover, data = dist_turn, geom = 'boxplot')
+@
+
 
 % Triple check the timing of the board elections, spring of 2012 is merged with 
 % which year of administrative records? Document this decision
