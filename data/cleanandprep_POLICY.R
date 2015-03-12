@@ -92,10 +92,22 @@ dist_turn <- rbind(dist_turn, dist.tmp)
 row_counts <- ddply(dist_turn, .(distid, year), nrow)
 dist_turn <- merge(dist_turn, row_counts, all.x=TRUE)
 dist_turn$recs <- dist_turn$V1; dist_turn$V1 <- NULL
-dist_turn1 <- dist_turn[dist_turn$recs >= 1 & dist_turn$districtwide > 0,]
-dist_turn2 <- dist_turn[dist_turn$recs == 1 & dist_turn$districtwide == 0,]
-dist_turn <- rbind(dist_turn1, dist_turn2)
-dist_turn$recs <- NULL
+
+
+dist_turn <- ddply(dist_turn, .(distid, year), summarize, 
+                   ncand = sum(ncand), nrealcand = sum(nrealcand), 
+                   nwins = sum(nwins), ninc = sum(ninc), 
+                   nminor = sum(nminor), votes = sum(votes), 
+                   VAP_adj = ceiling(as.numeric(VAP_adj)[1]), 
+                   incDefeats = sum(incDefeats),
+                   nraces = sum(nraces), 
+                   districtwide = max(districtwide), 
+                   distWidemix = max(recs))
+
+# dist_turn1 <- dist_turn[dist_turn$recs >= 1 & dist_turn$districtwide > 0,]
+# dist_turn2 <- dist_turn[dist_turn$recs == 1 & dist_turn$districtwide == 0,]
+# dist_turn <- rbind(dist_turn1, dist_turn2)
+# dist_turn$recs <- NULL
 
 ## Clean up metrics
 # turnout over the prior presidential election

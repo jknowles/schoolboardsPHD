@@ -24,28 +24,49 @@ stars.note <- apsrtable:::stars.note
 
 \section{Introduction}
 
-School boards have considerable power over local issues in their community. 
-We have seen that school boards are often responsible for setting property tax
-levies, labor relations with teachers and support staff within the school, and
-often serve as the largest single employer in their community. The driving idea
-behind locally elected school boards was to ensure that the local community
-retained some control over the direction taken by the schools in their community
-and to ensure that the school system was responsive to the preferences of that
-community. Until now there have only been limited tests of school board 
-responsiveness. 
+Prior chapters have focused on the ability of community members to exert 
+democratic influence on their local school boards; for this final chapter I 
+examine if influence even matters. Mobilizing to vote or run for school board can 
+be expensive relative to the perceived small benefit of doing so. Are voters and 
+potential candidates correct if they assess school boards as unable to shift 
+policy toward their preferences? Are school boards so constrained as actors that 
+they are not able to effect meaningful policy change? 
 
 The challenge in testing school board responsiveness is great. First, in most 
 cases school boards are non-partisan offices and education issues do not fall 
 along traditional ideological lines \citep[for counter example:][]{RefWorks:347}. 
-This poses a challenge for researchers seeking evidence of such responsiveness. 
-Additionally, the majority of school board election activity is low-impact and 
-low-cost, eliminating traditional ways of measuring the information provided to 
-voters about candidates and their policy preferences \citep{RefWorks:322, RefWorks:321}. 
+This poses a measurement challenge for researchers seeking evidence of policy 
+responsiveness. Additionally, the majority of school board election activity is 
+low-impact and low-cost, eliminating traditional ways of measuring the information 
+provided to voters about candidates and their policy preferences 
+\citep{RefWorks:322, RefWorks:321}. Finally, the link between school board decisions 
+and aggregate student outcomes in the community is weak in two distinct ways. First, 
+the ability or desire of boards to make decisions that are counter to the preferences 
+of the district administrator is questionable. % CITATION
+Second, school board decisions, like other policy decisions, may take time to 
+show results in district outcomes, particularly aggregate measures of student 
+performance. 
 
-Voter policy preferences were expressed and made clear through two elections in 
-Wisconsin - the 2010 Gubernatorial election, and updated with the 2011 recall 
-election. 
+Despite these measurement difficulties, there are strong reasons to believe that 
+school boards do in fact matter. School boards have considerable power over 
+local issues in their community. School boards in Wisconsin are responsible for 
+setting property tax levies, labor relations with teachers and support staff within 
+the school, and often serve as the largest single employer in their community. They 
+determine graduation requirements and discipline and attendance policies for the 
+students in their schools. The driving idea behind locally elected school boards 
+was to ensure that the local community retained some control over the direction 
+taken by their schools and that the school system was responsive to their 
+preferences. Until now there have only been limited tests of school board 
+responsiveness. 
 
+In this chapter I explore the impact of incumbent defeat on student outcomes both 
+directly and indirectly in Wisconsin school districts. I focus on incumbent defeat 
+because it is the clearest sign of dissatisfaction with current board policy and 
+practice. 
+
+% Voter policy preferences were expressed and made clear through two elections in 
+% Wisconsin - the 2010 Gubernatorial election, and updated with the 2011 recall 
+% election. 
 % Does board member turnout change anything? 
 % Does it change superintendents?
 % Does it change test scores?
@@ -60,6 +81,7 @@ incDefeat <- ddply(dat[dat$electiontype == 1,],
                    summarise, 
                    incsDefeated = sum(incumbent[winner == 0]), 
                    incsTotal = sum(incumbent), 
+                   candTotal = length(candidateid[candidateid != 99]),
                    winnersTotal = sum(winner))
 # TODO:
 # Why is this?
@@ -69,6 +91,8 @@ fw  <- function(x) c(x[2:length(x)], NA)
 
 dist_turn <- merge(dist_turn, incDefeat, by = c("distid", "year")) 
 dist_turn$boardTurnover <- dist_turn$incsDefeated / dist_turn$servingMembers
+dist_turn$boardSeatsUp <- dist_turn$winnersTotal / dist_turn$servingMembers
+dist_turn$challengRate <- 1 - (dist_turn$incsTotal / dist_turn$candTotal)
 
 library(data.table)
 dist_turn <- dist_turn[order(dist_turn$distid, dist_turn$year),]
@@ -269,7 +293,7 @@ charcteristics, but which differ on their incumbent defeat.
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "READ_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
                            "econ_disadv_per", "VAP_adj", "per65o", 
-                           "PerBachelorOrAbove", "locale2")]
+                           "PerBachelorOrAbove", "locale2", "incsTotal")]
 modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
 modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
 preTreat <- modeldata[modeldata$year <= 2010,]

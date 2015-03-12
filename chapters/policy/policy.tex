@@ -2,39 +2,53 @@
 \label{chap:policy}
 \chapterstyle{deposit}
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: package or namespace load failed for 'devtools'}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): could not find function "{}install\_github"{}}}\end{kframe}
-\end{knitrout}
 
 \section{Introduction}
 
-School boards have considerable power over local issues in their community. 
-We have seen that school boards are often responsible for setting property tax
-levies, labor relations with teachers and support staff within the school, and
-often serve as the largest single employer in their community. The driving idea
-behind locally elected school boards was to ensure that the local community
-retained some control over the direction taken by the schools in their community
-and to ensure that the school system was responsive to the preferences of that
-community. Until now there have only been limited tests of school board 
-responsiveness. 
+Prior chapters have focused on the ability of community members to exert 
+democratic influence on their local school boards; for this final chapter I 
+examine if influence even matters. Mobilizing to vote or run for school board can 
+be expensive relative to the perceived small benefit of doing so. Are voters and 
+potential candidates correct if they assess school boards as unable to shift 
+policy toward their preferences? Are school boards so constrained as actors that 
+they are not able to effect meaningful policy change? 
 
 The challenge in testing school board responsiveness is great. First, in most 
 cases school boards are non-partisan offices and education issues do not fall 
 along traditional ideological lines \citep[for counter example:][]{RefWorks:347}. 
-This poses a challenge for researchers seeking evidence of such responsiveness. 
-Additionally, the majority of school board election activity is low-impact and 
-low-cost, eliminating traditional ways of measuring the information provided to 
-voters about candidates and their policy preferences \citep{RefWorks:322, RefWorks:321}. 
+This poses a measurement challenge for researchers seeking evidence of policy 
+responsiveness. Additionally, the majority of school board election activity is 
+low-impact and low-cost, eliminating traditional ways of measuring the information 
+provided to voters about candidates and their policy preferences 
+\citep{RefWorks:322, RefWorks:321}. Finally, the link between school board decisions 
+and aggregate student outcomes in the community is weak in two distinct ways. First, 
+the ability or desire of boards to make decisions that are counter to the preferences 
+of the district administrator is questionable. % CITATION
+Second, school board decisions, like other policy decisions, may take time to 
+show results in district outcomes, particularly aggregate measures of student 
+performance. 
 
-Voter policy preferences were expressed and made clear through two elections in 
-Wisconsin - the 2010 Gubernatorial election, and updated with the 2011 recall 
-election. 
+Despite these measurement difficulties, there are strong reasons to believe that 
+school boards do in fact matter. School boards have considerable power over 
+local issues in their community. School boards in Wisconsin are responsible for 
+setting property tax levies, labor relations with teachers and support staff within 
+the school, and often serve as the largest single employer in their community. They 
+determine graduation requirements and discipline and attendance policies for the 
+students in their schools. The driving idea behind locally elected school boards 
+was to ensure that the local community retained some control over the direction 
+taken by their schools and that the school system was responsive to their 
+preferences. Until now there have only been limited tests of school board 
+responsiveness. 
 
+In this chapter I explore the impact of incumbent defeat on student outcomes both 
+directly and indirectly in Wisconsin school districts. I focus on incumbent defeat 
+because it is the clearest sign of dissatisfaction with current board policy and 
+practice. 
+
+% Voter policy preferences were expressed and made clear through two elections in 
+% Wisconsin - the 2010 Gubernatorial election, and updated with the 2011 recall 
+% election. 
 % Does board member turnout change anything? 
 % Does it change superintendents?
 % Does it change test scores?
@@ -216,11 +230,11 @@ charcteristics, but which differ on their incumbent defeat.
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Model 2 } & \multicolumn{ 1 }{ c }{ Model 3 } \\ \hline
  %                          & Lag               & Model 2           & Model 3          \\ 
-(Intercept)                & 0.393 ^{***}      & 0.086 ^{***}      & -0.621           \\ 
-                           & (0.033)           & (0.017)           & (0.447)          \\ 
+(Intercept)                & 0.393 ^{***}      & 0.086 ^{***}      & -0.623           \\ 
+                           & (0.033)           & (0.017)           & (0.448)          \\ 
 incsDefeatedFac\_lag1     & -0.010 ^*         & 0.001             & 0.000            \\ 
                            & (0.005)           & (0.002)           & (0.002)          \\ 
-locale2\_lagexurb         & 0.033 ^\dagger   & 0.001             & 0.407 ^{***}     \\ 
+locale2\_lagexurb         & 0.033 ^\dagger   & 0.001             & 0.408 ^{***}     \\ 
                            & (0.020)           & (0.004)           & (0.077)          \\ 
 locale2\_lagrural         & 0.022             & 0.005             & 0.406 ^{***}     \\ 
                            & (0.016)           & (0.004)           & (0.077)          \\ 
@@ -251,11 +265,11 @@ Resid. sd                  & 0.081             & 0.032             & 0.027      
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Model 2 } & \multicolumn{ 1 }{ c }{ Model 3 } \\ \hline
  %                          & Lag               & Model 2           & Model 3          \\ 
-(Intercept)                & 0.432 ^{***}      & 0.072 ^{**}       & -3.102 ^{***}    \\ 
+(Intercept)                & 0.432 ^{***}      & 0.072 ^{**}       & -3.107 ^{***}    \\ 
                            & (0.019)           & (0.025)           & (0.842)          \\ 
 incsDefeatedFac\_lag1     & -0.012 ^\dagger  & 0.001             & -0.002           \\ 
                            & (0.007)           & (0.003)           & (0.003)          \\ 
-locale2\_lagexurb         & 0.055 ^*          & 0.019 ^*          & 0.581 ^{***}     \\ 
+locale2\_lagexurb         & 0.055 ^*          & 0.019 ^*          & 0.582 ^{***}     \\ 
                            & (0.024)           & (0.008)           & (0.130)          \\ 
 locale2\_lagrural         & 0.036 ^\dagger   & 0.017 ^*          & 0.580 ^{***}     \\ 
                            & (0.020)           & (0.007)           & (0.130)          \\ 
@@ -263,7 +277,7 @@ econ\_disadv\_per\_lag  &                   & -0.001 ^{***}     & 0.001 ^*      
                            &                   & (0.000)           & (0.000)          \\ 
 MATH\_PROFADV\_PER\_lag &                   & 0.777 ^{***}      &                  \\ 
                            &                   & (0.019)           &                  \\ 
-log(VAP\_adj\_lag)       &                   & 0.004 ^\dagger   & 0.305 ^{***}     \\ 
+log(VAP\_adj\_lag)       &                   & 0.004 ^\dagger   & 0.306 ^{***}     \\ 
                            &                   & (0.002)           & (0.081)          \\ 
 PerBachelorOrAbove\_lag   &                   & 0.128 ^{***}      & 0.657 ^{**}      \\ 
                            &                   & (0.032)           & (0.250)          \\ 
@@ -289,13 +303,13 @@ Resid. sd                  & 0.110             & 0.042             & 0.038      
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Full } & \multicolumn{ 1 }{ c }{ Fixed Effect } \\ \hline
  %                         & Simple           & Full             & Fixed Effect    \\ 
-(Intercept)               & -1.455 ^{***}    & -1.245           & -1.806 ^*       \\ 
+(Intercept)               & -1.455 ^{***}    & -1.245           & -1.807 ^*       \\ 
                           & (0.268)          & (0.936)          & (0.721)         \\ 
 incsDefeatedFac\_lag1    & 0.271 ^\dagger  & 0.244            & 0.107           \\ 
                           & (0.159)          & (0.159)          & (0.204)         \\ 
 locale2\_lagexurb        & -0.462           & -0.317           & -0.299          \\ 
                           & (0.319)          & (0.356)          & (0.280)         \\ 
-locale2\_lagrural        & -0.329           & -0.176           & -0.076          \\ 
+locale2\_lagrural        & -0.329           & -0.176           & -0.075          \\ 
                           & (0.273)          & (0.351)          & (0.221)         \\ 
 econ\_disadv\_per\_lag &                  & 0.008 ^\dagger  & 0.021 ^*        \\ 
                           &                  & (0.005)          & (0.008)         \\ 
@@ -307,7 +321,7 @@ per65o\_lag              &                  & -3.797 ^*        & -5.599 ^{**}   
                           &                  & (1.840)          & (1.890)          \\
  $N$                       & 1918             & 1918             & 1918            \\ 
 AIC                       & 1632.418         & 1626.880         & 1946.831        \\ 
-BIC                       & 1721.363         & 1804.770         & 8973.456        \\ 
+BIC                       & 1721.363         & 1804.769         & 8973.456        \\ 
 $\log L$                 & -800.209         & -781.440         & 290.584          \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
