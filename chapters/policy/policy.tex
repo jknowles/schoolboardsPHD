@@ -161,8 +161,16 @@ Timing is of critical importance in assessing the \emph{impact} of school board
 incumbent defeat. While school board members are elected in spring elections, 
 their term begins the following fall. It is not reasonable to expect school 
 board members to have time after taking office to affect student outcomes or 
-superintendent contracts. As such, I lag incumbent defeat to allow for an 
-additional year. 
+superintendent contracts. As such, I lag incumbent defeat to account for this and 
+to attempt to disentangle the endogeneity of board defeat with a shift in outcomes. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-incDefeatMeasure-1} \caption[Incumbent Defeat Year to Year in Wisconsin 2002-2012]{Incumbent Defeat Year to Year in Wisconsin 2002-2012}\label{fig:incDefeatMeasure}
+\end{figure}
+
+
+\end{knitrout}
 
 % Check measurement of incumbent defeat 
 % Measure share of board that turnsover, vs. any incumbent defeat, vs. count of
@@ -170,6 +178,18 @@ additional year.
 
 It is also insufficient to simply turn over a single board member and expect 
 broad policy change if consensus existed among the other board members. 
+However, in the sample period few school boards ever defeated more than one 
+incumbent in a single election -- fewer than ten districts a year. Incumbent 
+defeat is too uncommon. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-incTurnover-1} \caption[Number of Board Seats Elected Each Year]{Number of Board Seats Elected Each Year}\label{fig:incTurnover}
+\end{figure}
+
+
+\end{knitrout}
+
 
 % Triple check the timing of the board elections, spring of 2012 is merged with 
 % which year of administrative records? Document this decision
@@ -193,6 +213,24 @@ serve as a method by which the community can express its demand for higher
 quality education as measured by accountability measures such as student 
 test scores and graduation rates. 
 
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-gradRateplot-1} \caption[Public High School Graduation Rates]{Public High School Graduation Rates}\label{fig:gradRateplot}
+\end{figure}
+
+
+\end{knitrout}
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-supChange-1} \caption[Superintendent turnover by year in sample]{Superintendent turnover by year in sample.}\label{fig:supChange}
+\end{figure}
+
+
+\end{knitrout}
 
 \section{Methods}
 
@@ -230,30 +268,30 @@ charcteristics, but which differ on their incumbent defeat.
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Model 2 } & \multicolumn{ 1 }{ c }{ Model 3 } \\ \hline
  %                          & Lag               & Model 2           & Model 3          \\ 
-(Intercept)                & 0.393 ^{***}      & 0.086 ^{***}      & -0.623           \\ 
-                           & (0.033)           & (0.017)           & (0.448)          \\ 
-incsDefeatedFac\_lag1     & -0.010 ^*         & 0.001             & 0.000            \\ 
-                           & (0.005)           & (0.002)           & (0.002)          \\ 
-locale2\_lagexurb         & 0.033 ^\dagger   & 0.001             & 0.408 ^{***}     \\ 
-                           & (0.020)           & (0.004)           & (0.077)          \\ 
-locale2\_lagrural         & 0.022             & 0.005             & 0.406 ^{***}     \\ 
-                           & (0.016)           & (0.004)           & (0.077)          \\ 
-servingMembers\_lag       & -0.007 ^\dagger  & 0.000             & -0.002           \\ 
-                           & (0.004)           & (0.001)           & (0.003)          \\ 
-econ\_disadv\_per\_lag  &                   & -0.001 ^{***}     & 0.000            \\ 
-                           &                   & (0.000)           & (0.000)          \\ 
-READ\_PROFADV\_PER\_lag &                   & 0.784 ^{***}      &                  \\ 
-                           &                   & (0.022)           &                  \\ 
-log(VAP\_adj\_lag)       &                   & -0.001            & 0.085 ^*         \\ 
-                           &                   & (0.001)           & (0.043)          \\ 
-PerBachelorOrAbove\_lag   &                   & 0.126 ^{***}      & 0.091            \\ 
-                           &                   & (0.026)           & (0.182)          \\ 
-per65o\_lag               &                   & 0.011             & -0.068           \\ 
-                           &                   & (0.033)           & (0.383)           \\
+(Intercept)                & 3.609 ^{***}      & 0.758 ^{***}      & 0.770            \\ 
+                           & (0.096)           & (0.101)           & (1.367)          \\ 
+incsDefeatedFac\_lag1     & -0.024 ^\dagger  & 0.007             & 0.001            \\ 
+                           & (0.013)           & (0.007)           & (0.007)          \\ 
+locale2\_lagexurb         & 0.104             & -0.003            & 1.032 ^{***}     \\ 
+                           & (0.064)           & (0.012)           & (0.229)          \\ 
+locale2\_lagrural         & 0.069             & 0.005             & 1.029 ^{***}     \\ 
+                           & (0.053)           & (0.012)           & (0.229)          \\ 
+servingMembers\_lag       & -0.014            & 0.000             & -0.009           \\ 
+                           & (0.011)           & (0.003)           & (0.009)          \\ 
+econ\_disadv\_per\_lag  &                   & -0.002 ^{***}     & 0.001            \\ 
+                           &                   & (0.000)           & (0.001)          \\ 
+READ\_PROFADV\_PER\_lag &                   & 0.797 ^{***}      &                  \\ 
+                           &                   & (0.027)           &                  \\ 
+log(VAP\_adj\_lag)       &                   & -0.002            & 0.245 ^\dagger  \\ 
+                           &                   & (0.004)           & (0.130)          \\ 
+PerBachelorOrAbove\_lag   &                   & 0.201 ^*          & 0.079            \\ 
+                           &                   & (0.085)           & (0.535)          \\ 
+per65o\_lag               &                   & 0.103             & -0.069           \\ 
+                           &                   & (0.096)           & (1.106)           \\
  $N$                        & 1918              & 1425              & 1918             \\ 
-$R^2$                      & 0.023             & 0.851             & 0.909            \\ 
-adj. $R^2$                 & 0.021             & 0.850             & 0.891            \\ 
-Resid. sd                  & 0.081             & 0.032             & 0.027             \\ \hline
+$R^2$                      & 0.017             & 0.846             & 0.906            \\ 
+adj. $R^2$                 & 0.015             & 0.845             & 0.888            \\ 
+Resid. sd                  & 0.235             & 0.094             & 0.079             \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
@@ -264,37 +302,66 @@ Resid. sd                  & 0.081             & 0.032             & 0.027      
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Model 2 } & \multicolumn{ 1 }{ c }{ Model 3 } \\ \hline
- %                          & Lag               & Model 2           & Model 3          \\ 
-(Intercept)                & 0.432 ^{***}      & 0.072 ^{**}       & -3.107 ^{***}    \\ 
-                           & (0.019)           & (0.025)           & (0.842)          \\ 
-incsDefeatedFac\_lag1     & -0.012 ^\dagger  & 0.001             & -0.002           \\ 
-                           & (0.007)           & (0.003)           & (0.003)          \\ 
-locale2\_lagexurb         & 0.055 ^*          & 0.019 ^*          & 0.582 ^{***}     \\ 
-                           & (0.024)           & (0.008)           & (0.130)          \\ 
-locale2\_lagrural         & 0.036 ^\dagger   & 0.017 ^*          & 0.580 ^{***}     \\ 
-                           & (0.020)           & (0.007)           & (0.130)          \\ 
-econ\_disadv\_per\_lag  &                   & -0.001 ^{***}     & 0.001 ^*         \\ 
-                           &                   & (0.000)           & (0.000)          \\ 
-MATH\_PROFADV\_PER\_lag &                   & 0.777 ^{***}      &                  \\ 
-                           &                   & (0.019)           &                  \\ 
-log(VAP\_adj\_lag)       &                   & 0.004 ^\dagger   & 0.306 ^{***}     \\ 
-                           &                   & (0.002)           & (0.081)          \\ 
-PerBachelorOrAbove\_lag   &                   & 0.128 ^{***}      & 0.657 ^{**}      \\ 
-                           &                   & (0.032)           & (0.250)          \\ 
-per65o\_lag               &                   & -0.004            & 0.356            \\ 
-                           &                   & (0.036)           & (0.545)           \\
- $N$                        & 1918              & 1425              & 1918             \\ 
-$R^2$                      & 0.011             & 0.849             & 0.901            \\ 
-adj. $R^2$                 & 0.009             & 0.848             & 0.882            \\ 
-Resid. sd                  & 0.110             & 0.042             & 0.038             \\ \hline
+ %                          & Lag              & Model 2          & Model 3         \\ 
+(Intercept)                & 3.741 ^{***}     & 0.907 ^{***}     & -5.040 ^*       \\ 
+                           & (0.053)          & (0.109)          & (2.140)         \\ 
+incsDefeatedFac\_lag1     & -0.023           & 0.007            & -0.004          \\ 
+                           & (0.014)          & (0.007)          & (0.007)         \\ 
+locale2\_lagexurb         & 0.120 ^\dagger  & 0.037 ^*         & 1.403 ^{***}    \\ 
+                           & (0.064)          & (0.017)          & (0.320)         \\ 
+locale2\_lagrural         & 0.076            & 0.033 ^*         & 1.400 ^{***}    \\ 
+                           & (0.055)          & (0.016)          & (0.321)         \\ 
+econ\_disadv\_per\_lag  &                  & -0.002 ^{***}    & 0.003 ^*        \\ 
+                           &                  & (0.000)          & (0.001)         \\ 
+MATH\_PROFADV\_PER\_lag &                  & 0.745 ^{***}     &                 \\ 
+                           &                  & (0.025)          &                 \\ 
+log(VAP\_adj\_lag)       &                  & 0.011 ^*         & 0.772 ^{***}    \\ 
+                           &                  & (0.005)          & (0.204)         \\ 
+PerBachelorOrAbove\_lag   &                  & 0.160            & 1.124 ^\dagger \\ 
+                           &                  & (0.102)          & (0.593)         \\ 
+per65o\_lag               &                  & 0.052            & 0.535           \\ 
+                           &                  & (0.086)          & (1.265)          \\
+ $N$                        & 1918             & 1425             & 1918            \\ 
+$R^2$                      & 0.010            & 0.840            & 0.889           \\ 
+adj. $R^2$                 & 0.008            & 0.839            & 0.868           \\ 
+Resid. sd                  & 0.250            & 0.097            & 0.091            \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
 
 % HSC 
 
+ 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
+ %                         & Simple            & Lag               & FE               \\ 
+(Intercept)               & 4.483 ^{***}      & 2.529 ^{***}      & 3.844 ^{***}     \\ 
+                          & (0.021)           & (0.269)           & (0.627)          \\ 
+incsDefeatedFac\_lag1    & -0.006 ^\dagger  & -0.002            & -0.002           \\ 
+                          & (0.003)           & (0.003)           & (0.003)          \\ 
+locale2\_lagexurb        & 0.053 ^*          & 0.016             & 0.081            \\ 
+                          & (0.023)           & (0.011)           & (0.111)          \\ 
+locale2\_lagrural        & 0.062 ^{**}       & 0.020 ^\dagger   & 0.093            \\ 
+                          & (0.022)           & (0.011)           & (0.109)          \\ 
+gradRate\_lag            &                   & 0.452 ^{***}      &                  \\ 
+                          &                   & (0.058)           &                  \\ 
+log(VAP\_adj\_lag)      &                   & -0.008 ^{**}      & 0.055            \\ 
+                          &                   & (0.003)           & (0.059)          \\ 
+PerBachelorOrAbove\_lag  &                   & 0.147 ^{***}      & 0.198            \\ 
+                          &                   & (0.031)           & (0.208)          \\ 
+per65o\_lag              &                   & -0.073 ^\dagger  & 0.416            \\ 
+                          &                   & (0.037)           & (0.405)          \\ 
+econ\_disadv\_per\_lag &                   &                   & 0.000 ^\dagger  \\ 
+                          &                   &                   & (0.000)           \\
+ $N$                       & 1755              & 1755              & 1755             \\ 
+$R^2$                     & 0.057             & 0.310             & 0.591            \\ 
+adj. $R^2$                & 0.055             & 0.308             & 0.511            \\ 
+Resid. sd                 & 0.059             & 0.051             & 0.043             \\ \hline
+ \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular} 
 
-\subsection{Student Outcomes}
+
 
 \subsection{Superintendent Turnover}
 

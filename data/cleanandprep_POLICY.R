@@ -2,6 +2,7 @@ source("data/dataAssemble.R")
 load("data/cache/DataMergeVAP.rda")
 load("data/cache/fullDataSep2014.rda")
 load("data/cache/boardSize.rda")
+load("data/cache/hsc.rda")
 
 distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", 
                     "AdjPopulation",
@@ -264,6 +265,15 @@ rm(distAttr, distvotes12r, dvp, govTurn, presTurn, wercDatALL, wercDatTeachers)
 dist_turn <- merge(dist_turn, boardSize, by.x = c("distid", "year"), 
                    by.y = c("agency", "year"), all.x=TRUE)
 rm(boardSize)
+
+#--------------------------------------------------------------------------
+# HSC
+
+# spring 2002 election lines up to HSC 2002 in spring
+
+dist_turn <- merge(dist_turn, hsc, by = c("distid", "year"), 
+                   all.x=TRUE)
+rm(hsc); gc()
 ###########################################################################
 # load("../../data/cache/springElectionVotes.rda")
 # # load("data/cache/springElectionVotes.rda")

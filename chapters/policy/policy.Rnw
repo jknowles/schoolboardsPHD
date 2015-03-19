@@ -307,13 +307,21 @@ serve as a method by which the community can express its demand for higher
 quality education as measured by accountability measures such as student 
 test scores and graduation rates. 
 
-<<testscorePlot>>=
-
+<<testscorePlot, eval=FALSE>>=
 qplot(year, MATH_PROFADV_PER, data = dist_turn, group = distid, geom='line', 
       alpha = I(0.2)) + geom_smooth(aes(group = 1), method ='lm')
 
 qplot(year, READ_PROFADV_PER, data = dist_turn, group = distid, geom='line', 
       alpha = I(0.2)) + geom_smooth(aes(group = 1), method ='lm')
+
+@
+
+<<gradRateplot, fig.cap="Public High School Graduation Rates">>=
+qplot(factor(year), gradRate/100, data = dist_turn[dist_turn$gradRate > 0 & 
+                                                   !is.na(dist_turn$gradRate),], 
+      geom='boxplot') + theme_bw() + 
+  scale_y_continuous(label = percent) + 
+  labs(x= "Year", y = "Public Graduation Rate")
 
 @
 
@@ -368,6 +376,7 @@ modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "READ_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
                            "econ_disadv_per", "VAP_adj", "per65o", 
                            "PerBachelorOrAbove", "locale2", "incsTotal")]
+modeldata$READ_PROFADV_PER <- log(modeldata$READ_PROFADV_PER*100)
 modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
 modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
 preTreat <- modeldata[modeldata$year <= 2010,]
@@ -412,6 +421,7 @@ modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "MATH_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
                            "econ_disadv_per", "VAP_adj", "per65o", 
                            "PerBachelorOrAbove", "locale2")]
+modeldata$MATH_PROFADV_PER <- log(modeldata$MATH_PROFADV_PER*100)
 modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
 modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
 preTreat <- modeldata[modeldata$year <= 2010,]
@@ -449,8 +459,53 @@ apsrtable(simpModMath, lagModMath, lagModMathFE, se = "robust",
 
 % HSC 
 
+<<hscModel, results='asis'>>=
+modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
+                           "gradRate", "NEW_SUP", "SUP_EXPERIENCE",
+                           "econ_disadv_per", "VAP_adj", "per65o", 
+                           "PerBachelorOrAbove", "locale2")]
+modeldata <- modeldata[modeldata$gradRate > 0, ]
+modeldata$gradRate <- log(modeldata$gradRate)
+modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
+modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
+preTreat <- modeldata[modeldata$year <= 2010,]
+preTreat$year <- preTreat$year + 2
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+modeldata <- modeldata[, c("gradRate", "distid", "year")]
+modeldata <- merge(modeldata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
+modeldata <- modeldata[modeldata$year > 2005, ]
+modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0, 
+                                       modeldata$SUP_EXPERIENCE_lag)
 
-\subsection{Student Outcomes}
+simpModGrad <- lm(gradRate ~ incsDefeatedFac_lag + locale2_lag, 
+                  data = modeldata)
+simpModGrad$se <- sqrt(diag(get_CL_vcov(simpModGrad, 
+                                        modeldata$distid[!is.na(modeldata$gradRate)])))
+
+lagModGrad <- lm(gradRate ~ gradRate_lag + incsDefeatedFac_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag, data = modeldata)
+lagModGrad$se <- sqrt(diag(get_CL_vcov(lagModGrad, 
+                   modeldata$distid[!is.na(modeldata$gradRate_lag) & 
+                                      !is.na(modeldata$gradRate)])))
+
+lagModGradFE <- lm(gradRate ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag + distid, data = modeldata)
+
+lagModGradFE$se <- sqrt(diag(get_CL_vcov(lagModGradFE, 
+                                         modeldata$distid[!is.na(modeldata$gradRate)])))
+
+apsrtable(simpModGrad, lagModGrad, lagModGradFE, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
+          caption = "Incumbent Defeat and High School Graduation", 
+          label = "tab:readMod", notes = list(stars.note), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))))
+@
+
 
 \subsection{Superintendent Turnover}
 
