@@ -257,11 +257,31 @@ grid.arrange(p1, p2, nrow = 2, main = "Incumbent Defeats in Data over Time")
 
 It is also insufficient to simply turn over a single board member and expect 
 broad policy change if consensus existed among the other board members. 
+However, in the sample period few school boards ever defeated more than one 
+incumbent in a single election -- fewer than ten districts a year. Incumbent 
+defeat is too uncommon. 
 
-<<incTurnover, eval=FALSE>>=
-qplot(factor(year), boardSeatsUp, data = dist_turn, geom = 'boxplot')
-qplot(factor(year), challengRate, data = dist_turn, geom = 'boxplot')
-qplot(factor(year), boardTurnover, data = dist_turn, geom = 'boxplot')
+<<incTurnover, fig.cap="Number of Board Seats Elected Each Year">>=
+# Number of winners
+dist_turn$winnerFac <- ifelse(dist_turn$winnersTotal == 1, "1", 0)
+dist_turn$winnerFac <- ifelse(dist_turn$winnersTotal == 2, "2", dist_turn$winnerFac)
+dist_turn$winnerFac <- ifelse(dist_turn$winnersTotal > 2, "3+", dist_turn$winnerFac)
+
+tmpdf <- as.data.frame(prop.table(table(dist_turn$winnerFac, dist_turn$year), margin = 2))
+tmpdf$Var1 <- ordered(tmpdf$Var1, levels = c("1", "2", "3+"))
+
+qplot(Var2, Freq, data = tmpdf, fill = Var1, geom='bar', stat='identity', 
+      color = I("black")) + 
+  scale_y_continuous(label = percent) + 
+  guides(colour = FALSE, fill = guide_legend(override.aes = list(colour = NULL))) + 
+  labs(fill = "Seats Elected", x= "Year", y = "Percent of Districts") + 
+  scale_fill_brewer(type = "seq", palette = 8) + 
+  theme_bw()
+
+dist_turn$winnerFac <- NULL
+# qplot(factor(year), boardSeatsUp, data = dist_turn, geom = 'boxplot')
+# qplot(factor(year), challengRate, data = dist_turn, geom = 'boxplot')
+# qplot(factor(year), boardTurnover, data = dist_turn, geom = 'boxplot')
 @
 
 
@@ -287,6 +307,30 @@ serve as a method by which the community can express its demand for higher
 quality education as measured by accountability measures such as student 
 test scores and graduation rates. 
 
+<<testscorePlot>>=
+
+qplot(year, MATH_PROFADV_PER, data = dist_turn, group = distid, geom='line', 
+      alpha = I(0.2)) + geom_smooth(aes(group = 1), method ='lm')
+
+qplot(year, READ_PROFADV_PER, data = dist_turn, group = distid, geom='line', 
+      alpha = I(0.2)) + geom_smooth(aes(group = 1), method ='lm')
+
+@
+
+
+<<supChange, fig.cap="Superintendent turnover by year in sample.">>=
+tmpdf <- as.data.frame(prop.table(table(dist_turn$NEW_SUP, dist_turn$year),
+                                  margin=2))
+tmpdf$Var1 <- ifelse(tmpdf$Var1 == 1, "Yes", "No")
+tmpdf$Var1 <- ordered(tmpdf$Var1, levels = c("Yes", "No"))
+
+qplot(Var2, Freq, data = tmpdf, fill = Var1, geom='bar', stat='identity') + 
+  scale_y_continuous(label = percent) + 
+  labs(fill = "Sup. Turnover?", x= "Year", y = "Percent of Districts") + 
+  scale_fill_brewer(type = "qual", palette = 6) + 
+  theme_bw()
+
+@
 
 \section{Methods}
 
