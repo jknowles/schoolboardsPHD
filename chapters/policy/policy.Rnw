@@ -25,12 +25,16 @@ stars.note <- apsrtable:::stars.note
 \section{Introduction}
 
 Prior chapters have focused on the ability of community members to exert 
-democratic influence on their local school boards; for this final chapter I 
-examine if influence even matters. Mobilizing to vote or run for school board can 
-be expensive relative to the perceived small benefit of doing so. Are voters and 
+democratic influence on their local school boards. While the evidence on the 
+responsiveness of the community to the democratic election of school boards has 
+been mixed, it remains to be seen if successfully defeating an incumbent results 
+in observable changes in outcomes. Mobilizing to vote or run for school board can 
+be expensive relative to the small perceived benefit of doing so. Are voters and 
 potential candidates correct if they assess school boards as unable to shift 
 policy toward their preferences? Are school boards so constrained as actors that 
-they are not able to effect meaningful policy change? 
+they are not able to effect meaningful policy change? In this chapter I explore 
+this for two specific policy changes -- improvements in student outcomes and 
+the change in district administrator.
 
 The challenge in testing school board responsiveness is great. First, in most 
 cases school boards are non-partisan offices and education issues do not fall 
@@ -39,7 +43,7 @@ This poses a measurement challenge for researchers seeking evidence of policy
 responsiveness. Additionally, the majority of school board election activity is 
 low-impact and low-cost, eliminating traditional ways of measuring the information 
 provided to voters about candidates and their policy preferences 
-\citep{RefWorks:322, RefWorks:321}. Finally, the link between school board decisions 
+\citep{RefWorks:322,RefWorks:321}. Finally, the link between school board decisions 
 and aggregate student outcomes in the community is weak in two distinct ways. First, 
 the ability or desire of boards to make decisions that are counter to the preferences 
 of the district administrator is questionable. % CITATION
@@ -57,22 +61,13 @@ students in their schools. The driving idea behind locally elected school boards
 was to ensure that the local community retained some control over the direction 
 taken by their schools and that the school system was responsive to their 
 preferences. Until now there have only been limited tests of school board 
-responsiveness. 
+responsiveness \citep{RefWorks:345}. 
 
 In this chapter I explore the impact of incumbent defeat on student outcomes both 
 directly and indirectly in Wisconsin school districts. I focus on incumbent defeat 
 because it is the clearest sign of dissatisfaction with current board policy and 
-practice. 
-
-% Voter policy preferences were expressed and made clear through two elections in 
-% Wisconsin - the 2010 Gubernatorial election, and updated with the 2011 recall 
-% election. 
-% Does board member turnout change anything? 
-% Does it change superintendents?
-% Does it change test scores?
-% Board turnover writ large = change
-% Incumbent defeat should change things
-
+practice and serves as a cornerstone for dissatisfaction theory, the richest 
+theory linking school board practice to educational outcomes \citep{RefWorks:297}. 
 
 <<incdefeat, results='hide'>>=
 dist_turn$incDefeats <- NULL
@@ -122,63 +117,7 @@ dist_turn <- as.data.frame(dist_turn)
 #                  "NEW_SUP_FW", "READ_PROFADV_PER", "READ_PROFADV_PER_LAG")], 25)
 @
 
-\section{School Boards and Policy Change}
-
-The literature on school boards affecting policy change is dominated by a focus 
-on three areas - 1) superintendent turnover as policy change, 2) setting tax
-levies, or 3) making direct policy changes about social issues, and 4) changes
-resulting in student outcomes. 
-
-Much of the work referred to in Chapter \ref{chap:intro} dealt with the impact 
-of school boards on policy change. In fact, both the dissatisfaction theory and the public choice theories of school board politics include superintendent
-turnover as key evidence \citep{RefWorks:297,RefWorks:271, RefWorks:351, RefWorks:339,RefWorks:340,RefWorks:243}. Recently a key improvement in empirical tests 
-of this work has focused on political vs. apolitical turnover, typically 
-retirement, among school board members and superintendents \citep{RefWorks:311}. 
-
-There is a strong public economics literature that views school boards as agents 
-that set the price for the public good of education through property tax rates. % citations needed
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Find citations about public finance from Reschovsky work
-%
-
-
-\citet{RefWorks:347} represents the most thorough study of school boards as agents 
-of change in social issues. Some view school boards as potentially captured by 
-special interest groups \citep{RefWorks:320}. There is evidence that when 
-boards are elected, they become more responsive to interest groups than previously 
-when they were appointed \citep{RefWorks:242}. 
-
-\citet{RefWorks:347} represents the most thorough study of school boards as 
-agents of change in social issues. Some view school boards as potentially 
-captured by special interest groups \citep{RefWorks:320}. There is evidence that
-when boards are elected, they become more responsive to interest groups than
-previously when they were appointed \citep{RefWorks:242}. 
-
-Boards can influence student outcomes through a range of decisions - some direct 
-and some less direct. \citet{RefWorks:210} provides an example by examining the 
-relationship between board decisions to consolidate school districts and the 
-resulting changes in student achievement. On a more universal basis, 
-\citet{RefWorks:214} explores if boards change policies in response to public
-accountability for student achivement, and if this results in improvements in
-student achievement.\footnote{This argument assumes a certain level of 
-effectiveness that is not captured by any measures in the current study and 
-may not be evenly distributed across boards \citep{RefWorks:237,RefWorks:261}.} 
-In many cases, boards are criticized as being highly constrained actors with 
-little room to set policy after complying with state and federal mandates 
-\citep{RefWorks:316}, although the extent of this is not clear 
-\citep{RefWorks:223}.\footnote{Note that this argument can be reduced down ever
-further to the impact of district policies on schools or school policies on
-classroom \citep{RefWorks:255}}
-
-Yet boards allocate resources, and resources matter \citep{RefWorks:183}. 
-
-\section{Theory}
-
-Figure \ref{fig:model} can be seen as the primary representation of the model of school board politics and policy change that the present study seeks to evaluate.
-Building on the work in Chapters \ref{chap:turnout} and \ref{chap:candidacy}, 
-this chapter combines the political conditions in school districts and the 
-changes that result in school outcomes. 
+\section{Literature Review and Theory}
 
 While previous chapters examined the exercise of democratic control 
 of school board elections -- under what conditions did voters and candidates 
@@ -199,34 +138,75 @@ voters are dissatisfied with their board and replace some board members with new
 challengers, it is likely that they demand higher student performance, new 
 district management, or both. 
 
+Much of the work referred to in Chapter \ref{chap:intro} dealt with the impact 
+of school boards on policy change. In fact, both the dissatisfaction theory and 
+the public choice theories of school board politics include superintendent
+turnover as key evidence \citep{RefWorks:297,RefWorks:271, RefWorks:351,
+RefWorks:339,RefWorks:340,RefWorks:243}. Recently a key improvement in empirical 
+tests of this work has focused on the importance of political turnover among 
+school board members, as opposed to the more typical turnover due to retirement, 
+as a precursor to improved student performance \citep{RefWorks:311}. 
+
+\citet{RefWorks:347} represents the most thorough study of school boards as agents 
+of change in social issues. Some view school boards as potentially captured by 
+special interest groups \citep{RefWorks:320}. There is evidence that when 
+boards are elected, they become more responsive to interest groups than previously 
+when they were appointed \citep{RefWorks:242}. 
+
+Boards can influence student outcomes through a range of decisions - some direct 
+and some less direct. \citet{RefWorks:210} provides an example by examining the 
+relationship between board decisions to consolidate school districts and the 
+resulting changes in student achievement. On a more universal basis, 
+\citet{RefWorks:214} explores if boards change policies in response to public
+accountability for student achivement, and if this results in improvements in
+student achievement.\footnote{This argument assumes a certain level of 
+effectiveness that is not captured by any measures in the current study and 
+may not be evenly distributed across boards \citep{RefWorks:237,RefWorks:261}.} 
+In many cases, boards are criticized as being highly constrained actors with 
+little room to set policy after complying with state and federal mandates 
+\citep{RefWorks:316}, although the extent of this is not clear 
+\citep{RefWorks:223}.\footnote{Note that this argument can be reduced down ever
+further to the impact of district policies on schools or school policies on
+classroom \citep{RefWorks:255}}
+
+Yet boards allocate resources, and resources matter \citep{RefWorks:183}. 
 
 \section{Data}
 
 To study the impacts of incumbent defeat in Wisconsin school districts I employ 
 a panel data set of school board election outcomes matched to school district 
-administrative records. To code incumbent defeat, I matched a roster of known 
-school board members in a given school year against the victors in the following 
-school year to identify which candidates were incumbents. Though both the roster 
-and the election results require some judgment in assessing their accuracy, 
-this represents a strong measure of incumbency and electoral defeat for school 
-board members in 300 Wisconsin school districts from 2002-2012. 
+administrative records. School board election results were obtained for a sample 
+of Wisconsin school districts for the time period from 2002-2012 and coded to 
+indicate winners, losers, incumbents, and repeat candidates. To code incumbent 
+defeat, I matched a roster of known school board members in a given school year 
+against the victors in the following school year to identify which candidates 
+were incumbents. 
+
+This method differs from the board and candidate self-reported measure of incumbent 
+defeat that have been used previously in the literature \citep{RefWorks:345}. The 
+longitudinal design is also more observations per district and includes a larger 
+proportion of districts in the state than prior designs. In addition to this, 
+a host of administrative data on school districts is also included, most critically 
+measures of student outcomes and superintendent turnover. I discuss these in 
+turn below. 
 
 \subsection{Independent Variables}
 
 Previous chapters have established that school board incumbent defeat is rare 
 because incumbents are rarely challenged, and even more rarely is that challenge 
-serious. Incumbents often face no challenge or leave office without running for 
-re-election. As we have seen, previous research on school board incumbent 
-defeat has focused on correctly measuring political and apolitical turnover 
-by focusing on incumbents who are defeated, not simply those who do not return 
-to the board for another term. 
+serious. Previous research on school board incumbent defeat has focused on 
+correctly measuring political and apolitical turnover by focusing on incumbents 
+who are defeated, not simply those who do not return to the board for another term. 
 
 Timing is of critical importance in assessing the \emph{impact} of school board 
 incumbent defeat. While school board members are elected in spring elections, 
-their term begins the following fall. It is not reasonable to expect school 
-board members to have time after taking office to affect student outcomes or 
-superintendent contracts. As such, I lag incumbent defeat to account for this and 
-to attempt to disentangle the endogeneity of board defeat with a shift in outcomes. 
+their term begins the following fall. I use a lagged indicator of incumbent defeat 
+to account for this by looking at the impact incumbent defeat has on student 
+performance on the state exam and graduation rate two years after the election date. 
+For an incumbent defeated in the spring election of 2004, the impact of this 
+defeat is expected to come not during the 2005-06 school year, but instead the 
+2006-07 year.\footnote{I check models with both a twice and single lagged measure 
+of incumbent defeat for substantive differences.}
 
 <<incDefeatMeasure, fig.cap="Incumbent Defeat Year to Year in Wisconsin 2002-2012">>=
 library(gridExtra)
@@ -251,15 +231,17 @@ p2 <- qplot(year, incsDefeated, data = plotdf,
 grid.arrange(p1, p2, nrow = 2, main = "Incumbent Defeats in Data over Time")
 @
 
-% Check measurement of incumbent defeat 
-% Measure share of board that turnsover, vs. any incumbent defeat, vs. count of
-% incumbent defeats -- which is best
-
-It is also insufficient to simply turn over a single board member and expect 
-broad policy change if consensus existed among the other board members. 
-However, in the sample period few school boards ever defeated more than one 
-incumbent in a single election -- fewer than ten districts a year. Incumbent 
-defeat is too uncommon. 
+Figure \ref{fig:incDefeatMeasure} shows the count and proportion of  
+incumbent defeats in the Wisconsin data from 2002-2012. Typically 40-60 incumbents 
+are defeated a year, representing approximately 10\% of all incumbents running 
+each year. One shortcoming with using simple incumbent defeat as a measure is that 
+Wisconsin school boards are majority rule decision making bodies meaning that if 
+a single incumbent is defeated, it may be insufficient to result in substantive 
+policy change depending on the policy positions of other members of the board. 
+Figure \ref{fig:incTurnover} shows the number of seats on average up for election 
+in districts in each year. The majority of districts elect one or two members 
+and this represents a minority of the typically sized board of five to seven 
+members. 
 
 <<incTurnover, fig.cap="Number of Board Seats Elected Each Year">>=
 # Number of winners
@@ -284,47 +266,45 @@ dist_turn$winnerFac <- NULL
 # qplot(factor(year), boardTurnover, data = dist_turn, geom = 'boxplot')
 @
 
+Unfortunately, there is not enough variation in the number of board seats elected 
+and the number of incumbents defeated to use anything other than a binary measure 
+of incumbent defeat. 
 
-% Triple check the timing of the board elections, spring of 2012 is merged with 
-% which year of administrative records? Document this decision
+\subsection{Control Variables}
+
+Following the work of \citet{RefWorks:345}, I include relatively few control 
+variables. Including too many control variables results in overly restricting the 
+variance available to be explained by incumbent defeat and possibly collinear. 
+However I do include measures of whether the district is rural, urban, or exurban, 
+and a control for the size of the voting age population. I also include measures 
+of the level of education of the adult population and the percentage of adults in 
+the community who are over the age of 65. I also include a measure of economic 
+disadvantage for students in the school district -- a key predictor of student 
+outcomes. 
 
 \subsection{Outcomes}
 
-I am primarily interested in the effect of board turnover on two classes of 
-outcomes. First, and most directly, boards are charged with hiring and monitoring 
+First, and most directly, boards are charged with hiring and monitoring 
 the performance of a district administrator who manages the academic and 
 financial affairs of the district. The choice of superintendent is critical to 
 the board as the superintendent is the board's primary conduit of information 
 about the health of the district and the educational strategies in place for 
-students. Superintendent turnover is a primary prediction of dissatisfaction 
-theory, and rightfully so. If voters are unhappy with the state of affairs in 
-their school district, in all likelihood they are unhappy with the performance 
-of their district administrator. 
+students \citep{RefWorks:271}. Superintendent turnover is a primary prediction 
+of dissatisfaction theory, and rightfully so. If voters are unhappy with the 
+state of affairs in their school district, in all likelihood they are unhappy 
+with the performance of their district administrator \citep{RefWorks:246,RefWorks:245,
+RefWorks:273}. 
 
-More indirectly, school boards are responsible for setting policy and directing 
-the superintendent to provide quality education. Thus, incumbent defeat may 
-serve as a method by which the community can express its demand for higher 
-quality education as measured by accountability measures such as student 
-test scores and graduation rates. 
+Superintendent change is coded using the Wisconsin Department of Public Instruction 
+database on school staffing - the PI-1202 report. This report includes annual 
+information on the job position, license status, full-time equivalency or full-time 
+part-time nature of the job, and salary. This information is collected each fall. 
+A superintendent change was coded if a new superintendent was listed that differed 
+from the prior year. 
 
-<<testscorePlot, eval=FALSE>>=
-qplot(year, MATH_PROFADV_PER, data = dist_turn, group = distid, geom='line', 
-      alpha = I(0.2)) + geom_smooth(aes(group = 1), method ='lm')
-
-qplot(year, READ_PROFADV_PER, data = dist_turn, group = distid, geom='line', 
-      alpha = I(0.2)) + geom_smooth(aes(group = 1), method ='lm')
-
-@
-
-<<gradRateplot, fig.cap="Public High School Graduation Rates">>=
-qplot(factor(year), gradRate/100, data = dist_turn[dist_turn$gradRate > 0 & 
-                                                   !is.na(dist_turn$gradRate),], 
-      geom='boxplot') + theme_bw() + 
-  scale_y_continuous(label = percent) + 
-  labs(x= "Year", y = "Public Graduation Rate")
-
-@
-
+Figure \ref{fig:supChange} shows the percentage of school districts in the sample 
+each year that experienced a superintendent turnover. Annually around 15\% of 
+districts in the sample had a change in superintendent. 
 
 <<supChange, fig.cap="Superintendent turnover by year in sample.">>=
 tmpdf <- as.data.frame(prop.table(table(dist_turn$NEW_SUP, dist_turn$year),
@@ -339,6 +319,52 @@ qplot(Var2, Freq, data = tmpdf, fill = Var1, geom='bar', stat='identity') +
   theme_bw()
 
 @
+
+
+More indirectly, school boards are responsible for setting policy and directing 
+the superintendent to provide quality education. Thus, incumbent defeat may 
+serve as a method by which the community can express its demand for higher 
+quality education as measured by accountability measures such as student 
+test scores and graduation rates. While prior research has found evidence of 
+an effect of school board turnover and elections on student performance on 
+standardized tests, this outcome seems the furthest from the control of school 
+board members. 
+
+<<testscorePlot, eval=FALSE>>=
+qplot(year, MATH_PROFADV_PER, data = dist_turn, group = distid, geom='line', 
+      alpha = I(0.2)) + geom_smooth(aes(group = 1), method ='lm')
+
+qplot(year, READ_PROFADV_PER, data = dist_turn, group = distid, geom='line', 
+      alpha = I(0.2)) + geom_smooth(aes(group = 1), method ='lm')
+
+@
+
+School boards appear to have more ability to influence graduation rates. First, 
+school boards in Wisconsin have wide leverage in setting the academic standards 
+for graduation and there is large variability in the credit requirements to graduate 
+in high schools across the state. Second, graduation rates are highly visible 
+accountability measures throughout this period of observation, and districts may 
+have been able to attempt a wide variety of policy changes to improve graduation 
+outcomes relatively quickly. 
+
+The graduation rate measure I use is the only measure consistently calculated 
+throughout the time period and the one used for accountability purposes for 
+most of the period from 2002-2012 -- the legacy graduation rate. This rate differs 
+from more recent graduation rates reported by schools, districts, and states -- 
+it is not a four-year graduation rate. One challenge with this measure is that 
+overall Wisconsin has a high graduation rate, and many school districts in 
+Wisconsin has particularly high graduation rates. Figure \ref{fig:gradRateplot} 
+shows the graduation rates of school districts throughout the period of study. 
+
+<<gradRateplot, fig.cap="Public High School Graduation Rates">>=
+qplot(factor(year), gradRate/100, data = dist_turn[dist_turn$gradRate > 0 & 
+                                                   !is.na(dist_turn$gradRate),], 
+      geom='boxplot') + theme_bw() + 
+  scale_y_continuous(label = percent) + 
+  labs(x= "Year", y = "Public Graduation Rate")
+
+@
+
 
 \section{Methods}
 
@@ -364,7 +390,6 @@ The second strategy is more susceptible to unobserved alternative explanatory
 variables, but attempts to explain the variation in outcomes between school 
 districts by comparing school districts with similar demographic 
 charcteristics, but which differ on their incumbent defeat. 
-
 
 \section{Results}
 
@@ -405,13 +430,20 @@ lagModReadFE <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag 
                    data = modeldata)
 lagModReadFE$se <- sqrt(diag(get_CL_vcov(lagModReadFE, modeldata$distid)))
 
+prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
+                 "FRL \\%", "Prof Rate Lag", "VAP", "\\% Bach. +", 
+                 "\\% Over 65")
+
+fe.note <- "District fixed effects not displayed."
+
 apsrtable(simpModRead, lagModRead, lagModReadFE, se = "robust", 
-          stars = "default", digits = 3, model.names = c("Lag"), 
-          caption = "Incumbent Defeat and Student Scores", 
-          label = "tab:readMod", notes = list(stars.note), 
-          Sweave = TRUE, 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
+          caption = "Incumbent Defeat and Reading Proficiency Rates", 
+          label = "tab:readMod", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))))
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames)
 @
 
 
@@ -434,27 +466,35 @@ modeldata <- modeldata[modeldata$year > 2005, ]
 modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0, 
                                        modeldata$SUP_EXPERIENCE_lag)
 
-simpModMath <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + locale2_lag, 
+simpModMath <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + locale2_lag + 
+                    servingMembers_lag, 
                   data = modeldata)
 simpModMath$se <- sqrt(diag(get_CL_vcov(simpModMath, modeldata$distid)))
 lagModMath <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
-                   MATH_PROFADV_PER_lag +
+                   MATH_PROFADV_PER_lag +servingMembers_lag+
                    log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
                    per65o_lag, data = modeldata)
 lagModMath$se <- sqrt(diag(get_CL_vcov(lagModMath, 
                    modeldata$distid[!is.na(modeldata$MATH_PROFADV_PER_lag)])))
 lagModMathFE <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
                    log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
-                   per65o_lag + distid, data = modeldata)
+                  servingMembers_lag+  per65o_lag + distid, data = modeldata)
 lagModMathFE$se <- sqrt(diag(get_CL_vcov(lagModMathFE, modeldata$distid)))
+
+prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
+                 "FRL \\%", "Prof Rate Lag", "VAP", "\\% Bach. +", 
+                 "\\% Over 65")
+
+fe.note <- "District fixed effects not displayed."
 
 apsrtable(simpModMath, lagModMath, lagModMathFE, se = "robust", 
           stars = "default", digits = 3, model.names = c("Lag"), 
-          caption = "Incumbent Defeat and Student Scores", 
-          label = "tab:readMod", notes = list(stars.note), 
+          caption = "Incumbent Defeat and Math Proficiency Rates", 
+          label = "tab:readMod", notes = list(stars.note, fe.note), 
           Sweave = TRUE, 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))))
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames)
 @
 
 % HSC 
@@ -478,12 +518,13 @@ modeldata <- modeldata[modeldata$year > 2005, ]
 modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0, 
                                        modeldata$SUP_EXPERIENCE_lag)
 
-simpModGrad <- lm(gradRate ~ incsDefeatedFac_lag + locale2_lag, 
+simpModGrad <- lm(gradRate ~ incsDefeatedFac_lag + locale2_lag + 
+                    servingMembers_lag, 
                   data = modeldata)
 simpModGrad$se <- sqrt(diag(get_CL_vcov(simpModGrad, 
                                         modeldata$distid[!is.na(modeldata$gradRate)])))
 
-lagModGrad <- lm(gradRate ~ gradRate_lag + incsDefeatedFac_lag + 
+lagModGrad <- lm(gradRate ~ gradRate_lag + incsDefeatedFac_lag + servingMembers_lag+
                    log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
                    per65o_lag, data = modeldata)
 lagModGrad$se <- sqrt(diag(get_CL_vcov(lagModGrad, 
@@ -492,19 +533,27 @@ lagModGrad$se <- sqrt(diag(get_CL_vcov(lagModGrad,
 
 lagModGradFE <- lm(gradRate ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
                    log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
-                   per65o_lag + distid, data = modeldata)
+                   servingMembers_lag + per65o_lag + distid, data = modeldata)
 
 lagModGradFE$se <- sqrt(diag(get_CL_vcov(lagModGradFE, 
                                          modeldata$distid[!is.na(modeldata$gradRate)])))
 
+prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
+                 "FRL \\%", "Grad Rate Lag", "VAP", "\\% Bach. +", 
+                 "\\% Over 65")
+
+fe.note <- "District fixed effects not displayed."
+
 apsrtable(simpModGrad, lagModGrad, lagModGradFE, se = "robust", 
           stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
           caption = "Incumbent Defeat and High School Graduation", 
-          label = "tab:readMod", notes = list(stars.note), 
-          Sweave = TRUE, 
+          label = "tab:gradMod", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))))
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames)
 @
+
 
 
 \subsection{Superintendent Turnover}
@@ -556,7 +605,7 @@ apsrtable(simpModSup, fullModSup, fullModSupFE, se = "robust",
 \section{Conclusion}
 
 This chapter has looked for evidence of the impact of school board electoral 
-defeat. 
+defeat on student outcomes and on school district leadership. 
 
 
 
