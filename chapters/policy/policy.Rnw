@@ -330,6 +330,19 @@ an effect of school board turnover and elections on student performance on
 standardized tests, this outcome seems the furthest from the control of school 
 board members. 
 
+For student test scores I use the district-wide proficiency rate on the state 
+standardized reading and math examinations known as the Wisconsin Knowledge 
+and Concepts Examination (WKCE). Proficiency rates are calculated by identifying 
+which range of scale scores student scores lie within. Four proficiency categories 
+exist -- minimal, basic, proficient, and advanced. I use the percentage of students 
+in the district scoring at the level of proficient or advanced across all grades. 
+The proficiency rate is the percentage of eligible students. During the period 
+of study Wisconsin increased the score required to reach proficiency to reflect 
+increased performance expectations on schools and districts. I use these adjusted 
+proficiency rates retroactively applied throughout the time period. State 
+standardized assessment results are only available from 2005-2006 to present, 
+truncating the sample for this analysis. 
+
 <<testscorePlot, eval=FALSE>>=
 qplot(year, MATH_PROFADV_PER, data = dist_turn, group = distid, geom='line', 
       alpha = I(0.2)) + geom_smooth(aes(group = 1), method ='lm')
@@ -365,37 +378,42 @@ qplot(factor(year), gradRate/100, data = dist_turn[dist_turn$gradRate > 0 &
 
 @
 
+\clearpage
 
 \section{Methods}
 
-Measuring the impact of school board turnout on superintendent turnover and 
-student outcomes is difficult because of the large number of competing 
-forces shaping these outcomes. Student performance is largely predicted by 
-family income and parental education levels. Superintendent turnover may be 
-related to salary and the prestige associated with leading certain school 
-districts. In order to better understand the impact of school board turnover 
-net of these factors, I employ a regression strategy to control for as many 
-of these observable and unobservable factors as possible. 
+To explore the impact that school board member electoral defeat has on school 
+outcomes I employ a regression strategy that leverages the panel nature of my 
+data and repeated measures ofs chool districts over time. As in previous 
+chapters, I employ the bounding strategy suggested by \citet{mhecon} using a 
+lagged dependent variable and a fixed effect model to compare for time variant 
+and time invariant unobservable factors respectively. This model provides better 
+confidence that the effect estimated, in this case the effect of incumbent defeat, 
+is independent of unobserved factors. Unfortunately, the disadvantage of this 
+strategy is that for the outcomes in question, relatively little variance 
+remains to be explained after accounting for all between school district effects, 
+because the within school district variation is so small. Thus, even with a healthy 
+sample size and several observations per district, the study may be underpowered 
+to detect any residual impact of school board incumbent defeat. 
 
-
-I employ two distinct modeling strategies. The first is the most restrictive. 
-As in previous chapters, I employ the bounding strategy suggested by \citet{mhecon} 
-to leverage the repeated observations in my data to compare, where possible, 
-school districts within themselves. The disadvantage of this strategy is that 
-for the outcomes in question, relatively little variance remains to be explained 
-after accounting for all between school district effects, because the within 
-school district variation is so small. 
-
-The second strategy is more susceptible to unobserved alternative explanatory 
-variables, but attempts to explain the variation in outcomes between school 
-districts by comparing school districts with similar demographic 
-charcteristics, but which differ on their incumbent defeat. 
+As an alternative to the two model strategy above, I also include a reduced model 
+which includes no district fixed effects and no lagged outcome measure, but instead 
+includes just a few indicators of district demographics so that the effect of 
+board member turnover is estimated between districts that are similar on exogenous 
+demographic factors.\footnote{Before fitting the models I log the variables 
+expressed as percentages to make the more normal. For all three types of models 
+I report robust clustered standard errors.}
 
 \section{Results}
 
+In all of the models I expect to find a positive relationship between incumbent 
+defeat and the outcome. If voters are defeating incumbents as a way of seeking 
+improvement in their schools, then incumbent defeat should lead to increased 
+accountability pressure and improved student outcomes. 
 
 \subsection{Student Outcomes}
 
+\begin{small}
 <<testScoresR, results='asis'>>=
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "READ_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
@@ -415,7 +433,7 @@ modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0,
                                        modeldata$SUP_EXPERIENCE_lag)
 
 simpModRead <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + locale2_lag  +
-                    servingMembers_lag, 
+                    servingMembers_lag + log(VAP_adj_lag), 
                   data = modeldata)
 simpModRead$se <- sqrt(diag(get_CL_vcov(simpModRead, modeldata$distid)))
 lagModRead <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
@@ -431,7 +449,7 @@ lagModReadFE <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag 
 lagModReadFE$se <- sqrt(diag(get_CL_vcov(lagModReadFE, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                 "FRL \\%", "Prof Rate Lag", "VAP", "\\% Bach. +", 
+                 "VAP", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -445,9 +463,35 @@ apsrtable(simpModRead, lagModRead, lagModReadFE, se = "robust",
                          expression(grep("distid", coefnames, value=TRUE))), 
           coef.names = prettyNames)
 @
+\end{small}
 
+Table \ref{tab:readMod} shows relatively little effect of school board incumbent 
+defeat on student proficiency rates. In the simple model, there appears to be a 
+slight negative effect on student scores after an incumbent is defeated. However, 
+this effect disappears when including a lagged dependent variable or district 
+fixed effect, and the sign switches. The model also has a very small $R^{2}$ and 
+the inclusion of indicators of district economic disadvantage and fixed effects 
+or the lagged dependent variable pushes the $R^{2}$ to 0.85 to 0.9. 
 
+The substantive impact of the most generous estimate in the first model in Table 
+\ref{tab:readMod} is equivalent to a reduction in 0.3\% in the percentage of 
+students in a school district that are proficient or advanced. This is approximately 
+0.036 of a standard deviation. 
 
+Table \ref{tab:mathMod} shows the results for math proficiency rates. Again, 
+the effect of incumbent defeat is significant and negative in the first model, 
+but that effect is erased in the lagged and fixed effect models. The first model 
+has a very small $R^{2}$, but the lagged and FE models have a much higher $R^{2}$ 
+with economic and unobservable characteristics explaining most of the variance 
+in student performance. 
+
+The substantive impact here is again small, but larger than that found on the reading 
+models in Table \ref{tab:readMod}. Here the reduction due to school 
+board incumbent defeat is equivalent to a reduction of the percentage proficient 
+or advanced at math in the district of 1.4\%. This is a much larger effect than 
+that measured in the reading models, about 0.13 of a standard deviation. 
+
+\begin{small}
 <<testScoresM, results='asis'>>=
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "MATH_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
@@ -467,7 +511,7 @@ modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0,
                                        modeldata$SUP_EXPERIENCE_lag)
 
 simpModMath <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + locale2_lag + 
-                    servingMembers_lag, 
+                    servingMembers_lag + log(VAP_adj_lag), 
                   data = modeldata)
 simpModMath$se <- sqrt(diag(get_CL_vcov(simpModMath, modeldata$distid)))
 lagModMath <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
@@ -482,23 +526,29 @@ lagModMathFE <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag 
 lagModMathFE$se <- sqrt(diag(get_CL_vcov(lagModMathFE, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                 "FRL \\%", "Prof Rate Lag", "VAP", "\\% Bach. +", 
+                 "VAP",
+                 "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
 
 apsrtable(simpModMath, lagModMath, lagModMathFE, se = "robust", 
-          stars = "default", digits = 3, model.names = c("Lag"), 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
           caption = "Incumbent Defeat and Math Proficiency Rates", 
-          label = "tab:readMod", notes = list(stars.note, fe.note), 
+          label = "tab:mathMod", notes = list(stars.note, fe.note), 
           Sweave = TRUE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
           coef.names = prettyNames)
 @
+\end{small}
+
+Table \ref{tab:gradMod} shows the results for graduation rates. 
+
+
 
 % HSC 
-
+\begin{small}
 <<hscModel, results='asis'>>=
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "gradRate", "NEW_SUP", "SUP_EXPERIENCE",
@@ -519,7 +569,7 @@ modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0,
                                        modeldata$SUP_EXPERIENCE_lag)
 
 simpModGrad <- lm(gradRate ~ incsDefeatedFac_lag + locale2_lag + 
-                    servingMembers_lag, 
+                    servingMembers_lag + log(VAP_adj_lag), 
                   data = modeldata)
 simpModGrad$se <- sqrt(diag(get_CL_vcov(simpModGrad, 
                                         modeldata$distid[!is.na(modeldata$gradRate)])))
@@ -539,7 +589,7 @@ lagModGradFE$se <- sqrt(diag(get_CL_vcov(lagModGradFE,
                                          modeldata$distid[!is.na(modeldata$gradRate)])))
 
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                 "FRL \\%", "Grad Rate Lag", "VAP", "\\% Bach. +", 
+                 "VAP", "FRL \\%", "Grad Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -553,8 +603,9 @@ apsrtable(simpModGrad, lagModGrad, lagModGradFE, se = "robust",
                          expression(grep("distid", coefnames, value=TRUE))), 
           coef.names = prettyNames)
 @
+\end{small}
 
-
+\clearpage
 
 \subsection{Superintendent Turnover}
 
