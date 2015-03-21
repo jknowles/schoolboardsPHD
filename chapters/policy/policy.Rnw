@@ -158,7 +158,7 @@ and some less direct. \citet{RefWorks:210} provides an example by examining the
 relationship between board decisions to consolidate school districts and the 
 resulting changes in student achievement. On a more universal basis, 
 \citet{RefWorks:214} explores if boards change policies in response to public
-accountability for student achivement, and if this results in improvements in
+accountability for student achievement, and if this results in improvements in
 student achievement.\footnote{This argument assumes a certain level of 
 effectiveness that is not captured by any measures in the current study and 
 may not be evenly distributed across boards \citep{RefWorks:237,RefWorks:261}.} 
@@ -384,7 +384,7 @@ qplot(factor(year), gradRate/100, data = dist_turn[dist_turn$gradRate > 0 &
 
 To explore the impact that school board member electoral defeat has on school 
 outcomes I employ a regression strategy that leverages the panel nature of my 
-data and repeated measures ofs chool districts over time. As in previous 
+data and repeated measures of school districts over time. As in previous 
 chapters, I employ the bounding strategy suggested by \citet{mhecon} using a 
 lagged dependent variable and a fixed effect model to compare for time variant 
 and time invariant unobservable factors respectively. This model provides better 
@@ -543,9 +543,12 @@ apsrtable(simpModMath, lagModMath, lagModMathFE, se = "robust",
 @
 \end{small}
 
-Table \ref{tab:gradMod} shows the results for graduation rates. 
-
-
+Table \ref{tab:gradMod} shows the results for graduation rates. Although I expected 
+to find a stronger effect of school boards on graduation rates, there is weaker 
+evidence here. The estimated effect is consistently negative -- counter to 
+expectations -- but is not statistically significant. The effect is substantively 
+equivalent to a decrease of 0.18\% in the graduation rate, an effect of 
+0.03 standard deviations. 
 
 % HSC 
 \begin{small}
@@ -609,8 +612,16 @@ apsrtable(simpModGrad, lagModGrad, lagModGradFE, se = "robust",
 
 \subsection{Superintendent Turnover}
 
+Superintendent turnover models are slightly different in that they are logistic 
+regression models predicting a binary outcome of whether the superintendent 
+turned over or not. Table \ref{tab:supMod} shows the results of these logistic 
+regressions. Here, incumbent defeat is consistently positively related with 
+superintendent turnover, but this effect is only statistically significant in 
+the first model. The estimated effect is quite large -- an incumbent defeat 
+translates into an odds-ratio of 1.31. 
+
 <<newSup, results='asis'>>=
-modeldata <- dist_turn[, c("distid", "year", "incsDefeated", 
+modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "MATH_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
                            "econ_disadv_per", "VAP_adj", "per65o", 
                            "PerBachelorOrAbove", "locale2")]
@@ -626,37 +637,53 @@ modeldata <- modeldata[modeldata$year > 2005, ]
 modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0, 
                                        modeldata$SUP_EXPERIENCE_lag)
 
-simpModSup <- glm(NEW_SUP ~ incsDefeatedFac_lag + locale2_lag, 
+simpModSup <- glm(NEW_SUP ~ incsDefeatedFac_lag + locale2_lag + 
+                    servingMembers_lag + log(VAP_adj_lag), 
                   data = modeldata, family = "binomial")
 simpModSup$se <- sqrt(diag(get_CL_vcov(simpModSup, modeldata$distid)))
 fullModSup <- glm(NEW_SUP ~ incsDefeatedFac_lag + econ_disadv_per_lag + 
-                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   log(VAP_adj_lag) + servingMembers_lag + NEW_SUP_lag +
+                    locale2_lag + PerBachelorOrAbove_lag + 
                    per65o_lag, data = modeldata, family = "binomial")
 fullModSup$se <- sqrt(diag(get_CL_vcov(fullModSup, modeldata$distid)))
 library(arm)
 fullModSupFE <- bayesglm(NEW_SUP ~ incsDefeatedFac_lag + 
-                      econ_disadv_per_lag + log(VAP_adj_lag) + 
+                      econ_disadv_per_lag + log(VAP_adj_lag) + servingMembers_lag +
                       locale2_lag + PerBachelorOrAbove_lag + 
                    per65o_lag + distid, data = modeldata, family = "binomial")
 fullModSupFE$se <- sqrt(diag(get_CL_vcov(fullModSupFE, modeldata$distid)))
 
+prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
+                 "VAP", "FRL \\%", "New Sup. Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+
+fe.note <- "District fixed effects not displayed."
+
 apsrtable(simpModSup, fullModSup, fullModSupFE, se = "robust", 
           stars = "default", digits = 3, 
-          model.names = c("Simple", "Full", "Fixed Effect"), 
-          caption = "Incumbent Defeat and Student Scores", 
-          label = "tab:readMod", notes = list(stars.note), 
-          Sweave = TRUE, 
+          model.names = c("Simple", "Lag", "FE"), 
+          caption = "Incumbent Defeat and Superintendent Turnover", 
+          label = "tab:supMod", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))))
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames)
 @
 
+Another interesting effect that emerges from the models in Table \ref{tab:supMod} 
+is a consistently statistically significant and positive effect on the size of a 
+school board on the likelihood of a superintendent being removed. A board with 
+an increased size of 1 is associated with a 14\% increase in the likelihood of 
+a superintendent changing. This effect stays statistically significant and 
+roughly the same size across the specifications of the model. 
 
 \clearpage
 
 \section{Conclusion}
 
+Counter to the prior findings in the literature, this chapter has looked for 
+evidence of an impact of school board incumbent defeat on student outcomes and 
+district policy and found little. 
+
 This chapter has looked for evidence of the impact of school board electoral 
 defeat on student outcomes and on school district leadership. 
-
-
-
