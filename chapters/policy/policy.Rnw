@@ -16,8 +16,8 @@ source("data/cleanandprep_POLICY.R")
 library(scales)
 library(xtable)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
-library(devtools)
-install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
+# library(devtools)
+# install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
 library(apsrtable)
 stars.note <- apsrtable:::stars.note
 @

@@ -16,6 +16,32 @@ detachPkgs <- function(){
   lapply(pkgs, detach, character.only = TRUE, unload = TRUE)
 }
 
+cleanNamespace <- function(){
+  currentlyattached <- search();
+  currentlyloaded <- loadedNamespaces();
+  #try to detach packages that were attached during eval
+  nowattached <- search();
+  todetach <- nowattached[!(nowattached %in% currentlyattached)];
+  while( ! length(todetach) == 0 ){
+    for(i in seq_along(todetach)){
+      suppressWarnings(tryCatch(detach(todetach[i], unload=TRUE, character.only=TRUE, force=TRUE),error = function(x) return(NA)))
+    }
+    nowattached <- search();
+    todetach <- sample(nowattached[!(nowattached %in% currentlyattached)]);
+  }
+  
+  #try to unload packages that are still loaded
+  nowloaded <- loadedNamespaces(); 
+  tounload <- nowloaded[!(nowloaded %in% currentlyloaded)];
+  while( ! length(tounload) == 0 ){
+    for(i in seq_along(todetach)){
+      suppressWarnings(tryCatch(unloadNamespace(tounload[i]),error = function(x) return(NA)))
+    }
+    nowloaded <- loadedNamespaces(); 
+    tounload <- sample(nowloaded[!(nowloaded %in% currentlyloaded)]);
+  }
+}
+
 
 iNum <- function(x){prettyNum(as.character(x), big.mark = ",", small.mark = ".", 
                               digits = 3)}

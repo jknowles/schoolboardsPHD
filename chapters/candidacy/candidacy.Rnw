@@ -21,8 +21,8 @@ options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 library(gridExtra)
 library(scales)
 library(reshape2)
-library(devtools)
-install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
+# library(devtools)
+# install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
 library(apsrtable)
 @
 

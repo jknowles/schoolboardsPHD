@@ -1222,8 +1222,8 @@ these characteristics might be on school board election turnout.
 # detach("package:plyr", unload=TRUE)
 library(sandwich)
 library(rms)
-library(devtools)
-install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
+# library(devtools)
+# install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
 library(apsrtable)
 moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
 moddat <- moddat[moddat$year != "2002",]

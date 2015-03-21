@@ -15,7 +15,7 @@ source("R/thesis_functions.R")
 source("data/cleanandprep_WALKER.R")
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 # Set up tables
-library(devtools)
+# library(devtools)
 # install_github("jknowles/apsrtable", subdir = "pkg", ref = "dev")
 library(apsrtable)
 stars.note <- apsrtable:::stars.note
