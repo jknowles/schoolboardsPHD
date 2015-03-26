@@ -273,3 +273,29 @@ rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
 dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
 dist_turn$median_incomeLOG <- log(dist_turn$median_income)
 dist_turn$VAP_adjLOG <- log(dist_turn$VAP_adj)
+
+
+dist_turn$recentTwoPartyShareDem <- NA
+dist_turn$recentFallTurnout <- NA
+
+for(i in unique(dist_turn$distid)){
+  for(j in unique(dist_turn$year)){
+    if(j %in% c("2003", "2004", "2007", "2008", "2011", "2012")){
+      dist_turn$recentTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$govTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i]
+      dist_turn$recentFallTurnout[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$topGovTurnoutPrior[dist_turn$year == j & dist_turn$distid == i]
+    } else if(j %in% c("2001", "2002", "2005", "2006", "2009", "2010", "2013")) {
+      dist_turn$recentTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$presTwoPartyShareDem[dist_turn$year == j & dist_turn$distid == i]
+      dist_turn$recentFallTurnout[dist_turn$year == j & dist_turn$distid == i] <- 
+        dist_turn$topPresTurnoutPrior[dist_turn$year == j & dist_turn$distid == i]
+    }
+  }
+}
+
+dist_turn$partyDivisionFall <- abs(0.5 - dist_turn$fallTwoPartyShareDem)
+dist_turn$partyDivisionRecent <- abs(0.5 - dist_turn$recentTwoPartyShareDem)
+dist_turn$incumRun <- ifelse(dist_turn$ninc > 0, 1, 0)
+dist_turn$incumShare <- dist_turn$ninc / (dist_turn$nrealcand)
+dist_turn$onlyIncum <- ifelse(dist_turn$incumShare == 1, 1, 0)

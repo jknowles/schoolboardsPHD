@@ -54,8 +54,9 @@ higher profile elections benefit from examining the limits of their generalizabi
 voter turnout in school board elections through the lenses of the major theories of 
 voter turnout. I begin by reviewing these theories. Then, I move into a discussion 
 of school boards and the contribution a study of school boards can bring to 
-the understanding of these theories. Then I discuss the unique panel data set of 
-school board results that I have collected and the methods with which I will test 
+the understanding of these theories. Then I discuss the panel data set of 
+school board results that I have collected, which is unique in its length and 
+breadth, and the methods with which I will test 
 these competing theories on the data. Finally, I conclude with an assessment of 
 the performance of each of the theories and the foundations for future work. 
 
@@ -147,14 +148,14 @@ P is much higher than other elections.\footnote{$P$ can be estimated using the
 Blais-Lago calculation for the competitiveness of elections under various configurations of open seats and number of winners \citep{blaislago}.} It remains to be seen if 
 $B$ is indeed 
 higher in such cases, as we shall see the policy preferences of candidates for 
-board are not always easily discovered by voters. Yet, game theoretic and social 
+board are not always easily discovered by voters. Yet, rational choice and social 
 mobilization theories of turnout expect that in smaller electorates the collective 
 behavior of the electorate or social group could spur turnout to be higher. 
 
 % Game theoretic
 
-In the game theoretic case the argument is that if everyone pursues the optimal 
-strategy of not voting, then the value of $PB$ increase. This sets of a strategic 
+In the rational choice case the argument is that if everyone pursues the optimal 
+strategy of not voting, then the value of $PB$ increase. This sets off a strategic 
 game among voters where the value of $P$ is determined by the strategies selected by 
 all other voters in the electorate \citep{Palfrey83, Palfrey85,Ledyard84}. In order for positive turnout to emerge from 
 such a game, voters are expected to have certainty about the costs of voting and 
@@ -247,11 +248,14 @@ elections -- though fewer -- are much more informed and engaged than non-voters
 \citep{oliver12}. The causal direction of this relationship is not clear, but 
 there is some suggestion that the electorate in these non-partisan local races 
 has a stronger estimate of the expected benefit of their candidate winning than 
-non-voters.
+non-voters. More importantly, \citet{oliver12} finds in local municipal elections 
+that more important than knowledge or perception of preferences is personal contact 
+with candidates themselves. 
 
 School boards are a fascinating lens through which we can explore the Downsian 
 hypothesis and its extensions. In many states school boards are sub-county 
-administrative entities without partisan office holders and who often elect multiple members in 
+administrative entities without partisan office holders and who often elect 
+multiple members in 
 one election cycle. Furthermore, the low level of information about school board 
 candidates, their positions on issues, their likely vote share in an election, and 
 the voters' own feelings on issues facing the school board make this environment 
@@ -262,16 +266,19 @@ magnitude larger than for state wide or nation wide office.
 \subsection{Voter Socialization}
 
 Other scholars have found that the D term can be endogenous within individuals from 
-election to election \citep{Plutzer2002}. Experimental 
-evidence has found that ``voting and abstention, in other words, are habit forming'' 
+election to election \citep{Plutzer2002}.\footnote{Though the type of motivation 
+based on personal contact with the candidates would not necessarily be endogenous.} 
+Experimental evidence has found that 
+``voting and abstention, in other words, are habit forming'' 
 \citep[p.540]{Gerber2003} This is related to the group mobilization arguments 
 above because social groups may well be the mechanism by which the habit is 
 formed \citep{Kanazawa2000}. Particularly in groups that interact frequently or 
 small communities with low monitoring costs, social rewards may be found for 
-voting and sanctions 
-may be made for those who abstain \citep{Fowler2005}. Then, citizens who are 
-rewarded for their vote (via the election of their preferred candidate) or punished for their abstention
-(through the election of a less-preferred candidate) acquire an increased preference for voting. Conversely, if their voting is punished or their abstention is
+voting and sanctions may be made for those who abstain \citep{Fowler2005}. Then, 
+citizens who are rewarded for their vote (via the election of their preferred 
+candidate) or punished for their abstention (through the election of a 
+less-preferred candidate) acquire an increased preference for voting. Conversely, 
+if their voting is punished or their abstention is
 rewarded, they lose some of their preference for voting. This has been considered 
 in other cases by political scientists as well \citep{ParticAnnReview2004}.\footnote{
 Other scholars have found that not just the depth and frequency of interactions with 
@@ -357,7 +364,7 @@ in such elections \citep{RefWorks:311,RefWorks:243,RefWorks:340}.
 \subsection{Voter Turnout in School Board Elections}
 
 Several competing conceptions of voter turnout can be explored at the local level 
-through the lens of turnout in school board elections. Table \ref{turnoutH} lists 
+through the lens of turnout in school board elections. Table \ref{tab:turnoutH} lists 
 the evidence in school board turnout that would be consistent with the dominant 
 theories of voter turnout. 
 
@@ -366,12 +373,12 @@ theories of voter turnout.
 \begin{center}
 \begin{small}
 \caption{Theories of Turnout and Expected Evidence}
-\label{turnoutH}
+\label{tab:turnoutH}
 \begin{tabular}{| p{.25\textwidth} | p{.2\textwidth} | p{.375\textwidth} |}
 \hline
 \textbf{Theory}  & \textbf{Citation} & \textbf{Expected Finding} \\ \hline
 Habit-forming voters  & \citet{Plutzer2002} & High autocorrelation in turnout\\ \hline
-Game-theoretic voters & \citet{Mueller3, aldrich1993} & Smaller electorate has higher turnout \\ \hline
+Rational voters & \citet{Mueller3, aldrich1993} & Smaller electorate has higher turnout \\ \hline
 Social group led voting &\citet{Fowler2005} & Union membership as share of electorate drives up turnout \\ \hline
 Pivotal-voter & \citet{Downs57} & Small electorate and close election drives turnout up \\ \hline
 Social group led voting &\citet{Fowler2005} & Polarized communities have higher turnout \\ \hline
@@ -400,7 +407,7 @@ on any measurement of the effect of key variables on school board election
 participation.
 
 \subsubsection{Spring Turnout}
-As we saw in Chapter \ref{chap:wisco}, the spring elections in Wisconsin are decidedly low turnout affairs. Estimating school board election turnout is decidedly difficult because it requires 
+As in Chapter \ref{chap:wisco}, the spring elections in Wisconsin are decidedly low turnout affairs. Estimating school board election turnout is decidedly difficult because it requires 
 both a reliable assessment of the votes cast in the election and a reliable 
 estimate of the voting age population in the school district. Due to the fact that 
 school districts have diverse electoral structure and no requirements 
@@ -458,28 +465,45 @@ without a top ticket race, see Section \ref{subsec:undervote} in Chapter \ref{ch
 
 \subsection{Key Independent Variables}
 
-<<turnoutComparison, echo=FALSE, fig.cap="Comparison of Fall and Spring Turnout in Wisconsin Elections">>=
-plotdf <- dist_turn[dist_turn$turnout < 0.95, c("year", "fallTurnout", "turnout")]
+I begin with the explanations in Table \ref{tab:turnoutH} and explore them using the Wisconsin data. I start with the models based on electorate size and explore if at the  small electorate sizes common in school board elections there is evidence 
+that voters are more likely to turnout than in larger school board races. Figure 
+\ref{fig:turnoutSize} shows that there is a consistent negative relationship 
+between electorate size and school board election turnout across the years of data 
+available in Wisconsin. As population increases, Wisconsin school board 
+elections have lower turnout with a correlation of 
+\Sexpr{iNum2(cor(dist_turn$turnout, dist_turn$VAP_adj, use = "pairwise.complete.obs"))}. 
+This conforms with the predictions of rational choice approaches which state that 
+in a small electorate a voter can expect their vote to matter more in the outcome and 
+thus increase the potential benefits associated with voting
+\citep{Mueller3, aldrich1993, Downs57}. However, this does not represent a full test 
+of this theory, as voters are also voting up ticket in statewide non-partisan races 
+such as Supreme Court and State Superintendent, and school board turnout may be 
+driven by these races.\footnote{They may not though because upticket races have 
+a statewide electorate and little chance for influence by individual voters.} 
 
-qplot(fallTurnout, turnout, data = na.omit(plotdf)) + facet_wrap(~year) + 
-  geom_smooth(se = TRUE, method = "lm") + theme_dpi() + 
-  scale_x_continuous(label = percent) + 
+
+<<turnoutSize, echo=FALSE, fig.cap="Turnout in School Board Elections based on Electorate Size">>=
+plotdf <- dist_turn[dist_turn$turnout < 0.95, c("year", "VAP_adj", "turnout")]
+
+qplot(VAP_adj, turnout, data = na.omit(plotdf)) + facet_wrap(~year) + 
+  geom_smooth(se = TRUE, method = "rlm") + theme_dpi() + 
   scale_y_continuous(label = percent) + 
-  labs(x = "Average Fall Turnout Pres and Gov", y = "School Board Turnout", 
-       title = "Comparing Fall and Spring Turnout in Wisconsin Elections")
+  scale_x_log10(label = comma)+
+  labs(x = "Voting Age Population (log-scale)", y = "School Board Turnout", 
+       title = "Comparing Turnout and Size of Electorate")
 @
 
 
-<<partyDivision, echo=FALSE, fig.cap="Comparison of School Board Turnout to Electorate Polarization">>=
-plotdf <- dist_turn[dist_turn$turnout < 0.95, c("year", "fallTwoPartyShareDem", "turnout")]
 
-qplot(fallTwoPartyShareDem, turnout, data = na.omit(plotdf)) + facet_wrap(~year) + 
-  geom_smooth(se = TRUE) + theme_dpi() + 
-  scale_x_continuous(label = percent) + 
-  scale_y_continuous(label = percent) + 
-  labs(x = "Democrat Share of Two Party Gubernatorial and Presidential Vote", y = "School Board Turnout", 
-       title = "Turnout and Voter Partisanship")
-@
+Having competitive races is critical in driving voter turnout, as voters have 
+very little reason to vote if they are not presented with a meaningful choice 
+\citep{Downs57}. Figure \ref{fig:turnoutCompetitive} shows voter turnout across 
+the competitiveness typologies 
+described in Chapter \ref{chap:wisco} with a clear pattern of higher turnout in races 
+featuring an incumbent and a serious challenger. Open seats also appear to feature higher 
+turnout than uncontested races. The turnout in uncontested races in the bottom panel 
+is very likely being driven by the presence of other contested races on the ticket. 
+Using a statistical model I explore this in greater detail below. 
 
 <<turnoutCompetitive, echo=FALSE, fig.scap="Turnout in School Board Elections based on Contestation",fig.cap="Histogram showing the distribution of turnout for each type of contestation. The vertical red line represents the median of the distribution.">>=
 dist_turn$contestINC[dist_turn$nrealcand <= dist_turn$nwins & dist_turn$ninc == 0] <- "Open Uncontested"
@@ -511,90 +535,6 @@ qplot(turnout, data = tempdf,
 rm(tempdf)
 @
 
-<<turnoutSize, echo=FALSE, fig.cap="Turnout in School Board Elections based on Electorate Size">>=
-plotdf <- dist_turn[dist_turn$turnout < 0.95, c("year", "VAP_adj", "turnout")]
-
-qplot(VAP_adj, turnout, data = na.omit(plotdf)) + facet_wrap(~year) + 
-  geom_smooth(se = TRUE, method = "rlm") + theme_dpi() + 
-  scale_y_continuous(label = percent) + 
-  scale_x_log10(label = comma)+
-  labs(x = "Voting Age Population (log-scale)", y = "School Board Turnout", 
-       title = "Comparing Turnout and Size of Electorate")
-@
-
-
-<<turnoutAutocorrelation, echo=FALSE, fig.cap="Turnout in School Board Elections based on Prior Turnout">>=
-plotdf <- dist_turn[dist_turn$turnout < 0.95 & dist_turn$year > 2003,
-                    c("year", "turnoutLag2", "turnout")]
-
-qplot(turnoutLag2, turnout, data = na.omit(plotdf)) +
-  facet_wrap(~year) + theme_dpi() + geom_smooth(method = 'rlm') + 
-  scale_x_continuous(label = percent) + 
-  scale_y_continuous(label = percent) + 
-  labs(x = "Lagged School Board Turnout (2 year lag)", y = "School Board Turnout", 
-       title = "Comparing Lagged Turnout")
-@
-% Turnout and group membership
-
-<<unionInf, echo=FALSE, fig.cap="Turnout in School Board Elections based on School Staff Share">>=
-
-plotdf <- dist_turn[dist_turn$year > 2004, c("year", "teachShareofVoters", "turnout")]
-plotdf <- na.omit(plotdf)
-
-qplot(teachShareofVoters, turnout, 
-      data = plotdf) + 
-  geom_smooth(method="rlm") + theme_dpi() +
-  facet_wrap(~year)+ 
-  scale_x_continuous(label = percent) + 
-  scale_y_continuous(label = percent) + 
-  labs(x = "Teacher FTE as Share of VAP", y = "School Board Turnout", 
-       title = "Turnout to Staff Share of School Board Electorate")
-
-@
-
-% Competitiveness
-
-<<competition, fig.cap="Competitiveness and Turnout">>=
-plotdf <- dist_turn[dist_turn$year > 2004, c("year", "minBlaisLago", "turnout")]
-plotdf <- plotdf[plotdf$turnout < 0.95 & plotdf$minBlaisLago < 100 & 
-                   plotdf$minBlaisLago > 0,]
-plotdf <- na.omit(plotdf)
-
-qplot(minBlaisLago, turnout, data = plotdf) +  
-  theme_dpi() + geom_smooth(method = 'lm') +
-  scale_y_continuous(label = percent, breaks = seq(0, 1, by = .10)) + 
-  scale_x_sqrt(breaks = c(0, 2.5, 5, 7.5, 10, 25, 50, 75, 100)) + 
-  labs(y = "Turnout in School Board Elections", 
-       x = "Blais-Lago Quotient",
-       title = "Turnout and Competitiveness in School Board Elections") 
-
-@
-
-I begin with the explanations in Table \ref{turnoutH} and explore them using the Wisconsin data. I start with the models based on electorate size and explore if at the  small electorate sizes common in school board elections there is evidence 
-that voters are more likely to turnout than in larger school board races. Figure 
-\ref{fig:turnoutSize} shows that there is a consistent negative relationship 
-between electorate size and school board election turnout across the years of data 
-available in Wisconsin. As population increases, Wisconsin school board 
-elections have lower turnout with a correlation of 
-\Sexpr{iNum2(cor(dist_turn$turnout, dist_turn$VAP_adj, use = "pairwise.complete.obs"))}. 
-This conforms with the predictions of game-theoretic approaches which state that 
-in a small electorate a voter can expect their vote to matter more in the outcome and 
-thus increase the potential benefits associated with voting
-\citep{Mueller3, aldrich1993, Downs57}. However, this does not represent a full test 
-of this theory, as voters are also voting up ticket in statewide non-partisan races 
-such as Supreme Court and State Superintendent, and school board turnout may be 
-driven by these races.\footnote{They may not though because upticket races have 
-a statewide electorate and little chance for influence by individual voters.} 
-
-Having competitive races is critical in driving voter turnout, as voters have 
-very little reason to vote if they are not presented with a meaningful choice \citep{Downs57}. 
-Figure \ref{fig:turnoutCompetitive} shows voter turnout across the competitiveness typologies 
-described in Chapter \ref{chap:wisco} with a clear pattern of higher turnout in races 
-featuring an incumbent and a serious challenger. Open seats also appear to feature higher 
-turnout than uncontested races. The turnout in uncontested races in the bottom panel 
-is very likely being driven by the presence of other contested races on the ticket. 
-Using a statistical model I explore this in greater detail below. 
-
 A related measure of contestation is that higher turnout is expected when races 
 are more competitive. Measuring competitiveness in conjunction 
 with turnout is a difficult methodological task, but often some measure of the final 
@@ -619,6 +559,23 @@ the fall partisan electorate, and evidence from other jurisdictions suggests suc
 off-cycle local voters are much more engaged, informed, and politically active 
 than general election voters \citep{oliver12}. 
 
+
+<<competition, fig.cap="Competitiveness and Turnout">>=
+plotdf <- dist_turn[dist_turn$year > 2004, c("year", "minBlaisLago", "turnout")]
+plotdf <- plotdf[plotdf$turnout < 0.95 & plotdf$minBlaisLago < 100 & 
+                   plotdf$minBlaisLago > 0,]
+plotdf <- na.omit(plotdf)
+
+qplot(minBlaisLago, turnout, data = plotdf) +  
+  theme_dpi() + geom_smooth(method = 'lm') +
+  scale_y_continuous(label = percent, breaks = seq(0, 1, by = .10)) + 
+  scale_x_sqrt(breaks = c(0, 2.5, 5, 7.5, 10, 25, 50, 75, 100)) + 
+  labs(y = "Turnout in School Board Elections", 
+       x = "Blais-Lago Quotient",
+       title = "Turnout and Competitiveness in School Board Elections") 
+
+@
+
 Figure \ref{fig:turnoutAutocorrelation} explores how habit forming turnout may be 
 in spring elections in school districts \citep{Plutzer2002}. Using a two-year lag 
 of turnout, Figure \ref{fig:turnoutAutocorrelation} shows a consistently high 
@@ -632,7 +589,39 @@ appears to be inflated. Figure \ref{fig:turnoutComparison} looks at this further
 yet by showing the relationship between the average of the turnout in the prior two 
 fall elections for Governor and President compared to the current school board turnout. 
 These correlate positively as well at a level of 
-\Sexpr{iNum2(cor(dist_turn$turnout, dist_turn$fallTurnout, use = "pairwise.complete.obs"))}. 
+\Sexpr{iNum2(cor(dist_turn$turnout, dist_turn$fallTurnout, use = "pairwise.complete.obs"))}.
+
+
+<<turnoutAutocorrelation, echo=FALSE, fig.cap="Turnout in School Board Elections based on Prior Turnout">>=
+plotdf <- dist_turn[dist_turn$turnout < 0.95 & dist_turn$year > 2003,
+                    c("year", "turnoutLag2", "turnout")]
+
+qplot(turnoutLag2, turnout, data = na.omit(plotdf)) +
+  facet_wrap(~year) + theme_dpi() + geom_smooth(method = 'rlm') + 
+  scale_x_continuous(label = percent) + 
+  scale_y_continuous(label = percent) + 
+  labs(x = "Lagged School Board Turnout (2 year lag)", y = "School Board Turnout", 
+       title = "Comparing Lagged Turnout")
+@
+% Turnout and group membership
+
+
+<<unionInf, echo=FALSE, fig.cap="Turnout in School Board Elections based on School Staff Share">>=
+
+plotdf <- dist_turn[dist_turn$year > 2004, c("year", "teachShareofVoters", "turnout")]
+plotdf <- na.omit(plotdf)
+
+qplot(teachShareofVoters, turnout, 
+      data = plotdf) + 
+  geom_smooth(method="rlm") + theme_dpi() +
+  facet_wrap(~year)+ 
+  scale_x_continuous(label = percent) + 
+  scale_y_continuous(label = percent) + 
+  labs(x = "Teacher FTE as Share of VAP", y = "School Board Turnout", 
+       title = "Turnout to Staff Share of School Board Electorate")
+
+@
+
 
 With a reduced electorate, school board elections are an interesting case to study 
 the role substantial interest groups can play in an election. \citet{Fowler2005} 
@@ -648,8 +637,7 @@ twice lagged school board turnout that is made of teachers will also be explored
 This comparison illustrates how large of a voting block a cohesive teacher union 
 might estimate they possess based on the number of votes cast in previous elections.}
 The relationship shown in Figure \ref{fig:unionInf} is not what theory would expect. 
-Here a higher teacher share of the prior school board turnout is associated with depressed turnout rates, 
-instead of elevated turnout. The average correlation across years is 
+Here a higher teacher share of the prior school board turnout is associated with depressed turnout rates, instead of elevated turnout. The average correlation across years is 
 \Sexpr{iNum2(cor(dist_turn$teachShareofVoters, dist_turn$turnout, use = "pairwise.complete.obs"))}. 
 I will pursue this finding further with statistical models, 
 but it is worth noting that there may be limits on the impact social groups can have 
@@ -663,24 +651,20 @@ the school board through the candidate recruitment and nomination process instea
 % Competitiveness has a very modest positive effect on turnout across 
 % all observations
 
-Figure \ref{fig:partyDivision} takes a different approach to this problem by looking 
+Figure \ref{fig:partisan2} takes a different approach to this problem by looking 
 at the information voters may have about their community -- the level of partisan 
 polarization. Using the average Democratic share of the two-party vote from the prior 
-Gubernatorial and Presidential election combined, I explore the variation in school board election 
-turnout. Theory would suggest that the more divided a community is on partisan issues, the 
-greater the impetus to vote \citep{Fowler2005}. Thus in Figure \ref{fig:partyDivision} we 
-should expect to see an inverted U shape representing higher turnout around 50\% share of 
-the two party vote. In fact, this pattern does not occur in any year, and in some years 
-there is evidence of just the opposite relationship -- a correlation between higher 
-partisan unity and turnout. Figure \ref{fig:partisan2} shows the linear relationship 
-between higher partisan unity and turnout. In most years there is almost no relationship, 
-but in 2011 and 2012 there appears to be an uptick in school board turnout associated 
-with more strongly partisan school districts. The correlation is 
-\Sexpr{iNum2(cor(dist_turn$turnout, abs(dist_turn$fallTwoPartyShareDem - .5), use = 'pairwise.complete.obs'))} across all years. 
+Gubernatorial and Presidential election combined, I explore the variation in school board election turnout. Theory would suggest that the more divided a community is on 
+partisan issues, the greater the impetus to vote \citep{Fowler2005}. Figure 
+\ref{fig:partisan2} shows the linear relationship between higher partisan unity and 
+turnout. In most years there is almost no relationship, but in 2011 and 2012 there 
+appears to be an uptick in school board turnout associated with more strongly 
+partisan school districts. The correlation is \Sexpr{iNum2(cor(dist_turn$turnout, 
+dist_turn$partyDivisionRecent, use = 'pairwise.complete.obs'))} across all years. 
 
 <<partisan2, fig.cap="Another Look at Relationship Between Turnout and Partisanship">>=
 
-qplot(abs(fallTwoPartyShareDem-.5), turnout, 
+qplot(partyDivisionRecent, turnout, 
       data = dist_turn[dist_turn$turnout < 0.95 & !is.na(dist_turn$turnout) & dist_turn$year > 2003,]) + facet_wrap(~year) + 
   geom_smooth(se = TRUE, method = 'rlm') + theme_dpi() + 
   scale_x_continuous(label=percent) + 
@@ -690,7 +674,7 @@ qplot(abs(fallTwoPartyShareDem-.5), turnout,
 
 @
 
-Taken alone, these figures do not suggest that any of the theories in Table \ref{turnoutH} are confirmed or denied, but it does help illustrate the diversity of school board 
+Taken alone, these figures do not suggest that any of the theories in Table \ref{tab:turnoutH} are confirmed or denied, but it does help illustrate the diversity of school board 
 elections in Wisconsin and the need for statistical models to help separate out 
 competing explanations that may themselves be highly correlated or confound 
 one another. 
@@ -709,40 +693,57 @@ Fortunately, using US census data, an abundance of data is available on the
 population of Wisconsin school districts. 
 
 
-<<demog1, fig.cap="Pairs Plot of Demographic Variables and Turnout in 2012", fig.height = 8, fig.width=8>>=
-library(GGally)
-dist_turn$median_incomeLOG <- log(dist_turn$median_income)
+<<demog1, fig.scap="Correlation Plot of Demographic Variables and Turnout across Sample", fig.height = 8, fig.width=8, fig.cap="Cells are shaded in proportion to the magnitude and direction of the bivariate correlation across all observations in the sample.">>=
+library(reshape)
+nopanel <- theme(panel.background=element_blank(),
+                 panel.grid.minor=element_blank(),
+                 panel.grid.major=element_blank(),
+                 axis.text.x = element_text(angle = -90, hjust = 0), 
+                               axis.text = element_text(colour = "black"))
+
 pairLabels <- c("Turnout", "Fall Turnout", "% 65 Older", "% Bach. +", "OOH %", 
                 "Median Income", "Log VAP")
-tmpdf <- dist_turn[dist_turn$turnout < 0.95 & 
-                            dist_turn$year == 2012 & 
-                            !is.na(dist_turn$turnout), ]
-tmpdf <- tmpdf[, c("turnout", "fallTurnout", "per65o", "PerBachelorOrAbove", 
-                   "OOH_share", "median_incomeLOG", "VAP_adj")]
+corVars <-  c("turnout", "fallTurnout", "per65o", "PerBachelorOrAbove", 
+                   "OOH_share", "median_incomeLOG", "VAP_adj")
 
-tmpdf$VAP_adj <- log(tmpdf$VAP_adj)
-ggpairs(tmpdf, 
-        columnLabels = pairLabels,
-        lower = list(continuous = "smooth"), 
-        upper = list(continuous = 'cor'), 
-        title = "Pairs Plot of Key Control Variables")
-rm(tmpdf)
+tempdf <- dist_turn[!is.na(dist_turn$turnout), which(names(dist_turn) %in% corVars)]
+tempdf <- tempdf[, corVars]
+names(tempdf) <- pairLabels
+
+cormat <- melt(round(cor(tempdf, use = "pairwise"), 3)) 
+
+cormat$value2 <- cut(cormat$value, 
+                     breaks=c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1), 
+                     include.lowest=TRUE, 
+            label=c("(-0.75,-1)","(-0.5,-0.75)","(-0.25,-0.5)","(0,-0.25)",
+                    "(0,0.25)","(0.25,0.5)","(0.5,0.75)","(0.75,1)")) 
+
+qplot(x=X1, y=X2, data=cormat, fill=value2, geom="tile", color = I("gray40")) + 
+  scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
+                    breaks = levels(cormat$value2), drop =FALSE)+
+  geom_text(aes(label = value), size = 2) + nopanel + 
+  labs(x = "", y = "")
+
 @
 
-Figure \ref{fig:demog1} uses a ``pairs plot" to examine the relationships between 
-these dependent variables and the outcome for the year 2012. This shows a series 
-of scatterplots relating the two variables, as well as the distribution of each 
-variable, and the pairwise correlation of the variables in the upper diagonal. 
-Turnout is indeed positively correlated with all of these demographic controls, except 
-district size, to differing degrees. There are also strong relationships between these individual demographic categories, with particularly strong relationships between education, age, and income, as well as a strong negative between age and owner occupied housing and age and education level.\footnote{This pairs plot is produced using the \texttt{GGally} package in R \citep{ggally}.} 
+Figure \ref{fig:demog1} uses a correlation matrix to examine the relationships between 
+these dependent variables and the outcome for all complete observations in the 
+data. The pairwise correlation of the variables is printed in each cell which 
+represents the bivariate correlation. Additionally, the cells are shaded to 
+distinguish the direction and strength of the correlation. From this figure it 
+is clear that turnout is only weakly positively correlated with these demographic 
+controls, except district size and owner occupied housing, to differing degrees. 
+There are also strong relationships between these individual demographic categories, with particularly strong relationships between education, age, and income, as well as a 
+strong negative between age and owner occupied housing and age and education level.
 
-The strongest correlations are among income, percentage of population over 65, and 
-percentage of owner occupied housing -- these variables are negatively correlated. 
-Turnout only has a weak correlation with these measures. It is important to 
-note that all of these variables are much more highly correlated with fall 
-turnout than with spring turnout. This provides some evidence that the school 
-board electorate is different than the general election electorate -- a finding 
-previously shown by \citet{oliver12}. 
+% The strongest correlations are among income, percentage of population over 65, and 
+% percentage of owner occupied housing -- these variables are negatively correlated. 
+% Turnout only has a weak correlation with these measures. 
+
+It is important to note that all of these variables are much more highly 
+correlated with fall turnout than with spring turnout. This provides some evidence 
+that the school board electorate is different than the general election 
+electorate -- a finding previously shown by \citet{oliver12}. 
 
 \clearpage
 \section{Methods}
@@ -761,7 +762,7 @@ by voters in school board elections.
 \subsection{Estimation Equations}
 
 In my first set of models I look for evidence that the explanations described in Table 
-\ref{turnoutH} for voter turnout in elections are supported in the data 
+\ref{tab:turnoutH} for voter turnout in elections are supported in the data 
 available on Wisconsin school boards. In the second case, I change my dependent variable to be the distance between the turnout for 
 the school board races in a school district, and the top non-partisan statewide 
 race in the district. In each case, I start with a specification that pools 
@@ -794,7 +795,7 @@ are closer and that this effect should be greater in smaller electorates.
 Thus I include in the $Z_{t}$ vector a measure of the margin of victory. I also 
 include an interaction effect to explore whether or not voters are more likely 
 to turn out for close races in small electorates, where their $P$, probability of 
-deciding the election, is greatest. In a game-theoretic perspective, the smaller electorate would drive turnout because the costs of non-voting can be more easily estimated by voters in small electorates, and the expected benefit of such 
+deciding the election, is greatest. From a rational choice perspective, the smaller electorate would drive turnout because the costs of non-voting can be more easily estimated by voters in small electorates, and the expected benefit of such 
 non-voting is smaller. This interaction model is represented in equation 2. 
 
 \[(2) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{t} + \psi Z_{t} x \lambda S_{t} +
@@ -808,7 +809,8 @@ has been little work explicitly testing the influence of political parties in
 non-partisan school board races, but some evidence that the 
 share of teachers in the electorate is an important driver of turnout and 
 policy change in school board elections \citep{RefWorks:207, 
-RefWorks:218,RefWorks:320}. 
+RefWorks:218,RefWorks:320}. A last model will be fit to include all of the various 
+models above to check for robustness against omitted variables. 
 
 \subsection{Model Specifications}
 \label{subsec:spec}
@@ -913,9 +915,6 @@ results of these tests for all of the models is included in the Appendix \ref{se
 
 \subsection{Computation}
 
-%Demonstrate outliers
-% Talk about penalized maximum likelhood
-% Bayesian and tobit regression options
 
 <<simpleModel, fig.cap="Regression Diagnostics for A Simple Multiple Regression", fig.height=9>>=
 
@@ -941,7 +940,7 @@ results of these tests for all of the models is included in the Appendix \ref{se
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest",
                         "fallTurnout", "VAP_adjLOG", "distid", "districtwide",
                         "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", 
-                        "median_incomeLOG", "minBlaisLago", "incumbent")]
+                        "median_incomeLOG", "minBlaisLago")]
 #moddat <- na.omit(moddat)
 moddat <- subset(moddat, turnout < 0.95,)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -967,20 +966,8 @@ naive1 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq +
                median_incomeLOG + districtwide + minBlaisLago,
              data = moddat)
 
-autoplot(naive1)
-
 @
 
-Diagnostics from the simple pooled linear regression without fixed effects or 
-clustered standard errors are shown in Figure \ref{fig:simpleModel}. The key result 
-here is that there are a number of high leverage 
-observations that appear to be extreme outliers. Additionally, the upper left 
-quadrant of Figure \ref{fig:simpleModel} suggests the presence of some level of 
-heteroskedacticity in the results, a likely result of the clustering and repeated 
-observation features of the dataset. The upper right quadrant shows the QQ plot 
-for this regression model which demonstrates that the model deviates from normality 
-quite substantially. I investigate this further by looking for extreme outliers 
-in the turnout variable. 
 
 <<outlierdetect, results='hide'>>=
 centr <- mean(moddat$turnout)
@@ -988,23 +975,23 @@ stddev <- sd(moddat$turnout)
 moddat$outflag <- (moddat$turnout - centr) / stddev
 @
 
-There are \Sexpr{table(moddat$outflag>5)[[2]]} cases where 
+Due to the suspicion of measurement issues in the key estimate of turnout, I use 
+the approach taken by \citet{berry2} on administrative data and exclude all 
+observations that fall outside of five standard deviations of the normal values 
+for the dependent variable. There are \Sexpr{table(moddat$outflag>5)[[2]]} cases where 
 the value of the dependent variable is more than five standard deviations above 
 the group average. This is less than half of 1\% of the observations and is unlikely 
 to be influential, however, it is also likely that such deviations are due to 
 measurement error either in the VAP denominator or in the aggregation of district 
-board election vote counts themselves. Due to the suspicion of measurement issues 
-in the key estimate of turnout, I use the approach taken by \citet{berry2} on 
-administrative data and exclude all observations that fall outside of five standard 
-deviations of the normal values for the dependent variable. Additionally, I 
-grand-center and rescale all of my continuous variables in order to speed model 
-convergence and avoid computational problems associated with widely varying scales 
-in the underlying data. The coefficients reported in the tables below then can be 
-interpreted as the effect on the dependent variable in standard deviation terms 
-of moving the predictor variable two standard deviations. This standardized 
-regression approach is recommended in multilevel modeling, particularly in cases 
-with underlying predictors with scales that vary by orders of magnitude like in 
-the present case \citep{gelhill}. 
+board election vote counts themselves. Additionally, I grand-center and rescale 
+all of my continuous variables in order to speed model convergence and avoid 
+computational problems associated with widely varying scales in the underlying 
+data. The coefficients reported in the tables below then can be interpreted as 
+the effect on the dependent variable in standard deviation terms of moving the 
+predictor variable two standard deviations. This standardized regression approach 
+is recommended in multilevel modeling, particularly in cases with underlying 
+predictors with scales that vary by orders of magnitude like in the present 
+case \citep{gelhill}. 
 
 \clearpage
 \section{Results}
@@ -1212,7 +1199,7 @@ then this becomes more problematic.
 
 <<closeModRLM, results ='asis'>>=
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", 
-                        "VAP_adjLOG", "distid", "incumbent",
+                        "VAP_adjLOG", "distid", "incumShare",
                         "per_white_all", "per65o", "PerBachelorOrAbove", 
                         "OOH_share", "median_incomeLOG", "districtwide", 
                         "contest", "minBlaisLago")]
@@ -1253,12 +1240,12 @@ closeRLM2 <- ols(turnout ~ VAP_adjLOG + VAP_adjLOG_sq + per_white_all +
 closeRLM2$se <- sqrt(diag(vcov(robcov(closeRLM2, cluster = moddat$distid))))
 closeRLM3 <- ols(turnout ~ VAP_adjLOG + VAP_adjLOG_sq+ per_white_all + 
                   per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-                   districtwide + incumbent + contest * VAP_adjLOG + factor(year) + factor(distid), 
+                   districtwide + incumShare + contest * VAP_adjLOG + factor(year) + factor(distid), 
               data = moddat, x = TRUE, y = TRUE)
 closeRLM3$se <- sqrt(diag(vcov(robcov(closeRLM3, cluster = moddat$distid))))
 closeRLM4 <- ols(turnout ~ VAP_adjLOG + VAP_adjLOG_sq+ minBlaisLago*VAP_adjLOG + per_white_all + 
                   per65o + PerBachelorOrAbove + OOH_share + median_incomeLOG +
-                   districtwide + incumbent + minBlaisLago + factor(year) + factor(distid), 
+                   districtwide + incumShare + minBlaisLago + factor(year) + factor(distid), 
               data = moddat, x = TRUE, y = TRUE)
 closeRLM4$se <- sqrt(diag(vcov(robcov(closeRLM4, cluster = moddat$distid))))
 
@@ -1266,7 +1253,7 @@ closeRLM4$se <- sqrt(diag(vcov(robcov(closeRLM4, cluster = moddat$distid))))
 closeCoefs1 <- c("Intercept", "ln(VAP)", 
                   "$ln(VAP)^{2}$", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                "ln(MedianIncome)", "District-wide", "No Incumbent",
+                "ln(MedianIncome)", "District-wide", "Incumbent Share",
                 "Uncontested Seat", "VAP x Uncontested", 
                  "Blais-Lago", "VAP x Blais-Lago")
 
@@ -1314,14 +1301,14 @@ effect models are largely the same?}
 mixedModclose <- lmer(turnout ~  VAP_adjLOG + VAP_adjLOG_sq +
                      per_white_all + 
                     per65o + PerBachelorOrAbove + OOH_share + 
-                    median_incomeLOG + districtwide + incumbent +
+                    median_incomeLOG + districtwide + incumShare +
                   contest *VAP_adjLOG  + (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
 mixedModcloseB <- lmer(turnout ~  VAP_adjLOG +  VAP_adjLOG_sq + 
                      per_white_all + 
                      per65o + PerBachelorOrAbove + OOH_share + 
-                     median_incomeLOG + districtwide + incumbent + 
+                     median_incomeLOG + districtwide + incumShare + 
                        contest * VAP_adjLOG + 
                    (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
@@ -1329,7 +1316,7 @@ mixedModcloseB <- lmer(turnout ~  VAP_adjLOG +  VAP_adjLOG_sq +
 mixedModcloseC <- lmer(turnout ~  VAP_adjLOG +  VAP_adjLOG_sq + 
                      per_white_all + 
                      per65o + PerBachelorOrAbove + OOH_share + 
-                     median_incomeLOG + districtwide + incumbent + 
+                     median_incomeLOG + districtwide + incumShare + 
                        minBlaisLago * VAP_adjLOG + 
                    (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
@@ -1337,7 +1324,7 @@ mixedModcloseC <- lmer(turnout ~  VAP_adjLOG +  VAP_adjLOG_sq +
 closeCoefs2 <- c("Intercept", "ln(VAP)", 
                   "$ln(VAP)^{2}$", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "No Incumbent", 
+                  "ln(MedianIncome)", "District-wide", "Incumbent Share", 
                  "Uncontested Seat", "VAP x Uncontested", 
                  "Blais-Lago", "VAP x Blais-Lago")
 
@@ -1386,7 +1373,7 @@ previous models in an attempt to find evidence of such an effect.
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", 
                         "VAP_adjLOG", "distid", "per_white_all", "per65o", 
                         "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
-                        "teachShareofVoters", "districtwide", "incumbent",
+                        "teachShareofVoters", "districtwide", "incumShare",
                         "contest", "minBlaisLago")]
 moddat <- na.omit(moddat)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -1432,7 +1419,7 @@ teachRLM2$se <- sqrt(diag(vcov(robcov(teachRLM2, cluster = moddat$distid))))
 teachRLM3 <- ols(turnout ~ teachShareofVoters + turnoutLag2 + 
                    minBlaisLago + VAP_adjLOG +
                    VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + incumbent + 
+                   OOH_share + median_incomeLOG + districtwide + incumShare + 
                    distid + factor(year), 
               data = moddat, x = TRUE, y = TRUE)
 
@@ -1443,7 +1430,7 @@ teachRLM4 <- ols(turnout ~ teachShareofVoters +
                    turnoutLag2 + minBlaisLago + 
                    VAP_adjLOG +  VAP_adjLOG_sq +
                     per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + incumbent + 
+                   OOH_share + median_incomeLOG + districtwide + incumShare + 
                    teachShareofVoters * VAP_adjLOG + factor(year) +
                    distid, 
               data = moddat, x = TRUE, y = TRUE)
@@ -1454,7 +1441,7 @@ teachRLM4$se <- sqrt(diag(vcov(robcov(teachRLM4, cluster = moddat$distid))))
 teachCoefnames <- c("Intercept", "Teacher \\% VAP", "Lag Turnout", 
                  "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "No Incumbent", 
+                  "ln(MedianIncome)", "District-wide", "Incumbent Share", 
                   "Teacher \\% X VAP")
 
 teachTab1 <- apsrtable(teachRLM3, teachRLM4, se="robust", label="tab:teachmods", 
@@ -1499,13 +1486,13 @@ that worries critics of special purpose governments like school districts
 teachCoefnames2 <- c("Intercept", "Teacher \\% VAP",  
                  "Blais-Lago", "Lag Turnout 2", "ln(VAP)", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "No Incumbent",
+                  "ln(MedianIncome)", "District-wide", "Incumbent Share",
                  "Teacher \\% x VAP", "$ln(VAP)^{2}$")
 # what happens if I cut out lags
 
 mixedModteach <- lmer(turnout ~ teachShareofVoters +  minBlaisLago +  turnoutLag2 + 
                     VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide +  incumbent +
+                   OOH_share + median_incomeLOG + districtwide +  incumShare +
                    teachShareofVoters * VAP_adjLOG + (1|year) +  (1|distid), 
               data = moddat, REML = TRUE)
 
@@ -1513,7 +1500,7 @@ mixedModteachB <- lmer(turnout ~ teachShareofVoters +
                    turnoutLag2 + minBlaisLago + 
                    VAP_adjLOG +  VAP_adjLOG_sq +
                     per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + incumbent + 
+                   OOH_share + median_incomeLOG + districtwide + incumShare + 
                    teachShareofVoters * VAP_adjLOG + 
                          (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
@@ -1556,7 +1543,7 @@ they are non-partisan the party leadership has little incentive to prioritize th
 #TODO: Fix this -- make it the division between two-party share of these
 dist_turn$fallPartyDivision <- abs(dist_turn$fallTwoPartyShareDem - 0.5)
 
-moddat <- dist_turn[, c("turnout", "year", "fallTurnout", "incumbent",
+moddat <- dist_turn[, c("turnout", "year", "fallTurnout", "incumShare",
                         "VAP_adjLOG", "distid", "per_white_all", "per65o", 
                         "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
                         "fallTwoPartyShareDem", "fallPartyDivision", 
@@ -1588,7 +1575,7 @@ options(datadist="dd")
 partyRLM1 <- ols(turnout ~ fallTurnout + minBlaisLago + 
                     VAP_adjLOG + VAP_adjLOG_sq  + per_white_all + per65o + 
                    PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-                   districtwide + incumbent + fallPartyDivision + year + distid,
+                   districtwide + incumShare + fallPartyDivision + year + distid,
               data = moddat, x= TRUE, y = TRUE)
 
 partyRLM1$se <- sqrt(diag(vcov(robcov(partyRLM1, cluster = moddat$distid))))
@@ -1596,7 +1583,7 @@ partyRLM1$se <- sqrt(diag(vcov(robcov(partyRLM1, cluster = moddat$distid))))
 
 partyRLM2 <- ols(turnout ~ fallTwoPartyShareDem + fallTurnout + minBlaisLago + 
                     VAP_adjLOG + VAP_adjLOG_sq + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + incumbent + 
+                   OOH_share + median_incomeLOG + districtwide + incumShare + 
                    distid + factor(year), 
               data = moddat, x = TRUE, y = TRUE)
 
@@ -1605,7 +1592,7 @@ partyRLM2$se <- sqrt(diag(vcov(robcov(partyRLM2, cluster = moddat$distid))))
 partyRLM3 <- ols(turnout ~ fallPartyDivision*VAP_adjLOG + fallTurnout + minBlaisLago + 
                     VAP_adjLOG + VAP_adjLOG_sq+ per_white_all + per65o + 
                    PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-                   districtwide + incumbent + year + distid,
+                   districtwide + incumShare + year + distid,
               data = moddat, x= TRUE, y = TRUE)
 
 partyRLM3$se <- sqrt(diag(vcov(robcov(partyRLM3, cluster = moddat$distid))))
@@ -1613,7 +1600,7 @@ partyRLM3$se <- sqrt(diag(vcov(robcov(partyRLM3, cluster = moddat$distid))))
 
 partyRLM4 <- ols(turnout ~ fallTwoPartyShareDem*VAP_adjLOG + fallTurnout + minBlaisLago + 
                     VAP_adjLOG + VAP_adjLOG_sq+ per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + incumbent + 
+                   OOH_share + median_incomeLOG + districtwide + incumShare + 
                    distid + factor(year), 
               data = moddat, x = TRUE, y = TRUE)
 
@@ -1622,7 +1609,7 @@ partyRLM4$se <- sqrt(diag(vcov(robcov(partyRLM4, cluster = moddat$distid))))
 partyCoefNames <- c("Intercept", "Fall Turnout", 
                  "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "No Incumbent", 
+                  "ln(MedianIncome)", "District-wide", "Incumbent Share", 
                   "Fall Party Divide", "Fall 2 Party Dem.", 
                  "Party Division x VAP", 
                  "2 Party Dem x VAP")
@@ -1645,14 +1632,14 @@ partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4, se="robust"
 partyCoefNames2 <- c("Intercept", "Fall Party Divide", "Fall Turnout", 
                  "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "No Incumbent", 
+                  "ln(MedianIncome)", "District-wide", "Incumbent Share", 
                  "Party Division x VAP", 
                  "Fall 2 Party Dem.", "$2 Party Dem^{2}$","2 Party Dem x VAP")
 
 mixedModP <- lmer(turnout ~ fallPartyDivision + fallTurnout + minBlaisLago + 
                     VAP_adjLOG + VAP_adjLOG_sq +per_white_all + per65o + 
                    PerBachelorOrAbove + OOH_share + median_incomeLOG + 
-                   districtwide + incumbent + fallPartyDivision * VAP_adjLOG + 
+                   districtwide + incumShare + fallPartyDivision * VAP_adjLOG + 
                     (1|distid) + (1|year), 
               data = moddat, REML = TRUE)
 
@@ -1661,7 +1648,7 @@ mixedModPb <- lmer(turnout ~ VAP_adjLOG + VAP_adjLOG_sq + fallTwoPartyShareDem +
                      fallTurnout + 
                      minBlaisLago + 
                     VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + incumbent +
+                   OOH_share + median_incomeLOG + districtwide + incumShare +
                      fallTwoPartyShareDem * VAP_adjLOG +
                      (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
@@ -1711,7 +1698,7 @@ dist_turn <- merge(dist_turn, springVotes,
 dist_turn$topTicketTurnoutSpring <- dist_turn$votesTopTicketSpring / dist_turn$VAP_adj
 dist_turn$turnoutDiff <- dist_turn$topTicketTurnoutSpring - dist_turn$turnout
 
-vars2 <- c("turnout", "turnoutLag2", "year", "fallTurnout", "incumbent",
+vars2 <- c("turnout", "turnoutLag2", "year", "fallTurnout", "incumShare",
                         "VAP_adjLOG", "distid", "per_white_all", "per65o", 
                         "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
                         "teachShareofVoters", "districtwide", 
@@ -1776,7 +1763,7 @@ elections elsewhere \citep{streb09,wattenberg00}.
 undervoteMMlag <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + 
                          VAP_adjLOG + VAP_adjLOG_sq + per_white_all + 
                          per65o + PerBachelorOrAbove + OOH_share + 
-                         median_incomeLOG + districtwide + incumbent +
+                         median_incomeLOG + districtwide + incumShare +
                          ImputedFlag + minBlaisLago + 
                          (1|year) + (1|distid), 
               data = moddat, REML = FALSE)
@@ -1784,7 +1771,7 @@ undervoteMMclose <- lmer(turnoutDiff ~  minBlaisLago + VAP_adjLOG + fallTurnout 
                            VAP_adjLOG_sq + per_white_all + 
                     per65o + PerBachelorOrAbove + OOH_share + 
                       ImputedFlag + minBlaisLago * VAP_adjLOG +
-                    median_incomeLOG + districtwide + incumbent +
+                    median_incomeLOG + districtwide + incumShare +
                     (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMcloseB <- lmer(turnoutDiff ~ VAP_adjLOG +  VAP_adjLOG_sq + 
@@ -1792,28 +1779,28 @@ undervoteMMcloseB <- lmer(turnoutDiff ~ VAP_adjLOG +  VAP_adjLOG_sq +
                      VAP_adjLOG + per_white_all + 
                      per65o + PerBachelorOrAbove + OOH_share + 
                        ImputedFlag +
-                     median_incomeLOG + districtwide + contest + incumbent + 
+                     median_incomeLOG + districtwide + contest + incumShare + 
                        contest * VAP_adjLOG + 
                    (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMteach <- lmer(turnoutDiff ~ teachShareofVoters + fallTurnout + 
                            minBlaisLago + VAP_adjLOG + VAP_adjLOG_sq +
                            per_white_all + per65o + PerBachelorOrAbove +
-                  OOH_share + median_incomeLOG + districtwide + incumbent +
+                  OOH_share + median_incomeLOG + districtwide + incumShare +
                     ImputedFlag+  
                    teachShareofVoters * VAP_adjLOG + (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMparty <- lmer(turnoutDiff ~ fallTwoPartyShareDem*VAP_adjLOG + VAP_adjLOG_sq +
                            fallTurnout + minBlaisLago +
                   VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide + incumbent +
+                   OOH_share + median_incomeLOG + districtwide + incumShare +
                     ImputedFlag + 
                       (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 undervoteMMpartyB <- lmer(turnoutDiff ~ fallPartyDivision*VAP_adjLOG +  VAP_adjLOG_sq+ 
                            fallTurnout + minBlaisLago +
                   VAP_adjLOG + per_white_all + per65o + PerBachelorOrAbove +
-                   OOH_share + median_incomeLOG + districtwide +incumbent +
+                   OOH_share + median_incomeLOG + districtwide +incumShare +
                     ImputedFlag +
                       (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
@@ -1821,7 +1808,7 @@ undervoteMMpartyB <- lmer(turnoutDiff ~ fallPartyDivision*VAP_adjLOG +  VAP_adjL
 coefNamesUnd1 <- c("Intercept", "Turnout Lag (2)","Fall Turnout", 
                  "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "No Incumbent","Imputed",
+                  "ln(MedianIncome)", "District-wide", "Incumbent Share","Imputed",
                  "Blais-Lago", "Blais-Lago x VAP", 
                  "Uncontested Seat", "Uncon. Seat. x VAP")
 
@@ -1859,7 +1846,7 @@ more rolloff for school board races.
 coefNamesUnd2 <- c("Intercept", "Teacher Share VAP", "Fall Turnout", 
                    "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
-                  "ln(MedianIncome)", "District-wide", "No Incumbent","Imputed", 
+                  "ln(MedianIncome)", "District-wide", "Incumbent Share","Imputed", 
                  "Teacher Share x VAP", "Fall Dem.", "Fall Dem. X VAP", 
                  "Fall Partisan", "Fall Partisan x VAP")
 apsrtable(undervoteMMteach, undervoteMMparty, undervoteMMpartyB,
