@@ -425,6 +425,19 @@ easyPredCI <- function(model, newdata, alpha=0.05, re = NULL) {
                 yhat = pred0))
 }
 
+RMSE.merMod <- function(mod){
+  # Express RMSE as percentage of dependent variable range
+  dvRange <- max(mod@frame[, 1]) - min(mod@frame[, 1])
+  RMSE <- sqrt(mean(residuals(mod)^2))
+  return(RMSE/dvRange)
+}
+
+bootRMSE <- function(data, indx, model){
+  moddat <- data[indx, ]
+  modb <- eval(model@call)
+  RMSE.merMod(modb)
+}
+
 ### Boot CI for merMod
 # set.seed(101)
 # bb <- bootMer(fullmodMMni,

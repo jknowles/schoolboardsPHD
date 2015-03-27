@@ -299,3 +299,16 @@ dist_turn$partyDivisionRecent <- abs(0.5 - dist_turn$recentTwoPartyShareDem)
 dist_turn$incumRun <- ifelse(dist_turn$ninc > 0, 1, 0)
 dist_turn$incumShare <- dist_turn$ninc / (dist_turn$nrealcand)
 dist_turn$onlyIncum <- ifelse(dist_turn$incumShare == 1, 1, 0)
+
+
+dist_turn$teachShareofVoters2 <- round(dist_turn$FTE_TEACH, 0) / round(dist_turn$voters, 0)
+dist_turn$teachShareofVoters2[dist_turn$teachShareofVoters2 > 0.7 & 
+                                !is.na(dist_turn$teachShareofVoters2)] <- 0.7
+
+# -------------
+# Board size
+
+load("data/cache/boardSize.rda")
+dist_turn <- merge(dist_turn, boardSize, by.x = c("distid", "year"), 
+                   by.y = c("agency", "year"), all.x=TRUE)
+rm(boardSize)
