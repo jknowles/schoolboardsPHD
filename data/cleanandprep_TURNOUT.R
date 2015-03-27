@@ -301,9 +301,9 @@ dist_turn$incumShare <- dist_turn$ninc / (dist_turn$nrealcand)
 dist_turn$onlyIncum <- ifelse(dist_turn$incumShare == 1, 1, 0)
 
 
-dist_turn$teachShareofVoters2 <- round(dist_turn$FTE_TEACH, 0) / round(dist_turn$voters, 0)
-dist_turn$teachShareofVoters2[dist_turn$teachShareofVoters2 > 0.7 & 
-                                !is.na(dist_turn$teachShareofVoters2)] <- 0.7
+dist_turn$teachShareofVoters2 <- round(dist_turn$FTE_TEACH, 0) / round(dist_turn$votersLag2, 0)
+dist_turn$teachShareofVoters2[dist_turn$teachShareofVoters2 > 0.46 & 
+                                !is.na(dist_turn$teachShareofVoters2)] <- 0.46
 
 # -------------
 # Board size

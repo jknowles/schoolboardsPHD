@@ -484,13 +484,25 @@ a statewide electorate and little chance for influence by individual voters.}
 
 <<turnoutSize, echo=FALSE, fig.cap="Turnout in School Board Elections based on Electorate Size">>=
 plotdf <- dist_turn[dist_turn$turnout < 0.95, c("year", "VAP_adj", "turnout")]
-
+plotdf <- na.omit(plotdf)
 qplot(VAP_adj, turnout, data = na.omit(plotdf)) + facet_wrap(~year) + 
   geom_smooth(se = TRUE, method = "rlm") + theme_dpi() + 
   scale_y_continuous(label = percent) + 
   scale_x_log10(label = comma)+
   labs(x = "Voting Age Population (log-scale)", y = "School Board Turnout", 
        title = "Comparing Turnout and Size of Electorate")
+
+plotdf2 <- ddply(plotdf, .(year), summarize, 
+                 corLow = cor.test(VAP_adj, turnout)$conf.int[1], 
+      cor = cor.test(VAP_adj, turnout)$estimate, 
+      corHi = cor.test(VAP_adj, turnout)$conf.int[2])
+
+ggplot(plotdf2, aes(x = factor(year), 
+                    ymin = corLow, ymax = corHi, y = cor)) + 
+  geom_pointrange() + 
+  geom_hline(yintercept = 0,  color = I("red"), linetype = 4) + 
+  theme_dpi() + labs(x = "Year", y = "Correlation Coefficient")
+
 @
 
 
@@ -573,6 +585,18 @@ qplot(minBlaisLago, turnout, data = plotdf) +
   labs(y = "Turnout in School Board Elections", 
        x = "Blais-Lago Quotient",
        title = "Turnout and Competitiveness in School Board Elections") 
+ 
+# plotdf2 <- ddply(plotdf, .(year), summarize, 
+#                  corLow = cor.test(minBlaisLago, turnout)$conf.int[1], 
+#       cor = cor.test(minBlaisLago, turnout)$estimate, 
+#       corHi = cor.test(minBlaisLago, turnout, )$conf.int[2])
+# 
+# ggplot(plotdf2, aes(x = factor(year), 
+#                     ymin = corLow, ymax = corHi, y = cor)) + 
+#   geom_pointrange() + 
+#   geom_hline(yintercept = 0,  color = I("red"), linetype = 4) + 
+#   theme_dpi() + labs(x = "Year", y = "Correlation Coefficient")
+
 
 @
 
@@ -608,10 +632,10 @@ qplot(turnoutLag2, turnout, data = na.omit(plotdf)) +
 
 <<unionInf, echo=FALSE, fig.cap="Turnout in School Board Elections based on School Staff Share">>=
 
-plotdf <- dist_turn[dist_turn$year > 2004, c("year", "teachShareofVoters", "turnout")]
+plotdf <- dist_turn[dist_turn$year > 2004, c("year", "teachShareofVoters2", "turnout")]
 plotdf <- na.omit(plotdf)
 
-qplot(teachShareofVoters, turnout, 
+qplot(teachShareofVoters2, turnout, 
       data = plotdf) + 
   geom_smooth(method="rlm") + theme_dpi() +
   facet_wrap(~year)+ 
@@ -620,6 +644,16 @@ qplot(teachShareofVoters, turnout,
   labs(x = "Teacher FTE as Share of VAP", y = "School Board Turnout", 
        title = "Turnout to Staff Share of School Board Electorate")
 
+plotdf2 <- ddply(plotdf, .(year), summarize, 
+                 corLow = cor.test(teachShareofVoters2, turnout)$conf.int[1], 
+      cor = cor.test(teachShareofVoters2, turnout)$estimate, 
+      corHi = cor.test(teachShareofVoters2, turnout, )$conf.int[2])
+
+ggplot(plotdf2, aes(x = factor(year), 
+                    ymin = corLow, ymax = corHi, y = cor)) + 
+  geom_pointrange() + 
+  geom_hline(yintercept = 0,  color = I("red"), linetype = 4) + 
+  theme_dpi() + labs(x = "Year", y = "Correlation Coefficient")
 @
 
 
@@ -638,13 +672,14 @@ This comparison illustrates how large of a voting block a cohesive teacher union
 might estimate they possess based on the number of votes cast in previous elections.}
 The relationship shown in Figure \ref{fig:unionInf} is not what theory would expect. 
 Here a higher teacher share of the prior school board turnout is associated with depressed turnout rates, instead of elevated turnout. The average correlation across years is 
-\Sexpr{iNum2(cor(dist_turn$teachShareofVoters, dist_turn$turnout, use = "pairwise.complete.obs"))}. 
+\Sexpr{iNum2(cor(dist_turn$teachShareofVoters2, dist_turn$turnout, use = "pairwise.complete.obs"))}. 
 I will pursue this finding further with statistical models, 
 but it is worth noting that there may be limits on the impact social groups can have 
 on driving up turnout before they capture the electorate and thus reduce competitiveness 
 and turnout. In fact, for \citet{RefWorks:207} this would represent the ideal condition 
-for a union, freeing their members from the need to be politically active and influencing 
-the school board through the candidate recruitment and nomination process instead. 
+for a union, freeing their members from the need to be politically active and 
+influencing the school board through the candidate recruitment and nomination 
+process instead. 
 
 % Here rewrite
 % TODO: Fix paragraph about competitiveness
@@ -722,7 +757,7 @@ qplot(x=X1, y=X2, data=cormat, fill=value2, geom="tile", color = I("gray40")) +
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
   geom_text(aes(label = value), size = 2) + nopanel + 
-  labs(x = "", y = "")
+  labs(x = "", y = "") + theme(legend.position = "none")
 
 @
 
