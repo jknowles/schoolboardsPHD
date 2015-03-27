@@ -157,42 +157,6 @@ dist_turn <- merge(dist_turn, dist_turn.tmp)
 rm(dist_turn.tmp)
 dist_turn <- merge(dist_turn, distAttr, by = c("distid", "year"))
 
-cand.tmp <- dat[dat$candidateid!=99 & dat$electiontype==1, ]
-votes.tmp <- merge(cand.tmp, as.data.frame(races)[races$nwins >0, c("raceid2", "votes", 
-                                                                    "districtwide", "ninc",
-                                                                    "nminor","nwins", "ncand",
-                                                                    "nrealcand")], 
-                   by = c("raceid2"), suffixes = c(".cand", ".race"))
-
-votes.tmp$vote_share <- votes.tmp$votes.cand / votes.tmp$votes.race
-votes.tmp$vote_share[is.na(votes.tmp$vote_share)] <- 0
-plotdf2 <- as.data.table(votes.tmp)[, list(cand = .N, 
-                                           distid = distid[1],
-                                           year = year[1],
-                                           winners = sum(winner),
-                                           votescast = sum(votes.cand),
-                                           winshare = sum(vote_share[winner ==1]),
-                                           winmargin = sum(vote_share[winner == 1]) - sum(vote_share[winner == 0]),
-                                           winmargin2 = mean(vote_share[winner==1]) - mean(vote_share[winner == 0])), 
-                                    by = c("raceid2")]
-plotdf2$winmargin3 <- plotdf2$winshare - (1/plotdf2$cand * plotdf2$winners)
-plotdf2$winmargin3[plotdf2$cand == plotdf2$winners] <- .5
-
-plotdf2$closeRace <- 0
-plotdf2$closeRace[plotdf2$winmargin2 < .15] <- 1
-
-errors <- subset(plotdf2, winmargin < 0)
-
-plot.tmp <- ddply(plotdf2, .(distid, year), summarise, 
-                  races = length(distid), 
-                  closeRaces = sum(closeRace))
-
-
-dist_turn <- merge(dist_turn, plot.tmp, all.x=TRUE)
-rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
-
-dist_turn$CLOSE <- factor(ifelse(dist_turn$closeRaces >0, "Competitive", "Not Competitive"))
-
 source("data/cleanandprep_DPIADMIN.R")
 
 dist_turn$DISTID <- FORMATdistid(dist_turn$distid)

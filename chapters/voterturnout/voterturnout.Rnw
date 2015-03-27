@@ -492,6 +492,8 @@ qplot(VAP_adj, turnout, data = na.omit(plotdf)) + facet_wrap(~year) +
   labs(x = "Voting Age Population (log-scale)", y = "School Board Turnout", 
        title = "Comparing Turnout and Size of Electorate")
 
+detach("package:plyr")
+library(plyr)
 plotdf2 <- ddply(plotdf, .(year), summarize, 
                  corLow = cor.test(VAP_adj, turnout)$conf.int[1], 
       cor = cor.test(VAP_adj, turnout)$estimate, 
@@ -954,7 +956,8 @@ results of these tests for all of the models is included in the Appendix \ref{se
 <<simpleModel, results='hide'>>=
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest",
                         "fallTurnout", "VAP_adjLOG", "distid", "districtwide",
-                        "per_white_all", "per65o", "PerBachelorOrAbove", "OOH_share", 
+                        "per_white_all", "per65o", "PerBachelorOrAbove", 
+                        "OOH_share", 
                         "median_incomeLOG", "minBlaisLago")]
 #moddat <- na.omit(moddat)
 moddat <- subset(moddat, turnout < 0.95,)
@@ -1509,42 +1512,42 @@ that worries critics of special purpose governments like school districts
 \begin{tiny}
 <<teachInfMM, results='asis'>>=
 teachCoefnames2 <- c("Intercept", "Teacher \\% VAP",  
-                 "Blais-Lago", "Lag Turnout 2", "ln(VAP)",  "$ln(VAP)^{2}$", 
+                 "Blais-Lago",  "ln(VAP)",  "$ln(VAP)^{2}$", 
                   "\\% White", "\\% Over 65", "\\% Bach. +", "\\% OOH", 
                   "ln(MedianIncome)", "District-wide", "Incumbent Share",
                  "Teacher \\% x VAP", "Teacher \\% of SB Vote", 
-                 "Teacher \\% of SB X VAP")
+                 "Teacher \\% of SB X Inc Share")
 # what happens if I cut out lags
 
-mixedModteach <- lmer(turnout ~ teachShareofVoters +  minBlaisLago +  turnoutLag2 + 
+mixedModteach <- lmer(turnout ~ teachShareofVoters +  minBlaisLago +   
                     VAP_adjLOG + VAP_adjLOG_sq + per_white_all + per65o + 
                       PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide +  incumShare +
-                   teachShareofVoters * VAP_adjLOG + (1|year) +  (1|distid), 
+                   teachShareofVoters + (1|year) +  (1|distid), 
               data = moddat, REML = TRUE)
 
 mixedModteachB <- lmer(turnout ~ teachShareofVoters +  
-                   turnoutLag2 + minBlaisLago + 
+                    minBlaisLago + 
                    VAP_adjLOG +  VAP_adjLOG_sq +
                     per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide + incumShare + 
-                   teachShareofVoters * VAP_adjLOG + 
+                   teachShareofVoters * incumShare + 
                          (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
-mixedModteachC <- lmer(turnout ~ teachShareofVoters2 +  minBlaisLago +  turnoutLag2 + 
+mixedModteachC <- lmer(turnout ~ teachShareofVoters2 +  minBlaisLago +  
                     VAP_adjLOG + VAP_adjLOG_sq + 
                       per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide +  incumShare +
-                   teachShareofVoters2 * VAP_adjLOG + (1|year) +  (1|distid), 
+                   teachShareofVoters2  + (1|year) +  (1|distid), 
               data = moddat, REML = TRUE)
 
 mixedModteachD <- lmer(turnout ~ teachShareofVoters2 +  
-                   turnoutLag2 + minBlaisLago + 
+                    minBlaisLago + 
                    VAP_adjLOG +  VAP_adjLOG_sq +
                     per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide + incumShare + 
-                   teachShareofVoters2 * VAP_adjLOG + 
+                   teachShareofVoters2 * incumShare + 
                          (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
