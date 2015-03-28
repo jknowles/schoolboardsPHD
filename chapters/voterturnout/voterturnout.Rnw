@@ -1955,12 +1955,9 @@ I prefer an estimate of the predictive power of the model for the observations
 in the sample. To assess this, I use a boostrapped estimate of the Root Mean Squared 
 Error (RMSE) to demonstrate how close the predicted values are to the fitted values across 
 models across many resamples of the data. All of the models fit relatively well. 
-Figure \ref{fig:modFitplot1} demonstrates how the multilevel model improves on 
-the pooled fixed effect model fit by showing the original data, predicted values, 
-and predicted values under the fixed effect model for the model of competitiveness 
-predicting turnout.
 
-<<modFitplot1, eval = TRUE, fig.cap="Comparing Model Fit for Competitiveness Model. Black represents observed value, purple represents fixed effect estimate, and the red dots are the estimate from the full model.">>=
+
+<<modFitplot1, eval = TRUE, fig.scap="Comparing Model Fit for Competitiveness Model", fig.cap="Comparing Model Fit for Competitiveness Model. Black represents observed value, purple represents fixed effect estimate, and the red dots are the estimate from the full model.">>=
 library(broom)
 plotdf <- augment(mixedModcloseC)
 plotdf$yUnscale <- (plotdf$turnout * 2 * moddatScaleClose["turnout", 2]) + 
@@ -1978,7 +1975,7 @@ plotInt <- coefficients(lm(yUnscale ~ x1Unscale, data = plotdf))[1]
 cases <- sample(unique(plotdf$distid), 12)
 plotdf <- plotdf[plotdf$distid %in% cases, ]
 
-ggplot(plotdf, aes(x = year, y = yUnscale/100)) +
+modelFitexamplePlot <- ggplot(plotdf, aes(x = year, y = yUnscale/100)) +
          geom_line(aes(group = distid), linetype = 2) + 
   geom_point(aes(x = year, y = yhatFixed/100), color = I("purple")) +
   geom_point(aes(x = year, y = yhatUnscale/100), color = I("red")) + 
@@ -2033,54 +2030,79 @@ ggplot(plotdf, aes(x = x1Unscale, y = yUnscale)) +
 <<bootRMSE, results='hide', cache=TRUE>>=
 library(boot)
 
-sigmaBoot <- boot(mixedModP@frame, bootRMSE, R = 100, model = mixedModP)
-out <- cbind(summary(sigmaBoot), mod  = "mixedmodP")
-sigmaBoot <- boot(mixedModlags@frame, bootRMSE, R = 100, model = mixedModlags)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModlags"))
-sigmaBoot <- boot(mixedMod1lagsb@frame, bootRMSE, R = 100, model = mixedMod1lagsb)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedMod1lagsb"))
-sigmaBoot <- boot(mixedModcloseC@frame, bootRMSE, R = 100, model = mixedModcloseC)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModcloseC"))
-sigmaBoot <- boot(mixedModclose@frame, bootRMSE, R = 100, model = mixedModclose)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModclose"))
-sigmaBoot <- boot(mixedModcloseB@frame, bootRMSE, R = 100, model = mixedModcloseB)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModcloseB"))
-sigmaBoot <- boot(mixedModteach@frame, bootRMSE, R = 100, model = mixedModteach)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModteach"))
-sigmaBoot <- boot(mixedModteachB@frame, bootRMSE, R = 100, model = mixedModteachB)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModteachB"))
-sigmaBoot <- boot(mixedModPb@frame, bootRMSE, R = 100, model = mixedModPb)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModPb"))
+sigmaBoot <- boot(mixedModP@frame, bootRMSE, R = 150, model = mixedModP)
+out <- cbind(summary(sigmaBoot), mod  = "Party Division")
+# sigmaBoot <- boot(mixedModlags@frame, bootRMSE, R = 150, model = mixedModlags)
+# out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModlags"))
+sigmaBoot <- boot(mixedMod1lagsb@frame, bootRMSE, R = 150, model = mixedMod1lagsb)
+out <- rbind(out, cbind(summary(sigmaBoot), mod  = "Habit"))
+# sigmaBoot <- boot(mixedModcloseC@frame, bootRMSE, R = 150, model = mixedModcloseC)
+# out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModcloseC"))
+sigmaBoot <- boot(mixedModclose@frame, bootRMSE, R = 150, model = mixedModclose)
+out <- rbind(out, cbind(summary(sigmaBoot), mod  = "Blais-Lago"))
+# sigmaBoot <- boot(mixedModcloseB@frame, bootRMSE, R = 100, model = mixedModcloseB)
+# out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModcloseB"))
+# sigmaBoot <- boot(mixedModteach@frame, bootRMSE, R = 150, model = mixedModteach)
+# out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModteach"))
+sigmaBoot <- boot(mixedModteachD@frame, bootRMSE, R = 150, model = mixedModteachD)
+out <- rbind(out, cbind(summary(sigmaBoot), mod  = "Teach. Infl."))
+# sigmaBoot <- boot(mixedModPb@frame, bootRMSE, R = 150, model = mixedModPb)
+# out <- rbind(out, cbind(summary(sigmaBoot), mod  = "mixedModPb"))
 
-rmsePlot1 <- ggplot(out, aes(x = mod, y = bootMed, ymax = bootMed + (bootSE *2), 
-                ymin = bootMed - (bootSE *2))) + 
-  geom_pointrange() + geom_point(aes(x = mod, y = original), color = I("red")) + 
-  labs(x = "Model Name", y = "Model RMSE", title = "Turnout Models") + 
-  coord_flip() + theme_dpi()
+rmsePlot1 <- ggplot(out, aes(x = mod, y = bootMed)) + 
+  geom_bar(stat='identity', width = .5) + 
+  geom_errorbar(aes(ymin = bootMed - bootSE, ymax = bootMed + bootSE), 
+                width = .2) + theme_dpi() + 
+  geom_point(aes(y = original, x = mod), color = I("red")) + 
+  labs(x = "Model Name", y = "Mean Model Error in Std. Dev.", 
+       title = "Turnout Models") 
+# 
+# ggplot(out, aes(x = mod, y = bootMed, ymax = bootMed + (bootSE *2), 
+#                 ymin = bootMed - (bootSE *2))) + 
+#   geom_pointrange() + geom_point(aes(x = mod, y = original), color = I("red")) + 
+#   labs(x = "Model Name", y = "Mean Model Error in Standard Deviations", 
+#        title = "Turnout Models") + 
+#   scale_y_continuous(label = percent) + 
+#   coord_flip() + theme_dpi()
 @
 
 <<bootRMSE2, results='hide', cache=TRUE>>=
-sigmaBoot <- boot(undervoteMMclose@frame, bootRMSE, R = 100, model = undervoteMMclose)
-out <- cbind(summary(sigmaBoot), mod  = "undervoteMMclose")
-sigmaBoot <- boot(undervoteMMlag@frame, bootRMSE, R = 100, model = undervoteMMlag)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "undervoteMMlag"))
-sigmaBoot <- boot(undervoteMMparty@frame, bootRMSE, R = 100, model = undervoteMMparty)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "undervoteMMparty"))
-sigmaBoot <- boot(undervoteMMpartyB@frame, bootRMSE, R = 100, model = undervoteMMpartyB)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "undervoteMMpartyB"))
-sigmaBoot <- boot(undervoteMMteach@frame, bootRMSE, R = 100, model = undervoteMMteach)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "undervoteMMteach"))
-sigmaBoot <- boot(undervoteMMteachB@frame, bootRMSE, R = 100, model = undervoteMMteachB)
-out <- rbind(out, cbind(summary(sigmaBoot), mod  = "undervoteMMteachB"))
+sigmaBoot <- boot(undervoteMMclose@frame, bootRMSE, R = 150, model = undervoteMMclose)
+out <- cbind(summary(sigmaBoot), mod  = "Blais-Lago")
+sigmaBoot <- boot(undervoteMMlag@frame, bootRMSE, R = 150, model = undervoteMMlag)
+out <- rbind(out, cbind(summary(sigmaBoot), mod  = "Habit"))
+sigmaBoot <- boot(undervoteMMparty@frame, bootRMSE, R = 150, model = undervoteMMparty)
+out <- rbind(out, cbind(summary(sigmaBoot), mod  = "% Democrat"))
+sigmaBoot <- boot(undervoteMMpartyB@frame, bootRMSE, R = 150, model = undervoteMMpartyB)
+out <- rbind(out, cbind(summary(sigmaBoot), mod  = "Party Division"))
+sigmaBoot <- boot(undervoteMMteach@frame, bootRMSE, R = 150, model = undervoteMMteach)
+out <- rbind(out, cbind(summary(sigmaBoot), mod  = "Teach. Infl."))
+# sigmaBoot <- boot(undervoteMMteachB@frame, bootRMSE, R = 150, model = undervoteMMteachB)
+# out <- rbind(out, cbind(summary(sigmaBoot), mod  = "undervoteMMteachB"))
 
-rmsePlot2 <- ggplot(out, aes(x = mod, y = bootMed, ymax = bootMed + (bootSE *2), 
-                ymin = bootMed - (bootSE *2))) + 
-  geom_pointrange() + geom_point(aes(x = mod, y = original), color = I("red")) + 
-  labs(x = "Model Name", y = "Model RMSE", title = "Rolloff Models") + 
-  coord_flip() + theme_dpi()
+rmsePlot2 <- ggplot(out, aes(x = mod, y = bootMed)) + 
+  geom_bar(stat='identity', width = .5) + 
+  geom_errorbar(aes(ymin = bootMed - bootSE, ymax = bootMed + bootSE), 
+                width = .2) + theme_dpi() + 
+  geom_point(aes(y = original, x = mod), color = I("red")) + 
+  labs(x = "Model Name", y = "Mean Model Error in Std. Dev.", 
+       title = "Rolloff Models") 
 @
 
 
+The RMSE here is standardized to represent the percentage of the standard deviation 
+of the dependent variable the average observation is mis-predicted. A lower figure is 
+better. The red points represent the non-bootstrapped error and the black point 
+and line represent the bootstrapped RMSE plus or minus two standard deviations 
+of all of the resampled RMSE values. Overall the rolloff models perform better 
+than the turnout models, but none of the models are significantly better fitting 
+than any of the others within each dependent variable. 
+
+<<printRMSEplot, fig.scap="Comparing Model Fit Across Variables", fig.cap="Figures show the bootstrapped root mean square error (RMSE) of competing models across 150 bootstrapped replications along with a confidence interval. The fit from the original model is marked by a point. A lower RMSE corresponds to a more accurate prediction and better explanation of the dependent variable.", fig.height=4,fig.width=8>>==
+grid.arrange(rmsePlot1, rmsePlot2)
+@
+
+%TODO: cut out substantive effect plots
 \subsection{Substantive Effects}
 
 After finding evidence in favor of voters behaving as theory might expect, I now 
@@ -2121,6 +2143,7 @@ grouping variables have on turnout and rolloff.
 % \item Boards self identify as moderate or conservative, only 1 in 5 self-identify as liberal 
 % \end{itemize} \vspace{-4mm}
 
+% TODO: Fix this table
 
 \renewcommand\arraystretch{1.4}
 \begin{table}[h!]
@@ -2920,21 +2943,15 @@ Sensitivity checks and further table analysis.
 
 \subsection{Model Fit Comparisons}
 
-The RMSE here is standardized to represent the percentage of the range of the 
-dependent variable the average observation is mis-predicted. A lower figure is 
-better. The red points represent the non-bootstrapped error and the black point 
-and line represent the bootstrapped RMSE plus or minus two standard deviations 
-of all of the resampled RMSE values. Overall the rolloff models perform better 
-than the turnout models, but none of the models are significantly better fitting 
-than any of the others within each dependent variable. 
+Figure \ref{fig:ModFitExamp} demonstrates how the multilevel model improves on 
+the pooled fixed effect model fit by showing the original data, predicted values, 
+and predicted values under the fixed effect model for the model of competitiveness 
+predicting turnout.
 
-<<rmsePlot1, fig.cap="Bootstrapped RMSE for Various Models of School Board Turnout">>=
-rmsePlot1
+<<ModFitExamp, fig.cap="Bootstrapped RMSE for Various Models of School Board Turnout">>=
+modelFitexamplePlot
 @
 
-<<rmsePlot2, fig.cap="Bootstrapped RMSE for Various Models of School Board Rolloff">>=
-rmsePlot2
-@
 
 \clearpage
 

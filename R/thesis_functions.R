@@ -427,9 +427,9 @@ easyPredCI <- function(model, newdata, alpha=0.05, re = NULL) {
 
 RMSE.merMod <- function(mod){
   # Express RMSE as percentage of dependent variable range
-  dvRange <- max(mod@frame[, 1]) - min(mod@frame[, 1])
+  dvSD <- sd(mod@frame[, 1])
   RMSE <- sqrt(mean(residuals(mod)^2))
-  return(RMSE/dvRange)
+  return(RMSE/dvSD)
 }
 
 bootRMSE <- function(data, indx, model){
