@@ -1484,6 +1484,9 @@ teachTab1 <- apsrtable(teachRLM3, teachRLM4, teachRLM5, teachRLM6,
           Sweave=FALSE)
 @
 
+% TODO: rewrite results as this is no longer the results for the new measure 
+% Results are completely different
+
 Table \ref{tab:meInf} provides some evidence to support that teacher's unions 
 may have an effect on the turnout. The key variables here are the teacher share of voters 
 and its interaction with the voting age population. The main effects of the share 
@@ -1496,7 +1499,11 @@ difficult -- particularly in mixed-effect models. I return to demonstrating the
 effect of these variables later using simulation methods to show their substantive 
 impact on voter turnout as predicted by the model. Other variables follow their 
 expected signs, although some like competitiveness have a smaller effect than 
-in prior models. 
+in prior models. \footnote{The models reported here use teacher share of the 
+number of voters in the school board election two years prior. This is used to 
+avoid endogeneity and to better reflect the strategic interaction between school 
+board vote turnout and district size.} % TODO: Explain this better, describes 
+% robustness of results to other specification
 
 This result is counter to the theoretical expectations described above where more 
 union membership would drive turnout up as a greater share of the population would 
@@ -1511,12 +1518,11 @@ that worries critics of special purpose governments like school districts
 
 \begin{tiny}
 <<teachInfMM, results='asis'>>=
-teachCoefnames2 <- c("Intercept", "Teacher \\% VAP",  
+teachCoefnames2 <- c("Intercept", "Teacher \\% SB Vote",  
                  "Blais-Lago",  "ln(VAP)",  "$ln(VAP)^{2}$", 
                   "\\% White", "\\% Over 65", "\\% Bach. +", "\\% OOH", 
                   "ln(MedianIncome)", "District-wide", "Incumbent Share",
-                 "Teacher \\% x VAP", "Teacher \\% of SB Vote", 
-                 "Teacher \\% of SB X Inc Share")
+                  "Teacher \\% of SB X Inc Share")
 # what happens if I cut out lags
 
 mixedModteach <- lmer(turnout ~ teachShareofVoters +  minBlaisLago +   
@@ -1531,7 +1537,7 @@ mixedModteachB <- lmer(turnout ~ teachShareofVoters +
                    VAP_adjLOG +  VAP_adjLOG_sq +
                     per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide + incumShare + 
-                   teachShareofVoters * incumShare + 
+                   teachShareofVoters * VAP_adjLOG + 
                          (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
@@ -1547,11 +1553,20 @@ mixedModteachD <- lmer(turnout ~ teachShareofVoters2 +
                    VAP_adjLOG +  VAP_adjLOG_sq +
                     per_white_all + per65o + PerBachelorOrAbove +
                    OOH_share + median_incomeLOG + districtwide + incumShare + 
-                   teachShareofVoters2 * incumShare + 
+                   teachShareofVoters2 * VAP_adjLOG + 
                          (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
-apsrtable(mixedModteach, mixedModteachB, mixedModteachC, mixedModteachD, 
+mixedModteachE <- lmer(turnout ~ teachShareofVoters2 +  
+                    minBlaisLago + 
+                   VAP_adjLOG +  
+                    per_white_all + per65o + PerBachelorOrAbove +
+                   OOH_share + median_incomeLOG + districtwide + incumShare + 
+                   teachShareofVoters2 * VAP_adjLOG + 
+                         (1|year) + (1|distid), 
+              data = moddat, REML = TRUE)
+
+apsrtable(mixedModteachC, mixedModteachE, mixedModteachD, 
           caption = "Partial Pooling Model of Staff Influence",
           model.names = c("Model 1","Model 2"),
             label = "tab:meInf", notes = list(stars.note), 

@@ -276,3 +276,10 @@ load("data/cache/boardSize.rda")
 dist_turn <- merge(dist_turn, boardSize, by.x = c("distid", "year"), 
                    by.y = c("agency", "year"), all.x=TRUE)
 rm(boardSize)
+
+# Transform Blais-Lago
+# ----------
+
+dist_turn$minBlaisLago <- abs(dist_turn$minBlaisLago - 100)
+
+#
