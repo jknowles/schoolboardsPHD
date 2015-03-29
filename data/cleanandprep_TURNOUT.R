@@ -121,8 +121,6 @@ dist_turn <- ddply(dist_turn, .(distid, year), summarize,
 # dist_turn$recs <- NULL
 ## Clean up metrics
 # turnout over the prior presidential election
-## Clean up metrics
-# turnout over the prior presidential election
 dist_turn <- merge(dist_turn, presTurn, by = c("distid", "year"), all.x=TRUE)
 dist_turn <- merge(dist_turn, govTurn, by = c("distid", "year"), all.x=TRUE)
 dist_turn$VAP_adj <- as.numeric(dist_turn$VAP_adj)

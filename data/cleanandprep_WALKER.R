@@ -65,15 +65,12 @@ dist_turn <- ddply(races.tmp, .(distid, year), summarise,
                    nraces = length(distid))
 
 dist_turn$districtwide <- 1
-############
-# Non district-wide
-############
 races <- as.data.frame(races)
 races.tmp <- merge(races, VAP_dist, by = c("distid", "year"))
 
 races.tmp <- subset(races.tmp, select = c("distid", "year", "raceid2", "ncand", 
                                           "nrealcand", "nwins", "ninc", "raceid",
-                                          "nminor", "votes", "districtwide",  "nincDefInd", 
+                                          "nminor", "votes", "districtwide", "nincDefInd",
                                           "electiontype", "VAP_adj"))
 
 races.tmp <- subset(races.tmp, raceid!=0)
@@ -83,25 +80,41 @@ races.tmp <- subset(races.tmp, electiontype == 1)
 races.tmp <- subset(races.tmp, districtwide == 0)
 races.tmp <- subset(races.tmp, nrealcand > 0)
 races.tmp <- races.tmp[!is.na(races.tmp$distid),]
+
 # collapse to the district level
+
 dist.tmp <- ddply(races.tmp, .(distid, year), summarise, 
                   ncand = sum(ncand), nrealcand = sum(nrealcand), 
                   nwins = sum(nwins), ninc = sum(ninc), 
                   nminor = sum(nminor), votes = sum(votes), 
-                  incDefeats = sum(nincDefInd),
                   VAP_adj = statamode(VAP_adj), 
+                  incDefeats = sum(nincDefInd),
                   nraces = length(distid))
+
 dist.tmp$districtwide <- 0
+dist.tmp$districtwide <- 0
+
 dist_turn <- rbind(dist_turn, dist.tmp)
+
 row_counts <- ddply(dist_turn, .(distid, year), nrow)
 dist_turn <- merge(dist_turn, row_counts, all.x=TRUE)
 dist_turn$recs <- dist_turn$V1; dist_turn$V1 <- NULL
-dist_turn1 <- dist_turn[dist_turn$recs >= 1 & dist_turn$districtwide > 0,]
-dist_turn2 <- dist_turn[dist_turn$recs == 1 & dist_turn$districtwide == 0,]
 
-dist_turn <- rbind(dist_turn1, dist_turn2)
-dist_turn$recs <- NULL
+# Have to collapse down to district level thoughtfully now
 
+dist_turn <- ddply(dist_turn, .(distid, year), summarize, 
+                   ncand = sum(ncand), nrealcand = sum(nrealcand), 
+                   nwins = sum(nwins), ninc = sum(ninc), 
+                   nminor = sum(nminor), votes = sum(votes), 
+                   VAP_adj = ceiling(as.numeric(VAP_adj)[1]), 
+                   incDefeats = sum(incDefeats),
+                   nraces = sum(nraces), 
+                   districtwide = max(districtwide), 
+                   distWidemix = max(recs))
+# dist_turn1 <- dist_turn[dist_turn$recs >= 1 & dist_turn$districtwide > 0,]
+# dist_turn2 <- dist_turn[dist_turn$recs == 1 & dist_turn$districtwide == 0,]
+# dist_turn <- rbind(dist_turn1, dist_turn2)
+# dist_turn$recs <- NULL
 ## Clean up metrics
 # turnout over the prior presidential election
 dist_turn <- merge(dist_turn, presTurn, by = c("distid", "year"), all.x=TRUE)
@@ -319,7 +332,9 @@ for(i in unique(dist_turn$distid)){
 dist_turn$partyDivisionFall <- 1 - abs(0.5 - dist_turn$fallTwoPartyShareDem)
 dist_turn$partyDivisionRecent <- 1 - abs(0.5 - dist_turn$recentTwoPartyShareDem)
 dist_turn$schoolMillShare <- dist_turn$millrate  / (dist_turn$NonSDMill + dist_turn$millrate)
+dist_turn$minBlaisLago <- abs(abs(dist_turn$minBlaisLago) - 100)
 
+#
 ################################################################################
 # Read in contract extension data
 ################################################################################

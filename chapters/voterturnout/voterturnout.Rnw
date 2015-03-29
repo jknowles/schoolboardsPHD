@@ -1877,7 +1877,7 @@ coefNamesUnd1 <- c("Intercept", "Turnout Lag (2)","Fall Turnout",
 
 
 apsrtable(undervoteMMlag, undervoteMMclose,  
-          caption = "Partial Pooling Model of School Board Undervote",
+          caption = "Partial Pooling Model of School Board Rolloff",
            model.names = c("Lag", "Close Race"),
             label = "tab:meUndv1", notes = list(stars.note), 
           Sweave = FALSE, digits = 3, 
@@ -1914,7 +1914,7 @@ coefNamesUnd2 <- c("Intercept", "Teacher Share VAP", "Fall Turnout",
                  "Fall Dem.", "Fall Dem. X VAP", 
                  "Fall Partisan", "Fall Partisan x VAP")
 apsrtable(undervoteMMteach, undervoteMMteachB, undervoteMMparty, undervoteMMpartyB,
-          caption = "Partial Pooling Model of School Board Undervote",
+          caption = "Partial Pooling Model of School Board Rolloff",
            model.names = c("Teach. Infl.", "Teach. Infl. 2", 
                            "Party Infl.", "Party Divide"),
             label = "tab:meUndv2", notes = list(stars.note), 
@@ -2840,11 +2840,11 @@ the most populated Wisconsins school districts have a population consisting of
 
 %TODO: Describe these figures correctly
 
-<<teachUndEff, fig.scap="Interaction Effect of Teacher Share on Undervote", fig.height=5, fig.cap="Interaction between teacher share of the VAP and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the teacher share of VAP is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
+<<teachUndEff, fig.scap="Interaction Effect of Teacher Share on Rolloff", fig.height=5, fig.cap="Interaction between teacher share of the VAP and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the teacher share of VAP is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
 p3
 @
 
-<<compUndEff, fig.scap="Interaction Effect of Competition on Undervote", fig.height=5, fig.cap="Interaction between the Blais-Lago quotient and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the competitiveness of races is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
+<<compUndEff, fig.scap="Interaction Effect of Competition on Rolloff", fig.height=5, fig.cap="Interaction between the Blais-Lago quotient and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the competitiveness of races is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
 p4
 @
 
