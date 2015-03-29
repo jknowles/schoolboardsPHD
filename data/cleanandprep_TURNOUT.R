@@ -280,6 +280,6 @@ rm(boardSize)
 # Transform Blais-Lago
 # ----------
 
-dist_turn$minBlaisLago <- abs(dist_turn$minBlaisLago - 100)
+dist_turn$minBlaisLago <- abs(abs(dist_turn$minBlaisLago) - 100)
 
 #

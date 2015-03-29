@@ -574,16 +574,16 @@ off-cycle local voters are much more engaged, informed, and politically active
 than general election voters \citep{oliver12}. 
 
 
-<<competition, fig.cap="Competitiveness and Turnout">>=
+<<competition, fig.scap="Blais-Lago and Turnout", fig.cap="Blais-Lago quotient and turnout are slightly positively correlated. Each dot represents a district-year observation, with more competitive elections indicated by higher Blais-Lago quotients.",fig.height=4.5>>=
 plotdf <- dist_turn[dist_turn$year > 2004, c("year", "minBlaisLago", "turnout")]
-plotdf <- plotdf[plotdf$turnout < 0.95 & plotdf$minBlaisLago < 100 & 
-                   plotdf$minBlaisLago > 0,]
+plotdf <- plotdf[plotdf$turnout < 0.95 & plotdf$minBlaisLago <= 100 & 
+                   plotdf$minBlaisLago > 50,]
 plotdf <- na.omit(plotdf)
 
 qplot(minBlaisLago, turnout, data = plotdf) +  
   theme_dpi() + geom_smooth(method = 'lm') +
   scale_y_continuous(label = percent, breaks = seq(0, 1, by = .10)) + 
-  scale_x_sqrt(breaks = c(0, 2.5, 5, 7.5, 10, 25, 50, 75, 100)) + 
+  scale_x_continuous(breaks = c(0, 25, 50, 75, 85, 90, 95, 100)) + 
   labs(y = "Turnout in School Board Elections", 
        x = "Blais-Lago Quotient",
        title = "Turnout and Competitiveness in School Board Elections") 
@@ -632,7 +632,7 @@ qplot(turnoutLag2, turnout, data = na.omit(plotdf)) +
 % Turnout and group membership
 
 
-<<unionInf, echo=FALSE, fig.cap="Turnout in School Board Elections based on School Staff Share">>=
+<<unionInf, echo=FALSE, fig.cap="Turnout in School Board Elections based on School Staff Share",fig.height=4.5>>=
 
 plotdf <- dist_turn[dist_turn$year > 2004, c("year", "teachShareofVoters2", "turnout")]
 plotdf <- na.omit(plotdf)
@@ -1076,7 +1076,7 @@ lagmodTab <- apsrtable(dumbRLM1, dumbRLMbest, dumbRLM2, se="robust",
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
           Sweave=FALSE, coef.names = coefnamesLag, digits = 3,
-          float = "sidewaystable")
+          float = "sidewaystable", stars = "default")
 
 @
 
@@ -1138,7 +1138,7 @@ appA1 <- apsrtable(dumbRLM1b, dumbRLMbestb, dumbRLM2b, se="robust",
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
           Sweave=FALSE, coef.names = coefnamesLag2, digits = 3,
-          float = "sidewaystable")
+          float = "sidewaystable", stars = "default")
 @
 
 \begin{tiny}
@@ -1170,7 +1170,8 @@ apsrtable(mixedModlags, mixedMod1lagsb, caption = "Partial Pooling Model of Lagg
             label = "tab:meTurnout",  
            notes = list("All variables grand-mean scaled and centered.", 
                        stars.note), 
-          Sweave = FALSE, digits = 3, coef.names = coefnamesLag3)
+          Sweave = FALSE, digits = 3, 
+          coef.names = coefnamesLag3, stars = "default")
 @
 \end{tiny}
 
@@ -1276,7 +1277,7 @@ closeModTab <- apsrtable(closeRLM2, closeRLM4, se="robust",
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))),
           coef.names = closeCoefs1, digits = 3,
-          Sweave=FALSE)
+          Sweave=FALSE, stars = "default")
 @
 
 
@@ -1335,11 +1336,12 @@ closeCoefs2 <- c("Intercept", "ln(VAP)",
 
 
 # summary(mixedMod2)
-apsrtable(mixedModclose, mixedModcloseC, caption = "Partial Pooling Models of Competitiveness",
+apsrtable(mixedModclose, mixedModcloseC, 
+          caption = "Partial Pooling Models of Competitiveness",
           model.names = c("No Interaction", "Interaction"),
             label = "tab:meClose", notes = list(tabnote, stars.note), 
           coef.names = closeCoefs2, digits = 3,
-          Sweave = FALSE)
+          Sweave = FALSE, stars = "default")
 
 # Results with fallTurnout are largely similar but demographic variables are not 
 # significant and less impactful due to collinearity with fall turnout
@@ -1481,7 +1483,7 @@ teachTab1 <- apsrtable(teachRLM3, teachRLM4, teachRLM5, teachRLM6,
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))),
           coef.names = teachCoefnames, digits = 3,
-          Sweave=FALSE)
+          Sweave=FALSE, stars = "default")
 @
 
 % TODO: rewrite results as this is no longer the results for the new measure 
@@ -1571,7 +1573,7 @@ apsrtable(mixedModteachC, mixedModteachE, mixedModteachD,
           model.names = c("Model 1","Model 2"),
             label = "tab:meInf", notes = list(stars.note), 
           coef.names = teachCoefnames2, digits = 3,
-          Sweave = FALSE)
+          Sweave = FALSE, stars = "default")
 @
 \end{tiny}
 
@@ -1673,8 +1675,10 @@ partyCoefNames <- c("Intercept", "Fall Turnout",
                  "Party Division x VAP", 
                  "2 Party Dem x VAP")
 
-partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4, se="robust", label="tab:partymods", 
-          model.names=c("Party Unity", "Dem Share", "Party Unity Inter.", "Dem Share Inter."), 
+partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4, 
+                         se="robust", label="tab:partymods", 
+          model.names=c("Party Unity", "Dem Share", 
+                        "Party Unity Inter.", "Dem Share Inter."), 
           caption = "Models of Partisanship and Turnout in School Board Elections",
           notes = list(se.note, stars.note, "Year and district fixed effects omitted."),
           omitcoef=list("distid", 
@@ -1682,7 +1686,7 @@ partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4, se="robust"
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
           coef.names = partyCoefNames,
-          Sweave=FALSE, float = "sidewaystable")
+          Sweave=FALSE, float = "sidewaystable", stars = "default")
 @
 
 
@@ -1715,7 +1719,8 @@ mixedModPb <- lmer(turnout ~ VAP_adjLOG + VAP_adjLOG_sq + fallTwoPartyShareDem +
 apsrtable(mixedModP, mixedModPb, caption = "Partial Pooling Model of Partisanship",
           model.names = c("Division", "Democrat"),
             label = "tab:mePartisan", notes = list(tabnote, stars.note), 
-          Sweave = FALSE, coef.names = partyCoefNames2, digits = 3)
+          Sweave = FALSE, 
+          coef.names = partyCoefNames2, digits = 3, stars = "default")
 @
 \end{tiny}
 
@@ -1876,7 +1881,7 @@ apsrtable(undervoteMMlag, undervoteMMclose,
            model.names = c("Lag", "Close Race"),
             label = "tab:meUndv1", notes = list(stars.note), 
           Sweave = FALSE, digits = 3, 
-          coef.names = coefNamesUnd1)
+          coef.names = coefNamesUnd1, stars = "default")
 @
 
 \end{tiny}
@@ -1910,10 +1915,10 @@ coefNamesUnd2 <- c("Intercept", "Teacher Share VAP", "Fall Turnout",
                  "Fall Partisan", "Fall Partisan x VAP")
 apsrtable(undervoteMMteach, undervoteMMteachB, undervoteMMparty, undervoteMMpartyB,
           caption = "Partial Pooling Model of School Board Undervote",
-           model.names = c("Teacher Influence", "Teach. Infl. 2", 
-                           "Party Influence", "Party Divide"),
+           model.names = c("Teach. Infl.", "Teach. Infl. 2", 
+                           "Party Infl.", "Party Divide"),
             label = "tab:meUndv2", notes = list(stars.note), 
-          Sweave = FALSE, coef.names = coefNamesUnd2)
+          Sweave = FALSE, coef.names = coefNamesUnd2, stars = "default")
 @
 \end{tiny}
 
@@ -2052,9 +2057,9 @@ out <- rbind(out, cbind(summary(sigmaBoot), mod  = "Teach. Infl."))
 rmsePlot1 <- ggplot(out, aes(x = mod, y = bootMed)) + 
   geom_bar(stat='identity', width = .5) + 
   geom_errorbar(aes(ymin = bootMed - bootSE, ymax = bootMed + bootSE), 
-                width = .2) + theme_dpi() + 
+                width = .2, color = I("red")) + theme_dpi() + 
   geom_point(aes(y = original, x = mod), color = I("red")) + 
-  labs(x = "Model Name", y = "Mean Model Error in Std. Dev.", 
+  labs(x = "Model Name", y = "", 
        title = "Turnout Models") 
 # 
 # ggplot(out, aes(x = mod, y = bootMed, ymax = bootMed + (bootSE *2), 
@@ -2083,9 +2088,9 @@ out <- rbind(out, cbind(summary(sigmaBoot), mod  = "Teach. Infl."))
 rmsePlot2 <- ggplot(out, aes(x = mod, y = bootMed)) + 
   geom_bar(stat='identity', width = .5) + 
   geom_errorbar(aes(ymin = bootMed - bootSE, ymax = bootMed + bootSE), 
-                width = .2) + theme_dpi() + 
+                width = .2, color = I("red")) + theme_dpi() + 
   geom_point(aes(y = original, x = mod), color = I("red")) + 
-  labs(x = "Model Name", y = "Mean Model Error in Std. Dev.", 
+  labs(x = "Model Name", y = "", 
        title = "Rolloff Models") 
 @
 
@@ -2099,7 +2104,7 @@ than the turnout models, but none of the models are significantly better fitting
 than any of the others within each dependent variable. 
 
 <<printRMSEplot, fig.scap="Comparing Model Fit Across Variables", fig.cap="Figures show the bootstrapped root mean square error (RMSE) of competing models across 150 bootstrapped replications along with a confidence interval. The fit from the original model is marked by a point. A lower RMSE corresponds to a more accurate prediction and better explanation of the dependent variable.", fig.height=4,fig.width=8>>==
-grid.arrange(rmsePlot1, rmsePlot2)
+grid.arrange(rmsePlot1, rmsePlot2, left = "Mean Model Error in Std. Dev.")
 @
 
 %TODO: cut out substantive effect plots
@@ -2290,8 +2295,7 @@ increase in expected voter turnout -- but much less substantial than the effect
 of teacher voter share or competitiveness. 
 
 
-<<fixefSub1, eval=TRUE, fig.cap="Substantive Effect on School Board Turnout Across Cases">>=
-library(gridExtra)
+<<fixefSub1, eval=TRUE, fig.scap="Substantive Effect on School Board Turnout Across Cases",fig.cap="Effect of four variables on school board turnout. Each panel represents the results from a different model for a different explanatory variable. Each line in each panel represents a randomly selected school district. The line represents the change in the expected turnout for that case as the value of the explanatory value is increased across the distribution.">>=
 
 seplotdf <- 1
 while(class(seplotdf) != "data.frame"){
@@ -2349,7 +2353,7 @@ p2 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   theme_dpi(base_size=12) + 
   labs(x = "Teacher Share of Voters", y = "School Board Turnout") + 
   scale_y_continuous(label = percent, limits = c(0, .50)) + 
-  scale_x_continuous(label = percent, limits = c(0, 0.7))
+  scale_x_continuous(label = percent, limits = c(0, 0.5))
 seplotdf <- 1
 while(class(seplotdf) != "data.frame"){
   seplotdf <- try(substEffSimFE(mixedModcloseC, "minBlaisLago", ncases = 4L, 
@@ -2504,27 +2508,30 @@ for the district intercept.
 %TODO: check this and review wording
 
 
-<<randomEffectplot1, eval=TRUE, fig.cap="Comparing District Intercepts on Standardized Coefficient Scale for Turnout">>=
+<<randomEffectplot1, eval=TRUE, fig.scap="Exploring the Variance in District Effects on School Board Turnout", fig.cap="Simulated effect of district effects on turnout. As a case moves from the lowest turnout effect to the highest turnout effect, the effect of the district on turnout is represented by the line with a 95 percent confidence interval represented by the gray ribbon. This figure shows the results for the partisan divide model, but all models reported in the text show a similar distribution. The horizontal bars represent the interquartile range of the dependent variable, and the vertical bars represent the 20th and 80th percentile of school district effects.">>=
 replotdf <- 1
 while(class(replotdf) != "data.frame"){
-  replotdf <- try(substEffSimRE(mixedModP, "distid", ncases = 3, alpha = 0.1), 
+  replotdf <- try(substEffSimRE(mixedModP, "distid", ncases = 1, alpha = 0.1), 
                   silent = TRUE)
 }
 
 replotdf$distid <- as.character(replotdf$distid)
-replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + 
+  moddatScaleParty[1, 1]
 replotdf$yhatUnscale <- replotdf$yhatUnscale / 100
-replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + 
+  moddatScaleParty[1, 1]
 replotdf$lwrUnscale <- replotdf$lwrUnscale / 100
-replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) + 
+  moddatScaleParty[1, 1]
 replotdf$uprUnscale <- replotdf$uprUnscale / 100
 
-lowerBar <- ((quantile(fitted(mixedModP), prob = 0.25) * 2 * moddatScaleParty["turnout", 2]) + 
-      moddatScaleParty["turnout", 1]) /100
-upperBar <- ((quantile(fitted(mixedModP), prob = 0.75) * 2 * moddatScaleParty["turnout", 2]) + 
-      moddatScaleParty["turnout", 1]) / 100
+lowerBar <- ((quantile(fitted(mixedModP), prob = 0.25) * 2 * 
+                moddatScaleParty["turnout", 2]) + moddatScaleParty["turnout", 1]) /100
+upperBar <- ((quantile(fitted(mixedModP), prob = 0.75) * 2 * 
+                moddatScaleParty["turnout", 2]) + moddatScaleParty["turnout", 1]) / 100
 
-p0 <- ggplot(data = replotdf, aes(x = reorder(distid, -yhatUnscale), y = yhatUnscale, 
+ggplot(data = replotdf, aes(x = reorder(distid, yhatUnscale), y = yhatUnscale, 
                             ymin = lwrUnscale, ymax = uprUnscale)) + 
   geom_line(aes(group = caseID)) + 
     geom_ribbon(aes(group = caseID), alpha=0.4) + 
@@ -2536,38 +2543,42 @@ p0 <- ggplot(data = replotdf, aes(x = reorder(distid, -yhatUnscale), y = yhatUns
                       panel.grid.major = element_blank()) + 
   geom_hline(yintercept = lowerBar, linetype = 2) + 
   geom_hline(yintercept = upperBar, linetype = 2) + 
+  geom_vline(xintercept = 31) + 
+  geom_vline(xintercept = 280) + 
   facet_wrap(~caseID, ncol = 1) + 
-  labs(x = "District", y = "Predicted SB Turnout", title = "Party Model") + 
-  scale_y_continuous(label = percent)
+  labs(x = "District", y = "Predicted SB Turnout") + 
+  scale_y_continuous(label = percent, limits = c(0, .5))
 
-plotdf <- REsim(mixedModP, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 1",]
-p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-               sd = "sd", sigmaScale = sigma(mixedModP)) + 
-  labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
-  ylim(c(-2, 3.5))
-plotdf <- REsim(mixedModclose, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 1",]
-p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-                 sd = "sd", sigmaScale = sigma(mixedModclose)) + 
-  labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
-  ylim(c(-2, 3.5))
-plotdf <- REsim(mixedModteach, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 1",]
-p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-                 sd = "sd", sigmaScale = sigma(mixedModteach))+ 
-  labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
-  ylim(c(-2, 3.5))
-plotdf <- REsim(mixedModlags, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 1",]
-p4 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-                 sd = "sd", sigmaScale = sigma(mixedModlags))+ 
-  labs(title = "Lagged Model", x= "District", y = "Intercept") + 
-  ylim(c(-2, 3.5))
 
-grid.arrange(p1, p2, p3, p4)
+# plotdf <- REsim(mixedModP, nsims = 1000)
+# plotdf <- plotdf[plotdf$level == "Level 1",]
+# p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+#                sd = "sd", sigmaScale = sigma(mixedModP)) + 
+#   labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
+#   ylim(c(-2, 3.5))
+# plotdf <- REsim(mixedModclose, nsims = 1000)
+# plotdf <- plotdf[plotdf$level == "Level 1",]
+# p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+#                  sd = "sd", sigmaScale = sigma(mixedModclose)) + 
+#   labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
+#   ylim(c(-2, 3.5))
+# plotdf <- REsim(mixedModteach, nsims = 1000)
+# plotdf <- plotdf[plotdf$level == "Level 1",]
+# p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+#                  sd = "sd", sigmaScale = sigma(mixedModteach))+ 
+#   labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
+#   ylim(c(-2, 3.5))
+# plotdf <- REsim(mixedModlags, nsims = 1000)
+# plotdf <- plotdf[plotdf$level == "Level 1",]
+# p4 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+#                  sd = "sd", sigmaScale = sigma(mixedModlags))+ 
+#   labs(title = "Lagged Model", x= "District", y = "Intercept") + 
+#   ylim(c(-2, 3.5))
+# 
+# grid.arrange(p1, p2, p3, p4)
 @
 
+%TODO: fix text here
 Even more interestingly is the pattern for the year effects demonstrated in 
 Figure \ref{fig:randomEffectplot2}. In all four models we see one below average year, 
 2010, and three above average years -- 2003, 2011, and 2012. These above average 
@@ -2578,10 +2589,11 @@ is that two years of elevated turnout across the state (net of district-election
 district-average effects) were in 2011 and 2012 after the election of Governor Scott Walker 
 and the introduction of Act 10. 
 
-<<randomEffectplot2, eval=TRUE, fig.cap="Comparing Year Intercepts of Year Effects for Turnout">>=
+<<randomEffectplot2, eval=TRUE, fig.scap="Comparing Year Effects for Turnout",fig.height=4.5, fig.cap="Estimated year effects in standard deviation terms. Each point represents the estimated standard deviation increase or decrease in turnout for a given election year across all school districts. Confidence intervals are the 95 percent confidence interval across 1000 simulations of the model random effects.">>=
+
 # replotdf <- 1
 # while(class(replotdf) != "data.frame"){
-#   replotdf <- try(substEffSimRE(mixedModP, "year", ncases = 1, alpha = 0.1), 
+#   replotdf <- try(substEffSimRE(mixedModclose, "year", ncases = 1, alpha = 0.1), 
 #                   silent = TRUE)
 # }
 # 
@@ -2612,34 +2624,40 @@ and the introduction of Act 10.
 #   facet_wrap(~caseID, ncol = 1) + 
 #   labs(x = "Year", y = "Predicted SB Turnout") + 
 #   scale_y_continuous(label = percent)
+# 
+# 
+# plotdf <- REsim(mixedModP, nsims = 1000)
+# plotdf <- plotdf[plotdf$level == "Level 2",]
+# p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+#                sd = "sd", sigmaScale = sigma(mixedModP)) + 
+#   labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
+#   ylim(c(-2, 3.5))
+# plotdf <- REsim(mixedModclose, nsims = 1000)
+# plotdf <- plotdf[plotdf$level == "Level 2",]
+# p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+#                  sd = "sd", sigmaScale = sigma(mixedModclose)) + 
+#   labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
+#   ylim(c(-2, 3.5))
+# plotdf <- REsim(mixedModteach, nsims = 1000)
+# plotdf <- plotdf[plotdf$level == "Level 2",]
+# p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+#                  sd = "sd", sigmaScale = sigma(mixedModteach))+ 
+#   labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
+#   ylim(c(-2, 3.5))
+# plotdf <- REsim(mixedMod1lagsb, nsims = 1000)
+# plotdf <- plotdf[plotdf$level == "Level 2",]
 
+plotMCMCre(plotdf, scale = 1.6, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedMod1lagsb))+ 
+  labs(x= "Year", y = "Intercept") + 
+  ylim(c(-2, 3.5))  + 
+  scale_x_continuous(breaks = c(1:10), labels = c(2003:2012)) + 
+  scale_y_continuous(breaks = seq(-1.5, 1.5, by = .25)) +
+  theme(axis.text.x=element_text(), panel.grid = element_line(), 
+         panel.grid.major = element_line(linetype="dotted"),
+        panel.grid.major.x = element_blank())
 
-plotdf <- REsim(mixedModP, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 2",]
-p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-               sd = "sd", sigmaScale = sigma(mixedModP)) + 
-  labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
-  ylim(c(-2, 3.5))
-plotdf <- REsim(mixedModclose, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 2",]
-p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-                 sd = "sd", sigmaScale = sigma(mixedModclose)) + 
-  labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
-  ylim(c(-2, 3.5))
-plotdf <- REsim(mixedModteach, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 2",]
-p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-                 sd = "sd", sigmaScale = sigma(mixedModteach))+ 
-  labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
-  ylim(c(-2, 3.5))
-plotdf <- REsim(mixedModlags, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 2",]
-p4 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-                 sd = "sd", sigmaScale = sigma(mixedModlags))+ 
-  labs(title = "Lagged Model", x= "District", y = "Intercept") + 
-  ylim(c(-2, 3.5))
-
-grid.arrange(p1, p2, p3, p4, main = "Variance in Year Intercepts Across Models")
+# grid.arrange(p1, p2, p3, p4, main = "Variance in Year Intercepts Across Models")
 
 @
 
@@ -2735,20 +2753,22 @@ seplotdf$sizeCut <- cut(seplotdf$VAP_adjLOG,
                         breaks = quantile(undervoteMMteachB@frame$VAP_adjLOG, 
                                           prob = c(0, 0.25, .5, .75, 1)), 
                         labels = c("VAP Quart. 1", "VAP Quart. 2", "VAP Quart. 3", "VAP Quart. 4"))
-
+seplotdf <- na.omit(seplotdf)
 p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   geom_line(aes(group = caseID), alpha = 0.4, size = I(1.05)) +
-  facet_wrap(~sizeCut) +
+  facet_wrap(~sizeCut, nrow=1) +
   geom_hline(yintercept = lowerBar, linetype = 2) + 
   geom_hline(yintercept = upperBar, linetype = 2) + 
   geom_rug(data = dist_turn, aes(x = teachShareofVoters2, y = turnoutDiff)) + 
   theme_dpi(base_size=12) + 
+  scale_x_continuous(limits = c(0, .3)) + 
+  scale_y_continuous(limits = c(-.25, .175)) +
   labs(x = "Teacher Share of VAP", y = "Voter Rolloff") 
 
 # -------------------------------------------------------------------------------
 seplotdf <- 1
 while(class(seplotdf) != "data.frame"){
-  seplotdf <- try(substEffSimFE(undervoteMMclose, "minBlaisLago", ncases = 64L, 
+  seplotdf <- try(substEffSimFE(undervoteMMclose, "minBlaisLago", ncases = 32L, 
                           unscale = moddatScaleUndervote, re = TRUE), 
                   silent = TRUE)
 }
@@ -2768,15 +2788,17 @@ seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
 seplotdf$sizeCut <- cut(seplotdf$VAP_adjLOG, 
                         breaks = quantile(undervoteMMclose@frame$VAP_adjLOG, 
                                           prob = c(0, 0.25, .5, .75, 1)), 
-                        labels = c("VAP Quart. 1", "VAP Quart. 2", "VAP Quart. 3", "VAP Quart. 4"))
-
+                        labels = c("VAP Quart. 1", "VAP Quart. 2", 
+                                   "VAP Quart. 3", "VAP Quart. 4"))
+seplotdf <- na.omit(seplotdf)
 p4 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   geom_line(aes(group = caseID), alpha = 0.4, size = I(1.05)) +
-  facet_wrap(~sizeCut) +
+  facet_wrap(~sizeCut, nrow=1) +
   geom_hline(yintercept = lowerBar, linetype = 2) + 
   geom_hline(yintercept = upperBar, linetype = 2) + 
   geom_rug(data = dist_turn, aes(x = minBlaisLago, y = turnoutDiff)) + 
   theme_dpi(base_size=12) + 
+  scale_y_continuous(limits = c(-.25, .175)) + 
   labs(x = "Blais-Lago", y = "Voter Rolloff") 
 
 @
@@ -2816,13 +2838,14 @@ panel, for the largest districts, depicts the very unlikely scenario in which
 the most populated Wisconsins school districts have a population consisting of 
 5\% teachers employed in public schools. 
 
+%TODO: Describe these figures correctly
 
-<<teachUndEff, fig.cap="Interaction Effect of Teacher Share on Undervote">>=
-p4
+<<teachUndEff, fig.scap="Interaction Effect of Teacher Share on Undervote", fig.height=5, fig.cap="Interaction between teacher share of the VAP and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the teacher share of VAP is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
+p3
 @
 
-<<compUndEff, fig.cap="Interaction Effect of Competition on Undervote">>=
-p3
+<<compUndEff, fig.scap="Interaction Effect of Competition on Undervote", fig.height=5, fig.cap="Interaction between the Blais-Lago quotient and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the competitiveness of races is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
+p4
 @
 
 
