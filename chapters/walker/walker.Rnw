@@ -273,7 +273,7 @@ varies. School board elections can be interpreted as reflecting the preferences
 of those voters mobilized by these groups based on the intensity and homogeneity 
 of each of their preferences multiplied by their size -- Dahl's polyarchy \citep{RefWorks:319}.
 
-Dissatisfaction theory would agree with this re framing of the power 
+Dissatisfaction theory would agree with this reframing of the power 
 structures of school boards and suggest that periodically if the board strays too 
 far from the preferences of less represented groups, voters will punish them and 
 adjust the board to reflect the preferences of the community. If this is the case, 
@@ -282,11 +282,19 @@ retain their current board members but with greater numbers. That is, if we coul
 exogenously eliminate the coordination and information costs for each interest group, 
 we should not expect to see great changes in school board membership. 
 
-On the other hand, if community fractures do exist, then this injection of 
+However, if community fractures do exist, then this injection of 
 information should accelerate the process of actualizing democratic activity 
 for broader swaths of the community. In these cases, the exogenous shock should 
 accelerate the process of increased candidate and voter activity, culminating 
-in heightened incumbent defeat. I now turn to describing the political conditions 
+in heightened incumbent defeat. A final case might occur if before the shock an 
+equilibrium was reached either through overall satisfaction with the board, or 
+through capture by interest groups that warded off challengers. Post Act 10, 
+candidates and dissatisfied community members become emboldened with the chance 
+of change, and democratic actualization would increase. In the case of interest 
+group blocking, this effect should be even stronger with interest groups newly 
+weakened through Act 10. 
+
+I now turn to describing the political conditions 
 in Wisconsin from 2010-2012 that created such an exogenous provision of information 
 to voters. I demonstrate how this statewide shock increased information for voters 
 about school board candidates and lowered the cost to participating in school board 
@@ -462,7 +470,9 @@ was known, then the Act 10 period should result in larger impacts in these
 communities. As dissatisfaction theory suggests that these realignments 
 of school boards to community preferences are rare, I expect that on average 
 the Act 10 period should lead to an overall increase in competition, incumbent 
-defeat, and voter participation. 
+defeat, and voter participation. I will also explore if this effect is stronger 
+or weaker in communities with deeper partisan divisions and stronger interest 
+groups. 
 
 \begin{center}
 \begin{figure}[h!]
@@ -605,25 +615,40 @@ for a change in the patterns of candidate contestation and seat competitiveness
 after the passage of Act 10 and the granting of additional powers to school boards. 
 For voters, I look for changes in voter turnout and decreases in voter rolloff. 
 
-<<blaisLagoplot, fig.cap="Lagged Competitiveness Across Years", out.height='3.18in'>>=
-plotdf <- dist_turn[dist_turn$year > 2006, ]
+<<blaisLagoplot, fig.scap="Correlation of Blais-Lago Quotient and Blais-Lago Lag", fig.height=3.7, fig.cap="Correlation of Blais-Lago Quotient and 2x Lag. Point is the correlation coefficient and confidence bands mark the 95 percent confidence interval for the correlation in each year.">>=
+plotdf <- dist_turn[dist_turn$year > 2005, ]
 # lg  <- function(x) c(NA, x[1:length(x)-1])
 # lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
-plotdf <- as.data.table(plotdf)[, blaisLagoLag1:= lg(minBlaisLago), by = "distid"]
+plotdf <- as.data.table(plotdf)[, blaisLagoLag2:= lg2(minBlaisLago), by = "distid"]
 plotdf$minBlaisLago <- log(plotdf$minBlaisLago)
-plotdf$blaisLagoLag1 <- log(plotdf$blaisLagoLag1)
-plotdf$blaisLagoLag1[!is.finite(plotdf$blaisLagoLag1)] <- -4
+plotdf$blaisLagoLag2 <- log(plotdf$blaisLagoLag2)
+plotdf$blaisLagoLag2[!is.finite(plotdf$blaisLagoLag2)] <- -4
 plotdf$minBlaisLago[!is.finite(plotdf$minBlaisLago)] <- -4
 plotdf <- as.data.frame(plotdf)
-plotdf <- na.omit(plotdf[, c("blaisLagoLag1", "minBlaisLago", "year")])
-plotdf <- plotdf[plotdf$year > 2008,]
-qplot(blaisLagoLag1, minBlaisLago, data = plotdf, group = year) + 
-  facet_wrap(~year) + geom_smooth(method = 'lm') + 
-  geom_abline(intercept = 1.7439, slope = 0.1414, linetype = 2) +
-  scale_x_continuous(limits = c(-1, 5)) +
-  scale_y_continuous(limits = c(-1, 5)) +
-  theme_dpi(base_size=10) +
-  labs(x= "Lagged Blais-Lago", y = "Blais-Lago")
+plotdf <- na.omit(plotdf[, c("blaisLagoLag2", "minBlaisLago", "year")])
+# plotdf <- plotdf[plotdf$year > 2008,]
+# qplot(blaisLagoLag1, minBlaisLago, data = plotdf, group = year) + 
+#   facet_wrap(~year) + geom_smooth(method = 'lm') + 
+#   geom_abline(intercept = 1.7439, slope = 0.1414, linetype = 2) +
+#   scale_x_continuous(limits = c(-1, 5)) +
+#   scale_y_continuous(limits = c(-1, 5)) +
+#   theme_dpi(base_size=10) +
+#   labs(x= "Lagged Blais-Lago", y = "Blais-Lago")
+
+
+detach("package:plyr")
+library(plyr)
+plotdf2 <- ddply(plotdf, .(year), summarize, 
+                 corLow = cor.test(blaisLagoLag2, minBlaisLago)$conf.int[1], 
+      cor = cor.test(blaisLagoLag2, minBlaisLago)$estimate, 
+      corHi = cor.test(blaisLagoLag2, minBlaisLago)$conf.int[2])
+plotdf2 <- na.omit(plotdf2)
+ggplot(plotdf2, aes(x = factor(year), 
+                    ymin = corLow, ymax = corHi, y = cor)) + 
+  geom_pointrange() + 
+  geom_hline(yintercept = 0,  color = I("red"), linetype = 4) + 
+  theme_dpi() + labs(x = "Year", y = "Correlation Coefficient")
+
 @
 
 
@@ -659,67 +684,86 @@ but the intercept is close to the same. This looks like a good argument for
 considering a twice lagged measure as the strange year to year relationships may 
 be due to the cyclical nature of these elections. 
 
-For rolloff, 2011 is clearly a standout year, while 2012 appears to fall right 
-in line with the pooled across year relationship represented by the dashed line. 
+For rolloff both 2011 and 2012 standout. 
 
+%TODO: Finish this. 
 
-<<turnoutPlot1, fig.cap="Lagged School Board Turnout Across Years", out.height='3.18in'>>=
-plotdf <- dist_turn[dist_turn$year >= 2006, ]
-plotdf <- as.data.table(plotdf)[, turnoutLag1:= lg(turnout), by = "distid"]
+<<turnoutPlot1, fig.scap="Lagged School Board Turnout Across Years", out.height='3.18in', fig.cap="Relationship between school board turnout and twice lagged school board turnout. Each panel is a school board election cycle and each point represents a school district. The dashed line represents the pooled relationship between the lag and turnout across all years, and the blue line represents the relationship in each year.">>=
+plotdf <- dist_turn[dist_turn$year >= 2005, ]
+plotdf <- as.data.table(plotdf)[, turnoutLag2:= lg2(turnout), by = "distid"]
 plotdf$turnout <- log(plotdf$turnout)
-plotdf$turnoutLag1 <- log(plotdf$turnoutLag1)
+plotdf$turnoutLag2 <- log(plotdf$turnoutLag2)
 plotdf <- as.data.frame(plotdf)
-plotdf <- na.omit(plotdf[, c("turnoutLag1", "turnout", "year")])
+plotdf <- na.omit(plotdf[, c("turnoutLag2", "turnout", "year")])
 plotdf <- plotdf[plotdf$year >= 2007,]
-qplot(turnoutLag1, turnout, data = plotdf, group = year) + 
+qplot(turnoutLag2, turnout, data = plotdf, group = year) + 
   facet_wrap(~year) + geom_smooth(method = 'lm') + 
-  geom_abline(intercept = -1.3192, slope = 0.2615, linetype = 2) +
+  geom_abline(intercept = -1.1838, slope = 0.3036, linetype = 2) +
   scale_x_continuous(limits = c(-3, 0)) +
   scale_y_continuous(limits = c(-3, 0)) +
   theme_dpi(base_size=10) +
-  labs(x= "School Board Turnout Lag (log) ", y = "School Board Turnout (log)")
+  labs(x= "School Board Turnout Lag 2 (log) ", y = "School Board Turnout (log)")
 @
 
-<<turnoutPlot2, fig.cap="Lagged Spring Rolloff Across Years", out.height='3.18in'>>=
+<<turnoutPlot2, fig.scap="Lagged Spring Rolloff Across Years", out.height='3.18in',fig.cap="Relationship between school board rolloff and twice lagged school board rolloff. Each panel is a school board election cycle and each point represents a school district. The dashed line represents the pooled relationship between the lag and rolloff across all years, and the blue line represents the relationship in each year.">>=
 plotdf <- dist_turn[dist_turn$year > 2006, ]
-plotdf <- as.data.table(plotdf)[, turnoutDiffLag1:= lg(turnoutDiff), by = "distid"]
+plotdf <- as.data.table(plotdf)[, turnoutDiffLag2:= lg2(turnoutDiff), by = "distid"]
 plotdf <- as.data.frame(plotdf)
-plotdf <- na.omit(plotdf[, c("turnoutDiffLag1", "turnoutDiff", "year")])
-plotdf <- plotdf[plotdf$year > 2008,]
+plotdf <- na.omit(plotdf[, c("turnoutDiffLag2", "turnoutDiff", "year")])
+plotdf <- plotdf[plotdf$year > 2008 & plotdf$turnoutDiffLag2 > -.3,]
 
-qplot(turnoutDiffLag1, turnoutDiff, data = plotdf, group = year) + 
+qplot(turnoutDiffLag2, turnoutDiff, data = plotdf, group = year) + 
   facet_wrap(~year) + geom_smooth(method = 'rlm') + 
-  geom_abline(intercept = .02617, slope = 0.33217, linetype = 2) +
+  geom_abline(intercept = .03027, slope = 0.40003, linetype = 2) +
   theme_dpi(base_size=10) +
-  labs(x= "School Board Rolloff Lag (log) ", y = "School Board Rolloff (log)")
+  labs(x= "School Board Rolloff Lag", y = "School Board Rolloff")
 @
 
 
 \subsection{Independent Variables}
 
-Figure \ref{fig:pairsPlot} shows the relationships among some key control variables 
+Figure \ref{fig:corMat} shows the relationships among some key control variables 
 and is similar to the plot introduced in Chapter \ref{chap:turnout}. These 
 variables are related to the key independent variables identified by 
 \citet{RefWorks:297} as indicators of school districts in transition from insular 
 to competitive in their politics. 
 
-<<pairsPlot, fig.cap="Pairs Plot of Demographic Variables and Turnout in 2012", fig.height = 8, fig.width=8>>=
-library(GGally)
-dist_turn$median_incomeLOG <- log(dist_turn$median_income)
-pairLabels <- c("Turnout", "% Incumbents", "% 65 Older", "% Bach. +", "OOH %", 
-                "Median Income", "Log VAP")
-tmpdf <- dist_turn[dist_turn$turnout < 0.95 & 
-                            dist_turn$year == 2012 & 
-                            !is.na(dist_turn$turnout), ]
-tmpdf <- tmpdf[, c("turnout", "incumShare", "per65o", "PerBachelorOrAbove", 
-                   "OOH_share", "median_incomeLOG", "VAP_adjLOG")]
+% TODO: Finish descriptions here
 
-ggpairs(tmpdf, 
-        columnLabels = pairLabels,
-        lower = list(continuous = "smooth"), 
-        upper = list(continuous = 'cor'), 
-        title = "Pairs Plot of Key Control Variables")
-rm(tmpdf)
+<<corMat, fig.cap="Correlation Matrix of Demographic Variables and Turnout Across Sample", fig.height = 8, fig.width=8>>=
+dist_turn$median_incomeLOG <- log(dist_turn$median_income)
+
+library(reshape)
+nopanel <- theme(panel.background=element_blank(),
+                 panel.grid.minor=element_blank(),
+                 panel.grid.major=element_blank(),
+                 axis.text.x = element_text(angle = -90, hjust = 0), 
+                               axis.text = element_text(colour = "black"))
+
+pairLabels <- c("Turnout", "Fall Turnout", "Incumbent Share", "% 65 Older", 
+                "% Bach. +", "OOH %", "Median Income", "Log VAP")
+corVars <-  c("turnout", "fallTurnout", "incumShare", "per65o", "PerBachelorOrAbove", 
+                   "OOH_share", "median_incomeLOG", "VAP_adjLOG")
+
+tempdf <- dist_turn[dist_turn$turnout < 0.95 & 
+                                !is.na(dist_turn$turnout), ]
+tempdf <- tempdf[, corVars]
+names(tempdf) <- pairLabels
+
+cormat <- melt(round(cor(tempdf, use = "pairwise"), 3)) 
+
+cormat$value2 <- cut(cormat$value, 
+                     breaks=c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1), 
+                     include.lowest=TRUE, 
+            label=c("(-0.75,-1)","(-0.5,-0.75)","(-0.25,-0.5)","(0,-0.25)",
+                    "(0,0.25)","(0.25,0.5)","(0.5,0.75)","(0.75,1)")) 
+
+qplot(x=X1, y=X2, data=cormat, fill=value2, geom="tile", color = I("gray40")) + 
+  scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
+                    breaks = levels(cormat$value2), drop =FALSE)+
+  geom_text(aes(label = value), size = 2) + nopanel + 
+  labs(x = "", y = "") + theme(legend.position = "none")
+
 @
 
 
@@ -803,7 +847,36 @@ p4 <- qplot(RecallPolarization, topTicketTurnoutSpring, data = plotdf) +
    scale_y_continuous(label = percent) +
    theme_dpi() + labs(x= "Polarization from 2012 Gov. Recall",y= "Spring 2012 Turnout")
 
-grid.arrange(p1, p2, p3, p4)
+# grid.arrange(p1, p2, p3, p4)
+
+
+pairLabels <- c("Recall Polar.", "Gov. Recall Turnout", "Fall Share Dem.", 
+                "Recent Fall Turn.", "Spring Turn.", "WERC Turnout")
+corVars <-  c("RecallPolarization", "GovTurnout_recall", 
+              "fallTwoPartyShareDem", "recentFallTurnout", 
+              "topTicketTurnoutSpring", "turnout_overall_werc")
+
+tempdf <- dist_turn[dist_turn$turnout < 0.95 & 
+                            dist_turn$year >= 2010 & 
+                            !is.na(dist_turn$turnout), ]
+tempdf <- tempdf[, corVars]
+names(tempdf) <- pairLabels
+
+cormat <- melt(round(cor(tempdf, use = "pairwise"), 3)) 
+
+cormat$value2 <- cut(cormat$value, 
+                     breaks=c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1), 
+                     include.lowest=TRUE, 
+            label=c("(-0.75,-1)","(-0.5,-0.75)","(-0.25,-0.5)","(0,-0.25)",
+                    "(0,0.25)","(0.25,0.5)","(0.5,0.75)","(0.75,1)")) 
+
+qplot(x=X1, y=X2, data=cormat, fill=value2, geom="tile", color = I("gray40")) + 
+  scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
+                    breaks = levels(cormat$value2), drop =FALSE)+
+  geom_text(aes(label = value), size = 3) + nopanel + 
+  labs(x = "", y = "") + theme(legend.position = "none")
+
+
 @
 
 Figure \ref{fig:ivPlot2} explores the relationship between recall polarization 
@@ -814,6 +887,8 @@ polarization with higher polarization more strongly associated with lower income
 Polarization appears to be consistent across the size of the Voting Age Population 
 (VAP). There is a slight increase in polarization as the percentage of VAP over 
 65 increases. 
+
+% TODO: Update the text here. 
 
 <<ivPlot2, fig.cap="Polarization and Population Control Variables">>=
 p1 <- qplot(median_incomeLOG, RecallPolarization, data = plotdf) + 
@@ -841,10 +916,46 @@ p4 <- qplot(per65o, RecallPolarization, data = plotdf) +
    scale_x_continuous(label = percent) +
    theme_dpi() + labs(y= "Polarization from 2012 Gov. Recall", x="% VAP 65+")
 
-grid.arrange(p1, p2, p3, p4)
+# grid.arrange(p1, p2, p3, p4)
+# 
+
+
+pairLabels <- c("Recall Polar.", "Gov. Recall Turnout", "WERC Turnout", 
+                "Median Income", 
+                "Log VAP", "% Bach. +", "% 65 Older", "OOH %", "Fall Share Dem.")
+corVars <-  c("RecallPolarization", "GovTurnout_recall", 
+              "turnout_overall_werc","median_incomeLOG", 
+              "VAP_adjLOG", "PerBachelorOrAbove", 
+              "per65o", "OOH_share", "fallTwoPartyShareDem")
+
+tempdf <- dist_turn[dist_turn$turnout < 0.95 & 
+                            dist_turn$year >= 2010 & 
+                            !is.na(dist_turn$turnout), ]
+tempdf <- tempdf[, corVars]
+names(tempdf) <- pairLabels
+
+cormat <- melt(round(cor(tempdf, use = "pairwise"), 3)) 
+
+cormat$value2 <- cut(cormat$value, 
+                     breaks=c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1), 
+                     include.lowest=TRUE, 
+            label=c("(-0.75,-1)","(-0.5,-0.75)","(-0.25,-0.5)","(0,-0.25)",
+                    "(0,0.25)","(0.25,0.5)","(0.5,0.75)","(0.75,1)")) 
+
+qplot(x=X1, y=X2, data=cormat, fill=value2, geom="tile", color = I("gray40")) + 
+  scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
+                    breaks = levels(cormat$value2), drop =FALSE)+
+  geom_text(aes(label = value), size = 3) + nopanel + 
+  labs(x = "", y = "") + theme(legend.position = "none")
 @
 
 \subsubsection{WERC Elections}
+
+Figure \ref{fig:ivPlot2} also shows the relationship between independent variables and 
+the turnout in school district union certification elections after the passage 
+of Act 10. Polarization is slightly negatively related with WERC turnout. 
+Median income is slightly positively related with WERC turnout. VAP and \% of 
+VAP over 65 are not really related to this. 
 
 The Act 10 period forced teachers' unions to show their strength through 
 recertification elections. Statewide, most unions recertified sometime in the 
@@ -857,48 +968,90 @@ districts had to recertify in waves as their existing union contracts expired.
 I take WERC election results from 2011, 2012, 2013, and 2014. After recertifying 
 the first time, unions must hold an annual recertification election. I collapse 
 the recertifcation elections for all unions in the district available in all years 
-as a measure of union strength over time. 
+as a measure of latent union strength. 
+
+Overall, \Sexpr{iNum(length(unique(wercDatTeachers$distid_werc)))} school districts 
+had a certification election and of these, \Sexpr{iNum(length(intersect(unique(wercDatTeachers$distid_werc), unique(dist_turn$distid))))} are also in my sample. 
+Taken together, teachers' unions in Wisconsin 
+held \Sexpr{iNum(sum(wercDatTeachers$tries_werc))} 
+certification elections, and won \Sexpr{iNum(wercDatTeachers$wins_werc)}. This 
+win rate makes using wins as a variable not possible. A key feature of the elections 
+is, however, that voters who did not turn out are counted as voting ``No'' for 
+recertification. Thus, voter turnout is a measure of the ability of the union to 
+organize. On average, districts saw \Sexpr{iPer(mean(wercDatTeachers$best_margin_werc)*100)} margins of votes in favor of certification.  
 
 Turnout is a strong proxy for union strength because such vote records are public 
 record. Teachers have little financial incentive to participate in the union 
 post Act 10 as the union is barred legally from bargaining for anything other 
 than an inflation indexed wage increase. 
 
+For districts without a recertification election, I code them as 0. As of the 
+writing of this dissertation, nearly every district is eligble for recertification. 
+Those that have chosen not to recertify have been unable to conduct a recertification 
+election and should be interepreted as weakened. I explore the sensitivity to 
+this. 
 
-Figure \ref{fig:ivPlot3} shows the relationship between independent variables and 
-the turnout in school district union certification elections after the passage 
-of Act 10. Polarization is slightly negatively related with WERC turnout. 
-Median income is slightly positively related with WERC turnout. VAP and \% of 
-VAP over 65 are not really related to this. 
+%TODO: Sensitivity check for WERC election coding missing as 0, try coding as mean, 
+% or mean - standard deviation.
 
-<<ivPlot3, fig.cap = "Polarization and WERC Elections">>=
-p1 <- qplot(RecallPolarization, turnout_overall_werc, data = plotdf) + 
-  geom_smooth(method='lm') + 
-  facet_wrap(~year) + 
-  scale_y_continuous(label = percent) + theme_dpi() + 
-  labs(y = "WERC Election Turnout", x = "Polarization from 2012 Gov. Recall")
 
-p2 <- qplot(median_incomeLOG, turnout_overall_werc, data = plotdf) + 
-  geom_smooth(method='lm') + 
-  facet_wrap(~year) + 
-  scale_y_continuous(label = percent) + theme_dpi() + 
-  scale_x_continuous(limits = c(9.5, 11.5)) +
-  labs(y = "WERC Election Turnout", x = "Median Income Log")
+<<ivPlot3, fig.cap = "Polarization and WERC Elections", eval=FALSE>>=
+# p1 <- qplot(RecallPolarization, turnout_overall_werc, data = plotdf) + 
+#   geom_smooth(method='lm') + 
+#   facet_wrap(~year) + 
+#   scale_y_continuous(label = percent) + theme_dpi() + 
+#   labs(y = "WERC Election Turnout", x = "Polarization from 2012 Gov. Recall")
+# 
+# p2 <- qplot(median_incomeLOG, turnout_overall_werc, data = plotdf) + 
+#   geom_smooth(method='lm') + 
+#   facet_wrap(~year) + 
+#   scale_y_continuous(label = percent) + theme_dpi() + 
+#   scale_x_continuous(limits = c(9.5, 11.5)) +
+#   labs(y = "WERC Election Turnout", x = "Median Income Log")
+# 
+# p3 <- qplot(per65o, turnout_overall_werc, data = plotdf) + 
+#   geom_smooth(method='lm') + 
+#   facet_wrap(~year) + 
+#   scale_y_continuous(label = percent) + theme_dpi() + 
+#   scale_x_continuous(label = percent) +
+#   labs(y = "WERC Election Turnout", x = "% VAP 65+")
+# 
+# p4 <- qplot(VAP_adjLOG, turnout_overall_werc, data = plotdf) + 
+#   geom_smooth(method = 'lm') + 
+#    facet_wrap(~year) + 
+#    scale_x_continuous() + scale_y_continuous(label = percent) +
+#    theme_dpi() + labs(y= "WERC Election Turnout", x= "VAP (log)")
+# 
+# grid.arrange(p1, p2, p3, p4)
 
-p3 <- qplot(per65o, turnout_overall_werc, data = plotdf) + 
-  geom_smooth(method='lm') + 
-  facet_wrap(~year) + 
-  scale_y_continuous(label = percent) + theme_dpi() + 
-  scale_x_continuous(label = percent) +
-  labs(y = "WERC Election Turnout", x = "% VAP 65+")
 
-p4 <- qplot(VAP_adjLOG, turnout_overall_werc, data = plotdf) + 
-  geom_smooth(method = 'lm') + 
-   facet_wrap(~year) + 
-   scale_x_continuous() + scale_y_continuous(label = percent) +
-   theme_dpi() + labs(y= "WERC Election Turnout", x= "VAP (log)")
 
-grid.arrange(p1, p2, p3, p4)
+pairLabels <- c("WERC Turnout", "Gov. Recall Turnout", "Median Income", 
+                "Log VAP", "% Bach. +", "% 65 Older", "OOH %", "Fall Share Dem.")
+corVars <-  c("turnout_overall_werc", "GovTurnout_recall", "median_incomeLOG", 
+              "VAP_adjLOG", "PerBachelorOrAbove", 
+              "per65o", "OOH_share", "fallTwoPartyShareDem")
+
+tempdf <- dist_turn[dist_turn$turnout < 0.95 & 
+                            dist_turn$year >= 2010 & 
+                            !is.na(dist_turn$turnout), ]
+tempdf <- tempdf[, corVars]
+names(tempdf) <- pairLabels
+
+cormat <- melt(round(cor(tempdf, use = "pairwise"), 3)) 
+
+cormat$value2 <- cut(cormat$value, 
+                     breaks=c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1), 
+                     include.lowest=TRUE, 
+            label=c("(-0.75,-1)","(-0.5,-0.75)","(-0.25,-0.5)","(0,-0.25)",
+                    "(0,0.25)","(0.25,0.5)","(0.5,0.75)","(0.75,1)")) 
+
+qplot(x=X1, y=X2, data=cormat, fill=value2, geom="tile", color = I("gray40")) + 
+  scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
+                    breaks = levels(cormat$value2), drop =FALSE)+
+  geom_text(aes(label = value), size = 3) + nopanel + 
+  labs(x = "", y = "") + theme(legend.position = "none")
+
 @
 
 

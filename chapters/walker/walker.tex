@@ -241,7 +241,7 @@ varies. School board elections can be interpreted as reflecting the preferences
 of those voters mobilized by these groups based on the intensity and homogeneity 
 of each of their preferences multiplied by their size -- Dahl's polyarchy \citep{RefWorks:319}.
 
-Dissatisfaction theory would agree with this re framing of the power 
+Dissatisfaction theory would agree with this reframing of the power 
 structures of school boards and suggest that periodically if the board strays too 
 far from the preferences of less represented groups, voters will punish them and 
 adjust the board to reflect the preferences of the community. If this is the case, 
@@ -250,11 +250,19 @@ retain their current board members but with greater numbers. That is, if we coul
 exogenously eliminate the coordination and information costs for each interest group, 
 we should not expect to see great changes in school board membership. 
 
-On the other hand, if community fractures do exist, then this injection of 
+However, if community fractures do exist, then this injection of 
 information should accelerate the process of actualizing democratic activity 
 for broader swaths of the community. In these cases, the exogenous shock should 
 accelerate the process of increased candidate and voter activity, culminating 
-in heightened incumbent defeat. I now turn to describing the political conditions 
+in heightened incumbent defeat. A final case might occur if before the shock an 
+equilibrium was reached either through overall satisfaction with the board, or 
+through capture by interest groups that warded off challengers. Post Act 10, 
+candidates and dissatisfied community members become emboldened with the chance 
+of change, and democratic actualization would increase. In the case of interest 
+group blocking, this effect should be even stronger with interest groups newly 
+weakened through Act 10. 
+
+I now turn to describing the political conditions 
 in Wisconsin from 2010-2012 that created such an exogenous provision of information 
 to voters. I demonstrate how this statewide shock increased information for voters 
 about school board candidates and lowered the cost to participating in school board 
@@ -430,7 +438,9 @@ was known, then the Act 10 period should result in larger impacts in these
 communities. As dissatisfaction theory suggests that these realignments 
 of school boards to community preferences are rare, I expect that on average 
 the Act 10 period should lead to an overall increase in competition, incumbent 
-defeat, and voter participation. 
+defeat, and voter participation. I will also explore if this effect is stronger 
+or weaker in communities with deeper partisan divisions and stronger interest 
+groups. 
 
 \begin{center}
 \begin{figure}[h!]
@@ -575,7 +585,7 @@ For voters, I look for changes in voter turnout and decreases in voter rolloff.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth,height=3.18in]{../../phd_figs/chap6-blaisLagoplot-1} \caption[Lagged Competitiveness Across Years]{Lagged Competitiveness Across Years}\label{fig:blaisLagoplot}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-blaisLagoplot-1} \caption[Correlation of Blais-Lago Quotient and Blais-Lago Lag]{Correlation of Blais-Lago Quotient and 2x Lag. Point is the correlation coefficient and confidence bands mark the 95 percent confidence interval for the correlation in each year.}\label{fig:blaisLagoplot}
 \end{figure}
 
 
@@ -583,7 +593,7 @@ For voters, I look for changes in voter turnout and decreases in voter rolloff.
 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Mar 29 13:17:40 2015
+% Sun Mar 29 16:25:00 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -622,13 +632,13 @@ but the intercept is close to the same. This looks like a good argument for
 considering a twice lagged measure as the strange year to year relationships may 
 be due to the cyclical nature of these elections. 
 
-For rolloff, 2011 is clearly a standout year, while 2012 appears to fall right 
-in line with the pooled across year relationship represented by the dashed line. 
+For rolloff both 2011 and 2012 standout. 
 
+%TODO: Finish this. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth,height=3.18in]{../../phd_figs/chap6-turnoutPlot1-1} \caption[Lagged School Board Turnout Across Years]{Lagged School Board Turnout Across Years}\label{fig:turnoutPlot1}
+\includegraphics[width=\maxwidth,height=3.18in]{../../phd_figs/chap6-turnoutPlot1-1} \caption[Lagged School Board Turnout Across Years]{Relationship between school board turnout and twice lagged school board turnout. Each panel is a school board election cycle and each point represents a school district. The dashed line represents the pooled relationship between the lag and turnout across all years, and the blue line represents the relationship in each year.}\label{fig:turnoutPlot1}
 \end{figure}
 
 
@@ -636,7 +646,7 @@ in line with the pooled across year relationship represented by the dashed line.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth,height=3.18in]{../../phd_figs/chap6-turnoutPlot2-1} \caption[Lagged Spring Rolloff Across Years]{Lagged Spring Rolloff Across Years}\label{fig:turnoutPlot2}
+\includegraphics[width=\maxwidth,height=3.18in]{../../phd_figs/chap6-turnoutPlot2-1} \caption[Lagged Spring Rolloff Across Years]{Relationship between school board rolloff and twice lagged school board rolloff. Each panel is a school board election cycle and each point represents a school district. The dashed line represents the pooled relationship between the lag and rolloff across all years, and the blue line represents the relationship in each year.}\label{fig:turnoutPlot2}
 \end{figure}
 
 
@@ -645,15 +655,17 @@ in line with the pooled across year relationship represented by the dashed line.
 
 \subsection{Independent Variables}
 
-Figure \ref{fig:pairsPlot} shows the relationships among some key control variables 
+Figure \ref{fig:corMat} shows the relationships among some key control variables 
 and is similar to the plot introduced in Chapter \ref{chap:turnout}. These 
 variables are related to the key independent variables identified by 
 \citet{RefWorks:297} as indicators of school districts in transition from insular 
 to competitive in their politics. 
 
+% TODO: Finish descriptions here
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap6-pairsPlot-1} \caption[Pairs Plot of Demographic Variables and Turnout in 2012]{Pairs Plot of Demographic Variables and Turnout in 2012}\label{fig:pairsPlot}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-corMat-1} \caption[Correlation Matrix of Demographic Variables and Turnout Across Sample]{Correlation Matrix of Demographic Variables and Turnout Across Sample}\label{fig:corMat}
 \end{figure}
 
 
@@ -730,6 +742,8 @@ Polarization appears to be consistent across the size of the Voting Age Populati
 (VAP). There is a slight increase in polarization as the percentage of VAP over 
 65 increases. 
 
+% TODO: Update the text here. 
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
 \includegraphics[width=\maxwidth]{../../phd_figs/chap6-ivPlot2-1} \caption[Polarization and Population Control Variables]{Polarization and Population Control Variables}\label{fig:ivPlot2}
@@ -739,6 +753,12 @@ Polarization appears to be consistent across the size of the Voting Age Populati
 \end{knitrout}
 
 \subsubsection{WERC Elections}
+
+Figure \ref{fig:ivPlot2} also shows the relationship between independent variables and 
+the turnout in school district union certification elections after the passage 
+of Act 10. Polarization is slightly negatively related with WERC turnout. 
+Median income is slightly positively related with WERC turnout. VAP and \% of 
+VAP over 65 are not really related to this. 
 
 The Act 10 period forced teachers' unions to show their strength through 
 recertification elections. Statewide, most unions recertified sometime in the 
@@ -751,27 +771,34 @@ districts had to recertify in waves as their existing union contracts expired.
 I take WERC election results from 2011, 2012, 2013, and 2014. After recertifying 
 the first time, unions must hold an annual recertification election. I collapse 
 the recertifcation elections for all unions in the district available in all years 
-as a measure of union strength over time. 
+as a measure of latent union strength. 
+
+Overall, 272 school districts 
+had a certification election and of these, 209 are also in my sample. 
+Taken together, teachers' unions in Wisconsin 
+held 513 
+certification elections, and won 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 1, 2, 0, 2, 2, 2, 3, 2, 2, 2, 2, 0, 2, 1, 2, 2, 2, 3, 2, 1, 2, 3, 2, 4, 1, 1, 1, 1, 2, 2, 2, 3, 2, 2, 2, 1, 3, 2, 1, 1, 2, 2, 3, 2, 2, 2, 1, 1, 3, 2, 2, 2, 3, 1, 1, 1, 2, 2, 1, 1, 2, 2, 2, 2, 2, 1, 2, 0, 3, 2, 1, 2, 2, 2, 3, 2, 3, 1, 1, 0, 3, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 1, 3, 2, 2, 2, 1, 2, 1, 2, 0, 3, 2, 2, 1, 2, 2, 0, 1, 2, 2, 2, 1, 2, 1, 0, 2, 0, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 1, 2, 2, 2, 3, 0, 3, 2, 2, 2, 2, 2, 1, 1, 3, 2, 2, 1, 0, 2, 3, 2, 2, 2, 2, 2, 1, 3, 1, 1, 1, 1, 2, 1, 2, 2, 3, 2, 2, 2, 2, 2, 1, 2, 1, 3, 2, 4, 2, 1, 2, 1, 1, 2, 0, 3, 3, 2, 2, 2, 2, 2, 2, 2, 3, 1, 2, 2, 0, 2, 2, 2, 1, 3, 3, 2, 3, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 2, 2, 1, 2, 3, 1, 1, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 1, 1, 3, 2, 1, 0. This 
+win rate makes using wins as a variable not possible. A key feature of the elections 
+is, however, that voters who did not turn out are counted as voting ``No'' for 
+recertification. Thus, voter turnout is a measure of the ability of the union to 
+organize. On average, districts saw 76.5\% margins of votes in favor of certification.  
 
 Turnout is a strong proxy for union strength because such vote records are public 
 record. Teachers have little financial incentive to participate in the union 
 post Act 10 as the union is barred legally from bargaining for anything other 
 than an inflation indexed wage increase. 
 
+For districts without a recertification election, I code them as 0. As of the 
+writing of this dissertation, nearly every district is eligble for recertification. 
+Those that have chosen not to recertify have been unable to conduct a recertification 
+election and should be interepreted as weakened. I explore the sensitivity to 
+this. 
 
-Figure \ref{fig:ivPlot3} shows the relationship between independent variables and 
-the turnout in school district union certification elections after the passage 
-of Act 10. Polarization is slightly negatively related with WERC turnout. 
-Median income is slightly positively related with WERC turnout. VAP and \% of 
-VAP over 65 are not really related to this. 
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap6-ivPlot3-1} \caption[Polarization and WERC Elections]{Polarization and WERC Elections}\label{fig:ivPlot3}
-\end{figure}
+%TODO: Sensitivity check for WERC election coding missing as 0, try coding as mean, 
+% or mean - standard deviation.
 
 
-\end{knitrout}
+
 
 
 \clearpage

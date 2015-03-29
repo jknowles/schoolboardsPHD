@@ -471,15 +471,12 @@ a statewide electorate and little chance for influence by individual voters.}
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap4-turnoutSize-1} \caption[Turnout in School Board Elections based on Electorate Size]{Turnout in School Board Elections based on Electorate Size}\label{fig:turnoutSize1}
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap4-turnoutSize-2} \caption[Turnout in School Board Elections based on Electorate Size]{Turnout in School Board Elections based on Electorate Size}\label{fig:turnoutSize2}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-turnoutSize-1} \caption[Turnout in School Board Elections based on Electorate Size]{Turnout in School Board Elections based on Electorate Size}\label{fig:turnoutSize}
 \end{figure}
 
 
 \end{knitrout}
+
 
 
 
@@ -562,15 +559,12 @@ These correlate positively as well at a level of
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap4-unionInf-1} \caption[Turnout in School Board Elections based on School Staff Share]{Turnout in School Board Elections based on School Staff Share}\label{fig:unionInf1}
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap4-unionInf-2} \caption[Turnout in School Board Elections based on School Staff Share]{Turnout in School Board Elections based on School Staff Share}\label{fig:unionInf2}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-unionInf-1} \caption[Turnout in School Board Elections based on School Staff Share]{Turnout in School Board Elections based on School Staff Share}\label{fig:unionInf}
 \end{figure}
 
 
 \end{knitrout}
+
 
 
 With a reduced electorate, school board elections are an interesting case to study 
@@ -1234,7 +1228,7 @@ elections elsewhere \citep{streb09,wattenberg00}.
 
 \begin{tiny}
 \begin{table}[!ht]
-\caption{Partial Pooling Model of School Board Undervote}
+\caption{Partial Pooling Model of School Board Rolloff}
 \label{tab:meUndv1} 
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
 \hline 
@@ -1306,7 +1300,7 @@ more rolloff for school board races.
 
 \begin{tiny}
 \begin{table}[!ht]
-\caption{Partial Pooling Model of School Board Undervote}
+\caption{Partial Pooling Model of School Board Rolloff}
 \label{tab:meUndv2} 
 \begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
 \hline 
@@ -1642,6 +1636,8 @@ for the district intercept.
 
 \end{knitrout}
 
+
+
 %TODO: fix text here
 Even more interestingly is the pattern for the year effects demonstrated in 
 Figure \ref{fig:randomEffectplot2}. In all four models we see one below average year, 
@@ -1653,33 +1649,524 @@ is that two years of elevated turnout across the state (net of district-election
 district-average effects) were in 2011 and 2012 after the election of Governor Scott Walker 
 and the introduction of Act 10. 
 
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-randomEffectplot2-1} \caption[Comparing Year Effects for Turnout]{Estimated year effects in standard deviation terms. Each point represents the estimated standard deviation increase or decrease in turnout for a given election year across all school districts. Confidence intervals are the 95 percent confidence interval across 1000 simulations of the model random effects.}\label{fig:randomEffectplot2}
+\end{figure}
+
+
+\end{knitrout}
 
 
 
+\clearpage
+
+\subsubsection{Rolloff}
 
 
 
+There are many interesting findings in the models of rolloff. However, the main 
+findings about district size and prior turnout are broadly similar to those found 
+for overall spring election turnout. Here I focus on the evidence that voter rolloff 
+appears more strategic and more influenced by interest groups than overall 
+turnout. 
+
+Figure \ref{fig:compUndEff} provides same look at an interactive effect with 
+district size, but for school board seat competitiveness. Each panel represents 
+one quartile of the voting age population variable. Competitiveness has an 
+almost imperceptible role in small districts in the top left, but as districts 
+get larger toward the bottom right, less competitive races inspire more voter 
+rolloff. There are a number of possible explanations for this effect. One is that 
+in small communities, as we saw, voter turnout is influenced more by competitiveness 
+in these races and thus voters have made their decision on whether to vote for 
+school board before showing up at the poll. In larger communities, turnout may 
+be driven by other factors aside from the competitiveness of the board race, 
+indeed the effect is quite modest for turnout, and thus may be influenced to not 
+complete their ballot for school board when they have not heard anything about the 
+race because it is not seriously contested. 
+
+Teacher share of the voting age population has an even more substantial impact 
+on the rolloff of voters for school board races. Figure \ref{fig:teachUndEff} 
+shows the variation in the impact of the teacher share of voters on voter rolloff 
+across four quartiles of district VAP. For the smallest districts, the teacher share 
+of voters does not affect voter rolloff -- voters complete their ballots at the 
+same rate whether teachers comprise 1\% or 5\% of the electorate. As districts get 
+larger, the impact of teachers grows stronger and in the second and third quartile, 
+the impact of moving from 2\% to 3\% teachers in the VAP can increase voter rolloff 
+in school board elections by nearly as much as the interquartile range for the 
+variable. Though this effect is quite striking it is important to remember that 
+these are simulations and have their limitations -- the simulation in the final 
+panel, for the largest districts, depicts the very unlikely scenario in which 
+the most populated Wisconsins school districts have a population consisting of 
+5\% teachers employed in public schools. 
+
+%TODO: Describe these figures correctly
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-teachUndEff-1} \caption[Interaction Effect of Teacher Share on Rolloff]{Interaction between teacher share of the VAP and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the teacher share of VAP is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.}\label{fig:teachUndEff}
+\end{figure}
+
+
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-compUndEff-1} \caption[Interaction Effect of Competition on Rolloff]{Interaction between the Blais-Lago quotient and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the competitiveness of races is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.}\label{fig:compUndEff}
+\end{figure}
+
+
+\end{knitrout}
 
 
 
+%TODO: add random effect plots for undervote to the appendix as well
+\clearpage
+
+\section{Discussion}
+
+In all, I find strong evidence of voters in school board elections behaving as 
+predicted by the major theories of voting. Table \ref{tab:turnoutRESULTS} summarizes 
+the substantive impact of the key variables. It also provides a sense of the relative 
+magnitude of these effects across the differing models. 
+
+Voters in school board elections are largely habit-forming -- a variable with a 
+large impact even after controlling for observable and unobservable district and 
+election characteristics. This means that communities with higher historical spring 
+election participation will have smaller rolloff on school board ballots and overall 
+higher turnout in the spring election. Though non-partisan spring elections have 
+much lower levels of turnout, they appear to be behaving similarly to other electorates. 
+This effect was strong and statistically significant in both the random and district 
+fixed effect specifications.
+
+Voters also appear to behave rationally. The larger the electorate, the lower the 
+turnout and the less likely voters are to complete their ballots. Voters are also 
+more likely to participate in elections when their chance of influencing the outcome is 
+greatest. Uncontested races have lower voter turnout than races 
+with contestation. Little difference exists between races for open seats and races 
+featuring an incumbent. Competitiveness matters as well, with races that are contested 
+but include a non-competitive candidate having depressed turnout as well.This 
+suggests that, despite a lack of campaigning by candidates or major media coverage, 
+voters in school board elections are able to assess whether or not to vote based 
+on an assessment of how contested a race will be. 
+
+This is strong support that while the overall electorate in spring 
+elections may not be behaving strategically with regard to school board races, 
+the subset of the electorate participating in the spring election is more likely 
+to participate in the board election when the race is close and their probability 
+of influencing the outcome is greatest. This effect, however, is modest. 
+
+Interest groups play a role in spring elections and school board races. More modest effects are found in the form of the influence of interest groups. 
+The greater the share of teachers in the electorate, the less overall turnout 
+there is for school board. This effect is modest, but it is larger in small 
+districts. This is important -- voters in small school districts face lower 
+information costs for school board races, and the deterrent effect of teacher 
+preferences may encourage voters to stay away from the polls if they believe 
+the nomination process or the election will have little chance of reflecting 
+their policy preferences. The same disinterest for school board races is found 
+in rolloff when teacher share of the electorate is greater, the rolloff is more. 
+
+There was no evidence of parties playing a role in turnout in non-partisan spring 
+elections. However, parties do appear to influence voter rolloff for school board 
+races in the spring election -- sometimes to a large degree. Democratic vote in 
+prior elections is strongly related with increased rolloff in school board races. 
+This is probably also highly correlated with teacher share of voters and the strength 
+of labor unions, and so this suggests that there is potential influence in spring 
+voting patterns by the parties. This influence is perhaps realized through mitigating 
+competitiveness of races or controlling the nominating process, decreasing the 
+motivation of voters in these communities for school board voting. 
+
+Partisan divides also increase rolloff, but to a much lower extent. In small communities, 
+partisan divide does not lead to much rolloff on the part of voters. However, in larger 
+communities rolloff is more influenced by party division. This suggests that as 
+communities are more polarized, voters rolloff more. This effect is small, but it 
+is notably smaller in small communities. This raises interesting questions of whether 
+or not smaller in smaller communities partisan polarization motivates voters more 
+because of the information it might confer about non-partisan candidates, or whether 
+better informed spring election voters view board elections as more important to 
+complete than a comparison electorate in a less polarized community. 
+
+This study is not without its limits. A first limitation is the question of how 
+much spring election voter turnout can be considered to be driven by local 
+down-ticket elections. This is particularly true during the period of study in 
+this chapter, which included the highest turnout spring election in Wisconsin 
+history -- a result that cannot be attributed to a slate of particularly 
+contentious school board elections, but instead to the aftershocks of historical
+partisan politics surrounding Governor Scott Walker and the state fiscal crisis. 
+In an effort to address these concerns I confirmed the theory expectations on a 
+narrower dependent variable -- the difference in turnout between the top spring 
+ticket and the school board race. While this addresses the concern about falsely 
+attributing larger spring election forces to school boards, more evidence directly 
+about school boards would be preferred. 
+
+Second, this study is an attempt to infer voter behavior from the observed patterns 
+of turnout and rolloff observed over the last several years in a sample of 
+Wisconsin school districts. Thus, while theories of habit-forming voters are in
+accordance with the pattern observed here, this study is limited by its inability
+to peer into the rationales of individual voters. In order to disentangle the many
+confounding theories, future research must survey eligible voters and ask them about
+their decision to vote or not vote in local school board elections like the work
+of \citet{oliver12}. Thus, readers should be cautious in overinterpreting the
+results here. 
+
+Third, there is a limited ability to draw causal inferences from the results 
+presented here. While all of the results presented are net of a set of strong 
+control variables and after conditioning out unobservable election and school 
+district specific effects, there may be a large set of potential omitted variables 
+responsible for the patterns shown here. Luckily, Chapter \ref{chap:walker} will 
+leverage an exogenous statewide shock to school board elections to investigate 
+the causal impact of some of these variables on turnout and lend more support to 
+the initial findings here. 
+
+Overall, unlike the results in Chapter \ref{chap:candidacy}, the results in this chapter 
+reflect theoretical expectations for election behavior. Applying these theories 
+to non-partisan spring elections, particularly local elections, provides an interesting 
+new context to apply these theories. This suggests that although the school board 
+electorate is different than the general election electorate, that electorate behaves 
+in expected ways -- that is, habit forming, selective about their vote mattering, 
+and influenced by social group mechanisms. 
 
 
 
+\clearpage
+
+\section{Appendix}
+\label{sec:appendixT}
+
+Sensitivity checks and further table analysis. 
+
+\subsection{Model Fit Comparisons}
+
+Figure \ref{fig:ModFitExamp} demonstrates how the multilevel model improves on 
+the pooled fixed effect model fit by showing the original data, predicted values, 
+and predicted values under the fixed effect model for the model of competitiveness 
+predicting turnout.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-ModFitExamp-1} \caption[Bootstrapped RMSE for Various Models of School Board Turnout]{Bootstrapped RMSE for Various Models of School Board Turnout}\label{fig:ModFitExamp}
+\end{figure}
 
 
+\end{knitrout}
 
 
+\clearpage
+
+\subsection{Additional Effect Plots}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-interactPlot1-1} \caption[Illustrating Interaction Effects with District Size and Partisanship]{Illustrating Interaction Effects with District Size and Partisanship}\label{fig:interactPlot1}
+\end{figure}
 
 
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-interactPlot2-1} \caption[Illustrating Interaction Effects with District Size]{Illustrating Interaction Effects with District Size}\label{fig:interactPlot2}
+\end{figure}
 
 
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-interactPlot3-1} \caption[Prior Turnout Effect on Voter Rolloff]{Prior Turnout Effect on Voter Rolloff}\label{fig:interactPlot3}
+\end{figure}
 
 
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-interactPlot4-1} \caption[Partisan Division Effect on Voter Rolloff in Spring]{Partisan Division Effect on Voter Rolloff in Spring}\label{fig:interactPlot4}
+\end{figure}
 
 
+\end{knitrout}
+
+\clearpage
+\subsection{Random Effect Specification Tests}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## 
+## 	simulated finite sample distribution of RLRT.
+## 	
+## 	(p-value based on 10000 simulated values)
+## 
+## data:  
+## RLRT = 123.8164, p-value < 2.2e-16
+## 
+## 	simulated finite sample distribution of RLRT.
+## 	
+## 	(p-value based on 10000 simulated values)
+## 
+## data:  
+## RLRT = 244.8971, p-value < 2.2e-16
+## 
+## 	simulated finite sample distribution of RLRT.
+## 	
+## 	(p-value based on 10000 simulated values)
+## 
+## data:  
+## RLRT = 345.5048, p-value < 2.2e-16
+## 
+## 	simulated finite sample distribution of RLRT.
+## 	
+## 	(p-value based on 10000 simulated values)
+## 
+## data:  
+## RLRT = 245.7539, p-value < 2.2e-16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\clearpage
+
+\subsection{District and Year Fixed Effect Results}
+
+District fixed effect model results. 
+
+\begin{tiny}
+\begin{sidewaystable}[!ht]
+\caption{Models of Lagged Turnout in School Board Elections}
+\label{tab:lagmods} 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Fall Turnout } & \multicolumn{ 1 }{ c }{ Dist/Year FE } \\ \hline
+ %                  & Simple           & Fall Turnout     & Dist/Year FE    \\ 
+Intercept          & -0.020           & 0.483            & 0.240           \\ 
+                   & (0.027)          & (0.301)          & (0.291)         \\ 
+Lagged Turnout (2) & 0.188 ^{***}     & -0.052 ^*        & -0.048 ^*       \\ 
+                   & (0.027)          & (0.021)          & (0.021)         \\ 
+Fall Turnout       & 0.102 ^{**}      & 0.277 ^{***}     &                 \\ 
+                   & (0.034)          & (0.079)          &                 \\ 
+ln(VAP)            & -1.335 ^{***}    & 1.081            & -1.807          \\ 
+                   & (0.265)          & (5.014)          & (4.957)         \\ 
+$ln(VAP)^{2}$      & 1.114 ^{***}     & -1.868           & 1.858           \\ 
+                   & (0.265)          & (5.095)          & (4.955)         \\ 
+\% White          & -0.022           & 0.484 ^\dagger  & 0.549 ^\dagger \\ 
+                   & (0.026)          & (0.284)          & (0.293)         \\ 
+\% Over 65        & 0.169 ^{***}     & 0.269 ^\dagger  & 0.309 ^*        \\ 
+                   & (0.034)          & (0.148)          & (0.148)         \\ 
+\% Bach. +        & 0.082 ^*         & -0.270           & -0.152          \\ 
+                   & (0.035)          & (0.186)          & (0.180)         \\ 
+\% OOH            & 0.003            & 0.128            & 0.167           \\ 
+                   & (0.035)          & (0.212)          & (0.218)         \\ 
+ln(MedianIncome)   & 0.075 ^\dagger  & -0.127           & -0.150          \\ 
+                   & (0.042)          & (0.140)          & (0.141)         \\ 
+District-wide      & 0.004            & 0.078 ^\dagger  & 0.076 ^\dagger \\ 
+                   & (0.030)          & (0.041)          & (0.041)         \\ 
+Blais-Lago         & 0.033            & 0.089 ^{***}     & 0.090 ^{***}    \\ 
+                   & (0.022)          & (0.020)          & (0.020)          \\
+ $N$                & 2398             & 2398             & 2398            \\ 
+$R^2$              & 0.199            & 0.569            & 0.566           \\ 
+adj. $R^2$         & 0.196            & 0.500            & 0.497           \\ 
+Resid. sd          & 0.412            & 0.325            & 0.326            \\ \hline
+ \multicolumn{4}{l}{\footnotesize{Standard errors clustered at the school district.}}\\
+\multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+\multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted in models 2 and 3.}} 
+\end{tabular} 
+ \end{sidewaystable}
+
+\end{tiny}
 
 
+\begin{tiny}
+\begin{sidewaystable}[!ht]
+\caption{Models of Lagged Turnout in School Board Elections}
+\label{tab:lagmods2} 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Fall Turnout } & \multicolumn{ 1 }{ c }{ Dist/Year FE } \\ \hline
+ %                  & Simple           & Fall Turnout     & Dist/Year FE    \\ 
+Intercept          & -0.020           & 0.483            & 0.240           \\ 
+                   & (0.027)          & (0.301)          & (0.291)         \\ 
+Lagged Turnout (1) & 0.188 ^{***}     & -0.052 ^*        & -0.048 ^*       \\ 
+                   & (0.027)          & (0.021)          & (0.021)         \\ 
+Fall Turnout       & 0.102 ^{**}      & 0.277 ^{***}     &                 \\ 
+                   & (0.034)          & (0.079)          &                 \\ 
+ln(VAP)            & -1.335 ^{***}    & 1.081            & -1.807          \\ 
+                   & (0.265)          & (5.014)          & (4.957)         \\ 
+$ln(VAP)^{2}$      & 1.114 ^{***}     & -1.868           & 1.858           \\ 
+                   & (0.265)          & (5.095)          & (4.955)         \\ 
+\% White          & -0.022           & 0.484 ^\dagger  & 0.549 ^\dagger \\ 
+                   & (0.026)          & (0.284)          & (0.293)         \\ 
+\% Over 65        & 0.169 ^{***}     & 0.269 ^\dagger  & 0.309 ^*        \\ 
+                   & (0.034)          & (0.148)          & (0.148)         \\ 
+\% Bach. +        & 0.082 ^*         & -0.270           & -0.152          \\ 
+                   & (0.035)          & (0.186)          & (0.180)         \\ 
+\% OOH            & 0.003            & 0.128            & 0.167           \\ 
+                   & (0.035)          & (0.212)          & (0.218)         \\ 
+ln(MedianIncome)   & 0.075 ^\dagger  & -0.127           & -0.150          \\ 
+                   & (0.042)          & (0.140)          & (0.141)         \\ 
+District-wide      & 0.004            & 0.078 ^\dagger  & 0.076 ^\dagger \\ 
+                   & (0.030)          & (0.041)          & (0.041)         \\ 
+Blais-Lago         & 0.033            & 0.089 ^{***}     & 0.090 ^{***}    \\ 
+                   & (0.022)          & (0.020)          & (0.020)          \\
+ $N$                & 2398             & 2398             & 2398            \\ 
+$R^2$              & 0.199            & 0.569            & 0.566           \\ 
+adj. $R^2$         & 0.196            & 0.500            & 0.497           \\ 
+Resid. sd          & 0.412            & 0.325            & 0.326            \\ \hline
+ \multicolumn{4}{l}{\footnotesize{Standard errors clustered at the school district.}}\\
+\multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+\multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted in models 2 and 3.}} 
+\end{tabular} 
+ \end{sidewaystable}
+
+\end{tiny}
 
 
+\begin{tiny}
+\begin{table}[!ht]
+\caption{Models of Competitiveness and Turnout in School Board Elections}
+\label{tab:closemods} 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ No Interact } & \multicolumn{ 1 }{ c }{ Interact + Year FE } \\ \hline
+ %                  & No Interact        & Interact + Year FE\\ 
+Intercept          & 0.227              & 0.216             \\ 
+                   & (0.162)            & (0.311)           \\ 
+ln(VAP)            & -1.697 ^{***}      & -2.055            \\ 
+                   & (0.370)            & (5.403)           \\ 
+$ln(VAP)^{2}$      & 1.375 ^{***}       & 2.140             \\ 
+                   & (0.371)            & (5.391)           \\ 
+\% White          & -0.014             & 0.580 ^\dagger   \\ 
+                   & (0.040)            & (0.318)           \\ 
+\% Over 65        & 0.209 ^{***}       & 0.326 ^*          \\ 
+                   & (0.046)            & (0.155)           \\ 
+\% Bach. +        & 0.148 ^{***}       & -0.129            \\ 
+                   & (0.039)            & (0.188)           \\ 
+\% OOH            & -0.019             & 0.212             \\ 
+                   & (0.046)            & (0.229)           \\ 
+ln(MedianIncome)   & 0.141 ^{**}        & -0.193            \\ 
+                   & (0.050)            & (0.147)           \\ 
+District-wide      & 0.014              & 0.086 ^\dagger   \\ 
+                   & (0.037)            & (0.045)           \\ 
+Incumbent Share    & -0.142 ^{***}      & -0.090 ^{***}     \\ 
+                   & (0.019)            & (0.018)           \\ 
+Blais-Lago         & 0.012              & 0.070 ^{***}      \\ 
+                   & (0.025)            & (0.021)           \\ 
+VAP x Blais-Lago   &                    & 0.030             \\ 
+                   &                    & (0.053)            \\
+ $N$                & 2398               & 2398              \\ 
+$R^2$              & 0.357              & 0.570             \\ 
+adj. $R^2$         & 0.352              & 0.502             \\ 
+Resid. sd          & 0.403              & 0.353              \\ \hline
+ \multicolumn{3}{l}{\footnotesize{Robust standard errors in parentheses}}\\
+\multicolumn{3}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+\multicolumn{3}{l}{\footnotesize{Year and district fixed effects omitted.}} 
+\end{tabular} 
+ \end{table}
 
+\end{tiny}
+
+\begin{tiny}
+\begin{table}[!ht]
+\caption{Models of Unionization and Turnout in School Board Elections}
+\label{tab:teachmods} 
+\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ RLM + District FE } & \multicolumn{ 1 }{ c }{ + Interaction } & \multicolumn{ 1 }{ c }{ Measure 2 } & \multicolumn{ 1 }{ c }{ Measure 2 + Interaction } \\ \hline
+ %                       & RLM + District FE       & + Interaction           & Measure 2               & Measure 2 + Interaction\\ 
+Intercept               & 0.209                   & 0.233                   & 0.246                   & 0.246                  \\ 
+                        & (0.307)                 & (0.310)                 & (0.311)                 & (0.311)                \\ 
+Teacher \% VAP         & 0.116                   & 0.141                   &                         &                        \\ 
+                        & (0.102)                 & (0.088)                 &                         &                        \\ 
+Lag Turnout             & -0.054 ^*               & -0.053 ^*               & -0.024                  & -0.024                 \\ 
+                        & (0.022)                 & (0.022)                 & (0.033)                 & (0.033)                \\ 
+Blais-Lago              & 0.065 ^{**}             & 0.065 ^{**}             & 0.065 ^{**}             & 0.065 ^{**}            \\ 
+                        & (0.022)                 & (0.022)                 & (0.022)                 & (0.022)                \\ 
+ln(VAP)                 & -1.883                  & -2.632                  & -2.485                  & -2.486                 \\ 
+                        & (5.347)                 & (6.543)                 & (5.437)                 & (5.435)                \\ 
+$ln(VAP)^{2}$           & 2.259                   & 3.090                   & 2.631                   & 2.631                  \\ 
+                        & (5.296)                 & (6.604)                 & (5.443)                 & (5.441)                \\ 
+\% White               & 0.632 ^*                & 0.642 ^*                & 0.603 ^\dagger         & 0.604 ^\dagger        \\ 
+                        & (0.317)                 & (0.326)                 & (0.324)                 & (0.323)                \\ 
+\% Over 65             & 0.330 ^*                & 0.334 ^*                & 0.335 ^*                & 0.335 ^*               \\ 
+                        & (0.159)                 & (0.156)                 & (0.160)                 & (0.160)                \\ 
+\% Bach. +             & -0.164                  & -0.170                  & -0.140                  & -0.140                 \\ 
+                        & (0.199)                 & (0.194)                 & (0.193)                 & (0.192)                \\ 
+\% OOH                 & 0.218                   & 0.211                   & 0.205                   & 0.205                  \\ 
+                        & (0.233)                 & (0.233)                 & (0.233)                 & (0.233)                \\ 
+ln(MedianIncome)        & -0.190                  & -0.191                  & -0.181                  & -0.181                 \\ 
+                        & (0.148)                 & (0.148)                 & (0.150)                 & (0.150)                \\ 
+District-wide           & 0.084 ^\dagger         & 0.085 ^\dagger         & 0.086 ^*                & 0.086 ^*               \\ 
+                        & (0.043)                 & (0.044)                 & (0.044)                 & (0.044)                \\ 
+Incumbent Share         & -0.092 ^{***}           & -0.092 ^{***}           & -0.090 ^{***}           & -0.090 ^{***}          \\ 
+                        & (0.018)                 & (0.018)                 & (0.018)                 & (0.018)                \\ 
+Teacher \% X VAP       &                         & 0.073                   &                         &                        \\ 
+                        &                         & (0.213)                 &                         &                        \\ 
+Teacher \% of SB Vote  &                         &                         & 0.040                   & 0.040                  \\ 
+                        &                         &                         & (0.029)                 & (0.029)                \\ 
+Teacher \% of SB X VAP &                         &                         &                         & 0.001                  \\ 
+                        &                         &                         &                         & (0.046)                 \\
+ $N$                     & 2398                    & 2398                    & 2398                    & 2398                   \\ 
+$R^2$                   & 0.572                   & 0.572                   & 0.572                   & 0.572                  \\ 
+adj. $R^2$              & 0.504                   & 0.504                   & 0.504                   & 0.503                  \\ 
+Resid. sd               & 0.352                   & 0.352                   & 0.352                   & 0.352                   \\ \hline
+ \multicolumn{5}{l}{\footnotesize{Robust standard errors in parentheses}}\\
+\multicolumn{5}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+\multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
+\end{tabular} 
+ \end{table}
+
+\end{tiny}
+
+
+\begin{tiny}
+\begin{sidewaystable}[!ht]
+\caption{Models of Partisanship and Turnout in School Board Elections}
+\label{tab:partymods} 
+\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Party Unity } & \multicolumn{ 1 }{ c }{ Dem Share } & \multicolumn{ 1 }{ c }{ Party Unity Inter. } & \multicolumn{ 1 }{ c }{ Dem Share Inter. } \\ \hline
+ %                    & Party Unity        & Dem Share          & Party Unity Inter. & Dem Share Inter.  \\ 
+Intercept            & 0.31               & 0.35               & 0.31               & 0.29              \\ 
+                     & (0.24)             & (0.25)             & (0.24)             & (0.25)            \\ 
+Fall Turnout         & 0.25 ^{**}         & 0.25 ^{**}         & 0.25 ^{**}         & 0.25 ^{**}        \\ 
+                     & (0.08)             & (0.08)             & (0.08)             & (0.08)            \\ 
+Blais-Lago           & 0.08 ^{***}        & 0.08 ^{***}        & 0.08 ^{***}        & 0.08 ^{***}       \\ 
+                     & (0.02)             & (0.02)             & (0.02)             & (0.02)            \\ 
+ln(VAP)              & -4.07              & -4.15              & -4.04              & -5.52             \\ 
+                     & (4.54)             & (4.52)             & (4.54)             & (4.58)            \\ 
+$ln(VAP)^{2}$        & 3.34               & 3.43               & 3.31               & 4.75              \\ 
+                     & (4.64)             & (4.62)             & (4.64)             & (4.68)            \\ 
+\% White            & 0.04               & 0.05               & 0.04               & 0.04              \\ 
+                     & (0.21)             & (0.21)             & (0.21)             & (0.21)            \\ 
+\% Over 65          & 0.27 ^\dagger     & 0.27 ^\dagger     & 0.27 ^\dagger     & 0.26 ^\dagger    \\ 
+                     & (0.14)             & (0.14)             & (0.14)             & (0.14)            \\ 
+\% Bach. +          & -0.22              & -0.23              & -0.22              & -0.23             \\ 
+                     & (0.15)             & (0.15)             & (0.15)             & (0.14)            \\ 
+\% OOH              & 0.07               & 0.06               & 0.06               & 0.06              \\ 
+                     & (0.18)             & (0.18)             & (0.18)             & (0.17)            \\ 
+ln(MedianIncome)     & -0.02              & -0.02              & -0.02              & -0.00             \\ 
+                     & (0.14)             & (0.14)             & (0.14)             & (0.14)            \\ 
+District-wide        & 0.06               & 0.06               & 0.06               & 0.06              \\ 
+                     & (0.04)             & (0.04)             & (0.04)             & (0.04)            \\ 
+Incumbent Share      & -0.10 ^{***}       & -0.10 ^{***}       & -0.10 ^{***}       & -0.09 ^{***}      \\ 
+                     & (0.02)             & (0.02)             & (0.02)             & (0.02)            \\ 
+Fall Party Divide    & 0.05               &                    & 0.05               &                   \\ 
+                     & (0.04)             &                    & (0.04)             &                   \\ 
+Fall 2 Party Dem.    &                    & 0.01               &                    & -0.04             \\ 
+                     &                    & (0.09)             &                    & (0.09)            \\ 
+Party Division x VAP &                    &                    & 0.02               &                   \\ 
+                     &                    &                    & (0.07)             &                   \\ 
+2 Party Dem x VAP    &                    &                    &                    & -0.24 ^*          \\ 
+                     &                    &                    &                    & (0.10)             \\
+ $N$                  & 3013               & 3013               & 3013               & 3013              \\ 
+$R^2$                & 0.55               & 0.55               & 0.55               & 0.55              \\ 
+adj. $R^2$           & 0.49               & 0.49               & 0.49               & 0.49              \\ 
+Resid. sd            & 0.36               & 0.36               & 0.36               & 0.36               \\ \hline
+ \multicolumn{5}{l}{\footnotesize{Robust standard errors in parentheses}}\\
+\multicolumn{5}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+\multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
+\end{tabular} 
+ \end{sidewaystable}
+
+\end{tiny}
 

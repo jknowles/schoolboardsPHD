@@ -485,12 +485,6 @@ a statewide electorate and little chance for influence by individual voters.}
 <<turnoutSize, echo=FALSE, fig.cap="Turnout in School Board Elections based on Electorate Size">>=
 plotdf <- dist_turn[dist_turn$turnout < 0.95, c("year", "VAP_adj", "turnout")]
 plotdf <- na.omit(plotdf)
-qplot(VAP_adj, turnout, data = na.omit(plotdf)) + facet_wrap(~year) + 
-  geom_smooth(se = TRUE, method = "rlm") + theme_dpi() + 
-  scale_y_continuous(label = percent) + 
-  scale_x_log10(label = comma)+
-  labs(x = "Voting Age Population (log-scale)", y = "School Board Turnout", 
-       title = "Comparing Turnout and Size of Electorate")
 
 detach("package:plyr")
 library(plyr)
@@ -507,6 +501,14 @@ ggplot(plotdf2, aes(x = factor(year),
 
 @
 
+<<turnoutHide, fig.show='hide', echo=FALSE>>=
+qplot(VAP_adj, turnout, data = na.omit(plotdf)) + facet_wrap(~year) + 
+  geom_smooth(se = TRUE, method = "rlm") + theme_dpi() + 
+  scale_y_continuous(label = percent) + 
+  scale_x_log10(label = comma)+
+  labs(x = "Voting Age Population (log-scale)", y = "School Board Turnout", 
+       title = "Comparing Turnout and Size of Electorate")
+@
 
 
 Having competitive races is critical in driving voter turnout, as voters have 
@@ -637,14 +639,7 @@ qplot(turnoutLag2, turnout, data = na.omit(plotdf)) +
 plotdf <- dist_turn[dist_turn$year > 2004, c("year", "teachShareofVoters2", "turnout")]
 plotdf <- na.omit(plotdf)
 
-qplot(teachShareofVoters2, turnout, 
-      data = plotdf) + 
-  geom_smooth(method="rlm") + theme_dpi() +
-  facet_wrap(~year)+ 
-  scale_x_continuous(label = percent) + 
-  scale_y_continuous(label = percent) + 
-  labs(x = "Teacher FTE as Share of VAP", y = "School Board Turnout", 
-       title = "Turnout to Staff Share of School Board Electorate")
+
 
 plotdf2 <- ddply(plotdf, .(year), summarize, 
                  corLow = cor.test(teachShareofVoters2, turnout)$conf.int[1], 
@@ -658,6 +653,16 @@ ggplot(plotdf2, aes(x = factor(year),
   theme_dpi() + labs(x = "Year", y = "Correlation Coefficient")
 @
 
+<<unionInfhide, fig.show='hide'>>=
+qplot(teachShareofVoters2, turnout, 
+      data = plotdf) + 
+  geom_smooth(method="rlm") + theme_dpi() +
+  facet_wrap(~year)+ 
+  scale_x_continuous(label = percent) + 
+  scale_y_continuous(label = percent) + 
+  labs(x = "Teacher FTE as Share of VAP", y = "School Board Turnout", 
+       title = "Turnout to Staff Share of School Board Electorate")
+@
 
 With a reduced electorate, school board elections are an interesting case to study 
 the role substantial interest groups can play in an election. \citet{Fowler2005} 
@@ -1962,7 +1967,7 @@ Error (RMSE) to demonstrate how close the predicted values are to the fitted val
 models across many resamples of the data. All of the models fit relatively well. 
 
 
-<<modFitplot1, eval = TRUE, fig.scap="Comparing Model Fit for Competitiveness Model", fig.cap="Comparing Model Fit for Competitiveness Model. Black represents observed value, purple represents fixed effect estimate, and the red dots are the estimate from the full model.">>=
+<<modFitplot1, eval = TRUE, fig.scap="Comparing Model Fit for Competitiveness Model", fig.cap="Comparing Model Fit for Competitiveness Model. Black represents observed value, purple represents fixed effect estimate, and the red dots are the estimate from the full model.", fig.show='hide'>>=
 library(broom)
 plotdf <- augment(mixedModcloseC)
 plotdf$yUnscale <- (plotdf$turnout * 2 * moddatScaleClose["turnout", 2]) + 
@@ -1988,10 +1993,12 @@ modelFitexamplePlot <- ggplot(plotdf, aes(x = year, y = yUnscale/100)) +
   scale_y_continuous(label = percent) +
   theme_bw() + labs(x= "Year", y = "Turnout", title = "Model Fit for Blais-Lago Model") + 
   theme(strip.text = element_blank())
+
+modelFitexamplePlot
 @
 
 
-<<modFitplot2, eval = FALSE>>=
+<<modFitplot2Hide, fig.show='hide'>>=
 plotdf <- augment(mixedMod1lagsb)
 plotdf$yUnscale <- (plotdf$turnout * 2 * moddatScaleLag["turnout", 2]) + 
    moddatScaleLag["turnout", 1]
@@ -2025,7 +2032,8 @@ ggplot(plotdf, aes(x = x1Unscale, y = yUnscale)) +
   facet_wrap(~distid) + 
   geom_abline(intercept = plotInt, slope = plotSlope, linetype=2) +
   xlim(c(0, max(plotdf$x1Unscale))) + 
-  theme_bw()
+  theme_bw() + labs(x = "Lag Turnout", y = "Turnout", 
+                    title = "Model Fit for Lagged Turnout Models")
 
 # Bootstrap the beta coefficients here using bootMer
 # http://glmm.wikidot.com/faq
@@ -2232,7 +2240,7 @@ Partisan Influence & Dem. Share & No & 7\% point $\uparrow$ Democrats = 4.71\% p
 \subsubsection{Turnout Models}
 
 
-<<fixefplot1, eval=FALSE, fig.cap="Coefficient Plot for Full Model Fixed Effects",fig.height=8.5, fig.width=8, results='hide'>>=
+<<fixefplot1, eval=FALSE, fig.cap="Coefficient Plot for Full Model Fixed Effects",fig.height=8.5, fig.width=8, fig.show='hide'>>=
 sim1 <- FEsim(mixedMod1lagsb, nsims = 1000); sim1$dv <- "Lags"
 sim2 <- FEsim(mixedModcloseC, nsims = 1000); sim2$dv <- "Close"
 sim3 <- FEsim(fullmodMMd, nsims = 1000); sim3$dv <- "Defeat"
@@ -2548,34 +2556,35 @@ ggplot(data = replotdf, aes(x = reorder(distid, yhatUnscale), y = yhatUnscale,
   facet_wrap(~caseID, ncol = 1) + 
   labs(x = "District", y = "Predicted SB Turnout") + 
   scale_y_continuous(label = percent, limits = c(0, .5))
+@
 
+<<rePlotHide, fig.show='hide'>>=
+plotdf <- REsim(mixedModP, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 1",]
+p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+               sd = "sd", sigmaScale = sigma(mixedModP)) + 
+  labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModclose, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 1",]
+p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModclose)) + 
+  labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModteach, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 1",]
+p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModteach))+ 
+  labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModlags, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 1",]
+p4 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModlags))+ 
+  labs(title = "Lagged Model", x= "District", y = "Intercept") + 
+  ylim(c(-2, 3.5))
 
-# plotdf <- REsim(mixedModP, nsims = 1000)
-# plotdf <- plotdf[plotdf$level == "Level 1",]
-# p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-#                sd = "sd", sigmaScale = sigma(mixedModP)) + 
-#   labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
-#   ylim(c(-2, 3.5))
-# plotdf <- REsim(mixedModclose, nsims = 1000)
-# plotdf <- plotdf[plotdf$level == "Level 1",]
-# p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-#                  sd = "sd", sigmaScale = sigma(mixedModclose)) + 
-#   labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
-#   ylim(c(-2, 3.5))
-# plotdf <- REsim(mixedModteach, nsims = 1000)
-# plotdf <- plotdf[plotdf$level == "Level 1",]
-# p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-#                  sd = "sd", sigmaScale = sigma(mixedModteach))+ 
-#   labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
-#   ylim(c(-2, 3.5))
-# plotdf <- REsim(mixedModlags, nsims = 1000)
-# plotdf <- plotdf[plotdf$level == "Level 1",]
-# p4 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-#                  sd = "sd", sigmaScale = sigma(mixedModlags))+ 
-#   labs(title = "Lagged Model", x= "District", y = "Intercept") + 
-#   ylim(c(-2, 3.5))
-# 
-# grid.arrange(p1, p2, p3, p4)
+grid.arrange(p1, p2, p3, p4)
 @
 
 %TODO: fix text here
@@ -2590,63 +2599,6 @@ district-average effects) were in 2011 and 2012 after the election of Governor S
 and the introduction of Act 10. 
 
 <<randomEffectplot2, eval=TRUE, fig.scap="Comparing Year Effects for Turnout",fig.height=4.5, fig.cap="Estimated year effects in standard deviation terms. Each point represents the estimated standard deviation increase or decrease in turnout for a given election year across all school districts. Confidence intervals are the 95 percent confidence interval across 1000 simulations of the model random effects.">>=
-
-# replotdf <- 1
-# while(class(replotdf) != "data.frame"){
-#   replotdf <- try(substEffSimRE(mixedModclose, "year", ncases = 1, alpha = 0.1), 
-#                   silent = TRUE)
-# }
-# 
-# replotdf$year <- as.character(replotdf$year)
-# 
-# replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
-# replotdf$yhatUnscale <- replotdf$yhatUnscale / 100
-# replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
-# replotdf$lwrUnscale <- replotdf$lwrUnscale / 100
-# replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
-# replotdf$uprUnscale <- replotdf$uprUnscale / 100
-# 
-# lowerBar <- ((quantile(fitted(mixedModP), prob = 0.2) * 2 * moddatScaleParty["turnout", 2]) + 
-#       moddatScaleParty["turnout", 1]) /100
-# upperBar <- ((quantile(fitted(mixedModP), prob = 0.8) * 2 * moddatScaleParty["turnout", 2]) + 
-#       moddatScaleParty["turnout", 1]) / 100
-# 
-# ggplot(data = replotdf, aes(x = year, y = yhatUnscale, 
-#                             ymin = lwrUnscale, ymax = uprUnscale)) + 
-#   geom_errorbar(width = .4) + geom_point()+
-#   theme_dpi(base_size=12) + 
-#   theme(
-#                       strip.text = element_blank(), 
-#                       strip.background = element_blank(), 
-#                       panel.grid.minor = element_blank()) + 
-#   geom_hline(yintercept = lowerBar, linetype = 2) + 
-#   geom_hline(yintercept = upperBar, linetype = 2) + 
-#   facet_wrap(~caseID, ncol = 1) + 
-#   labs(x = "Year", y = "Predicted SB Turnout") + 
-#   scale_y_continuous(label = percent)
-# 
-# 
-# plotdf <- REsim(mixedModP, nsims = 1000)
-# plotdf <- plotdf[plotdf$level == "Level 2",]
-# p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-#                sd = "sd", sigmaScale = sigma(mixedModP)) + 
-#   labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
-#   ylim(c(-2, 3.5))
-# plotdf <- REsim(mixedModclose, nsims = 1000)
-# plotdf <- plotdf[plotdf$level == "Level 2",]
-# p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-#                  sd = "sd", sigmaScale = sigma(mixedModclose)) + 
-#   labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
-#   ylim(c(-2, 3.5))
-# plotdf <- REsim(mixedModteach, nsims = 1000)
-# plotdf <- plotdf[plotdf$level == "Level 2",]
-# p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-#                  sd = "sd", sigmaScale = sigma(mixedModteach))+ 
-#   labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
-#   ylim(c(-2, 3.5))
-# plotdf <- REsim(mixedMod1lagsb, nsims = 1000)
-# plotdf <- plotdf[plotdf$level == "Level 2",]
-
 plotMCMCre(plotdf, scale = 1.6, var = "mean", 
                  sd = "sd", sigmaScale = sigma(mixedMod1lagsb))+ 
   labs(x= "Year", y = "Intercept") + 
@@ -2657,8 +2609,66 @@ plotMCMCre(plotdf, scale = 1.6, var = "mean",
          panel.grid.major = element_line(linetype="dotted"),
         panel.grid.major.x = element_blank())
 
-# grid.arrange(p1, p2, p3, p4, main = "Variance in Year Intercepts Across Models")
+@
 
+<<rePlotHide2, fig.show='hide'>>=
+replotdf <- 1
+while(class(replotdf) != "data.frame"){
+  replotdf <- try(substEffSimRE(mixedModclose, "year", ncases = 1, alpha = 0.1), 
+                  silent = TRUE)
+}
+
+replotdf$year <- as.character(replotdf$year)
+
+replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$yhatUnscale <- replotdf$yhatUnscale / 100
+replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$lwrUnscale <- replotdf$lwrUnscale / 100
+replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$uprUnscale <- replotdf$uprUnscale / 100
+
+lowerBar <- ((quantile(fitted(mixedModP), prob = 0.2) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) /100
+upperBar <- ((quantile(fitted(mixedModP), prob = 0.8) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) / 100
+
+ggplot(data = replotdf, aes(x = year, y = yhatUnscale, 
+                            ymin = lwrUnscale, ymax = uprUnscale)) + 
+  geom_errorbar(width = .4) + geom_point()+
+  theme_dpi(base_size=12) + 
+  theme(
+                      strip.text = element_blank(), 
+                      strip.background = element_blank(), 
+                      panel.grid.minor = element_blank()) + 
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  facet_wrap(~caseID, ncol = 1) + 
+  labs(x = "Year", y = "Predicted SB Turnout") + 
+  scale_y_continuous(label = percent)
+
+
+plotdf <- REsim(mixedModP, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+               sd = "sd", sigmaScale = sigma(mixedModP)) + 
+  labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModclose, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModclose)) + 
+  labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModteach, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModteach))+ 
+  labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedMod1lagsb, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+
+grid.arrange(p1, p2, p3, p4, main = "Variance in Year Intercepts Across Models")
 @
 
 \clearpage
@@ -2848,6 +2858,11 @@ p3
 p4
 @
 
+<<effPlotHide, fig.show='hide'>>=
+p1
+
+p2
+@
 
 %TODO: add random effect plots for undervote to the appendix as well
 \clearpage
