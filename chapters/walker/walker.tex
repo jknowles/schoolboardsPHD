@@ -210,7 +210,7 @@ not mutually exclusive -- citizens can belong to any combination of them.
 \begin{small}
 \caption{Potential Interest Groups in School Board Elections}
 \label{tab:interests}
-\begin{tabular}{| p{.2\textwidth} | p{.15\textwidth} | p{.15\textwidth} | p{.15\textwidth} p{.15\textwidth} |}
+\begin{tabular}{| p{.2\textwidth} | p{.15\textwidth} | p{.15\textwidth} | p{.15\textwidth} | p{.15\textwidth} |}
 \hline
 \textbf{Group}  & \textbf{Benefit} & \textbf{Cost} & \textbf{Cohesion}  & \textbf{size} \\ \hline
 Teachers  & High & Lowest & Concentrated & Small \\ \hline
@@ -488,13 +488,12 @@ district.}
 \label{tab:act10hypo}
 \begin{tabular}{| p{.16\textwidth} | p{.12\textwidth} | p{.12\textwidth} | 
  p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} | p{.12\textwidth} |} \hline
-variable & shock & shock x polarization & shock x recall & shock x IG & 
-      polarization & IG strength \\ \hline
-Cont. Race & + & + & null & - & null & - \\ \hline
-Inc. Def.  & + & + & +    & - & +    & - \\ \hline 
-Blais-Lago & + & + & null & + & +    & - \\ \hline
-Turnout    & + & + & +    & - & null & - \\ \hline
-Rolloff    & - & - & -    & - & null & + \\ \hline
+DV & Shock & Polarization & IG strength & shock x polarization & shock x recall & shock x IG \\ \hline
+Cont. Race & + & null & - & + & null & - \\ \hline
+Blais-Lago & + & +    & - & + & null & + \\ \hline
+Inc. Def.  & + & +    & - & + & +    & - \\ \hline 
+Turnout    & + & null & - & + & +    & - \\ \hline
+Rolloff    & - & null & + & - & -    & - \\ \hline
 \end{tabular}
 \end{small}
 \end{center}
@@ -584,19 +583,19 @@ For voters, I look for changes in voter turnout and decreases in voter rolloff.
 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sat Mar 21 11:23:41 2015
+% Sun Mar 29 13:17:40 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
   \hline
  & No Serious Contestation & Serious Contestation \\ 
   \hline
-2007 & 131 & 165 \\ 
-  2008 & 158 & 140 \\ 
-  2009 & 149 & 148 \\ 
-  2010 & 137 & 162 \\ 
-  2011 & 143 & 161 \\ 
-  2012 & 141 & 162 \\ 
+2007 & 129 & 167 \\ 
+  2008 & 156 & 142 \\ 
+  2009 & 148 & 149 \\ 
+  2010 & 135 & 164 \\ 
+  2011 & 140 & 164 \\ 
+  2012 & 138 & 165 \\ 
    \hline
 \end{tabular}
 \caption{Frequency of Incumbency and Contestation.} 
@@ -882,7 +881,7 @@ interest that occurs in the post-treatment period.
 
 \begin{align*} 
 y_{it} &= \alpha + \gamma Y_{it-2} + \beta X_{it-2} + \lambda T_{it} 
-+ \delta Y_{it-2} x T_{it} +\epsilon_{it}  \\ 
++ \delta Y_{it-2} \times T_{it} +\epsilon_{it}  \\ 
 \end{align*}
 
 Here the $\lambda$ term represents the overall change in the outcome in the 
@@ -944,44 +943,45 @@ substantive impact on the results.}
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
- %                                & Lag           & DnD           & FE           \\ 
-(Intercept)                      & -1.381        & -1.354        & 0.037        \\ 
-                                 & (2.957)       & (2.959)       & (0.226)      \\ 
-contestSer\_lag1                & 0.399 ^{***}  & 0.379 ^{**}   &              \\ 
-                                 & (0.107)       & (0.118)       &              \\ 
-treatmentDiff1                   & -0.037        & -0.012        & -0.126       \\ 
-                                 & (0.130)       & (0.181)       & (0.171)      \\ 
-treatmentDiff2                   & -0.023        & -0.140        & -0.102       \\ 
-                                 & (0.128)       & (0.195)       & (0.171)      \\ 
-VAP\_adjLOG\_sq\_lag          & 0.045         & 0.045         &              \\ 
-                                 & (0.044)       & (0.044)       &              \\ 
-incumShare\_lag                 & -0.176        & -0.176        & 0.243        \\ 
-                                 & (0.158)       & (0.158)       & (0.193)      \\ 
-VAP\_adjLOG\_lag               & -0.257        & -0.259        &              \\ 
-                                 & (0.749)       & (0.749)       &              \\ 
-per65o\_lag                     & 1.348         & 1.339         &              \\ 
-                                 & (1.742)       & (1.741)       &              \\ 
-nraces\_lag                     & -0.258 ^{**}  & -0.258 ^{**}  & -0.077       \\ 
-                                 & (0.092)       & (0.092)       & (0.180)      \\ 
-OOH\_share\_lag                & 0.529         & 0.533         &              \\ 
-                                 & (0.577)       & (0.579)       &              \\ 
-PerBachelorOrAbove\_lag         & -3.169 ^{***} & -3.173 ^{***} &              \\ 
-                                 & (0.712)       & (0.713)       &              \\ 
-locale2\_lagexurb               & 0.391         & 0.386         &              \\ 
-                                 & (0.446)       & (0.446)       &              \\ 
-locale2\_lagrural               & 0.486         & 0.481         &              \\ 
-                                 & (0.432)       & (0.432)       &              \\ 
-contestSer\_lag1:treatmentDiff1 &               & -0.054        &              \\ 
-                                 &               & (0.271)       &              \\ 
-contestSer\_lag1:treatmentDiff2 &               & 0.217         &              \\ 
-                                 &               & (0.264)       &               \\
- $N$                              & 2362          & 2362          & 2362         \\ 
-AIC                              & 3112.131      & 3115.357      & 3144.132     \\ 
-BIC                              & 3412.029      & 3461.393      & 10295.539    \\ 
-$\log L$                        & -1504.066     & -1497.679     & -332.066      \\ \hline
+ %               & Lag           & DnD           & FE           \\ 
+Intercept       & -2.032        & -2.022        & 0.154        \\ 
+                & (2.898)       & (2.900)       & (0.220)      \\ 
+Lag. Contest    & 0.359 ^{***}  & 0.357 ^{**}   &              \\ 
+                & (0.107)       & (0.118)       &              \\ 
+Spring 2011     & -0.018        & 0.035         & -0.100       \\ 
+                & (0.131)       & (0.180)       & (0.171)      \\ 
+Spring 2012     & 0.003         & -0.063        & -0.080       \\ 
+                & (0.129)       & (0.197)       & (0.172)      \\ 
+ln(VAP)         & -0.101        & -0.101        &              \\ 
+                & (0.736)       & (0.736)       &              \\ 
+$ln(VAP)^{2}$   & 0.037         & 0.037         &              \\ 
+                & (0.043)       & (0.043)       &              \\ 
+Incumbent Share & -0.213        & -0.215        & 0.220        \\ 
+                & (0.159)       & (0.158)       & (0.193)      \\ 
+\% Over 65     & 0.958         & 0.942         &              \\ 
+                & (1.757)       & (1.757)       &              \\ 
+n races         & -0.246 ^{**}  & -0.246 ^{**}  & -0.177       \\ 
+                & (0.079)       & (0.079)       & (0.179)      \\ 
+\% OOH         & 0.479         & 0.479         &              \\ 
+                & (0.597)       & (0.599)       &              \\ 
+\% Bach. +     & -3.242 ^{***} & -3.242 ^{***} &              \\ 
+                & (0.728)       & (0.730)       &              \\ 
+Exurb           & 0.449         & 0.447         &              \\ 
+                & (0.443)       & (0.443)       &              \\ 
+Rural           & 0.550         & 0.548         &              \\ 
+                & (0.435)       & (0.435)       &              \\ 
+Lag x 2011      &               & -0.107        &              \\ 
+                &               & (0.267)       &              \\ 
+Lag x 2012      &               & 0.121         &              \\ 
+                &               & (0.264)       &               \\
+ $N$             & 2362          & 2362          & 2362         \\ 
+AIC             & 3104.781      & 3108.348      & 3157.508     \\ 
+BIC             & 3404.679      & 3454.384      & 10308.915    \\ 
+$\log L$       & -1500.391     & -1494.174     & -338.754      \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}}\\
-\multicolumn{4}{l}{\footnotesize{Dependent variable is binomial. Coefficients are reported on the logistic scale. }} 
+\multicolumn{4}{l}{\footnotesize{Dependent variable is binomial. Coefficients are reported on 
+             the logistic scale. }} 
 \end{tabular} 
  \end{table}
 
@@ -995,41 +995,41 @@ $\log L$                        & -1504.066     & -1497.679     & -332.066      
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
- %                                 & Lag              & DnD              & FE              \\ 
-(Intercept)                       & 4.285 ^*         & 4.274 ^*         & 1.382 ^{***}    \\ 
-                                  & (1.771)          & (1.767)          & (0.129)         \\ 
-minBlaisLago\_lag                & 0.152 ^{***}     & 0.133 ^{***}     &                 \\ 
-                                  & (0.030)          & (0.032)          &                 \\ 
-treatmentDiff1                    & 0.151 ^\dagger  & 0.054            & 0.209 ^*        \\ 
-                                  & (0.084)          & (0.151)          & (0.087)         \\ 
-treatmentDiff2                    & 0.050            & -0.169           & 0.081           \\ 
-                                  & (0.083)          & (0.140)          & (0.088)         \\ 
-VAP\_adjLOG\_sq\_lag           & 0.002            & 0.001            &                 \\ 
-                                  & (0.026)          & (0.026)          &                 \\ 
-incumShare\_lag                  & -0.035           & -0.032           & -0.149          \\ 
-                                  & (0.103)          & (0.103)          & (0.098)         \\ 
-VAP\_adjLOG\_lag                & -0.425           & -0.415           &                 \\ 
-                                  & (0.446)          & (0.445)          &                 \\ 
-per65o\_lag                      & 0.160            & 0.148            &                 \\ 
-                                  & (1.230)          & (1.225)          &                 \\ 
-nraces\_lag                      & 0.666 ^{***}     & 0.668 ^{***}     & 0.120           \\ 
-                                  & (0.069)          & (0.069)          & (0.103)         \\ 
-OOH\_share\_lag                 & -0.162           & -0.172           &                 \\ 
-                                  & (0.401)          & (0.400)          &                 \\ 
-PerBachelorOrAbove\_lag          & 2.637 ^{***}     & 2.643 ^{***}     &                 \\ 
-                                  & (0.531)          & (0.529)          &                 \\ 
-locale2\_lagexurb                & 0.066            & 0.067            &                 \\ 
-                                  & (0.257)          & (0.257)          &                 \\ 
-locale2\_lagrural                & -0.029           & -0.025           &                 \\ 
-                                  & (0.237)          & (0.237)          &                 \\ 
-minBlaisLago\_lag:treatmentDiff1 &                  & 0.045            &                 \\ 
-                                  &                  & (0.057)          &                 \\ 
-minBlaisLago\_lag:treatmentDiff2 &                  & 0.104 ^\dagger  &                 \\ 
-                                  &                  & (0.057)          &                  \\
- $N$                               & 2362             & 2362             & 2362            \\ 
-$R^2$                             & 0.174            & 0.176            & 0.414           \\ 
-adj. $R^2$                        & 0.170            & 0.171            & 0.326           \\ 
-Resid. sd                         & 1.386            & 1.385            & 1.249            \\ \hline
+ %                 & Lag               & DnD               & FE               \\ 
+Intercept         & 5.427 ^*          & 5.430 ^*          & 4.636 ^{***}     \\ 
+                  & (2.248)           & (2.246)           & (0.180)          \\ 
+Lag Blais-Lago    & 0.048             & 0.035             &                  \\ 
+                  & (0.033)           & (0.034)           &                  \\ 
+Spring 2011       & -0.167 ^\dagger  & -0.529            & -0.199 ^*        \\ 
+                  & (0.087)           & (0.343)           & (0.089)          \\ 
+Spring 2012       & -0.155 ^\dagger  & -0.180            & -0.171 ^\dagger \\ 
+                  & (0.089)           & (0.332)           & (0.096)          \\ 
+ln(VAP)           & -0.533            & -0.519            &                  \\ 
+                  & (0.566)           & (0.564)           &                  \\ 
+$ln(VAP)^{2}$     & 0.047             & 0.046             &                  \\ 
+                  & (0.033)           & (0.033)           &                  \\ 
+Incumbent Share   & -0.033            & -0.036            & 0.083            \\ 
+                  & (0.090)           & (0.090)           & (0.094)          \\ 
+\% Over 65       & 0.095             & 0.097             &                  \\ 
+                  & (1.367)           & (1.362)           &                  \\ 
+n races           & -0.864 ^{***}     & -0.860 ^{***}     & -0.093           \\ 
+                  & (0.076)           & (0.075)           & (0.155)          \\ 
+\% OOH           & 0.721 ^\dagger   & 0.706 ^\dagger   &                  \\ 
+                  & (0.392)           & (0.390)           &                  \\ 
+\% Bach. +       & -2.339 ^{***}     & -2.355 ^{***}     &                  \\ 
+                  & (0.627)           & (0.625)           &                  \\ 
+Exurb             & 0.183             & 0.180             &                  \\ 
+                  & (0.174)           & (0.174)           &                  \\ 
+Rural             & 0.352 ^*          & 0.349 ^*          &                  \\ 
+                  & (0.156)           & (0.156)           &                  \\ 
+Lag x 2011        &                   & 0.093             &                  \\ 
+                  &                   & (0.078)           &                  \\ 
+Lag x 2012        &                   & 0.006             &                  \\ 
+                  &                   & (0.076)           &                   \\
+ $N$               & 2362              & 2362              & 2362             \\ 
+$R^2$             & 0.177             & 0.178             & 0.386            \\ 
+adj. $R^2$        & 0.172             & 0.173             & 0.294            \\ 
+Resid. sd         & 1.380             & 1.380             & 1.275             \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}} 
 \end{tabular} 
@@ -1045,44 +1045,45 @@ Resid. sd                         & 1.386            & 1.385            & 1.249 
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
- %                               & Lag               & DnD               & FE               \\ 
-(Intercept)                     & -8.424 ^*         & -8.442 ^*         & -19.331 ^{***}   \\ 
-                                & (3.418)           & (3.432)           & (1.127)          \\ 
-incDefeats\_lag                & 0.356 ^*          & 0.400 ^{**}       &                  \\ 
-                                & (0.139)           & (0.153)           &                  \\ 
-treatmentDiff1                  & -0.341 ^\dagger  & -0.266            & -0.383 ^\dagger \\ 
-                                & (0.182)           & (0.193)           & (0.223)          \\ 
-treatmentDiff2                  & 0.005             & 0.026             & 0.016            \\ 
-                                & (0.170)           & (0.197)           & (0.212)          \\ 
-VAP\_adjLOG\_sq\_lag         & -0.070            & -0.070            &                  \\ 
-                                & (0.049)           & (0.049)           &                  \\ 
-VAP\_adjLOG\_lag              & 1.494 ^\dagger   & 1.498 ^\dagger   &                  \\ 
-                                & (0.847)           & (0.852)           &                  \\ 
-per65o\_lag                    & 0.140             & 0.092             &                  \\ 
-                                & (2.085)           & (2.089)           &                  \\ 
-nraces\_lag                    & -0.150            & -0.152            & -0.153           \\ 
-                                & (0.134)           & (0.134)           & (0.278)          \\ 
-OOH\_share\_lag               & -0.002            & -0.015            &                  \\ 
-                                & (0.699)           & (0.698)           &                  \\ 
-PerBachelorOrAbove\_lag        & -3.336 ^{**}      & -3.360 ^{**}      &                  \\ 
-                                & (1.044)           & (1.048)           &                  \\ 
-incumShare\_lag                & -0.197            & -0.198            & -0.005           \\ 
-                                & (0.173)           & (0.174)           & (0.239)          \\ 
-locale2\_lagexurb              & 0.138             & 0.140             &                  \\ 
-                                & (0.383)           & (0.386)           &                  \\ 
-locale2\_lagrural              & -0.088            & -0.085            &                  \\ 
-                                & (0.421)           & (0.423)           &                  \\ 
-incDefeats\_lag:treatmentDiff1 &                   & -0.426            &                  \\ 
-                                &                   & (0.506)           &                  \\ 
-incDefeats\_lag:treatmentDiff2 &                   & -0.082            &                  \\ 
-                                &                   & (0.390)           &                   \\
- $N$                             & 2362              & 2362              & 2362             \\ 
-AIC                             & 2187.863          & 2191.097          & 2382.801         \\ 
-BIC                             & 2487.761          & 2537.133          & 9534.208         \\ 
-$\log L$                       & -1041.932         & -1035.549         & 48.600            \\ \hline
+ %                 & Lag               & DnD               & FE               \\ 
+Intercept         & -5.569 ^\dagger  & -5.628 ^\dagger  & -18.572 ^{***}   \\ 
+                  & (3.168)           & (3.161)           & (1.117)          \\ 
+Lag Inc. Def.     & 0.351 ^*          & 0.411 ^{**}       &                  \\ 
+                  & (0.140)           & (0.156)           &                  \\ 
+Spring 2011       & -0.275            & -0.198            & -0.321           \\ 
+                  & (0.178)           & (0.191)           & (0.219)          \\ 
+Spring 2012       & 0.039             & 0.087             & 0.040            \\ 
+                  & (0.169)           & (0.194)           & (0.212)          \\ 
+ln(VAP)           & 0.840             & 0.854             &                  \\ 
+                  & (0.794)           & (0.792)           &                  \\ 
+$ln(VAP)^{2}$     & -0.032            & -0.032            &                  \\ 
+                  & (0.046)           & (0.045)           &                  \\ 
+\% Over 65       & -0.755            & -0.830            &                  \\ 
+                  & (2.056)           & (2.066)           &                  \\ 
+n races           & -0.075            & -0.077            & 0.030            \\ 
+                  & (0.091)           & (0.091)           & (0.245)          \\ 
+\% OOH           & -0.277            & -0.294            &                  \\ 
+                  & (0.674)           & (0.674)           &                  \\ 
+\% Bach. +       & -3.606 ^{***}     & -3.632 ^{***}     &                  \\ 
+                  & (1.070)           & (1.075)           &                  \\ 
+Incumbent Share   & -0.185            & -0.188            & 0.038            \\ 
+                  & (0.174)           & (0.175)           & (0.239)          \\ 
+Exurb             & 0.300             & 0.302             &                  \\ 
+                  & (0.370)           & (0.372)           &                  \\ 
+Rural             & 0.109             & 0.112             &                  \\ 
+                  & (0.404)           & (0.405)           &                  \\ 
+Lag x 2011        &                   & -0.409            &                  \\ 
+                  &                   & (0.483)           &                  \\ 
+Lag x 2012        &                   & -0.191            &                  \\ 
+                  &                   & (0.386)           &                   \\
+ $N$               & 2362              & 2362              & 2362             \\ 
+AIC               & 2221.722          & 2224.796          & 2419.508         \\ 
+BIC               & 2521.620          & 2570.832          & 9570.915         \\ 
+$\log L$         & -1058.861         & -1052.398         & 30.246            \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}}\\
-\multicolumn{4}{l}{\footnotesize{Dependent variable is binomial. Coefficients are reported on the logistic scale. }} 
+\multicolumn{4}{l}{\footnotesize{Dependent variable is binomial. Coefficients are reported on 
+             the logistic scale. }} 
 \end{tabular} 
  \end{table}
 
@@ -1096,45 +1097,47 @@ $\log L$                       & -1041.932         & -1035.549         & 48.600 
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
- %                            & Lag           & DnD           & FE           \\ 
-(Intercept)                  & -1.611        & -1.632        & -1.951 ^{***}\\ 
-                             & (1.413)       & (1.423)       & (0.192)      \\ 
-turnout\_lag                & 0.217 ^{***}  & 0.253 ^{***}  &              \\ 
-                             & (0.026)       & (0.031)       &              \\ 
-treatmentDiff1               & 0.529 ^{***}  & 0.361 ^{**}   & 0.556 ^{***} \\ 
-                             & (0.022)       & (0.118)       & (0.022)      \\ 
-treatmentDiff2               & 0.292 ^{***}  & -0.064        & 0.253 ^{***} \\ 
-                             & (0.027)       & (0.096)       & (0.025)      \\ 
-VAP\_adjLOG\_sq\_lag      & 0.013         & 0.013         &              \\ 
-                             & (0.014)       & (0.014)       &              \\ 
-VAP\_adjLOG\_lag           & -0.337        & -0.327        &              \\ 
-                             & (0.232)       & (0.240)       &              \\ 
-per65o\_lag                 & 1.600 ^{***}  & 1.558 ^{***}  &              \\ 
-                             & (0.439)       & (0.441)       &              \\ 
-nraces\_lag                 & -0.014        & -0.012        & -0.009       \\ 
-                             & (0.021)       & (0.020)       & (0.058)      \\ 
-OOH\_share\_lag            & -0.104        & -0.106        &              \\ 
-                             & (0.156)       & (0.156)       &              \\ 
-median\_incomeLOG\_lag     & 0.151         & 0.156         &              \\ 
-                             & (0.110)       & (0.109)       &              \\ 
-ImputedFlagYes               & -0.403 ^{***} & -0.399 ^{***} & -0.361 ^{***}\\ 
-                             & (0.051)       & (0.052)       & (0.056)      \\ 
-locale2\_lagexurb           & -0.082        & -0.082        &              \\ 
-                             & (0.077)       & (0.078)       &              \\ 
-locale2\_lagrural           & -0.035        & -0.033        &              \\ 
-                             & (0.082)       & (0.083)       &              \\ 
-PerBachelorOrAbove\_lag     & 0.331         & 0.326         &              \\ 
-                             & (0.305)       & (0.308)       &              \\ 
-fallTurnout\_lag            & 0.507 ^{**}   & 0.489 ^{**}   & 0.146        \\ 
-                             & (0.174)       & (0.176)       & (0.215)      \\ 
-turnout\_lag:treatmentDiff1 &               & -0.091        &              \\ 
-                             &               & (0.064)       &              \\ 
-turnout\_lag:treatmentDiff2 &               & -0.170 ^{***} &              \\ 
-                             &               & (0.044)       &               \\
- $N$                          & 2331          & 2331          & 2331         \\ 
-$R^2$                        & 0.320         & 0.324         & 0.501        \\ 
-adj. $R^2$                   & 0.316         & 0.319         & 0.425        \\ 
-Resid. sd                    & 0.422         & 0.421         & 0.387         \\ \hline
+ %                 & Lag               & DnD               & FE               \\ 
+Intercept         & -1.990            & -1.972            & -1.911 ^{***}    \\ 
+                  & (1.495)           & (1.473)           & (0.184)          \\ 
+Lag SB Turnout    & 0.240 ^{***}      & 0.273 ^{***}      &                  \\ 
+                  & (0.027)           & (0.033)           &                  \\ 
+Spring 2011       & 0.527 ^{***}      & 0.455 ^{***}      & 0.555 ^{***}     \\ 
+                  & (0.021)           & (0.085)           & (0.022)          \\ 
+Spring 2012       & 0.302 ^{***}      & -0.093            & 0.254 ^{***}     \\ 
+                  & (0.027)           & (0.099)           & (0.025)          \\ 
+ln(VAP)           & -0.237            & -0.238            &                  \\ 
+                  & (0.286)           & (0.281)           &                  \\ 
+$ln(VAP)^{2}$     & 0.007             & 0.008             &                  \\ 
+                  & (0.017)           & (0.016)           &                  \\ 
+\% Over 65       & 1.498 ^{***}      & 1.450 ^{***}      &                  \\ 
+                  & (0.427)           & (0.428)           &                  \\ 
+n races           & -0.046 ^*         & -0.044 ^\dagger  & -0.052           \\ 
+                  & (0.023)           & (0.022)           & (0.038)          \\ 
+\% OOH           & -0.101            & -0.103            &                  \\ 
+                  & (0.152)           & (0.152)           &                  \\ 
+ln(Median Income) & 0.159             & 0.164             &                  \\ 
+                  & (0.114)           & (0.113)           &                  \\ 
+Imputed           & -0.403 ^{***}     & -0.399 ^{***}     & -0.362 ^{***}    \\ 
+                  & (0.051)           & (0.051)           & (0.056)          \\ 
+Districtwide      & 0.113 ^*          & 0.112 ^*          & 0.108 ^\dagger  \\ 
+                  & (0.049)           & (0.049)           & (0.061)          \\ 
+Exurb             & -0.104            & -0.102            &                  \\ 
+                  & (0.079)           & (0.079)           &                  \\ 
+Rural             & -0.056            & -0.051            &                  \\ 
+                  & (0.084)           & (0.083)           &                  \\ 
+\% Bach. +       & 0.308             & 0.294             &                  \\ 
+                  & (0.307)           & (0.305)           &                  \\ 
+Fall Turnout      & 0.472 ^{**}       & 0.456 ^{**}       & 0.159            \\ 
+                  & (0.170)           & (0.171)           & (0.214)          \\ 
+Lag x 2011        &                   & -0.040            &                  \\ 
+                  &                   & (0.045)           &                  \\ 
+Lag x 2012        &                   & -0.188 ^{***}     &                  \\ 
+                  &                   & (0.045)           &                   \\
+ $N$               & 2331              & 2331              & 2331             \\ 
+$R^2$             & 0.334             & 0.338             & 0.513            \\ 
+adj. $R^2$        & 0.330             & 0.334             & 0.438            \\ 
+Resid. sd         & 0.418             & 0.417             & 0.382             \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}} 
 \end{tabular} 
@@ -1150,45 +1153,47 @@ Resid. sd                    & 0.422         & 0.421         & 0.387         \\ 
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
- %                                & Lag              & DnD              & FE              \\ 
-(Intercept)                      & 0.146            & 0.170            & -0.072          \\ 
-                                 & (0.370)          & (0.362)          & (0.230)         \\ 
-turnoutDiff\_lag                & 0.149 ^{**}      & 0.125            &                 \\ 
-                                 & (0.057)          & (0.084)          &                 \\ 
-treatmentDiff1                   & 0.090 ^{***}     & 0.074 ^{***}     & 0.091 ^{***}    \\ 
-                                 & (0.009)          & (0.009)          & (0.010)         \\ 
-treatmentDiff2                   & 0.041 ^{***}     & 0.045 ^{***}     & 0.043 ^{***}    \\ 
-                                 & (0.009)          & (0.008)          & (0.010)         \\ 
-VAP\_adjLOG\_sq\_lag          & 0.011 ^{**}      & 0.011 ^{**}      &                 \\ 
-                                 & (0.004)          & (0.004)          &                 \\ 
-VAP\_adjLOG\_lag               & -0.206 ^{**}     & -0.203 ^{**}     &                 \\ 
-                                 & (0.066)          & (0.066)          &                 \\ 
-per65o\_lag                     & -0.052           & -0.020           &                 \\ 
-                                 & (0.156)          & (0.158)          &                 \\ 
-nraces\_lag                     & 0.006            & 0.005            & 0.005           \\ 
-                                 & (0.006)          & (0.006)          & (0.009)         \\ 
-OOH\_share\_lag                & -0.149 ^{**}     & -0.142 ^*        &                 \\ 
-                                 & (0.056)          & (0.056)          &                 \\ 
-median\_incomeLOG\_lag         & 0.078 ^*         & 0.074 ^*         &                 \\ 
-                                 & (0.032)          & (0.032)          &                 \\ 
-ImputedFlagYes                   & 0.064 ^{***}     & 0.063 ^{***}     & 0.077 ^{***}    \\ 
-                                 & (0.013)          & (0.013)          & (0.015)         \\ 
-locale2\_lagexurb               & 0.036            & 0.037 ^\dagger  &                 \\ 
-                                 & (0.022)          & (0.021)          &                 \\ 
-locale2\_lagrural               & 0.030            & 0.027            &                 \\ 
-                                 & (0.020)          & (0.019)          &                 \\ 
-PerBachelorOrAbove\_lag         & 0.106            & 0.097            &                 \\ 
-                                 & (0.107)          & (0.104)          &                 \\ 
-fallTurnout\_lag                & 0.133            & 0.132            & 0.447           \\ 
-                                 & (0.081)          & (0.083)          & (0.277)         \\ 
-turnoutDiff\_lag:treatmentDiff1 &                  & 0.424 ^\dagger  &                 \\ 
-                                 &                  & (0.248)          &                 \\ 
-turnoutDiff\_lag:treatmentDiff2 &                  & -0.067           &                 \\ 
-                                 &                  & (0.100)          &                  \\
- $N$                              & 1137             & 1137             & 1137            \\ 
-$R^2$                            & 0.197            & 0.209            & 0.479           \\ 
-adj. $R^2$                       & 0.187            & 0.198            & 0.291           \\ 
-Resid. sd                        & 0.107            & 0.107            & 0.100            \\ \hline
+ %                 & Lag              & DnD              & FE              \\ 
+Intercept         & 0.248            & 0.275            & -0.007          \\ 
+                  & (0.343)          & (0.335)          & (0.225)         \\ 
+Lag SB Rolloff    & 0.154 ^{**}      & 0.123            &                 \\ 
+                  & (0.058)          & (0.085)          &                 \\ 
+Spring 2011       & 0.093 ^{***}     & 0.073 ^{***}     & 0.093 ^{***}    \\ 
+                  & (0.009)          & (0.009)          & (0.010)         \\ 
+Spring 2012       & 0.040 ^{***}     & 0.043 ^{***}     & 0.042 ^{***}    \\ 
+                  & (0.008)          & (0.008)          & (0.010)         \\ 
+ln(VAP)           & -0.251 ^{***}    & -0.246 ^{***}    &                 \\ 
+                  & (0.058)          & (0.059)          &                 \\ 
+$ln(VAP)^{2}$     & 0.014 ^{***}     & 0.013 ^{***}     &                 \\ 
+                  & (0.003)          & (0.003)          &                 \\ 
+\% Over 65       & -0.051           & -0.010           &                 \\ 
+                  & (0.154)          & (0.156)          &                 \\ 
+n races           & 0.007            & 0.006            & -0.003          \\ 
+                  & (0.005)          & (0.005)          & (0.010)         \\ 
+\% OOH           & -0.157 ^{**}     & -0.146 ^{**}     &                 \\ 
+                  & (0.055)          & (0.054)          &                 \\ 
+ln(Median Income) & 0.087 ^{**}      & 0.082 ^{**}      &                 \\ 
+                  & (0.031)          & (0.030)          &                 \\ 
+Imputed           & 0.067 ^{***}     & 0.065 ^{***}     & 0.078 ^{***}    \\ 
+                  & (0.013)          & (0.013)          & (0.015)         \\ 
+Districtwide      & 0.013            & 0.014            & -0.005          \\ 
+                  & (0.016)          & (0.016)          & (0.028)         \\ 
+Exurb             & 0.041 ^*         & 0.042 ^*         &                 \\ 
+                  & (0.021)          & (0.020)          &                 \\ 
+Rural             & 0.039 ^*         & 0.036 ^\dagger  &                 \\ 
+                  & (0.020)          & (0.019)          &                 \\ 
+\% Bach. +       & 0.092            & 0.079            &                 \\ 
+                  & (0.105)          & (0.101)          &                 \\ 
+Fall Turnout      & 0.114            & 0.113            & 0.376           \\ 
+                  & (0.076)          & (0.078)          & (0.273)         \\ 
+Lag x 2011        &                  & 0.529 ^*         &                 \\ 
+                  &                  & (0.250)          &                 \\ 
+Lag x 2012        &                  & -0.063           &                 \\ 
+                  &                  & (0.102)          &                  \\
+ $N$               & 1137             & 1137             & 1137            \\ 
+$R^2$             & 0.213            & 0.230            & 0.481           \\ 
+adj. $R^2$        & 0.203            & 0.218            & 0.293           \\ 
+Resid. sd         & 0.105            & 0.104            & 0.099            \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}} 
 \end{tabular} 
@@ -1346,38 +1351,40 @@ both of which were prevalent in this period \citep{NegativeCamp1999}.
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
- %                                       & Ser. Cont.       & Compet.          & Turnout          & Rolloff          & Inc. Def.       \\ 
-(Intercept)                             & -0.227 ^*        & -0.010           & -0.228 ^{***}    & -0.176 ^{***}    & -1.647 ^{***}   \\ 
-                                        & (0.112)          & (0.021)          & (0.022)          & (0.017)          & (0.125)         \\ 
-contestSer\_lag1                       & 0.621 ^{***}     &                  &                  &                  &                 \\ 
-                                        & (0.123)          &                  &                  &                  &                 \\ 
-treatmentDiff1                          & 0.045            & 0.027            & 0.587 ^{***}     & 0.379 ^{***}     & -0.277          \\ 
-                                        & (0.148)          & (0.034)          & (0.027)          & (0.032)          & (0.206)         \\ 
-treatmentDiff2                          & 0.014            & 0.011            & 0.400 ^{***}     & 0.257 ^{***}     & 0.029           \\ 
-                                        & (0.147)          & (0.032)          & (0.035)          & (0.033)          & (0.195)         \\ 
-RecallPolarization\_lag                & -0.044           & -0.030           & 0.046            & -0.004           & 0.043           \\ 
-                                        & (0.189)          & (0.038)          & (0.042)          & (0.034)          & (0.211)         \\ 
-treatmentDiff1:RecallPolarization\_lag & 0.243            & 0.034            & -0.148 ^{**}     & -0.048           & 0.277           \\ 
-                                        & (0.311)          & (0.062)          & (0.054)          & (0.062)          & (0.389)         \\ 
-treatmentDiff2:RecallPolarization\_lag & 0.230            & -0.038           & -0.275 ^{***}    & 0.034            & -0.066          \\ 
-                                        & (0.293)          & (0.067)          & (0.063)          & (0.073)          & (0.399)         \\ 
-minBlaisLago\_lag                      &                  & 0.294 ^{***}     &                  &                  &                 \\ 
-                                        &                  & (0.033)          &                  &                  &                 \\ 
-turnout\_lag                           &                  &                  & 0.285 ^{***}     &                  &                 \\ 
-                                        &                  &                  & (0.030)          &                  &                 \\ 
-ImputedFlagYes                          &                  &                  & -0.261 ^{***}    & 0.195 ^{**}      &                 \\ 
-                                        &                  &                  & (0.049)          & (0.065)          &                 \\ 
-turnoutDiff\_lag                       &                  &                  &                  & 0.291 ^{***}     &                 \\ 
-                                        &                  &                  &                  & (0.061)          &                 \\ 
-incDefeats\_lag1                       &                  &                  &                  &                  & 0.352 ^\dagger \\ 
-                                        &                  &                  &                  &                  & (0.205)          \\
- $N$                                     & 1146             & 1146             & 1146             & 1146             & 1146            \\ 
-AIC                                     & 1570.807         &                  &                  &                  & 1027.404        \\ 
-BIC                                     & 1712.040         &                  &                  &                  & 1168.637        \\ 
-$\log L$                               & -757.404         &                  &                  &                  & -485.702        \\ 
-$R^2$                                   &                  & 0.090            & 0.384            & 0.182            &                 \\ 
-adj. $R^2$                              &                  & 0.085            & 0.380            & 0.177            &                 \\ 
-Resid. sd                               &                  & 0.478            & 0.394            & 0.453            &                  \\ \hline
+ %                    & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+Intercept            & -0.182            & 0.045 ^*          & -0.229 ^{***}     & -0.179 ^{***}     & -1.604 ^{***}    \\ 
+                     & (0.114)           & (0.020)           & (0.023)           & (0.016)           & (0.125)          \\ 
+Spring 2011          & 0.068             & -0.049            & 0.584 ^{***}      & 0.382 ^{***}      & -0.220           \\ 
+                     & (0.147)           & (0.034)           & (0.027)           & (0.032)           & (0.201)          \\ 
+Spring 2012          & 0.023             & -0.063 ^\dagger  & 0.409 ^{***}      & 0.256 ^{***}      & 0.040            \\ 
+                     & (0.146)           & (0.033)           & (0.037)           & (0.033)           & (0.192)          \\ 
+Recall Polarization  & -0.049            & -0.019            & 0.042             & 0.002             & -0.001           \\ 
+                     & (0.187)           & (0.038)           & (0.041)           & (0.033)           & (0.207)          \\ 
+Districtwide         & 0.011             & -0.311 ^{***}     & -0.016            & 0.048             & -0.071           \\ 
+                     & (0.286)           & (0.087)           & (0.065)           & (0.078)           & (0.360)          \\ 
+Contest Lag          & 0.566 ^{***}      &                   &                   &                   &                  \\ 
+                     & (0.125)           &                   &                   &                   &                  \\ 
+Spring 2011 x Polar. & 0.182             & 0.064             & -0.129 ^{**}      & -0.063            & 0.029            \\ 
+                     & (0.305)           & (0.067)           & (0.049)           & (0.062)           & (0.393)          \\ 
+Spring 2012 x Polar. & 0.271             & 0.079             & -0.281 ^{***}     & 0.041             & 0.094            \\ 
+                     & (0.292)           & (0.075)           & (0.065)           & (0.072)           & (0.402)          \\ 
+Blais-Lago lag       &                   & 0.194 ^{***}      &                   &                   &                  \\ 
+                     &                   & (0.051)           &                   &                   &                  \\ 
+Imputed              &                   &                   & -0.258 ^{***}     & 0.195 ^{**}       &                  \\ 
+                     &                   &                   & (0.049)           & (0.065)           &                  \\ 
+Turnout Lag          &                   &                   & 0.309 ^{***}      &                   &                  \\ 
+                     &                   &                   & (0.035)           &                   &                  \\ 
+Rolloff Lag          &                   &                   &                   & 0.298 ^{***}      &                  \\ 
+                     &                   &                   &                   & (0.062)           &                  \\ 
+Inc. Def. Lag        &                   &                   &                   &                   & 0.338            \\ 
+                     &                   &                   &                   &                   & (0.205)           \\
+ $N$                  & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                  & 1575.366          &                   &                   &                   & 1056.562         \\ 
+BIC                  & 1736.775          &                   &                   &                   & 1217.971         \\ 
+$\log L$            & -755.683          &                   &                   &                   & -496.281         \\ 
+$R^2$                &                   & 0.077             & 0.395             & 0.189             &                  \\ 
+adj. $R^2$           &                   & 0.072             & 0.390             & 0.184             &                  \\ 
+Resid. sd            &                   & 0.482             & 0.390             & 0.452             &                   \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
  \end{table}
@@ -1415,40 +1422,42 @@ to pre Act 10 with a statistically significant effect in 2012.
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
- %                               & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
-(Intercept)                     & -0.225 ^*         & -0.010            & -0.226 ^{***}     & -0.175 ^{***}     & -1.650 ^{***}    \\ 
-                                & (0.112)           & (0.020)           & (0.022)           & (0.016)           & (0.125)          \\ 
-contestSer\_lag1               & 0.616 ^{***}      &                   &                   &                   &                  \\ 
-                                & (0.123)           &                   &                   &                   &                  \\ 
-treatmentDiff1                  & 0.048             & 0.027             & 0.585 ^{***}      & 0.378 ^{***}      & -0.279           \\ 
-                                & (0.148)           & (0.034)           & (0.027)           & (0.032)           & (0.207)          \\ 
-treatmentDiff2                  & 0.012             & 0.013             & 0.399 ^{***}      & 0.255 ^{***}      & -0.012           \\ 
-                                & (0.146)           & (0.032)           & (0.035)           & (0.033)           & (0.202)          \\ 
-WERC\_str\_lag                & 0.192             & 0.143             & -0.087            & 0.247 ^\dagger   & -0.237           \\ 
-                                & (0.616)           & (0.120)           & (0.090)           & (0.148)           & (0.750)          \\ 
-WERC\_elec\_lag               & -0.268            & -0.166            & 0.035             & -0.278 ^\dagger  & 0.122            \\ 
-                                & (0.639)           & (0.124)           & (0.090)           & (0.155)           & (0.740)          \\ 
-treatmentDiff1:WERC\_str\_lag & 0.415             & -0.091            & 0.109 ^*          & 0.004             & 0.535            \\ 
-                                & (0.293)           & (0.068)           & (0.050)           & (0.059)           & (0.416)          \\ 
-treatmentDiff2:WERC\_str\_lag & 0.200             & 0.011             & 0.146 ^*          & -0.020            & 0.834 ^\dagger  \\ 
-                                & (0.309)           & (0.066)           & (0.059)           & (0.071)           & (0.439)          \\ 
-minBlaisLago\_lag              &                   & 0.295 ^{***}      &                   &                   &                  \\ 
-                                &                   & (0.032)           &                   &                   &                  \\ 
-turnout\_lag                   &                   &                   & 0.281 ^{***}      &                   &                  \\ 
-                                &                   &                   & (0.030)           &                   &                  \\ 
-ImputedFlagYes                  &                   &                   & -0.269 ^{***}     & 0.190 ^{**}       &                  \\ 
-                                &                   &                   & (0.049)           & (0.065)           &                  \\ 
-turnoutDiff\_lag               &                   &                   &                   & 0.285 ^{***}      &                  \\ 
-                                &                   &                   &                   & (0.059)           &                  \\ 
-incDefeats\_lag1               &                   &                   &                   &                   & 0.362 ^\dagger  \\ 
-                                &                   &                   &                   &                   & (0.205)           \\
- $N$                             & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
-AIC                             & 1571.003          &                   &                   &                   & 1024.002         \\ 
-BIC                             & 1732.412          &                   &                   &                   & 1185.411         \\ 
-$\log L$                       & -753.502          &                   &                   &                   & -480.001         \\ 
-$R^2$                           &                   & 0.092             & 0.371             & 0.187             &                  \\ 
-adj. $R^2$                      &                   & 0.087             & 0.367             & 0.181             &                  \\ 
-Resid. sd                       &                   & 0.478             & 0.398             & 0.453             &                   \\ \hline
+ %                       & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+Intercept               & -0.177            & 0.045 ^*          & -0.227 ^{***}     & -0.178 ^{***}     & -1.606 ^{***}    \\ 
+                        & (0.114)           & (0.020)           & (0.022)           & (0.016)           & (0.126)          \\ 
+Contest Lag             & 0.560 ^{***}      &                   &                   &                   &                  \\ 
+                        & (0.125)           &                   &                   &                   &                  \\ 
+Spring 2011             & 0.070             & -0.048            & 0.582 ^{***}      & 0.381 ^{***}      & -0.223           \\ 
+                        & (0.147)           & (0.034)           & (0.027)           & (0.032)           & (0.202)          \\ 
+Spring 2012             & 0.020             & -0.063 ^\dagger  & 0.409 ^{***}      & 0.255 ^{***}      & 0.006            \\ 
+                        & (0.146)           & (0.033)           & (0.037)           & (0.032)           & (0.198)          \\ 
+WERC Turnout            & 0.282             & -0.036            & -0.084            & 0.234             & -0.120           \\ 
+                        & (0.631)           & (0.108)           & (0.089)           & (0.145)           & (0.745)          \\ 
+WERC Election?          & -0.368            & 0.052             & 0.025             & -0.260 ^\dagger  & 0.003            \\ 
+                        & (0.656)           & (0.116)           & (0.089)           & (0.152)           & (0.735)          \\ 
+Districtwide            & -0.025            & -0.316 ^{***}     & 0.000             & 0.040             & -0.087           \\ 
+                        & (0.286)           & (0.088)           & (0.066)           & (0.075)           & (0.364)          \\ 
+Spring 2011 x WERC Str. & 0.360             & 0.034             & 0.110 ^*          & 0.007             & 0.367            \\ 
+                        & (0.289)           & (0.070)           & (0.049)           & (0.059)           & (0.407)          \\ 
+Spring 2012 x WERC Str. & 0.242             & 0.005             & 0.157 ^{**}       & -0.029            & 0.767 ^\dagger  \\ 
+                        & (0.307)           & (0.069)           & (0.061)           & (0.070)           & (0.427)          \\ 
+Blais-Lago lag          &                   & 0.193 ^{***}      &                   &                   &                  \\ 
+                        &                   & (0.050)           &                   &                   &                  \\ 
+Turnout Lag             &                   &                   & 0.306 ^{***}      &                   &                  \\ 
+                        &                   &                   & (0.035)           &                   &                  \\ 
+Imputed                 &                   &                   & -0.268 ^{***}     & 0.191 ^{**}       &                  \\ 
+                        &                   &                   & (0.049)           & (0.065)           &                  \\ 
+Rolloff Lag             &                   &                   &                   & 0.292 ^{***}      &                  \\ 
+                        &                   &                   &                   & (0.059)           &                  \\ 
+Inc. Def. Lag           &                   &                   &                   &                   & 0.347 ^\dagger  \\ 
+                        &                   &                   &                   &                   & (0.205)           \\
+ $N$                     & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                     & 1575.596          &                   &                   &                   & 1053.742         \\ 
+BIC                     & 1757.181          &                   &                   &                   & 1235.327         \\ 
+$\log L$               & -751.798          &                   &                   &                   & -490.871         \\ 
+$R^2$                   &                   & 0.076             & 0.382             & 0.193             &                  \\ 
+adj. $R^2$              &                   & 0.070             & 0.377             & 0.186             &                  \\ 
+Resid. sd               &                   & 0.482             & 0.395             & 0.451             &                   \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
  \end{table}
@@ -1486,44 +1495,46 @@ participation in the recall election.
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
- %                                       & Ser. Cont.       & Compet.          & Turnout          & Rolloff          & Inc. Def.       \\ 
-(Intercept)                             & -0.226 ^*        & -0.010           & -0.229 ^{***}    & -0.178 ^{***}    & -1.647 ^{***}   \\ 
-                                        & (0.113)          & (0.021)          & (0.022)          & (0.016)          & (0.125)         \\ 
-contestSer\_lag1                       & 0.620 ^{***}     &                  &                  &                  &                 \\ 
-                                        & (0.124)          &                  &                  &                  &                 \\ 
-treatmentDiff1                          & 0.050            & 0.031            & 0.596 ^{***}     & 0.388 ^{***}     & -0.287          \\ 
-                                        & (0.148)          & (0.034)          & (0.027)          & (0.032)          & (0.207)         \\ 
-treatmentDiff2                          & 0.012            & 0.010            & 0.399 ^{***}     & 0.262 ^{***}     & 0.029           \\ 
-                                        & (0.147)          & (0.032)          & (0.034)          & (0.032)          & (0.195)         \\ 
-RecallTurnout\_lag                     & -0.038           & 0.017            & 0.079 ^\dagger  & 0.050            & -0.317          \\ 
-                                        & (0.194)          & (0.039)          & (0.041)          & (0.043)          & (0.242)         \\ 
-RecallPolarization\_lag                & -0.058           & -0.024           & 0.074            & 0.015            & -0.070          \\ 
-                                        & (0.199)          & (0.040)          & (0.046)          & (0.040)          & (0.228)         \\ 
-treatmentDiff1:RecallTurnout\_lag      & 0.262            & 0.127 ^\dagger  & 0.197 ^{***}     & 0.229 ^{***}     & 0.073           \\ 
-                                        & (0.329)          & (0.073)          & (0.053)          & (0.069)          & (0.410)         \\ 
-treatmentDiff2:RecallTurnout\_lag      & -0.052           & -0.085           & 0.047            & 0.188 ^*         & 0.677 ^\dagger \\ 
-                                        & (0.295)          & (0.066)          & (0.059)          & (0.082)          & (0.403)         \\ 
-treatmentDiff1:RecallPolarization\_lag & 0.345            & 0.083            & -0.069           & 0.042            & 0.304           \\ 
-                                        & (0.340)          & (0.068)          & (0.058)          & (0.067)          & (0.449)         \\ 
-treatmentDiff2:RecallPolarization\_lag & 0.207            & -0.073           & -0.249 ^{***}    & 0.114            & 0.198           \\ 
-                                        & (0.314)          & (0.074)          & (0.068)          & (0.074)          & (0.423)         \\ 
-minBlaisLago\_lag                      &                  & 0.294 ^{***}     &                  &                  &                 \\ 
-                                        &                  & (0.033)          &                  &                  &                 \\ 
-turnout\_lag                           &                  &                  & 0.263 ^{***}     &                  &                 \\ 
-                                        &                  &                  & (0.030)          &                  &                 \\ 
-ImputedFlagYes                          &                  &                  & -0.248 ^{***}    & 0.204 ^{**}      &                 \\ 
-                                        &                  &                  & (0.050)          & (0.066)          &                 \\ 
-turnoutDiff\_lag                       &                  &                  &                  & 0.277 ^{***}     &                 \\ 
-                                        &                  &                  &                  & (0.062)          &                 \\ 
-incDefeats\_lag1                       &                  &                  &                  &                  & 0.348 ^\dagger \\ 
-                                        &                  &                  &                  &                  & (0.206)          \\
- $N$                                     & 1146             & 1146             & 1146             & 1146             & 1146            \\ 
-AIC                                     & 1575.917         &                  &                  &                  & 1030.173        \\ 
-BIC                                     & 1777.678         &                  &                  &                  & 1231.935        \\ 
-$\log L$                               & -747.959         &                  &                  &                  & -475.087        \\ 
-$R^2$                                   &                  & 0.095            & 0.405            & 0.212            &                 \\ 
-adj. $R^2$                              &                  & 0.088            & 0.400            & 0.205            &                 \\ 
-Resid. sd                               &                  & 0.477            & 0.387            & 0.446            &                  \\ \hline
+ %                         & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+Intercept                 & -0.180            & 0.045 ^*          & -0.229 ^{***}     & -0.181 ^{***}     & -1.604 ^{***}    \\ 
+                          & (0.115)           & (0.020)           & (0.023)           & (0.016)           & (0.126)          \\ 
+Contest Lag               & 0.565 ^{***}      &                   &                   &                   &                  \\ 
+                          & (0.126)           &                   &                   &                   &                  \\ 
+Spring 2011               & 0.068             & -0.050            & 0.592 ^{***}      & 0.392 ^{***}      & -0.256           \\ 
+                          & (0.147)           & (0.034)           & (0.026)           & (0.031)           & (0.206)          \\ 
+Spring 2012               & 0.021             & -0.061 ^\dagger  & 0.408 ^{***}      & 0.261 ^{***}      & 0.041            \\ 
+                          & (0.146)           & (0.033)           & (0.036)           & (0.032)           & (0.192)          \\ 
+Recall Turnout            & -0.055            & 0.018             & 0.071 ^\dagger   & 0.054             & -0.352           \\ 
+                          & (0.190)           & (0.039)           & (0.041)           & (0.043)           & (0.240)          \\ 
+Recall Polarization       & -0.069            & -0.012            & 0.066             & 0.021             & -0.127           \\ 
+                          & (0.195)           & (0.039)           & (0.044)           & (0.039)           & (0.225)          \\ 
+Districtwide              & 0.013             & -0.311 ^{***}     & -0.027            & 0.039             & -0.069           \\ 
+                          & (0.286)           & (0.087)           & (0.060)           & (0.078)           & (0.356)          \\ 
+Spring 2011 x Rec. Turn.  & 0.145             & -0.083            & 0.207 ^{***}      & 0.221 ^{**}       & -0.218           \\ 
+                          & (0.325)           & (0.088)           & (0.052)           & (0.070)           & (0.460)          \\ 
+Spring 2012 x Rec. Turn.  & -0.015            & 0.044             & 0.064             & 0.171 ^*          & 0.727 ^\dagger  \\ 
+                          & (0.293)           & (0.070)           & (0.060)           & (0.082)           & (0.394)          \\ 
+Spring 2011 x Rec. Polar. & 0.237             & 0.032             & -0.046            & 0.023             & -0.056           \\ 
+                          & (0.332)           & (0.074)           & (0.051)           & (0.067)           & (0.486)          \\ 
+Spring 2012 x Rec. Polar. & 0.263             & 0.098             & -0.249 ^{***}     & 0.114             & 0.374            \\ 
+                          & (0.314)           & (0.085)           & (0.070)           & (0.074)           & (0.423)          \\ 
+Blais-Lago lag            &                   & 0.195 ^{***}      &                   &                   &                  \\ 
+                          &                   & (0.051)           &                   &                   &                  \\ 
+Turnout Lag               &                   &                   & 0.287 ^{***}      &                   &                  \\ 
+                          &                   &                   & (0.035)           &                   &                  \\ 
+Imputed                   &                   &                   & -0.247 ^{***}     & 0.205 ^{**}       &                  \\ 
+                          &                   &                   & (0.050)           & (0.066)           &                  \\ 
+Rolloff Lag               &                   &                   &                   & 0.283 ^{***}      &                  \\ 
+                          &                   &                   &                   & (0.062)           &                  \\ 
+Inc. Def. Lag             &                   &                   &                   &                   & 0.330            \\ 
+                          &                   &                   &                   &                   & (0.205)           \\
+ $N$                       & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                       & 1581.085          &                   &                   &                   & 1056.799         \\ 
+BIC                       & 1803.023          &                   &                   &                   & 1278.736         \\ 
+$\log L$                 & -746.543          &                   &                   &                   & -484.399         \\ 
+$R^2$                     &                   & 0.079             & 0.416             & 0.217             &                  \\ 
+adj. $R^2$                &                   & 0.071             & 0.411             & 0.210             &                  \\ 
+Resid. sd                 &                   & 0.482             & 0.384             & 0.445             &                   \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
  \end{table}
@@ -1607,44 +1618,45 @@ if their representation does not change in response to such events.
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
- %                                  & Lag           & DnD           & FE           \\ 
-(Intercept)                        & -1.330        & -1.318        & 0.029        \\ 
-                                   & (2.978)       & (2.979)       & (0.226)      \\ 
-contestMinor\_lag1                & 0.392 ^{***}  & 0.374 ^{**}   &              \\ 
-                                   & (0.106)       & (0.118)       &              \\ 
-treatmentDiff1                     & -0.046        & -0.026        & -0.138       \\ 
-                                   & (0.130)       & (0.184)       & (0.173)      \\ 
-treatmentDiff2                     & -0.033        & -0.138        & -0.114       \\ 
-                                   & (0.129)       & (0.198)       & (0.173)      \\ 
-VAP\_adjLOG\_sq\_lag            & 0.044         & 0.044         &              \\ 
-                                   & (0.044)       & (0.044)       &              \\ 
-incumShare\_lag                   & -0.167        & -0.166        & 0.260        \\ 
-                                   & (0.163)       & (0.163)       & (0.195)      \\ 
-VAP\_adjLOG\_lag                 & -0.251        & -0.250        &              \\ 
-                                   & (0.755)       & (0.755)       &              \\ 
-per65o\_lag                       & 1.329         & 1.319         &              \\ 
-                                   & (1.746)       & (1.744)       &              \\ 
-nraces\_lag                       & -0.237 ^*     & -0.238 ^*     & -0.072       \\ 
-                                   & (0.095)       & (0.095)       & (0.181)      \\ 
-OOH\_share\_lag                  & 0.581         & 0.585         &              \\ 
-                                   & (0.575)       & (0.577)       &              \\ 
-PerBachelorOrAbove\_lag           & -3.213 ^{***} & -3.216 ^{***} &              \\ 
-                                   & (0.716)       & (0.716)       &              \\ 
-locale2\_lagexurb                 & 0.385         & 0.382         &              \\ 
-                                   & (0.448)       & (0.448)       &              \\ 
-locale2\_lagrural                 & 0.443         & 0.439         &              \\ 
-                                   & (0.433)       & (0.433)       &              \\ 
-contestMinor\_lag1:treatmentDiff1 &               & -0.044        &              \\ 
-                                   &               & (0.271)       &              \\ 
-contestMinor\_lag1:treatmentDiff2 &               & 0.190         &              \\ 
-                                   &               & (0.265)       &               \\
- $N$                                & 2362          & 2362          & 2362         \\ 
-AIC                                & 3116.567      & 3119.978      & 3143.010     \\ 
-BIC                                & 3416.465      & 3466.014      & 10294.417    \\ 
-$\log L$                          & -1506.284     & -1499.989     & -331.505      \\ \hline
+ %               & Lag           & DnD           & FE           \\ 
+Intercept       & -1.961        & -1.961        & 0.146        \\ 
+                & (2.917)       & (2.918)       & (0.220)      \\ 
+Lag. Contest    & 0.345 ^{**}   & 0.344 ^{**}   &              \\ 
+                & (0.107)       & (0.119)       &              \\ 
+Spring 2011     & -0.028        & 0.018         & -0.113       \\ 
+                & (0.131)       & (0.183)       & (0.173)      \\ 
+Spring 2012     & -0.007        & -0.061        & -0.093       \\ 
+                & (0.130)       & (0.200)       & (0.173)      \\ 
+ln(VAP)         & -0.095        & -0.094        &              \\ 
+                & (0.742)       & (0.742)       &              \\ 
+$ln(VAP)^{2}$   & 0.036         & 0.036         &              \\ 
+                & (0.043)       & (0.043)       &              \\ 
+Incumbent Share & -0.209        & -0.210        & 0.238        \\ 
+                & (0.165)       & (0.165)       & (0.195)      \\ 
+\% Over 65     & 0.935         & 0.921         &              \\ 
+                & (1.762)       & (1.761)       &              \\ 
+n races         & -0.234 ^{**}  & -0.235 ^{**}  & -0.172       \\ 
+                & (0.081)       & (0.081)       & (0.180)      \\ 
+\% OOH         & 0.531         & 0.531         &              \\ 
+                & (0.595)       & (0.597)       &              \\ 
+\% Bach. +     & -3.299 ^{***} & -3.299 ^{***} &              \\ 
+                & (0.732)       & (0.732)       &              \\ 
+Exurb           & 0.444         & 0.442         &              \\ 
+                & (0.445)       & (0.445)       &              \\ 
+Rural           & 0.508         & 0.506         &              \\ 
+                & (0.436)       & (0.436)       &              \\ 
+Lag x 2011      &               & -0.092        &              \\ 
+                &               & (0.268)       &              \\ 
+Lag x 2012      &               & 0.097         &              \\ 
+                &               & (0.265)       &               \\
+ $N$             & 2362          & 2362          & 2362         \\ 
+AIC             & 3108.460      & 3112.159      & 3156.485     \\ 
+BIC             & 3408.358      & 3458.195      & 10307.892    \\ 
+$\log L$       & -1502.230     & -1496.080     & -338.243      \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}}\\
-\multicolumn{4}{l}{\footnotesize{Dependent variable is binomial. Coefficients are reported on the logistic scale. }} 
+\multicolumn{4}{l}{\footnotesize{Dependent variable is binomial. Coefficients are reported on 
+             the logistic scale. }} 
 \end{tabular} 
  \end{table}
 
@@ -1663,53 +1675,55 @@ HLM mediation models.
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
  %                                       & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
-(Intercept)                             & -0.670            & 0.020             & -0.181 ^\dagger  & -0.145            & -1.692 ^{***}    \\ 
-                                        & (0.541)           & (0.109)           & (0.093)           & (0.123)           & (0.002)          \\ 
-contestMinor\_lag1                     & 0.294 ^*          &                   &                   &                   &                  \\ 
+(Intercept)                             & -0.677            & -0.086            & -0.155 ^\dagger  & -0.176            & -1.857 ^{***}    \\ 
+                                        & (0.539)           & (0.093)           & (0.091)           & (0.121)           & (0.525)          \\ 
+treatmentDiff1                          & 0.060             & -0.042            & 0.570 ^{***}      & 0.391 ^{***}      & -0.222           \\ 
+                                        & (0.153)           & (0.033)           & (0.027)           & (0.030)           & (0.203)          \\ 
+treatmentDiff2                          & 0.039             & -0.055 ^\dagger  & 0.319 ^{***}      & 0.217 ^{***}      & 0.076            \\ 
+                                        & (0.153)           & (0.033)           & (0.029)           & (0.030)           & (0.193)          \\ 
+VAP\_adjLOG\_sq\_lag                 & 2.035             & 0.636             & 0.030             & -1.237 ^*         & -2.451           \\ 
+                                        & (2.460)           & (0.408)           & (0.393)           & (0.518)           & (2.639)          \\ 
+VAP\_adjLOG\_lag                      & -0.581            & -0.426            & -0.279            & 1.480 ^{**}       & 3.161            \\ 
+                                        & (2.340)           & (0.391)           & (0.377)           & (0.498)           & (2.588)          \\ 
+per65o\_lag                            & 0.098             & -0.002            & 0.112 ^{**}       & 0.028             & -0.306           \\ 
+                                        & (0.185)           & (0.035)           & (0.035)           & (0.046)           & (0.233)          \\ 
+nraces\_lag                            & -0.410 ^{**}      & -0.388 ^{***}     & -0.031            & 0.047             & -0.180           \\ 
+                                        & (0.151)           & (0.031)           & (0.027)           & (0.034)           & (0.192)          \\ 
+OOH\_share\_lag                       & 0.217             & 0.085 ^*          & 0.029             & 0.062             & -0.130           \\ 
+                                        & (0.182)           & (0.035)           & (0.034)           & (0.045)           & (0.230)          \\ 
+PerBachelorOrAbove\_lag                & -0.497 ^{**}      & -0.065 ^*         & 0.146 ^{***}      & 0.038             & -0.480 ^*        \\ 
+                                        & (0.159)           & (0.030)           & (0.029)           & (0.038)           & (0.203)          \\ 
+locale2\_lagexurb                      & 0.398             & 0.057             & -0.094            & -0.077            & 0.089            \\ 
+                                        & (0.561)           & (0.097)           & (0.095)           & (0.127)           & (0.548)          \\ 
+locale2\_lagrural                      & 0.792             & 0.127             & -0.042            & 0.019             & 0.210            \\ 
+                                        & (0.561)           & (0.097)           & (0.095)           & (0.126)           & (0.544)          \\ 
+distWidemixYes                          & 0.157             & -0.043            & 0.027             & -0.031            & -0.015           \\ 
+                                        & (0.324)           & (0.066)           & (0.059)           & (0.071)           & (0.412)          \\ 
+contestMinor\_lag1                     & 0.239 ^\dagger   &                   &                   &                   &                  \\ 
                                         & (0.131)           &                   &                   &                   &                  \\ 
-treatmentDiff1                          & 0.028             & 0.030             & 0.572 ^{***}      & 0.388 ^{***}      & -0.294 ^{***}    \\ 
-                                        & (0.153)           & (0.031)           & (0.027)           & (0.030)           & (0.002)          \\ 
-treatmentDiff2                          & 0.015             & 0.007             & 0.305 ^{***}      & 0.217 ^{***}      & 0.057 ^{***}     \\ 
-                                        & (0.153)           & (0.031)           & (0.029)           & (0.030)           & (0.002)          \\ 
-VAP\_adjLOG\_sq\_lag                 & 2.382             & 0.056             & 0.311             & -1.546 ^{**}      & -4.080 ^{***}    \\ 
-                                        & (2.510)           & (0.472)           & (0.401)           & (0.526)           & (0.002)          \\ 
-VAP\_adjLOG\_lag                      & -0.938            & -0.360            & -0.555            & 1.772 ^{**}       & 4.722 ^{***}     \\ 
-                                        & (2.386)           & (0.453)           & (0.385)           & (0.506)           & (0.002)          \\ 
-per65o\_lag                            & 0.156             & 0.016             & 0.116 ^{**}       & 0.028             & -0.161 ^{***}    \\ 
-                                        & (0.186)           & (0.042)           & (0.036)           & (0.047)           & (0.002)          \\ 
-nraces\_lag                            & -0.320 ^*         & 0.251 ^{***}      & -0.015            & 0.023             & -0.218 ^{***}    \\ 
-                                        & (0.136)           & (0.030)           & (0.025)           & (0.031)           & (0.002)          \\ 
-OOH\_share\_lag                       & 0.286             & -0.022            & 0.027             & 0.065             & 0.046 ^{***}     \\ 
-                                        & (0.184)           & (0.041)           & (0.035)           & (0.046)           & (0.002)          \\ 
-PerBachelorOrAbove\_lag                & -0.489 ^{**}      & 0.119 ^{**}       & 0.150 ^{***}      & 0.038             & -0.457 ^{***}    \\ 
-                                        & (0.159)           & (0.035)           & (0.030)           & (0.039)           & (0.002)          \\ 
-locale2\_lagexurb                      & 0.353             & 0.035             & -0.072            & -0.101            & -0.048 ^{***}    \\ 
-                                        & (0.564)           & (0.115)           & (0.097)           & (0.129)           & (0.002)          \\ 
-locale2\_lagrural                      & 0.746             & -0.040            & -0.008            & -0.017            & -0.042 ^{***}    \\ 
-                                        & (0.564)           & (0.114)           & (0.097)           & (0.128)           & (0.002)          \\ 
-RecallPolarization\_lag                & -0.080            & -0.018            & 0.050             & -0.021            & -0.008 ^{***}    \\ 
-                                        & (0.194)           & (0.042)           & (0.035)           & (0.044)           & (0.002)          \\ 
-treatmentDiff1:RecallPolarization\_lag & 0.216             & 0.030             & -0.149 ^{**}      & -0.042            & 0.284 ^{***}     \\ 
-                                        & (0.311)           & (0.061)           & (0.052)           & (0.057)           & (0.002)          \\ 
-treatmentDiff2:RecallPolarization\_lag & 0.159             & -0.026            & -0.234 ^{***}     & 0.052             & -0.092 ^{***}    \\ 
-                                        & (0.309)           & (0.061)           & (0.052)           & (0.057)           & (0.002)          \\ 
-minBlaisLago\_lag                      &                   & 0.075 ^*          &                   &                   &                  \\ 
-                                        &                   & (0.029)           &                   &                   &                  \\ 
-turnout\_lag                           &                   &                   & 0.085 ^{**}       &                   &                  \\ 
-                                        &                   &                   & (0.027)           &                   &                  \\ 
-ImputedFlagYes                          &                   &                   & -0.305 ^{***}     & 0.190 ^{***}      &                  \\ 
+RecallPolarization\_lag                & -0.114            & -0.030            & 0.046             & -0.017            & -0.093           \\ 
+                                        & (0.193)           & (0.039)           & (0.035)           & (0.044)           & (0.240)          \\ 
+treatmentDiff1:RecallPolarization\_lag & 0.140             & 0.056             & -0.134 ^*         & -0.055            & 0.040            \\ 
+                                        & (0.310)           & (0.065)           & (0.052)           & (0.058)           & (0.418)          \\ 
+treatmentDiff2:RecallPolarization\_lag & 0.202             & 0.090             & -0.243 ^{***}     & 0.060             & 0.083            \\ 
+                                        & (0.309)           & (0.065)           & (0.052)           & (0.057)           & (0.394)          \\ 
+minBlaisLago\_lag                      &                   & 0.062 ^*          &                   &                   &                  \\ 
+                                        &                   & (0.030)           &                   &                   &                  \\ 
+turnout\_lag                           &                   &                   & 0.119 ^{***}      &                   &                  \\ 
+                                        &                   &                   & (0.026)           &                   &                  \\ 
+ImputedFlagYes                          &                   &                   & -0.303 ^{***}     & 0.194 ^{***}      &                  \\ 
                                         &                   &                   & (0.042)           & (0.047)           &                  \\ 
-turnoutDiff\_lag                       &                   &                   &                   & 0.028             &                  \\ 
+turnoutDiff\_lag                       &                   &                   &                   & 0.045             &                  \\ 
                                         &                   &                   &                   & (0.029)           &                  \\ 
-incDefeats\_lag1                       &                   &                   &                   &                   & 0.143 ^{***}     \\ 
-                                        &                   &                   &                   &                   & (0.002)           \\
+incDefeats\_lag1                       &                   &                   &                   &                   & 0.194            \\ 
+                                        &                   &                   &                   &                   & (0.234)           \\
  $N$                                     & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
-AIC                                     & 1517.248          & 1460.823          & 1088.931          & 1415.501          & 1026.438         \\ 
+AIC                                     & 1519.678          & 1477.320          & 1075.544          & 1410.618          & 1055.276         \\ 
 N Groups                                & 306               & 306               & 306               & 306               & 306              \\ 
 Group Names                             & distid            & distid            & distid            & distid            & distid           \\ 
 Group:distid Effs.                      & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
-Group:distid Var.                       & 0.535             & 0.166             & 0.141             & 0.231             & 0.465            \\ 
-Sigma                                   & 1                 & 0.421             & 0.3567            & 0.3929            & 1                 \\ \hline
+Group:distid Var.                       & 0.522             & 0                 & 0.132             & 0.223             & 0.338            \\ 
+Sigma                                   & 1                 & 0.4497            & 0.3562            & 0.3937            & 1                 \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
@@ -1721,56 +1735,58 @@ Sigma                                   & 1                 & 0.421             
 \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
- %                               & Ser. Cont.       & Compet.          & Turnout          & Rolloff          & Inc. Def.       \\ 
-(Intercept)                     & -0.679           & 0.007            & -0.194 ^*        & -0.168           & -1.678 ^{**}    \\ 
-                                & (0.542)          & (0.108)          & (0.093)          & (0.120)          & (0.556)         \\ 
-contestMinor\_lag1             & 0.269 ^*         &                  &                  &                  &                 \\ 
-                                & (0.131)          &                  &                  &                  &                 \\ 
-treatmentDiff1                  & 0.033            & 0.030            & 0.570 ^{***}     & 0.387 ^{***}     & -0.293          \\ 
-                                & (0.153)          & (0.030)          & (0.027)          & (0.030)          & (0.212)         \\ 
-treatmentDiff2                  & 0.017            & 0.007            & 0.300 ^{***}     & 0.215 ^{***}     & 0.025           \\ 
-                                & (0.154)          & (0.031)          & (0.029)          & (0.030)          & (0.202)         \\ 
-VAP\_adjLOG\_sq\_lag         & 2.595            & 0.097            & 0.346            & -1.361 ^*        & -4.296          \\ 
-                                & (2.559)          & (0.468)          & (0.401)          & (0.513)          & (3.019)         \\ 
-VAP\_adjLOG\_lag              & -1.113           & -0.401           & -0.599           & 1.603 ^{**}      & 4.913 ^\dagger \\ 
-                                & (2.431)          & (0.448)          & (0.385)          & (0.492)          & (2.954)         \\ 
-per65o\_lag                    & 0.166            & 0.013            & 0.115 ^{**}      & 0.029            & -0.169          \\ 
-                                & (0.187)          & (0.042)          & (0.036)          & (0.046)          & (0.245)         \\ 
-nraces\_lag                    & -0.329 ^*        & 0.253 ^{***}     & -0.013           & 0.020            & -0.220          \\ 
-                                & (0.137)          & (0.030)          & (0.025)          & (0.031)          & (0.189)         \\ 
-OOH\_share\_lag               & 0.289            & -0.017           & 0.038            & 0.071            & 0.036           \\ 
-                                & (0.181)          & (0.040)          & (0.035)          & (0.045)          & (0.239)         \\ 
-PerBachelorOrAbove\_lag        & -0.487 ^{**}     & 0.120 ^{**}      & 0.157 ^{***}     & 0.043            & -0.461 ^*       \\ 
-                                & (0.160)          & (0.035)          & (0.030)          & (0.038)          & (0.211)         \\ 
-locale2\_lagexurb              & 0.372            & 0.040            & -0.064           & -0.081           & -0.079          \\ 
-                                & (0.565)          & (0.114)          & (0.097)          & (0.126)          & (0.582)         \\ 
-locale2\_lagrural              & 0.768            & -0.026           & 0.009            & 0.009            & -0.067          \\ 
-                                & (0.565)          & (0.113)          & (0.097)          & (0.125)          & (0.580)         \\ 
-WERC\_elec\_lag               & -0.742           & -0.141           & 0.056            & -0.423 ^{**}     & 0.045           \\ 
-                                & (0.556)          & (0.125)          & (0.107)          & (0.139)          & (0.697)         \\ 
-WERC\_str\_lag                & 0.450            & 0.178            & -0.065           & 0.339 ^*         & -0.251          \\ 
-                                & (0.536)          & (0.120)          & (0.103)          & (0.132)          & (0.675)         \\ 
-treatmentDiff1:WERC\_str\_lag & 0.413            & -0.092           & 0.110 ^*         & -0.008           & 0.575           \\ 
-                                & (0.303)          & (0.061)          & (0.052)          & (0.057)          & (0.436)         \\ 
-treatmentDiff2:WERC\_str\_lag & 0.186            & -0.009           & 0.115 ^*         & -0.007           & 0.896 ^*        \\ 
-                                & (0.304)          & (0.061)          & (0.052)          & (0.057)          & (0.419)         \\ 
-minBlaisLago\_lag              &                  & 0.075 ^*         &                  &                  &                 \\ 
-                                &                  & (0.029)          &                  &                  &                 \\ 
-turnout\_lag                   &                  &                  & 0.072 ^*         &                  &                 \\ 
-                                &                  &                  & (0.027)          &                  &                 \\ 
-ImputedFlagYes                  &                  &                  & -0.307 ^{***}    & 0.185 ^{***}     &                 \\ 
-                                &                  &                  & (0.043)          & (0.048)          &                 \\ 
-turnoutDiff\_lag               &                  &                  &                  & 0.028            &                 \\ 
-                                &                  &                  &                  & (0.029)          &                 \\ 
-incDefeats\_lag1               &                  &                  &                  &                  & 0.163           \\ 
-                                &                  &                  &                  &                  & (0.240)          \\
- $N$                             & 1146             & 1146             & 1146             & 1146             & 1146            \\ 
-AIC                             & 1516.080         & 1459.839         & 1106.774         & 1409.136         & 1023.440        \\ 
-N Groups                        & 306              & 306              & 306              & 306              & 306             \\ 
-Group Names                     & distid           & distid           & distid           & distid           & distid          \\ 
-Group:distid Effs.              & (Intercept)      & (Intercept)      & (Intercept)      & (Intercept)      & (Intercept)     \\ 
-Group:distid Var.               & 0.544            & 0.166            & 0.143            & 0.224            & 0.473           \\ 
-Sigma                           & 1                & 0.4206           & 0.3588           & 0.3933           & 1                \\ \hline
+ %                               & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+(Intercept)                     & -0.722            & -0.084            & -0.167 ^\dagger  & -0.199 ^\dagger  & -1.874 ^{***}    \\ 
+                                & (0.539)           & (0.093)           & (0.092)           & (0.118)           & (0.525)          \\ 
+contestMinor\_lag1             & 0.217 ^\dagger   &                   &                   &                   &                  \\ 
+                                & (0.132)           &                   &                   &                   &                  \\ 
+treatmentDiff1                  & 0.065             & -0.041            & 0.568 ^{***}      & 0.390 ^{***}      & -0.226           \\ 
+                                & (0.153)           & (0.033)           & (0.027)           & (0.030)           & (0.204)          \\ 
+treatmentDiff2                  & 0.041             & -0.055 ^\dagger  & 0.314 ^{***}      & 0.216 ^{***}      & 0.045            \\ 
+                                & (0.154)           & (0.033)           & (0.029)           & (0.030)           & (0.196)          \\ 
+VAP\_adjLOG\_sq\_lag         & 2.388             & 0.647             & 0.062             & -1.061 ^*         & -2.509           \\ 
+                                & (2.501)           & (0.406)           & (0.394)           & (0.506)           & (2.660)          \\ 
+VAP\_adjLOG\_lag              & -0.883            & -0.434            & -0.323            & 1.321 ^*          & 3.208            \\ 
+                                & (2.377)           & (0.388)           & (0.378)           & (0.485)           & (2.606)          \\ 
+per65o\_lag                    & 0.105             & -0.001            & 0.112 ^{**}       & 0.029             & -0.312           \\ 
+                                & (0.185)           & (0.036)           & (0.035)           & (0.045)           & (0.234)          \\ 
+nraces\_lag                    & -0.423 ^{**}      & -0.390 ^{***}     & -0.028            & 0.043             & -0.166           \\ 
+                                & (0.152)           & (0.031)           & (0.028)           & (0.034)           & (0.193)          \\ 
+OOH\_share\_lag               & 0.232             & 0.084 ^*          & 0.041             & 0.067             & -0.116           \\ 
+                                & (0.180)           & (0.034)           & (0.034)           & (0.044)           & (0.225)          \\ 
+PerBachelorOrAbove\_lag        & -0.496 ^{**}      & -0.066 ^*         & 0.153 ^{***}      & 0.042             & -0.477 ^*        \\ 
+                                & (0.159)           & (0.030)           & (0.030)           & (0.038)           & (0.203)          \\ 
+locale2\_lagexurb              & 0.447             & 0.058             & -0.088            & -0.057            & 0.095            \\ 
+                                & (0.562)           & (0.097)           & (0.096)           & (0.124)           & (0.549)          \\ 
+locale2\_lagrural              & 0.852             & 0.125             & -0.026            & 0.045             & 0.225            \\ 
+                                & (0.562)           & (0.096)           & (0.095)           & (0.123)           & (0.544)          \\ 
+WERC\_elec\_lag               & -0.902            & -0.018            & 0.051             & -0.411 ^{**}      & -0.131           \\ 
+                                & (0.553)           & (0.106)           & (0.105)           & (0.137)           & (0.675)          \\ 
+WERC\_str\_lag                & 0.607             & -0.006            & -0.067            & 0.333 ^*          & -0.069           \\ 
+                                & (0.533)           & (0.103)           & (0.101)           & (0.130)           & (0.654)          \\ 
+distWidemixYes                  & 0.147             & -0.043            & 0.035             & -0.038            & -0.022           \\ 
+                                & (0.325)           & (0.066)           & (0.059)           & (0.070)           & (0.413)          \\ 
+treatmentDiff1:WERC\_str\_lag & 0.356             & 0.040             & 0.111 ^*          & -0.005            & 0.381            \\ 
+                                & (0.303)           & (0.065)           & (0.052)           & (0.057)           & (0.414)          \\ 
+treatmentDiff2:WERC\_str\_lag & 0.213             & -0.009            & 0.127 ^*          & -0.014            & 0.797 ^*         \\ 
+                                & (0.304)           & (0.065)           & (0.052)           & (0.058)           & (0.406)          \\ 
+minBlaisLago\_lag              &                   & 0.061 ^*          &                   &                   &                  \\ 
+                                &                   & (0.030)           &                   &                   &                  \\ 
+turnout\_lag                   &                   &                   & 0.106 ^{***}      &                   &                  \\ 
+                                &                   &                   & (0.027)           &                   &                  \\ 
+ImputedFlagYes                  &                   &                   & -0.306 ^{***}     & 0.189 ^{***}      &                  \\ 
+                                &                   &                   & (0.043)           & (0.048)           &                  \\ 
+turnoutDiff\_lag               &                   &                   &                   & 0.045             &                  \\ 
+                                &                   &                   &                   & (0.029)           &                  \\ 
+incDefeats\_lag1               &                   &                   &                   &                   & 0.203            \\ 
+                                &                   &                   &                   &                   & (0.233)           \\
+ $N$                             & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                             & 1518.001          & 1481.395          & 1093.774          & 1405.453          & 1052.934         \\ 
+N Groups                        & 306               & 306               & 306               & 306               & 306              \\ 
+Group Names                     & distid            & distid            & distid            & distid            & distid           \\ 
+Group:distid Effs.              & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
+Group:distid Var.               & 0.527             & 0                 & 0.136             & 0.216             & 0.343            \\ 
+Sigma                           & 1                 & 0.4502            & 0.3581            & 0.3943            & 1                 \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
@@ -1783,53 +1799,55 @@ Sigma                           & 1                & 0.4206           & 0.3588  
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
  %                                  & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
-(Intercept)                        & -0.659            & -0.049            & -0.185 ^*         & -0.138            & -1.691 ^{**}     \\ 
-                                   & (0.536)           & (0.109)           & (0.089)           & (0.121)           & (0.556)          \\ 
-contestMinor\_lag1                & 0.288 ^*          &                   &                   &                   &                  \\ 
+(Intercept)                        & -0.674            & -0.084            & -0.161 ^\dagger  & -0.172            & -1.885 ^{***}    \\ 
+                                   & (0.535)           & (0.093)           & (0.088)           & (0.119)           & (0.529)          \\ 
+contestMinor\_lag1                & 0.233 ^\dagger   &                   &                   &                   &                  \\ 
                                    & (0.131)           &                   &                   &                   &                  \\ 
-treatmentDiff1                     & 0.045             & 0.010             & 0.586 ^{***}      & 0.403 ^{***}      & -0.298           \\ 
-                                   & (0.153)           & (0.031)           & (0.027)           & (0.029)           & (0.214)          \\ 
-treatmentDiff2                     & 0.029             & -0.018            & 0.317 ^{***}      & 0.229 ^{***}      & 0.069            \\ 
-                                   & (0.154)           & (0.031)           & (0.029)           & (0.030)           & (0.199)          \\ 
-VAP\_adjLOG\_sq\_lag            & 2.522             & 0.237             & 0.481             & -1.501 ^{**}      & -4.205           \\ 
-                                   & (2.502)           & (0.470)           & (0.386)           & (0.514)           & (3.001)          \\ 
-VAP\_adjLOG\_lag                 & -1.061            & -0.531            & -0.709 ^\dagger  & 1.749 ^{**}       & 4.857 ^\dagger  \\ 
-                                   & (2.376)           & (0.451)           & (0.370)           & (0.494)           & (2.939)          \\ 
-per65o\_lag                       & 0.125             & 0.009             & 0.076 ^*          & -0.012            & -0.173           \\ 
-                                   & (0.189)           & (0.043)           & (0.035)           & (0.047)           & (0.250)          \\ 
-nraces\_lag                       & -0.316 ^*         & 0.233 ^{***}      & -0.013            & 0.028             & -0.218           \\ 
-                                   & (0.136)           & (0.030)           & (0.024)           & (0.030)           & (0.188)          \\ 
-OOH\_share\_lag                  & 0.198             & -0.017            & -0.067 ^\dagger  & -0.028            & 0.009            \\ 
-                                   & (0.201)           & (0.045)           & (0.037)           & (0.050)           & (0.270)          \\ 
-PerBachelorOrAbove\_lag           & -0.630 ^{**}      & 0.115 ^*          & -0.013            & -0.120 ^*         & -0.521 ^\dagger \\ 
-                                   & (0.217)           & (0.048)           & (0.039)           & (0.053)           & (0.287)          \\ 
-locale2\_lagexurb                 & 0.325             & 0.114             & -0.090            & -0.122            & -0.048           \\ 
-                                   & (0.559)           & (0.115)           & (0.094)           & (0.127)           & (0.581)          \\ 
-locale2\_lagrural                 & 0.731             & 0.047             & -0.005            & -0.027            & -0.059           \\ 
-                                   & (0.559)           & (0.114)           & (0.093)           & (0.126)           & (0.579)          \\ 
-RecallTurnout\_lag                & 0.163             & -0.026            & 0.164 ^{***}      & 0.143 ^*          & -0.123           \\ 
-                                   & (0.246)           & (0.054)           & (0.045)           & (0.058)           & (0.318)          \\ 
-treatmentDiff1:RecallTurnout\_lag & 0.221             & 0.106 ^\dagger   & 0.228 ^{***}      & 0.226 ^{***}      & -0.076           \\ 
-                                   & (0.311)           & (0.062)           & (0.052)           & (0.057)           & (0.446)          \\ 
-treatmentDiff2:RecallTurnout\_lag & -0.041            & -0.069            & 0.133 ^*          & 0.117 ^*          & 0.717 ^\dagger  \\ 
-                                   & (0.309)           & (0.061)           & (0.052)           & (0.057)           & (0.409)          \\ 
-minBlaisLago\_lag                 &                   & 0.075 ^*          &                   &                   &                  \\ 
-                                   &                   & (0.029)           &                   &                   &                  \\ 
-turnout\_lag                      &                   &                   & 0.066 ^*          &                   &                  \\ 
+treatmentDiff1                     & 0.071             & -0.039            & 0.584 ^{***}      & 0.406 ^{***}      & -0.248           \\ 
+                                   & (0.153)           & (0.033)           & (0.027)           & (0.029)           & (0.209)          \\ 
+treatmentDiff2                     & 0.049             & -0.058 ^\dagger  & 0.331 ^{***}      & 0.229 ^{***}      & 0.095            \\ 
+                                   & (0.154)           & (0.033)           & (0.029)           & (0.030)           & (0.195)          \\ 
+VAP\_adjLOG\_sq\_lag            & 2.203             & 0.665             & 0.200             & -1.185 ^*         & -2.541           \\ 
+                                   & (2.447)           & (0.406)           & (0.378)           & (0.507)           & (2.665)          \\ 
+VAP\_adjLOG\_lag                 & -0.734            & -0.474            & -0.436            & 1.453 ^{**}       & 3.264            \\ 
+                                   & (2.325)           & (0.389)           & (0.363)           & (0.487)           & (2.612)          \\ 
+per65o\_lag                       & 0.067             & 0.007             & 0.073 ^*          & -0.011            & -0.317           \\ 
+                                   & (0.187)           & (0.036)           & (0.034)           & (0.046)           & (0.241)          \\ 
+nraces\_lag                       & -0.410 ^{**}      & -0.383 ^{***}     & -0.034            & 0.046             & -0.173           \\ 
+                                   & (0.151)           & (0.031)           & (0.027)           & (0.033)           & (0.194)          \\ 
+OOH\_share\_lag                  & 0.149             & 0.100 ^*          & -0.061 ^\dagger  & -0.030            & -0.136           \\ 
+                                   & (0.199)           & (0.038)           & (0.036)           & (0.049)           & (0.257)          \\ 
+PerBachelorOrAbove\_lag           & -0.620 ^{**}      & -0.035            & -0.013            & -0.120 ^*         & -0.519 ^\dagger \\ 
+                                   & (0.215)           & (0.041)           & (0.038)           & (0.052)           & (0.276)          \\ 
+locale2\_lagexurb                 & 0.383             & 0.060             & -0.109            & -0.096            & 0.120            \\ 
+                                   & (0.558)           & (0.097)           & (0.092)           & (0.125)           & (0.552)          \\ 
+locale2\_lagrural                 & 0.787             & 0.123             & -0.037            & 0.011             & 0.224            \\ 
+                                   & (0.557)           & (0.097)           & (0.091)           & (0.124)           & (0.548)          \\ 
+RecallTurnout\_lag                & 0.149             & -0.011            & 0.152 ^{**}       & 0.146 ^*          & -0.107           \\ 
+                                   & (0.245)           & (0.049)           & (0.044)           & (0.057)           & (0.306)          \\ 
+distWidemixYes                     & 0.155             & -0.032            & 0.029             & -0.037            & -0.020           \\ 
+                                   & (0.323)           & (0.066)           & (0.057)           & (0.070)           & (0.415)          \\ 
+treatmentDiff1:RecallTurnout\_lag & 0.148             & -0.088            & 0.230 ^{***}      & 0.225 ^{***}      & -0.209           \\ 
+                                   & (0.309)           & (0.066)           & (0.052)           & (0.057)           & (0.435)          \\ 
+treatmentDiff2:RecallTurnout\_lag & -0.024            & -0.009            & 0.150 ^{**}       & 0.101 ^\dagger   & 0.691 ^\dagger  \\ 
+                                   & (0.309)           & (0.065)           & (0.052)           & (0.057)           & (0.398)          \\ 
+minBlaisLago\_lag                 &                   & 0.061 ^*          &                   &                   &                  \\ 
+                                   &                   & (0.030)           &                   &                   &                  \\ 
+turnout\_lag                      &                   &                   & 0.100 ^{***}      &                   &                  \\ 
                                    &                   &                   & (0.026)           &                   &                  \\ 
-ImputedFlagYes                     &                   &                   & -0.310 ^{***}     & 0.177 ^{***}      &                  \\ 
+ImputedFlagYes                     &                   &                   & -0.309 ^{***}     & 0.182 ^{***}      &                  \\ 
                                    &                   &                   & (0.042)           & (0.047)           &                  \\ 
-turnoutDiff\_lag                  &                   &                   &                   & 0.009             &                  \\ 
+turnoutDiff\_lag                  &                   &                   &                   & 0.025             &                  \\ 
                                    &                   &                   &                   & (0.029)           &                  \\ 
-incDefeats\_lag1                  &                   &                   &                   &                   & 0.141            \\ 
-                                   &                   &                   &                   &                   & (0.242)           \\
+incDefeats\_lag1                  &                   &                   &                   &                   & 0.173            \\ 
+                                   &                   &                   &                   &                   & (0.235)           \\
  $N$                                & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
-AIC                                & 1516.302          & 1468.664          & 1055.475          & 1384.485          & 1023.436         \\ 
+AIC                                & 1519.237          & 1488.832          & 1042.528          & 1380.719          & 1051.219         \\ 
 N Groups                           & 306               & 306               & 306               & 306               & 306              \\ 
 Group Names                        & distid            & distid            & distid            & distid            & distid           \\ 
 Group:distid Effs.                 & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
-Group:distid Var.                  & 0.53              & 0.169             & 0.132             & 0.229             & 0.483            \\ 
-Sigma                              & 1                 & 0.4221            & 0.3535            & 0.3871            & 1                 \\ \hline
+Group:distid Var.                  & 0.516             & 0                 & 0.123             & 0.222             & 0.382            \\ 
+Sigma                              & 1                 & 0.4522            & 0.3529            & 0.388             & 1                 \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
 
@@ -1844,59 +1862,61 @@ Sigma                              & 1                 & 0.4221            & 0.3
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
  %                                       & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
-(Intercept)                             & -0.691            & 0.018             & -0.197 ^*         & -0.154            & -1.707 ^{**}     \\ 
-                                        & (0.540)           & (0.109)           & (0.090)           & (0.122)           & (0.558)          \\ 
-contestMinor\_lag1                     & 0.291 ^*          &                   &                   &                   &                  \\ 
+(Intercept)                             & -0.694            & -0.083            & -0.170 ^\dagger  & -0.188            & -1.855 ^{***}    \\ 
+                                        & (0.538)           & (0.093)           & (0.088)           & (0.120)           & (0.531)          \\ 
+contestMinor\_lag1                     & 0.237 ^\dagger   &                   &                   &                   &                  \\ 
                                         & (0.131)           &                   &                   &                   &                  \\ 
-treatmentDiff1                          & 0.048             & 0.032             & 0.589 ^{***}      & 0.404 ^{***}      & -0.299           \\ 
-                                        & (0.154)           & (0.031)           & (0.027)           & (0.029)           & (0.214)          \\ 
-treatmentDiff2                          & 0.033             & 0.004             & 0.320 ^{***}      & 0.232 ^{***}      & 0.063            \\ 
-                                        & (0.155)           & (0.031)           & (0.029)           & (0.030)           & (0.200)          \\ 
-VAP\_adjLOG\_sq\_lag                 & 2.689             & 0.088             & 0.556             & -1.416 ^*         & -4.295           \\ 
-                                        & (2.516)           & (0.474)           & (0.390)           & (0.523)           & (3.037)          \\ 
-VAP\_adjLOG\_lag                      & -1.218            & -0.391            & -0.781 ^*         & 1.668 ^{**}       & 4.951 ^\dagger  \\ 
-                                        & (2.390)           & (0.455)           & (0.374)           & (0.502)           & (2.974)          \\ 
-per65o\_lag                            & 0.111             & 0.018             & 0.073 ^*          & -0.018            & -0.192           \\ 
-                                        & (0.190)           & (0.043)           & (0.035)           & (0.047)           & (0.251)          \\ 
-nraces\_lag                            & -0.316 ^*         & 0.253 ^{***}      & -0.012            & 0.028             & -0.231           \\ 
-                                        & (0.136)           & (0.030)           & (0.024)           & (0.030)           & (0.190)          \\ 
-OOH\_share\_lag                       & 0.195             & -0.018            & -0.065 ^\dagger  & -0.028            & 0.004            \\ 
-                                        & (0.201)           & (0.045)           & (0.037)           & (0.050)           & (0.270)          \\ 
-PerBachelorOrAbove\_lag                & -0.661 ^{**}      & 0.123 ^*          & -0.021            & -0.133 ^*         & -0.531 ^\dagger \\ 
-                                        & (0.223)           & (0.049)           & (0.040)           & (0.054)           & (0.294)          \\ 
-locale2\_lagexurb                      & 0.348             & 0.035             & -0.078            & -0.110            & -0.040           \\ 
-                                        & (0.562)           & (0.115)           & (0.094)           & (0.128)           & (0.582)          \\ 
-locale2\_lagrural                      & 0.764             & -0.038            & 0.003             & -0.010            & -0.038           \\ 
-                                        & (0.563)           & (0.114)           & (0.093)           & (0.127)           & (0.581)          \\ 
-RecallTurnout\_lag                     & 0.163             & -0.018            & 0.201 ^{***}      & 0.152 ^*          & -0.167           \\ 
-                                        & (0.264)           & (0.058)           & (0.048)           & (0.062)           & (0.339)          \\ 
-RecallPolarization\_lag                & -0.050            & -0.023            & 0.093 ^*          & 0.004             & -0.069           \\ 
-                                        & (0.208)           & (0.045)           & (0.037)           & (0.047)           & (0.269)          \\ 
-treatmentDiff1:RecallTurnout\_lag      & 0.354             & 0.135 ^\dagger   & 0.203 ^{***}      & 0.247 ^{***}      & 0.072            \\ 
-                                        & (0.336)           & (0.066)           & (0.056)           & (0.062)           & (0.483)          \\ 
-treatmentDiff2:RecallTurnout\_lag      & 0.022             & -0.087            & 0.048             & 0.163 ^*          & 0.837 ^\dagger  \\ 
-                                        & (0.334)           & (0.066)           & (0.056)           & (0.062)           & (0.450)          \\ 
-treatmentDiff1:RecallPolarization\_lag & 0.353             & 0.082             & -0.068            & 0.053             & 0.315            \\ 
-                                        & (0.336)           & (0.066)           & (0.055)           & (0.061)           & (0.479)          \\ 
-treatmentDiff2:RecallPolarization\_lag & 0.164             & -0.062            & -0.217 ^{***}     & 0.113 ^\dagger   & 0.220            \\ 
-                                        & (0.334)           & (0.066)           & (0.056)           & (0.061)           & (0.438)          \\ 
-minBlaisLago\_lag                      &                   & 0.074 ^*          &                   &                   &                  \\ 
-                                        &                   & (0.029)           &                   &                   &                  \\ 
-turnout\_lag                           &                   &                   & 0.072 ^*          &                   &                  \\ 
+treatmentDiff1                          & 0.074             & -0.045            & 0.586 ^{***}      & 0.407 ^{***}      & -0.253           \\ 
+                                        & (0.153)           & (0.033)           & (0.027)           & (0.029)           & (0.209)          \\ 
+treatmentDiff2                          & 0.053             & -0.056 ^\dagger  & 0.333 ^{***}      & 0.232 ^{***}      & 0.093            \\ 
+                                        & (0.155)           & (0.033)           & (0.028)           & (0.030)           & (0.195)          \\ 
+VAP\_adjLOG\_sq\_lag                 & 2.262             & 0.589             & 0.259             & -1.097 ^*         & -2.734           \\ 
+                                        & (2.473)           & (0.410)           & (0.382)           & (0.515)           & (2.679)          \\ 
+VAP\_adjLOG\_lag                      & -0.787            & -0.382            & -0.491            & 1.367 ^{**}       & 3.455            \\ 
+                                        & (2.350)           & (0.393)           & (0.367)           & (0.495)           & (2.627)          \\ 
+per65o\_lag                            & 0.066             & 0.003             & 0.070 ^\dagger   & -0.018            & -0.316           \\ 
+                                        & (0.188)           & (0.036)           & (0.034)           & (0.047)           & (0.242)          \\ 
+nraces\_lag                            & -0.409 ^{**}      & -0.388 ^{***}     & -0.027            & 0.047             & -0.179           \\ 
+                                        & (0.151)           & (0.031)           & (0.025)           & (0.034)           & (0.195)          \\ 
+OOH\_share\_lag                       & 0.149             & 0.096 ^*          & -0.060 ^\dagger  & -0.030            & -0.145           \\ 
+                                        & (0.199)           & (0.038)           & (0.036)           & (0.049)           & (0.257)          \\ 
+PerBachelorOrAbove\_lag                & -0.628 ^{**}      & -0.044            & -0.019            & -0.134 ^*         & -0.504 ^\dagger \\ 
+                                        & (0.222)           & (0.042)           & (0.039)           & (0.053)           & (0.282)          \\ 
+locale2\_lagexurb                      & 0.398             & 0.058             & -0.097            & -0.085            & 0.082            \\ 
+                                        & (0.560)           & (0.097)           & (0.092)           & (0.126)           & (0.554)          \\ 
+locale2\_lagrural                      & 0.807             & 0.125             & -0.028            & 0.028             & 0.194            \\ 
+                                        & (0.560)           & (0.097)           & (0.092)           & (0.125)           & (0.550)          \\ 
+RecallTurnout\_lag                     & 0.119             & -0.022            & 0.185 ^{***}      & 0.157 ^*          & -0.173           \\ 
+                                        & (0.263)           & (0.052)           & (0.047)           & (0.061)           & (0.326)          \\ 
+RecallPolarization\_lag                & -0.091            & -0.034            & 0.084 ^*          & 0.010             & -0.164           \\ 
+                                        & (0.207)           & (0.042)           & (0.036)           & (0.046)           & (0.262)          \\ 
+distWidemixYes                          & 0.157             & -0.043            &                   & -0.030            & -0.028           \\ 
+                                        & (0.324)           & (0.066)           &                   & (0.070)           & (0.417)          \\ 
+treatmentDiff1:RecallTurnout\_lag      & 0.236             & -0.087            & 0.212 ^{***}      & 0.240 ^{***}      & -0.229           \\ 
+                                        & (0.334)           & (0.071)           & (0.056)           & (0.062)           & (0.466)          \\ 
+treatmentDiff2:RecallTurnout\_lag      & 0.063             & 0.047             & 0.064             & 0.147 ^*          & 0.869 ^*         \\ 
+                                        & (0.334)           & (0.071)           & (0.056)           & (0.062)           & (0.439)          \\ 
+treatmentDiff1:RecallPolarization\_lag & 0.229             & 0.022             & -0.049            & 0.038             & -0.051           \\ 
+                                        & (0.334)           & (0.071)           & (0.055)           & (0.061)           & (0.459)          \\ 
+treatmentDiff2:RecallPolarization\_lag & 0.223             & 0.110             & -0.219 ^{***}     & 0.115 ^\dagger   & 0.431            \\ 
+                                        & (0.334)           & (0.071)           & (0.056)           & (0.061)           & (0.429)          \\ 
+minBlaisLago\_lag                      &                   & 0.062 ^*          &                   &                   &                  \\ 
+                                        &                   & (0.030)           &                   &                   &                  \\ 
+turnout\_lag                           &                   &                   & 0.105 ^{***}      &                   &                  \\ 
                                         &                   &                   & (0.026)           &                   &                  \\ 
-ImputedFlagYes                          &                   &                   & -0.304 ^{***}     & 0.177 ^{***}      &                  \\ 
+ImputedFlagYes                          &                   &                   & -0.304 ^{***}     & 0.182 ^{***}      &                  \\ 
                                         &                   &                   & (0.042)           & (0.047)           &                  \\ 
-turnoutDiff\_lag                       &                   &                   &                   & 0.007             &                  \\ 
+turnoutDiff\_lag                       &                   &                   &                   & 0.023             &                  \\ 
                                         &                   &                   &                   & (0.029)           &                  \\ 
-incDefeats\_lag1                       &                   &                   &                   &                   & 0.143            \\ 
-                                        &                   &                   &                   &                   & (0.243)           \\
+incDefeats\_lag1                       &                   &                   &                   &                   & 0.176            \\ 
+                                        &                   &                   &                   &                   & (0.235)           \\
  $N$                                     & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
-AIC                                     & 1520.998          & 1463.629          & 1052.989          & 1391.979          & 1028.779         \\ 
+AIC                                     & 1524.559          & 1485.438          & 1036.118          & 1388.013          & 1055.912         \\ 
 N Groups                                & 306               & 306               & 306               & 306               & 306              \\ 
 Group Names                             & distid            & distid            & distid            & distid            & distid           \\ 
 Group:distid Effs.                      & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
-Group:distid Var.                       & 0.528             & 0.168             & 0.131             & 0.23              & 0.476            \\ 
-Sigma                                   & 1                 & 0.4194            & 0.3514            & 0.3865            & 1                 \\ \hline
+Group:distid Var.                       & 0.517             & 0                 & 0.124             & 0.223             & 0.379            \\ 
+Sigma                                   & 1                 & 0.4497            & 0.3505            & 0.3874            & 1                 \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
 \end{tabular} 
  \end{table}
