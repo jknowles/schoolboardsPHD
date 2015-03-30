@@ -1290,7 +1290,7 @@ causMinorConTab <- apsrtable(lagModcontest, DIDmodContest, FEmodContest,
           Sweave = FALSE, coef.names = coefNames,
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
-          size="small")
+          size="footnotesize")
 
 @
 
@@ -1364,7 +1364,7 @@ apsrtable(lagModcontest2, DIDmodContest2, FEmodContest2,
           multicolumn.align = c("center"), 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
-          size="small")
+          size="footnotesize")
 
 @
 
@@ -1449,7 +1449,7 @@ apsrtable(lagModBL, DIDmodBL, FEmodBL, se = "robust", stars = "default",
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
-          size="small")
+          size="footnotesize")
 
 @
 
@@ -1522,7 +1522,7 @@ coefNames <- c("Intercept", "Lag Inc. Def.", "Spring 2011", "Spring 2012",
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))),
-          size="small")
+          size="footnotesize")
 @
 
 %tab:causTurn
@@ -1619,7 +1619,7 @@ coefNames <- c("Intercept", "Lag SB Turnout", "Spring 2011", "Spring 2012",
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
-          size="small")
+          size="footnotesize")
 
 @
 
@@ -1716,7 +1716,7 @@ apsrtable(lagModroll, DIDmodroll, FEmodRoll, se = "robust", stars = "default",
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
-          size="small")
+          size="footnotesize")
 @
 
 \clearpage
@@ -2005,7 +2005,7 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
           stars = "default", coef.names = coefNames1, 
           caption = "Mediation Estimates of Polarization on Board Elections", 
           label = "tab:polarMed", notes = list(stars.note), Sweave = FALSE, 
-          size="small")
+          size="footnotesize")
 
 polarMedTable <- apsrtable(full1, full3, full4, full5, full6, 
                            se = "robust", digits = 3, 
@@ -2191,7 +2191,7 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
            stars = "default", coef.names = coefNames1,  
           caption = "Mediation Estimates of Union Strength on Board Elections", 
           label = "tab:unionMed", notes = list(stars.note), Sweave = FALSE, 
-          size="small")
+          size="footnotesize")
 
 unionMedtable <- apsrtable(full1, full3, full4, full5, full6, 
                            se = "robust", digits = 3, 
@@ -2534,7 +2534,7 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
            stars = "default", coef.names = coefNames1, 
           caption = "Mediation Estimates of Recall on Board Elections", 
           label = "tab:recallAllMed", notes = list(stars.note), Sweave = FALSE, 
-          size="small")
+          size="footnotesize")
 
 recallMedTable <- apsrtable(full1, full3, full4, full5, full6, 
                             se = "robust", digits = 3, 
