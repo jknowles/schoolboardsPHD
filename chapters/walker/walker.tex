@@ -593,7 +593,7 @@ For voters, I look for changes in voter turnout and decreases in voter rolloff.
 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Sun Mar 29 16:25:00 2015
+% Mon Mar 30 01:46:14 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -777,7 +777,7 @@ Overall, 272 school districts
 had a certification election and of these, 209 are also in my sample. 
 Taken together, teachers' unions in Wisconsin 
 held 513 
-certification elections, and won 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 1, 2, 0, 2, 2, 2, 3, 2, 2, 2, 2, 0, 2, 1, 2, 2, 2, 3, 2, 1, 2, 3, 2, 4, 1, 1, 1, 1, 2, 2, 2, 3, 2, 2, 2, 1, 3, 2, 1, 1, 2, 2, 3, 2, 2, 2, 1, 1, 3, 2, 2, 2, 3, 1, 1, 1, 2, 2, 1, 1, 2, 2, 2, 2, 2, 1, 2, 0, 3, 2, 1, 2, 2, 2, 3, 2, 3, 1, 1, 0, 3, 1, 2, 2, 2, 1, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 1, 3, 2, 2, 2, 1, 2, 1, 2, 0, 3, 2, 2, 1, 2, 2, 0, 1, 2, 2, 2, 1, 2, 1, 0, 2, 0, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 1, 2, 2, 2, 3, 0, 3, 2, 2, 2, 2, 2, 1, 1, 3, 2, 2, 1, 0, 2, 3, 2, 2, 2, 2, 2, 1, 3, 1, 1, 1, 1, 2, 1, 2, 2, 3, 2, 2, 2, 2, 2, 1, 2, 1, 3, 2, 4, 2, 1, 2, 1, 1, 2, 0, 3, 3, 2, 2, 2, 2, 2, 2, 2, 3, 1, 2, 2, 0, 2, 2, 2, 1, 3, 3, 2, 3, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 3, 2, 2, 1, 2, 3, 1, 1, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 1, 1, 3, 2, 1, 0. This 
+certification elections, and won 487. This 
 win rate makes using wins as a variable not possible. A key feature of the elections 
 is, however, that voters who did not turn out are counted as voting ``No'' for 
 recertification. Thus, voter turnout is a measure of the ability of the union to 
@@ -954,7 +954,7 @@ impact was mediated.
 I provide three sets of results for each dependent variable. The first is a 
 regression with a lagged dependent variable and demographic controls, the second 
 is a differences in differences estimate, and the third is a difference in 
-differences estimate with district level random effects.\footnote{I tested the 
+differences estimate with district level fixed effects.\footnote{I tested the 
 models on a restricted sample with only years after 2007, but this had no 
 substantive impact on the results.}
 
@@ -963,11 +963,11 @@ substantive impact on the results.}
 
 
 %tab:causSerCon
-\begin{small}
 \begin{table}[!ht]
 \caption{Causal Estimates of Act 10 Period on Contestation}
 \label{tab:causSerCon} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{small}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
  %               & Lag           & DnD           & FE           \\ 
@@ -1009,17 +1009,19 @@ $\log L$       & -1500.391     & -1494.174     & -338.754      \\ \hline
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}}\\
 \multicolumn{4}{l}{\footnotesize{Dependent variable is binomial. Coefficients are reported on 
              the logistic scale. }} 
-\end{tabular} 
+\end{tabular}
+ \end{small}
+ 
  \end{table}
 
-\end{small}
+
 
 %tab:causBL
-\begin{small}
 \begin{table}[!ht]
 \caption{Causal Estimates of Act 10 Period on Competitiveness}
 \label{tab:causBL} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{small}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
  %                 & Lag               & DnD               & FE               \\ 
@@ -1059,17 +1061,18 @@ adj. $R^2$        & 0.172             & 0.173             & 0.294            \\
 Resid. sd         & 1.380             & 1.380             & 1.275             \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}} 
-\end{tabular} 
+\end{tabular}
+ \end{small}
+ 
  \end{table}
 
-\end{small}
 
 %tab:causID
-\begin{small}
 \begin{table}[!ht]
 \caption{Causal Estimates of Act 10 Period on Incumbent Defeat}
 \label{tab:causID} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{small}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
  %                 & Lag               & DnD               & FE               \\ 
@@ -1111,17 +1114,19 @@ $\log L$         & -1058.861         & -1052.398         & 30.246            \\ 
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}}\\
 \multicolumn{4}{l}{\footnotesize{Dependent variable is binomial. Coefficients are reported on 
              the logistic scale. }} 
-\end{tabular} 
+\end{tabular}
+ \end{small}
+ 
  \end{table}
 
-\end{small}
 
 %tab:causTurn
-\begin{small}
+
 \begin{table}[!ht]
 \caption{Causal Estimates of Act 10 Period on Turnout}
 \label{tab:causTurn} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{small}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
  %                 & Lag               & DnD               & FE               \\ 
@@ -1167,17 +1172,18 @@ adj. $R^2$        & 0.330             & 0.334             & 0.438            \\
 Resid. sd         & 0.418             & 0.417             & 0.382             \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}} 
-\end{tabular} 
+\end{tabular}
+ \end{small}
+ 
  \end{table}
 
-\end{small}
 
 %tab:causRoll
-\begin{small}
 \begin{table}[!ht]
 \caption{Causal Estimates of Act 10 Period on Rolloff}
 \label{tab:causRoll} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{small}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
  %                 & Lag              & DnD              & FE              \\ 
@@ -1223,10 +1229,11 @@ adj. $R^2$        & 0.203            & 0.218            & 0.293           \\
 Resid. sd         & 0.105            & 0.104            & 0.099            \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}} 
-\end{tabular} 
+\end{tabular}
+ \end{small}
+ 
  \end{table}
 
-\end{small}
 
 \clearpage
 
@@ -1371,11 +1378,11 @@ be due to voter fatigue, or voter disengagement due to negative campaigning,
 both of which were prevalent in this period \citep{NegativeCamp1999}. 
 
 %tab:polarMed
-\begin{small}
 \begin{table}[!ht]
 \caption{Mediation Estimates of Polarization on Board Elections}
 \label{tab:polarMed} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{small}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
  %                    & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
@@ -1413,10 +1420,12 @@ $R^2$                &                   & 0.077             & 0.395            
 adj. $R^2$           &                   & 0.072             & 0.390             & 0.184             &                  \\ 
 Resid. sd            &                   & 0.482             & 0.390             & 0.452             &                   \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{small}
+ 
  \end{table}
 
-\end{small}
+
 
 \subsubsection{Union Strength}
 
@@ -1442,11 +1451,11 @@ unions are associated with higher rates of incumbent defeat post Act 10 relative
 to pre Act 10 with a statistically significant effect in 2012. 
 
 %tab:unionMed
-\begin{small}
 \begin{table}[!ht]
 \caption{Mediation Estimates of Union Strength on Board Elections}
 \label{tab:unionMed} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{small}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
  %                       & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
@@ -1486,10 +1495,11 @@ $R^2$                   &                   & 0.076             & 0.382         
 adj. $R^2$              &                   & 0.070             & 0.377             & 0.186             &                  \\ 
 Resid. sd               &                   & 0.482             & 0.395             & 0.451             &                   \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{small}
+ 
  \end{table}
 
-\end{small}
 
 %tab:recallTurnMed
 
@@ -1515,11 +1525,11 @@ incumbent defeat in 2012 period is found to exist in communities that saw more
 participation in the recall election. 
 
 %tab:recallAllMed
-\begin{small}
 \begin{table}[!ht]
 \caption{Mediation Estimates of Recall on Board Elections}
 \label{tab:recallAllMed} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{small}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
  %                         & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
@@ -1563,10 +1573,12 @@ $R^2$                     &                   & 0.079             & 0.416       
 adj. $R^2$                &                   & 0.071             & 0.411             & 0.210             &                  \\ 
 Resid. sd                 &                   & 0.482             & 0.384             & 0.445             &                   \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{small}
+ 
  \end{table}
 
-\end{small}
+
 % Rolloff and turnout evidence for polarization and turnout on treatment
 
 \clearpage 
@@ -1642,7 +1654,8 @@ if their representation does not change in response to such events.
 \begin{table}[!ht]
 \caption{Causal Estimates of Act 10 Period on Contestation}
 \label{tab:causMinorCon} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{small}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
  %               & Lag           & DnD           & FE           \\ 
@@ -1684,7 +1697,9 @@ $\log L$       & -1502.230     & -1496.080     & -338.243      \\ \hline
 \multicolumn{4}{l}{\footnotesize{Fixed effect model includes district fixed effects - not reported.}}\\
 \multicolumn{4}{l}{\footnotesize{Dependent variable is binomial. Coefficients are reported on 
              the logistic scale. }} 
-\end{tabular} 
+\end{tabular}
+ \end{small}
+ 
  \end{table}
 
 \end{footnotesize}
@@ -1698,7 +1713,8 @@ HLM mediation models.
 \begin{footnotesize}
 
  
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{normalsize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
  %                                       & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
@@ -1752,14 +1768,17 @@ Group:distid Effs.                      & (Intercept)       & (Intercept)       
 Group:distid Var.                       & 0.522             & 0                 & 0.132             & 0.223             & 0.338            \\ 
 Sigma                                   & 1                 & 0.4497            & 0.3562            & 0.3937            & 1                 \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{normalsize}
+ 
 
 
 
 
 
  
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{normalsize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
  %                               & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
@@ -1815,14 +1834,17 @@ Group:distid Effs.              & (Intercept)       & (Intercept)       & (Inter
 Group:distid Var.               & 0.527             & 0                 & 0.136             & 0.216             & 0.343            \\ 
 Sigma                           & 1                 & 0.4502            & 0.3581            & 0.3943            & 1                 \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{normalsize}
+ 
 
 
 
 
 
  
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{normalsize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
  %                                  & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
@@ -1876,7 +1898,9 @@ Group:distid Effs.                 & (Intercept)       & (Intercept)       & (In
 Group:distid Var.                  & 0.516             & 0                 & 0.123             & 0.222             & 0.382            \\ 
 Sigma                              & 1                 & 0.4522            & 0.3529            & 0.388             & 1                 \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{normalsize}
+ 
 
 
 
@@ -1885,7 +1909,8 @@ Sigma                              & 1                 & 0.4522            & 0.3
 \begin{table}[!ht]
 \caption{Mediation Estimates of Recall on Board Elections - Multilevel Models}
 \label{tab:recallAllMedHLM} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{normalsize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
  %                                       & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
@@ -1945,7 +1970,9 @@ Group:distid Effs.                      & (Intercept)       & (Intercept)       
 Group:distid Var.                       & 0.517             & 0                 & 0.124             & 0.223             & 0.379            \\ 
 Sigma                                   & 1                 & 0.4497            & 0.3505            & 0.3874            & 1                 \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{normalsize}
+ 
  \end{table}
 
 

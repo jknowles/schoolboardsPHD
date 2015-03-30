@@ -615,7 +615,7 @@ for a change in the patterns of candidate contestation and seat competitiveness
 after the passage of Act 10 and the granting of additional powers to school boards. 
 For voters, I look for changes in voter turnout and decreases in voter rolloff. 
 
-<<blaisLagoplot, fig.scap="Correlation of Blais-Lago Quotient and Blais-Lago Lag", fig.height=3.7, fig.cap="Correlation of Blais-Lago Quotient and 2x Lag. Point is the correlation coefficient and confidence bands mark the 95 percent confidence interval for the correlation in each year.">>=
+<<blaisLagoplot, fig.scap="Correlation of Blais-Lago Quotient and Blais-Lago Lag", fig.height=3.15, fig.cap="Correlation of Blais-Lago Quotient and 2x Lag. Point is the correlation coefficient and confidence bands mark the 95 percent confidence interval for the correlation in each year.">>=
 plotdf <- dist_turn[dist_turn$year > 2005, ]
 # lg  <- function(x) c(NA, x[1:length(x)-1])
 # lg2 <- function(x) c(NA, NA, x[2:length(x) -2])
@@ -737,7 +737,7 @@ library(reshape)
 nopanel <- theme(panel.background=element_blank(),
                  panel.grid.minor=element_blank(),
                  panel.grid.major=element_blank(),
-                 axis.text.x = element_text(angle = -90, hjust = 0), 
+                 axis.text.x = element_text(angle = 90, hjust = 0), 
                                axis.text = element_text(colour = "black"))
 
 pairLabels <- c("Turnout", "Fall Turnout", "Incumbent Share", "% 65 Older", 
@@ -974,7 +974,7 @@ Overall, \Sexpr{iNum(length(unique(wercDatTeachers$distid_werc)))} school distri
 had a certification election and of these, \Sexpr{iNum(length(intersect(unique(wercDatTeachers$distid_werc), unique(dist_turn$distid))))} are also in my sample. 
 Taken together, teachers' unions in Wisconsin 
 held \Sexpr{iNum(sum(wercDatTeachers$tries_werc))} 
-certification elections, and won \Sexpr{iNum(wercDatTeachers$wins_werc)}. This 
+certification elections, and won \Sexpr{iNum(sum(wercDatTeachers$wins_werc))}. This 
 win rate makes using wins as a variable not possible. A key feature of the elections 
 is, however, that voters who did not turn out are counted as voting ``No'' for 
 recertification. Thus, voter turnout is a measure of the ability of the union to 
@@ -1208,7 +1208,7 @@ impact was mediated.
 I provide three sets of results for each dependent variable. The first is a 
 regression with a lagged dependent variable and demographic controls, the second 
 is a differences in differences estimate, and the third is a difference in 
-differences estimate with district level random effects.\footnote{I tested the 
+differences estimate with district level fixed effects.\footnote{I tested the 
 models on a restricted sample with only years after 2007, but this had no 
 substantive impact on the results.}
 
@@ -1289,13 +1289,13 @@ causMinorConTab <- apsrtable(lagModcontest, DIDmodContest, FEmodContest,
           label = "tab:causMinorCon", notes = list(stars.note, omitNote, glmNote), 
           Sweave = FALSE, coef.names = coefNames,
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))))
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          size="small")
 
 @
 
 
 %tab:causSerCon
-\begin{small}
 <<contestDID2, eval=TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "contestSer", "VAP_adjLOG_sq", 
                          "VAP_adjLOG", "per65o", "NonPublicPupilPer", 
@@ -1360,15 +1360,16 @@ apsrtable(lagModcontest2, DIDmodContest2, FEmodContest2,
           stars = "default", digits = 3, model.names = c("Lag", "DnD", "FE"), 
           caption = "Causal Estimates of Act 10 Period on Contestation", 
           label = "tab:causSerCon", notes = list(stars.note, omitNote, glmNote), 
-          Sweave = FALSE, coef.names = coefNames, 
+          Sweave = FALSE, coef.names = coefNames, align = c("left"), 
+          multicolumn.align = c("center"), 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))))
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          size="small")
 
 @
-\end{small}
+
 
 %tab:causBL
-\begin{small}
 <<blDIDandLag, eval=TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq", "VAP_adjLOG", 
                          "per65o", "NonPublicPupilPer", "incumShare", 
@@ -1447,13 +1448,12 @@ apsrtable(lagModBL, DIDmodBL, FEmodBL, se = "robust", stars = "default",
           label = "tab:causBL", notes = list(stars.note, omitNote), 
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))))
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          size="small")
 
 @
-\end{small}
 
 %tab:causID
-\begin{small}
 <<incdefDIDandLag, eval = TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "incDefeats", "VAP_adjLOG_sq", 
                          "VAP_adjLOG", 
@@ -1521,12 +1521,12 @@ coefNames <- c("Intercept", "Lag Inc. Def.", "Spring 2011", "Spring 2012",
           label = "tab:causID", notes = list(stars.note, omitNote, glmNote), 
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))))
+                         expression(grep("distid", coefnames, value=TRUE))),
+          size="small")
 @
-\end{small}
 
 %tab:causTurn
-\begin{small}
+
 <<turnoutDIDandLag, eval=TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq", 
                          "VAP_adjLOG", "distWidemix", 
@@ -1618,13 +1618,12 @@ coefNames <- c("Intercept", "Lag SB Turnout", "Spring 2011", "Spring 2012",
           label = "tab:causTurn", notes = list(stars.note, omitNote), 
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))))
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          size="small")
 
 @
-\end{small}
 
 %tab:causRoll
-\begin{small}
 <<rolloffDIDandLag, eval=TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "turnoutDiff", "VAP_adjLOG_sq", 
                          "VAP_adjLOG", "distWidemix",
@@ -1716,9 +1715,9 @@ apsrtable(lagModroll, DIDmodroll, FEmodRoll, se = "robust", stars = "default",
           label = "tab:causRoll", notes = list(stars.note, omitNote), 
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))))
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          size="small")
 @
-\end{small}
 
 \clearpage
 
@@ -1866,7 +1865,6 @@ be due to voter fatigue, or voter disengagement due to negative campaigning,
 both of which were prevalent in this period \citep{NegativeCamp1999}. 
 
 %tab:polarMed
-\begin{small}
 <<polarizationMediation, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
                          "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
@@ -2006,7 +2004,8 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
                           "Turnout", "Rolloff", "Inc. Def."), 
           stars = "default", coef.names = coefNames1, 
           caption = "Mediation Estimates of Polarization on Board Elections", 
-          label = "tab:polarMed", notes = list(stars.note), Sweave = FALSE)
+          label = "tab:polarMed", notes = list(stars.note), Sweave = FALSE, 
+          size="small")
 
 polarMedTable <- apsrtable(full1, full3, full4, full5, full6, 
                            se = "robust", digits = 3, 
@@ -2016,7 +2015,7 @@ caption = "Mediation Estimates of Polarization on Board Elections - Multilevel M
         Sweave = TRUE, 
           stars = "default")
 @
-\end{small}
+
 
 \subsubsection{Union Strength}
 
@@ -2042,7 +2041,6 @@ unions are associated with higher rates of incumbent defeat post Act 10 relative
 to pre Act 10 with a statistically significant effect in 2012. 
 
 %tab:unionMed
-\begin{small}
 <<unionStrength, results="asis">>=
 # TODO: subset analysis only on districts with WERC election results
 # TODO: interact werc elec with werc elec strength. 
@@ -2192,7 +2190,8 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
                           "Turnout", "Rolloff", "Inc. Def."), 
            stars = "default", coef.names = coefNames1,  
           caption = "Mediation Estimates of Union Strength on Board Elections", 
-          label = "tab:unionMed", notes = list(stars.note), Sweave = FALSE)
+          label = "tab:unionMed", notes = list(stars.note), Sweave = FALSE, 
+          size="small")
 
 unionMedtable <- apsrtable(full1, full3, full4, full5, full6, 
                            se = "robust", digits = 3, 
@@ -2202,7 +2201,6 @@ unionMedtable <- apsrtable(full1, full3, full4, full5, full6,
           label = "tab:unionMedHLM", notes = list(stars.note), Sweave = TRUE, 
           stars = "default")
 @
-\end{small}
 
 %tab:recallTurnMed
 <<recallTurnout, results='hide'>>=
@@ -2375,7 +2373,6 @@ incumbent defeat in 2012 period is found to exist in communities that saw more
 participation in the recall election. 
 
 %tab:recallAllMed
-\begin{small}
 <<turnandpolarRecall, results='asis'>>=
 outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer", 
                          "VAP_adjLOG_sq", "turnout", "turnoutDiff", 
@@ -2536,7 +2533,8 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
                           "Turnout", "Rolloff", "Inc. Def."),
            stars = "default", coef.names = coefNames1, 
           caption = "Mediation Estimates of Recall on Board Elections", 
-          label = "tab:recallAllMed", notes = list(stars.note), Sweave = FALSE)
+          label = "tab:recallAllMed", notes = list(stars.note), Sweave = FALSE, 
+          size="small")
 
 recallMedTable <- apsrtable(full1, full3, full4, full5, full6, 
                             se = "robust", digits = 3, 
@@ -2547,7 +2545,7 @@ recallMedTable <- apsrtable(full1, full3, full4, full5, full6,
           label = "tab:recallAllMedHLM", notes = list(stars.note), 
           Sweave = FALSE)
 @
-\end{small}
+
 % Rolloff and turnout evidence for polarization and turnout on treatment
 
 \clearpage 
