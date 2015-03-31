@@ -1724,6 +1724,7 @@ apsrtable(lagModroll, DIDmodroll, FEmodRoll, se = "robust", stars = "default",
 
 
 % List effects and magnitudes
+% 
 
 \begin{table}[h!]
 \begin{center}
@@ -1927,7 +1928,7 @@ library(arm)
 nums <- sapply(outdata, is.numeric)
 # nums["treatment"] <- FALSE
 outdata[, nums] <- apply(outdata[, nums], 2, rescale)
-
+outdata$VAP_adjLOG_sq_lag <- outdata$VAP_adjLOG_lag^2
 simp1 <- glm(contestSer ~ treatmentDiff * RecallPolarization_lag + 
                distWidemix + contestSer_lag  , 
              data = outdata, family = 'binomial')
@@ -2109,7 +2110,7 @@ library(arm)
 nums <- sapply(outdata, is.numeric)
 # nums["treatment"] <- FALSE
 outdata[, nums] <- apply(outdata[, nums], 2, rescale)
-
+outdata$VAP_adjLOG_sq_lag <- outdata$VAP_adjLOG_lag^2
 simp1 <- glm(contestSer ~ contestSer_lag + treatmentDiff * WERC_str_lag+ 
               WERC_elec_lag + distWidemix, 
              data = outdata, family = 'binomial')
@@ -2267,7 +2268,7 @@ library(arm)
 nums <- sapply(outdata, is.numeric)
 # nums["treatment"] <- FALSE
 outdata[, nums] <- apply(outdata[, nums], 2, rescale)
-
+outdata$VAP_adjLOG_sq_lag <- outdata$VAP_adjLOG_lag^2
 simp1 <- glm(contestSer ~ contestSer_lag + treatmentDiff * RecallTurnout_lag + 
                distWidemix, 
              data = outdata, family = 'binomial')
@@ -2440,7 +2441,7 @@ library(arm)
 nums <- sapply(outdata, is.numeric)
 # nums["treatment"] <- FALSE
 outdata[, nums] <- apply(outdata[, nums], 2, rescale)
-
+outdata$VAP_adjLOG_sq_lag <- outdata$VAP_adjLOG_lag^2
 simp1 <- glm(contestSer ~ contestSer_lag + treatmentDiff * RecallTurnout_lag + 
                treatmentDiff * RecallPolarization_lag + distWidemix, 
              data = outdata, family = 'binomial')
@@ -2548,6 +2549,27 @@ recallMedTable <- apsrtable(full1, full3, full4, full5, full6,
 @
 
 % Rolloff and turnout evidence for polarization and turnout on treatment
+% Mediation tables
+
+% \begin{table}[h!]
+% \begin{center}
+% \caption{Summary of Causal Relationship of Act 10 Reforms on Board Elections}
+% \label{tab:act10resSummary}
+% \begin{footnotesize}
+% \begin{tabular}{| p{.24\textwidth} | p{.11\textwidth} | p{.11\textwidth} | 
+%       p{.44\textwidth} |} \hline
+% DV / Variable & expected & observed & evidence \\ \hline
+% Contested Race (ser) & + & null & no statistical significance, wrong sign \\ \hline
+% Competitiveness & + & -  & statistically significant decrease in competitiveness\\ \hline
+% Incumbent Defeat & + & null & no effects\\ \hline 
+% Turnout & + & + & diff in diff weakly negative, overall effect positive in both 
+% years \\ \hline
+% Rolloff & - & + & rolloff increases in all models, dip in rolloff in 2012 \\ \hline
+% \end{tabular}
+% \end{footnotesize}
+% \end{center}
+% \end{table}
+% 
 
 \clearpage 
 

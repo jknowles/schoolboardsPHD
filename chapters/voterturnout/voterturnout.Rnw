@@ -482,7 +482,7 @@ driven by these races.\footnote{They may not though because upticket races have
 a statewide electorate and little chance for influence by individual voters.} 
 
 
-<<turnoutSize, echo=FALSE, fig.cap="Turnout in School Board Elections based on Electorate Size">>=
+<<turnoutSize, echo=FALSE, fig.scap="Turnout in School Board Elections based on Electorate Size", fig.height=3.15, fig.cap="Correlation coefficient between school district voting age population and school board election turnout. Each line represents the 95 percent confidence interval.">>=
 plotdf <- dist_turn[dist_turn$turnout < 0.95, c("year", "VAP_adj", "turnout")]
 plotdf <- na.omit(plotdf)
 
@@ -610,41 +610,50 @@ of turnout, Figure \ref{fig:turnoutAutocorrelation} shows a consistently high
 positive correlation between lagged and current turnout, averaging 
 \Sexpr{iNum2(cor(dist_turn$turnout, dist_turn$turnoutLag2, use = "pairwise.complete.obs"))}.\footnote{For a single year lag, the corresponding correlation is 
 \Sexpr{iNum2(cor(dist_turn$turnout, dist_turn$turnoutLag1, use = "pairwise.complete.obs"))} and the 
-year to year pattern is largely similar.} A robust linear model is used to show 
-the smoothed relationship between lagged and current turnout. Of note is the pattern 
-shift in both 2005 and 2011 where the correlation is more pronounced and turnout 
-appears to be inflated. Figure \ref{fig:turnoutComparison} looks at this further 
-yet by showing the relationship between the average of the turnout in the prior two 
-fall elections for Governor and President compared to the current school board turnout. 
-These correlate positively as well at a level of 
+year to year pattern is largely similar.} Turnout is also correlated with turnout 
+in fall elections as well. I construct a measure of fall turnout using the average 
+turnout in the two most recent fall general elections (Gubernatorial and Presidential), which correlates positively with school board turnout at 
 \Sexpr{iNum2(cor(dist_turn$turnout, dist_turn$fallTurnout, use = "pairwise.complete.obs"))}.
 
 
-<<turnoutAutocorrelation, echo=FALSE, fig.cap="Turnout in School Board Elections based on Prior Turnout">>=
-plotdf <- dist_turn[dist_turn$turnout < 0.95 & dist_turn$year > 2003,
+<<turnoutAutocorrelation, echo=FALSE, fig.scap="Turnout in School Board Elections Correlated with Prior Turnout", fig.cap="Correlation coefficient between twice lagged turnout and turnout across years. Correlation is depicted with 95 percent confidence interval.", fig.height=3.2>>=
+plotdf <- dist_turn[dist_turn$turnout < 0.95 & dist_turn$year > 2004,
                     c("year", "turnoutLag2", "turnout")]
+plotdf <- na.omit(plotdf)
+library(plyr)
+plotdf2 <- ddply(plotdf, .(year), summarize, 
+                 corLow = cor.test(turnoutLag2, turnout)$conf.int[1], 
+      cor = cor.test(turnoutLag2, turnout)$estimate, 
+      corHi = cor.test(turnoutLag2, turnout)$conf.int[2])
 
-qplot(turnoutLag2, turnout, data = na.omit(plotdf)) +
+ggplot(plotdf2, aes(x = factor(year), 
+                    ymin = corLow, ymax = corHi, y = cor)) + 
+  geom_pointrange() + 
+  geom_hline(yintercept = 0,  color = I("red"), linetype = 4) + 
+  theme_dpi() + labs(x = "Year", y = "Correlation Coefficient")
+
+
+@
+% Turnout and group membership
+
+<<lagplotHide, fig.show='hide', fig.cap="Lagged and current turnout across time.">>=
+qplot(turnoutLag2, turnout, data = plotdf) +
   facet_wrap(~year) + theme_dpi() + geom_smooth(method = 'rlm') + 
   scale_x_continuous(label = percent) + 
   scale_y_continuous(label = percent) + 
   labs(x = "Lagged School Board Turnout (2 year lag)", y = "School Board Turnout", 
        title = "Comparing Lagged Turnout")
 @
-% Turnout and group membership
 
-
-<<unionInf, echo=FALSE, fig.cap="Turnout in School Board Elections based on School Staff Share",fig.height=4.5>>=
+<<unionInf, echo=FALSE, fig.scap="Turnout in School Board Elections Correlated with School Staff Share",fig.height=3.5, fig.cap="Correlation between school board turnout and teacher share of voters in prior school board election. Correlation coefficient with 95 percent confidence interval.">>=
 
 plotdf <- dist_turn[dist_turn$year > 2004, c("year", "teachShareofVoters2", "turnout")]
 plotdf <- na.omit(plotdf)
 
-
-
 plotdf2 <- ddply(plotdf, .(year), summarize, 
                  corLow = cor.test(teachShareofVoters2, turnout)$conf.int[1], 
       cor = cor.test(teachShareofVoters2, turnout)$estimate, 
-      corHi = cor.test(teachShareofVoters2, turnout, )$conf.int[2])
+      corHi = cor.test(teachShareofVoters2, turnout)$conf.int[2])
 
 ggplot(plotdf2, aes(x = factor(year), 
                     ymin = corLow, ymax = corHi, y = cor)) + 
@@ -678,15 +687,16 @@ twice lagged school board turnout that is made of teachers will also be explored
 This comparison illustrates how large of a voting block a cohesive teacher union 
 might estimate they possess based on the number of votes cast in previous elections.}
 The relationship shown in Figure \ref{fig:unionInf} is not what theory would expect. 
-Here a higher teacher share of the prior school board turnout is associated with depressed turnout rates, instead of elevated turnout. The average correlation across years is 
+Here a higher teacher share of the prior school board turnout is associated with depressed turnout rates, instead of elevated turnout. The average correlation 
+across years is 
 \Sexpr{iNum2(cor(dist_turn$teachShareofVoters2, dist_turn$turnout, use = "pairwise.complete.obs"))}. 
 I will pursue this finding further with statistical models, 
 but it is worth noting that there may be limits on the impact social groups can have 
-on driving up turnout before they capture the electorate and thus reduce competitiveness 
-and turnout. In fact, for \citet{RefWorks:207} this would represent the ideal condition 
-for a union, freeing their members from the need to be politically active and 
-influencing the school board through the candidate recruitment and nomination 
-process instead. 
+on driving up turnout before they capture the electorate and thus reduce 
+competitiveness and turnout. In fact, for \citet{RefWorks:207} this would 
+represent the ideal condition for a union, freeing their members from the need 
+to be politically active and influencing the school board through the 
+candidate recruitment and nomination process instead. 
 
 % Here rewrite
 % TODO: Fix paragraph about competitiveness
@@ -698,28 +708,46 @@ at the information voters may have about their community -- the level of partisa
 polarization. Using the average Democratic share of the two-party vote from the prior 
 Gubernatorial and Presidential election combined, I explore the variation in school board election turnout. Theory would suggest that the more divided a community is on 
 partisan issues, the greater the impetus to vote \citep{Fowler2005}. Figure 
-\ref{fig:partisan2} shows the linear relationship between higher partisan unity and 
+\ref{fig:partisan2} shows the annual correlation between higher partisan unity and 
 turnout. In most years there is almost no relationship, but in 2011 and 2012 there 
 appears to be an uptick in school board turnout associated with more strongly 
 partisan school districts. The correlation is \Sexpr{iNum2(cor(dist_turn$turnout, 
 dist_turn$partyDivisionRecent, use = 'pairwise.complete.obs'))} across all years. 
 
-<<partisan2, fig.cap="Another Look at Relationship Between Turnout and Partisanship">>=
+<<partisan2, fig.scap="Correlation Between Turnout and Partisanship", fig.height=3.5, fig.cap="Correlation coefficient between fall general election partisanship and ">>=
+plotdf <- dist_turn[dist_turn$year > 2004, c("year", "partyDivisionRecent", "turnout")]
+plotdf <- plotdf[plotdf$turnout < 0.95 & !is.na(plotdf$turnout), ]
+plotdf <- na.omit(plotdf)
+
+
+plotdf2 <- ddply(plotdf, .(year), summarize, 
+                 corLow = cor.test(partyDivisionRecent, turnout)$conf.int[1], 
+      cor = cor.test(partyDivisionRecent, turnout)$estimate, 
+      corHi = cor.test(partyDivisionRecent, turnout)$conf.int[2])
+
+ggplot(plotdf2, aes(x = factor(year), 
+                    ymin = corLow, ymax = corHi, y = cor)) + 
+  geom_pointrange() + 
+  geom_hline(yintercept = 0,  color = I("red"), linetype = 4) + 
+  theme_dpi() + labs(x = "Year", y = "Correlation Coefficient")
+
+@
+
+Taken alone, these figures do not suggest that any of the theories in Table \ref{tab:turnoutH} are confirmed or denied, but it does help illustrate the diversity 
+of school board elections in Wisconsin and the need for statistical models 
+to help separate out competing explanations that may themselves be highly 
+correlated or confound one another. 
+
+<<partisan2hide, fig.show='hide'>>=
 
 qplot(partyDivisionRecent, turnout, 
-      data = dist_turn[dist_turn$turnout < 0.95 & !is.na(dist_turn$turnout) & dist_turn$year > 2003,]) + facet_wrap(~year) + 
+      data = plotdf) + facet_wrap(~year) + 
   geom_smooth(se = TRUE, method = 'rlm') + theme_dpi() + 
   scale_x_continuous(label=percent) + 
   scale_y_continuous(label = percent) + 
   labs(x = "Partisan Unity", y = "School Board Turnout", 
        title = "Turnout and Voter Partisanship")
-
 @
-
-Taken alone, these figures do not suggest that any of the theories in Table \ref{tab:turnoutH} are confirmed or denied, but it does help illustrate the diversity of school board 
-elections in Wisconsin and the need for statistical models to help separate out 
-competing explanations that may themselves be highly correlated or confound 
-one another. 
 
 \clearpage
 
@@ -728,7 +756,7 @@ one another.
 In addition to the variables of interest shown above, it is necessary to include 
 some common demographic control variables. Political scientists have long established 
 the strong relationship between certain demographic characteristics and voter 
-turnout in partisan elections. % CITENEEDED
+turnout in partisan elections. %TODO: CITENEEDED
 In order to understand the effect of other variables on turnout, it is desirable to 
 remove as many other explanations as possible given the availability of data. 
 Fortunately, using US census data, an abundance of data is available on the 
@@ -763,7 +791,7 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=X1, y=X2, data=cormat, fill=value2, geom="tile", color = I("gray40")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value), size = 2) + nopanel + 
+  geom_text(aes(label = value), size = 3) + nopanel + 
   labs(x = "", y = "") + theme(legend.position = "none")
 
 @
@@ -775,8 +803,9 @@ represents the bivariate correlation. Additionally, the cells are shaded to
 distinguish the direction and strength of the correlation. From this figure it 
 is clear that turnout is only weakly positively correlated with these demographic 
 controls, except district size and owner occupied housing, to differing degrees. 
-There are also strong relationships between these individual demographic categories, with particularly strong relationships between education, age, and income, as well as a 
-strong negative between age and owner occupied housing and age and education level.
+There are also strong relationships between these individual demographic categories, with particularly strong relationships between education, age, and income, as 
+well as a strong negative between age and owner occupied housing and age and 
+education level.
 
 % The strongest correlations are among income, percentage of population over 65, and 
 % percentage of owner occupied housing -- these variables are negatively correlated. 
@@ -972,7 +1001,6 @@ moddat$year <- factor(moddat$year)
 moddat$contest <- factor(moddat$contest)
 moddat$turnout <- moddat$turnout * 100
 moddat$districtwide <- factor(moddat$districtwide)
-moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 
 nums <- sapply(moddat, is.numeric)
 ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
@@ -982,7 +1010,7 @@ moddatScaleLag <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 library(arm)
 nums <- sapply(moddat, is.numeric)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
-
+moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 
 naive1 <- lm(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
                per_white_all + per65o + PerBachelorOrAbove + OOH_share + 
@@ -1229,7 +1257,6 @@ moddat$year <- factor(moddat$year)
 moddat$turnout <- moddat$turnout * 100
 moddat$districtwide <- factor(moddat$districtwide)
 moddat$contest <- factor(moddat$contest)
-moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 centr <- mean(moddat$turnout)
 stddev <- sd(moddat$turnout)
 moddat$outflag <- (moddat$turnout - centr) / stddev
@@ -1241,7 +1268,7 @@ ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
 moddatScaleClose <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 nums <- sapply(moddat, is.numeric)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
-
+moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 dd <<- datadist(moddat)
 options(datadist="dd")
 
@@ -1396,7 +1423,6 @@ moddat$year <- factor(moddat$year)
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
 moddat$districtwide <- factor(moddat$districtwide)
-moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 moddat$year <- factor(moddat$year)
 moddat$turnout <- moddat$turnout * 100
 centr <- mean(moddat$turnout)
@@ -1410,6 +1436,7 @@ ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
 moddatScaleTeach <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 nums <- sapply(moddat, is.numeric)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
+moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 dd <<- datadist(moddat)
 options(datadist="dd")
 
@@ -1622,7 +1649,6 @@ moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
 moddat$contest <- factor(moddat$contest)
 moddat$districtwide <- factor(moddat$districtwide)
-moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 moddat$year <- factor(moddat$year)
 moddat$turnout <- moddat$turnout * 100
 centr <- mean(moddat$turnout)
@@ -1635,6 +1661,7 @@ ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
 ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
 moddatScaleParty <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
+moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 dd <<- datadist(moddat)
 options(datadist="dd")
 
@@ -1790,7 +1817,6 @@ moddat$ImputedFlag[moddat$ImputedFlag == "Imputed2010"] <- "Imputed"
 moddat$ImputedFlag[moddat$ImputedFlag == "Observed2010"] <- "Observed"
 moddat$ImputedFlag <- factor(moddat$ImputedFlag, levels = c("Imputed", "Observed"))
 moddat$ImputedFlag <- relevel(moddat$ImputedFlag, ref = "Imputed")
-moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 moddat <- na.omit(moddat)
 moddat <- moddat[order(moddat$distid, moddat$year),]
 moddat$distid <- factor(moddat$distid)
@@ -1817,6 +1843,7 @@ ScaleSD <- apply(moddat[, nums], 2, sd, na.rm=TRUE)
 moddatScaleUndervote <- cbind(ScaleMeans, ScaleSD); rm(ScaleMeans, ScaleSD)
 nums <- sapply(moddat, is.numeric)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
+moddat$VAP_adjLOG_sq <- moddat$VAP_adjLOG^2
 dd <<- datadist(moddat)
 options(datadist="dd")
 @
@@ -1992,7 +2019,8 @@ modelFitexamplePlot <- ggplot(plotdf, aes(x = year, y = yUnscale/100)) +
   geom_point(aes(x = year, y = yhatUnscale/100), color = I("red")) + 
   facet_wrap(~distid) + 
   scale_y_continuous(label = percent) +
-  theme_bw() + labs(x= "Year", y = "Turnout", title = "Model Fit for Blais-Lago Model") + 
+  theme_bw() + labs(x= "Year", y = "Turnout", 
+                    title = "Model Fit for Blais-Lago Model") + 
   theme(strip.text = element_blank())
 
 modelFitexamplePlot
@@ -2120,17 +2148,246 @@ grid.arrange(rmsePlot1, rmsePlot2, left = "Mean Model Error in Std. Dev.")
 \subsection{Substantive Effects}
 
 After finding evidence in favor of voters behaving as theory might expect, I now 
-turn my attention to exploring the magnitude of these effects. Table \ref{tab:turnoutRESULTS}
-summarizes the substantive findings for all variables across both turnout and 
-rolloff. In this section, I conduct simulations to show the change in the dependent 
-variable holding all else constant and manipulating an independent variable of 
-interest. I then plot the result to give a visual representation of the findings 
-of the models above. While this type of simulation does not represent the interrelated 
-nature of the independent variables in the models above, it does allow me to 
-demonstrate the maximum possible effect predicted by the models described above -- 
-assuming the independent variable is changing while all other variables remain 
-constant.\footnote{Simulations are conducted using a modification of the \texttt{sim} 
-function in the \texttt{arm} package for R.}
+turn my attention to exploring the magnitude of these effects. Table 
+\ref{tab:turnoutRESULTS} summarizes the substantive findings for all variables 
+across both turnout and rolloff. Each row in the table shows the net impact on 
+turnout and rolloff changing a key predictor associated with one of the theories 
+of voter turnout. 
+
+In general, the impacts are modest. 
+
+% Describe model results
+
+<<substEffSim, eval=FALSE, results='hide'>>=
+
+# beta <- fixef(mixedMod1lagsb)["turnoutLag2"]
+# margEff <- 0.6 * beta
+# 
+# margEff * 2 * moddatScaleLag["turnout", 2] + moddatScaleLag["turnout", 1] - 
+#    moddatScaleLag["turnout", 1]
+# 
+# 0.6 * 2 * moddatScaleLag["turnoutLag2", 2] + moddatScaleLag["turnoutLag2", 1] - 
+#    moddatScaleLag["turnoutLag2", 1]
+# 
+# # ------------------
+# 
+# beta <- fixef(undervoteMMlag)["turnoutLag2"]
+# margEff <- 0.6 * beta
+# 
+# margEff * 2 * moddatScaleUndervote["turnoutDiff", 2] + 
+#   moddatScaleUndervote["turnoutDiff", 1] - 
+#    moddatScaleUndervote["turnoutDiff", 1]
+# 
+# 0.6 * 2 * moddatScaleUndervote["turnoutLag2", 2] + 
+#   moddatScaleUndervote["turnoutLag2", 1] - 
+#    moddatScaleUndervote["turnoutLag2", 1]
+
+# ------------------------
+effSizeScale <- function(model, scales, betaChg, dv, iv, iv2=NULL){
+  beta <- fixef(model)[iv]
+  polyString <- paste0(iv, "_sq")
+  polyTerm <- intersect(polyString, names(fixef(model)))
+  if(!is.null(iv2)){
+    alpha <- fixef(model)[iv2]
+    interactStrings <- c(paste(iv, iv2, sep=":"), paste(iv2, iv, sep=":"))
+    interactTerm <- intersect(interactStrings, names(fixef(model)))
+  } else{
+    interactTerm <- NULL
+  }
+  
+  if(length(polyTerm) > 0){
+    beta2 <- fixef(model)[polyTerm]
+    margEff <- (betaChg * beta) + (betaChg^2 * beta2)
+  } else {
+    margEff <- betaChg * beta
+  }
+
+  if(length(interactTerm > 0)){
+    polyString <- paste0(iv2, "_sq")
+    polyTerm <- intersect(polyString, names(fixef(model)))
+    if(length(polyTerm) > 0){
+    alpha2 <- fixef(model)[polyTerm]
+    alphaLo <- quantile(model@frame[[iv2]], probs = 0.125) 
+    alphaEffl <- (alphaLo * alpha) + (alpha2 * alphaLo^2)
+    alphaM <- quantile(model@frame[[iv2]], probs = 0.5) 
+    alphaEffm <- (alphaM * alpha) + (alpha2 * alphaM^2)
+    alphaHi <- quantile(model@frame[[iv2]], probs = 0.875)
+    alphaEffh <- (alphaHi * alpha) + (alpha2 * alphaHi^2)
+      
+    } else{
+    alphaLo <- quantile(model@frame[[iv2]], probs = 0.125) 
+    alphaEffl <- alphaLo * alpha
+    alphaM <- quantile(model@frame[[iv2]], probs = 0.5) 
+    alphaEffm <- alphaM * alpha
+    alphaHi <- quantile(model@frame[[iv2]], probs = 0.875)
+    alphaEffh <- alphaHi * alpha
+    }
+    
+    psi <- fixef(model)[interactTerm]
+    
+    margEffLo <- margEff + alphaEffl + (betaChg * alphaLo *  psi)
+    margEffHi <- margEff + alphaEffh + (betaChg * alphaHi *  psi)
+    margEffM <-  margEff + alphaEffm + (betaChg * alphaM *  psi)
+    margEff <- c(margEffLo, margEffM, margEffHi)
+}
+
+  DVdelta <- margEff * 2 * scales[dv, 2] + scales[dv, 1] - scales[dv, 1]
+
+  varChg <- betaChg * 2 * scales[iv, 2] 
+  varChg <- round(varChg, digits = 4)
+  DVdelta <- round(DVdelta, digits = 4)
+  
+  ivMax <- max(model@frame[[iv]])
+  ivMin <- min(model@frame[[iv]])
+  
+  varMax <- round(ivMax * 2 * scales[iv, 2] + scales[iv, 1], digits = 4)
+  varMin <- round(ivMin * 2 * scales[iv, 2] + scales[iv, 1], digits = 4)
+  varSD <- round(0.5 * 2 * scales[iv, 2], digits = 4)
+  
+  dvMax <- max(model@frame[[dv]])
+  dvMin <- min(model@frame[[dv]])
+  
+  dvarMax <- round(dvMax * 2 * scales[dv, 2] + scales[dv, 1], digits = 4)
+  dvarMin <- round(dvMin * 2 * scales[dv, 2] + scales[dv, 1], digits = 4)
+  dvarSD <-  round(0.5 * 2 * scales[dv, 2], digits = 4)
+  
+  if(!is.null(iv2)){
+    stub <- c(" for the Bottom Quartile ", " for the Median ", 
+              " for the Top Quartile")
+    print(paste0("Dependent variable changes ",  paste(DVdelta, stub, collapse=""), 
+          " of the interacted variable ", iv2))
+  } else{
+    print(paste0("Dependent variable changes ", DVdelta))
+  }
+  print(paste0("on a range from ", dvarMin, " to ", dvarMax, 
+               " on the dependent variable with standard deviation of ", dvarSD))
+  print(paste0("for a change in independent variable of ", varChg))
+  print(paste0("on a range from ", varMin, " to ", varMax, 
+               " on the independent variable with standard deviation of ", varSD))
+}
+
+# turnoutlag2
+effSizeScale(mixedMod1lagsb, scales = moddatScaleLag, betaChg = 0.6, 
+             dv = "turnout", iv = "turnoutLag2")
+
+# decreases are good
+effSizeScale(mixedModcloseC, scales = moddatScaleClose, betaChg = -0.5, 
+              dv = "turnout", iv = "VAP_adjLOG")
+
+# Closeness
+effSizeScale(mixedModcloseC, scales = moddatScaleClose, betaChg = 0.5, 
+              dv = "turnout", iv = "minBlaisLago")
+effSizeScale(mixedModcloseC, scales = moddatScaleClose, betaChg = 0.5, 
+              dv = "turnout", iv = "minBlaisLago", iv2="VAP_adjLOG")
+effSizeScale(mixedModcloseC, scales = moddatScaleClose, betaChg = 0, 
+              dv = "turnout", iv = "minBlaisLago", iv2="VAP_adjLOG")
+
+# teachershare
+effSizeScale(mixedModteachD, scales = moddatScaleTeach, betaChg = 0.25, 
+             dv = "turnout", iv = "teachShareofVoters2", iv2="VAP_adjLOG")
+effSizeScale(mixedModteachD, scales = moddatScaleTeach, betaChg = 0, 
+             dv = "turnout", iv = "teachShareofVoters2", iv2="VAP_adjLOG")
+
+# Partisan divide
+effSizeScale(mixedModP, scales = moddatScaleParty, betaChg = 0.25, 
+             dv = "turnout", iv = "partyDivisionFall", iv2="VAP_adjLOG")
+effSizeScale(mixedModPb, scales = moddatScaleParty, betaChg = 0.25, 
+             dv = "turnout", iv = "fallTwoPartyShareDem", iv2="VAP_adjLOG")
+#------------
+# Rolloff
+# turnoutlag2
+effSizeScale(undervoteMMlag, scales = moddatScaleUndervote, betaChg = 0.8, 
+             dv = "turnoutDiff", iv = "turnoutLag2")
+
+# decreases are good
+effSizeScale(undervoteMMclose, scales = moddatScaleUndervote, betaChg = -0.5, 
+              dv = "turnoutDiff", iv = "VAP_adjLOG")
+
+# Closeness
+effSizeScale(undervoteMMclose, scales = moddatScaleUndervote, betaChg = 0.25, 
+              dv = "turnoutDiff", iv = "minBlaisLago")
+effSizeScale(undervoteMMclose, scales = moddatScaleUndervote, betaChg = 0.25, 
+              dv = "turnoutDiff", iv = "minBlaisLago", iv2="VAP_adjLOG")
+effSizeScale(undervoteMMclose, scales = moddatScaleUndervote, betaChg = 0, 
+              dv = "turnoutDiff", iv = "minBlaisLago", iv2="VAP_adjLOG")
+
+# teachershare
+effSizeScale(undervoteMMteachB, scales = moddatScaleUndervote, betaChg = 0.5, 
+             dv = "turnoutDiff", iv = "teachShareofVoters2", iv2="VAP_adjLOG")
+effSizeScale(undervoteMMteachB, scales = moddatScaleUndervote, betaChg = 0, 
+             dv = "turnoutDiff", iv = "teachShareofVoters2", iv2="VAP_adjLOG")
+
+# Partisan divide
+effSizeScale(undervoteMMparty, scales = moddatScaleUndervote, betaChg = 0.25, 
+             dv = "turnoutDiff", iv = "fallTwoPartyShareDem", iv2="VAP_adjLOG")
+effSizeScale(undervoteMMparty, scales = moddatScaleUndervote, betaChg = 0, 
+             dv = "turnoutDiff", iv = "fallTwoPartyShareDem", iv2="VAP_adjLOG")
+effSizeScale(undervoteMMpartyB, scales = moddatScaleUndervote, betaChg = 0.25, 
+             dv = "turnoutDiff", iv = "partyDivisionFall", iv2="VAP_adjLOG")
+effSizeScale(undervoteMMpartyB, scales = moddatScaleUndervote, betaChg = 0, 
+             dv = "turnoutDiff", iv = "partyDivisionFall", iv2="VAP_adjLOG")
+@
+
+
+\renewcommand\arraystretch{1.4}
+\begin{table}[h!]
+\begin{center}
+\begin{footnotesize}
+\caption[Summary of Evidence for All Models on Turnout and Rolloff]{Summary of model results. Large districts are in the middle of top VAP quartile; small districts at midpoint of bottom quartile.}
+\label{tab:turnoutRESULTS}
+\begin{tabular}{| p{.175\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.125\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.34\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.34\textwidth} |} 
+\hline
+\textbf{Theory}  & \textbf{Variable} & \textbf{Turnout Effect} & \textbf{Rolloff Effect} \\[2ex] \hline
+Habit-forming voters  & Lagged turnout & 10 point lagged turnout $\uparrow = 0.8$ point turnout $\uparrow $& 5\% $\uparrow$ lagged turnout = $\downarrow$ 0.25 point rolloff 
+\\ \hline
+Rational Voters & VAP & 4.5 point turnout $\uparrow$ for VAP $\downarrow$ from 
+6,000 to 2,100 & 2.9 point rolloff $\downarrow$ for VAP $\downarrow$ from 
+6,000 to 2,100  \\ \hline
+Rational Voters & Blais-Lago & 1 SD $\uparrow$ in BL = $\uparrow$ turnout 0.5 points
+& None. \\ \hline
+Strategic Voters & VAP x Blais-Lago &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+\item Large district: 0.35 point turnout $\uparrow$ when $\uparrow$ 
+0.5 SD of Blais-Lago
+\item Small district:  0.18 point turnout $\uparrow$ when $\uparrow$ 0.5 SD 
+of Blais-Lago
+\end{itemize} \vspace{-8mm} & \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+\item Large district: 0.41 point rolloff $\downarrow$ when BL $\uparrow$ 0.5 SD
+\item Small district:  0.26 point rolloff $\uparrow$ when BL $\uparrow$ 0.5 SD
+\end{itemize} \vspace{-8mm} \\ \hline
+Teacher Influence & Teacher \% of SB & \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+\item Large district: 0.25 point turnout $\downarrow$ when $\uparrow$ 
+0.5 SD of teacher share
+\item Small district:  0.18\% point turnout $\downarrow$ when $\uparrow$ 0.5 SD 
+of teacher share
+\end{itemize} \vspace{-8mm} & None. \\ \hline
+Teacher Influence & Teacher \% of VAP & None. & \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+\item Large district: 0.88 point rolloff $\uparrow$ when $\uparrow$ 
+0.5 SD of teacher share
+\item Small district:  0.2 point rolloff $\uparrow$ when $\uparrow$ 0.5 SD 
+of teacher share
+\end{itemize} \vspace{-8mm} \\ \hline
+Partisan Influence & Party Divide & None. &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+\item Large district: 1 point $\uparrow$ rolloff as party division $\uparrow$ 6.6\% points
+\item Small district:  0.15 point $\downarrow$ for rolloff as party division $\uparrow$ 6.6\% points
+\end{itemize} \vspace{-8mm} \\ \hline
+Partisan Influence & Dem. Share & None. &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+\item Large district: 0.29 point $\uparrow$ rolloff as Dem. share $\uparrow$ 5\% point
+\item Small district:  0.6 point $\uparrow$ rolloff as Dem. share $\uparrow$ 5\% point
+\end{itemize} \vspace{-8mm} \\ \hline
+\end{tabular}
+\end{footnotesize}
+\end{center}
+\end{table}
+
+In the rest of this section, I conduct simulations to show the change in the 
+dependent variable holding all else constant and manipulating an independent 
+variable of interest. I then plot the result to give a visual representation of 
+the findings of the models above. While this type of simulation does not represent 
+the interrelated nature of the independent variables in the models above, it does 
+allow me to demonstrate the maximum possible effect predicted by the models 
+described above -- assuming the independent variable is changing while all other
+variables remain constant.\footnote{Simulations are conducted using a modification 
+of the \texttt{sim} function in the \texttt{arm} package for R.}
 
 In addition to demonstrating the effect of the key variables of interest, I use 
 simulations to illustrate the election and school district specific effects to 
@@ -2138,104 +2395,6 @@ provide a sense of the scale of year to year and district to district variation
 captured in the models. This simulation technique presents caterpillar plots of 
 the estimated values of the impact the unobservable characteristics of these 
 grouping variables have on turnout and rolloff. 
-
-
-% Lagged turnout being higher, results in lower turnout differential
-% higher fall turnout results in higher turnout differential
-% bigger size = higher turnout differential
-% whiter = higher turnout differential
-% older - no difference
-% more educated = higher turnout differential (more rolloff)
-% higher income = lower turnout differential
-% higher OOH share = higher voter rolloff
-% imputation model dummy adjusts rolloff downward
-% uncontested seat = higher rolloff
-% less competitive seat = more rolloff, but only in smaller jurisdictions
-%  \vspace{-6mm} \begin{itemize} \setlength\itemsep{-2pt}
-% \item Over 90\% of boards are elected 
-% \item Board elections unlikely to be competitive \item Mean board tenure is 6.7 years 
-% \item Boards self identify as moderate or conservative, only 1 in 5 self-identify as liberal 
-% \end{itemize} \vspace{-4mm}
-
-% TODO: Fix this table
-
-\renewcommand\arraystretch{1.4}
-\begin{table}[h!]
-\begin{center}
-\begin{small}
-\caption{Summary of Evidence for All Models on Both Outcomes}
-\label{tab:turnoutRESULTS}
-\begin{tabular}{| p{.15\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.15\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.325\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.325\textwidth} |} 
-\hline
-\textbf{Theory}  & \textbf{Variable} & \textbf{Turnout?} & \textbf{Rolloff?} \\[2ex] \hline
-Habit-forming voters  & Lagged turnout & 10 point turnout $\uparrow = 1$ point turnout $\uparrow $& 5\% $\uparrow$ lagged turnout = $\downarrow$ 0.3\% point rolloff \\ \hline
-Rational Voters & VAP & 8.5\% point $\downarrow$ decrease for VAP $\uparrow$ of 3,000 to 12,000 & No rolloff to 9.3\% point rolloff for same VAP $\uparrow$  \\ \hline
-Rational Voters & Blais-Lago &  0.54\% $\downarrow$ decrease for $\uparrow$ in BL from 2 to 24 & 
-None. \\ \hline
-Strategic Voters & VAP x Blais-Lago & No & \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
-\item Large district: 0.38\% point rolloff $\downarrow$ when competitiveness $\downarrow$ 2.1 to 24
-\item Small district:  0.12\% point rolloff $\downarrow$ 
-\end{itemize} \vspace{-4mm} \\ \hline
-Teacher Influence & Teacher \% of VAP &   \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
-\item Large district: 0.43\% point turnout $\downarrow$ when teacher VAP $\uparrow$ 1.45\% to 2.13\%
-\item Small district:  0.55\% point turnout $\downarrow$ for same increase
-\end{itemize} \vspace{-4mm} & $\uparrow$ 1.4\% of teachers to 2.1\% teachers = $\uparrow$  0.55\% point of rolloff \\ \hline
-Partisan Influence & Party Divide & No &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
-\item Large district: 0.9\% $\uparrow$ as party division $\uparrow$ 8.5\% point
-\item Small district:  0.2\% point $\uparrow$ for same gap
-\end{itemize} \vspace{-4mm} \\ \hline
-Partisan Influence & Dem. Share & No & 7\% point $\uparrow$ Democrats = 4.71\% point $\uparrow$ rolloff \\ \hline
-\end{tabular}
-\end{small}
-\end{center}
-\end{table}
-% Lag effect is .057 mm % increasing 10% of prior turnout increases 1% of CY turnout
-% Lag effect is .06 for dfe
-% -.11 blais-lago for dfe 
-% -.09 blais-lago for MM % decrease competition by 1-10, decrease turnout by .2%
-% -.03 vap x blais-lago for MM (not sig)
-% -.25 uncontested seat for MM % uncontested seat are 4.55% lower turnout
-% -.01 for teacher influence for MM ( not sig)
-% -.15 for teacher inf. x VAP for MM 
-%%% For size
-%%   1Q district = 22.61633%; bigger drops to 14.1225 for increase from 3,000 to 12,000
-%%   BL = decrease from 19.10245 to 18.56772 for incgreas in BL 2 to 24
-%%   %%%%
-%%   For undervote
-%%   1Q district = No rolloff to 9.3% point rolloff for increase from 3,000 to 12,000
-%%   BL = small district: 4.00 to 3.87 % point rolloff increase for comp. decrease 2 to 24
-%%        big district: 3.75 for close to 3.88 % point rolloff for less competitive
-%%%% Control for VAP^2 and it falls to -.02 (not sig)
-% -.03 vap x blais-lago for dfe
-% interpret
-% For small district: 18.06 - 18.62% turnout; for big district 18.22 to 18.65
-%  run from 1.45% to 2.13%
-% .11 to .14 teacher influence for dfe (not sig)
-% .07 teacher VAP for dfe (not sig)
-% Party divide .024 for MM (not sig)
-% party divide x VAP .009 for MM (not sig)
-% Dem share -.010 for MM (not sig)
-% Dem share ^2 .032 for MM (not sig)
-% 2 party dem x VAP -.048 for MM (not sig)
-% partisan division .05 for dfe (not sig)
-% dem share .02 for dfe (not sig)
-% partisan division x VAP .02 (not sig)
-% dem share x vap -.24 (not sig)
-% Now undervote
-% Lag -.06  -- increasing lagged turnout from 10-15% decreases undervote from 3.3 to 3%
-% Blais-Lago .03 main, .16 interact w/ VAP -- increasing Blais-Lago from 10 to 20, no effect
-%%  -- explore interaction median size district 1.174% point rolloff for 
-%%  -- Blais-Lago from 2.1 to 24 for median district
-%% ---- For large district 0.38% point rolloff
-%% ---- for small district  0.12% point rolloff
-% .23 for uncontested seat, no interaction, uncontested seats have 3.8% points more rolloff
-% teachshare .15 main effect, .15 interact w/ VAP (not sig) move from 1.4% of teachers to 2.1% teachers leads to  0.550942% points of rolloff
-% dem share .12 main effect, -.1 interact w/ VAP (not sig) (4.71 points more rolloff) 
-% going from 42% democrat to 55% democrat leads to that much more rolloff
-% party divide .06 main effect (not sig), .12 by VAP (sig)
-% For a small district, .2% point increase in rolloff as party division increases
-% for a large district .9% increase in rolloff
-% For 8.5 % point more partisan gap between republicans and dems
 
 
 \subsubsection{Turnout Models}
