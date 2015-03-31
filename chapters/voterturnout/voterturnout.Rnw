@@ -1111,7 +1111,7 @@ lagmodTab <- apsrtable(dumbRLM1, dumbRLMbest, dumbRLM2, se="robust",
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
           Sweave=FALSE, coef.names = coefnamesLag, digits = 3,
-          float = "sidewaystable", stars = "default", size = "footnotesize")
+          stars = "default", size = "scriptsize")
 
 @
 
@@ -1173,7 +1173,7 @@ appA1 <- apsrtable(dumbRLM1b, dumbRLMbestb, dumbRLM2b, se="robust",
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
           Sweave=FALSE, coef.names = coefnamesLag2, digits = 3,
-          float = "sidewaystable", stars = "default", size = "footnotesize")
+          stars = "default", size = "scriptsize")
 @
 
 
@@ -1311,7 +1311,7 @@ closeModTab <- apsrtable(closeRLM2, closeRLM4, se="robust",
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))),
           coef.names = closeCoefs1, digits = 3,
-          Sweave=FALSE, stars = "default", size = "footnotesize")
+          Sweave=FALSE, stars = "default", size = "scriptsize")
 @
 
 
@@ -1517,7 +1517,7 @@ teachTab1 <- apsrtable(teachRLM3, teachRLM4, teachRLM5, teachRLM6,
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))),
           coef.names = teachCoefnames, digits = 3,
-          Sweave=FALSE, stars = "default", size = "footnotesize")
+          Sweave=FALSE, stars = "default", size = "scriptsize")
 @
 
 % TODO: rewrite results as this is no longer the results for the new measure 
@@ -1719,8 +1719,8 @@ partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4,
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
           coef.names = partyCoefNames,
-          Sweave=FALSE, float = "sidewaystable", stars = "default", 
-          size = "footnotesize")
+          Sweave=FALSE, stars = "default", 
+          size = "scriptsize")
 @
 
 
@@ -1836,6 +1836,10 @@ moddat$turnoutDiff <- moddat$turnoutDiff * 100
 centr <- mean(moddat$turnoutDiff)
 stddev <- sd(moddat$turnoutDiff)
 moddat$outflag <- (moddat$turnoutDiff - centr) / stddev
+moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
+centr <- mean(moddat$turnout)
+stddev <- sd(moddat$turnout)
+moddat$outflag <- (moddat$turnout - centr) / stddev
 moddat <- moddat[moddat$outflag <= 5 & moddat$outflag >= -5,]
 nums <- sapply(moddat, is.numeric)
 ScaleMeans <- apply(moddat[, nums], 2, mean, na.rm=TRUE)
@@ -1973,14 +1977,17 @@ to voter rolloff in school board elections as well. Democratic party strength is
 also related with fewer voters completing the school board vote. An interaction 
 effect just misses statistical significance here -- suggesting that as 
 communities get larger and more Democratic, voter rolloff lessens. Partisan division 
-exhibits the same behavior -- as communities get larger and party division is stronger, 
+exhibits the same behavior -- as communities get larger and party division is s
+tronger, 
 rolloff grows. One possible explanation is that parties may be doing organizing for 
 the top ticket spring race -- such as State Superintendent or Supreme Court -- and 
 increasing voter turnout for these races by providing information to voters on 
 policy preferences of the candidates. If parties are successful in organizing voters 
 for top ticket races, then more voters with less interest in down-ticket races like 
 school board may find themselves at the polls and thus not interested in casting 
-a vote in school board races. 
+a vote in school board races.\footnote{As further evidence, the partisanship 
+variables and their interaction with VAP are statistically significant predictors 
+in models using spring election top ticket turnout as the dependent variable.}
 
 \clearpage
 \subsection{Model Fit}
@@ -2154,7 +2161,28 @@ across both turnout and rolloff. Each row in the table shows the net impact on
 turnout and rolloff changing a key predictor associated with one of the theories 
 of voter turnout. 
 
-In general, the impacts are modest. 
+In general, the impacts are modest. District size and prior district turnout have 
+the largest substantive impacts on both rolloff and turnout. Competitiveness has 
+a notably smaller impact, requiring a large shift in competitiveness to provide 
+a measurable increase in turnout. In a median sized district, the increase in 
+voter turnout attributable to this increase in competitiveness would result in 
+an additional 25 voters -- enough to sway the outcome of a race in fewer than 
+10\% of the observed spring election cycles. Net of these effects, the effects 
+of interest groups and political parties are quite low. School board turnout is suppressed by a larger share of the number of voters being represented by 
+teachers in the school district. This effect is smaller in smaller communities. 
+There appears to be an influence of teachers on rolloff as well -- but only 
+when measured as a share of the voting age population. These effects are quite 
+modest with turnout averaging around 18\% a 0.25\% point increase in turnout in 
+a median size district equates to just 13 additional voters. 
+
+There is no evidence of a role of political parties in school board spring election 
+turnout, but there is evidence off an effect on rolloff. The effect on rolloff is 
+much larger than effects on turnout. A one point increase in rolloff represents 
+a 25\% increase in rolloff for a typical district. However, in the median 
+district this represents 50 fewer school board election voters -- well below the 
+median victory margin in the closest race in each district, approximately 
+290 votes. 
+
 
 % Describe model results
 
@@ -2332,7 +2360,7 @@ effSizeScale(undervoteMMpartyB, scales = moddatScaleUndervote, betaChg = 0,
 \renewcommand\arraystretch{1.4}
 \begin{table}[h!]
 \begin{center}
-\begin{footnotesize}
+\begin{scriptsize}
 \caption[Summary of Evidence for All Models on Turnout and Rolloff]{Summary of model results. Large districts are in the middle of top VAP quartile; small districts at midpoint of bottom quartile.}
 \label{tab:turnoutRESULTS}
 \begin{tabular}{| p{.175\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.125\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.34\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.34\textwidth} |} 
@@ -2375,7 +2403,7 @@ Partisan Influence & Dem. Share & None. &\vspace{-4mm} \begin{itemize}[leftmargi
 \item Small district:  0.6 point $\uparrow$ rolloff as Dem. share $\uparrow$ 5\% point
 \end{itemize} \vspace{-8mm} \\ \hline
 \end{tabular}
-\end{footnotesize}
+\end{scriptsize}
 \end{center}
 \end{table}
 
@@ -2396,6 +2424,7 @@ captured in the models. This simulation technique presents caterpillar plots of
 the estimated values of the impact the unobservable characteristics of these 
 grouping variables have on turnout and rolloff. 
 
+\clearpage
 
 \subsubsection{Turnout Models}
 
@@ -2431,36 +2460,29 @@ ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr,
 @
 
 Figure \ref{fig:fixefSub1} shows the effect of four of the key variables of interest 
-from the models above. These plots show four randomly sampled observations (represented 
-by a different colored line) with the independent variable on the x-axis and the 
-predicted school board turnout on the y-axis. Along the x-axis is a rug-plot showing 
-the relative density of observations at each range of the x-variable to help demonstrate 
-where the model may be extrapolating with less data. The two dashed lines shown 
-represent the inter-quartile range or the predicted values from the model being 
-simulated. This is presented to provide a reference for how powerful the effect 
-of the independent variable -- as shown by the slope of the line -- is relative 
-to the overall variability in turnout. 
+from the models above. These plots show four randomly sampled 
+observations (represented by a different colored line) with the independent 
+variable on the x-axis and the predicted school board turnout on the y-axis. Along 
+the x-axis is a rug-plot showing the relative density of observations at each 
+range of the x-variable to help demonstrate where the model may be extrapolating 
+with less data. The two dashed lines shown represent the inter-quartile range or 
+the predicted values from the model being simulated. This is presented to provide 
+a reference for how powerful the effect of the independent variable -- as shown 
+by the slope of the line -- is relative to the overall variability in turnout. 
 
-In Figure \ref{fig:fixefSub1} two patterns stand out. First, the interaction 
-effect for the teacher share of voters depicted in the top right panel, stands 
-out immediately -- the differing slopes are the result of the variation in VAP 
-across these randomly sampled observations. This effect is strong and is further 
-explored in Figure \ref{fig:interactPlot1}. However, from this panel it is clear 
-the effect of the teacher share of voters can move school board turnout a substantial 
-degree of the range of the turnout variable -- as evidenced by the steep slope of 
-some of these lines. 
+In Figure \ref{fig:fixefSub1} the modest effects in Table \ref{tab:turnoutRESULTS} 
+are illustrated. The weakly negative effect for the teacher share of voters 
+on turnout in the top right panel show the modest impact interest groups may play 
+in school board votes. The positive effect of competitiveness on turnout is 
+depicted in the bottom left -- this impact is again quite modest. On the other 
+diagonal there is an expected relationship between prior turnout and current 
+turnout as positive and fairly strong. Partisan division has no measurable effect 
+on turnout. 
 
-The second pattern is in the bottom-left panel. As competitiveness decreases from 
-left to right, turnout decreases substantially. Across the range of competitiveness 
-the effect is almost equivalent to two quartiles of school board turnout. More 
-practically, it results in turnout decreasing between three and five percentage 
-points. Given that median turnout is around 20\%, this effect is quite large. 
-
-On the other diagonal there is an expected relationship between prior turnout 
-and current turnout as positive and fairly strong. Partisan division has a very 
-small positive effect of turnout with more polarized communities having a slight 
-increase in expected voter turnout -- but much less substantial than the effect 
-of teacher voter share or competitiveness. 
+Taken together with the results in Table \ref{tab:turnoutRESULTS} it seems clear 
+that net of election cycle and district long-term trends, as well as demographic 
+characteristics of the communities, school board election turnout is relatively 
+unmoved by these factors. 
 
 
 <<fixefSub1, eval=TRUE, fig.scap="Substantive Effect on School Board Turnout Across Cases",fig.cap="Effect of four variables on school board turnout. Each panel represents the results from a different model for a different explanatory variable. Each line in each panel represents a randomly selected school district. The line represents the change in the expected turnout for that case as the value of the explanatory value is increased across the distribution.">>=
@@ -2651,32 +2673,46 @@ PartyInteractPlot <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   scale_x_continuous(label = percent)
 @
 
-All of the models specified included random intercepts for both school districts 
-and years as a way to control for unobservable characteristics of each district 
-and secular change in turnout from spring election to spring election. Figure 
-\ref{fig:randomEffectplot1} demonstrates the variability in the district intercepts 
-for each of the four models. These plots can be interpreted as the deviation of 
-the intercept of a school district from the average district. This figure arranges 
-the estimate of the individual intercept for each school, and its corresponding 
-95\% confidence interval, from lowest to highest to depict the variability in 
-district intercepts. The red line represents the median district or year.\footnote{
-Extracting the parameter estimates from random effect models is not straightforward 
-and there are many ways to estimate the resulting confidence intervals. Here I use 
-the simulation method proposed by \citet{gelhill} and implemented in the excellent 
-\texttt{arm} package \citep{armpkg}.}
+One possible reason these simulated results show such modest effects is that a 
+large degree of variance in turnout is explained by individual school district 
+unobservable characteristics captured as random intercepts in the mixed model 
+framework. All of the models specified included random intercepts for both 
+school districts and election cycles as a way to control for unobservable 
+characteristics of each district and secular change in turnout from spring election 
+to spring election. Figure \ref{fig:randomEffectplot1} demonstrates the variability 
+in the district intercepts from one of the models.\footnote{This figure is derived 
+from the partisanship model in particular, but the school district intercepts are 
+remarkably stable across all of the model specifications and this figure can be 
+interpreted as representative of all of these models.} This figure can be 
+interpreted as the deviation of the intercept of a school district from the 
+average district. 
 
-The results in \ref{fig:randomEffectplot1} show large and consistent variance 
-between the four models with a number of individual districts deviating from the 
-average district even with their confidence intervals. The height of the points 
-can be interpreted as the number of standard deviations in election turnout the 
-school district deviates from the average for all districts in the model with the 
-lines representing the range of the 5th to 95th quantile of the simulated estimates 
-for the district intercept. 
+This figure represents the change in turnout for a randomly selected school district 
+election as it is moved from the lowest through the highest school district 
+intercept. Thus, it represents how much turnout would change in a school district 
+election if it were modified by the effect of each other school district in the 
+state. This figure arranges the estimate of the individual intercept 
+for in each district, and its corresponding 90\% confidence interval, from lowest to 
+highest to depict the variability in district intercepts. The horizontal dashed 
+lines represent the middle two quartiles of fitted school board election turnout 
+from the model. The vertical lines mark the top most and bottom most decile of 
+school district effects. \footnote{Extracting the parameter estimates from 
+random effect models is not straightforward and there are many ways to estimate 
+the resulting confidence intervals. Here I use the simulation method proposed 
+by \citet{gelhill} and implemented in the excellent \texttt{arm} package 
+\citep{armpkg}.} 
 
-%TODO: check this and review wording
+The results in \ref{fig:randomEffectplot1} show that moving from 
+the bottom decile to the top decile in district effect results in an increase of 
+nearly 10\% points in school board turnout. This effect is quite large in comparison 
+with the effects shown in Figure \ref{fig:fixefSub1}, suggesting that community 
+factors unmeasured in this study explain a large part of the variance in turnout 
+between school districts. This effect exists even with the inclusion of strong 
+demographic and historical controls like school district size and historical 
+school board turnout. 
 
 
-<<randomEffectplot1, eval=TRUE, fig.scap="Exploring the Variance in District Effects on School Board Turnout", fig.cap="Simulated effect of district effects on turnout. As a case moves from the lowest turnout effect to the highest turnout effect, the effect of the district on turnout is represented by the line with a 95 percent confidence interval represented by the gray ribbon. This figure shows the results for the partisan divide model, but all models reported in the text show a similar distribution. The horizontal bars represent the interquartile range of the dependent variable, and the vertical bars represent the 20th and 80th percentile of school district effects.">>=
+<<randomEffectplot1, eval=TRUE, fig.scap="Exploring the Variance in District Effects on School Board Turnout", fig.cap="Simulated effect of district effects on turnout. As a case moves from the lowest turnout effect to the highest turnout effect, the effect of the district on turnout is represented by the line with a 90 percent confidence interval represented by the gray ribbon. This figure shows the results for the partisan divide model, but all models reported in the text show a similar distribution. The horizontal bars represent the interquartile range of the dependent variable, and the vertical bars represent the 20th and 80th percentile of school district effects.", fig.height=3.5>>=
 replotdf <- 1
 while(class(replotdf) != "data.frame"){
   replotdf <- try(substEffSimRE(mixedModP, "distid", ncases = 1, alpha = 0.1), 
@@ -2694,9 +2730,9 @@ replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) +
   moddatScaleParty[1, 1]
 replotdf$uprUnscale <- replotdf$uprUnscale / 100
 
-lowerBar <- ((quantile(fitted(mixedModP), prob = 0.25) * 2 * 
+lowerBar <- ((quantile(fitted(mixedModP), probs = 0.25) * 2 * 
                 moddatScaleParty["turnout", 2]) + moddatScaleParty["turnout", 1]) /100
-upperBar <- ((quantile(fitted(mixedModP), prob = 0.75) * 2 * 
+upperBar <- ((quantile(fitted(mixedModP), probs = 0.75) * 2 * 
                 moddatScaleParty["turnout", 2]) + moddatScaleParty["turnout", 1]) / 100
 
 ggplot(data = replotdf, aes(x = reorder(distid, yhatUnscale), y = yhatUnscale, 
@@ -2747,29 +2783,14 @@ p4 <- plotMCMCre(plotdf, scale = 1.96, var = "mean",
 grid.arrange(p1, p2, p3, p4)
 @
 
-%TODO: fix text here
-Even more interestingly is the pattern for the year effects demonstrated in 
-Figure \ref{fig:randomEffectplot2}. In all four models we see one below average year, 
-2010, and three above average years -- 2003, 2011, and 2012. These above average 
-years are not always statistically different than zero -- 2003 tends to have many 
-fewer observations than the other years -- but statewide spring election specific 
-effects do appear to exert an influence on school board turnout. Most interestingly 
+
+Figure \ref{fig:randomEffectplot2} shows the standardized intercepts for each 
+election cycle -- here the year effects are measured in standard deviations from 
+the grand average of 0 marked by the red line. From 2004 to 2009 elections were 
+relatively consistent with one another in terms of turnout. From 2010 to 2012, 
+turnout was first depressed, and then heightened across the state. Most interestingly 
 is that two years of elevated turnout across the state (net of district-election and 
-district-average effects) were in 2011 and 2012 after the election of Governor Scott Walker 
-and the introduction of Act 10. 
-
-<<randomEffectplot2, eval=TRUE, fig.scap="Comparing Year Effects for Turnout",fig.height=4.5, fig.cap="Estimated year effects in standard deviation terms. Each point represents the estimated standard deviation increase or decrease in turnout for a given election year across all school districts. Confidence intervals are the 95 percent confidence interval across 1000 simulations of the model random effects.">>=
-plotMCMCre(plotdf, scale = 1.6, var = "mean", 
-                 sd = "sd", sigmaScale = sigma(mixedMod1lagsb))+ 
-  labs(x= "Year", y = "Intercept") + 
-  ylim(c(-2, 3.5))  + 
-  scale_x_continuous(breaks = c(1:10), labels = c(2003:2012)) + 
-  scale_y_continuous(breaks = seq(-1.5, 1.5, by = .25)) +
-  theme(axis.text.x=element_text(), panel.grid = element_line(), 
-         panel.grid.major = element_line(linetype="dotted"),
-        panel.grid.major.x = element_blank())
-
-@
+district-average effects) were in 2011 and 2012 after the election of Governor Scott Walker and the introduction of Act 10. 
 
 <<rePlotHide2, fig.show='hide'>>=
 replotdf <- 1
@@ -2828,7 +2849,32 @@ p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean",
 plotdf <- REsim(mixedMod1lagsb, nsims = 1000)
 plotdf <- plotdf[plotdf$level == "Level 2",]
 
-grid.arrange(p1, p2, p3, p4, main = "Variance in Year Intercepts Across Models")
+grid.arrange(p1, p2, p3, main = "Variance in Year Intercepts Across Models")
+@
+
+<<randomEffectplot2, eval=TRUE, fig.scap="Comparing Year Effects for Turnout",fig.height=4, fig.cap="Estimated year effects in model effect size terms. Each point represents the estimated standard deviation increase or decrease in turnout for a given election year across all school districts. Confidence intervals are the 90 percent confidence interval across 1000 simulations of the model random effects.">>=
+
+plotdf$median <- plotdf$median / sigma(mixedMod1lagsb)
+plotdf$sd <- plotdf$sd / sigma(mixedMod1lagsb)
+
+ggplot(plotdf, aes(x = as.numeric(X1), y = median, ymin = median - 1.6 * sd, 
+       ymax = median + 1.6*sd)) + geom_pointrange() + 
+  labs(x= "Year", y = "Intercept", "Year Effect Sizes") + 
+  scale_x_continuous(breaks = c(2003:2012), labels = c(2003:2012)) + 
+  scale_y_continuous(breaks = seq(-1.5, 1.5, by = .25)) + 
+  geom_hline(yintercept = 0, size =I(1.05), color = I("red")) +
+  theme(axis.text.x=element_text(), panel.grid = element_line(), 
+         panel.grid.major = element_line(linetype="dotted", colour ="black"),
+        panel.grid.major.x = element_blank(), 
+         panel.grid.minor = element_blank(), 
+         panel.background = element_rect(fill = "white", colour = NA), 
+            panel.border = element_rect(fill = NA, colour = "grey50"), 
+        axis.title = element_text(size = rel(0.8), face = "bold"), 
+            axis.title.y = element_text(vjust = 0.35, angle = 90), 
+            axis.text = element_text(size = rel(0.8), colour = "black"), 
+        axis.ticks = element_line(colour = "black", 
+                size = rel(1.5)), legend.key = element_rect(colour = "grey80"), 
+            legend.title = element_text(), legend.text = element_text())
 @
 
 \clearpage
@@ -2903,15 +2949,15 @@ p2 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
 # -------------------------------------------------------------------------------
 seplotdf <- 1
 while(class(seplotdf) != "data.frame"){
-  seplotdf <- try(substEffSimFE(undervoteMMteachB, "teachShareofVoters2", ncases = 64L, 
+  seplotdf <- try(substEffSimFE(undervoteMMteach, "teachShareofVoters", ncases = 64L, 
                           unscale = moddatScaleUndervote, re = TRUE), 
                   silent = TRUE)
 }
-lowerBar <- ((quantile(fitted(undervoteMMteachB), prob = 0.2) * 2 * 
+lowerBar <- ((quantile(fitted(undervoteMMteach), prob = 0.2) * 2 * 
                 moddatScaleUndervote["turnoutDiff", 2]) + 
       moddatScaleUndervote["turnoutDiff", 1]) /100
 
-upperBar <- ((quantile(fitted(undervoteMMteachB), prob = 0.8) * 2 * 
+upperBar <- ((quantile(fitted(undervoteMMteach), prob = 0.8) * 2 * 
                 moddatScaleUndervote["turnoutDiff", 2]) + 
       moddatScaleUndervote["turnoutDiff", 1]) / 100
 
@@ -2920,7 +2966,7 @@ seplotdf$lwrUnscale <- seplotdf$lwrUnscale / 100
 seplotdf$uprUnscale <- seplotdf$uprUnscale / 100
 
 seplotdf$sizeCut <- cut(seplotdf$VAP_adjLOG, 
-                        breaks = quantile(undervoteMMteachB@frame$VAP_adjLOG, 
+                        breaks = quantile(undervoteMMteach@frame$VAP_adjLOG, 
                                           prob = c(0, 0.25, .5, .75, 1)), 
                         labels = c("VAP Quart. 1", "VAP Quart. 2", "VAP Quart. 3", "VAP Quart. 4"))
 seplotdf <- na.omit(seplotdf)
@@ -2929,10 +2975,10 @@ p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   facet_wrap(~sizeCut, nrow=1) +
   geom_hline(yintercept = lowerBar, linetype = 2) + 
   geom_hline(yintercept = upperBar, linetype = 2) + 
-  geom_rug(data = dist_turn, aes(x = teachShareofVoters2, y = turnoutDiff)) + 
+  geom_rug(data = dist_turn, aes(x = teachShareofVoters, y = turnoutDiff)) + 
   theme_dpi(base_size=12) + 
-  scale_x_continuous(limits = c(0, .3)) + 
-  scale_y_continuous(limits = c(-.25, .175)) +
+  scale_x_continuous(limits = c(0, .06), label = percent) + 
+  scale_y_continuous(limits = c(-.15, .2)) +
   labs(x = "Teacher Share of VAP", y = "Voter Rolloff") 
 
 # -------------------------------------------------------------------------------
@@ -2968,53 +3014,53 @@ p4 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   geom_hline(yintercept = upperBar, linetype = 2) + 
   geom_rug(data = dist_turn, aes(x = minBlaisLago, y = turnoutDiff)) + 
   theme_dpi(base_size=12) + 
-  scale_y_continuous(limits = c(-.25, .175)) + 
+  scale_y_continuous(limits = c(-.15, .2)) + 
   labs(x = "Blais-Lago", y = "Voter Rolloff") 
 
 @
 
-There are many interesting findings in the models of rolloff. However, the main 
-findings about district size and prior turnout are broadly similar to those found 
-for overall spring election turnout. Here I focus on the evidence that voter rolloff 
-appears more strategic and more influenced by interest groups than overall 
-turnout. 
+The main effect of district size and prior turnout on rolloff are broadly similar 
+to the effects on school board turnout in general. Here I depict the evidence 
+that influences on voter rolloff appear more pronounced than influences on turnout 
+and are strongly interacted with community size. 
+
+Figure \ref{fig:teachUndEff} depicts the simulated impact of increasing teacher 
+share of the voting age population on voter rolloff. Each panel represents a 
+quartile of the VAP distribution and each line in each panel represents a single 
+district being simulated. The line represents the change in voter rolloff for 
+that district as the teacher share of the VAP is increased from its minimum of 
+0.8\% to its maximum of 5\%. As before, the dashed horizontal lines represent the 
+median two quartiles of the distribution of the rolloff variable. 
+
+Two patterns emerge immediately from this figure. First, teacher share of the 
+population has a consistent positive impact on rolloff across districts of all 
+sizes. Second, the interaction effect is quite strong. As districts get 
+larger, the impact of teachers grows stronger and in the second and third quartile, 
+the impact of moving from 2\% to 3\% teachers in the VAP can increase voter rolloff 
+in school board elections enough to move between quartiles. Though this effect 
+is quite striking it is important to remember that these are simulations and have 
+their limitations -- the simulation in the final panel, for the largest 
+districts, depicts the very unlikely scenario in which the most populated 
+Wisconsins school districts have a population consisting of 5\% teachers 
+employed in public schools. However, despite this fact, it is clear that there 
+is a sizable impact on rolloff explained by the share of the VAP that are teachers. 
 
 Figure \ref{fig:compUndEff} provides same look at an interactive effect with 
 district size, but for school board seat competitiveness. Each panel represents 
 one quartile of the voting age population variable. Competitiveness has an 
-almost imperceptible role in small districts in the top left, but as districts 
-get larger toward the bottom right, less competitive races inspire more voter 
-rolloff. There are a number of possible explanations for this effect. One is that 
-in small communities, as we saw, voter turnout is influenced more by competitiveness 
-in these races and thus voters have made their decision on whether to vote for 
-school board before showing up at the poll. In larger communities, turnout may 
-be driven by other factors aside from the competitiveness of the board race, 
-indeed the effect is quite modest for turnout, and thus may be influenced to not 
-complete their ballot for school board when they have not heard anything about the 
-race because it is not seriously contested. 
+almost imperceptible role in small districts, but as districts get larger toward 
+the right, more competitive races result in reduced voter rolloff. In larger 
+communities, turnout may be driven by other factors aside from the 
+competitiveness of the board race, indeed the effect is quite modest for 
+turnout, and thus may be influenced to not complete their ballot for school 
+board when they have not heard anything about the race because it is not 
+seriously contested. 
 
-Teacher share of the voting age population has an even more substantial impact 
-on the rolloff of voters for school board races. Figure \ref{fig:teachUndEff} 
-shows the variation in the impact of the teacher share of voters on voter rolloff 
-across four quartiles of district VAP. For the smallest districts, the teacher share 
-of voters does not affect voter rolloff -- voters complete their ballots at the 
-same rate whether teachers comprise 1\% or 5\% of the electorate. As districts get 
-larger, the impact of teachers grows stronger and in the second and third quartile, 
-the impact of moving from 2\% to 3\% teachers in the VAP can increase voter rolloff 
-in school board elections by nearly as much as the interquartile range for the 
-variable. Though this effect is quite striking it is important to remember that 
-these are simulations and have their limitations -- the simulation in the final 
-panel, for the largest districts, depicts the very unlikely scenario in which 
-the most populated Wisconsins school districts have a population consisting of 
-5\% teachers employed in public schools. 
-
-%TODO: Describe these figures correctly
-
-<<teachUndEff, fig.scap="Interaction Effect of Teacher Share on Rolloff", fig.height=5, fig.cap="Interaction between teacher share of the VAP and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the teacher share of VAP is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
+<<teachUndEff, fig.scap="Interaction Effect of Teacher Share on Rolloff", fig.height=4, fig.cap="Interaction between teacher share of the VAP and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the teacher share of VAP is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
 p3
 @
 
-<<compUndEff, fig.scap="Interaction Effect of Competition on Rolloff", fig.height=5, fig.cap="Interaction between the Blais-Lago quotient and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the competitiveness of races is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
+<<compUndEff, fig.scap="Interaction Effect of Competition on Rolloff", fig.height=4, fig.cap="Interaction between the Blais-Lago quotient and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the competitiveness of races is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
 p4
 @
 
@@ -3024,7 +3070,7 @@ p1
 p2
 @
 
-%TODO: add random effect plots for undervote to the appendix as well
+
 \clearpage
 
 \section{Discussion}

@@ -223,12 +223,16 @@ plot.tmp <- ddply(plotdf2, .(distid, year), summarise,
                   avgBlaisLago = mean(blaisLago, na.rm=TRUE),
                   minHareQuotaDelta = min(hareQuotaDelta2, na.rm=TRUE),
                   avgHareQuotaDelta = mean(hareQuotaDelta2, na.rm=TRUE),
+                  avgVoteMargin = mean(voteMargin, na.rm=TRUE), 
+                  minVoteMargin = min(voteMargin, na.rm=TRUE),
                   closeRaces = sum(closeRace))
 
 plot.tmp$minBlaisLago[!is.finite(plot.tmp$minBlaisLago)] <- 100
 plot.tmp$avgBlaisLago[!is.finite(plot.tmp$avgBlaisLago)] <- 100
 plot.tmp$minHareQuotaDelta[!is.finite(plot.tmp$minHareQuotaDelta)] <- NA
 plot.tmp$avgHareQuotaDelta[!is.finite(plot.tmp$avgHareQuotaDelta)] <- NA
+plot.tmp$minVoteMargin[!is.finite(plot.tmp$minVoteMargin)] <- NA
+plot.tmp$avgVoteMargin[!is.finite(plot.tmp$avgVoteMargin)] <- NA
 dist_turn <- merge(dist_turn, plot.tmp, all.x=TRUE)
 rm(plot.tmp, plotdf2, votes.tmp, cand.tmp)
 
