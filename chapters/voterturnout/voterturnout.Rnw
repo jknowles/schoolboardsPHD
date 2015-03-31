@@ -1025,6 +1025,8 @@ the rolloff of voters in the spring election. Finally, I conclude by interpretin
 the substantive effect of these variables to weigh how large the effects of 
 these characteristics might be on school board election turnout. 
 
+%TODO: Check out districtwide vs. distWideMix
+
 \subsection{Habit Forming Voters}
 
 <<lagmodRLM, results ='hide'>>=
@@ -1081,7 +1083,7 @@ lagmodTab <- apsrtable(dumbRLM1, dumbRLMbest, dumbRLM2, se="robust",
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
           Sweave=FALSE, coef.names = coefnamesLag, digits = 3,
-          float = "sidewaystable", stars = "default")
+          float = "sidewaystable", stars = "default", size = "footnotesize")
 
 @
 
@@ -1143,10 +1145,10 @@ appA1 <- apsrtable(dumbRLM1b, dumbRLMbestb, dumbRLM2b, se="robust",
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
           Sweave=FALSE, coef.names = coefnamesLag2, digits = 3,
-          float = "sidewaystable", stars = "default")
+          float = "sidewaystable", stars = "default", size = "footnotesize")
 @
 
-\begin{tiny}
+
 <<lagModMM, results ='asis'>>=
 library(lme4)
 
@@ -1176,9 +1178,9 @@ apsrtable(mixedModlags, mixedMod1lagsb, caption = "Partial Pooling Model of Lagg
            notes = list("All variables grand-mean scaled and centered.", 
                        stars.note), 
           Sweave = FALSE, digits = 3, 
-          coef.names = coefnamesLag3, stars = "default")
+          coef.names = coefnamesLag3, stars = "default", size = "footnotesize")
 @
-\end{tiny}
+
 
 
 <<laggedTurnSens, results='hide', eval=TRUE>>=
@@ -1282,7 +1284,7 @@ closeModTab <- apsrtable(closeRLM2, closeRLM4, se="robust",
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))),
           coef.names = closeCoefs1, digits = 3,
-          Sweave=FALSE, stars = "default")
+          Sweave=FALSE, stars = "default", size = "footnotesize")
 @
 
 
@@ -1308,7 +1310,7 @@ have an effect on turnout is not confirmed here - the interaction term
 is not statistically significant although it is in the right direction.\footnote{The fixed 
 effect models are largely the same?}
 
-\begin{tiny}
+
 <<closeModMM, results='asis'>>=
 mixedModclose <- lmer(turnout ~  VAP_adjLOG + VAP_adjLOG_sq +
                      per_white_all + 
@@ -1346,12 +1348,12 @@ apsrtable(mixedModclose, mixedModcloseC,
           model.names = c("No Interaction", "Interaction"),
             label = "tab:meClose", notes = list(tabnote, stars.note), 
           coef.names = closeCoefs2, digits = 3,
-          Sweave = FALSE, stars = "default")
+          Sweave = FALSE, stars = "default", size = "footnotesize")
 
 # Results with fallTurnout are largely similar but demographic variables are not 
 # significant and less impactful due to collinearity with fall turnout
 @
-\end{tiny}
+
 
 
 <<closeModSens,results='hide', eval=TRUE>>=
@@ -1488,7 +1490,7 @@ teachTab1 <- apsrtable(teachRLM3, teachRLM4, teachRLM5, teachRLM6,
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))),
           coef.names = teachCoefnames, digits = 3,
-          Sweave=FALSE, stars = "default")
+          Sweave=FALSE, stars = "default", size = "footnotesize")
 @
 
 % TODO: rewrite results as this is no longer the results for the new measure 
@@ -1523,7 +1525,7 @@ that worries critics of special purpose governments like school districts
 \citep{fosterK,burnsN,berry2}. 
 
 
-\begin{tiny}
+
 <<teachInfMM, results='asis'>>=
 teachCoefnames2 <- c("Intercept", "Teacher \\% SB Vote",  
                  "Blais-Lago",  "ln(VAP)",  "$ln(VAP)^{2}$", 
@@ -1578,9 +1580,8 @@ apsrtable(mixedModteachC, mixedModteachE, mixedModteachD,
           model.names = c("Model 1","Model 2"),
             label = "tab:meInf", notes = list(stars.note), 
           coef.names = teachCoefnames2, digits = 3,
-          Sweave = FALSE, stars = "default")
+          Sweave = FALSE, stars = "default", size = "footnotesize")
 @
-\end{tiny}
 
 
 <<mixedInfmodSen, results='hide', eval=TRUE>>=
@@ -1691,11 +1692,12 @@ partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4,
                         "year", 
                         expression(grep("year", coefnames, value = TRUE))), 
           coef.names = partyCoefNames,
-          Sweave=FALSE, float = "sidewaystable", stars = "default")
+          Sweave=FALSE, float = "sidewaystable", stars = "default", 
+          size = "footnotesize")
 @
 
 
-\begin{tiny}
+
 <<partyMixedMods, results='asis'>>=
 partyCoefNames2 <- c("Intercept", "Fall Party Divide", "Fall Turnout", 
                  "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
@@ -1725,9 +1727,10 @@ apsrtable(mixedModP, mixedModPb, caption = "Partial Pooling Model of Partisanshi
           model.names = c("Division", "Democrat"),
             label = "tab:mePartisan", notes = list(tabnote, stars.note), 
           Sweave = FALSE, 
-          coef.names = partyCoefNames2, digits = 3, stars = "default")
+          coef.names = partyCoefNames2, digits = 3, stars = "default", 
+          size = "footnotesize")
 @
-\end{tiny}
+
 
 <<mixedPartymodSen, results='hide', eval=TRUE>>=
 # Test for year specific slopes
@@ -1827,7 +1830,7 @@ top ticket race would be \Sexpr{iNum2(1810 + 1810*mean(dist_turn$turnoutDiff, na
 elections elsewhere \citep{streb09,wattenberg00}.
 
 
-\begin{tiny}
+
 <<undervoteMMfits1, results='asis'>>=
 undervoteMMlag <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + 
                          VAP_adjLOG + VAP_adjLOG_sq + per_white_all + 
@@ -1886,10 +1889,9 @@ apsrtable(undervoteMMlag, undervoteMMclose,
            model.names = c("Lag", "Close Race"),
             label = "tab:meUndv1", notes = list(stars.note), 
           Sweave = FALSE, digits = 3, 
-          coef.names = coefNamesUnd1, stars = "default")
+          coef.names = coefNamesUnd1, stars = "default", size = "footnotesize")
 @
 
-\end{tiny}
 
 Table \ref{tab:meUndv1} shows the results of the first three types of models investigated 
 above for turnout. Note that here the sign is flipped -- the smaller the dependent 
@@ -1909,7 +1911,6 @@ and then they persevere. This interpretation is further bolstered by the large
 effect that district size has on rolloff -- larger districts have significantly 
 more rolloff for school board races. 
 
-\begin{tiny}
 <<undervoteMMfits2, results='asis'>>=
 coefNamesUnd2 <- c("Intercept", "Teacher Share VAP", "Fall Turnout", 
                    "Blais-Lago", "ln(VAP)", "$ln(VAP)^{2}$","\\% White", 
@@ -1923,9 +1924,9 @@ apsrtable(undervoteMMteach, undervoteMMteachB, undervoteMMparty, undervoteMMpart
            model.names = c("Teach. Infl.", "Teach. Infl. 2", 
                            "Party Infl.", "Party Divide"),
             label = "tab:meUndv2", notes = list(stars.note), 
-          Sweave = FALSE, coef.names = coefNamesUnd2, stars = "default")
+          Sweave = FALSE, coef.names = coefNamesUnd2, stars = "default", 
+          size = "footnotesize")
 @
-\end{tiny}
 
 
 Table \ref{tab:meUndv2} which shows the models for interest group influence on 

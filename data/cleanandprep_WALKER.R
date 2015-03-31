@@ -334,6 +334,8 @@ dist_turn$partyDivisionRecent <- 1 - abs(0.5 - dist_turn$recentTwoPartyShareDem)
 dist_turn$schoolMillShare <- dist_turn$millrate  / (dist_turn$NonSDMill + dist_turn$millrate)
 dist_turn$minBlaisLago <- abs(abs(dist_turn$minBlaisLago) - 100)
 
+# reset districtwide
+dist_turn$distWidemix <- ifelse(dist_turn$distWidemix > 1, 1, 0)
 #
 ################################################################################
 # Read in contract extension data

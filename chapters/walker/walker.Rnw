@@ -1273,9 +1273,8 @@ FEmodContest <- glm(contestMinor ~ treatmentDiff + nraces_lag +
                     data = outdata, family = "binomial")
 FEmodContest$se <- sqrt(diag(get_CL_vcov(FEmodContest, outdata$distid)))
 
-glmNote <- c("Dependent variable is binomial. Coefficients are reported on 
-             the logistic scale. ")
-omitNote <- "Fixed effect model includes district fixed effects - not reported."
+glmNote <- c("Coefficients are on the logistic scale")
+omitNote <- "FE = Fixed effect model with omitted district effects"
 
 coefNames <- c("Intercept", "Lag. Contest", "Spring 2011", "Spring 2012", 
                "ln(VAP)", "$ln(VAP)^{2}$", "Incumbent Share", "\\% Over 65", 
@@ -1607,7 +1606,7 @@ FEmodTurn$se <- sqrt(diag(get_CL_vcov(FEmodTurn, outdata$distid)))
 
 coefNames <- c("Intercept", "Lag SB Turnout", "Spring 2011", "Spring 2012", 
                "ln(VAP)", "$ln(VAP)^{2}$", "\\% Over 65", 
-               "n races", "\\% OOH", "ln(Median Income)", "Imputed", "Districtwide", 
+               "n races", "\\% OOH", "ln(Median Income)",
                "Exurb", "Rural", "\\% Bach. +", "Fall Turnout", 
                "Lag x 2011", "Lag x 2012")
 
@@ -1618,7 +1617,8 @@ coefNames <- c("Intercept", "Lag SB Turnout", "Spring 2011", "Spring 2012",
           label = "tab:causTurn", notes = list(stars.note, omitNote), 
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))), 
+                         expression(grep("distid", coefnames, value=TRUE)), 
+                         "ImputedFlag", "distWidemix"), 
           size="footnotesize")
 
 @
@@ -1704,7 +1704,7 @@ FEmodRoll$se <- sqrt(diag(get_CL_vcov(FEmodRoll, outdata$distid)))
 
 coefNames <- c("Intercept", "Lag SB Rolloff", "Spring 2011", "Spring 2012", 
                "ln(VAP)", "$ln(VAP)^{2}$", "\\% Over 65", 
-               "n races", "\\% OOH", "ln(Median Income)", "Imputed", "Districtwide", 
+               "n races", "\\% OOH", "ln(Median Income)", 
                "Exurb", "Rural", "\\% Bach. +", "Fall Turnout", 
                "Lag x 2011", "Lag x 2012")
 
@@ -1715,31 +1715,32 @@ apsrtable(lagModroll, DIDmodroll, FEmodRoll, se = "robust", stars = "default",
           label = "tab:causRoll", notes = list(stars.note, omitNote), 
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
-                         expression(grep("distid", coefnames, value=TRUE))), 
-          size="footnotesize")
+                         expression(grep("distid", coefnames, value=TRUE)), 
+                         "distWidemix", "ImputedFlag"), 
+          size="scriptsize")
 @
 
 \clearpage
 
+
+% List effects and magnitudes
+
 \begin{table}[h!]
 \begin{center}
-\begin{small}
 \caption{Summary of Causal Relationship of Act 10 Reforms on Board Elections}
 \label{tab:act10resSummary}
+\begin{footnotesize}
 \begin{tabular}{| p{.24\textwidth} | p{.11\textwidth} | p{.11\textwidth} | 
       p{.44\textwidth} |} \hline
 DV / Variable & expected & observed & evidence \\ \hline
-Contested Race & + & null & no statistical significance, wrong sign \\ \hline
 Contested Race (ser) & + & null & no statistical significance, wrong sign \\ \hline
-Competitiveness & + & -  & weakly positive, statistically significant for one year in 
-diff in diff, not for FE\\ \hline
-Incumbent Defeat & + & - & weakly negative, weak statistical significance, only one year\\ \hline 
+Competitiveness & + & -  & statistically significant decrease in competitiveness\\ \hline
+Incumbent Defeat & + & null & no effects\\ \hline 
 Turnout & + & + & diff in diff weakly negative, overall effect positive in both 
 years \\ \hline
-Rolloff & - & + & decrease in year 2, but incorrect sign, statistical significance 
-in FE models\\ \hline
+Rolloff & - & + & rolloff increases in all models, dip in rolloff in 2012 \\ \hline
 \end{tabular}
-\end{small}
+\end{footnotesize}
 \end{center}
 \end{table}
 
@@ -1810,7 +1811,7 @@ from the Act 10 shock to lead to turnover and change in school boards. Now, I
 turn my attention to the mediation analysis to attempt to unpack these questions. 
 
 
-<<bldiffindiff, fig.cap="Average Fitted Value over Realistic Value">>=
+<<bldiffindiff, fig.cap="Average Fitted Value over Realistic Value", fig.show='hide'>>=
 summPlot <- ddply(plotdf2, .(year), summarize, 
                   meanEff = mean(plotPred))
 
@@ -2534,7 +2535,7 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
            stars = "default", coef.names = coefNames1, 
           caption = "Mediation Estimates of Recall on Board Elections", 
           label = "tab:recallAllMed", notes = list(stars.note), Sweave = FALSE, 
-          size="footnotesize")
+          size="scriptsize")
 
 recallMedTable <- apsrtable(full1, full3, full4, full5, full6, 
                             se = "robust", digits = 3, 

@@ -865,6 +865,8 @@ the rolloff of voters in the spring election. Finally, I conclude by interpretin
 the substantive effect of these variables to weigh how large the effects of 
 these characteristics might be on school board election turnout. 
 
+%TODO: Check out districtwide vs. distWideMix
+
 \subsection{Habit Forming Voters}
 
 
@@ -890,53 +892,56 @@ variation in turnout for spring non-partisan school board elections.
 
 
 
-\begin{tiny}
+
 \begin{table}[!ht]
 \caption{Partial Pooling Model of Lagged Turnout}
 \label{tab:meTurnout} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ No Fall Turnout } & \multicolumn{ 1 }{ c }{ Fall Turnout } \\ \hline
  %                  & No Fall Turnout & Fall Turnout   \\ 
-Intercept          & -0.022          & -0.015         \\ 
-                   & (0.066)         & (0.067)        \\ 
-Lagged Turnout (2) & 0.074 ^{***}    & 0.066 ^{***}   \\ 
+Intercept          & -0.007          & -0.010         \\ 
+                   & (0.062)         & (0.063)        \\ 
+Lagged Turnout (2) & 0.076 ^{***}    & 0.067 ^{***}   \\ 
                    & (0.017)         & (0.017)        \\ 
-ln(VAP)            & -0.293 ^{***}   & -1.618 ^{***}  \\ 
-                   & (0.027)         & (0.276)        \\ 
-\% White          & -0.029          & 0.000          \\ 
+ln(VAP)            & -0.297 ^{***}   & -1.667 ^{***}  \\ 
+                   & (0.027)         & (0.273)        \\ 
+\% White          & -0.022          & 0.009          \\ 
                    & (0.031)         & (0.030)        \\ 
-\% Over 65        & 0.171 ^{***}    & 0.179 ^{***}   \\ 
-                   & (0.032)         & (0.032)        \\ 
-\% Bach. +        & 0.144 ^{***}    & 0.056          \\ 
+\% Over 65        & 0.169 ^{***}    & 0.177 ^{***}   \\ 
+                   & (0.032)         & (0.031)        \\ 
+\% Bach. +        & 0.140 ^{***}    & 0.055          \\ 
                    & (0.035)         & (0.039)        \\ 
-\% OOH            & -0.004          & 0.006          \\ 
+\% OOH            & -0.013          & -0.002         \\ 
                    & (0.035)         & (0.034)        \\ 
-ln(MedianIncome)   & 0.103 ^*        & 0.048          \\ 
+ln(MedianIncome)   & 0.110 ^*        & 0.056          \\ 
                    & (0.045)         & (0.045)        \\ 
-District-wide      & 0.025           & 0.012          \\ 
-                   & (0.028)         & (0.028)        \\ 
-Blais-Lago         & 0.074 ^{***}    & 0.072 ^{***}   \\ 
+District-wide      & 0.120 ^{**}     & 0.121 ^{**}    \\ 
+                   & (0.043)         & (0.042)        \\ 
+Blais-Lago         & 0.082 ^{***}    & 0.078 ^{***}   \\ 
                    & (0.016)         & (0.016)        \\ 
-Fall Turnout       &                 & 0.157 ^{***}   \\ 
+Fall Turnout       &                 & 0.152 ^{***}   \\ 
                    &                 & (0.034)        \\ 
-$ln(VAP)^{2}$      &                 & 1.358 ^{***}   \\ 
-                   &                 & (0.278)         \\
+$ln(VAP)^{2}$      &                 & 1.402 ^{***}   \\ 
+                   &                 & (0.275)         \\
  $N$                & 2398            & 2398           \\ 
-AIC                & 1906.823        & 1870.351       \\ 
+AIC                & 1899.756        & 1862.447       \\ 
 N Groups           & 310 | 10        & 310 | 10       \\ 
 Group Names        & distid | year   & distid | year  \\ 
 Group:distid Effs. & (Intercept)     & (Intercept)    \\ 
 Group:year Effs.   & (Intercept)     & (Intercept)    \\ 
-Group:distid Var.  & 0.17            & 0.163          \\ 
-Group:year Var.    & 0.189           & 0.194          \\ 
-Sigma              & 0.331           & 0.3292          \\ \hline
+Group:distid Var.  & 0.168           & 0.161          \\ 
+Group:year Var.    & 0.19            & 0.194          \\ 
+Sigma              & 0.3308          & 0.3289          \\ \hline
  \multicolumn{3}{l}{\footnotesize{All variables grand-mean scaled and centered.}}\\
 \multicolumn{3}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{table}
 
-\end{tiny}
+
 
 
 
@@ -975,53 +980,56 @@ have an effect on turnout is not confirmed here - the interaction term
 is not statistically significant although it is in the right direction.\footnote{The fixed 
 effect models are largely the same?}
 
-\begin{tiny}
+
 \begin{table}[!ht]
 \caption{Partial Pooling Models of Competitiveness}
 \label{tab:meClose} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ No Interaction } & \multicolumn{ 1 }{ c }{ Interaction } \\ \hline
  %                  & No Interaction & Interaction   \\ 
-Intercept          & -0.012         & -0.014        \\ 
-                   & (0.076)        & (0.076)       \\ 
-ln(VAP)            & -1.790 ^{***}  & -1.759 ^{***} \\ 
-                   & (0.315)        & (0.318)       \\ 
-$ln(VAP)^{2}$      & 1.464 ^{***}   & 1.430 ^{***}  \\ 
-                   & (0.318)        & (0.322)       \\ 
-\% White          & 0.007          & 0.007         \\ 
+Intercept          & 0.006          & 0.004         \\ 
+                   & (0.072)        & (0.072)       \\ 
+ln(VAP)            & -1.863 ^{***}  & -1.820 ^{***} \\ 
+                   & (0.312)        & (0.315)       \\ 
+$ln(VAP)^{2}$      & 1.532 ^{***}   & 1.486 ^{***}  \\ 
+                   & (0.316)        & (0.319)       \\ 
+\% White          & 0.016          & 0.016         \\ 
                    & (0.035)        & (0.035)       \\ 
-\% Over 65        & 0.227 ^{***}   & 0.226 ^{***}  \\ 
+\% Over 65        & 0.226 ^{***}   & 0.225 ^{***}  \\ 
                    & (0.036)        & (0.036)       \\ 
-\% Bach. +        & 0.165 ^{***}   & 0.165 ^{***}  \\ 
+\% Bach. +        & 0.161 ^{***}   & 0.161 ^{***}  \\ 
                    & (0.039)        & (0.039)       \\ 
-\% OOH            & 0.019          & 0.019         \\ 
-                   & (0.040)        & (0.040)       \\ 
-ln(MedianIncome)   & 0.103 ^*       & 0.104 ^*      \\ 
-                   & (0.050)        & (0.050)       \\ 
-District-wide      & 0.029          & 0.030         \\ 
-                   & (0.031)        & (0.031)       \\ 
-Incumbent Share    & -0.109 ^{***}  & -0.109 ^{***} \\ 
+\% OOH            & 0.011          & 0.010         \\ 
+                   & (0.039)        & (0.039)       \\ 
+ln(MedianIncome)   & 0.111 ^*       & 0.113 ^*      \\ 
+                   & (0.049)        & (0.049)       \\ 
+District-wide      & 0.135 ^{**}    & 0.139 ^{**}   \\ 
+                   & (0.047)        & (0.047)       \\ 
+Incumbent Share    & -0.107 ^{***}  & -0.107 ^{***} \\ 
                    & (0.016)        & (0.016)       \\ 
-Blais-Lago         & 0.044 ^*       & 0.047 ^*      \\ 
-                   & (0.019)        & (0.019)       \\ 
-VAP x Blais-Lago   &                & 0.026         \\ 
+Blais-Lago         & 0.053 ^{**}    & 0.057 ^{**}   \\ 
+                   & (0.018)        & (0.019)       \\ 
+VAP x Blais-Lago   &                & 0.037         \\ 
                    &                & (0.040)        \\
  $N$                & 2398           & 2398          \\ 
-AIC                & 2283.844       & 2288.036      \\ 
+AIC                & 2275.662       & 2279.413      \\ 
 N Groups           & 310 | 10       & 310 | 10      \\ 
 Group Names        & distid | year  & distid | year \\ 
 Group:distid Effs. & (Intercept)    & (Intercept)   \\ 
 Group:year Effs.   & (Intercept)    & (Intercept)   \\ 
-Group:distid Var.  & 0.197          & 0.197         \\ 
-Group:year Var.    & 0.218          & 0.219         \\ 
-Sigma              & 0.3544         & 0.3545         \\ \hline
+Group:distid Var.  & 0.195          & 0.195         \\ 
+Group:year Var.    & 0.219          & 0.22          \\ 
+Sigma              & 0.3541         & 0.3542         \\ \hline
  \multicolumn{3}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
 \multicolumn{3}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{table}
 
-\end{tiny}
+
 
 
 
@@ -1071,54 +1079,56 @@ that worries critics of special purpose governments like school districts
 \citep{fosterK,burnsN,berry2}. 
 
 
-\begin{tiny}
+
 \begin{table}[!ht]
 \caption{Partial Pooling Model of Staff Influence}
 \label{tab:meInf} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Model 1 } & \multicolumn{ 1 }{ c }{ Model 2 } & \multicolumn{ 1 }{ c }{ Model 3 } \\ \hline
  %                             & Model 1           & Model 2           & Model 3          \\ 
-Intercept                     & -0.008            & -0.020            & -0.007           \\ 
-                              & (0.075)           & (0.076)           & (0.075)          \\ 
-Teacher \% SB Vote           & -0.044 ^*         & -0.035 ^\dagger  & -0.045 ^*        \\ 
+Intercept                     & 0.005             & 0.006             & 0.005            \\ 
+                              & (0.071)           & (0.071)           & (0.071)          \\ 
+Teacher \% SB Vote           & -0.046 ^*         & -0.037 ^\dagger  & -0.047 ^*        \\ 
                               & (0.018)           & (0.019)           & (0.019)          \\ 
-Blais-Lago                    & 0.044 ^*          & 0.044 ^*          & 0.044 ^*         \\ 
-                              & (0.019)           & (0.019)           & (0.019)          \\ 
-ln(VAP)                       & -1.816 ^{***}     & -0.355 ^{***}     & -1.828 ^{***}    \\ 
-                              & (0.305)           & (0.030)           & (0.306)          \\ 
-$ln(VAP)^{2}$                 & 1.484 ^{***}      &                   & 1.496 ^{***}     \\ 
-                              & (0.308)           &                   & (0.310)          \\ 
-\% White                     & -0.000            & -0.033            & -0.002           \\ 
+Blais-Lago                    & 0.052 ^{**}       & 0.054 ^{**}       & 0.052 ^{**}      \\ 
+                              & (0.018)           & (0.018)           & (0.018)          \\ 
+ln(VAP)                       & -1.886 ^{***}     & -0.360 ^{***}     & -1.899 ^{***}    \\ 
+                              & (0.301)           & (0.030)           & (0.303)          \\ 
+$ln(VAP)^{2}$                 & 1.548 ^{***}      &                   & 1.563 ^{***}     \\ 
+                              & (0.305)           &                   & (0.306)          \\ 
+\% White                     & 0.009             & -0.028            & 0.007            \\ 
                               & (0.034)           & (0.035)           & (0.034)          \\ 
-\% Over 65                   & 0.215 ^{***}      & 0.191 ^{***}      & 0.215 ^{***}     \\ 
+\% Over 65                   & 0.213 ^{***}      & 0.188 ^{***}      & 0.213 ^{***}     \\ 
                               & (0.035)           & (0.036)           & (0.035)          \\ 
-\% Bach. +                   & 0.162 ^{***}      & 0.164 ^{***}      & 0.160 ^{***}     \\ 
+\% Bach. +                   & 0.157 ^{***}      & 0.160 ^{***}      & 0.155 ^{***}     \\ 
                               & (0.038)           & (0.040)           & (0.038)          \\ 
-\% OOH                       & 0.020             & -0.003            & 0.019            \\ 
+\% OOH                       & 0.012             & -0.012            & 0.011            \\ 
                               & (0.038)           & (0.039)           & (0.038)          \\ 
-ln(MedianIncome)              & 0.101 ^*          & 0.109 ^*          & 0.103 ^*         \\ 
-                              & (0.048)           & (0.050)           & (0.049)          \\ 
-District-wide                 & 0.023             & 0.038             & 0.022            \\ 
-                              & (0.031)           & (0.031)           & (0.031)          \\ 
-Incumbent Share               & -0.110 ^{***}     & -0.110 ^{***}     & -0.110 ^{***}    \\ 
+ln(MedianIncome)              & 0.109 ^*          & 0.118 ^*          & 0.112 ^*         \\ 
+                              & (0.048)           & (0.050)           & (0.048)          \\ 
+District-wide                 & 0.135 ^{**}       & 0.123 ^*          & 0.135 ^{**}      \\ 
+                              & (0.046)           & (0.047)           & (0.046)          \\ 
+Incumbent Share               & -0.108 ^{***}     & -0.108 ^{***}     & -0.108 ^{***}    \\ 
                               & (0.016)           & (0.016)           & (0.016)          \\ 
-Teacher \% of SB X Inc Share &                   & 0.003             & -0.013           \\ 
-                              &                   & (0.033)           & (0.032)           \\
+Teacher \% of SB X Inc Share &                   & -0.000            & -0.016           \\ 
+                              &                   & (0.032)           & (0.032)           \\
  $N$                           & 2398              & 2398              & 2398             \\ 
-AIC                           & 2285.102          & 2312.031          & 2289.963         \\ 
+AIC                           & 2276.409          & 2305.798          & 2281.199         \\ 
 N Groups                      & 310 | 10          & 310 | 10          & 310 | 10         \\ 
 Group Names                   & distid | year     & distid | year     & distid | year    \\ 
 Group:distid Effs.            & (Intercept)       & (Intercept)       & (Intercept)      \\ 
 Group:year Effs.              & (Intercept)       & (Intercept)       & (Intercept)      \\ 
-Group:distid Var.             & 0.186             & 0.197             & 0.186            \\ 
-Group:year Var.               & 0.217             & 0.217             & 0.217            \\ 
-Sigma                         & 0.3559            & 0.3559            & 0.356             \\ \hline
+Group:distid Var.             & 0.184             & 0.196             & 0.184            \\ 
+Group:year Var.               & 0.218             & 0.218             & 0.218            \\ 
+Sigma                         & 0.3557            & 0.3557            & 0.3557            \\ \hline
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{table}
 
-\end{tiny}
 
 
 
@@ -1140,63 +1150,66 @@ they are non-partisan the party leadership has little incentive to prioritize th
 
 
 
-\begin{tiny}
+
 \begin{table}[!ht]
 \caption{Partial Pooling Model of Partisanship}
 \label{tab:mePartisan} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Division } & \multicolumn{ 1 }{ c }{ Democrat } \\ \hline
  %                    & Division         & Democrat        \\ 
-Intercept            & -0.016           & -0.019          \\ 
-                     & (0.068)          & (0.069)         \\ 
-Fall Party Divide    & 0.017            &                 \\ 
+Intercept            & -0.006           & -0.009          \\ 
+                     & (0.064)          & (0.064)         \\ 
+Fall Party Divide    & 0.013            &                 \\ 
                      & (0.026)          &                 \\ 
-Fall Turnout         & 0.175 ^{***}     & 0.175 ^{***}    \\ 
+Fall Turnout         & 0.173 ^{***}     & 0.173 ^{***}    \\ 
                      & (0.036)          & (0.037)         \\ 
-Blais-Lago           & 0.061 ^{***}     & 0.061 ^{***}    \\ 
+Blais-Lago           & 0.067 ^{***}     & 0.067 ^{***}    \\ 
                      & (0.017)          & (0.017)         \\ 
-ln(VAP)              & -1.863 ^{***}    & -2.093 ^{***}   \\ 
-                     & (0.310)          & (0.370)         \\ 
-$ln(VAP)^{2}$        & 1.547 ^{***}     & 1.781 ^{***}    \\ 
-                     & (0.313)          & (0.376)         \\ 
-\% White            & -0.006           & -0.003          \\ 
+ln(VAP)              & -1.924 ^{***}    & -2.139 ^{***}   \\ 
+                     & (0.308)          & (0.368)         \\ 
+$ln(VAP)^{2}$        & 1.605 ^{***}     & 1.823 ^{***}    \\ 
+                     & (0.311)          & (0.373)         \\ 
+\% White            & 0.001            & 0.003           \\ 
                      & (0.035)          & (0.036)         \\ 
 \% Over 65          & 0.212 ^{***}     & 0.207 ^{***}    \\ 
                      & (0.035)          & (0.036)         \\ 
-\% Bach. +          & 0.027            & 0.026           \\ 
-                     & (0.043)          & (0.043)         \\ 
-\% OOH              & -0.008           & -0.016          \\ 
-                     & (0.038)          & (0.039)         \\ 
-ln(MedianIncome)     & 0.086 ^\dagger  & 0.087 ^\dagger \\ 
+\% Bach. +          & 0.025            & 0.024           \\ 
+                     & (0.042)          & (0.043)         \\ 
+\% OOH              & -0.015           & -0.021          \\ 
+                     & (0.038)          & (0.038)         \\ 
+ln(MedianIncome)     & 0.094 ^\dagger  & 0.095 ^\dagger \\ 
                      & (0.048)          & (0.050)         \\ 
-District-wide        & 0.018            & 0.017           \\ 
-                     & (0.029)          & (0.029)         \\ 
-Incumbent Share      & -0.110 ^{***}    & -0.110 ^{***}   \\ 
+District-wide        & 0.120 ^*         & 0.117 ^*        \\ 
+                     & (0.044)          & (0.044)         \\ 
+Incumbent Share      & -0.109 ^{***}    & -0.109 ^{***}   \\ 
                      & (0.015)          & (0.015)         \\ 
-Party Division x VAP & -0.010           &                 \\ 
+Party Division x VAP & -0.016           &                 \\ 
                      & (0.038)          &                 \\ 
-Fall 2 Party Dem.    &                  & -0.018          \\ 
+Fall 2 Party Dem.    &                  & -0.015          \\ 
                      &                  & (0.030)         \\ 
-$2 Party Dem^{2}$    &                  & 0.023           \\ 
+$2 Party Dem^{2}$    &                  & 0.015           \\ 
                      &                  & (0.038)         \\ 
-2 Party Dem x VAP    &                  & -0.056          \\ 
+2 Party Dem x VAP    &                  & -0.052          \\ 
                      &                  & (0.048)          \\
  $N$                  & 3013             & 3013            \\ 
-AIC                  & 2898.833         & 2901.424        \\ 
+AIC                  & 2890.989         & 2893.913        \\ 
 N Groups             & 310 | 11         & 310 | 11        \\ 
 Group Names          & distid | year    & distid | year   \\ 
 Group:distid Effs.   & (Intercept)      & (Intercept)     \\ 
 Group:year Effs.     & (Intercept)      & (Intercept)     \\ 
-Group:distid Var.    & 0.202            & 0.203           \\ 
+Group:distid Var.    & 0.201            & 0.202           \\ 
 Group:year Var.      & 0.206            & 0.206           \\ 
-Sigma                & 0.3582           & 0.3581           \\ \hline
+Sigma                & 0.3579           & 0.3578           \\ \hline
  \multicolumn{3}{l}{\footnotesize{Model includes both year and district random effects modeled as intercepts.}}\\
 \multicolumn{3}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{table}
 
-\end{tiny}
+
 
 
 
@@ -1226,59 +1239,61 @@ top ticket race would be 1,876. Thus ballot fatigue is not that uncommon and mat
 elections elsewhere \citep{streb09,wattenberg00}.
 
 
-\begin{tiny}
+
 \begin{table}[!ht]
 \caption{Partial Pooling Model of School Board Rolloff}
 \label{tab:meUndv1} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ Close Race } \\ \hline
  %                  & Lag              & Close Race      \\ 
-Intercept          & 0.397 ^{***}     & 0.413 ^{***}    \\ 
-                   & (0.095)          & (0.101)         \\ 
+Intercept          & 0.371 ^{***}     & 0.384 ^{***}    \\ 
+                   & (0.089)          & (0.095)         \\ 
 Turnout Lag (2)    & -0.067 ^{**}     &                 \\ 
                    & (0.023)          &                 \\ 
-Fall Turnout       & 0.113 ^*         & 0.092 ^\dagger \\ 
+Fall Turnout       & 0.113 ^*         & 0.093 ^\dagger \\ 
                    & (0.052)          & (0.053)         \\ 
-ln(VAP)            & 1.589 ^{***}     & 1.533 ^{***}    \\ 
-                   & (0.387)          & (0.402)         \\ 
-$ln(VAP)^{2}$      & -1.318 ^{**}     & -1.227 ^{**}    \\ 
-                   & (0.391)          & (0.407)         \\ 
-\% White          & 0.049            & 0.052           \\ 
+ln(VAP)            & 1.622 ^{***}     & 1.574 ^{***}    \\ 
+                   & (0.386)          & (0.401)         \\ 
+$ln(VAP)^{2}$      & -1.351 ^{**}     & -1.266 ^{**}    \\ 
+                   & (0.390)          & (0.406)         \\ 
+\% White          & 0.049            & 0.050           \\ 
+                   & (0.045)          & (0.047)         \\ 
+\% Over 65        & -0.002           & -0.007          \\ 
                    & (0.045)          & (0.046)         \\ 
-\% Over 65        & -0.001           & -0.006          \\ 
-                   & (0.045)          & (0.046)         \\ 
-\% Bach. +        & 0.021            & 0.029           \\ 
+\% Bach. +        & 0.020            & 0.028           \\ 
                    & (0.058)          & (0.060)         \\ 
-\% OOH            & 0.105 ^*         & 0.111 ^*        \\ 
+\% OOH            & 0.106 ^*         & 0.113 ^*        \\ 
                    & (0.049)          & (0.051)         \\ 
-ln(MedianIncome)   & -0.141 ^*        & -0.151 ^*       \\ 
+ln(MedianIncome)   & -0.142 ^*        & -0.154 ^*       \\ 
                    & (0.066)          & (0.068)         \\ 
-District-wide      & -0.031           & -0.035          \\ 
-                   & (0.038)          & (0.039)         \\ 
-Incumbent Share    & 0.032            & 0.031           \\ 
+District-wide      & -0.019           & -0.039          \\ 
+                   & (0.058)          & (0.059)         \\ 
+Incumbent Share    & 0.031            & 0.029           \\ 
                    & (0.020)          & (0.020)         \\ 
-Imputed            & -0.396 ^{***}    & -0.402 ^{***}   \\ 
+Imputed            & -0.395 ^{***}    & -0.400 ^{***}   \\ 
                    & (0.049)          & (0.048)         \\ 
-Blais-Lago         & 0.004            & -0.014          \\ 
+Blais-Lago         & -0.001           & -0.019          \\ 
                    & (0.023)          & (0.023)         \\ 
-Blais-Lago x VAP   &                  & -0.183 ^{***}   \\ 
+Blais-Lago x VAP   &                  & -0.185 ^{***}   \\ 
                    &                  & (0.048)          \\
  $N$                & 1705             & 1705            \\ 
-AIC                & 1815.218         & 1833.982        \\ 
+AIC                & 1815.777         & 1833.516        \\ 
 N Groups           & 310 | 6          & 310 | 6         \\ 
 Group Names        & distid | year    & distid | year   \\ 
 Group:distid Effs. & (Intercept)      & (Intercept)     \\ 
 Group:year Effs.   & (Intercept)      & (Intercept)     \\ 
 Group:distid Var.  & 0.242            & 0.256           \\ 
-Group:year Var.    & 0.183            & 0.201           \\ 
-Sigma              & 0.3623           & 0.3599           \\ \hline
+Group:year Var.    & 0.183            & 0.2             \\ 
+Sigma              & 0.3623           & 0.36             \\ \hline
  \multicolumn{3}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{table}
 
 
-\end{tiny}
 
 Table \ref{tab:meUndv1} shows the results of the first three types of models investigated 
 above for turnout. Note that here the sign is flipped -- the smaller the dependent 
@@ -1298,43 +1313,43 @@ and then they persevere. This interpretation is further bolstered by the large
 effect that district size has on rolloff -- larger districts have significantly 
 more rolloff for school board races. 
 
-\begin{tiny}
 \begin{table}[!ht]
 \caption{Partial Pooling Model of School Board Rolloff}
 \label{tab:meUndv2} 
-\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Teach. Infl. } & \multicolumn{ 1 }{ c }{ Teach. Infl. 2 } & \multicolumn{ 1 }{ c }{ Party Infl. } & \multicolumn{ 1 }{ c }{ Party Divide } \\ \hline
  %                     & Teach. Infl.     & Teach. Infl. 2   & Party Infl.      & Party Divide    \\ 
-Intercept             & 0.42 ^{***}      & 0.40 ^{***}      & 0.41 ^{***}      & 0.40 ^{***}     \\ 
+Intercept             & 0.41 ^{***}      & 0.38 ^{***}      & 0.38 ^{***}      & 0.38 ^{***}     \\ 
                       & (0.10)           & (0.10)           & (0.10)           & (0.10)          \\ 
 Teacher Share VAP     & 0.16 ^*          &                  &                  &                 \\ 
                       & (0.06)           &                  &                  &                 \\ 
-Fall Turnout          & 0.09 ^\dagger   & 0.09 ^\dagger   & 0.13 ^*          & 0.08            \\ 
+Fall Turnout          & 0.09 ^\dagger   & 0.10 ^\dagger   & 0.13 ^*          & 0.08            \\ 
                       & (0.05)           & (0.05)           & (0.05)           & (0.05)          \\ 
-Blais-Lago            & 0.00             & 0.00             & 0.00             & 0.01            \\ 
+Blais-Lago            & 0.00             & -0.00            & 0.00             & 0.01            \\ 
                       & (0.02)           & (0.02)           & (0.02)           & (0.02)          \\ 
-ln(VAP)               & 1.44 ^*          & 1.83 ^{***}      & 1.31 ^{**}       & 1.91 ^{***}     \\ 
+ln(VAP)               & 1.45 ^*          & 1.86 ^{***}      & 1.35 ^{**}       & 1.94 ^{***}     \\ 
                       & (0.53)           & (0.40)           & (0.47)           & (0.40)          \\ 
-$ln(VAP)^{2}$         & -1.06 ^\dagger  & -1.54 ^{***}     & -1.02 ^*         & -1.64 ^{***}    \\ 
+$ln(VAP)^{2}$         & -1.06 ^\dagger  & -1.57 ^{***}     & -1.05 ^*         & -1.68 ^{***}    \\ 
                       & (0.53)           & (0.41)           & (0.48)           & (0.40)          \\ 
 \% White             & 0.07             & 0.06             & 0.06             & 0.07            \\ 
                       & (0.05)           & (0.05)           & (0.05)           & (0.05)          \\ 
 \% Over 65           & -0.00            & -0.01            & 0.00             & -0.01           \\ 
                       & (0.05)           & (0.05)           & (0.05)           & (0.05)          \\ 
-\% Bach. +           & 0.03             & 0.04             & -0.03            & 0.04            \\ 
+\% Bach. +           & 0.03             & 0.03             & -0.03            & 0.04            \\ 
                       & (0.06)           & (0.06)           & (0.06)           & (0.06)          \\ 
 \% OOH               & 0.08             & 0.11 ^*          & 0.11 ^*          & 0.12 ^*         \\ 
                       & (0.05)           & (0.05)           & (0.05)           & (0.05)          \\ 
 ln(MedianIncome)      & -0.13 ^\dagger  & -0.16 ^*         & -0.07            & -0.17 ^*        \\ 
                       & (0.07)           & (0.07)           & (0.07)           & (0.07)          \\ 
-District-wide         & -0.02            & -0.03            & -0.03            & -0.02           \\ 
-                      & (0.04)           & (0.04)           & (0.04)           & (0.04)          \\ 
-Incumbent Share       & 0.03             & 0.03             & 0.04 ^\dagger   & 0.04 ^\dagger  \\ 
+District-wide         & -0.01            & -0.02            & -0.01            & -0.03           \\ 
+                      & (0.06)           & (0.06)           & (0.06)           & (0.06)          \\ 
+Incumbent Share       & 0.03             & 0.03             & 0.03 ^\dagger   & 0.04 ^\dagger  \\ 
                       & (0.02)           & (0.02)           & (0.02)           & (0.02)          \\ 
 Imputed               & -0.40 ^{***}     & -0.40 ^{***}     & -0.41 ^{***}     & -0.41 ^{***}    \\ 
                       & (0.05)           & (0.05)           & (0.05)           & (0.05)          \\ 
-Teacher Share x VAP   & 0.18 ^*          &                  &                  &                 \\ 
+Teacher Share x VAP   & 0.19 ^*          &                  &                  &                 \\ 
                       & (0.08)           &                  &                  &                 \\ 
 Teach. Share of SB    &                  & 0.02             &                  &                 \\ 
                       &                  & (0.02)           &                  &                 \\ 
@@ -1346,22 +1361,23 @@ Fall Dem. X VAP       &                  &                  & -0.09            &
                       &                  &                  & (0.06)           &                 \\ 
 Fall Partisan         &                  &                  &                  & 0.07 ^\dagger  \\ 
                       &                  &                  &                  & (0.03)          \\ 
-Fall Partisan x VAP   &                  &                  &                  & 0.17 ^{**}      \\ 
+Fall Partisan x VAP   &                  &                  &                  & 0.17 ^{***}     \\ 
                       &                  &                  &                  & (0.05)           \\
  $N$                   & 1705             & 1705             & 1705             & 1705            \\ 
-AIC                   & 1843.49          & 1851.64          & 1839.03          & 1838.09         \\ 
+AIC                   & 1842.90          & 1851.15          & 1838.83          & 1837.27         \\ 
 N Groups              & 310 | 6          & 310 | 6          & 310 | 6          & 310 | 6         \\ 
 Group Names           & distid | year    & distid | year    & distid | year    & distid | year   \\ 
 Group:distid Effs.    & (Intercept)      & (Intercept)      & (Intercept)      & (Intercept)     \\ 
 Group:year Effs.      & (Intercept)      & (Intercept)      & (Intercept)      & (Intercept)     \\ 
 Group:distid Var.     & 0.25             & 0.26             & 0.25             & 0.25            \\ 
 Group:year Var.       & 0.2              & 0.2              & 0.21             & 0.2             \\ 
-Sigma                 & 0.3615           & 0.3611           & 0.3611           & 0.361            \\ \hline
+Sigma                 & 0.3616           & 0.3612           & 0.3612           & 0.361            \\ \hline
  \multicolumn{5}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{table}
 
-\end{tiny}
 
 
 Table \ref{tab:meUndv2} which shows the models for interest group influence on 
@@ -1899,28 +1915,28 @@ predicting turnout.
 ## 	(p-value based on 10000 simulated values)
 ## 
 ## data:  
-## RLRT = 123.8164, p-value < 2.2e-16
+## RLRT = 120.087, p-value < 2.2e-16
 ## 
 ## 	simulated finite sample distribution of RLRT.
 ## 	
 ## 	(p-value based on 10000 simulated values)
 ## 
 ## data:  
-## RLRT = 244.8971, p-value < 2.2e-16
+## RLRT = 239.985, p-value < 2.2e-16
 ## 
 ## 	simulated finite sample distribution of RLRT.
 ## 	
 ## 	(p-value based on 10000 simulated values)
 ## 
 ## data:  
-## RLRT = 345.5048, p-value < 2.2e-16
+## RLRT = 342.7272, p-value < 2.2e-16
 ## 
 ## 	simulated finite sample distribution of RLRT.
 ## 	
 ## 	(p-value based on 10000 simulated values)
 ## 
 ## data:  
-## RLRT = 245.7539, p-value < 2.2e-16
+## RLRT = 241.9439, p-value < 2.2e-16
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1935,42 +1951,45 @@ District fixed effect model results.
 \begin{sidewaystable}[!ht]
 \caption{Models of Lagged Turnout in School Board Elections}
 \label{tab:lagmods} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Fall Turnout } & \multicolumn{ 1 }{ c }{ Dist/Year FE } \\ \hline
  %                  & Simple           & Fall Turnout     & Dist/Year FE    \\ 
-Intercept          & -0.020           & 0.483            & 0.240           \\ 
-                   & (0.027)          & (0.301)          & (0.291)         \\ 
-Lagged Turnout (2) & 0.188 ^{***}     & -0.052 ^*        & -0.048 ^*       \\ 
-                   & (0.027)          & (0.021)          & (0.021)         \\ 
-Fall Turnout       & 0.102 ^{**}      & 0.277 ^{***}     &                 \\ 
+Intercept          & -0.021 ^*        & 0.567 ^\dagger  & 0.323           \\ 
+                   & (0.011)          & (0.296)          & (0.287)         \\ 
+Lagged Turnout (2) & 0.187 ^{***}     & -0.052 ^*        & -0.048 ^*       \\ 
+                   & (0.026)          & (0.021)          & (0.021)         \\ 
+Fall Turnout       & 0.097 ^{**}      & 0.276 ^{***}     &                 \\ 
                    & (0.034)          & (0.079)          &                 \\ 
-ln(VAP)            & -1.335 ^{***}    & 1.081            & -1.807          \\ 
-                   & (0.265)          & (5.014)          & (4.957)         \\ 
-$ln(VAP)^{2}$      & 1.114 ^{***}     & -1.868           & 1.858           \\ 
-                   & (0.265)          & (5.095)          & (4.955)         \\ 
-\% White          & -0.022           & 0.484 ^\dagger  & 0.549 ^\dagger \\ 
-                   & (0.026)          & (0.284)          & (0.293)         \\ 
-\% Over 65        & 0.169 ^{***}     & 0.269 ^\dagger  & 0.309 ^*        \\ 
-                   & (0.034)          & (0.148)          & (0.148)         \\ 
-\% Bach. +        & 0.082 ^*         & -0.270           & -0.152          \\ 
+ln(VAP)            & -1.378 ^{***}    & 1.251            & -1.630          \\ 
+                   & (0.269)          & (5.007)          & (4.949)         \\ 
+$ln(VAP)^{2}$      & 1.152 ^{***}     & -2.031           & 1.685           \\ 
+                   & (0.270)          & (5.088)          & (4.947)         \\ 
+\% White          & -0.015           & 0.488 ^\dagger  & 0.553 ^\dagger \\ 
+                   & (0.027)          & (0.283)          & (0.292)         \\ 
+\% Over 65        & 0.167 ^{***}     & 0.270 ^\dagger  & 0.310 ^*        \\ 
+                   & (0.033)          & (0.148)          & (0.148)         \\ 
+\% Bach. +        & 0.082 ^*         & -0.276           & -0.158          \\ 
                    & (0.035)          & (0.186)          & (0.180)         \\ 
-\% OOH            & 0.003            & 0.128            & 0.167           \\ 
-                   & (0.035)          & (0.212)          & (0.218)         \\ 
-ln(MedianIncome)   & 0.075 ^\dagger  & -0.127           & -0.150          \\ 
-                   & (0.042)          & (0.140)          & (0.141)         \\ 
-District-wide      & 0.004            & 0.078 ^\dagger  & 0.076 ^\dagger \\ 
-                   & (0.030)          & (0.041)          & (0.041)         \\ 
-Blais-Lago         & 0.033            & 0.089 ^{***}     & 0.090 ^{***}    \\ 
-                   & (0.022)          & (0.020)          & (0.020)          \\
+\% OOH            & -0.004           & 0.122            & 0.161           \\ 
+                   & (0.035)          & (0.211)          & (0.217)         \\ 
+ln(MedianIncome)   & 0.081 ^\dagger  & -0.118           & -0.141          \\ 
+                   & (0.042)          & (0.139)          & (0.140)         \\ 
+District-wide      & 0.103 ^*         & 0.122 ^{**}      & 0.121 ^{**}     \\ 
+                   & (0.041)          & (0.041)          & (0.041)         \\ 
+Blais-Lago         & 0.044 ^*         & 0.089 ^{***}     & 0.091 ^{***}    \\ 
+                   & (0.021)          & (0.020)          & (0.020)          \\
  $N$                & 2398             & 2398             & 2398            \\ 
-$R^2$              & 0.199            & 0.569            & 0.566           \\ 
-adj. $R^2$         & 0.196            & 0.500            & 0.497           \\ 
+$R^2$              & 0.201            & 0.569            & 0.566           \\ 
+adj. $R^2$         & 0.198            & 0.501            & 0.497           \\ 
 Resid. sd          & 0.412            & 0.325            & 0.326            \\ \hline
  \multicolumn{4}{l}{\footnotesize{Standard errors clustered at the school district.}}\\
 \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted in models 2 and 3.}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{sidewaystable}
 
 \end{tiny}
@@ -1980,42 +1999,45 @@ Resid. sd          & 0.412            & 0.325            & 0.326            \\ \
 \begin{sidewaystable}[!ht]
 \caption{Models of Lagged Turnout in School Board Elections}
 \label{tab:lagmods2} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Fall Turnout } & \multicolumn{ 1 }{ c }{ Dist/Year FE } \\ \hline
  %                  & Simple           & Fall Turnout     & Dist/Year FE    \\ 
-Intercept          & -0.020           & 0.483            & 0.240           \\ 
-                   & (0.027)          & (0.301)          & (0.291)         \\ 
-Lagged Turnout (1) & 0.188 ^{***}     & -0.052 ^*        & -0.048 ^*       \\ 
-                   & (0.027)          & (0.021)          & (0.021)         \\ 
-Fall Turnout       & 0.102 ^{**}      & 0.277 ^{***}     &                 \\ 
+Intercept          & -0.021 ^*        & 0.567 ^\dagger  & 0.323           \\ 
+                   & (0.011)          & (0.296)          & (0.287)         \\ 
+Lagged Turnout (1) & 0.187 ^{***}     & -0.052 ^*        & -0.048 ^*       \\ 
+                   & (0.026)          & (0.021)          & (0.021)         \\ 
+Fall Turnout       & 0.097 ^{**}      & 0.276 ^{***}     &                 \\ 
                    & (0.034)          & (0.079)          &                 \\ 
-ln(VAP)            & -1.335 ^{***}    & 1.081            & -1.807          \\ 
-                   & (0.265)          & (5.014)          & (4.957)         \\ 
-$ln(VAP)^{2}$      & 1.114 ^{***}     & -1.868           & 1.858           \\ 
-                   & (0.265)          & (5.095)          & (4.955)         \\ 
-\% White          & -0.022           & 0.484 ^\dagger  & 0.549 ^\dagger \\ 
-                   & (0.026)          & (0.284)          & (0.293)         \\ 
-\% Over 65        & 0.169 ^{***}     & 0.269 ^\dagger  & 0.309 ^*        \\ 
-                   & (0.034)          & (0.148)          & (0.148)         \\ 
-\% Bach. +        & 0.082 ^*         & -0.270           & -0.152          \\ 
+ln(VAP)            & -1.378 ^{***}    & 1.251            & -1.630          \\ 
+                   & (0.269)          & (5.007)          & (4.949)         \\ 
+$ln(VAP)^{2}$      & 1.152 ^{***}     & -2.031           & 1.685           \\ 
+                   & (0.270)          & (5.088)          & (4.947)         \\ 
+\% White          & -0.015           & 0.488 ^\dagger  & 0.553 ^\dagger \\ 
+                   & (0.027)          & (0.283)          & (0.292)         \\ 
+\% Over 65        & 0.167 ^{***}     & 0.270 ^\dagger  & 0.310 ^*        \\ 
+                   & (0.033)          & (0.148)          & (0.148)         \\ 
+\% Bach. +        & 0.082 ^*         & -0.276           & -0.158          \\ 
                    & (0.035)          & (0.186)          & (0.180)         \\ 
-\% OOH            & 0.003            & 0.128            & 0.167           \\ 
-                   & (0.035)          & (0.212)          & (0.218)         \\ 
-ln(MedianIncome)   & 0.075 ^\dagger  & -0.127           & -0.150          \\ 
-                   & (0.042)          & (0.140)          & (0.141)         \\ 
-District-wide      & 0.004            & 0.078 ^\dagger  & 0.076 ^\dagger \\ 
-                   & (0.030)          & (0.041)          & (0.041)         \\ 
-Blais-Lago         & 0.033            & 0.089 ^{***}     & 0.090 ^{***}    \\ 
-                   & (0.022)          & (0.020)          & (0.020)          \\
+\% OOH            & -0.004           & 0.122            & 0.161           \\ 
+                   & (0.035)          & (0.211)          & (0.217)         \\ 
+ln(MedianIncome)   & 0.081 ^\dagger  & -0.118           & -0.141          \\ 
+                   & (0.042)          & (0.139)          & (0.140)         \\ 
+District-wide      & 0.103 ^*         & 0.122 ^{**}      & 0.121 ^{**}     \\ 
+                   & (0.041)          & (0.041)          & (0.041)         \\ 
+Blais-Lago         & 0.044 ^*         & 0.089 ^{***}     & 0.091 ^{***}    \\ 
+                   & (0.021)          & (0.020)          & (0.020)          \\
  $N$                & 2398             & 2398             & 2398            \\ 
-$R^2$              & 0.199            & 0.569            & 0.566           \\ 
-adj. $R^2$         & 0.196            & 0.500            & 0.497           \\ 
+$R^2$              & 0.201            & 0.569            & 0.566           \\ 
+adj. $R^2$         & 0.198            & 0.501            & 0.497           \\ 
 Resid. sd          & 0.412            & 0.325            & 0.326            \\ \hline
  \multicolumn{4}{l}{\footnotesize{Standard errors clustered at the school district.}}\\
 \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{Year and district fixed effects omitted in models 2 and 3.}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{sidewaystable}
 
 \end{tiny}
@@ -2025,42 +2047,45 @@ Resid. sd          & 0.412            & 0.325            & 0.326            \\ \
 \begin{table}[!ht]
 \caption{Models of Competitiveness and Turnout in School Board Elections}
 \label{tab:closemods} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ No Interact } & \multicolumn{ 1 }{ c }{ Interact + Year FE } \\ \hline
  %                  & No Interact        & Interact + Year FE\\ 
-Intercept          & 0.227              & 0.216             \\ 
-                   & (0.162)            & (0.311)           \\ 
-ln(VAP)            & -1.697 ^{***}      & -2.055            \\ 
-                   & (0.370)            & (5.403)           \\ 
-$ln(VAP)^{2}$      & 1.375 ^{***}       & 2.140             \\ 
-                   & (0.371)            & (5.391)           \\ 
-\% White          & -0.014             & 0.580 ^\dagger   \\ 
-                   & (0.040)            & (0.318)           \\ 
-\% Over 65        & 0.209 ^{***}       & 0.326 ^*          \\ 
-                   & (0.046)            & (0.155)           \\ 
-\% Bach. +        & 0.148 ^{***}       & -0.129            \\ 
+Intercept          & 0.235              & 0.308             \\ 
+                   & (0.159)            & (0.306)           \\ 
+ln(VAP)            & -1.765 ^{***}      & -1.863            \\ 
+                   & (0.376)            & (5.398)           \\ 
+$ln(VAP)^{2}$      & 1.438 ^{***}       & 1.954             \\ 
+                   & (0.379)            & (5.385)           \\ 
+\% White          & -0.005             & 0.585 ^\dagger   \\ 
+                   & (0.042)            & (0.317)           \\ 
+\% Over 65        & 0.205 ^{***}       & 0.327 ^*          \\ 
+                   & (0.046)            & (0.156)           \\ 
+\% Bach. +        & 0.144 ^{***}       & -0.136            \\ 
                    & (0.039)            & (0.188)           \\ 
-\% OOH            & -0.019             & 0.212             \\ 
-                   & (0.046)            & (0.229)           \\ 
-ln(MedianIncome)   & 0.141 ^{**}        & -0.193            \\ 
-                   & (0.050)            & (0.147)           \\ 
-District-wide      & 0.014              & 0.086 ^\dagger   \\ 
-                   & (0.037)            & (0.045)           \\ 
-Incumbent Share    & -0.142 ^{***}      & -0.090 ^{***}     \\ 
+\% OOH            & -0.028             & 0.205             \\ 
+                   & (0.046)            & (0.228)           \\ 
+ln(MedianIncome)   & 0.148 ^{**}        & -0.183            \\ 
+                   & (0.051)            & (0.147)           \\ 
+District-wide      & 0.137 ^{**}        & 0.134 ^{**}       \\ 
+                   & (0.052)            & (0.044)           \\ 
+Incumbent Share    & -0.137 ^{***}      & -0.090 ^{***}     \\ 
                    & (0.019)            & (0.018)           \\ 
-Blais-Lago         & 0.012              & 0.070 ^{***}      \\ 
-                   & (0.025)            & (0.021)           \\ 
-VAP x Blais-Lago   &                    & 0.030             \\ 
+Blais-Lago         & 0.030              & 0.071 ^{***}      \\ 
+                   & (0.024)            & (0.021)           \\ 
+VAP x Blais-Lago   &                    & 0.031             \\ 
                    &                    & (0.053)            \\
  $N$                & 2398               & 2398              \\ 
-$R^2$              & 0.357              & 0.570             \\ 
-adj. $R^2$         & 0.352              & 0.502             \\ 
-Resid. sd          & 0.403              & 0.353              \\ \hline
+$R^2$              & 0.360              & 0.571             \\ 
+adj. $R^2$         & 0.355              & 0.502             \\ 
+Resid. sd          & 0.402              & 0.353              \\ \hline
  \multicolumn{3}{l}{\footnotesize{Robust standard errors in parentheses}}\\
 \multicolumn{3}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{3}{l}{\footnotesize{Year and district fixed effects omitted.}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{table}
 
 \end{tiny}
@@ -2069,50 +2094,53 @@ Resid. sd          & 0.403              & 0.353              \\ \hline
 \begin{table}[!ht]
 \caption{Models of Unionization and Turnout in School Board Elections}
 \label{tab:teachmods} 
-\begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ RLM + District FE } & \multicolumn{ 1 }{ c }{ + Interaction } & \multicolumn{ 1 }{ c }{ Measure 2 } & \multicolumn{ 1 }{ c }{ Measure 2 + Interaction } \\ \hline
  %                       & RLM + District FE       & + Interaction           & Measure 2               & Measure 2 + Interaction\\ 
-Intercept               & 0.209                   & 0.233                   & 0.246                   & 0.246                  \\ 
-                        & (0.307)                 & (0.310)                 & (0.311)                 & (0.311)                \\ 
-Teacher \% VAP         & 0.116                   & 0.141                   &                         &                        \\ 
-                        & (0.102)                 & (0.088)                 &                         &                        \\ 
-Lag Turnout             & -0.054 ^*               & -0.053 ^*               & -0.024                  & -0.024                 \\ 
+Intercept               & 0.301                   & 0.327                   & 0.340                   & 0.340                  \\ 
+                        & (0.301)                 & (0.304)                 & (0.305)                 & (0.305)                \\ 
+Teacher \% VAP         & 0.112                   & 0.138                   &                         &                        \\ 
+                        & (0.101)                 & (0.087)                 &                         &                        \\ 
+Lag Turnout             & -0.054 ^*               & -0.054 ^*               & -0.025                  & -0.025                 \\ 
                         & (0.022)                 & (0.022)                 & (0.033)                 & (0.033)                \\ 
-Blais-Lago              & 0.065 ^{**}             & 0.065 ^{**}             & 0.065 ^{**}             & 0.065 ^{**}            \\ 
+Blais-Lago              & 0.065 ^{**}             & 0.066 ^{**}             & 0.066 ^{**}             & 0.066 ^{**}            \\ 
                         & (0.022)                 & (0.022)                 & (0.022)                 & (0.022)                \\ 
-ln(VAP)                 & -1.883                  & -2.632                  & -2.485                  & -2.486                 \\ 
-                        & (5.347)                 & (6.543)                 & (5.437)                 & (5.435)                \\ 
-$ln(VAP)^{2}$           & 2.259                   & 3.090                   & 2.631                   & 2.631                  \\ 
-                        & (5.296)                 & (6.604)                 & (5.443)                 & (5.441)                \\ 
-\% White               & 0.632 ^*                & 0.642 ^*                & 0.603 ^\dagger         & 0.604 ^\dagger        \\ 
-                        & (0.317)                 & (0.326)                 & (0.324)                 & (0.323)                \\ 
-\% Over 65             & 0.330 ^*                & 0.334 ^*                & 0.335 ^*                & 0.335 ^*               \\ 
+ln(VAP)                 & -1.710                  & -2.504                  & -2.288                  & -2.289                 \\ 
+                        & (5.343)                 & (6.538)                 & (5.429)                 & (5.427)                \\ 
+$ln(VAP)^{2}$           & 2.083                   & 2.965                   & 2.439                   & 2.440                  \\ 
+                        & (5.292)                 & (6.599)                 & (5.435)                 & (5.433)                \\ 
+\% White               & 0.635 ^*                & 0.646 ^*                & 0.608 ^\dagger         & 0.609 ^\dagger        \\ 
+                        & (0.316)                 & (0.325)                 & (0.323)                 & (0.323)                \\ 
+\% Over 65             & 0.331 ^*                & 0.335 ^*                & 0.335 ^*                & 0.335 ^*               \\ 
                         & (0.159)                 & (0.156)                 & (0.160)                 & (0.160)                \\ 
-\% Bach. +             & -0.164                  & -0.170                  & -0.140                  & -0.140                 \\ 
-                        & (0.199)                 & (0.194)                 & (0.193)                 & (0.192)                \\ 
-\% OOH                 & 0.218                   & 0.211                   & 0.205                   & 0.205                  \\ 
-                        & (0.233)                 & (0.233)                 & (0.233)                 & (0.233)                \\ 
-ln(MedianIncome)        & -0.190                  & -0.191                  & -0.181                  & -0.181                 \\ 
-                        & (0.148)                 & (0.148)                 & (0.150)                 & (0.150)                \\ 
-District-wide           & 0.084 ^\dagger         & 0.085 ^\dagger         & 0.086 ^*                & 0.086 ^*               \\ 
-                        & (0.043)                 & (0.044)                 & (0.044)                 & (0.044)                \\ 
+\% Bach. +             & -0.170                  & -0.177                  & -0.147                  & -0.147                 \\ 
+                        & (0.199)                 & (0.194)                 & (0.192)                 & (0.191)                \\ 
+\% OOH                 & 0.210                   & 0.203                   & 0.198                   & 0.198                  \\ 
+                        & (0.232)                 & (0.232)                 & (0.232)                 & (0.232)                \\ 
+ln(MedianIncome)        & -0.180                  & -0.181                  & -0.171                  & -0.171                 \\ 
+                        & (0.147)                 & (0.147)                 & (0.150)                 & (0.150)                \\ 
+District-wide           & 0.130 ^{**}             & 0.131 ^{**}             & 0.133 ^{**}             & 0.134 ^{**}            \\ 
+                        & (0.043)                 & (0.043)                 & (0.043)                 & (0.043)                \\ 
 Incumbent Share         & -0.092 ^{***}           & -0.092 ^{***}           & -0.090 ^{***}           & -0.090 ^{***}          \\ 
                         & (0.018)                 & (0.018)                 & (0.018)                 & (0.018)                \\ 
-Teacher \% X VAP       &                         & 0.073                   &                         &                        \\ 
+Teacher \% X VAP       &                         & 0.078                   &                         &                        \\ 
                         &                         & (0.213)                 &                         &                        \\ 
-Teacher \% of SB Vote  &                         &                         & 0.040                   & 0.040                  \\ 
+Teacher \% of SB Vote  &                         &                         & 0.039                   & 0.039                  \\ 
                         &                         &                         & (0.029)                 & (0.029)                \\ 
 Teacher \% of SB X VAP &                         &                         &                         & 0.001                  \\ 
                         &                         &                         &                         & (0.046)                 \\
  $N$                     & 2398                    & 2398                    & 2398                    & 2398                   \\ 
-$R^2$                   & 0.572                   & 0.572                   & 0.572                   & 0.572                  \\ 
-adj. $R^2$              & 0.504                   & 0.504                   & 0.504                   & 0.503                  \\ 
+$R^2$                   & 0.572                   & 0.573                   & 0.572                   & 0.572                  \\ 
+adj. $R^2$              & 0.504                   & 0.504                   & 0.504                   & 0.504                  \\ 
 Resid. sd               & 0.352                   & 0.352                   & 0.352                   & 0.352                   \\ \hline
  \multicolumn{5}{l}{\footnotesize{Robust standard errors in parentheses}}\\
 \multicolumn{5}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{table}
 
 \end{tiny}
@@ -2122,37 +2150,38 @@ Resid. sd               & 0.352                   & 0.352                   & 0.
 \begin{sidewaystable}[!ht]
 \caption{Models of Partisanship and Turnout in School Board Elections}
 \label{tab:partymods} 
-\begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{2}D{.}{.}{2}D{.}{.}{2}D{.}{.}{2} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Party Unity } & \multicolumn{ 1 }{ c }{ Dem Share } & \multicolumn{ 1 }{ c }{ Party Unity Inter. } & \multicolumn{ 1 }{ c }{ Dem Share Inter. } \\ \hline
  %                    & Party Unity        & Dem Share          & Party Unity Inter. & Dem Share Inter.  \\ 
-Intercept            & 0.31               & 0.35               & 0.31               & 0.29              \\ 
+Intercept            & 0.38               & 0.41 ^\dagger     & 0.37               & 0.35              \\ 
                      & (0.24)             & (0.25)             & (0.24)             & (0.25)            \\ 
 Fall Turnout         & 0.25 ^{**}         & 0.25 ^{**}         & 0.25 ^{**}         & 0.25 ^{**}        \\ 
                      & (0.08)             & (0.08)             & (0.08)             & (0.08)            \\ 
 Blais-Lago           & 0.08 ^{***}        & 0.08 ^{***}        & 0.08 ^{***}        & 0.08 ^{***}       \\ 
                      & (0.02)             & (0.02)             & (0.02)             & (0.02)            \\ 
-ln(VAP)              & -4.07              & -4.15              & -4.04              & -5.52             \\ 
-                     & (4.54)             & (4.52)             & (4.54)             & (4.58)            \\ 
-$ln(VAP)^{2}$        & 3.34               & 3.43               & 3.31               & 4.75              \\ 
-                     & (4.64)             & (4.62)             & (4.64)             & (4.68)            \\ 
+ln(VAP)              & -3.97              & -4.06              & -3.95              & -5.42             \\ 
+                     & (4.53)             & (4.51)             & (4.52)             & (4.57)            \\ 
+$ln(VAP)^{2}$        & 3.24               & 3.34               & 3.21               & 4.65              \\ 
+                     & (4.63)             & (4.61)             & (4.63)             & (4.67)            \\ 
 \% White            & 0.04               & 0.05               & 0.04               & 0.04              \\ 
                      & (0.21)             & (0.21)             & (0.21)             & (0.21)            \\ 
-\% Over 65          & 0.27 ^\dagger     & 0.27 ^\dagger     & 0.27 ^\dagger     & 0.26 ^\dagger    \\ 
+\% Over 65          & 0.27 ^*            & 0.27 ^*            & 0.27 ^*            & 0.26 ^\dagger    \\ 
                      & (0.14)             & (0.14)             & (0.14)             & (0.14)            \\ 
-\% Bach. +          & -0.22              & -0.23              & -0.22              & -0.23             \\ 
+\% Bach. +          & -0.23              & -0.23              & -0.23              & -0.23             \\ 
                      & (0.15)             & (0.15)             & (0.15)             & (0.14)            \\ 
-\% OOH              & 0.07               & 0.06               & 0.06               & 0.06              \\ 
+\% OOH              & 0.06               & 0.05               & 0.06               & 0.06              \\ 
                      & (0.18)             & (0.18)             & (0.18)             & (0.17)            \\ 
-ln(MedianIncome)     & -0.02              & -0.02              & -0.02              & -0.00             \\ 
+ln(MedianIncome)     & -0.01              & -0.01              & -0.01              & 0.00              \\ 
                      & (0.14)             & (0.14)             & (0.14)             & (0.14)            \\ 
-District-wide        & 0.06               & 0.06               & 0.06               & 0.06              \\ 
+District-wide        & 0.13 ^{***}        & 0.13 ^{***}        & 0.13 ^{***}        & 0.13 ^{***}       \\ 
                      & (0.04)             & (0.04)             & (0.04)             & (0.04)            \\ 
-Incumbent Share      & -0.10 ^{***}       & -0.10 ^{***}       & -0.10 ^{***}       & -0.09 ^{***}      \\ 
+Incumbent Share      & -0.09 ^{***}       & -0.09 ^{***}       & -0.09 ^{***}       & -0.09 ^{***}      \\ 
                      & (0.02)             & (0.02)             & (0.02)             & (0.02)            \\ 
 Fall Party Divide    & 0.05               &                    & 0.05               &                   \\ 
                      & (0.04)             &                    & (0.04)             &                   \\ 
-Fall 2 Party Dem.    &                    & 0.01               &                    & -0.04             \\ 
+Fall 2 Party Dem.    &                    & 0.00               &                    & -0.04             \\ 
                      &                    & (0.09)             &                    & (0.09)            \\ 
 Party Division x VAP &                    &                    & 0.02               &                   \\ 
                      &                    &                    & (0.07)             &                   \\ 
@@ -2165,7 +2194,9 @@ Resid. sd            & 0.36               & 0.36               & 0.36           
  \multicolumn{5}{l}{\footnotesize{Robust standard errors in parentheses}}\\
 \multicolumn{5}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{5}{l}{\footnotesize{Year and district fixed effects omitted.}} 
-\end{tabular} 
+\end{tabular}
+ \end{footnotesize}
+ 
  \end{sidewaystable}
 
 \end{tiny}

@@ -281,3 +281,9 @@ rm(boardSize)
 dist_turn$minBlaisLago <- abs(abs(dist_turn$minBlaisLago) - 100)
 
 #
+
+# dist_turn mix
+
+dist_turn$distWidemix <- ifelse(dist_turn$distWidemix > 1, 1, 0)
+dist_turn$districtwide <- dist_turn$distWidemix
+
