@@ -165,11 +165,8 @@ is often called the pivotal-voter model, and it has been explicitly tested in
 small-scale elections and found that while it predicts overall turnout sufficiently, 
 it does not give an accurate reflection of the margins of victory \citep{Coate2008582}. 
 Other scholars find size to be an important factor in local elections, but do not 
-tie this to a particular theory of voter turnout \citep{Frandsen2002}.\footnote{The size 
-question is a curious one, because at its extreme it would predict that lower-level 
-elections should thus exhibit higher turnout than national elections - a phenomenon 
-described by \citet{Horiuchi2001} as the ``turnout-twist.'' Evidence of this in 
-Wisconsin will be explored later.}
+tie this to a particular theory of voter turnout \citep{Frandsen2002}.\footnote{The size question is a curious one, because at its extreme it would predict that lower-level elections should thus exhibit higher turnout than national elections - a phenomenon described by \citet{Horiuchi2001} as the ``turnout-twist.'' Evidence 
+of this in Wisconsin will be explored later.}
 
 %%%%%%%%%%% CITES %%%%%%%%%%%%%%%%%
 
@@ -2373,7 +2370,7 @@ Rational Voters & VAP & 4.5 point turnout $\uparrow$ for VAP $\downarrow$ from
 6,000 to 2,100  \\ \hline
 Rational Voters & Blais-Lago & 1 SD $\uparrow$ in BL = $\uparrow$ turnout 0.5 points
 & None. \\ \hline
-Strategic Voters & VAP x Blais-Lago &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+Pivotal Voter & VAP x Blais-Lago &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
 \item Large district: 0.35 point turnout $\uparrow$ when $\uparrow$ 
 0.5 SD of Blais-Lago
 \item Small district:  0.18 point turnout $\uparrow$ when $\uparrow$ 0.5 SD 
@@ -2382,23 +2379,23 @@ of Blais-Lago
 \item Large district: 0.41 point rolloff $\downarrow$ when BL $\uparrow$ 0.5 SD
 \item Small district:  0.26 point rolloff $\uparrow$ when BL $\uparrow$ 0.5 SD
 \end{itemize} \vspace{-8mm} \\ \hline
-Teacher Influence & Teacher \% of SB & \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+Social Group & Teacher \% of SB & \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
 \item Large district: 0.25 point turnout $\downarrow$ when $\uparrow$ 
 0.5 SD of teacher share
 \item Small district:  0.18\% point turnout $\downarrow$ when $\uparrow$ 0.5 SD 
 of teacher share
 \end{itemize} \vspace{-8mm} & None. \\ \hline
-Teacher Influence & Teacher \% of VAP & None. & \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+Social Group & Teacher \% of VAP & None. & \vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
 \item Large district: 0.88 point rolloff $\uparrow$ when $\uparrow$ 
 0.5 SD of teacher share
 \item Small district:  0.2 point rolloff $\uparrow$ when $\uparrow$ 0.5 SD 
 of teacher share
 \end{itemize} \vspace{-8mm} \\ \hline
-Partisan Influence & Party Divide & None. &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+Social Group & Party Divide & None. &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
 \item Large district: 1 point $\uparrow$ rolloff as party division $\uparrow$ 6.6\% points
 \item Small district:  0.15 point $\downarrow$ for rolloff as party division $\uparrow$ 6.6\% points
 \end{itemize} \vspace{-8mm} \\ \hline
-Partisan Influence & Dem. Share & None. &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
+Social Group & Dem. Share & None. &\vspace{-4mm} \begin{itemize}[leftmargin=*] \setlength\itemsep{-2pt}
 \item Large district: 0.29 point $\uparrow$ rolloff as Dem. share $\uparrow$ 5\% point
 \item Small district:  0.6 point $\uparrow$ rolloff as Dem. share $\uparrow$ 5\% point
 \end{itemize} \vspace{-8mm} \\ \hline
@@ -3075,36 +3072,68 @@ p2
 
 \section{Discussion}
 
-In all, I find strong evidence of voters in school board elections behaving as 
-predicted by the major theories of voting. Table \ref{tab:turnoutRESULTS} summarizes 
-the substantive impact of the key variables. It also provides a sense of the relative 
-magnitude of these effects across the differing models. 
+This chapter has explored the explanatory power of four different theories of voter 
+turnout in small democracies using the example of Wisconsin school board elections 
+from 2002-2012. In this exploration of democracy at the small scale, there was 
+consistent evidence to support each of the theories - habit forming voters, 
+rational voters, social group led voters, and pivotal voters. To test this theory 
+I used two separate measures of voter turnout. First, the estimated number of 
+voters in school board elections as a share of the voting age population residing 
+in the school district. The second, rolloff, is a measure of the proportion of 
+voters who cast a ballot for the top ticket race (a non-partisan statewide office) 
+but did not cast a ballot for school board. This second measure provides a measure 
+of school board turnout net of the macro political forces that may be shaping 
+spring turnout. 
 
-Voters in school board elections are largely habit-forming -- a variable with a 
-large impact even after controlling for observable and unobservable district and 
-election characteristics. This means that communities with higher historical spring 
-election participation will have smaller rolloff on school board ballots and overall 
-higher turnout in the spring election. Though non-partisan spring elections have 
-much lower levels of turnout, they appear to be behaving similarly to other electorates. 
-This effect was strong and statistically significant in both the random and district 
-fixed effect specifications.
+The strongest evidence is in support of habit-forming voters. Even after controlling 
+for demographic factors, turnout in the fall election cycle, and unobservable 
+community characteristics this variable remained a substantively important 
+predictor of turnout in school board elections. This means that communities with 
+higher historical spring election participation will have smaller rolloff on 
+school board ballots and overall higher turnout in the spring election. Though 
+non-partisan spring school board elections have much lower levels of turnout, 
+they appear to be behaving similarly to other electorates. And, by modeling 
+unobservable school district characteristics which are also likely to include 
+the civic character of the electorate, the estimated impact of twice-lagged 
+school board turnout reported in this chapter is likely an underestimate of the
+stickiness of school board turnout year to year. 
 
 Voters also appear to behave rationally. The larger the electorate, the lower the 
-turnout and the less likely voters are to complete their ballots. Voters are also 
-more likely to participate in elections when their chance of influencing the outcome is 
-greatest. Uncontested races have lower voter turnout than races 
-with contestation. Little difference exists between races for open seats and races 
-featuring an incumbent. Competitiveness matters as well, with races that are contested 
-but include a non-competitive candidate having depressed turnout as well.This 
-suggests that, despite a lack of campaigning by candidates or major media coverage, 
-voters in school board elections are able to assess whether or not to vote based 
-on an assessment of how contested a race will be. 
+turnout and the less likely voters are to complete their ballots. School district 
+size explains more of the variance in voter turnout and rolloff than any other 
+variable of theoretical interest. These data provide a great test of this theory 
+because of the large variance in electorate size from a few hundred to tens of 
+thousands of voters. Smaller communities exhibit much higher voter turnout than 
+larger communities -- all else equal. Additionally, voters in smaller communities 
+are more likely to cast a ballot for school board after casting a ballot in the 
+top ticket election. In fact, in small communities, it can happen that more voters 
+abstain from the top of the ticket race than from the school board. This ``turnout 
+twist'', as it is called by \citet{Horiuchi2001}, may have a number of contributing mechanisms including personal familiarity with the candidate, a higher sense of 
+influence, and a stronger sense of social obligation 
+\citep{oliver12,Plutzer2002,Mueller3, aldrich1993}. 
 
-This is strong support that while the overall electorate in spring 
-elections may not be behaving strategically with regard to school board races, 
-the subset of the electorate participating in the spring election is more likely 
-to participate in the board election when the race is close and their probability 
-of influencing the outcome is greatest. This effect, however, is modest. 
+The other variables of theoretical interest had measurable impact on turnout and 
+rolloff as well, but not with the substantive magnitude of the above impacts. 
+Competitiveness, measured from zero to 100 using the Blais-Lago quotient, led 
+to an increase in turnout but did not affect rolloff. As the competitiveness 
+measure presumes voters were able to relatively assess competitiveness pre-election 
+it makes sense that no impact was found on rolloff -- voters newly brought to the 
+polls to cast votes in some other election are less likely to have specific 
+knowledge of the school board race and so rolloff is largely determined by factors 
+other than specific knowledge of that race. 
+
+Interestingly, there is evidence that the impact of competitiveness is partially 
+attenuated by the size of the district. Larger districts have an increase in 
+turnout when races are competitive that is larger than the increase in smaller 
+districts. Additionally, rolloff is decreased in larger districts when races 
+are competitive, but in smaller districts, rolloff will increase (suggesting 
+turnout is saturated and additional turnout is not interested in school board). 
+% Check this
+
+Taken together, this suggests that, despite a lack of campaigning by candidates 
+or major media coverage, voters in school board elections are able to assess 
+whether or not to vote based on an assessment of how contested a race will be. 
+%  Pivotal voter and information theory
 
 Interest groups play a role in spring elections and school board races. More modest effects are found in the form of the influence of interest groups. 
 The greater the share of teachers in the electorate, the less overall turnout 
@@ -3135,6 +3164,8 @@ or not smaller in smaller communities partisan polarization motivates voters mor
 because of the information it might confer about non-partisan candidates, or whether 
 better informed spring election voters view board elections as more important to 
 complete than a comparison electorate in a less polarized community. 
+
+% limitations
 
 This study is not without its limits. A first limitation is the question of how 
 much spring election voter turnout can be considered to be driven by local 
@@ -3168,13 +3199,12 @@ leverage an exogenous statewide shock to school board elections to investigate
 the causal impact of some of these variables on turnout and lend more support to 
 the initial findings here. 
 
-Overall, unlike the results in Chapter \ref{chap:candidacy}, the results in this chapter 
-reflect theoretical expectations for election behavior. Applying these theories 
-to non-partisan spring elections, particularly local elections, provides an interesting 
-new context to apply these theories. This suggests that although the school board 
-electorate is different than the general election electorate, that electorate behaves 
-in expected ways -- that is, habit forming, selective about their vote mattering, 
-and influenced by social group mechanisms. 
+Overall, unlike the results in Chapter \ref{chap:candidacy}, the results in this chapter reflect theoretical expectations for election behavior. Applying these 
+theories to non-partisan spring elections, particularly local elections, provides 
+an interesting new context to apply these theories. This suggests that although 
+the school board electorate is different than the general election electorate, 
+that electorate behaves in expected ways -- that is, habit forming, selective 
+about their vote mattering, and influenced by social group mechanisms. 
 
 
 
