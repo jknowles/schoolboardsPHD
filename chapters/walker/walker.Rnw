@@ -1126,7 +1126,8 @@ avoid problems with endogeneity, and because of the long panel nature of the
 data, I use twice lagged predictors for all control variables. 
 
 The equation below represents the fixed effects approach with the
-\emph{i}'s representing individual observations and the \emph{j}'s representing 
+\emph{i}'s representing individual district-year observations and the 
+\emph{j}'s representing 
 the individual districts in the sample. $\lambda$ represents the conditional 
 estimate of the treatment, taking into account the within district variation 
 and conditional on lagged measures of the control variables in $X_{it-2}$. 
@@ -1146,7 +1147,7 @@ depicts this with the lagged dependent variable effect represented by the $\gamm
 y_{it} &= \alpha + \gamma Y_{it-2} + \beta X_{it-2} + \lambda T_{it} + \epsilon_{it}  \\ 
 \end{align*}
 
-Here, the $\lambda$ term is a measure of the average change in the level of 
+Here, the $\gamma$ term is a measure of the average change in the level of 
 the outcome variable conditional on the prior values of that variable in previous 
 observed periods and the lagged control variables for community attributes. 
 Time variant characteristics are controlled for, but time invariant differences 
@@ -1539,7 +1540,7 @@ outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq",
 
 outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
 outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
-outdata$distWidemix <- ifelse(outdata$distWidemix == 2, "Yes", "No")
+outdata$distWidemix <- ifelse(outdata$distWidemix == 1, "Yes", "No")
 preTreat <- outdata[outdata$year <= 2010,]
 preTreat$year <- preTreat$year + 2
 names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
@@ -1618,7 +1619,7 @@ coefNames <- c("Intercept", "Lag SB Turnout", "Spring 2011", "Spring 2012",
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE)), 
-                         "ImputedFlag", "distWidemix"), 
+                         "ImputedFlagYes", "distWidemixYes"), 
           size="footnotesize")
 
 @
@@ -1637,7 +1638,7 @@ outdata <- dist_turn[, c("distid", "year", "turnoutDiff", "VAP_adjLOG_sq",
 
 outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
 outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
-outdata$distWidemix <- ifelse(outdata$distWidemix == 2, "Yes", "No")
+outdata$distWidemix <- ifelse(outdata$distWidemix == 1, "Yes", "No")
 preTreat <- outdata[outdata$year <= 2010,]
 # preTreat$year <- preTreat$year + 1
 preTreat$year <- preTreat$year + 2
@@ -1716,7 +1717,7 @@ apsrtable(lagModroll, DIDmodroll, FEmodRoll, se = "robust", stars = "default",
           Sweave = FALSE, coef.names = coefNames, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE)), 
-                         "distWidemix", "ImputedFlag"), 
+                         "ImputedFlagYes", "distWidemixYes"), 
           size="scriptsize")
 @
 
@@ -1881,7 +1882,7 @@ outdata <- dist_turn[, c("distid", "year", "contestMinor", "contestSer",
 
 outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
 outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
-outdata$distWidemix <- ifelse(outdata$distWidemix == 2, "Yes", "No")
+outdata$distWidemix <- ifelse(outdata$distWidemix == 1, "Yes", "No")
 preTreat <- outdata[outdata$year <= 2010,]
 preTreat$year <- preTreat$year + 2
 names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
@@ -2014,8 +2015,8 @@ polarMedTable <- apsrtable(full1, full3, full4, full5, full6,
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
 caption = "Mediation Estimates of Polarization on Board Elections - Multilevel Models",           label = "tab:polarMedHLM", notes = list(stars.note), 
-        Sweave = TRUE, 
-          stars = "default")
+        Sweave = FALSE, 
+          stars = "default", size = "footnotesize")
 @
 
 
@@ -2063,7 +2064,7 @@ outdata$turnout_overall_werc <- NULL
 
 outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
 outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
-outdata$distWidemix <- ifelse(outdata$distWidemix == 2, "Yes", "No")
+outdata$distWidemix <- ifelse(outdata$distWidemix == 1, "Yes", "No")
 preTreat <- outdata[outdata$year <= 2010,]
 preTreat$year <- preTreat$year + 2
 names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
@@ -2200,8 +2201,8 @@ unionMedtable <- apsrtable(full1, full3, full4, full5, full6,
                   model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
           caption = "Mediation Estimates of Union Strength on Board Elections - Multilevel Models",           
-          label = "tab:unionMedHLM", notes = list(stars.note), Sweave = TRUE, 
-          stars = "default")
+          label = "tab:unionMedHLM", notes = list(stars.note), Sweave = FALSE, 
+          stars = "default", size="footnotesize")
 @
 
 %tab:recallTurnMed
@@ -2222,7 +2223,7 @@ outdata$RecallTurnout <- outdata$GovTurnout_recall
 outdata$GovTurnout_recall <- NULL
 outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
 outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
-outdata$distWidemix <- ifelse(outdata$distWidemix == 2, "Yes", "No")
+outdata$distWidemix <- ifelse(outdata$distWidemix == 1, "Yes", "No")
 preTreat <- outdata[outdata$year <= 2010,]
 preTreat$year <- preTreat$year + 2
 names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
@@ -2351,7 +2352,7 @@ recallTurnMedTable <- apsrtable(full1, full3, full4, full5, full6,
           stars = "default", 
           caption = "Mediation Estimates of Recall Turnout on Board Elections - HLM", 
           label = "tab:recallTurnMedHLM", notes = list(stars.note), 
-          Sweave = TRUE)
+          Sweave = FALSE, size = "footnotesize")
 @
 
 \subsubsection{Full Mediation}
@@ -2395,7 +2396,7 @@ outdata$RecallRep <- outdata$GovTwoPartyShareRep_recall
 outdata$GovTwoPartyShareRep_recall <- NULL
 outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
 outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
-outdata$distWidemix <- ifelse(outdata$distWidemix == 2, "Yes", "No")
+outdata$distWidemix <- ifelse(outdata$distWidemix == 1, "Yes", "No")
 preTreat <- outdata[outdata$year <= 2010,]
 preTreat$year <- preTreat$year + 2
 names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
@@ -2545,7 +2546,7 @@ recallMedTable <- apsrtable(full1, full3, full4, full5, full6,
           stars = "default", 
           caption = "Mediation Estimates of Recall on Board Elections - Multilevel Models",           
           label = "tab:recallAllMedHLM", notes = list(stars.note), 
-          Sweave = FALSE)
+          Sweave = FALSE, size = "scriptsize")
 @
 
 % Rolloff and turnout evidence for polarization and turnout on treatment

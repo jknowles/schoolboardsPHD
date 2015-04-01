@@ -593,7 +593,7 @@ For voters, I look for changes in voter turnout and decreases in voter rolloff.
 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Mar 31 14:06:30 2015
+% Tue Mar 31 21:42:25 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -872,7 +872,8 @@ avoid problems with endogeneity, and because of the long panel nature of the
 data, I use twice lagged predictors for all control variables. 
 
 The equation below represents the fixed effects approach with the
-\emph{i}'s representing individual observations and the \emph{j}'s representing 
+\emph{i}'s representing individual district-year observations and the 
+\emph{j}'s representing 
 the individual districts in the sample. $\lambda$ represents the conditional 
 estimate of the treatment, taking into account the within district variation 
 and conditional on lagged measures of the control variables in $X_{it-2}$. 
@@ -892,7 +893,7 @@ depicts this with the lagged dependent variable effect represented by the $\gamm
 y_{it} &= \alpha + \gamma Y_{it-2} + \beta X_{it-2} + \lambda T_{it} + \epsilon_{it}  \\ 
 \end{align*}
 
-Here, the $\lambda$ term is a measure of the average change in the level of 
+Here, the $\gamma$ term is a measure of the average change in the level of 
 the outcome variable conditional on the prior values of that variable in previous 
 observed periods and the lagged control variables for community attributes. 
 Time variant characteristics are controlled for, but time invariant differences 
@@ -1120,27 +1121,875 @@ $\log L$         & -1058.861         & -1052.398         & 30.246            \\ 
 
 %tab:causTurn
 
+\begin{table}[!ht]
+\caption{Causal Estimates of Act 10 Period on Turnout}
+\label{tab:causTurn} 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
+ %                 & Lag               & DnD               & FE               \\ 
+Intercept         & -1.990            & -1.972            & -1.911 ^{***}    \\ 
+                  & (1.495)           & (1.473)           & (0.184)          \\ 
+Lag SB Turnout    & 0.240 ^{***}      & 0.273 ^{***}      &                  \\ 
+                  & (0.027)           & (0.033)           &                  \\ 
+Spring 2011       & 0.527 ^{***}      & 0.455 ^{***}      & 0.555 ^{***}     \\ 
+                  & (0.021)           & (0.085)           & (0.022)          \\ 
+Spring 2012       & 0.302 ^{***}      & -0.093            & 0.254 ^{***}     \\ 
+                  & (0.027)           & (0.099)           & (0.025)          \\ 
+ln(VAP)           & -0.237            & -0.238            &                  \\ 
+                  & (0.286)           & (0.281)           &                  \\ 
+$ln(VAP)^{2}$     & 0.007             & 0.008             &                  \\ 
+                  & (0.017)           & (0.016)           &                  \\ 
+\% Over 65       & 1.498 ^{***}      & 1.450 ^{***}      &                  \\ 
+                  & (0.427)           & (0.428)           &                  \\ 
+n races           & -0.046 ^*         & -0.044 ^\dagger  & -0.052           \\ 
+                  & (0.023)           & (0.022)           & (0.038)          \\ 
+\% OOH           & -0.101            & -0.103            &                  \\ 
+                  & (0.152)           & (0.152)           &                  \\ 
+ln(Median Income) & 0.159             & 0.164             &                  \\ 
+                  & (0.114)           & (0.113)           &                  \\ 
+Exurb             & -0.104            & -0.102            &                  \\ 
+                  & (0.079)           & (0.079)           &                  \\ 
+Rural             & -0.056            & -0.051            &                  \\ 
+                  & (0.084)           & (0.083)           &                  \\ 
+\% Bach. +       & 0.308             & 0.294             &                  \\ 
+                  & (0.307)           & (0.305)           &                  \\ 
+Fall Turnout      & 0.472 ^{**}       & 0.456 ^{**}       & 0.159            \\ 
+                  & (0.170)           & (0.171)           & (0.214)          \\ 
+Lag x 2011        &                   & -0.040            &                  \\ 
+                  &                   & (0.045)           &                  \\ 
+Lag x 2012        &                   & -0.188 ^{***}     &                  \\ 
+                  &                   & (0.045)           &                   \\
+ $N$               & 2331              & 2331              & 2331             \\ 
+$R^2$             & 0.334             & 0.338             & 0.513            \\ 
+adj. $R^2$        & 0.330             & 0.334             & 0.438            \\ 
+Resid. sd         & 0.418             & 0.417             & 0.382             \\ \hline
+ \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+\multicolumn{4}{l}{\footnotesize{FE = Fixed effect model with omitted district effects}} 
+\end{tabular}
+ \end{footnotesize}
+ 
+ \end{table}
+
+
+%tab:causRoll
+\begin{table}[!ht]
+\caption{Causal Estimates of Act 10 Period on Rolloff}
+\label{tab:causRoll} 
+\begin{scriptsize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
+ %                 & Lag              & DnD              & FE              \\ 
+Intercept         & 0.248            & 0.275            & -0.007          \\ 
+                  & (0.343)          & (0.335)          & (0.225)         \\ 
+Lag SB Rolloff    & 0.154 ^{**}      & 0.123            &                 \\ 
+                  & (0.058)          & (0.085)          &                 \\ 
+Spring 2011       & 0.093 ^{***}     & 0.073 ^{***}     & 0.093 ^{***}    \\ 
+                  & (0.009)          & (0.009)          & (0.010)         \\ 
+Spring 2012       & 0.040 ^{***}     & 0.043 ^{***}     & 0.042 ^{***}    \\ 
+                  & (0.008)          & (0.008)          & (0.010)         \\ 
+ln(VAP)           & -0.251 ^{***}    & -0.246 ^{***}    &                 \\ 
+                  & (0.058)          & (0.059)          &                 \\ 
+$ln(VAP)^{2}$     & 0.014 ^{***}     & 0.013 ^{***}     &                 \\ 
+                  & (0.003)          & (0.003)          &                 \\ 
+\% Over 65       & -0.051           & -0.010           &                 \\ 
+                  & (0.154)          & (0.156)          &                 \\ 
+n races           & 0.007            & 0.006            & -0.003          \\ 
+                  & (0.005)          & (0.005)          & (0.010)         \\ 
+\% OOH           & -0.157 ^{**}     & -0.146 ^{**}     &                 \\ 
+                  & (0.055)          & (0.054)          &                 \\ 
+ln(Median Income) & 0.087 ^{**}      & 0.082 ^{**}      &                 \\ 
+                  & (0.031)          & (0.030)          &                 \\ 
+Exurb             & 0.041 ^*         & 0.042 ^*         &                 \\ 
+                  & (0.021)          & (0.020)          &                 \\ 
+Rural             & 0.039 ^*         & 0.036 ^\dagger  &                 \\ 
+                  & (0.020)          & (0.019)          &                 \\ 
+\% Bach. +       & 0.092            & 0.079            &                 \\ 
+                  & (0.105)          & (0.101)          &                 \\ 
+Fall Turnout      & 0.114            & 0.113            & 0.376           \\ 
+                  & (0.076)          & (0.078)          & (0.273)         \\ 
+Lag x 2011        &                  & 0.529 ^*         &                 \\ 
+                  &                  & (0.250)          &                 \\ 
+Lag x 2012        &                  & -0.063           &                 \\ 
+                  &                  & (0.102)          &                  \\
+ $N$               & 1137             & 1137             & 1137            \\ 
+$R^2$             & 0.213            & 0.230            & 0.481           \\ 
+adj. $R^2$        & 0.203            & 0.218            & 0.293           \\ 
+Resid. sd         & 0.105            & 0.104            & 0.099            \\ \hline
+ \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+\multicolumn{4}{l}{\footnotesize{FE = Fixed effect model with omitted district effects}} 
+\end{tabular}
+ \end{scriptsize}
+ 
+ \end{table}
+
+
+\clearpage
+
+
+% List effects and magnitudes
+% 
+
+\begin{table}[h!]
+\begin{center}
+\caption{Summary of Causal Relationship of Act 10 Reforms on Board Elections}
+\label{tab:act10resSummary}
+\begin{footnotesize}
+\begin{tabular}{| p{.24\textwidth} | p{.11\textwidth} | p{.11\textwidth} | 
+      p{.44\textwidth} |} \hline
+DV / Variable & expected & observed & evidence \\ \hline
+Contested Race (ser) & + & null & no statistical significance, wrong sign \\ \hline
+Competitiveness & + & -  & statistically significant decrease in competitiveness\\ \hline
+Incumbent Defeat & + & null & no effects\\ \hline 
+Turnout & + & + & diff in diff weakly negative, overall effect positive in both 
+years \\ \hline
+Rolloff & - & + & rolloff increases in all models, dip in rolloff in 2012 \\ \hline
+\end{tabular}
+\end{footnotesize}
+\end{center}
+\end{table}
+
+Table \ref{tab:act10resSummary} summarizes the results in comparison to the 
+expectations from Table \ref{tab:act10hypo}. First, there is no evidence of an 
+increase in the probability of a race being contested either nominally or more 
+seriously in the post Act 10 period across any of the models in Table 
+\ref{tab:causSerCon}. The sign of the treatment in both years one and two is 
+negative across the models, and the interaction effect with the lagged variable, 
+the estimate of the regime change in the post Act 10 period, is close to zero 
+and non-significant. Given what was demonstrated in Chapter \ref{chap:candidacy} 
+about the difficulty in predicting contestation, this is not surprising. 
+
+Competitiveness, measured by the Blais-Lago quotient, is only slightly more 
+promising. Here it is important to note that a positive coefficient is associated 
+with less competitiveness, as the Blais-Lago quotient is a measure from zero to 
+one hundred with zero representing a tie and one hundred representing a 
+unanimous victory. The results in Table \ref{tab:causBL} show the lagged model and 
+the fixed effect model disagree on the signs of the Act 10 period and have no 
+statistically significant results. The difference in differences model shows 
+weak evidence that in 2012 there was an increase in competitiveness. Figure 
+\ref{fig:bldiffindiff} provides a visual analysis of this effect. Competitiveness 
+decreased in 2011, but then increased in 2012. This is also counter to expectations, 
+where theory suggested that competitiveness should increase as the voting pool 
+expanded and the dividing lines between candidates was sharpened. This will be 
+explored further in seeking out mediating factors that might explain this result. 
+
+Incumbent defeat is next. Table \ref{tab:causID} provides some weak evidence 
+that counter to expectations, in the 2011 election incumbents were reinforced 
+instead of defeated as a result of the Act 10 shock. In 2012, there is no 
+evidence of such an effect. The difference in difference estimates follow this 
+pattern, but are not statistically significant. This too suggests the presence of 
+a mediating factor that explains the protection of incumbents in 2011 and not in 
+2012, and the weak nature of this relationship. 
+
+Turnout and rolloff provide the most exciting results. Table \ref{tab:causTurn} 
+shows broad agreement that the level of turnout was increased in 2011 and to a 
+lesser degree in 2012 with the lagged and fixed effect models agreeing in their 
+estimates. The difference in difference model suggests that in 2011 the increase 
+was across the board, while in the 2012 election, districts with higher turnout 
+prior to Act 10 saw a diminished turnout in 2012. Thus, while Act 10 rose turnout 
+in all districts in the spring of 2011, districts with higher turnout prior to 
+Act 10 saw a decrease in their turnout in the spring of 2012. This suggests some 
+regression to the mean or disengagement by voters in communities that were previously 
+engaged. 
+
+The rolloff results in Table \ref{tab:causRoll} help shed some more light on this 
+phenomenon. Counter to expectations, rolloff increases post Act 10 in both the 
+lagged and fixed effect models. This suggests that while more voters were going 
+to the polls in these spring elections than normal, they were not going to cast 
+ballots for school boards as the share of voters completing their school board 
+ballot decreased. The difference in differences model shows that rolloff was 
+even higher in districts with high pre-treatment rates of rolloff in 2011, but 
+in 2012, high pre-treatment levels of rolloff were associated with a decreased 
+amount of rolloff in 2012. Rolloff was elevated in 2012, but less so than in 2011, 
+and this finding suggests that voters were less likely to rolloff in 2012 in 
+districts that had previously had higher levels of rolloff -- suggesting some 
+level of voter learning was possible. 
+
+Overall, these findings are not very consistent with the expectations of 
+existing theory which would suggest that if voters are exogenously activated 
+the division between them and their relatively insulated school boards should 
+result in an adjustment through more incumbent defeat and more contested seats. 
+Without exploring mediating factors it is difficult to conclude whether this means 
+incumbent school board members were satisfactorily aligned with the preferences 
+of their communities, or that voters failed to receive enough additional information 
+from the Act 10 shock to lead to turnover and change in school boards. Now, I 
+turn my attention to the mediation analysis to attempt to unpack these questions. 
 
 
 
 
 
+\clearpage
+
+\subsection{Mediation Analysis}
+
+While the results above can be interpreted as the causal estimate of the political 
+upheaval surrounding Act 10 on democratic activity in school boards, questions 
+remain. Most importantly, it is important to explore the potential for mediating 
+factors on the causal estimate. To do this, I fit longitudinal models as above, 
+but I include mediating factors as interactions with the treatment indicator. 
+
+These mediating measures were observed post-treatment, but I argue that they 
+can be interpreted as a consistent measure of school district attributes that 
+existed pre-treatment. There is no empirical way to validate this assumption, but 
+using this assumption allows me to explore a rich set of potential mediating 
+factors to understand what conditions exacerbated or attenuated the actualization 
+of political activity in school boards. 
+
+I now analyze the impact of each mediating factor. 
+
+\subsubsection{Polarization}
+
+The first mediating factor I explore is the divide within the community over 
+Walker's education policies. I argue that the level of polarization seen in the 
+vote to recall Walker at the school district level represents the preferences of 
+likely voters in that community with respect to Act 10 and the Governor's education 
+policies. As such, more divided communities should see a post Act 10 increase in 
+their levels of contestation, and less divided communities should not see such 
+an increase -- in other words, the interaction term between the shock and the 
+Act 10 measure should be positive and statistically significant. 
+
+Table \ref{tab:polarMed} presents these results using simple models with a lagged 
+dependent variable and the treatment indicator as well as an interaction for 
+recall polarization with the treatment indicator. Full models with within district 
+estimates are provided in the Appendix. Both sets of models agree that there is 
+little evidence of any mediating effect of recall polarization for any democratic 
+activity except for voter turnout. In this case, voter turnout in both 2011 and 
+2012 was \emph{negatively} impacted by recall polarization. In other words, 
+voters were less likely to participate in spring elections in polarized communities 
+than they were in less polarized communities in both 2011 and 2012. This could 
+be due to voter fatigue, or voter disengagement due to negative campaigning, 
+both of which were prevalent in this period \citep{NegativeCamp1999}. 
+
+%tab:polarMed
+\begin{table}[!ht]
+\caption{Mediation Estimates of Polarization on Board Elections}
+\label{tab:polarMed} 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
+ %                    & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+Intercept            & -0.182            & 0.045 ^*          & -0.229 ^{***}     & -0.179 ^{***}     & -1.604 ^{***}    \\ 
+                     & (0.114)           & (0.020)           & (0.023)           & (0.016)           & (0.125)          \\ 
+Spring 2011          & 0.068             & -0.049            & 0.584 ^{***}      & 0.382 ^{***}      & -0.220           \\ 
+                     & (0.147)           & (0.034)           & (0.027)           & (0.032)           & (0.201)          \\ 
+Spring 2012          & 0.023             & -0.063 ^\dagger  & 0.409 ^{***}      & 0.256 ^{***}      & 0.040            \\ 
+                     & (0.146)           & (0.033)           & (0.037)           & (0.033)           & (0.192)          \\ 
+Recall Polarization  & -0.049            & -0.019            & 0.042             & 0.002             & -0.001           \\ 
+                     & (0.187)           & (0.038)           & (0.041)           & (0.033)           & (0.207)          \\ 
+Districtwide         & 0.011             & -0.311 ^{***}     & -0.016            & 0.048             & -0.071           \\ 
+                     & (0.286)           & (0.087)           & (0.065)           & (0.078)           & (0.360)          \\ 
+Contest Lag          & 0.566 ^{***}      &                   &                   &                   &                  \\ 
+                     & (0.125)           &                   &                   &                   &                  \\ 
+Spring 2011 x Polar. & 0.182             & 0.064             & -0.129 ^{**}      & -0.063            & 0.029            \\ 
+                     & (0.305)           & (0.067)           & (0.049)           & (0.062)           & (0.393)          \\ 
+Spring 2012 x Polar. & 0.271             & 0.079             & -0.281 ^{***}     & 0.041             & 0.094            \\ 
+                     & (0.292)           & (0.075)           & (0.065)           & (0.072)           & (0.402)          \\ 
+Blais-Lago lag       &                   & 0.194 ^{***}      &                   &                   &                  \\ 
+                     &                   & (0.051)           &                   &                   &                  \\ 
+Imputed              &                   &                   & -0.258 ^{***}     & 0.195 ^{**}       &                  \\ 
+                     &                   &                   & (0.049)           & (0.065)           &                  \\ 
+Turnout Lag          &                   &                   & 0.309 ^{***}      &                   &                  \\ 
+                     &                   &                   & (0.035)           &                   &                  \\ 
+Rolloff Lag          &                   &                   &                   & 0.298 ^{***}      &                  \\ 
+                     &                   &                   &                   & (0.062)           &                  \\ 
+Inc. Def. Lag        &                   &                   &                   &                   & 0.338            \\ 
+                     &                   &                   &                   &                   & (0.205)           \\
+ $N$                  & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                  & 1575.366          &                   &                   &                   & 1056.562         \\ 
+BIC                  & 1736.775          &                   &                   &                   & 1217.971         \\ 
+$\log L$            & -755.683          &                   &                   &                   & -496.281         \\ 
+$R^2$                &                   & 0.077             & 0.395             & 0.189             &                  \\ 
+adj. $R^2$           &                   & 0.072             & 0.390             & 0.184             &                  \\ 
+Resid. sd            &                   & 0.482             & 0.390             & 0.452             &                   \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular}
+ \end{footnotesize}
+ 
+ \end{table}
+
+
+
+\subsubsection{Union Strength}
+
+Table \ref{tab:unionMed} shows the mediating effect of union strength. Two measures 
+of union strength are included -- first whether the union had a recertification 
+election in the 2011-2014 period, and second, the result of that election. There 
+is no evidence of mediating effects of union strength on contestation, 
+competitiveness, or rolloff. There is some evidence that overall, stronger unions 
+saw higher rolloff across all elections in the sample, and that districts with 
+unions forced to recertify post Act 10 had lower rolloff.\footnote{This result 
+is backward and may need further analysis.} 
+
+Turnout has evidence of being higher in districts with strong unions post Act 10. 
+In the pre-Act 10 period turnout was not affected by union strength. Post Act 10, 
+districts with stronger unions exhibited higher turnout. There are two interpretations 
+of this finding. First, that unions organized their members to go to the polls 
+in the Act 10 period and drove turnout up in support of their preferred candidates. 
+Alternatively, voters in communities with historically strong unions may have 
+been motivated to go to the polls to defeat union backed candidates. 
+
+There is weak evidence of this second interpretation by the fact that stronger 
+unions are associated with higher rates of incumbent defeat post Act 10 relative 
+to pre Act 10 with a statistically significant effect in 2012. 
+
+%tab:unionMed
+\begin{table}[!ht]
+\caption{Mediation Estimates of Union Strength on Board Elections}
+\label{tab:unionMed} 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
+ %                       & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+Intercept               & -0.177            & 0.045 ^*          & -0.227 ^{***}     & -0.178 ^{***}     & -1.606 ^{***}    \\ 
+                        & (0.114)           & (0.020)           & (0.022)           & (0.016)           & (0.126)          \\ 
+Contest Lag             & 0.560 ^{***}      &                   &                   &                   &                  \\ 
+                        & (0.125)           &                   &                   &                   &                  \\ 
+Spring 2011             & 0.070             & -0.048            & 0.582 ^{***}      & 0.381 ^{***}      & -0.223           \\ 
+                        & (0.147)           & (0.034)           & (0.027)           & (0.032)           & (0.202)          \\ 
+Spring 2012             & 0.020             & -0.063 ^\dagger  & 0.409 ^{***}      & 0.255 ^{***}      & 0.006            \\ 
+                        & (0.146)           & (0.033)           & (0.037)           & (0.032)           & (0.198)          \\ 
+WERC Turnout            & 0.282             & -0.036            & -0.084            & 0.234             & -0.120           \\ 
+                        & (0.631)           & (0.108)           & (0.089)           & (0.145)           & (0.745)          \\ 
+WERC Election?          & -0.368            & 0.052             & 0.025             & -0.260 ^\dagger  & 0.003            \\ 
+                        & (0.656)           & (0.116)           & (0.089)           & (0.152)           & (0.735)          \\ 
+Districtwide            & -0.025            & -0.316 ^{***}     & 0.000             & 0.040             & -0.087           \\ 
+                        & (0.286)           & (0.088)           & (0.066)           & (0.075)           & (0.364)          \\ 
+Spring 2011 x WERC Str. & 0.360             & 0.034             & 0.110 ^*          & 0.007             & 0.367            \\ 
+                        & (0.289)           & (0.070)           & (0.049)           & (0.059)           & (0.407)          \\ 
+Spring 2012 x WERC Str. & 0.242             & 0.005             & 0.157 ^{**}       & -0.029            & 0.767 ^\dagger  \\ 
+                        & (0.307)           & (0.069)           & (0.061)           & (0.070)           & (0.427)          \\ 
+Blais-Lago lag          &                   & 0.193 ^{***}      &                   &                   &                  \\ 
+                        &                   & (0.050)           &                   &                   &                  \\ 
+Turnout Lag             &                   &                   & 0.306 ^{***}      &                   &                  \\ 
+                        &                   &                   & (0.035)           &                   &                  \\ 
+Imputed                 &                   &                   & -0.268 ^{***}     & 0.191 ^{**}       &                  \\ 
+                        &                   &                   & (0.049)           & (0.065)           &                  \\ 
+Rolloff Lag             &                   &                   &                   & 0.292 ^{***}      &                  \\ 
+                        &                   &                   &                   & (0.059)           &                  \\ 
+Inc. Def. Lag           &                   &                   &                   &                   & 0.347 ^\dagger  \\ 
+                        &                   &                   &                   &                   & (0.205)           \\
+ $N$                     & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                     & 1575.596          &                   &                   &                   & 1053.742         \\ 
+BIC                     & 1757.181          &                   &                   &                   & 1235.327         \\ 
+$\log L$               & -751.798          &                   &                   &                   & -490.871         \\ 
+$R^2$                   &                   & 0.076             & 0.382             & 0.193             &                  \\ 
+adj. $R^2$              &                   & 0.070             & 0.377             & 0.186             &                  \\ 
+Resid. sd               &                   & 0.482             & 0.395             & 0.451             &                   \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular}
+ \end{footnotesize}
+ 
+ \end{table}
+
+
+%tab:recallTurnMed
+
+
+\subsubsection{Full Mediation}
+
+Finally, I look at the impact of recall turnout and recall polarization together 
+as mediating factors. The polarization story is unchanged with the inclusion 
+of recall turnout, but recall turnout appears to have a strong moderating effect 
+in the post-Act 10 period. More turnout in the recall election is associated with 
+changes in election activity in 2011 -- specifically less competition for school 
+board seats, higher voter turnout, and greater voter rolloff. This is net of any 
+polarization effects. 
+
+There is some evidence that greater turnout is associated with greater incumbent 
+defeat in the 2012 period. In general, both recall polarization and recall turnout 
+are associated with increased incumbent defeat post Act 10, but only in the second 
+period does this effect reach statistical significance. This effect is a bit hard 
+to place, because in the causal models in Table \ref{tab:causID}, there was a 
+negative effect on incumbent defeat in the 2011 period. That effect shows up 
+here, but is no longer statistically significant, and instead an increase in 
+incumbent defeat in 2012 period is found to exist in communities that saw more 
+participation in the recall election. 
+
+%tab:recallAllMed
+\begin{table}[!ht]
+\caption{Mediation Estimates of Recall on Board Elections}
+\label{tab:recallAllMed} 
+\begin{scriptsize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
+ %                         & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+Intercept                 & -0.180            & 0.045 ^*          & -0.229 ^{***}     & -0.181 ^{***}     & -1.604 ^{***}    \\ 
+                          & (0.115)           & (0.020)           & (0.023)           & (0.016)           & (0.126)          \\ 
+Contest Lag               & 0.565 ^{***}      &                   &                   &                   &                  \\ 
+                          & (0.126)           &                   &                   &                   &                  \\ 
+Spring 2011               & 0.068             & -0.050            & 0.592 ^{***}      & 0.392 ^{***}      & -0.256           \\ 
+                          & (0.147)           & (0.034)           & (0.026)           & (0.031)           & (0.206)          \\ 
+Spring 2012               & 0.021             & -0.061 ^\dagger  & 0.408 ^{***}      & 0.261 ^{***}      & 0.041            \\ 
+                          & (0.146)           & (0.033)           & (0.036)           & (0.032)           & (0.192)          \\ 
+Recall Turnout            & -0.055            & 0.018             & 0.071 ^\dagger   & 0.054             & -0.352           \\ 
+                          & (0.190)           & (0.039)           & (0.041)           & (0.043)           & (0.240)          \\ 
+Recall Polarization       & -0.069            & -0.012            & 0.066             & 0.021             & -0.127           \\ 
+                          & (0.195)           & (0.039)           & (0.044)           & (0.039)           & (0.225)          \\ 
+Districtwide              & 0.013             & -0.311 ^{***}     & -0.027            & 0.039             & -0.069           \\ 
+                          & (0.286)           & (0.087)           & (0.060)           & (0.078)           & (0.356)          \\ 
+Spring 2011 x Rec. Turn.  & 0.145             & -0.083            & 0.207 ^{***}      & 0.221 ^{**}       & -0.218           \\ 
+                          & (0.325)           & (0.088)           & (0.052)           & (0.070)           & (0.460)          \\ 
+Spring 2012 x Rec. Turn.  & -0.015            & 0.044             & 0.064             & 0.171 ^*          & 0.727 ^\dagger  \\ 
+                          & (0.293)           & (0.070)           & (0.060)           & (0.082)           & (0.394)          \\ 
+Spring 2011 x Rec. Polar. & 0.237             & 0.032             & -0.046            & 0.023             & -0.056           \\ 
+                          & (0.332)           & (0.074)           & (0.051)           & (0.067)           & (0.486)          \\ 
+Spring 2012 x Rec. Polar. & 0.263             & 0.098             & -0.249 ^{***}     & 0.114             & 0.374            \\ 
+                          & (0.314)           & (0.085)           & (0.070)           & (0.074)           & (0.423)          \\ 
+Blais-Lago lag            &                   & 0.195 ^{***}      &                   &                   &                  \\ 
+                          &                   & (0.051)           &                   &                   &                  \\ 
+Turnout Lag               &                   &                   & 0.287 ^{***}      &                   &                  \\ 
+                          &                   &                   & (0.035)           &                   &                  \\ 
+Imputed                   &                   &                   & -0.247 ^{***}     & 0.205 ^{**}       &                  \\ 
+                          &                   &                   & (0.050)           & (0.066)           &                  \\ 
+Rolloff Lag               &                   &                   &                   & 0.283 ^{***}      &                  \\ 
+                          &                   &                   &                   & (0.062)           &                  \\ 
+Inc. Def. Lag             &                   &                   &                   &                   & 0.330            \\ 
+                          &                   &                   &                   &                   & (0.205)           \\
+ $N$                       & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                       & 1581.085          &                   &                   &                   & 1056.799         \\ 
+BIC                       & 1803.023          &                   &                   &                   & 1278.736         \\ 
+$\log L$                 & -746.543          &                   &                   &                   & -484.399         \\ 
+$R^2$                     &                   & 0.079             & 0.416             & 0.217             &                  \\ 
+adj. $R^2$                &                   & 0.071             & 0.411             & 0.210             &                  \\ 
+Resid. sd                 &                   & 0.482             & 0.384             & 0.445             &                   \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular}
+ \end{scriptsize}
+ 
+ \end{table}
+
+
+% Rolloff and turnout evidence for polarization and turnout on treatment
+% Mediation tables
+
+% \begin{table}[h!]
+% \begin{center}
+% \caption{Summary of Causal Relationship of Act 10 Reforms on Board Elections}
+% \label{tab:act10resSummary}
+% \begin{footnotesize}
+% \begin{tabular}{| p{.24\textwidth} | p{.11\textwidth} | p{.11\textwidth} | 
+%       p{.44\textwidth} |} \hline
+% DV / Variable & expected & observed & evidence \\ \hline
+% Contested Race (ser) & + & null & no statistical significance, wrong sign \\ \hline
+% Competitiveness & + & -  & statistically significant decrease in competitiveness\\ \hline
+% Incumbent Defeat & + & null & no effects\\ \hline 
+% Turnout & + & + & diff in diff weakly negative, overall effect positive in both 
+% years \\ \hline
+% Rolloff & - & + & rolloff increases in all models, dip in rolloff in 2012 \\ \hline
+% \end{tabular}
+% \end{footnotesize}
+% \end{center}
+% \end{table}
+% 
+
+\clearpage 
+
+\section{Conclusion}
+
+I have argued that the Act 10 period represented one of the largest exogenous 
+shocks on a statewide level to school board politics. For this two year period 
+not only were school boards granted much greater power than they had previously, 
+but this grant of power was accompanied with a vigorous and historic statewide 
+debate about the rights of public employees, the role of the state government 
+in public schools, and the value of supporting public schools. Additionally, 
+partisan cues were introduced that provided, or perhaps forced, voters and 
+candidates to organize school boards into Republican and Democrat with respect 
+to their support or opposition to Governor Scott Walker. 
+
+School board scholars have focused on the relative inactivity in school board 
+elections as either symptomatic of regulatory capture of these governments by 
+special interests or as reflecting overall community satisfaction with the 
+status quo. In fact, there are substantial costs for citizens to move from 
+the democratic potential of the school board to actualizing that potential by 
+running or voting for school board. 
+
+In Wisconsin's spring 2011 and 2012 elections these barriers were dramatically 
+reduced. Theory suggests that as a result of this voter participation should 
+have increased, races should have become more competitive, and incumbents 
+should have been defeated more often. This did not happen. Instead, races 
+were less competitive, incumbents were slightly safer, while turnout increased 
+but so did the number of voters who rolled off the school board. This could have 
+occurred for a number of reasons. For example, voters may have doubled down on 
+their school boards because they felt well represented by the candidates elected 
+in the pre Act 10 period. Thus, while overall these results were unexpected, 
+there is a need for further theory to unpack what might lead to this. 
+
+To approach this problem, I looked for evidence of interest groups causing 
+differential effects of the Act 10 period. Specifically, I looked at two measures 
+of interest group strength -- teacher union certification election results and 
+community polarization measured by the Gubernatorial recall election. There was 
+little mediating effect of polarization except on turnout, where curiously, more 
+polarized communities had decreased school board election turnout in both the 
+2011 and 2012 periods. This suggests a sort of voter disinterest in school board 
+races particularly in these communities that is difficult to square with either 
+the dissatisfaction or continuous participation theories -- both theories would 
+suggest that these communities should exhibit greater participation because of 
+greater disagreement about the role of public schools. 
+
+Strong unions were associated with greater turnout as well in the Act 10 period. 
+Though organized interest groups are usually associated with preferring lower 
+voter turnout, it is likely that in this period these organizations turned out 
+voters at a higher level as a show of their strength. This is surprising, then, 
+when taken in conjunction with the weaker evidence that strong unions are more 
+associated with incumbent defeat in both 2011 and 2012 -- though only 2012 is 
+statistically significant. 
+
+For both union strength and community polarization, mediation effects were not 
+found for competitiveness, contestation, rolloff or incumbent defeat. This, 
+coupled with the weak findings of the Act 10 period in general on these measures 
+leads us to return to the initial question: are school boards democratic? If a 
+statewide sample with hundreds of within year observations, and one to two 
+thousand overall, only finds weak and sporadic effects of a historic education 
+politics shakeup on school board elections, it is hard to conclude that school 
+boards are faithfully reflecting the preferences of the communities they serve 
+if their representation does not change in response to such events. 
+
+
+\clearpage
+
+\section{Appendix}
+
+\subsection{Minor Contestation Models}
+
+\begin{footnotesize}
+\begin{table}[!ht]
+\caption{Causal Estimates of Act 10 Period on Contestation}
+\label{tab:causMinorCon} 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ DnD } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
+ %               & Lag           & DnD           & FE           \\ 
+Intercept       & -1.961        & -1.961        & 0.146        \\ 
+                & (2.917)       & (2.918)       & (0.220)      \\ 
+Lag. Contest    & 0.345 ^{**}   & 0.344 ^{**}   &              \\ 
+                & (0.107)       & (0.119)       &              \\ 
+Spring 2011     & -0.028        & 0.018         & -0.113       \\ 
+                & (0.131)       & (0.183)       & (0.173)      \\ 
+Spring 2012     & -0.007        & -0.061        & -0.093       \\ 
+                & (0.130)       & (0.200)       & (0.173)      \\ 
+ln(VAP)         & -0.095        & -0.094        &              \\ 
+                & (0.742)       & (0.742)       &              \\ 
+$ln(VAP)^{2}$   & 0.036         & 0.036         &              \\ 
+                & (0.043)       & (0.043)       &              \\ 
+Incumbent Share & -0.209        & -0.210        & 0.238        \\ 
+                & (0.165)       & (0.165)       & (0.195)      \\ 
+\% Over 65     & 0.935         & 0.921         &              \\ 
+                & (1.762)       & (1.761)       &              \\ 
+n races         & -0.234 ^{**}  & -0.235 ^{**}  & -0.172       \\ 
+                & (0.081)       & (0.081)       & (0.180)      \\ 
+\% OOH         & 0.531         & 0.531         &              \\ 
+                & (0.595)       & (0.597)       &              \\ 
+\% Bach. +     & -3.299 ^{***} & -3.299 ^{***} &              \\ 
+                & (0.732)       & (0.732)       &              \\ 
+Exurb           & 0.444         & 0.442         &              \\ 
+                & (0.445)       & (0.445)       &              \\ 
+Rural           & 0.508         & 0.506         &              \\ 
+                & (0.436)       & (0.436)       &              \\ 
+Lag x 2011      &               & -0.092        &              \\ 
+                &               & (0.268)       &              \\ 
+Lag x 2012      &               & 0.097         &              \\ 
+                &               & (0.265)       &               \\
+ $N$             & 2362          & 2362          & 2362         \\ 
+AIC             & 3108.460      & 3112.159      & 3156.485     \\ 
+BIC             & 3408.358      & 3458.195      & 10307.892    \\ 
+$\log L$       & -1502.230     & -1496.080     & -338.243      \\ \hline
+ \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+\multicolumn{4}{l}{\footnotesize{FE = Fixed effect model with omitted district effects}}\\
+\multicolumn{4}{l}{\footnotesize{Coefficients are on the logistic scale}} 
+\end{tabular}
+ \end{footnotesize}
+ 
+ \end{table}
+
+\end{footnotesize}
+
+\clearpage
+
+\subsection{Full Mediation Models}
+
+HLM mediation models. 
+
+\begin{footnotesize}
+
+\begin{table}[!ht]
+\caption{Mediation Estimates of Polarization on Board Elections - Multilevel Models}
+\label{tab:polarMedHLM} 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
+ %                                       & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+(Intercept)                             & -0.710            & -0.104            & -0.156            & -0.141            & -1.779 ^{**}     \\ 
+                                        & (0.585)           & (0.100)           & (0.098)           & (0.130)           & (0.569)          \\ 
+treatmentDiff1                          & 0.060             & -0.042            & 0.570 ^{***}      & 0.391 ^{***}      & -0.226           \\ 
+                                        & (0.153)           & (0.033)           & (0.027)           & (0.030)           & (0.203)          \\ 
+treatmentDiff2                          & 0.039             & -0.055 ^\dagger  & 0.319 ^{***}      & 0.217 ^{***}      & 0.073            \\ 
+                                        & (0.153)           & (0.033)           & (0.029)           & (0.030)           & (0.193)          \\ 
+VAP\_adjLOG\_sq\_lag                 & 0.226             & 0.072             & 0.003             & -0.140 ^*         & -0.285           \\ 
+                                        & (0.279)           & (0.046)           & (0.045)           & (0.059)           & (0.300)          \\ 
+VAP\_adjLOG\_lag                      & 1.372 ^{***}      & 0.186 ^{***}      & -0.251 ^{***}     & 0.291 ^{***}      & 0.804 ^{***}     \\ 
+                                        & (0.200)           & (0.036)           & (0.036)           & (0.046)           & (0.236)          \\ 
+per65o\_lag                            & 0.099             & -0.002            & 0.112 ^{**}       & 0.028             & -0.307           \\ 
+                                        & (0.184)           & (0.035)           & (0.035)           & (0.046)           & (0.233)          \\ 
+nraces\_lag                            & -0.409 ^{**}      & -0.388 ^{***}     & -0.031            & 0.047             & -0.179           \\ 
+                                        & (0.151)           & (0.031)           & (0.027)           & (0.034)           & (0.192)          \\ 
+OOH\_share\_lag                       & 0.219             & 0.085 ^*          & 0.029             & 0.062             & -0.128           \\ 
+                                        & (0.182)           & (0.035)           & (0.034)           & (0.045)           & (0.230)          \\ 
+PerBachelorOrAbove\_lag                & -0.496 ^{**}      & -0.065 ^*         & 0.146 ^{***}      & 0.038             & -0.479 ^*        \\ 
+                                        & (0.158)           & (0.030)           & (0.029)           & (0.038)           & (0.203)          \\ 
+locale2\_lagexurb                      & 0.374             & 0.057             & -0.094            & -0.077            & 0.085            \\ 
+                                        & (0.562)           & (0.097)           & (0.095)           & (0.127)           & (0.548)          \\ 
+locale2\_lagrural                      & 0.766             & 0.127             & -0.042            & 0.019             & 0.204            \\ 
+                                        & (0.561)           & (0.097)           & (0.095)           & (0.126)           & (0.543)          \\ 
+distWidemixYes                          & 0.159             & -0.043            & 0.027             & -0.031            & -0.013           \\ 
+                                        & (0.324)           & (0.066)           & (0.059)           & (0.071)           & (0.411)          \\ 
+contestMinor\_lag1                     & 0.240 ^\dagger   &                   &                   &                   &                  \\ 
+                                        & (0.131)           &                   &                   &                   &                  \\ 
+RecallPolarization\_lag                & -0.113            & -0.030            & 0.046             & -0.017            & -0.089           \\ 
+                                        & (0.193)           & (0.039)           & (0.035)           & (0.044)           & (0.240)          \\ 
+treatmentDiff1:RecallPolarization\_lag & 0.139             & 0.056             & -0.134 ^*         & -0.055            & 0.036            \\ 
+                                        & (0.310)           & (0.065)           & (0.052)           & (0.058)           & (0.418)          \\ 
+treatmentDiff2:RecallPolarization\_lag & 0.201             & 0.090             & -0.243 ^{***}     & 0.060             & 0.081            \\ 
+                                        & (0.309)           & (0.065)           & (0.052)           & (0.057)           & (0.394)          \\ 
+minBlaisLago\_lag                      &                   & 0.062 ^*          &                   &                   &                  \\ 
+                                        &                   & (0.030)           &                   &                   &                  \\ 
+turnout\_lag                           &                   &                   & 0.119 ^{***}      &                   &                  \\ 
+                                        &                   &                   & (0.026)           &                   &                  \\ 
+ImputedFlagYes                          &                   &                   & -0.303 ^{***}     & 0.194 ^{***}      &                  \\ 
+                                        &                   &                   & (0.042)           & (0.047)           &                  \\ 
+turnoutDiff\_lag                       &                   &                   &                   & 0.045             &                  \\ 
+                                        &                   &                   &                   & (0.029)           &                  \\ 
+incDefeats\_lag1                       &                   &                   &                   &                   & 0.196            \\ 
+                                        &                   &                   &                   &                   & (0.234)           \\
+ $N$                                     & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                                     & 1519.682          & 1481.673          & 1079.896          & 1414.971          & 1055.276         \\ 
+N Groups                                & 306               & 306               & 306               & 306               & 306              \\ 
+Group Names                             & distid            & distid            & distid            & distid            & distid           \\ 
+Group:distid Effs.                      & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
+Group:distid Var.                       & 0.521             & 0                 & 0.132             & 0.223             & 0.337            \\ 
+Sigma                                   & 1                 & 0.4497            & 0.3562            & 0.3937            & 1                 \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular}
+ \end{footnotesize}
+ 
+ \end{table}
 
 
 
 
 
+\begin{table}[!ht]
+\caption{Mediation Estimates of Union Strength on Board Elections - Multilevel Models}
+\label{tab:unionMedHLM} 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
+ %                               & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+(Intercept)                     & -0.769            & -0.103            & -0.169 ^\dagger  & -0.169            & -1.800 ^{**}     \\ 
+                                & (0.585)           & (0.100)           & (0.099)           & (0.127)           & (0.570)          \\ 
+contestMinor\_lag1             & 0.217 ^\dagger   &                   &                   &                   &                  \\ 
+                                & (0.131)           &                   &                   &                   &                  \\ 
+treatmentDiff1                  & 0.064             & -0.041            & 0.568 ^{***}      & 0.390 ^{***}      & -0.225           \\ 
+                                & (0.153)           & (0.033)           & (0.027)           & (0.030)           & (0.204)          \\ 
+treatmentDiff2                  & 0.041             & -0.055 ^\dagger  & 0.314 ^{***}      & 0.216 ^{***}      & 0.044            \\ 
+                                & (0.154)           & (0.033)           & (0.029)           & (0.030)           & (0.197)          \\ 
+VAP\_adjLOG\_sq\_lag         & 0.267             & 0.073             & 0.007             & -0.120 ^*         & -0.292           \\ 
+                                & (0.284)           & (0.046)           & (0.045)           & (0.057)           & (0.302)          \\ 
+VAP\_adjLOG\_lag              & 1.410 ^{***}      & 0.188 ^{***}      & -0.263 ^{***}     & 0.301 ^{***}      & 0.798 ^{***}     \\ 
+                                & (0.202)           & (0.036)           & (0.036)           & (0.046)           & (0.238)          \\ 
+per65o\_lag                    & 0.106             & -0.001            & 0.112 ^{**}       & 0.029             & -0.312           \\ 
+                                & (0.185)           & (0.036)           & (0.035)           & (0.045)           & (0.234)          \\ 
+nraces\_lag                    & -0.422 ^{**}      & -0.390 ^{***}     & -0.028            & 0.043             & -0.164           \\ 
+                                & (0.152)           & (0.031)           & (0.028)           & (0.034)           & (0.193)          \\ 
+OOH\_share\_lag               & 0.232             & 0.084 ^*          & 0.041             & 0.067             & -0.117           \\ 
+                                & (0.179)           & (0.034)           & (0.034)           & (0.044)           & (0.225)          \\ 
+PerBachelorOrAbove\_lag        & -0.494 ^{**}      & -0.066 ^*         & 0.153 ^{***}      & 0.042             & -0.477 ^*        \\ 
+                                & (0.159)           & (0.030)           & (0.030)           & (0.038)           & (0.203)          \\ 
+locale2\_lagexurb              & 0.428             & 0.058             & -0.088            & -0.057            & 0.093            \\ 
+                                & (0.562)           & (0.097)           & (0.096)           & (0.124)           & (0.549)          \\ 
+locale2\_lagrural              & 0.831             & 0.125             & -0.026            & 0.045             & 0.223            \\ 
+                                & (0.562)           & (0.096)           & (0.095)           & (0.123)           & (0.545)          \\ 
+WERC\_elec\_lag               & -0.907            & -0.018            & 0.051             & -0.411 ^{**}      & -0.119           \\ 
+                                & (0.553)           & (0.106)           & (0.105)           & (0.137)           & (0.675)          \\ 
+WERC\_str\_lag                & 0.613             & -0.006            & -0.067            & 0.333 ^*          & -0.079           \\ 
+                                & (0.533)           & (0.103)           & (0.101)           & (0.130)           & (0.654)          \\ 
+distWidemixYes                  & 0.146             & -0.043            & 0.035             & -0.038            & -0.021           \\ 
+                                & (0.324)           & (0.066)           & (0.059)           & (0.070)           & (0.413)          \\ 
+treatmentDiff1:WERC\_str\_lag & 0.358             & 0.040             & 0.111 ^*          & -0.005            & 0.378            \\ 
+                                & (0.303)           & (0.065)           & (0.052)           & (0.057)           & (0.414)          \\ 
+treatmentDiff2:WERC\_str\_lag & 0.211             & -0.009            & 0.127 ^*          & -0.014            & 0.796 ^*         \\ 
+                                & (0.304)           & (0.065)           & (0.052)           & (0.058)           & (0.406)          \\ 
+minBlaisLago\_lag              &                   & 0.061 ^*          &                   &                   &                  \\ 
+                                &                   & (0.030)           &                   &                   &                  \\ 
+turnout\_lag                   &                   &                   & 0.106 ^{***}      &                   &                  \\ 
+                                &                   &                   & (0.027)           &                   &                  \\ 
+ImputedFlagYes                  &                   &                   & -0.306 ^{***}     & 0.189 ^{***}      &                  \\ 
+                                &                   &                   & (0.043)           & (0.048)           &                  \\ 
+turnoutDiff\_lag               &                   &                   &                   & 0.045             &                  \\ 
+                                &                   &                   &                   & (0.029)           &                  \\ 
+incDefeats\_lag1               &                   &                   &                   &                   & 0.203            \\ 
+                                &                   &                   &                   &                   & (0.233)           \\
+ $N$                             & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                             & 1518.004          & 1485.748          & 1098.127          & 1409.806          & 1052.933         \\ 
+N Groups                        & 306               & 306               & 306               & 306               & 306              \\ 
+Group Names                     & distid            & distid            & distid            & distid            & distid           \\ 
+Group:distid Effs.              & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
+Group:distid Var.               & 0.526             & 0                 & 0.136             & 0.216             & 0.344            \\ 
+Sigma                           & 1                 & 0.4502            & 0.3581            & 0.3943            & 1                 \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular}
+ \end{footnotesize}
+ 
+ \end{table}
 
 
 
 
 
+\begin{table}[!ht]
+\caption{Mediation Estimates of Recall Turnout on Board Elections - HLM}
+\label{tab:recallTurnMedHLM} 
+\begin{footnotesize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
+ %                                  & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+(Intercept)                        & -0.747            & -0.103            & -0.167 ^\dagger  & -0.138            & -1.786 ^{**}     \\ 
+                                   & (0.580)           & (0.100)           & (0.095)           & (0.128)           & (0.573)          \\ 
+contestMinor\_lag1                & 0.233 ^\dagger   &                   &                   &                   &                  \\ 
+                                   & (0.131)           &                   &                   &                   &                  \\ 
+treatmentDiff1                     & 0.076             & -0.039            & 0.584 ^{***}      & 0.406 ^{***}      & -0.250           \\ 
+                                   & (0.153)           & (0.033)           & (0.027)           & (0.029)           & (0.209)          \\ 
+treatmentDiff2                     & 0.052             & -0.058 ^\dagger  & 0.331 ^{***}      & 0.229 ^{***}      & 0.092            \\ 
+                                   & (0.154)           & (0.033)           & (0.029)           & (0.030)           & (0.195)          \\ 
+VAP\_adjLOG\_sq\_lag            & 0.256             & 0.075             & 0.023             & -0.134 ^*         & -0.300           \\ 
+                                   & (0.278)           & (0.046)           & (0.043)           & (0.058)           & (0.304)          \\ 
+VAP\_adjLOG\_lag                 & 1.387 ^{***}      & 0.166 ^{***}      & -0.243 ^{***}     & 0.313 ^{***}      & 0.815 ^{***}     \\ 
+                                   & (0.200)           & (0.036)           & (0.035)           & (0.046)           & (0.239)          \\ 
+per65o\_lag                       & 0.071             & 0.007             & 0.073 ^*          & -0.011            & -0.319           \\ 
+                                   & (0.187)           & (0.036)           & (0.034)           & (0.046)           & (0.241)          \\ 
+nraces\_lag                       & -0.410 ^{**}      & -0.383 ^{***}     & -0.034            & 0.046             & -0.173           \\ 
+                                   & (0.151)           & (0.031)           & (0.027)           & (0.033)           & (0.194)          \\ 
+OOH\_share\_lag                  & 0.151             & 0.100 ^*          & -0.061 ^\dagger  & -0.030            & -0.136           \\ 
+                                   & (0.199)           & (0.038)           & (0.036)           & (0.049)           & (0.257)          \\ 
+PerBachelorOrAbove\_lag           & -0.622 ^{**}      & -0.035            & -0.013            & -0.120 ^*         & -0.523 ^\dagger \\ 
+                                   & (0.216)           & (0.041)           & (0.038)           & (0.052)           & (0.276)          \\ 
+locale2\_lagexurb                 & 0.394             & 0.060             & -0.109            & -0.096            & 0.098            \\ 
+                                   & (0.558)           & (0.097)           & (0.092)           & (0.125)           & (0.552)          \\ 
+locale2\_lagrural                 & 0.796             & 0.123             & -0.037            & 0.011             & 0.201            \\ 
+                                   & (0.558)           & (0.097)           & (0.091)           & (0.124)           & (0.548)          \\ 
+RecallTurnout\_lag                & 0.151             & -0.011            & 0.152 ^{**}       & 0.146 ^*          & -0.100           \\ 
+                                   & (0.245)           & (0.049)           & (0.044)           & (0.057)           & (0.305)          \\ 
+distWidemixYes                     & 0.158             & -0.032            & 0.029             & -0.037            & -0.012           \\ 
+                                   & (0.323)           & (0.066)           & (0.057)           & (0.070)           & (0.414)          \\ 
+treatmentDiff1:RecallTurnout\_lag & 0.146             & -0.088            & 0.230 ^{***}      & 0.225 ^{***}      & -0.224           \\ 
+                                   & (0.310)           & (0.066)           & (0.052)           & (0.057)           & (0.435)          \\ 
+treatmentDiff2:RecallTurnout\_lag & -0.024            & -0.009            & 0.150 ^{**}       & 0.101 ^\dagger   & 0.683 ^\dagger  \\ 
+                                   & (0.309)           & (0.065)           & (0.052)           & (0.057)           & (0.398)          \\ 
+minBlaisLago\_lag                 &                   & 0.061 ^*          &                   &                   &                  \\ 
+                                   &                   & (0.030)           &                   &                   &                  \\ 
+turnout\_lag                      &                   &                   & 0.100 ^{***}      &                   &                  \\ 
+                                   &                   &                   & (0.026)           &                   &                  \\ 
+ImputedFlagYes                     &                   &                   & -0.309 ^{***}     & 0.182 ^{***}      &                  \\ 
+                                   &                   &                   & (0.042)           & (0.047)           &                  \\ 
+turnoutDiff\_lag                  &                   &                   &                   & 0.025             &                  \\ 
+                                   &                   &                   &                   & (0.029)           &                  \\ 
+incDefeats\_lag1                  &                   &                   &                   &                   & 0.176            \\ 
+                                   &                   &                   &                   &                   & (0.234)           \\
+ $N$                                & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                                & 1519.236          & 1493.185          & 1046.881          & 1385.072          & 1051.221         \\ 
+N Groups                           & 306               & 306               & 306               & 306               & 306              \\ 
+Group Names                        & distid            & distid            & distid            & distid            & distid           \\ 
+Group:distid Effs.                 & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
+Group:distid Var.                  & 0.518             & 0                 & 0.123             & 0.222             & 0.378            \\ 
+Sigma                              & 1                 & 0.4522            & 0.3529            & 0.388             & 1                 \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular}
+ \end{footnotesize}
+ 
+ \end{table}
 
 
 
 
 
+\begin{table}[!ht]
+\caption{Mediation Estimates of Recall on Board Elections - Multilevel Models}
+\label{tab:recallAllMedHLM} 
+\begin{scriptsize}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Ser. Cont. } & \multicolumn{ 1 }{ c }{ Compet. } & \multicolumn{ 1 }{ c }{ Turnout } & \multicolumn{ 1 }{ c }{ Rolloff } & \multicolumn{ 1 }{ c }{ Inc. Def. } \\ \hline
+ %                                       & Ser. Cont.        & Compet.           & Turnout           & Rolloff           & Inc. Def.        \\ 
+(Intercept)                             & -0.736            & -0.100            & -0.178 ^\dagger  & -0.157            & -1.767 ^{**}     \\ 
+                                        & (0.584)           & (0.100)           & (0.095)           & (0.129)           & (0.576)          \\ 
+contestMinor\_lag1                     & 0.237 ^\dagger   &                   &                   &                   &                  \\ 
+                                        & (0.131)           &                   &                   &                   &                  \\ 
+treatmentDiff1                          & 0.072             & -0.045            & 0.586 ^{***}      & 0.407 ^{***}      & -0.253           \\ 
+                                        & (0.153)           & (0.033)           & (0.027)           & (0.029)           & (0.209)          \\ 
+treatmentDiff2                          & 0.051             & -0.056 ^\dagger  & 0.333 ^{***}      & 0.232 ^{***}      & 0.092            \\ 
+                                        & (0.155)           & (0.033)           & (0.028)           & (0.030)           & (0.195)          \\ 
+VAP\_adjLOG\_sq\_lag                 & 0.251             & 0.067             & 0.029             & -0.124 ^*         & -0.317           \\ 
+                                        & (0.280)           & (0.046)           & (0.043)           & (0.058)           & (0.304)          \\ 
+VAP\_adjLOG\_lag                      & 1.385 ^{***}      & 0.185 ^{***}      & -0.241 ^{***}     & 0.312 ^{***}      & 0.823 ^{***}     \\ 
+                                        & (0.200)           & (0.036)           & (0.035)           & (0.046)           & (0.240)          \\ 
+per65o\_lag                            & 0.066             & 0.003             & 0.070 ^\dagger   & -0.018            & -0.320           \\ 
+                                        & (0.188)           & (0.036)           & (0.034)           & (0.047)           & (0.242)          \\ 
+nraces\_lag                            & -0.408 ^{**}      & -0.388 ^{***}     & -0.027            & 0.047             & -0.182           \\ 
+                                        & (0.151)           & (0.031)           & (0.025)           & (0.034)           & (0.195)          \\ 
+OOH\_share\_lag                       & 0.149             & 0.096 ^*          & -0.060 ^\dagger  & -0.030            & -0.146           \\ 
+                                        & (0.199)           & (0.038)           & (0.036)           & (0.049)           & (0.257)          \\ 
+PerBachelorOrAbove\_lag                & -0.625 ^{**}      & -0.044            & -0.019            & -0.134 ^*         & -0.506 ^\dagger \\ 
+                                        & (0.222)           & (0.042)           & (0.039)           & (0.053)           & (0.282)          \\ 
+locale2\_lagexurb                      & 0.378             & 0.058             & -0.097            & -0.085            & 0.073            \\ 
+                                        & (0.560)           & (0.097)           & (0.092)           & (0.126)           & (0.553)          \\ 
+locale2\_lagrural                      & 0.786             & 0.125             & -0.028            & 0.028             & 0.186            \\ 
+                                        & (0.561)           & (0.097)           & (0.092)           & (0.125)           & (0.550)          \\ 
+RecallTurnout\_lag                     & 0.117             & -0.022            & 0.185 ^{***}      & 0.157 ^*          & -0.168           \\ 
+                                        & (0.263)           & (0.052)           & (0.047)           & (0.061)           & (0.326)          \\ 
+RecallPolarization\_lag                & -0.093            & -0.034            & 0.084 ^*          & 0.010             & -0.159           \\ 
+                                        & (0.207)           & (0.042)           & (0.036)           & (0.046)           & (0.261)          \\ 
+distWidemixYes                          & 0.157             & -0.043            &                   & -0.030            & -0.028           \\ 
+                                        & (0.324)           & (0.066)           &                   & (0.070)           & (0.417)          \\ 
+treatmentDiff1:RecallTurnout\_lag      & 0.236             & -0.087            & 0.212 ^{***}      & 0.240 ^{***}      & -0.240           \\ 
+                                        & (0.334)           & (0.071)           & (0.056)           & (0.062)           & (0.466)          \\ 
+treatmentDiff2:RecallTurnout\_lag      & 0.063             & 0.047             & 0.064             & 0.147 ^*          & 0.865 ^*         \\ 
+                                        & (0.333)           & (0.071)           & (0.056)           & (0.062)           & (0.439)          \\ 
+treatmentDiff1:RecallPolarization\_lag & 0.228             & 0.022             & -0.049            & 0.038             & -0.064           \\ 
+                                        & (0.334)           & (0.071)           & (0.055)           & (0.061)           & (0.459)          \\ 
+treatmentDiff2:RecallPolarization\_lag & 0.223             & 0.110             & -0.219 ^{***}     & 0.115 ^\dagger   & 0.423            \\ 
+                                        & (0.334)           & (0.071)           & (0.056)           & (0.061)           & (0.429)          \\ 
+minBlaisLago\_lag                      &                   & 0.062 ^*          &                   &                   &                  \\ 
+                                        &                   & (0.030)           &                   &                   &                  \\ 
+turnout\_lag                           &                   &                   & 0.105 ^{***}      &                   &                  \\ 
+                                        &                   &                   & (0.026)           &                   &                  \\ 
+ImputedFlagYes                          &                   &                   & -0.304 ^{***}     & 0.182 ^{***}      &                  \\ 
+                                        &                   &                   & (0.042)           & (0.047)           &                  \\ 
+turnoutDiff\_lag                       &                   &                   &                   & 0.023             &                  \\ 
+                                        &                   &                   &                   & (0.029)           &                  \\ 
+incDefeats\_lag1                       &                   &                   &                   &                   & 0.181            \\ 
+                                        &                   &                   &                   &                   & (0.235)           \\
+ $N$                                     & 1146              & 1146              & 1146              & 1146              & 1146             \\ 
+AIC                                     & 1524.562          & 1489.791          & 1040.471          & 1392.366          & 1055.915         \\ 
+N Groups                                & 306               & 306               & 306               & 306               & 306              \\ 
+Group Names                             & distid            & distid            & distid            & distid            & distid           \\ 
+Group:distid Effs.                      & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
+Group:distid Var.                       & 0.518             & 0                 & 0.124             & 0.223             & 0.373            \\ 
+Sigma                                   & 1                 & 0.4497            & 0.3505            & 0.3874            & 1                 \\ \hline
+ \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}} 
+\end{tabular}
+ \end{scriptsize}
+ 
+ \end{table}
 
 
-
+\end{footnotesize}
 
