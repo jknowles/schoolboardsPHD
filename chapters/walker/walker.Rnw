@@ -44,7 +44,7 @@ of school boards. In Wisconsin from 2002-2012 it was nearly impossible to predic
 the emergence of challengers or competitive elections using measures of school 
 district fiscal, political, or policy pressure. Turnout was more easily predicted 
 by demographics and community factors, but rarely moved above 20-30\% and was 
-not strongly responsive to fiscal, political, or policy inputs either. Thus, 
+not strongly responsive to social group and partisan influences. Thus, 
 in many communities, school board elections can be best described as 20-30\% of 
 voters nearly unanimously approving unopposed incumbents. 
 
@@ -63,10 +63,10 @@ were not under much pressure from community and were generally assessed as provi
 good stewardship of public schools. Only over a longer time period and a larger 
 sample might we expect to find systematic patterns of voter dissatisfaction with 
 boards. Finally, voters are more likely to participate when they are informed on 
-the issues. Like the argument about non-voting in American presidential races, 
-defenders of school boards might suggest that the preferences of voters and 
-non-voters are not different, and thus despite the low turnout, the appropriate 
-values and goals of the electorate are advanced by a subset of voters. 
+the issues. Like the argument against the importance of non-voting in American
+presidential races, defenders of school boards may suggest that the preferences 
+of voters and non-voters are not different, and thus despite the low turnout, 
+the appropriate values and goals of the electorate are advanced by a subset of voters. 
 
 This chapter seeks to answer these challenges directly. I use the political turmoil 
 that followed the election of Governor Scott Walker in 2010 to explore these 
@@ -75,7 +75,7 @@ period formed an exogenous policy shock which a) raised awareness about the powe
 of local school boards, b) placed school board issues on a familiar and polarized 
 liberal-conservative issue dimension, and c) created a unified, contentious, and 
 widely debated statewide issue on which all school board candidates and voters 
-were focused across the state. While I still argue that overall the decade from 
+were focused across the state. While I still contend that overall the decade from 
 2002-2012 in Wisconsin ranks as one of the most contentious decades of education politics in state history, this chapter sets that debate aside. Instead, I focus 
 on examining the change in turnout and contestation during this period of political 
 upheaval from 2010-2012. As I will show, the political focus on education politics 
@@ -1738,8 +1738,7 @@ DV / Variable & expected & observed & evidence \\ \hline
 Contested Race (ser) & + & null & no statistical significance, wrong sign \\ \hline
 Competitiveness & + & -  & statistically significant decrease in competitiveness\\ \hline
 Incumbent Defeat & + & null & no effects\\ \hline 
-Turnout & + & + & diff in diff weakly negative, overall effect positive in both 
-years \\ \hline
+Turnout & + & + & Positive effect in both years, less positive in 2012 \\ \hline
 Rolloff & - & + & rolloff increases in all models, dip in rolloff in 2012 \\ \hline
 \end{tabular}
 \end{footnotesize}
@@ -2552,25 +2551,29 @@ recallMedTable <- apsrtable(full1, full3, full4, full5, full6,
 % Rolloff and turnout evidence for polarization and turnout on treatment
 % Mediation tables
 
-% \begin{table}[h!]
-% \begin{center}
-% \caption{Summary of Causal Relationship of Act 10 Reforms on Board Elections}
-% \label{tab:act10resSummary}
-% \begin{footnotesize}
-% \begin{tabular}{| p{.24\textwidth} | p{.11\textwidth} | p{.11\textwidth} | 
-%       p{.44\textwidth} |} \hline
-% DV / Variable & expected & observed & evidence \\ \hline
-% Contested Race (ser) & + & null & no statistical significance, wrong sign \\ \hline
-% Competitiveness & + & -  & statistically significant decrease in competitiveness\\ \hline
-% Incumbent Defeat & + & null & no effects\\ \hline 
-% Turnout & + & + & diff in diff weakly negative, overall effect positive in both 
-% years \\ \hline
-% Rolloff & - & + & rolloff increases in all models, dip in rolloff in 2012 \\ \hline
-% \end{tabular}
-% \end{footnotesize}
-% \end{center}
-% \end{table}
-% 
+\begin{table}[h!]
+\begin{center}
+\caption{Summary of Mediation Effects on Causal Relationship of Act 10 Reforms}
+\label{tab:act10medSummary}
+\begin{footnotesize}
+\begin{tabular}{| p{.24\textwidth} | p{.11\textwidth} | p{.11\textwidth} | 
+      p{.44\textwidth} |} \hline
+DV / Variable & Polarization &  Union & Recall Election \\ \hline
+Contested Race (ser) & null & null   & null \\ \hline
+Competitiveness      & null & null   & null \\ \hline
+Incumbent Defeat     & null & + 2012 & + 2012 \\ \hline 
+Turnout              & -    & +      & + 2011 \\ \hline
+Rolloff              & null & null   & + \\ \hline
+\end{tabular}
+\end{footnotesize}
+\end{center}
+\end{table}
+
+Table \ref{tab:act10medSummary} summarizes the results from the mediation models. 
+In general, there is some evidence that recall polarization depressed turnout, 
+teacher union strength increased turnout and increased incumbent defeat in 2012, 
+and that the recall election turnout is associated with increased turnout in 
+2011, increased incumbent defeat in 2012, and increased rolloff in 2012. 
 
 \clearpage 
 
