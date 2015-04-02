@@ -1857,8 +1857,6 @@ of political activity in school boards.
 
 I now analyze the impact of each mediating factor. 
 
-\clearpage
-
 \subsubsection{Polarization}
 
 The first mediating factor I explore is the divide within the community over 
@@ -1880,7 +1878,9 @@ activity except for voter turnout. In this case, voter turnout in both 2011 and
 voters were less likely to participate in spring elections in polarized communities 
 than they were in less polarized communities in both 2011 and 2012. This could 
 be due to voter fatigue, or voter disengagement due to negative campaigning, 
-both of which were prevalent in this period \citep{NegativeCamp1999}. 
+both of which were prevalent in this period \citep{NegativeCamp1999}.\footnote{The 
+main effect of recall polarization being virtually 0 across all models also suggests 
+that this measure is capturing a distinct post-treatment effect.}
 
 %tab:polarMed
 <<polarizationMediation, results = 'asis'>>=
@@ -1975,39 +1975,45 @@ simp6 <- glm(incDefeats ~ treatmentDiff * RecallPolarization_lag +
              data = outdata, family = "binomial")
 simp6$se <- sqrt(diag(get_CL_vcov(simp6, outdata$distid)))
 
-full1 <- glmer(contestMinor ~ treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+full1 <- glmer(contestMinor ~ treatmentDiff + VAP_adjLOG_lag + VAP_adjLOG_sq_lag + 
+               per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag + locale2_lag + distWidemix + 
                contestMinor_lag +
                treatmentDiff * RecallPolarization_lag + (1|distid), 
              data = outdata, family = "binomial", control = ctrl)
 
-full2 <- glmer(contestSer ~ contestSer_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+full2 <- glmer(contestSer ~ treatmentDiff + VAP_adjLOG_lag + 
+                 VAP_adjLOG_sq_lag +
+               per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag + locale2_lag + distWidemix +
+                 contestSer_lag +
                treatmentDiff * RecallPolarization_lag + (1|distid), 
              data = outdata, family = "binomial", control = ctrl)
 
-full3 <- lmer(minBlaisLago ~ minBlaisLago_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+full3 <- lmer(minBlaisLago ~ minBlaisLago_lag + treatmentDiff + VAP_adjLOG_lag +
+              VAP_adjLOG_sq_lag + 
+               per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + distWidemix +
                treatmentDiff * RecallPolarization_lag + (1|distid), 
              data = outdata)
 
-full4 <- lmer(turnout ~ turnout_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+full4 <- lmer(turnout ~ turnout_lag + treatmentDiff + VAP_adjLOG_lag + 
+                VAP_adjLOG_sq_lag + 
+                 per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + distWidemix + 
                treatmentDiff * RecallPolarization_lag + (1|distid), 
              data = outdata)
 
-full5 <- lmer(turnoutDiff ~ turnoutDiff_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+full5 <- lmer(turnoutDiff ~ turnoutDiff_lag + treatmentDiff +VAP_adjLOG_lag+ 
+                VAP_adjLOG_sq_lag + 
+               per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + distWidemix + ImputedFlag +
                treatmentDiff * RecallPolarization_lag + (1|distid), 
              data = outdata)
 
-full6 <- glmer(incDefeats ~ incDefeats_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+full6 <- glmer(incDefeats ~ incDefeats_lag + treatmentDiff + VAP_adjLOG_lag + 
+                 VAP_adjLOG_sq_lag + 
+              + per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag +  distWidemix +
                treatmentDiff * RecallPolarization_lag + (1|distid), 
              data = outdata, family = "binomial")
@@ -2025,11 +2031,19 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
           label = "tab:polarMed", notes = list(stars.note), Sweave = FALSE, 
           size="footnotesize")
 
-polarMedTable <- apsrtable(full1, full3, full4, full5, full6, 
+coefNames2 <- c("Intercept", "Spring 2011", "Spring 2012", "ln(VAP)", 
+                  "$ln(VAP)^{2}$",  "\\% Over 65", "N Races", "\\% OOH", 
+                "\\% Bach. +", "Exurb", "Rural", "Lag", "Recall Polarization", 
+                "Spring 2011 x Polar.", "Spring 2012 x Polar", "BL Lag", 
+                "Turn Lag", "Roll Lag", "Inc. Def. Lag")
+
+polarMedTable <- apsrtable(full2, full3, full4, full5, full6, 
                            se = "robust", digits = 3, 
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
-caption = "Mediation Estimates of Polarization on Board Elections - Multilevel Models",           label = "tab:polarMedHLM", notes = list(stars.note), 
+          caption = "Mediation Estimates of Polarization on Board Elections - Multilevel Models",           label = "tab:polarMedHLM", notes = list(stars.note), 
+          omitcoef=c("ImputedFlagYes", "distWidemixYes"),
+          coef.names=coefNames2,
         Sweave = FALSE, 
           stars = "default", size = "scriptsize")
 @
@@ -2041,10 +2055,7 @@ Table \ref{tab:unionMed} shows the mediating effect of union strength. Two measu
 of union strength are included -- first whether the union had a recertification 
 election in the 2011-2014 period, and second, the result of that election. There 
 is no evidence of mediating effects of union strength on contestation, 
-competitiveness, or rolloff. There is some evidence that overall, stronger unions 
-saw higher rolloff across all elections in the sample, and that districts with 
-unions forced to recertify post Act 10 had lower rolloff.\footnote{This result 
-is backward and may need further analysis.} 
+competitiveness, or rolloff. 
 
 Turnout has evidence of being higher in districts with strong unions post Act 10. 
 In the pre-Act 10 period turnout was not affected by union strength. Post Act 10, 
@@ -2053,7 +2064,6 @@ of this finding. First, that unions organized their members to go to the polls
 in the Act 10 period and drove turnout up in support of their preferred candidates. 
 Alternatively, voters in communities with historically strong unions may have 
 been motivated to go to the polls to defeat union backed candidates. 
-
 There is weak evidence of this second interpretation by the fact that stronger 
 unions are associated with higher rates of incumbent defeat post Act 10 relative 
 to pre Act 10 with a statistically significant effect in 2012. 
@@ -2159,35 +2169,38 @@ simp6$se <- sqrt(diag(get_CL_vcov(simp6, outdata$distid)))
 
 
 full1 <- glmer(contestMinor ~ contestMinor_lag + treatmentDiff + 
-                 VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+                 VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag + locale2_lag + WERC_elec_lag +
                treatmentDiff * WERC_str_lag + distWidemix + (1|distid), 
              data = outdata, family = "binomial", control = ctrl)
 
-full2 <- glmer(contestSer ~ contestSer_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+full2 <- glmer(contestSer ~ treatmentDiff + VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag + locale2_lag + WERC_elec_lag +
-               treatmentDiff * WERC_str_lag + distWidemix + (1|distid), 
+               treatmentDiff * WERC_str_lag + contestSer_lag + 
+               distWidemix + (1|distid), 
              data = outdata, family = "binomial", control = ctrl)
 
-full3 <- lmer(minBlaisLago ~ minBlaisLago_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+full3 <- lmer(minBlaisLago ~ treatmentDiff + VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + WERC_elec_lag +
-               treatmentDiff * WERC_str_lag + distWidemix +(1|distid), 
+               treatmentDiff * WERC_str_lag + minBlaisLago_lag + 
+               distWidemix +(1|distid), 
              data = outdata)
 
-full4 <- lmer(turnout ~ turnout_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+full4 <- lmer(turnout ~ treatmentDiff + VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + WERC_elec_lag +
-               treatmentDiff * WERC_str_lag + distWidemix +(1|distid), 
+               treatmentDiff * WERC_str_lag +turnout_lag+ distWidemix +(1|distid), 
              data = outdata)
 
-full5 <- lmer(turnoutDiff ~ turnoutDiff_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+full5 <- lmer(turnoutDiff ~  treatmentDiff + VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + WERC_elec_lag +
                ImputedFlag + 
-               treatmentDiff * WERC_str_lag + distWidemix +(1|distid), 
+               treatmentDiff * WERC_str_lag + turnoutDiff_lag + 
+               distWidemix +(1|distid), 
              data = outdata)
 
 full6 <- glmer(incDefeats ~ incDefeats_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
@@ -2210,13 +2223,21 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
           label = "tab:unionMed", notes = list(stars.note), Sweave = FALSE, 
           size="footnotesize")
 
-unionMedtable <- apsrtable(full1, full3, full4, full5, full6, 
+coefNames2 <- c("Intercept", "Spring 2011", "Spring 2012", "ln(VAP)", 
+                  "$ln(VAP)^{2}$",  "\\% Over 65", "N Races", "\\% OOH", 
+                "\\% Bach. +", "Exurb", "Rural", "WERC Elec.", "WERC Turnout", 
+                "Lag", "Spring 2011 x WERC T", "Spring 2012 x WERC T", "BL Lag", 
+                "Turn Lag", "Roll Lag", "Inc. Def. Lag")
+
+unionMedtable <- apsrtable(full2, full3, full4, full5, full6, 
                            se = "robust", digits = 3, 
                   model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
           caption = "Mediation Estimates of Union Strength on Board Elections - Multilevel Models",           
           label = "tab:unionMedHLM", notes = list(stars.note), Sweave = FALSE, 
-          stars = "default", size="scriptsize")
+          stars = "default", size="scriptsize",  
+          omitcoef=c("ImputedFlagYes", "distWidemixYes"),
+          coef.names=coefNames2)
 @
 
 %tab:recallTurnMed
@@ -2384,10 +2405,8 @@ defeat in the 2012 period. In general, both recall polarization and recall turno
 are associated with increased incumbent defeat post Act 10, but only in the second 
 period does this effect reach statistical significance. This effect is a bit hard 
 to place, because in the causal models in Table \ref{tab:causID}, there was a 
-negative effect on incumbent defeat in the 2011 period. That effect shows up 
-here, but is no longer statistically significant, and instead an increase in 
-incumbent defeat in 2012 period is found to exist in communities that saw more 
-participation in the recall election. 
+negative effect on incumbent defeat in the 2011 period though it was not statistically 
+significant.
 
 %tab:recallAllMed
 <<turnandpolarRecall, results='asis'>>=
@@ -2489,51 +2508,56 @@ simp6 <- glm(incDefeats ~ incDefeats_lag + treatmentDiff * RecallTurnout_lag +
 simp6$se <- sqrt(diag(get_CL_vcov(simp6, outdata$distid)))
 
 
-full1 <- glmer(contestMinor ~ contestMinor_lag + treatmentDiff + 
-                 VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+full1 <- glmer(contestMinor ~  treatmentDiff + 
+                 VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + nraces_lag + OOH_share_lag +  
                PerBachelorOrAbove_lag + locale2_lag + 
                treatmentDiff * RecallTurnout_lag + 
-               treatmentDiff * RecallPolarization_lag +  distWidemix + 
+               treatmentDiff * RecallPolarization_lag +  contestMinor_lag +
+               distWidemix +  (1|distid), 
+             data = outdata, family = "binomial", control = ctrl)
+
+full2 <- glmer(contestSer ~ treatmentDiff + VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+               PerBachelorOrAbove_lag + locale2_lag + 
+               treatmentDiff * RecallTurnout_lag + 
+               treatmentDiff * RecallPolarization_lag + contestSer_lag + 
+               distWidemix + 
                (1|distid), 
              data = outdata, family = "binomial", control = ctrl)
 
-full2 <- glmer(contestSer ~ contestSer_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + nraces_lag + OOH_share_lag +  
+full3 <- lmer(minBlaisLago ~ treatmentDiff + VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + 
                treatmentDiff * RecallTurnout_lag + 
-               treatmentDiff * RecallPolarization_lag + distWidemix + 
-               (1|distid), 
-             data = outdata, family = "binomial", control = ctrl)
-
-full3 <- lmer(minBlaisLago ~ minBlaisLago_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
-               PerBachelorOrAbove_lag + locale2_lag + 
-               treatmentDiff * RecallTurnout_lag + 
-               treatmentDiff * RecallPolarization_lag + distWidemix + 
+               treatmentDiff * RecallPolarization_lag + minBlaisLago_lag + 
+               distWidemix + 
                (1|distid), 
              data = outdata)
 
-full4 <- lmer(turnout ~ turnout_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+full4 <- lmer(turnout ~  treatmentDiff + VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + 
                treatmentDiff * RecallTurnout_lag + 
-               treatmentDiff * RecallPolarization_lag + (1|distid), 
+               treatmentDiff * RecallPolarization_lag + 
+               turnout_lag + (1|distid), 
              data = outdata)
 
-full5 <- lmer(turnoutDiff ~ turnoutDiff_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+full5 <- lmer(turnoutDiff ~ treatmentDiff + VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + ImputedFlag +
                treatmentDiff * RecallTurnout_lag + 
-               treatmentDiff * RecallPolarization_lag + distWidemix +
+               treatmentDiff * RecallPolarization_lag + turnoutDiff_lag + 
+               distWidemix +
                (1|distid), 
              data = outdata)
 
-full6 <- glmer(incDefeats ~ incDefeats_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
-             VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
+full6 <- glmer(incDefeats ~  treatmentDiff + VAP_adjLOG_lag + 
+             VAP_adjLOG_sq_lag + per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + 
                treatmentDiff * RecallTurnout_lag + 
-               treatmentDiff * RecallPolarization_lag + distWidemix + 
+               treatmentDiff * RecallPolarization_lag + incDefeats_lag + 
+               distWidemix + 
                (1|distid), 
              data = outdata, family = "binomial")
 
@@ -2552,14 +2576,23 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
           label = "tab:recallAllMed", notes = list(stars.note), Sweave = FALSE, 
           size="scriptsize")
 
-recallMedTable <- apsrtable(full1, full3, full4, full5, full6, 
+coefNames2 <- c("Intercept", "Spring 2011", "Spring 2012", "ln(VAP)", 
+                  "$ln(VAP)^{2}$",  "\\% Over 65", "N Races", "\\% OOH", 
+                "\\% Bach. +", "Exurb", "Rural", "Recall Turn.", "Recall Polar.", 
+                "Lag", "Spring 2011 x Recall Turn", "Spring 2012 x Recall Turn", 
+                "Spring 2011 x Recall Polar", "Spring 2012 x Recall Polar", "BL Lag", 
+                "Turn Lag", "Roll Lag", "Inc. Def. Lag")
+
+recallMedTable <- apsrtable(full2, full3, full4, full5, full6, 
                             se = "robust", digits = 3, 
-          model.names = c("Ser. Cont.", "Compet.", 
-                          "Turnout", "Rolloff", "Inc. Def."), 
-          stars = "default", 
-          caption = "Mediation Estimates of Recall on Board Elections - Multilevel Models",           
+                            model.names = c("Ser. Cont.", "Compet.", 
+                                            "Turnout", "Rolloff", "Inc. Def."), 
+                    stars = "default", 
+        caption = "Mediation Estimates of Recall on Board Elections - Multilevel Models",           
           label = "tab:recallAllMedHLM", notes = list(stars.note), 
-          Sweave = FALSE, size = "scriptsize")
+          Sweave = FALSE, size = "scriptsize",
+           omitcoef=c("ImputedFlagYes", "distWidemixYes"),
+          coef.names=coefNames2)
 @
 
 % Rolloff and turnout evidence for polarization and turnout on treatment
@@ -2570,9 +2603,9 @@ recallMedTable <- apsrtable(full1, full3, full4, full5, full6,
 \caption{Summary of Mediation Effects on Causal Relationship of Act 10 Reforms}
 \label{tab:act10medSummary}
 \begin{footnotesize}
-\begin{tabular}{| p{.24\textwidth} | p{.11\textwidth} | p{.11\textwidth} | 
-      p{.44\textwidth} |} \hline
-DV / Variable & Polarization &  Union & Recall Election \\ \hline
+\begin{tabular}{| p{.24\textwidth} | p{.2\textwidth} | p{.2\textwidth} | 
+      p{.2\textwidth} |} \hline
+DV / Variable & Polarization &  Union & Recall Turnout \\ \hline
 Contested Race (ser) & null & null   & null \\ \hline
 Competitiveness      & null & null   & null \\ \hline
 Incumbent Defeat     & null & + 2012 & + 2012 \\ \hline 
@@ -2588,6 +2621,13 @@ In general, there is some evidence that recall polarization depressed turnout,
 teacher union strength increased turnout and increased incumbent defeat in 2012, 
 and that the recall election turnout is associated with increased turnout in 
 2011, increased incumbent defeat in 2012, and increased rolloff in 2012. 
+
+The role of interest groups mediating the impact of the Act 10 period is then 
+unclear. Community polarization appeared to play little role at all in school 
+board elections -- despite the heated partisan nature of education politics in the 
+state. Voter activation and union strength resulted in increased incumbent 
+defeat in the 2012 spring election period -- suggesting that politically organized 
+communities and strong unions defeated school board incumbents. 
 
 \clearpage 
 
