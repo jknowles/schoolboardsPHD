@@ -1530,7 +1530,7 @@ coefNames <- c("Intercept", "Lag Inc. Def.", "Spring 2011", "Spring 2012",
 <<turnoutDIDandLag, eval=TRUE, results = 'asis'>>=
 outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq", 
                          "VAP_adjLOG", "distWidemix", 
-                         "PerBachelorOrAbove", "ImputedFlag", "median_incomeLOG", 
+                         "PerBachelorOrAbove", "median_incomeLOG", 
                          "per65o", "NonPublicPupilPer", "incumShare", 
                          "teachShareofVoters", 
                          "fallTurnout", "nraces", "schoolMillShare", "OOH_share",
@@ -1538,8 +1538,6 @@ outdata <- dist_turn[, c("distid", "year", "turnout", "VAP_adjLOG_sq",
                          "GovTurnout_recall", "RecallPolarization", "locale2", 
                          "econ_disadv_per")]
 
-outdata$ImputedFlag[is.na(outdata$ImputedFlag)] <- "No"
-outdata$ImputedFlag <- ifelse(outdata$ImputedFlag == "Imputed2010", "Yes", "No")
 outdata$distWidemix <- ifelse(outdata$distWidemix == 1, "Yes", "No")
 preTreat <- outdata[outdata$year <= 2010,]
 preTreat$year <- preTreat$year + 2
@@ -1551,7 +1549,7 @@ names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
 # preTreat <- rbind(preTreat, tmp)
 # rm(tmp)
 
-outdata <- outdata[, c("turnout", "ImputedFlag", "distWidemix", "distid", "year")]
+outdata <- outdata[, c("turnout", "distWidemix", "distid", "year")]
 outdata <- merge(outdata, preTreat, by.y = c("distid_lag", "year_lag"), 
                  by.x = c("distid", "year"))
 outdata$treatmentDose <- ifelse(outdata$year >= 2011, abs(outdata$year - 2013), 0)
@@ -1578,7 +1576,7 @@ outdata <- outdata[!outdata$distid %in% partialPanel, ]
 lagModturn <- lm(turnout ~ turnout_lag + treatmentDiff + VAP_adjLOG_lag + 
                    VAP_adjLOG_sq_lag + 
               per65o_lag + nraces_lag + OOH_share_lag + 
-               median_incomeLOG_lag + ImputedFlag + distWidemix + 
+               median_incomeLOG_lag + distWidemix + 
              locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
              data = outdata)
 lagModturnSE <- get_CL_vcov(lagModturn, outdata$distid)
@@ -1587,7 +1585,7 @@ lagModturn$se <- sqrt(diag(lagModturnSE))
 DIDmodturn <- lm(turnout ~ turnout_lag * treatmentDiff + VAP_adjLOG_lag +
                    VAP_adjLOG_sq_lag + 
               per65o_lag + nraces_lag + OOH_share_lag + 
-               median_incomeLOG_lag+ ImputedFlag + distWidemix +
+               median_incomeLOG_lag+ distWidemix +
              locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag, 
              data = outdata)
 DIDmodturnSE <- get_CL_vcov(DIDmodturn, outdata$distid)
@@ -1596,11 +1594,11 @@ DIDmodturn$se <- sqrt(diag(DIDmodturnSE))
 merModturn <- lmer(turnout ~ turnout_lag * treatmentDiff + VAP_adjLOG_lag +
                      VAP_adjLOG_sq_lag + 
               per65o_lag + nraces_lag + OOH_share_lag + 
-               median_incomeLOG_lag + ImputedFlag + distWidemix +
+               median_incomeLOG_lag + distWidemix +
              locale2_lag + PerBachelorOrAbove_lag + fallTurnout_lag + 
                (1|distid), data = outdata)
 
-FEmodTurn <- lm(turnout ~ treatmentDiff + nraces_lag + ImputedFlag + distWidemix +
+FEmodTurn <- lm(turnout ~ treatmentDiff + nraces_lag + distWidemix +
                   fallTurnout_lag + distid, data = outdata)
 FEmodTurn$se <- sqrt(diag(get_CL_vcov(FEmodTurn, outdata$distid)))
 
@@ -1945,7 +1943,7 @@ simp3 <- lm(minBlaisLago ~ treatmentDiff * RecallPolarization_lag +
 simp3$se <- sqrt(diag(get_CL_vcov(simp3, outdata$distid)))
 
 simp4 <- lm(turnout ~ treatmentDiff * RecallPolarization_lag + 
-              ImputedFlag +  distWidemix + turnout_lag, 
+              distWidemix + turnout_lag, 
              data = outdata)
 simp4$se <- sqrt(diag(get_CL_vcov(simp4, outdata$distid)))
 
@@ -1980,7 +1978,7 @@ full3 <- lmer(minBlaisLago ~ minBlaisLago_lag + treatmentDiff + VAP_adjLOG_sq_la
 
 full4 <- lmer(turnout ~ turnout_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
-               PerBachelorOrAbove_lag + locale2_lag + distWidemix + ImputedFlag +
+               PerBachelorOrAbove_lag + locale2_lag + distWidemix + 
                treatmentDiff * RecallPolarization_lag + (1|distid), 
              data = outdata)
 
@@ -2127,7 +2125,7 @@ simp3 <- lm(minBlaisLago ~ minBlaisLago_lag + treatmentDiff * WERC_str_lag +
 simp3$se <- sqrt(diag(get_CL_vcov(simp3, outdata$distid)))
 
 simp4 <- lm(turnout ~ turnout_lag + treatmentDiff * WERC_str_lag+ 
-              WERC_elec_lag + ImputedFlag + distWidemix, 
+              WERC_elec_lag + distWidemix, 
              data = outdata)
 simp4$se <- sqrt(diag(get_CL_vcov(simp4, outdata$distid)))
 
@@ -2164,7 +2162,6 @@ full3 <- lmer(minBlaisLago ~ minBlaisLago_lag + treatmentDiff + VAP_adjLOG_sq_la
 full4 <- lmer(turnout ~ turnout_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
                PerBachelorOrAbove_lag + locale2_lag + WERC_elec_lag +
-               ImputedFlag + 
                treatmentDiff * WERC_str_lag + distWidemix +(1|distid), 
              data = outdata)
 
@@ -2285,7 +2282,7 @@ simp3 <- lm(minBlaisLago ~ minBlaisLago_lag + treatmentDiff * RecallTurnout_lag 
 simp3$se <- sqrt(diag(get_CL_vcov(simp3, outdata$distid)))
 
 simp4 <- lm(turnout ~ turnout_lag + treatmentDiff * RecallTurnout_lag + 
-              ImputedFlag + distWidemix, 
+              distWidemix, 
              data = outdata)
 simp4$se <- sqrt(diag(get_CL_vcov(simp4, outdata$distid)))
 
@@ -2319,7 +2316,7 @@ full3 <- lmer(minBlaisLago ~ minBlaisLago_lag + treatmentDiff + VAP_adjLOG_sq_la
 
 full4 <- lmer(turnout ~ turnout_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
-               PerBachelorOrAbove_lag + locale2_lag + ImputedFlag +
+               PerBachelorOrAbove_lag + locale2_lag + 
                treatmentDiff * RecallTurnout_lag + distWidemix + (1|distid), 
              data = outdata)
 
@@ -2458,8 +2455,7 @@ simp3 <- lm(minBlaisLago ~ minBlaisLago_lag + treatmentDiff * RecallTurnout_lag+
 simp3$se <- sqrt(diag(get_CL_vcov(simp3, outdata$distid)))
 
 simp4 <- lm(turnout ~ turnout_lag + treatmentDiff * RecallTurnout_lag + 
-              ImputedFlag + 
-               treatmentDiff * RecallPolarization_lag + distWidemix, 
+              treatmentDiff * RecallPolarization_lag + distWidemix, 
              data = outdata)
 simp4$se <- sqrt(diag(get_CL_vcov(simp4, outdata$distid)))
 
@@ -2502,7 +2498,7 @@ full3 <- lmer(minBlaisLago ~ minBlaisLago_lag + treatmentDiff + VAP_adjLOG_sq_la
 
 full4 <- lmer(turnout ~ turnout_lag + treatmentDiff + VAP_adjLOG_sq_lag + 
              VAP_adjLOG_lag + per65o_lag + OOH_share_lag +  nraces_lag +
-               PerBachelorOrAbove_lag + locale2_lag + ImputedFlag +
+               PerBachelorOrAbove_lag + locale2_lag + 
                treatmentDiff * RecallTurnout_lag + 
                treatmentDiff * RecallPolarization_lag + (1|distid), 
              data = outdata)
