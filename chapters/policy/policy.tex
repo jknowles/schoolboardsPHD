@@ -281,7 +281,7 @@ chapters, I employ the bounding strategy suggested by \citet{mhecon} using a
 lagged dependent variable and a fixed effect model to compare for time variant 
 and time invariant unobservable factors respectively. This model provides better 
 confidence that the effect estimated, in this case the effect of incumbent defeat, 
-is independent of unobserved factors. Unfortunately, the disadvantage of this 
+is independent of unobserved factors. The disadvantage of this 
 strategy is that for the outcomes in question, relatively little variance 
 remains to be explained after accounting for all between school district effects, 
 because the within school district variation is so small. Thus, even with a healthy 
@@ -293,8 +293,8 @@ which includes no district fixed effects and no lagged outcome measure, but inst
 includes just a few indicators of district demographics so that the effect of 
 board member turnover is estimated between districts that are similar on exogenous 
 demographic factors.\footnote{Before fitting the models I log the variables 
-expressed as percentages to make the more normal. For all three types of models 
-I report robust clustered standard errors.}
+expressed as percentages to make their distribution more normal. For all three 
+types of models I report robust district clustered standard errors.}
 
 \section{Results}
 
@@ -305,11 +305,10 @@ accountability pressure and improved student outcomes.
 
 \subsection{Student Outcomes}
 
-\begin{small}
 \begin{table}[!ht]
 \caption{Incumbent Defeat and Reading Proficiency Rates}
 \label{tab:readMod} 
-\begin{normalsize}
+\begin{small}
  \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
@@ -324,7 +323,7 @@ Rural            & 0.233 ^{***}     & 0.005            & 1.029 ^{***}    \\
                  & (0.068)          & (0.012)          & (0.229)         \\ 
 Board Size       & -0.032 ^{***}    & 0.000            & -0.009          \\ 
                  & (0.010)          & (0.003)          & (0.009)         \\ 
-VAP              & 0.072 ^{***}     & -0.002           & 0.245 ^\dagger \\ 
+ln(VAP)          & 0.072 ^{***}     & -0.002           & 0.245 ^\dagger \\ 
                  & (0.018)          & (0.004)          & (0.130)         \\ 
 FRL \%          &                  & -0.002 ^{***}    & 0.001           \\ 
                  &                  & (0.000)          & (0.001)         \\ 
@@ -341,11 +340,13 @@ Resid. sd        & 0.229            & 0.094            & 0.079            \\ \hl
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{District fixed effects not displayed.}} 
 \end{tabular}
- \end{normalsize}
+ \end{small}
  
  \end{table}
 
-\end{small}
+
+
+
 
 Table \ref{tab:readMod} shows relatively little effect of school board incumbent 
 defeat on student proficiency rates. In the simple model, there appears to be a 
@@ -373,9 +374,8 @@ board incumbent defeat is equivalent to a reduction of the percentage proficient
 or advanced at math in the district of 1.4\%. This is a much larger effect than 
 that measured in the reading models, about 0.13 of a standard deviation. 
 
-\begin{small}
  
-\begin{normalsize}
+\begin{small}
  \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
@@ -390,7 +390,7 @@ Rural            & 0.244 ^{***}     & 0.033 ^*         & 1.391 ^{***}    \\
                  & (0.070)          & (0.016)          & (0.320)         \\ 
 Board Size       & -0.025 ^*        & -0.000           & -0.007          \\ 
                  & (0.010)          & (0.003)          & (0.011)         \\ 
-VAP              & 0.077 ^{***}     & 0.011 ^*         & 0.775 ^{***}    \\ 
+ln(VAP)          & 0.077 ^{***}     & 0.011 ^*         & 0.775 ^{***}    \\ 
                  & (0.019)          & (0.005)          & (0.204)         \\ 
 FRL \%          &                  & -0.002 ^{***}    & 0.003 ^*        \\ 
                  &                  & (0.000)          & (0.001)         \\ 
@@ -407,10 +407,12 @@ Resid. sd        & 0.243            & 0.097            & 0.091            \\ \hl
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{District fixed effects not displayed.}} 
 \end{tabular}
- \end{normalsize}
+ \end{small}
  
 
-\end{small}
+
+
+
 
 Table \ref{tab:gradMod} shows the results for graduation rates. Although I expected 
 to find a stronger effect of school boards on graduation rates, there is weaker 
@@ -420,11 +422,10 @@ equivalent to a decrease of 0.18\% in the graduation rate, an effect of
 0.03 standard deviations. 
 
 % HSC 
-\begin{small}
 \begin{table}[!ht]
 \caption{Incumbent Defeat and High School Graduation}
 \label{tab:gradMod} 
-\begin{normalsize}
+\begin{small}
  \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
@@ -439,7 +440,7 @@ Rural             & 0.053 ^{**}       & 0.021 ^\dagger   & 0.105            \\
                   & (0.020)           & (0.010)           & (0.109)          \\ 
 Board Size        & -0.002            & 0.001             & 0.009            \\ 
                   & (0.002)           & (0.001)           & (0.007)          \\ 
-VAP               & -0.003            & -0.008 ^{**}      & 0.053            \\ 
+ln(VAP)           & -0.003            & -0.008 ^{**}      & 0.053            \\ 
                   & (0.003)           & (0.003)           & (0.059)          \\ 
 FRL \%           &                   & 0.452 ^{***}      &                  \\ 
                   &                   & (0.058)           &                  \\ 
@@ -456,11 +457,13 @@ Resid. sd         & 0.059             & 0.051             & 0.043             \\
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{District fixed effects not displayed.}} 
 \end{tabular}
- \end{normalsize}
+ \end{small}
  
  \end{table}
 
-\end{small}
+
+
+
 
 \clearpage
 
@@ -474,10 +477,12 @@ superintendent turnover, but this effect is only statistically significant in
 the first model. The estimated effect is quite large -- an incumbent defeat 
 translates into an odds-ratio of 1.31. 
 
+
+
 \begin{table}[!ht]
 \caption{Incumbent Defeat and Superintendent Turnover}
 \label{tab:supMod} 
-\begin{normalsize}
+\begin{small}
  \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
 \hline 
   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
@@ -492,7 +497,7 @@ Rural            & -0.440           & -0.179           & -0.094          \\
                  & (0.341)          & (0.343)          & (0.223)         \\ 
 Board Size       & 0.137 ^{**}      & 0.111 ^*         & 0.148 ^*        \\ 
                  & (0.051)          & (0.051)          & (0.071)         \\ 
-VAP              & -0.114           & -0.031           & -0.069          \\ 
+ln(VAP)          & -0.114           & -0.031           & -0.069          \\ 
                  & (0.086)          & (0.090)          & (0.074)         \\ 
 FRL \%          &                  & 0.009 ^\dagger  & 0.022 ^*        \\ 
                  &                  & (0.005)          & (0.008)         \\ 
@@ -509,7 +514,45 @@ $\log L$        & -790.925         & -772.258         & 293.900          \\ \hli
  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{4}{l}{\footnotesize{District fixed effects not displayed.}} 
 \end{tabular}
- \end{normalsize}
+ \end{small}
+ 
+ \end{table}
+\begin{table}[!ht]
+\caption{Challenge Rate and Superintendent Turnover}
+\label{tab:supMod2} 
+\begin{small}
+ \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+\hline 
+  & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
+ %                 & Simple            & Lag               & FE               \\ 
+Intercept         & -1.387            & -1.567 ^\dagger  & -2.081 ^{**}     \\ 
+                  & (0.913)           & (0.919)           & (0.733)          \\ 
+Challenge Rate    & 0.485 ^*          & 0.470 ^*          & 0.189            \\ 
+                  & (0.203)           & (0.205)           & (0.255)          \\ 
+Exurb             & -0.485            & -0.259            & -0.261           \\ 
+                  & (0.352)           & (0.346)           & (0.285)          \\ 
+Rural             & -0.455            & -0.190            & -0.092           \\ 
+                  & (0.335)           & (0.339)           & (0.224)          \\ 
+Board Size        & 0.147 ^{**}       & 0.120 ^*          & 0.154 ^*         \\ 
+                  & (0.052)           & (0.053)           & (0.072)          \\ 
+ln(VAP)           & -0.131            & -0.046            & -0.076           \\ 
+                  & (0.088)           & (0.093)           & (0.077)          \\ 
+FRL \%           &                   & 0.009 ^\dagger   & 0.022 ^*         \\ 
+                  &                   & (0.005)           & (0.009)          \\ 
+New Sup. Lag      &                   & 0.255             &                  \\ 
+                  &                   & (0.165)           &                  \\ 
+\% Bach. +       &                   & -2.181            & -0.760           \\ 
+                  &                   & (1.328)           & (1.529)          \\ 
+\% Over 65       &                   & -4.005 ^*         & -5.879 ^{**}     \\ 
+                  &                   & (1.841)           & (1.917)           \\
+ $N$               & 1918              & 1918              & 1918             \\ 
+AIC               & 1627.114          & 1621.606          & 1948.160         \\ 
+BIC               & 1760.531          & 1843.967          & 8997.021         \\ 
+$\log L$         & -789.557          & -770.803          & 293.920           \\ \hline
+ \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+\multicolumn{4}{l}{\footnotesize{District fixed effects not displayed.}} 
+\end{tabular}
+ \end{small}
  
  \end{table}
 
@@ -531,3 +574,125 @@ district policy and found little.
 
 This chapter has looked for evidence of the impact of school board electoral 
 defeat on student outcomes and on school district leadership. 
+
+\section{Appendix}
+
+Sub-analysis of challenger rate instead of incumbent defeat. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+##  
+## \begin{small}
+##  \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+## \hline 
+##   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
+##  %                & Simple           & Lag              & FE              \\ 
+## Intercept        & 3.094 ^{***}     & 0.906 ^{***}     & -5.002 ^*       \\ 
+##                  & (0.224)          & (0.109)          & (2.145)         \\ 
+## Challenge Rate   & -0.026           & -0.002           & 0.004           \\ 
+##                  & (0.021)          & (0.009)          & (0.009)         \\ 
+## Exurb            & 0.227 ^{**}      & 0.038 ^*         & 1.392 ^{***}    \\ 
+##                  & (0.076)          & (0.018)          & (0.321)         \\ 
+## Rural            & 0.244 ^{***}     & 0.034 ^*         & 1.389 ^{***}    \\ 
+##                  & (0.070)          & (0.016)          & (0.321)         \\ 
+## Board Size       & -0.025 ^*        & -0.000           & -0.007          \\ 
+##                  & (0.010)          & (0.003)          & (0.011)         \\ 
+## ln(VAP)          & 0.078 ^{***}     & 0.011 ^*         & 0.774 ^{***}    \\ 
+##                  & (0.019)          & (0.005)          & (0.205)         \\ 
+## FRL \%          &                  & -0.002 ^{***}    & 0.003 ^*        \\ 
+##                  &                  & (0.000)          & (0.001)         \\ 
+## Prof Rate Lag    &                  & 0.746 ^{***}     &                 \\ 
+##                  &                  & (0.025)          &                 \\ 
+## \% Bach. +      &                  & 0.156            & 1.131 ^\dagger \\ 
+##                  &                  & (0.103)          & (0.590)         \\ 
+## \% Over 65      &                  & 0.053            & 0.539           \\ 
+##                  &                  & (0.086)          & (1.265)          \\
+##  $N$              & 1918             & 1425             & 1918            \\ 
+## $R^2$            & 0.065            & 0.840            & 0.889           \\ 
+## adj. $R^2$       & 0.062            & 0.839            & 0.868           \\ 
+## Resid. sd        & 0.243            & 0.097            & 0.091            \\ \hline
+##  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+## \multicolumn{4}{l}{\footnotesize{District fixed effects not displayed.}} 
+## \end{tabular}
+##  \end{small}
+## 
+## \begin{table}[!ht]
+## \caption{Challenger Rate and Reading Proficiency Rates}
+## \label{tab:readMod2} 
+## \begin{small}
+##  \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+## \hline 
+##   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
+##  %                & Simple           & Lag              & FE              \\ 
+## Intercept        & 2.960 ^{***}     & 0.759 ^{***}     & 0.724           \\ 
+##                  & (0.209)          & (0.101)          & (1.366)         \\ 
+## Challenge Rate   & -0.015           & -0.008           & 0.004           \\ 
+##                  & (0.020)          & (0.008)          & (0.007)         \\ 
+## Exurb            & 0.211 ^{**}      & -0.002           & 1.037 ^{***}    \\ 
+##                  & (0.076)          & (0.012)          & (0.228)         \\ 
+## Rural            & 0.234 ^{***}     & 0.006            & 1.034 ^{***}    \\ 
+##                  & (0.068)          & (0.013)          & (0.228)         \\ 
+## Board Size       & -0.032 ^{***}    & 0.000            & -0.009          \\ 
+##                  & (0.010)          & (0.003)          & (0.009)         \\ 
+## ln(VAP)          & 0.072 ^{***}     & -0.001           & 0.249 ^\dagger \\ 
+##                  & (0.018)          & (0.004)          & (0.129)         \\ 
+## FRL \%          &                  & -0.002 ^{***}    & 0.001           \\ 
+##                  &                  & (0.000)          & (0.001)         \\ 
+## Prof Rate Lag    &                  & 0.796 ^{***}     &                 \\ 
+##                  &                  & (0.027)          &                 \\ 
+## \% Bach. +      &                  & 0.197 ^*         & 0.082           \\ 
+##                  &                  & (0.086)          & (0.534)         \\ 
+## \% Over 65      &                  & 0.106            & -0.079          \\ 
+##                  &                  & (0.096)          & (1.104)          \\
+##  $N$              & 1918             & 1425             & 1918            \\ 
+## $R^2$            & 0.070            & 0.846            & 0.906           \\ 
+## adj. $R^2$       & 0.068            & 0.845            & 0.888           \\ 
+## Resid. sd        & 0.229            & 0.094            & 0.079            \\ \hline
+##  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+## \multicolumn{4}{l}{\footnotesize{District fixed effects not displayed.}} 
+## \end{tabular}
+##  \end{small}
+##  
+##  \end{table}
+## \begin{table}[!ht]
+## \caption{Incumbent Defeat and High School Graduation}
+## \label{tab:gradMod2} 
+## \begin{small}
+##  \begin{tabular}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} } 
+## \hline 
+##   & \multicolumn{ 1 }{ c }{ Simple } & \multicolumn{ 1 }{ c }{ Lag } & \multicolumn{ 1 }{ c }{ FE } \\ \hline
+##  %              & Simple       & Lag          & FE          \\ 
+## Intercept      & 4.528 ^{***} & 2.528 ^{***} & 3.807 ^{***}\\ 
+##                & (0.038)      & (0.269)      & (0.635)     \\ 
+## Challenge Rate & -0.007       & -0.004       & 0.001       \\ 
+##                & (0.005)      & (0.004)      & (0.004)     \\ 
+## Exurb          & 0.047 ^*     & 0.016        & 0.089       \\ 
+##                & (0.022)      & (0.011)      & (0.112)     \\ 
+## Rural          & 0.053 ^{**}  & 0.021 ^*     & 0.102       \\ 
+##                & (0.020)      & (0.010)      & (0.110)     \\ 
+## Board Size     & -0.002       & 0.001        & 0.009       \\ 
+##                & (0.002)      & (0.001)      & (0.007)     \\ 
+## ln(VAP)        & -0.002       & -0.008 ^{**} & 0.051       \\ 
+##                & (0.003)      & (0.003)      & (0.059)     \\ 
+## FRL \%        &              & 0.452 ^{***} &             \\ 
+##                &              & (0.057)      &             \\ 
+## Grad Rate Lag  &              & 0.151 ^{***} & 0.219       \\ 
+##                &              & (0.031)      & (0.210)     \\ 
+## \% Bach. +    &              & -0.073 ^*    & 0.391       \\ 
+##                &              & (0.037)      & (0.401)     \\ 
+## \% Over 65    &              &              & 0.001 ^*    \\ 
+##                &              &              & (0.000)      \\
+##  $N$            & 1755         & 1755         & 1755        \\ 
+## $R^2$          & 0.060        & 0.311        & 0.592       \\ 
+## adj. $R^2$     & 0.057        & 0.308        & 0.512       \\ 
+## Resid. sd      & 0.059        & 0.051        & 0.043        \\ \hline
+##  \multicolumn{4}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
+## \multicolumn{4}{l}{\footnotesize{District fixed effects not displayed.}} 
+## \end{tabular}
+##  \end{small}
+##  
+##  \end{table}
+\end{verbatim}
+\end{kframe}
+\end{knitrout}

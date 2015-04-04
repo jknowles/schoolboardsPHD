@@ -350,6 +350,12 @@ qplot(year, MATH_PROFADV_PER, data = dist_turn, group = distid, geom='line',
 qplot(year, READ_PROFADV_PER, data = dist_turn, group = distid, geom='line', 
       alpha = I(0.2)) + geom_smooth(aes(group = 1), method ='lm')
 
+qplot(factor(year), READ_PROFADV_PER, 
+      data = dist_turn[dist_turn$READ_PROFADV_PER > 0 &                                                !is.na(dist_turn$READ_PROFADV_PER),], 
+      geom='boxplot') + theme_bw() + 
+  scale_y_continuous(label = percent) + 
+  labs(x= "Year", y = "Public Graduation Rate")
+
 @
 
 School boards appear to have more ability to influence graduation rates. First, 
@@ -389,7 +395,7 @@ chapters, I employ the bounding strategy suggested by \citet{mhecon} using a
 lagged dependent variable and a fixed effect model to compare for time variant 
 and time invariant unobservable factors respectively. This model provides better 
 confidence that the effect estimated, in this case the effect of incumbent defeat, 
-is independent of unobserved factors. Unfortunately, the disadvantage of this 
+is independent of unobserved factors. The disadvantage of this 
 strategy is that for the outcomes in question, relatively little variance 
 remains to be explained after accounting for all between school district effects, 
 because the within school district variation is so small. Thus, even with a healthy 
@@ -401,8 +407,8 @@ which includes no district fixed effects and no lagged outcome measure, but inst
 includes just a few indicators of district demographics so that the effect of 
 board member turnover is estimated between districts that are similar on exogenous 
 demographic factors.\footnote{Before fitting the models I log the variables 
-expressed as percentages to make the more normal. For all three types of models 
-I report robust clustered standard errors.}
+expressed as percentages to make their distribution more normal. For all three 
+types of models I report robust district clustered standard errors.}
 
 \section{Results}
 
@@ -413,11 +419,10 @@ accountability pressure and improved student outcomes.
 
 \subsection{Student Outcomes}
 
-\begin{small}
 <<testScoresR, results='asis'>>=
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "READ_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
-                           "econ_disadv_per", "VAP_adj", "per65o", 
+                           "econ_disadv_per", "VAP_adj", "per65o", "challengRate",
                            "PerBachelorOrAbove", "locale2", "incsTotal")]
 modeldata$READ_PROFADV_PER <- log(modeldata$READ_PROFADV_PER*100)
 modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
@@ -449,7 +454,7 @@ lagModReadFE <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag 
 lagModReadFE$se <- sqrt(diag(get_CL_vcov(lagModReadFE, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                 "VAP", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                  "ln(VAP)", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -461,9 +466,41 @@ apsrtable(simpModRead, lagModRead, lagModReadFE, se = "robust",
           Sweave = FALSE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
-          coef.names = prettyNames)
+          coef.names = prettyNames, size = "small")
 @
-\end{small}
+
+<<testScoresRchall, results='hide'>>=
+prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
+                  "ln(VAP)", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+
+simpModReadC <- lm(READ_PROFADV_PER ~ challengRate_lag + locale2_lag  +
+                    servingMembers_lag + log(VAP_adj_lag), 
+                  data = modeldata)
+simpModReadC$se <- sqrt(diag(get_CL_vcov(simpModReadC, modeldata$distid)))
+lagModReadC <- lm(READ_PROFADV_PER ~ challengRate_lag + econ_disadv_per_lag + 
+                   READ_PROFADV_PER_lag + servingMembers_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag, data = modeldata)
+lagModReadC$se <- sqrt(diag(get_CL_vcov(lagModReadC, 
+                   modeldata$distid[!is.na(modeldata$READ_PROFADV_PER_lag)])))
+lagModReadFEc <- lm(READ_PROFADV_PER ~ challengRate_lag + econ_disadv_per_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                      servingMembers_lag + per65o_lag + distid, 
+                   data = modeldata)
+lagModReadFEc$se <- sqrt(diag(get_CL_vcov(lagModReadFEc, modeldata$distid)))
+
+readChalRateTab <- apsrtable(simpModReadC, lagModReadC, lagModReadFEc, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
+          caption = "Challenger Rate and Reading Proficiency Rates", 
+          label = "tab:readMod2", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames, size = "small")
+
+@
+
 
 Table \ref{tab:readMod} shows relatively little effect of school board incumbent 
 defeat on student proficiency rates. In the simple model, there appears to be a 
@@ -491,11 +528,10 @@ board incumbent defeat is equivalent to a reduction of the percentage proficient
 or advanced at math in the district of 1.4\%. This is a much larger effect than 
 that measured in the reading models, about 0.13 of a standard deviation. 
 
-\begin{small}
 <<testScoresM, results='asis'>>=
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "MATH_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
-                           "econ_disadv_per", "VAP_adj", "per65o", 
+                           "econ_disadv_per", "VAP_adj", "per65o", "challengRate",
                            "PerBachelorOrAbove", "locale2")]
 modeldata$MATH_PROFADV_PER <- log(modeldata$MATH_PROFADV_PER*100)
 modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
@@ -526,7 +562,7 @@ lagModMathFE <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag 
 lagModMathFE$se <- sqrt(diag(get_CL_vcov(lagModMathFE, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                 "VAP",
+                 "ln(VAP)",
                  "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
@@ -539,9 +575,42 @@ apsrtable(simpModMath, lagModMath, lagModMathFE, se = "robust",
           Sweave = TRUE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
-          coef.names = prettyNames)
+          coef.names = prettyNames, size = "small")
 @
-\end{small}
+
+
+<<testScoreschallM, results='hide'>>=
+simpModMathc <- lm(MATH_PROFADV_PER ~ challengRate_lag + locale2_lag + 
+                    servingMembers_lag + log(VAP_adj_lag), 
+                  data = modeldata)
+simpModMathc$se <- sqrt(diag(get_CL_vcov(simpModMathc, modeldata$distid)))
+lagModMathc <- lm(MATH_PROFADV_PER ~ challengRate_lag + econ_disadv_per_lag + 
+                   MATH_PROFADV_PER_lag +servingMembers_lag+
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag, data = modeldata)
+lagModMathc$se <- sqrt(diag(get_CL_vcov(lagModMathc, 
+                   modeldata$distid[!is.na(modeldata$MATH_PROFADV_PER_lag)])))
+lagModMathFEC <- lm(MATH_PROFADV_PER ~ challengRate_lag + econ_disadv_per_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                  servingMembers_lag+  per65o_lag + distid, data = modeldata)
+lagModMathFEC$se <- sqrt(diag(get_CL_vcov(lagModMathFEC, modeldata$distid)))
+
+prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
+                  "ln(VAP)",
+                 "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+
+fe.note <- "District fixed effects not displayed."
+
+mathChalRateTab <- apsrtable(simpModMathc, lagModMathc, lagModMathFEC, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
+          caption = "Challenge Rate and Math Proficiency Rates", 
+          label = "tab:mathMod2", notes = list(stars.note, fe.note), 
+          Sweave = TRUE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames, size = "small")
+@
 
 Table \ref{tab:gradMod} shows the results for graduation rates. Although I expected 
 to find a stronger effect of school boards on graduation rates, there is weaker 
@@ -551,10 +620,9 @@ equivalent to a decrease of 0.18\% in the graduation rate, an effect of
 0.03 standard deviations. 
 
 % HSC 
-\begin{small}
 <<hscModel, results='asis'>>=
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
-                           "gradRate", "NEW_SUP", "SUP_EXPERIENCE",
+                           "gradRate", "NEW_SUP", "SUP_EXPERIENCE", "challengRate",
                            "econ_disadv_per", "VAP_adj", "per65o", 
                            "PerBachelorOrAbove", "locale2")]
 modeldata <- modeldata[modeldata$gradRate > 0, ]
@@ -592,7 +660,7 @@ lagModGradFE$se <- sqrt(diag(get_CL_vcov(lagModGradFE,
                                          modeldata$distid[!is.na(modeldata$gradRate)])))
 
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                 "VAP", "FRL \\%", "Grad Rate Lag", "\\% Bach. +", 
+                  "ln(VAP)", "FRL \\%", "Grad Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -604,9 +672,48 @@ apsrtable(simpModGrad, lagModGrad, lagModGradFE, se = "robust",
           Sweave = FALSE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
-          coef.names = prettyNames)
+          coef.names = prettyNames, size="small")
 @
-\end{small}
+
+
+<<hscChalRate, results='hide'>>=
+
+simpModGradc <- lm(gradRate ~ challengRate_lag + locale2_lag + 
+                    servingMembers_lag + log(VAP_adj_lag), 
+                  data = modeldata)
+simpModGradc$se <- sqrt(diag(get_CL_vcov(simpModGradc, 
+                                        modeldata$distid[!is.na(modeldata$gradRate)])))
+
+lagModGradc <- lm(gradRate ~ gradRate_lag + challengRate_lag + servingMembers_lag+
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag, data = modeldata)
+lagModGradc$se <- sqrt(diag(get_CL_vcov(lagModGradc, 
+                   modeldata$distid[!is.na(modeldata$gradRate_lag) & 
+                                      !is.na(modeldata$gradRate)])))
+
+lagModGradFEc <- lm(gradRate ~ challengRate_lag + econ_disadv_per_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   servingMembers_lag + per65o_lag + distid, data = modeldata)
+
+lagModGradFEc$se <- sqrt(diag(get_CL_vcov(lagModGradFEc, 
+                                         modeldata$distid[!is.na(modeldata$gradRate)])))
+
+prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
+                  "ln(VAP)", "FRL \\%", "Grad Rate Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+
+fe.note <- "District fixed effects not displayed."
+
+gradChalRateTab <- apsrtable(simpModGradc, lagModGradc, lagModGradFEc, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
+          caption = "Incumbent Defeat and High School Graduation", 
+          label = "tab:gradMod2", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames, size="small")
+
+@
 
 \clearpage
 
@@ -624,6 +731,7 @@ translates into an odds-ratio of 1.31.
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "MATH_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
                            "econ_disadv_per", "VAP_adj", "per65o", 
+                           "challengRate",
                            "PerBachelorOrAbove", "locale2")]
 modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
 modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
@@ -652,9 +760,11 @@ fullModSupFE <- bayesglm(NEW_SUP ~ incsDefeatedFac_lag +
                       locale2_lag + PerBachelorOrAbove_lag + 
                    per65o_lag + distid, data = modeldata, family = "binomial")
 fullModSupFE$se <- sqrt(diag(get_CL_vcov(fullModSupFE, modeldata$distid)))
+@
 
+<<chalRateGrad, results='asis'>>=
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                 "VAP", "FRL \\%", "New Sup. Lag", "\\% Bach. +", 
+                  "ln(VAP)", "FRL \\%", "New Sup. Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -667,7 +777,38 @@ apsrtable(simpModSup, fullModSup, fullModSupFE, se = "robust",
           Sweave = FALSE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
-          coef.names = prettyNames)
+          coef.names = prettyNames, size = "small")
+
+simpModSupc <- glm(NEW_SUP ~ challengRate_lag + locale2_lag + 
+                    servingMembers_lag + log(VAP_adj_lag), 
+                  data = modeldata, family = "binomial")
+simpModSupc$se <- sqrt(diag(get_CL_vcov(simpModSupc, modeldata$distid)))
+fullModSupc <- glm(NEW_SUP ~ challengRate_lag + econ_disadv_per_lag + 
+                   log(VAP_adj_lag) + servingMembers_lag + NEW_SUP_lag +
+                    locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag, data = modeldata, family = "binomial")
+fullModSupc$se <- sqrt(diag(get_CL_vcov(fullModSupc, modeldata$distid)))
+
+fullModSupFEc <- bayesglm(NEW_SUP ~ challengRate_lag + 
+                      econ_disadv_per_lag + log(VAP_adj_lag) + servingMembers_lag +
+                      locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag + distid, data = modeldata, family = "binomial")
+fullModSupFEc$se <- sqrt(diag(get_CL_vcov(fullModSupFEc, modeldata$distid)))
+
+prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
+                  "ln(VAP)", "FRL \\%", "New Sup. Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+
+apsrtable(simpModSupc, fullModSupc, fullModSupFEc, se = "robust", 
+          stars = "default", digits = 3, 
+          model.names = c("Simple", "Lag", "FE"), 
+          caption = "Challenge Rate and Superintendent Turnover", 
+          label = "tab:supMod2", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames, size = "small")
+
 @
 
 Another interesting effect that emerges from the models in Table \ref{tab:supMod} 
@@ -687,3 +828,15 @@ district policy and found little.
 
 This chapter has looked for evidence of the impact of school board electoral 
 defeat on student outcomes and on school district leadership. 
+
+\section{Appendix}
+
+Sub-analysis of challenger rate instead of incumbent defeat. 
+
+<<printChalRates>>=
+mathChalRateTab
+
+readChalRateTab
+
+gradChalRateTab
+@
