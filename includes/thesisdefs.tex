@@ -30,7 +30,8 @@
 \newcounter {listofheading}
 
 \newcommand\@thesistitlemedskip{0.2in}
-\newcommand\@thesistitlebigskip{0.6in}
+\newcommand\@thesistitlesmallskip{0.15in}
+\newcommand\@thesistitlebigskip{0.475in}
 \newcommand{\degree}[1]{\gdef\@degree{#1}}
 \newcommand{\project}{\gdef\@doctype{A masters project report}}
 \newcommand{\prelim}{\gdef\@doctype{A preliminary report}}
@@ -68,19 +69,20 @@
 %-----------------------------------------------------------------------------
     \def\thanks##1{\typeout{Warning: `thanks' deleted from thesis titlepage.}}
     \let\footnotesize\small \let\footnoterule\relax \setcounter{page}{1}
+    \vspace*{-0.6in}
     \begin{center}
       {\textbf{\expandafter\expandafter{\@title}}} \\[\@thesistitlebigskip]
-       by \\[\@thesistitlemedskip]
+       by \\[\@thesistitlesmallskip]
       \@author \\[\@thesistitlebigskip]
       \@doctype\ submitted in partial fulfillment of \\
       the requirements for the degree of\\[\@thesistitlebigskip]
       \@degree \\[\@thesistitlemedskip]
       \@department \\[\@thesistitlebigskip]
-      at the \\[\@thesistitlemedskip]
-      UNIVERSITY OF WISCONSIN--MADISON\\[\@thesistitlemedskip]
-      \@date
+      at the \\
+      UNIVERSITY OF WISCONSIN--MADISON \\
+      \@date \\[\@thesistitlebigskip]
     \end{center}
-    \hspace*{-0.7in}Date of final oral examination: \@defensedate \\[\@thesistitlemedskip]
+    \hspace*{-0.7in}Date of final oral examination: \@defensedate \\[\@thesistitlesmallskip]
     \hspace*{-0.7in}The dissertation is approved by the following members of the 
      Final Oral Committee:\\
     \@committee

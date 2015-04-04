@@ -679,7 +679,7 @@ apsrtable(simpModMath, lagModMath, lagModMathFE, se = "robust",
           stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
           caption = "Incumbent Defeat and Math Proficiency Rates", 
           label = "tab:mathMod", notes = list(stars.note, fe.note), 
-          Sweave = TRUE, 
+          Sweave = FALSE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
           coef.names = prettyNames, size = "small")
@@ -729,7 +729,7 @@ prettyNames <- c("Intercept", "Dissat. Factor", "Exurb", "Rural", "Board Size",
 mathDRateTab <- apsrtable(simpModMathD, lagModMathD, lagModMathFEd, se = "robust", 
           stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
           caption = "Dissatisfaction Factor and Math Proficiency Rates", 
-          label = "tab:madhMod3", notes = list(stars.note, fe.note), 
+          label = "tab:mathMod3", notes = list(stars.note, fe.note), 
           Sweave = FALSE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
@@ -994,7 +994,7 @@ defeat on student outcomes and on school district leadership.
 
 Sub-analysis of challenger rate instead of incumbent defeat. 
 
-<<printChalRates>>=
+<<printChalRates, results='asis'>>=
 mathChalRateTab
 
 readChalRateTab
