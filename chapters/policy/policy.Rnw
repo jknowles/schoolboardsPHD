@@ -24,20 +24,22 @@ stars.note <- apsrtable:::stars.note
 
 \section{Introduction}
 
-Prior chapters have focused on the ability of community members to exert 
-democratic influence on their local school boards. While the evidence on the 
-responsiveness of the community to the democratic election of school boards has 
+Prior chapters have focused on the ability of community members to influence 
+their school boards through elections. While the evidence on the 
+responsiveness of school board elections to community influences has
 been mixed, it remains to be seen if successfully defeating an incumbent results 
 in observable changes in outcomes. Mobilizing to vote or run for school board can 
-be expensive relative to the small perceived benefit of doing so. Are voters and 
+be expensive relative to the small perceived benefit. Are voters and 
 potential candidates correct if they assess school boards as unable to shift 
 policy toward their preferences? Are school boards so constrained as actors that 
 they are not able to effect meaningful policy change? In this chapter I explore 
-this for two specific policy changes -- improvements in student outcomes and 
-the change in district administrator.
+this issue with two specific policy changes -- improvements in student outcomes and 
+the change in district administrator. In other words, are these policies responsive 
+to school board election results. 
 
-The challenge in testing school board responsiveness is great. First, in most 
-cases school boards are non-partisan offices and education issues do not fall 
+There are many challenges in testing the responsiveness of school boards. First, 
+in most 
+cases school boards are non-partisan offices and many education issues do not fall 
 along traditional ideological lines \citep[for counter example:][]{RefWorks:347}. 
 This poses a measurement challenge for researchers seeking evidence of policy 
 responsiveness. Additionally, the majority of school board election activity is 
@@ -46,8 +48,8 @@ provided to voters about candidates and their policy preferences
 \citep{RefWorks:322,RefWorks:321}. Finally, the link between school board decisions 
 and aggregate student outcomes in the community is weak in two distinct ways. First, 
 the ability or desire of boards to make decisions that are counter to the preferences 
-of the district administrator is questionable. % CITATION
-Second, school board decisions, like other policy decisions, may take time to 
+of the district administrator is questionable \citep{RefWorks:258}. Second, 
+school board decisions, like other policy decisions, may take time to 
 show results in district outcomes, particularly aggregate measures of student 
 performance. 
 
@@ -55,7 +57,7 @@ Despite these measurement difficulties, there are strong reasons to believe that
 school boards do in fact matter. School boards have considerable power over 
 local issues in their community. School boards in Wisconsin are responsible for 
 setting property tax levies, labor relations with teachers and support staff within 
-the school, and often serve as the largest single employer in their community. They 
+the school, and adopt and approve academic standards and curricula. They 
 determine graduation requirements and discipline and attendance policies for the 
 students in their schools. The driving idea behind locally elected school boards 
 was to ensure that the local community retained some control over the direction 
@@ -63,11 +65,17 @@ taken by their schools and that the school system was responsive to their
 preferences. Until now there have only been limited tests of school board 
 responsiveness \citep{RefWorks:345}. 
 
-In this chapter I explore the impact of incumbent defeat on student outcomes both 
-directly and indirectly in Wisconsin school districts. I focus on incumbent defeat 
-because it is the clearest sign of dissatisfaction with current board policy and 
-practice and serves as a cornerstone for dissatisfaction theory, the richest 
-theory linking school board practice to educational outcomes \citep{RefWorks:297}. 
+In this chapter I explore the impact of board turnover on student outcomes both 
+directly and indirectly in Wisconsin school districts. I focus on two measures 
+of board turnover -- incumbent defeat and the dissatisfaction factor, or number 
+of candidates per seat. 
+Incumbent defeat is the clearest sign of dissatisfaction with current board policy 
+and practice and serves as a cornerstone for dissatisfaction theory, the richest 
+theory linking school board practice to educational outcomes \citep{RefWorks:297,RefWorks:245}. The dissatisfaction factor, though, can be considered a strong 
+indication of community dissatisfaction with the school board as well, and has 
+the added advantage of being more frequently occuring than the relatively rare 
+defeat of incumbents. Dissatisfaction studies have used this indicator 
+historically as well \citep{RefWorks:247,RefWorks:282,RefWorks:245}. 
 
 <<incdefeat, results='hide'>>=
 dist_turn$incDefeats <- NULL
@@ -77,7 +85,9 @@ incDefeat <- ddply(dat[dat$electiontype == 1,],
                    incsDefeated = sum(incumbent[winner == 0]), 
                    incsTotal = sum(incumbent), 
                    candTotal = length(candidateid[candidateid != 99]),
+                   candReal = length(candidateid[candidateid != 99 & minor < 1]),
                    winnersTotal = sum(winner))
+
 # TODO:
 # Why is this?
 # incumbents defeated can exceed number of winners, especially when races 
@@ -85,9 +95,13 @@ incDefeat <- ddply(dat[dat$electiontype == 1,],
 fw  <- function(x) c(x[2:length(x)], NA)
 
 dist_turn <- merge(dist_turn, incDefeat, by = c("distid", "year")) 
+dist_turn$candReal <- ifelse(dist_turn$candReal == 0, dist_turn$candTotal, 
+                             dist_turn$candReal)
 dist_turn$boardTurnover <- dist_turn$incsDefeated / dist_turn$servingMembers
 dist_turn$boardSeatsUp <- dist_turn$winnersTotal / dist_turn$servingMembers
 dist_turn$challengRate <- 1 - (dist_turn$incsTotal / dist_turn$candTotal)
+dist_turn$dissatFactor <- 1 - (dist_turn$winnersTotal / dist_turn$candTotal)
+dist_turn$dissatFactor2 <- 1 - (dist_turn$winnersTotal / dist_turn$candReal)
 
 library(data.table)
 dist_turn <- dist_turn[order(dist_turn$distid, dist_turn$year),]
@@ -127,49 +141,83 @@ democratic institutions to matter, the results of elections must also matter.
 Challengers must represent a policy alternative to defeated incumbents. Policy 
 distinction must be seen among candidates. 
 
-Incumbent defeat provides a strong sign that citizens are dissatisfied with the 
-existing outputs of their school government and wish to see changes. Without 
-polling data or an in-depth study of the politics of each community, it is 
-difficult to understand what might be the source of this voter dissatisfaction 
-and what voters might wish to see change. In this study I look for evidence of 
-change along the two dimensions previously identified in the literature as 
-critical to voters -- the district administrator and student performance. If 
-voters are dissatisfied with their board and replace some board members with new 
-challengers, it is likely that they demand higher student performance, new 
-district management, or both. 
+I start with a simplified concept of voter dissatisfaction. Dissatisfaction in 
+the community can be expressed on the ballot in two distinct ways: a) the presence 
+of challengers to incumbents who see an opportunity to exploit voter dissatisfaction 
+to defeat an incumbent, and b) the actual defeat of an incumbent. In the school 
+board election literature these two approaches are known as the Lutz and the 
+Iannaccone-Lutz models of dissatisfaction respectively 
+\citep{RefWorks:337,RefWorks:297}. 
 
-Much of the work referred to in Chapter \ref{chap:intro} dealt with the impact 
-of school boards on policy change. In fact, both the dissatisfaction theory and 
-the public choice theories of school board politics include superintendent
-turnover as key evidence \citep{RefWorks:297,RefWorks:271, RefWorks:351,
-RefWorks:339,RefWorks:340,RefWorks:243}. Recently a key improvement in empirical 
-tests of this work has focused on the importance of political turnover among 
-school board members, as opposed to the more typical turnover due to retirement, 
-as a precursor to improved student performance \citep{RefWorks:311}. 
+In the study of school boards, since \citet{RefWorks:297}, incumbent defeat has 
+been seen as a strong sign that citizens are dissatisfied with the existing 
+outputs of their school government and wish to see changes. Its roots can be 
+traced back to fundamental ideas about the function elections play in allowing 
+citizens to shape the policies of their government. Incumbent defeat has shown 
+evidence of predicting policy change in school districts, but much of this evidence 
+remains relatively weak \citep{RefWorks:312}. Additionally, as shown in 
+Chapters \ref{chap:wisco} and \ref{chap:candidacy}, in Wisconsin school board 
+incumbent defeat is relatively rare. 
 
-\citet{RefWorks:347} represents the most thorough study of school boards as agents 
-of change in social issues. Some view school boards as potentially captured by 
-special interest groups \citep{RefWorks:320}. There is evidence that when 
-boards are elected, they become more responsive to interest groups than previously 
-when they were appointed \citep{RefWorks:242}. 
+\citet{RefWorks:337} defines the dissatisfaction 
+factor, which is the number of challengers running for a school board seat. Partially 
+in response to the twin measurement problems of the rarity of incumbent defeat 
+and the confounding influence of politically motivated incumbent retirement, 
+this measure has been used to predict both incumbent defeat and policy change 
+\citep{RefWorks:337,RefWorks:247}. 
+Theory suggests that an increase in the number of challengers is expected to 
+lead eventually to incumbent defeat as well as to encourage incumbents to retire 
+rather than face reelection. This, then, will lead to policy change 
+\citep{RefWorks:247}.\footnote{
+Formally, the dissatisfaction factor is counted as the number of available seats 
+divded by the number of challengers to that seat. The numerator includes all 
+candidates for seats, though the original study does not indicate how to handle 
+the case of challengers with very few votes or write-in candidates.}
 
-Boards can influence student outcomes through a range of decisions - some direct 
-and some less direct. \citet{RefWorks:210} provides an example by examining the 
-relationship between board decisions to consolidate school districts and the 
-resulting changes in student achievement. On a more universal basis, 
-\citet{RefWorks:214} explores if boards change policies in response to public
-accountability for student achievement, and if this results in improvements in
-student achievement.\footnote{This argument assumes a certain level of 
-effectiveness that is not captured by any measures in the current study and 
-may not be evenly distributed across boards \citep{RefWorks:237,RefWorks:261}.} 
+Equally difficult is deciding on which policy changes to focus on. School board 
+policy is, by its very nature, highly localized. Finding policy outputs that are 
+measureable and meaningful across school districts and across time on which to 
+compare the impact of board turnover is a challenging factor. Qualitative studies 
+with interviews of key stakeholders and analyses of board and community preferences 
+have found that dissatisfaction does matter and does drive change, but has done 
+so with a level of depth unavailable for a wide scale study 
+\citep{RefWorks:234,RefWorks:254,RefWorks:256,RefWorks:235}. Without such an 
+in-depth study of the politics of each community, it is difficult to understand 
+what might be the source of this voter dissatisfaction and what voters might wish 
+to see change. Much of the work in this area reviewed in Chapter \ref{chap:intro} 
+dealt focused on the impact of school board elections on superintendent
+turnover \citep{RefWorks:297,RefWorks:271, RefWorks:351,
+RefWorks:339,RefWorks:340,RefWorks:243}. The relatively recent emergence of 
+public accountability for student performance in school districts has opened 
+up another venue of potential investigation -- the importance of political 
+turnover among school board members as a precursor to improved student 
+performance \citep{RefWorks:311}. 
+
+In this study I look for evidence of change along the two dimensions previously
+identified in the literature as critical to voters -- the district administrator 
+and student performance. If voters are dissatisfied with their board and replace 
+some board members with new challengers, it is likely that they demand higher student
+performance, new district management, or both. While the linkage to superintendent 
+turnover is straightforward, the influence of boards on student outcomes is less 
+clear and merits further explanation. 
+
 In many cases, boards are criticized as being highly constrained actors with 
 little room to set policy after complying with state and federal mandates 
-\citep{RefWorks:316}, although the extent of this is not clear 
-\citep{RefWorks:223}.\footnote{Note that this argument can be reduced down ever
-further to the impact of district policies on schools or school policies on
-classroom \citep{RefWorks:255}}
-
-Yet boards allocate resources, and resources matter \citep{RefWorks:183}. 
+\citep{RefWorks:316}, although the extent of this is not clear \citep{RefWorks:223}.
+\footnote{Note that this argument can be reduced down ever further to the impact 
+of district policies on schools or school policies on classroom \citep{RefWorks:255}}
+Yet, evidence exists that boards can influence student outcomes through a range 
+of decisions - some direct and some less direct. \citet{RefWorks:210} provides 
+an example by examining the relationship between board decisions to consolidate 
+school districts and the resulting changes in student achievement. On a more 
+universal basis, \citet{RefWorks:214} explores if boards change policies in 
+response to public accountability for student achievement, and find evidence in 
+favor of resulting improvements in student achievement.\footnote{This argument 
+assumes a certain level of effectiveness that is not captured by any measures in 
+the current study and may not be evenly distributed across boards 
+\citep{RefWorks:237,RefWorks:261}.} More important still, boards allocate 
+limited school resources such as quality staff, technology materials, and curricula 
+materials, and evidence shows that such resources matter \citep{RefWorks:183}. 
 
 \section{Data}
 
@@ -180,7 +228,12 @@ of Wisconsin school districts for the time period from 2002-2012 and coded to
 indicate winners, losers, incumbents, and repeat candidates. To code incumbent 
 defeat, I matched a roster of known school board members in a given school year 
 against the victors in the following school year to identify which candidates 
-were incumbents. 
+were incumbents. In addition to this, I code the dissatisfaction factor in two 
+specific ways -- first as the number of elected seats over all candidates, and 
+second as the number of elected seats over all candidates receiving greater than 
+20 votes \citep{RefWorks:337}.\footnote{In the few cases in which a candidate 
+with fewer than 20 votes was the winner, this latter measure is replaced by the 
+former.} 
 
 This method differs from the board and candidate self-reported measure of incumbent 
 defeat that have been used previously in the literature \citep{RefWorks:345}. The 
@@ -269,6 +322,40 @@ dist_turn$winnerFac <- NULL
 Unfortunately, there is not enough variation in the number of board seats elected 
 and the number of incumbents defeated to use anything other than a binary measure 
 of incumbent defeat. 
+
+For a more continuous measure, I employ the dissatisfaction factor of 
+\citet{RefWorks:337} as well as a modified version which is the ratio of non-incumbents 
+to incumbents. Figure \ref{fig:dfactor} shows the average dissatisfaction factor 
+and average incumbent challenger rate in each year in the data. For both figures, 
+a higher number indicates more dissatisfaction either due to more candidates 
+overall participating or more non-incumbents. In general, competition seems to 
+have dropped off in both measures since 2002, though years prior to 2007 will 
+be excluded from most further analyses due to concerns about reporting bias with 
+the reduced sample and lack of student performance measures. 
+
+<<dfactor, fig.cap="Average Candidate Challenge in Wisconsin 2002-2012">>=
+plotdf <- ddply(dist_turn, .(year), summarise, 
+                dfactor1 = mean(dissatFactor), 
+                dfactor2 = mean(dissatFactor2),
+                crate = mean(challengRate), 
+                winnerAvg = mean(winnersTotal), 
+                candAvg = mean(candTotal))
+
+p1 <- qplot(year, dfactor1, data = plotdf, 
+      geom = "bar", stat='identity') + 
+  scale_x_continuous(breaks = c(2001:2012)) + theme_bw() + 
+  scale_y_continuous(label = percent) + 
+  labs(x = "Year", y = "DFACTOR")
+
+p2 <-  qplot(year, crate, data = plotdf, 
+      geom = "bar", stat='identity') + 
+  scale_x_continuous(breaks = c(2001:2012)) + theme_bw() + 
+  scale_y_continuous(label = percent) + 
+  labs(x = "Year", y = "CRATE")
+
+grid.arrange(p1, p2, nrow = 2, main = "Candidate Challenge Data over Time")
+@
+
 
 \subsection{Control Variables}
 
@@ -421,7 +508,8 @@ accountability pressure and improved student outcomes.
 
 <<testScoresR, results='asis'>>=
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
-                           "READ_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
+                           "READ_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE", 
+                           "dissatFactor", 
                            "econ_disadv_per", "VAP_adj", "per65o", "challengRate",
                            "PerBachelorOrAbove", "locale2", "incsTotal")]
 modeldata$READ_PROFADV_PER <- log(modeldata$READ_PROFADV_PER*100)
@@ -470,30 +558,49 @@ apsrtable(simpModRead, lagModRead, lagModReadFE, se = "robust",
 @
 
 <<testScoresRchall, results='hide'>>=
+simpModReadC <- update(simpModRead, . ~ challengRate_lag + . - 
+                         incsDefeatedFac_lag)
+simpModReadC$se <- sqrt(diag(get_CL_vcov(simpModReadC, modeldata$distid)))
+lagModReadC <- update(lagModRead, . ~ challengRate_lag + . - 
+                         incsDefeatedFac_lag)
+lagModReadC$se <- sqrt(diag(get_CL_vcov(lagModReadC, 
+                   modeldata$distid[!is.na(modeldata$READ_PROFADV_PER_lag)])))
+lagModReadFEc <- update(lagModReadFE, . ~ challengRate_lag + . - 
+                         incsDefeatedFac_lag)
+lagModReadFEc$se <- sqrt(diag(get_CL_vcov(lagModReadFEc, modeldata$distid)))
+
+simpModReadD <- update(simpModReadC, . ~ dissatFactor_lag + . - 
+                         challengRate_lag)
+simpModReadD$se <- sqrt(diag(get_CL_vcov(simpModReadD, modeldata$distid)))
+
+lagModReadD <- update(lagModReadC, . ~ dissatFactor_lag + . - 
+                         challengRate_lag)
+lagModReadD$se <- sqrt(diag(get_CL_vcov(lagModReadD, 
+                   modeldata$distid[!is.na(modeldata$READ_PROFADV_PER_lag)])))
+lagModReadFEd <- update(lagModReadFEc, . ~ dissatFactor_lag + . - 
+                         challengRate_lag)
+lagModReadFEd$se <- sqrt(diag(get_CL_vcov(lagModReadFEd, modeldata$distid)))
+
 prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
                   "ln(VAP)", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
-
-simpModReadC <- lm(READ_PROFADV_PER ~ challengRate_lag + locale2_lag  +
-                    servingMembers_lag + log(VAP_adj_lag), 
-                  data = modeldata)
-simpModReadC$se <- sqrt(diag(get_CL_vcov(simpModReadC, modeldata$distid)))
-lagModReadC <- lm(READ_PROFADV_PER ~ challengRate_lag + econ_disadv_per_lag + 
-                   READ_PROFADV_PER_lag + servingMembers_lag + 
-                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
-                   per65o_lag, data = modeldata)
-lagModReadC$se <- sqrt(diag(get_CL_vcov(lagModReadC, 
-                   modeldata$distid[!is.na(modeldata$READ_PROFADV_PER_lag)])))
-lagModReadFEc <- lm(READ_PROFADV_PER ~ challengRate_lag + econ_disadv_per_lag + 
-                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
-                      servingMembers_lag + per65o_lag + distid, 
-                   data = modeldata)
-lagModReadFEc$se <- sqrt(diag(get_CL_vcov(lagModReadFEc, modeldata$distid)))
 
 readChalRateTab <- apsrtable(simpModReadC, lagModReadC, lagModReadFEc, se = "robust", 
           stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
           caption = "Challenger Rate and Reading Proficiency Rates", 
           label = "tab:readMod2", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames, size = "small")
+
+prettyNames <- c("Intercept", "Dissat. Factor", "Exurb", "Rural", "Board Size",
+                  "ln(VAP)", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+readDRateTab <- apsrtable(simpModReadD, lagModReadD, lagModReadFEd, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
+          caption = "Dissatisfaction Factor and Reading Proficiency Rates", 
+          label = "tab:readMod3", notes = list(stars.note, fe.note), 
           Sweave = FALSE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
@@ -532,7 +639,7 @@ that measured in the reading models, about 0.13 of a standard deviation.
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "MATH_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
                            "econ_disadv_per", "VAP_adj", "per65o", "challengRate",
-                           "PerBachelorOrAbove", "locale2")]
+                           "PerBachelorOrAbove", "locale2", "dissatFactor")]
 modeldata$MATH_PROFADV_PER <- log(modeldata$MATH_PROFADV_PER*100)
 modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
 modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
@@ -580,36 +687,54 @@ apsrtable(simpModMath, lagModMath, lagModMathFE, se = "robust",
 
 
 <<testScoreschallM, results='hide'>>=
-simpModMathc <- lm(MATH_PROFADV_PER ~ challengRate_lag + locale2_lag + 
-                    servingMembers_lag + log(VAP_adj_lag), 
-                  data = modeldata)
-simpModMathc$se <- sqrt(diag(get_CL_vcov(simpModMathc, modeldata$distid)))
-lagModMathc <- lm(MATH_PROFADV_PER ~ challengRate_lag + econ_disadv_per_lag + 
-                   MATH_PROFADV_PER_lag +servingMembers_lag+
-                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
-                   per65o_lag, data = modeldata)
-lagModMathc$se <- sqrt(diag(get_CL_vcov(lagModMathc, 
+simpModMathc <- update(simpModMath, . ~ challengRate_lag + . - 
+                         incsDefeatedFac_lag)
+simpModMathc$se <- sqrt(diag(get_CL_vcov(simpModReadC, modeldata$distid)))
+lagModMathC <- update(lagModMath, . ~ challengRate_lag + . - 
+                         incsDefeatedFac_lag)
+lagModMathC$se <- sqrt(diag(get_CL_vcov(lagModMathC, 
                    modeldata$distid[!is.na(modeldata$MATH_PROFADV_PER_lag)])))
-lagModMathFEC <- lm(MATH_PROFADV_PER ~ challengRate_lag + econ_disadv_per_lag + 
-                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
-                  servingMembers_lag+  per65o_lag + distid, data = modeldata)
-lagModMathFEC$se <- sqrt(diag(get_CL_vcov(lagModMathFEC, modeldata$distid)))
+lagModMathFEc <- update(lagModMathFE, . ~ challengRate_lag + . - 
+                         incsDefeatedFac_lag)
+lagModMathFEc$se <- sqrt(diag(get_CL_vcov(lagModMathFEc, modeldata$distid)))
+
+simpModMathD <- update(simpModMathc, . ~ dissatFactor_lag + . - 
+                         challengRate_lag)
+simpModMathD$se <- sqrt(diag(get_CL_vcov(simpModMathD, modeldata$distid)))
+
+lagModMathD <- update(lagModMathC, . ~ dissatFactor_lag + . - 
+                         challengRate_lag)
+lagModMathD$se <- sqrt(diag(get_CL_vcov(lagModMathD, 
+                   modeldata$distid[!is.na(modeldata$MATH_PROFADV_PER_lag)])))
+lagModMathFEd <- update(lagModMathFEc, . ~ dissatFactor_lag + . - 
+                         challengRate_lag)
+lagModMathFEd$se <- sqrt(diag(get_CL_vcov(lagModMathFEd, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)",
-                 "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                  "ln(VAP)", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
-fe.note <- "District fixed effects not displayed."
-
-mathChalRateTab <- apsrtable(simpModMathc, lagModMathc, lagModMathFEC, se = "robust", 
+mathChalRateTab <- apsrtable(simpModMathc, lagModMathC, lagModMathFEc, se = "robust", 
           stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
-          caption = "Challenge Rate and Math Proficiency Rates", 
+          caption = "Challenger Rate and Math Proficiency Rates", 
           label = "tab:mathMod2", notes = list(stars.note, fe.note), 
-          Sweave = TRUE, 
+          Sweave = FALSE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
           coef.names = prettyNames, size = "small")
+
+prettyNames <- c("Intercept", "Dissat. Factor", "Exurb", "Rural", "Board Size",
+                  "ln(VAP)", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+mathDRateTab <- apsrtable(simpModMathD, lagModMathD, lagModMathFEd, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
+          caption = "Dissatisfaction Factor and Math Proficiency Rates", 
+          label = "tab:madhMod3", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames, size = "small")
+
 @
 
 Table \ref{tab:gradMod} shows the results for graduation rates. Although I expected 
@@ -623,7 +748,7 @@ equivalent to a decrease of 0.18\% in the graduation rate, an effect of
 <<hscModel, results='asis'>>=
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "gradRate", "NEW_SUP", "SUP_EXPERIENCE", "challengRate",
-                           "econ_disadv_per", "VAP_adj", "per65o", 
+                           "econ_disadv_per", "VAP_adj", "per65o", "dissatFactor",
                            "PerBachelorOrAbove", "locale2")]
 modeldata <- modeldata[modeldata$gradRate > 0, ]
 modeldata$gradRate <- log(modeldata$gradRate)
@@ -678,23 +803,16 @@ apsrtable(simpModGrad, lagModGrad, lagModGradFE, se = "robust",
 
 <<hscChalRate, results='hide'>>=
 
-simpModGradc <- lm(gradRate ~ challengRate_lag + locale2_lag + 
-                    servingMembers_lag + log(VAP_adj_lag), 
-                  data = modeldata)
-simpModGradc$se <- sqrt(diag(get_CL_vcov(simpModGradc, 
-                                        modeldata$distid[!is.na(modeldata$gradRate)])))
+simpModGradc <- update(simpModGrad, . ~ challengRate_lag + . - incsDefeatedFac_lag)
 
-lagModGradc <- lm(gradRate ~ gradRate_lag + challengRate_lag + servingMembers_lag+
-                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
-                   per65o_lag, data = modeldata)
+simpModGradc$se <- sqrt(diag(get_CL_vcov(simpModGradc, 
+                                  modeldata$distid[!is.na(modeldata$gradRate)])))
+lagModGradc <- update(lagModGrad,  . ~ challengRate_lag + . - incsDefeatedFac_lag)
 lagModGradc$se <- sqrt(diag(get_CL_vcov(lagModGradc, 
                    modeldata$distid[!is.na(modeldata$gradRate_lag) & 
                                       !is.na(modeldata$gradRate)])))
 
-lagModGradFEc <- lm(gradRate ~ challengRate_lag + econ_disadv_per_lag + 
-                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
-                   servingMembers_lag + per65o_lag + distid, data = modeldata)
-
+lagModGradFEc <- update(lagModGradFE,  . ~ challengRate_lag + . - incsDefeatedFac_lag)
 lagModGradFEc$se <- sqrt(diag(get_CL_vcov(lagModGradFEc, 
                                          modeldata$distid[!is.na(modeldata$gradRate)])))
 
@@ -706,13 +824,37 @@ fe.note <- "District fixed effects not displayed."
 
 gradChalRateTab <- apsrtable(simpModGradc, lagModGradc, lagModGradFEc, se = "robust", 
           stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
-          caption = "Incumbent Defeat and High School Graduation", 
+          caption = "Challenge Rate and High School Graduation", 
           label = "tab:gradMod2", notes = list(stars.note, fe.note), 
           Sweave = FALSE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
           coef.names = prettyNames, size="small")
 
+simpModGradD <- update(simpModGradc, . ~ dissatFactor_lag + . - challengRate_lag)
+simpModGradD$se <- sqrt(diag(get_CL_vcov(simpModGradD, 
+                                  modeldata$distid[!is.na(modeldata$gradRate)])))
+lagModGradD <- update(lagModGradc, . ~ dissatFactor_lag + . - challengRate_lag)
+lagModGradD$se <- sqrt(diag(get_CL_vcov(lagModGradD, 
+                   modeldata$distid[!is.na(modeldata$gradRate_lag) & 
+                                      !is.na(modeldata$gradRate)])))
+lagModGradFEd <- update(lagModGradFEc, . ~ dissatFactor_lag + . - challengRate_lag)
+lagModGradFEd$se <- sqrt(diag(get_CL_vcov(lagModGradFEd, 
+                                         modeldata$distid[!is.na(modeldata$gradRate)])))
+prettyNames <- c("Intercept", "Dissat. Factor", "Exurb", "Rural", "Board Size",
+                  "ln(VAP)", "FRL \\%", "Grad Rate Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+
+fe.note <- "District fixed effects not displayed."
+
+gradDRateTab <- apsrtable(simpModGradD, lagModGradD, lagModGradFEd, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
+          caption = "Dissatisfaction Factor and High School Graduation", 
+          label = "tab:gradMod3", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames, size="small")
 @
 
 \clearpage
@@ -731,7 +873,7 @@ translates into an odds-ratio of 1.31.
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "MATH_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
                            "econ_disadv_per", "VAP_adj", "per65o", 
-                           "challengRate",
+                           "challengRate", "dissatFactor",
                            "PerBachelorOrAbove", "locale2")]
 modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
 modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
@@ -760,9 +902,6 @@ fullModSupFE <- bayesglm(NEW_SUP ~ incsDefeatedFac_lag +
                       locale2_lag + PerBachelorOrAbove_lag + 
                    per65o_lag + distid, data = modeldata, family = "binomial")
 fullModSupFE$se <- sqrt(diag(get_CL_vcov(fullModSupFE, modeldata$distid)))
-@
-
-<<chalRateGrad, results='asis'>>=
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
                   "ln(VAP)", "FRL \\%", "New Sup. Lag", "\\% Bach. +", 
                  "\\% Over 65")
@@ -779,20 +918,16 @@ apsrtable(simpModSup, fullModSup, fullModSupFE, se = "robust",
                          expression(grep("distid", coefnames, value=TRUE))), 
           coef.names = prettyNames, size = "small")
 
-simpModSupc <- glm(NEW_SUP ~ challengRate_lag + locale2_lag + 
-                    servingMembers_lag + log(VAP_adj_lag), 
-                  data = modeldata, family = "binomial")
-simpModSupc$se <- sqrt(diag(get_CL_vcov(simpModSupc, modeldata$distid)))
-fullModSupc <- glm(NEW_SUP ~ challengRate_lag + econ_disadv_per_lag + 
-                   log(VAP_adj_lag) + servingMembers_lag + NEW_SUP_lag +
-                    locale2_lag + PerBachelorOrAbove_lag + 
-                   per65o_lag, data = modeldata, family = "binomial")
-fullModSupc$se <- sqrt(diag(get_CL_vcov(fullModSupc, modeldata$distid)))
+@
 
-fullModSupFEc <- bayesglm(NEW_SUP ~ challengRate_lag + 
-                      econ_disadv_per_lag + log(VAP_adj_lag) + servingMembers_lag +
-                      locale2_lag + PerBachelorOrAbove_lag + 
-                   per65o_lag + distid, data = modeldata, family = "binomial")
+<<chalRateGrad, results='asis'>>=
+
+
+simpModSupc <- update(simpModSup, . ~ challengRate_lag + . - incsDefeatedFac_lag)
+simpModSupc$se <- sqrt(diag(get_CL_vcov(simpModSupc, modeldata$distid)))
+fullModSupc <- update(fullModSup, . ~ challengRate_lag + . - incsDefeatedFac_lag)
+fullModSupc$se <- sqrt(diag(get_CL_vcov(fullModSupc, modeldata$distid)))
+fullModSupFEc <- update(fullModSupFE, . ~ challengRate_lag + . - incsDefeatedFac_lag)
 fullModSupFEc$se <- sqrt(diag(get_CL_vcov(fullModSupFEc, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
@@ -804,6 +939,29 @@ apsrtable(simpModSupc, fullModSupc, fullModSupFEc, se = "robust",
           model.names = c("Simple", "Lag", "FE"), 
           caption = "Challenge Rate and Superintendent Turnover", 
           label = "tab:supMod2", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames, size = "small")
+@
+
+<<dissatFatGrad, results='asis'>>=
+simpModSupd <- update(simpModSupc, . ~ dissatFactor_lag + . - challengRate_lag)
+simpModSupd$se <- sqrt(diag(get_CL_vcov(simpModSupc, modeldata$distid)))
+fullModSupd <- update(fullModSupc, . ~ dissatFactor_lag + . - challengRate_lag)
+fullModSupd$se <- sqrt(diag(get_CL_vcov(fullModSupc, modeldata$distid)))
+fullModSupFEd <- update(fullModSupFEc, . ~ dissatFactor_lag + . - challengRate_lag)
+fullModSupFEd$se <- sqrt(diag(get_CL_vcov(fullModSupFEc, modeldata$distid)))
+
+prettyNames <- c("Intercept", "Dissat. Factor", "Exurb", "Rural", "Board Size",
+                  "ln(VAP)", "FRL \\%", "New Sup. Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+
+apsrtable(simpModSupd, fullModSupd, fullModSupFEd, se = "robust", 
+          stars = "default", digits = 3, 
+          model.names = c("Simple", "Lag", "FE"), 
+          caption = "Dissatisfaction Factor and Superintendent Turnover", 
+          label = "tab:supMod3", notes = list(stars.note, fe.note), 
           Sweave = FALSE, 
            omitcoef=list("distid", 
                          expression(grep("distid", coefnames, value=TRUE))), 
@@ -826,6 +984,9 @@ Counter to the prior findings in the literature, this chapter has looked for
 evidence of an impact of school board incumbent defeat on student outcomes and 
 district policy and found little. 
 
+\citet{RefWorks:246} finds that board dissatisfaction does lead to superintendent 
+turnover. 
+
 This chapter has looked for evidence of the impact of school board electoral 
 defeat on student outcomes and on school district leadership. 
 
@@ -839,4 +1000,11 @@ mathChalRateTab
 readChalRateTab
 
 gradChalRateTab
+
+mathDRateTab
+
+readDRateTab
+
+gradDRateTab
+
 @
