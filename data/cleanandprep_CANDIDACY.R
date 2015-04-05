@@ -304,6 +304,10 @@ dist_turn$incumRun <- ifelse(dist_turn$ninc > 0, 1, 0)
 dist_turn$incumShare <- dist_turn$ninc / (dist_turn$nrealcand)
 dist_turn$onlyIncum <- ifelse(dist_turn$incumShare == 1, 1, 0)
 
+dist_turn$teachShareofVoters2 <- round(dist_turn$FTE_TEACH, 0) / round(dist_turn$votersLag2, 0)
+dist_turn$teachShareofVoters2[dist_turn$teachShareofVoters2 > 0.46 & 
+                                !is.na(dist_turn$teachShareofVoters2)] <- 0.46
+
 dist_turn$teachSalDiff <- dist_turn$ADJ_MEDIAN_SALARY_TEACHlog - 
   dist_turn$median_incomeLOG
 
@@ -317,3 +321,72 @@ dist_turn$refInPlace <- zeroNA(dist_turn$refInPlace)
 dist_turn$incDefeats <- ifelse(dist_turn$incDefeats > 0, 1, 0)
 
 rm(tmp, i, j)
+
+# Transform Blais-Lago
+# ----------
+
+dist_turn$minBlaisLago <- abs(abs(dist_turn$minBlaisLago) - 100)
+
+#
+
+# dist_turn mix
+
+dist_turn$distWidemix <- ifelse(dist_turn$distWidemix > 1, 1, 0)
+dist_turn$districtwide <- dist_turn$distWidemix
+
+# Board size
+
+load("data/cache/boardSize.rda")
+dist_turn <- merge(dist_turn, boardSize, by.x = c("distid", "year"), 
+                   by.y = c("agency", "year"), all.x=TRUE)
+rm(boardSize)
+
+#--------------------------
+dist_turn$incDefeats <- NULL
+incDefeat <- ddply(dat[dat$electiontype == 1,], 
+                   .(distid, year), 
+                   summarise, 
+                   incsDefeated = sum(incumbent[winner == 0]), 
+                   incsTotal = sum(incumbent), 
+                   candTotal = length(candidateid[candidateid != 99]),
+                   candReal = length(candidateid[candidateid != 99 & minor < 1]),
+                   winnersTotal = sum(winner))
+
+# TODO:
+# Why is this?
+# incumbents defeated can exceed number of winners, especially when races 
+# consolidate
+fw  <- function(x) c(x[2:length(x)], NA)
+
+dist_turn <- merge(dist_turn, incDefeat, by = c("distid", "year")) 
+dist_turn$candReal <- ifelse(dist_turn$candReal == 0, dist_turn$candTotal, 
+                             dist_turn$candReal)
+dist_turn$boardTurnover <- dist_turn$incsDefeated / dist_turn$servingMembers
+dist_turn$boardSeatsUp <- dist_turn$winnersTotal / dist_turn$servingMembers
+dist_turn$challengRate <- 1 - (dist_turn$incsTotal / dist_turn$candTotal)
+dist_turn$dissatFactor <- 1 - (dist_turn$winnersTotal / dist_turn$candTotal)
+dist_turn$dissatFactor2 <- 1 - (dist_turn$winnersTotal / dist_turn$candReal)
+
+library(data.table)
+dist_turn <- dist_turn[order(dist_turn$distid, dist_turn$year),]
+dist_turn <- as.data.table(dist_turn)[, NEW_SUP_FW:= fw(NEW_SUP), by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      READ_PROFADV_PER_LAG:= lg(READ_PROFADV_PER),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      MATH_PROFADV_PER_LAG:= lg(MATH_PROFADV_PER),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      incsDefeatedLag:= lg(incsDefeated),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      incsTotalLag:= lg(incsTotal),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      winnersTotalLag:= lg(winnersTotal),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      nrealcandLag:= lg(nrealcand),
+                                      by = "distid"]
+
+dist_turn <- as.data.frame(dist_turn)

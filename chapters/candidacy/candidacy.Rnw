@@ -426,6 +426,7 @@ Table \ref{tab:icbydef} shows that in races in which
 at least one of the candidates is not an incumbent incumbent defeat is rare. 
 
 <<nonincumbent3, results='asis'>>=
+dist_turn$incDefeats <- ifelse(dist_turn$incsDefeated > 0, 1, 0)
 dist_turn$incDefeatFac <- ifelse(dist_turn$incDefeats > 0, 1, 0)
 
 tabdf <- dist_turn[dist_turn$ninc > 0, c("incumbOnly", "contestSer", "incDefeatFac")]
@@ -1306,21 +1307,13 @@ or incumbents are defeated in a school board race.
 
 <<cleanModData, results='asis'>>=
 dist_turn$nonincumbRun <- ifelse(dist_turn$onlyIncum == 1, 0, 1)
-dist_turn$minBlaisLago <- abs(dist_turn$minBlaisLago) #TODO fix negative BLQ
-dist_turn$minBlaisLago[dist_turn$minBlaisLago == 0] <- .0001
-dist_turn$minBlaisLago <- log(dist_turn$minBlaisLago)
 dist_turn$partyDivisionRecent <- log(dist_turn$partyDivisionRecent)
-
 demogIdx <- c(demogIdx, "locale2")
 dvs <- c("contestSer", "contestMinor", "contestMinorLag", 
          "contestSerLag", "incDefeats", "onlyIncum", "incumShare", "nonincumbRun", 
          "minBlaisLago", "turnout", "turnoutLag1", "turnoutLag2")
 ids <- c("distid", "year", "districtwide")
-
-
-
 moddat <- dist_turn[, c(dvs, ids, demogIdx, fiscalIdx, policyIdx, politicIdx)]
-
 
 moddat$year <- factor(moddat$year)
 moddat <- moddat[order(moddat$distid, moddat$year),]
@@ -1423,12 +1416,12 @@ glmNItab <-apsrtable(demogsNI, politicNI, fiscalNI, policyNI, fullmodNI, se = "r
                         "Policy", "Full"), 
           caption = "Models of Incumbent Lockout in School Board Elections",
           notes = list(stars.note, rescalenote, coef.note),
-          Sweave=FALSE, digits = 3, coef.names = coefnames1)
+          Sweave=FALSE, digits = 3, coef.names = coefnames1, size="footnotesize")
 
 @
 
 
-\begin{tiny}
+
 <<glmermodsNI, results='asis'>>=
 library(optimx)
 ctrl2 <- glmerControl(optimizer = "optimx", calc.derivs = FALSE, 
@@ -1469,10 +1462,10 @@ apsrtable(demogsMMni, politicMMni, fiscalMMni, policyMMni, fullmodMMni,
                         "Policy", "Full"), 
           caption = "Mixed Models of Incumbent Lockout in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames1)
+          Sweave=FALSE, digits = 3, coef.names = coefnames1, size="scriptsize")
 
 @
-\end{tiny}
+
 
 The models in Table \ref{tab:glmerModsNI} are disappointing overall. Not only are 
 most variables not statistically significant, many of them are not of the correct 
@@ -1547,7 +1540,8 @@ rates rise and also as districts have offered more bond referenda historically.
 moddat2 <- moddat[moddat$incumShare != max(moddat$incumShare) & 
                     !is.na(moddat$contestSerLag), ]
 
-demogsCon <- glm(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+demogsCon <- glm(contestSer ~ VAP_adjLOG + per65o + PerBachelorOrAbove + 
+                   per_white_all +
               OOH_share + locale2 + contestSerLag +  year, 
               data = moddat2, 
               family = "binomial") #bach and 65o switch?
@@ -1608,12 +1602,12 @@ glmContab <- apsrtable(demogsCon, politicCon, fiscalCon, policyCon, fullmodCon, 
                         "Policy", "Full"), 
           caption = "Models of Contestation in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames2)
+          Sweave=FALSE, digits = 3, coef.names = coefnames2, size="scriptsize")
 
 @
 
 
-\begin{tiny}
+
 <<glmermods, results='asis'>>=
 library(optimx)
 ctrl2 <- glmerControl(optimizer = "optimx", calc.derivs = FALSE, 
@@ -1652,10 +1646,8 @@ apsrtable(demogsMMCon, politicMMCon, fiscalMMCon, policyMMCon, fullmodMMCon,
                         "Policy", "Full"), 
           caption = "Mixed Models of Contestation in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames2)
+          Sweave=FALSE, digits = 3, coef.names = coefnames2, size="scriptsize")
 @
-
-\end{tiny}
 
 \subsection{Competitiveness}
 
@@ -1750,12 +1742,11 @@ glmBLQtab <- apsrtable(demogsBLQ, politicBLQ, fiscalBLQ, policyBLQ, fullmodBLQ, 
                         "Policy", "Full"), 
           caption = "Linear Models of Blais-Lago Quotient of Competitiveness in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames4)
+          Sweave=FALSE, digits = 3, coef.names = coefnames4, size="scriptsize")
 
 @
 
 
-\begin{tiny}
 <<blqMMmods, eval=TRUE, results='asis'>>=
 demogsMMblq <- lmer(minBlaisLago ~ VAP_adjLOG + per65o + PerBachelorOrAbove + 
                       per_white_all + OOH_share + locale2 + contestSerLag + 
@@ -1786,11 +1777,9 @@ apsrtable(demogsMMblq, politicMMblq, fiscalMMblq, policyMMblq, fullmodMMblq,
                         "Policy", "Full"), 
           caption = "Linear Mixed Models of Blais-Lago Quotient of Competitiveness in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames4)
+          Sweave=FALSE, digits = 3, coef.names = coefnames4, size="scriptsize")
 
 @
-\end{tiny}
-
 
 
 \subsection{Incumbent Defeat}
@@ -1884,11 +1873,10 @@ glmDtab <- apsrtable(demogsD, politicD, fiscalD, policyD, fullmodD, se = "robust
                         "Policy", "Full"), 
           caption = "Logit Models of Incumbent Defeat in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames3)
+          Sweave=FALSE, digits = 3, coef.names = coefnames3, size="scriptsize")
 
 @
 
-\begin{tiny}
 <<incdefeatMods, eval=TRUE, results='asis'>>=
 moddat3 <- moddat[moddat$incumShare != max(moddat$incumShare) &
                               moddat$incumShare != min(moddat$incumShare),]
@@ -1925,10 +1913,10 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
                         "Policy", "Full"), 
           caption = "Mixed Models of Incumbent Defeat in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames3)
+          Sweave=FALSE, digits = 3, coef.names = coefnames3, size="scriptsize")
 
 @
-\end{tiny}
+
 
 \clearpage
 
@@ -2174,17 +2162,17 @@ NIdef <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat,
   labs(x = "District", y = "Pr(Incumb. Def.)", title = "Defeat")
 
 replotdf <- substEffSimRE(fullmodMMblq, "distid", ncases=6, alpha = 0.1)
-replotdf$yhatUnscale <- exp(replotdf[, "yhat"] * 2 * moddatScale["minBlaisLago", 2]) + 
+replotdf$yhatUnscale <- replotdf[, "yhat"] * 2 * moddatScale["minBlaisLago", 2] + 
   moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
-replotdf$lwrUnscale <- exp(replotdf[, "lwr"] * 2 * moddatScale["minBlaisLago", 2]) + 
+replotdf$lwrUnscale <- replotdf[, "lwr"] * 2 * moddatScale["minBlaisLago", 2] + 
   moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
-replotdf$uprUnscale <- exp(replotdf[, "upr"] * 2 * moddatScale["minBlaisLago", 2]) + 
+replotdf$uprUnscale <- replotdf[, "upr"] * 2 * moddatScale["minBlaisLago", 2] + 
   moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
 replotdf <- replotdf[replotdf$uprUnscale < 100,]
-lowerBar <- exp((quantile(fitted(fullmodMMblq), prob = 0.25) * 2 * moddatScale["minBlaisLago", 2]) + 
-      moddatScale["minBlaisLago", 1])
-upperBar <- exp((quantile(fitted(fullmodMMblq), prob = 0.75) * 2 * moddatScale["minBlaisLago", 2]) + 
-      moddatScale["minBlaisLago", 1])
+lowerBar <- quantile(fitted(fullmodMMblq), prob = 0.25) * 2 * moddatScale["minBlaisLago", 2] + 
+      moddatScale["minBlaisLago", 1]
+upperBar <- quantile(fitted(fullmodMMblq), prob = 0.75) * 2 * moddatScale["minBlaisLago", 2]+ 
+      moddatScale["minBlaisLago", 1]
 
 replotdf$newvar <- as.character(replotdf$newvar)
 

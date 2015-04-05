@@ -258,8 +258,8 @@ to account for this by looking at the impact incumbent defeat has on student
 performance on the state exam and graduation rate two years after the election date. 
 For an incumbent defeated in the spring election of 2004, the impact of this 
 defeat is expected to come not during the 2005-06 school year, but instead the 
-2006-07 year.\footnote{I check models with both a twice and single lagged measure 
-of incumbent defeat for substantive differences.}
+2006-07 year.\footnote{Future work may consider extending the lag even further 
+because of the length of time it may take to see achievement results.}
 
 <<incDefeatMeasure, fig.cap="Incumbent Defeat Year to Year in Wisconsin 2002-2012">>=
 library(gridExtra)
@@ -635,6 +635,14 @@ board incumbent defeat is equivalent to a reduction of the percentage proficient
 or advanced at math in the district of 1.4\%. This is a much larger effect than 
 that measured in the reading models, about 0.13 of a standard deviation. 
 
+For both reading and math, the results for incumbent defeat are broadly similar 
+for the dissatisfaction factor, which is negatively related to future test 
+score performance. These results can be found in Tables \ref{tab:readMod3} and 
+\ref{tab:mathMod3} and again the reduced for model is statistically significant, 
+but the lagged and fixed effect models have greatly reduced coefficients and 
+no statistical significance.\footnote{The challenge rate is similar, but not 
+statistically significant.}
+
 <<testScoresM, results='asis'>>=
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "MATH_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE",
@@ -742,7 +750,10 @@ to find a stronger effect of school boards on graduation rates, there is weaker
 evidence here. The estimated effect is consistently negative -- counter to 
 expectations -- but is not statistically significant. The effect is substantively 
 equivalent to a decrease of 0.18\% in the graduation rate, an effect of 
-0.03 standard deviations. 
+0.03 standard deviations. The effects for the challenge rate and the dissatisfaction 
+factor are largely the same, but only the dissatisfaction factor has a negative 
+statistically significant relationship in the simple model. These results are in 
+Table \ref{tab:gradMod2} and \ref{tab:gradMod3}. 
 
 % HSC 
 <<hscModel, results='asis'>>=
@@ -969,26 +980,45 @@ apsrtable(simpModSupd, fullModSupd, fullModSupFEd, se = "robust",
 
 @
 
-Another interesting effect that emerges from the models in Table \ref{tab:supMod} 
-is a consistently statistically significant and positive effect on the size of a 
-school board on the likelihood of a superintendent being removed. A board with 
-an increased size of 1 is associated with a 14\% increase in the likelihood of 
-a superintendent changing. This effect stays statistically significant and 
-roughly the same size across the specifications of the model. 
+The results for challenge rate and the dissatisfaction factor in Tables 
+\ref{tab:supMod2} and \ref{tab:supMod3} are even stronger -- with a consistent 
+positive statistically significant relationship. These findings confirm findings 
+like \citet{RefWorks:246} that board dissatisfaction does lead to superintendent 
+turnover. 
+
 
 \clearpage
 
 \section{Conclusion}
 
-Counter to the prior findings in the literature, this chapter has looked for 
-evidence of an impact of school board incumbent defeat on student outcomes and 
-district policy and found little. 
+There is little evidence that school board turnover is related to student 
+outcomes across any measure of dissatisfaction. If anything, it was found to be 
+counter to the prior findings in the literature which found a small positive 
+affect on student achievement after school board electoral defeats. At best, 
+the findings above provide some evidence 
+that suggests that communities with lower student outcomes have more board 
+turnover. Models that try to identify the causal relationship by controlling 
+for prior levels of achievement or within-district changes in student outcomes 
+did not have any findings. This is, at least in part, due to the nature of the 
+measures of student performance available which show very little year to year 
+variation net of student characteristics and prior achievement or graduation rates. 
 
-\citet{RefWorks:246} finds that board dissatisfaction does lead to superintendent 
-turnover. 
+The story for superintendent turnover is different. Across the three measures 
+of school board dissatisfaction, a positive statistically significant relationship 
+with superintendent turnover was identified. The stability of the prediction 
+across increasingly restrictive model specifications provides strong evidence 
+that an increase in candidates, challengers and defeats for school board in a 
+school district increases the likelihood the superintendent will turnover. 
 
-This chapter has looked for evidence of the impact of school board electoral 
-defeat on student outcomes and on school district leadership. 
+Future work is needed to explore the mechanisms here. First, a limitation of 
+this study is the inability to distinguish between types of superintendent 
+turnover including retirement, buyout, and firing. Another limitation is the 
+limited window -- using a twice lagged model is preferable, but both board 
+and superintendent turnover may need to be analyzed from a three year rolling 
+average basis to best measure this. 
+
+
+
 
 \section{Appendix}
 
