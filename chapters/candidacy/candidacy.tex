@@ -301,7 +301,7 @@ with each race electing multiple winners.\footnote{See Appendix \ref{app:data} f
 details about the coding of races.}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Apr 07 19:08:55 2015
+% Tue Apr 07 20:37:49 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllllllllll}
@@ -356,7 +356,7 @@ level is predicted by theory.
 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Apr 07 19:08:56 2015
+% Tue Apr 07 20:37:49 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -396,7 +396,7 @@ Table \ref{tab:icbydef} shows that in races in which
 at least one of the candidates is not an incumbent incumbent defeat is rare. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Apr 07 19:08:56 2015
+% Tue Apr 07 20:37:49 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -419,7 +419,7 @@ explain the variation in these three degrees of contestation.
 \subsubsection{Non-incumbents}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Apr 07 19:08:56 2015
+% Tue Apr 07 20:37:49 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrll}
@@ -1098,6 +1098,7 @@ or incumbents are defeated in a school board race.
 
 
 
+\begin{scriptsize}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Mixed Models of Incumbent Lockout in School Board Elections}
 \label{tab:glmerModsNI}\\ 
@@ -1167,9 +1168,10 @@ Group:distid Effs.     & (Intercept) & (Intercept) & (Intercept) & (Intercept) &
 Group:distid Var.      & 0.478       & 0.515       & 0.459       & 0.46        & 0.5        \\ 
 Sigma                  & 1           & 1           & 1           & 1           & 1           \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations.}} 
+\multicolumn{6}{l}{\footnotesize{All continuous variables mean centered and 
+divided by 2 standard deviations}} 
 \end{longtable} 
+ \end{scriptsize} 
 
 
 
@@ -1244,6 +1246,7 @@ rates rise and also as districts have offered more bond referenda historically.
 
 
 
+\begin{scriptsize}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Mixed Models of Contestation in School Board Elections}
 \label{tab:glmerModsCon}\\ 
@@ -1318,6 +1321,7 @@ Sigma                  & 1           & 1           & 1           & 1           &
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
 \end{longtable} 
+ \end{scriptsize} 
 
 
 \subsection{Competitiveness}
@@ -1354,6 +1358,7 @@ challengers ever emerge in the first place.
 
 
 
+\begin{scriptsize}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Linear Mixed Models of Blais-Lago Quotient of Competitiveness in School Board Elections}
 \label{tab:glmerModsBLQ}\\ 
@@ -1422,6 +1427,7 @@ Sigma                  & 0.4152      & 0.3921      & 0.4146      & 0.4152      &
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
 \end{longtable} 
+ \end{scriptsize} 
 
 
 
@@ -1450,6 +1456,7 @@ revenue limit maintains its predictive power in the full model.
 
 
 
+\begin{scriptsize}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Mixed Models of Incumbent Defeat in School Board Elections}
 \label{tab:glmerModsID}\\ 
@@ -1516,6 +1523,7 @@ Sigma                  & 1           & 1           & 1           & 1           &
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
 \end{longtable} 
+ \end{scriptsize} 
 
 
 
@@ -1820,6 +1828,7 @@ All analyses were done using R \citep{cran}. Source code and data available onli
 \subsection{Pooled GLM Model Results}
 
 \begin{tiny}
+\begin{scriptsize}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Models of Incumbent Lockout in School Board Elections}
 \label{tab:glmModsNI}\\ 
@@ -1886,14 +1895,16 @@ AIC                    & 3041.503  & 3045.640  & 3043.230  & 3042.214  & 3054.37
 BIC                    & 3467.092  & 3660.380  & 3587.038  & 3586.022  & 3905.548 \\ 
 $\log L$              & -1448.751 & -1418.820 & -1429.615 & -1429.107 & -1383.185 \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^*$ indicates significance at $p< 0.05 $}}\\
-\multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations.}}\\
-\multicolumn{6}{l}{\footnotesize{Year fixed effect coefficients excluded.}} 
+\multicolumn{6}{l}{\footnotesize{All continuous variables mean centered and 
+divided by 2 standard deviations}}\\
+\multicolumn{6}{l}{\footnotesize{Year fixed effect coefficients excluded}} 
 \end{longtable} 
+ \end{scriptsize} 
 
 \end{tiny}
 
 \begin{tiny}
+\begin{scriptsize}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Models of Contestation in School Board Elections}
 \label{tab:glmModsCon}\\ 
@@ -1965,10 +1976,12 @@ $\log L$              & -1057.775 & -1017.383 & -1036.375 & -1037.937 & -979.414
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
 \end{longtable} 
+ \end{scriptsize} 
 
 \end{tiny}
 
 \begin{tiny}
+\begin{scriptsize}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Linear Models of Blais-Lago Quotient of Competitiveness in School Board Elections}
 \label{tab:glmModsBLQ}\\ 
@@ -2034,10 +2047,12 @@ Resid. sd              & 0.492     & 0.421     & 0.487     & 0.491     & 0.418  
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
 \end{longtable} 
+ \end{scriptsize} 
 
 \end{tiny}
 
 \begin{tiny}
+\begin{scriptsize}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Logit Models of Incumbent Defeat in School Board Elections}
 \label{tab:glmModsD}\\ 
@@ -2103,6 +2118,7 @@ $\log L$              & -949.376  & -925.700  & -933.809  & -933.447  & -893.814
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
 \end{longtable} 
+ \end{scriptsize} 
 
 \end{tiny}
 
@@ -2124,7 +2140,7 @@ represented by the horizontal lines in each panel.
 \subsection{Model Specification Tests}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Apr 07 19:21:38 2015
+% Tue Apr 07 20:50:48 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{llrrr}

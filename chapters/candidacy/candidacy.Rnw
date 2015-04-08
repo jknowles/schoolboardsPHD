@@ -1392,10 +1392,10 @@ fullmodNI <- update(politicNI, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE 
 
 fullmodSE <- get_CL_vcov(fullmodNI, moddat2$distid)
 fullmodNI$se <- sqrt(diag(fullmodSE))
-rescalenote <- "All continuous variables rescaled to center 0 
-                and divided by 2 standard deviations."
+rescalenote <- "All continuous variables mean centered and 
+divided by 2 standard deviations"
 stars.note <- apsrtable:::stars.note
-coef.note <- "Year fixed effect coefficients excluded."
+coef.note <- "Year fixed effect coefficients excluded"
 
 coefnames1 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
                "\\% White", "\\% OOH",  "Exurb", "Rural", "Contestation Lag", 
@@ -1416,7 +1416,7 @@ glmNItab <-apsrtable(demogsNI, politicNI, fiscalNI, policyNI, fullmodNI, se = "r
                         "Policy", "Full"), 
           caption = "Models of Incumbent Lockout in School Board Elections",
           notes = list(stars.note, rescalenote, coef.note),
-          Sweave=FALSE, digits = 3, coef.names = coefnames1, size="footnotesize")
+          Sweave=FALSE, digits = 3, coef.names = coefnames1, size="scriptsize")
 
 @
 
