@@ -23,17 +23,18 @@ options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 
 \section{The Wisconsin Case}
 
-This dissertation focuses on school board elections in Wisconsin. Wisconsin is 
-located in the Midwest and ranks 23rd among U.S. states in terms of total area, 
-20th in terms of population size with 5.7 million residents, and has 424 
-school districts.\footnote{All facts from US Census.} Recently, Wisconsin has 
-become a crucial swing state exhibiting a close split 
-between Republican and Democratic voters in presidential politics. 
+This chapter describes school board elections in Wisconsin from 2002-2012. 
+Wisconsin has many attributes that make it representative of the Midwest, if not 
+the country. Its is located in the Midwest and ranks 23rd among U.S. states in 
+terms of total area, 20th in terms of population size with 5.7 million residents, 
+and has 424 school districts.\footnote{All facts from US Census.} Wisconsin has 
+become a crucial swing state exhibiting a close split between Republican and 
+Democratic voters in presidential politics. 
 
 One differentiating factor for Wisconsin is that like many other states in the 
 Midwest it grants much of the authority in school district decision making to 
 local school boards -- a so-called ``local control'' state. This is also why 
-Wisconsin, in contrast to Southern states for example, has such a large number of 
+Wisconsin, in contrast to Southern states, has such a large number of 
 school districts serving relatively small populations over relatively small areas. 
 Prior studies of school boards like those of \citet{RefWorks:311,RefWorks:214} have 
 taken place in states with larger school districts and more centralized state 
@@ -44,7 +45,9 @@ government.
 Another advantage of selecting Wisconsin is the comparative advantage
 I have had in gathering the necessary data to study a substantial proportion of the 
 school board races within the state.\footnote{For details on this, see the 
-Appendix \ref{app:data}.} A final advantage is the ability 
+Appendix \ref{app:data}.} WIth close relationships to policymakers in my role 
+as a research analyst at the SEA I have been able to collect a diverse set of 
+data on Wisconsin school districts. A final advantage is the ability 
 to test theories of the linkage between school board and state level politics thanks 
 to the dramatic shock to education policy that accompanied the election of Wisconsin 
 Governor Scott Walker in 2010. Taken together, these advantages mean that the in-depth 
@@ -68,11 +71,13 @@ turnout in school board elections, as well as any subsequent policy shifts.
 
 \section{Background and Legal Basis of Wisconsin School District Elections}
 \label{sec:wiscolaw}
-This project represents the first attempt to comprehensively study the patterns 
-in school board elections across an entire state over multiple years. Before 
-examining the patterns that emerge both within and between school districts, 
-it is important to first explore the data available on school board elections. 
-Wisconsin, like many other Midwest states and unlike states in the South, is a 
+This project is a comprehensive study of the patterns in school board elections 
+across an entire state over multiple years. Before examining the patterns that 
+emerge both within and between school districts, it is important to first describe 
+the data available on school board elections and the legal procedure under which 
+elections are conducted. This helps lay the groundwork for the democratic potential 
+of school boards by explaining what the legal barriers are for candidates and voters 
+to participate in school board election. Wisconsin, like many other Midwest states, is a 
 local control state. This means that Wisconsin school districts have revenue 
 authority independent of municipalities and counties, and are governed by 
 a non-partisan elected board independent of other local government 
@@ -101,19 +106,24 @@ the most common with limited exceptions for terms of 1 or 2 years (Wis. Stat \S 
 Board members are elected by a plurality and must be residents of the district to 
 be eligible for office (Wis. Stat \S 120.06 (2) (a)). All candidate verification, 
 ballot preparation, and election announcement is the responsibility of the school district 
-clerk (Wis. Stat \S 120.06 (8)) -- often a role filled by a board member. Primary 
-elections occur if there are more than 
+clerk, in practice a job often managed by district administrators 
+(Wis. Stat \S 120.06 (8)). Primary elections occur if there are more than 
 twice as many candidates as there are members to be elected (Wis. Stat \S 120.06 (7) (b)). 
-School boards may choose to apportion their seats in different ways 
+
+School boards also have flexibility to apportion their seats in different ways 
 ranging from a board of 3-9 members each representing the entire district, to a board 
 of 3-11 members each representing either a specific region of the school district or 
 the entire district. Figure \ref{fig:boardsize} shows the sizes of school boards 
 in Wisconsin over the time period being studied. This is calculated using a database 
-of school board members provided by the Wisconsin Association of School Boards (WASB). 
-The only restriction on the way seats are allocated is that the 
-plan is proposed with a petition by a threshold of voters and passed by the board 
-at an annual meeting or through an election (Wis. Stat \S 120.02 (2)). 
+of school board members provided by the Wisconsin Association of School Boards (WASB).
+\footnote{There was one anomaly with this data where school board seats were underreported 
+in the 2007 data due to a reporting error. As a result, I have added one to number of 
+seats for all school districts in the 2007 data.} The only restriction on the way 
+seats are allocated is that the plan is proposed with a petition by a threshold 
+of voters and passed by the board at an annual meeting or through an election 
+(Wis. Stat \S 120.02 (2)).
 
+%TODO: Calculate number of voters per board seat
 
 \begin{table}[h!]
 \begin{center}
@@ -130,19 +140,20 @@ Fall General & First Tuesday in November\\ \hline
 \end{center}
 \end{table}
 
-My study distinguishes itself from many other studies of school board elections through 
+My study distinguishes itself from previous studies with 
 its use of official election results provided directly by school boards to determine 
-the results of the elections. In Wisconsin, school boards are the official holder of all school district election results. This means that official school board election records are maintained solely by 
+the results of the elections. In Wisconsin, school districts are the official holder of all school district election results. This means that official school board election records are maintained solely by 
 school districts themselves and gathering school board election results in Wisconsin 
 requires requesting records from individual school districts.\footnote{See Appendix 
-\ref{app:data} and the Appendix \ref{app:log} for details on the request process.} These election records come in many forms and though school boards are required by law to retain 
-these records, the record keeping is often incomplete, unclear, or confusing (Wis. 
-Stat \S 120.06 (8) (g)).\footnote{A few enterprising county clerks have 
-collected school board election results and made them available online, however, these can be incomplete 
+\ref{app:data} and the Appendix \ref{app:log} for details on the request process.} 
+This challenge is a key barrier to the study of school board elections; though 
+school boards are required by law to retain these records, the record keeping is 
+often incomplete, unclear, or confusing (Wis. Stat \S 120.06 (8) (g)).
+\footnote{A few enterprising county clerks have collected school board election 
+results and made them available online, however, these can be incomplete 
 by only including the precincts that are within the county. They also are not official. 
-\citep[personal communication with][]{clerk1}.} In order to conduct this study then, a records 
-request was made to all 424 public school districts in the state of Wisconsin. 
-This request was e-mailed to the school district administrator in each of Wisconsin's 
+\citep[personal communication with][]{clerk1}.} In order to gather these records, a 
+request was e-mailed to the school district administrator in each of Wisconsin's 
 424 school districts in January of 2013. Three follow up waves were conducted throughout 
 2013, and at the end of the collection period, \Sexpr{iNum(length(unique(dat$distid)))} 
 districts responded with records. The official and preferred 
@@ -152,21 +163,19 @@ for each school board election and certify the winner for each school board seat
 as well as the votes cast for each candidate. When these were unavailable, a less 
 official record such as a tally sheet from the election or a vote count spreadsheet 
 was requested. Full details on the data collection process can be found in Appendix \ref{app:data}. 
-These records were then transcribed from the various records provided by school 
-districts into spreadsheets that combined together form the key database for this 
-analysis. 
+These records were then transcribed a database for analysis.
 
 The median district provided 
 \Sexpr{iNum(median(ddply(races, .(distid), summarise, out = length(unique(year)))[, 2]))} 
 years of records.\footnote{While each district was requested to provide the maximum amount of records legally required to be retained, ten years, many districts were unable to locate complete 
 records going this far back.} Figure \ref{fig:yeargraph} shows the number of districts providing 
 records in each year. Overall, records were provided on \Sexpr{iNum(nrow(races))} school 
-board races involving \Sexpr{iNum(nrow(cand))} unique candidates in the state -- many 
-candidates participated in multiple elections. For each election 
-the votes received by each candidate was recorded, as well as whether the candidate 
-won, was an incumbent, was a repeat candidate in the school district, or was a 
-minor candidate -- receiving fewer than 30 total votes. For each race, whether 
-the candidate was running for district wide or regional seat was also recorded. 
+board races involving \Sexpr{iNum(nrow(cand))} unique candidates in the state. 
+For each election the votes received by each candidate was recorded, as well as 
+whether the candidate won, was an incumbent, was a repeat candidate in the school 
+district, or was a minor candidate -- receiving fewer than 20 total votes. For each 
+race, whether the candidate was running for district wide or regional seat was 
+also recorded. 
 
 Using the names, vote totals, and winners from each school board election allows 
 for the construction of measures of the number of candidates in each election 
@@ -176,20 +185,28 @@ data were collected for several years in each district, time-variant trends can 
 explored. 
 
 
-<<boardsize, echo=FALSE, fig.cap="Boxplot of the Number of Seats Per District", fig.height=4.5>>=
+<<boardsize, echo=FALSE, fig.cap="Number of Seats Per District in 2012", fig.height=4.5>>=
 setwd("../../")
 boardsize <- read.csv("data/cache/SchoolBoardRosterVerification.csv", colClasses = "character")
 
 plotdf <- ddply(boardsize, .(year, agency_short_name), summarize, 
                 out = length(unique(full_name)))
 
-# Off by 1 error in data from DPI for year 2007
-plotdf$out[plotdf$year == 2007] <- plotdf$out[plotdf$year == 2007] + 1
+# # Off by 1 error in data from DPI for year 2007
+# plotdf$out[plotdf$year == 2007] <- plotdf$out[plotdf$year == 2007] + 1
+# 
+# qplot(year, out, data = plotdf, geom = 'boxplot') + theme_classic() + 
+#   labs( x= "Year", y = "Board Seats Per District", 
+#         title = "Distribution of Number of Seats Per District") + 
+#   scale_y_continuous(breaks = c(3:11))
 
-qplot(year, out, data = plotdf, geom = 'boxplot') + theme_classic() + 
-  labs( x= "Year", y = "Board Seats Per District", 
-        title = "Distribution of Number of Seats Per District") + 
-  scale_y_continuous(breaks = c(3:11))
+ggplot(data = plotdf[plotdf$year == 2012,], aes(x=factor(out))) +
+  stat_bin(bindwidth = 1, geom='histogram') +
+    stat_bin(binwidth=1, geom="text", aes(label=..count..), 
+           hjust = 1, vjust = -1, size = 4) +
+  scale_y_continuous(limits = c(0, 250)) +
+  theme_classic() + 
+  labs(x = "Number of Board Seats", y = "Count of Districts") 
 
 @
 
@@ -199,8 +216,8 @@ plotdf <- ddply(races, .(year), summarize, out = length(unique(distid)))
 qplot(year, out, data = plotdf, geom = 'bar', stat = 'identity') + theme_dpi() + 
   geom_text(vjust = -.2, aes(label = out)) + 
   labs(x = "Election Year", y = "Number of Districts", 
-       title = "District Providing Usable Records by Year")
-
+       title = "District Providing Usable Records by Year") + 
+  scale_y_continuous(limits = c(0, 320))
 @
 
 
@@ -209,11 +226,12 @@ qplot(year, out, data = plotdf, geom = 'bar', stat = 'identity') + theme_dpi() +
 plotdf <- ddply(races, .(distid), summarize, years = length(unique(year)), 
                 races = length(year))
 
-qplot(races, data = plotdf) + theme_dpi() + 
-  geom_vline(xintercept = median(plotdf$races), color = I('red')) + 
+qplot(races, data = plotdf, fill = I("gray80"), color = I("black")) + theme_dpi() + 
+  geom_vline(xintercept = median(plotdf$races), color = I('red'), size=I(1.1), 
+             linetype = 2) + 
   labs(x = "Number of School Board Races", y = "Count of Districts", 
        title = "Number of Race Records Provided by Each District") + 
-  coord_cartesian(ylim = c(0,100), xlim= c(0,40))
+  coord_cartesian(ylim = c(0,150), xlim= c(0,40))
 @
 
 
@@ -235,8 +253,9 @@ board races. Figure \ref{fig:racesgraph} shows the number of races
 provided by each school district, with the median highlighted by a red vertical line. 
 \Sexpr{iNum(table(rowSums(continuity) >5)[[2]])} districts had 
 a race in each year between 2007 and 2012, while \Sexpr{iNum(table(rowSums(continuity) >5)[[1]])} 
-did not. I distinguish these cases from others by verifying the absence of a ballot 
-for school board, as opposed to the absence of records. 
+did not. \footnote{In some cases a district like Milwaukee may only hold board elections 
+on an every other year cycle.} I distinguish these cases from others by verifying 
+the absence of a ballot for school board, as opposed to the absence of records. 
  
 \clearpage
 \section{The Diversity of Wisconsin School Districts}
