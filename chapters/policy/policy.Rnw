@@ -507,6 +507,7 @@ accountability pressure and improved student outcomes.
 
 \subsection{Student Outcomes}
 
+
 <<testScoresR, results='asis'>>=
 modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
                            "READ_PROFADV_PER", "NEW_SUP", "SUP_EXPERIENCE", 
@@ -986,6 +987,106 @@ The results for challenge rate and the dissatisfaction factor in Tables
 positive statistically significant relationship. These findings confirm findings 
 like \citet{RefWorks:246} that board dissatisfaction does lead to superintendent 
 turnover. 
+
+\subsection{Fiscal Outcomes}
+
+<<taxoutcomesMD, results='asis'>>=
+modeldata <- dist_turn[, c("distid", "year", "incsDefeated", "servingMembers",
+                           "NEW_SUP", "SUP_EXPERIENCE", "dissatFactor", 
+                           "econ_disadv_per", "VAP_adj", "per65o", "challengRate",
+                           "PerBachelorOrAbove", "locale2", "incsTotal", 
+                           "millrate_delta", "millrate", "ADJ_MEDIAN_SALARY_TEACH", 
+                           "overrideQues", "debtQues", "debtPass", "overridePass")]
+
+modeldata$incsDefeatedFac <- ifelse(modeldata$incsDefeated > 0, 1, 0)
+modeldata$incsDefeatedFac <- factor(modeldata$incsDefeatedFac)
+preTreat <- modeldata[modeldata$year <= 2010,]
+preTreat$year <- preTreat$year + 2
+names(preTreat) <- paste(names(preTreat), "lag", sep = "_")
+modeldata <- modeldata[, c("millrate_delta", "millrate", "ADJ_MEDIAN_SALARY_TEACH", 
+                           "overrideQues", "debtQues", "debtPass", 
+                           "overridePass", "distid", "year")]
+
+modeldata <- merge(modeldata, preTreat, by.y = c("distid_lag", "year_lag"), 
+                 by.x = c("distid", "year"))
+modeldata <- modeldata[modeldata$year > 2005, ]
+modeldata$SUP_EXPERIENCE_lag <- ifelse(is.na(modeldata$SUP_EXPERIENCE_lag), 0, 
+                                       modeldata$SUP_EXPERIENCE_lag)
+
+simpModMillDelta <- lm(millrate_delta ~ dissatFactor_lag + locale2_lag  +
+                    servingMembers_lag + log(VAP_adj_lag), 
+                  data = modeldata)
+simpModMillDelta$se <- sqrt(diag(get_CL_vcov(simpModMillDelta, modeldata$distid)))
+
+lagModMillDelta <- lm(millrate_delta ~ dissatFactor_lag + econ_disadv_per_lag + 
+                   millrate_delta_lag + servingMembers_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag, data = modeldata)
+lagModMillDelta$se <- sqrt(diag(get_CL_vcov(lagModMillDelta, 
+                   modeldata$distid[!is.na(modeldata$millrate_delta_lag)])))
+millDeltaFE <- lm(millrate_delta ~ dissatFactor_lag + econ_disadv_per_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                      servingMembers_lag + per65o_lag + distid, 
+                   data = modeldata)
+millDeltaFE$se <- sqrt(diag(get_CL_vcov(millDeltaFE, modeldata$distid)))
+
+prettyNames <- c("Intercept", "D-Factor", "Exurb", "Rural", "Board Size",
+                  "ln(VAP)", "FRL \\%", "MillRate \\delta Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+
+fe.note <- "District fixed effects not displayed."
+
+apsrtable(simpModMillDelta, lagModMillDelta, millDeltaFE, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
+          caption = "Dissatisfaction and Millrate Changes", 
+          label = "tab:millrateDelta", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE))), 
+          coef.names = prettyNames, size = "small")
+@
+
+
+<<taxresultsTeachSal, results='asis'>>=
+modeldata$ADJ_MEDIAN_SALARY_TEACH <- log(modeldata$ADJ_MEDIAN_SALARY_TEACH)
+modeldata$ADJ_MEDIAN_SALARY_TEACH_lag <- log(modeldata$ADJ_MEDIAN_SALARY_TEACH_lag)
+modeldata$yearF <- factor(modeldata$year)
+modeldata <- modeldata[modeldata$ADJ_MEDIAN_SALARY_TEACH > 10.2,]
+
+simpModSal <- lm(ADJ_MEDIAN_SALARY_TEACH ~ dissatFactor_lag + locale2_lag  +
+                    servingMembers_lag + log(VAP_adj_lag) + yearF, 
+                  data = modeldata)
+simpModSal$se <- sqrt(diag(get_CL_vcov(simpModSal, modeldata$distid)))
+
+lagModSal <- lm(ADJ_MEDIAN_SALARY_TEACH ~ dissatFactor_lag + econ_disadv_per_lag + 
+                   ADJ_MEDIAN_SALARY_TEACH_lag + servingMembers_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                   per65o_lag + yearF, data = modeldata)
+lagModSal$se <- sqrt(diag(get_CL_vcov(lagModSal, 
+                   modeldata$distid[!is.na(modeldata$millrate_delta_lag)])))
+FEmodSal <- lm(ADJ_MEDIAN_SALARY_TEACH ~ dissatFactor_lag + econ_disadv_per_lag + 
+                   log(VAP_adj_lag) + locale2_lag + PerBachelorOrAbove_lag + 
+                      servingMembers_lag + per65o_lag + yearF + distid, 
+                   data = modeldata)
+millDeltaFE$se <- sqrt(diag(get_CL_vcov(FEmodSal, modeldata$distid)))
+
+prettyNames <- c("Intercept", "D-Factor", "Exurb", "Rural", "Board Size",
+                  "ln(VAP)", "FRL \\%", "Teach Salary \\delta Lag", "\\% Bach. +", 
+                 "\\% Over 65")
+
+fe.note <- "District and year fixed effects not displayed."
+
+apsrtable(simpModSal, lagModSal, FEmodSal, se = "robust", 
+          stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
+          caption = "Dissatisfaction and Teacher Salary Changes", 
+          label = "tab:millrateDelta", notes = list(stars.note, fe.note), 
+          Sweave = FALSE, 
+           omitcoef=list("distid", 
+                         expression(grep("distid", coefnames, value=TRUE)), 
+                         "yearF", 
+                         expression(grep("yearF", coefnames, value=TRUE))), 
+          coef.names = prettyNames, size = "small")
+@
 
 
 \clearpage
