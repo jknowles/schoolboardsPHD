@@ -1105,13 +1105,13 @@ data, I use twice lagged predictors for all control variables.
 
 The equation below represents the fixed effects approach with the
 \emph{i}'s representing individual district-year observations and the 
-\emph{j}'s representing 
-the individual districts in the sample. $\lambda$ represents the conditional 
+$\gamma_{j}$ 's representing 
+the individual district intercepts in the sample. $\lambda$ represents the conditional 
 estimate of the treatment, taking into account the within district variation 
 and conditional on lagged measures of the control variables in $X_{it-2}$. 
 
 \begin{align*} 
-y_{it} &= \alpha + \gamma_{i} + \beta X_{it-2} + \lambda T_{it} + \epsilon_{it}  \\ 
+y_{it} &= \alpha + \gamma_{j} + \beta X_{it-2} + \lambda T_{it} + \epsilon_{it}  \\ 
 \end{align*}
 
 The $\lambda$ is the parameter of interest and in this model it represents the 
@@ -1140,8 +1140,7 @@ a change in the slope between the lagged dependent variable and the outcome of
 interest that occurs in the post-treatment period. 
 
 \begin{align*} 
-y_{it} &= \alpha + \gamma Y_{it-2} + \beta X_{it-2} + \lambda T_{it} 
-+ \delta Y_{it-2} \times T_{it} +\epsilon_{it}  \\ 
+y_{it} &= \alpha + \gamma Y_{it-2} + \beta X_{it-2} + \lambda T_{it} + \delta Y_{it-2}  \times T_{it} +\epsilon_{it}  \\ 
 \end{align*}
 
 Here the $\lambda$ term represents the overall change in the outcome in the 
