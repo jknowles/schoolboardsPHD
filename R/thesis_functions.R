@@ -1,15 +1,3 @@
-# Load packages
-# libraries
-# library(eeptools)
-# library(ROCR)
-# library(coefplot)
-# library(eeptools); library(gridExtra)
-# library(ROCR); library(lme4)
-# library(arm)
-# library(coefplot)
-# library(scales); 
-# library(stargazer)
-
 detachPkgs <- function(){
   pkgs = names(sessionInfo()$otherPkgs)  
   pkgs = paste('package:', pkgs, sep = "")
@@ -437,53 +425,3 @@ bootRMSE <- function(data, indx, model){
   modb <- eval(model@call)
   RMSE.merMod(modb)
 }
-
-### Boot CI for merMod
-# set.seed(101)
-# bb <- bootMer(fullmodMMni,
-#               FUN=function(x)
-#               predict(x,re.form=NA,newdata=seplotdf,type="response"),
-#               nsim=5)
-# 
-# cpredboot1.CI <- t(sapply(1:4,
-#        function(i)
-#          boot.ci(bb,type="perc",index=i)$percent[4:5]))
-
-# subst_eff_plot<-function(x){
-#   c<-coef(x)
-#   mod_mean<-apply(x$x,2,mean)
-#   mod_sd<-apply(x$x,2,sd)
-#   sig<-as.data.frame(confint.default(x))
-#   sig$sig<-"no"
-#   sig$sig[sign(sig[,1])==sign(sig[,2])]<-"yes"
-#   effect<-data.frame(var=row.names(sig),mean_eff=c*mod_mean,
-#                      low_eff=c*mod_mean-c*mod_sd,
-#                      high_eff=c*mod_mean+c*mod_sd,sig=sig[,3])
-#   effect<-subset(effect,var!="Intercept")
-#   
-#   ggplot(effect,(aes(x=var,y=mean_eff,ymin=low_eff,ymax=high_eff,
-#                      color=sig)))+
-#     geom_pointrange()+theme_dpi()+theme(axis.text.x=element_text(angle=30,size=8))+
-#     geom_hline(yintercept=-sd(x$y))+geom_hline(yintercept=sd(x$y))
-#   
-# }
-
-# 
-# # Plot regression effects
-# 
-# c<-coef(robust1)
-# mod_mean<-apply(robust1$x,2,mean)
-# mod_sd<-apply(robust1$x,2,sd)
-# sig<-as.data.frame(confint.default(robust1))
-# sig$sig<-"no"
-# sig$sig[sign(sig[,1])==sign(sig[,2])]<-"yes"
-# 
-# effect<-data.frame(mean_eff=c*mod_mean,low_eff=c*mod_mean-c*mod_sd,
-#                    high_eff=c*mod_mean+c*mod_sd,sig=sig[,3])
-# 
-# effect<-subset(effect,row.names(effect)!="Intercept")
-# 
-# ggplot(effect,(aes(x=row.names(effect),y=mean_eff,ymin=low_eff,ymax=high_eff,
-#                    color=sig)))+
-#   geom_pointrange()+theme_dpi()+theme(axis.text.x=element_text(angle=30,size=8))+
-#   geom_hline(yintercept=-6.266)+geom_hline(yintercept=6.266)
