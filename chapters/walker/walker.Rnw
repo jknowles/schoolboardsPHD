@@ -130,10 +130,9 @@ These studies face two difficulties. First, they rely on candidate self-reports
 of politically motivated retirement and electoral defeat. This is a labor intensive 
 method of studying school board turnover. As with previous chapters, I eschew this 
 approach and focus on electoral defeat from official election records. This means 
-that true retirements that are politically motivated are missing in my results -- 
-making detecting turnover more difficult -- but it does not preclude me from 
-identifying ``soft retirements'' where a candidate appears on the ballot, but does 
-not contend the election. 
+that true retirements that are politically motivated are missing in my results with 
+no way to distinguish between a candidate not running for office for political reasons 
+and an open seat. 
 
 Another, and more fundamental problem with this literature is the lack of analysis 
 explicitly on voter turnout. Voter dissatisfaction is talked about as an 
@@ -235,9 +234,8 @@ policy making, the more expensive the acquisition of knowledge on preferences of
 specialized issue brief of school boards, like other local and special jurisdiction 
 governments, makes the actualization of democratic potential difficult for individual citizens \citep{fosterK,burnsN}. 
 
-This informational deficit is a collective action problem. Interest groups then 
-should rise to fill this void \citep{olson1965logic}. I consider three special 
-interest groups that seek to organize information on school board to different 
+This informational deficit is a collective action problem. I consider three special 
+interest groups that seek to fill this deficit and organize information on school board to different 
 degrees: district employees, property taxpayers, and parents. Each of these groups 
 are different in their size, core issues, and preferences. These groups are also 
 not mutually exclusive -- citizens can belong to any combination of them. 
@@ -299,7 +297,10 @@ through capture by interest groups that warded off challengers. Post Act 10,
 candidates and dissatisfied community members become emboldened with the chance 
 of change, and democratic actualization would increase. In the case of interest 
 group blocking, this effect should be even stronger with interest groups newly 
-weakened through Act 10. 
+weakened through Act 10. How to distinguish between whether the community will 
+rally behind or backlash against teachers' unions post Act 10, then, is dependent 
+on the distance between the community's preferences and the status quo, and the 
+organizational capacities of each side to mobilize for spring elections.
 
 I now turn to describing the political conditions 
 in Wisconsin from 2010-2012 that created such an exogenous provision of information 
@@ -311,7 +312,7 @@ voters who were not representative of the broader community interests.
 
 \subsection{Wisconsin from 2010-2012}
 
-Wisconsin from 2012-2012 provides an ideal test case for testing the impact 
+Wisconsin from 2012-2012 provides an ideal test case for examining the impact 
 of increased voter information and decreased friction in the democratic process. 
 As discussed in Chapter \ref{chap:intro} and illustrated in Figure 
 \ref{fig:wiscotimeline} the election of Scott Walker to Governor and the 
@@ -499,11 +500,12 @@ how preferences of the community and board policy in the pre-election period
 are related to the rise of challengers, voter participation, and incumbent defeat 
 in the election period. Three potential indicators of the alignment of community 
 and school board preferences are posited. The first is the level of support for 
-Governor Walker's education policies in the Act 10 period. Second is the strength 
-of support in the community for those preferences. Third is the relative strength 
-of interest groups in the community -- specifically in this case teachers' 
+Governor Walker's education policies in the Act 10 period. Second is the level of 
+participation in the community in the recall election itself. Third is the relative 
+strength of interest groups within the community -- specifically in this case teachers' 
 unions. The next section describes these intervening measures in more detail. 
 
+%TODO: Reexamine 20 or more votes
 To measure actualized democracy in school districts, I use 
 four separate measures of democratic activity. The first two are related 
 measures of contestation. I categorize school board races with challengers 
@@ -1101,7 +1103,10 @@ characteristics between school districts. \citet{mhecon} demonstrate how a
 lagged dependent variable and an individual fixed effect model 
 can serve as a lower and upper bounds on the causal effect respectively. To 
 avoid problems with endogeneity, and because of the long panel nature of the 
-data, I use twice lagged predictors for all control variables. 
+data, I use twice lagged predictors for all control variables. Twice lagged 
+predictors also help for the few school districts which hold every other year 
+cyclical school board elections being retained in the data, notably the largest 
+school dsitrict Milwaukee Public Schools. 
 
 The equation below represents the fixed effects approach with the
 \emph{i}'s representing individual district-year observations and the 
