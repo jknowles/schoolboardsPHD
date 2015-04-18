@@ -328,16 +328,14 @@ difficult to determine.
 \clearpage
 \subsection{Dependent Variables}
 
-%TODO: Find studies of candidate emergence in low-level elections
 Previous research has focused on incumbent challenges or candidate self-reports of 
 contestation in their most recent elections \citep{RefWorks:311, RefWorks:321}. 
-By collecting election results directly, in contrast to surveying former school 
-board members, I explore for the first time the level of contestation 
-in school board elections directly. This allows me to construct measures of contestation, 
-the presence of multiple choices for voters on the ballot. Choice among candidates 
-is a key feature of a democratic body, and one criticism leveled against 
-school boards and other local offices is that they are undemocratic due to a lack 
-of choice for voters. %TODO: Citation here
+By collecting election results I observe the level of contestation 
+in school board elections directly for the first time. This allows me to construct 
+multiple measures of contestation, the presence of multiple choices for voters on 
+the ballot. Choice among candidates is a key component of the democratic potential 
+of a jurisdiction, and one criticism leveled against school boards and other local 
+offices is that they are undemocratic due to a lack of choice for voters. 
 
 I conceptualize the degree of candidate emergence for school boards as qualitatively 
 three distinct levels. The first, and lowest level, is whether any candidates other 
@@ -353,7 +351,7 @@ I investigate the ability of political theory to explain each of these three lev
 of competitiveness to understand if school district election competitiveness at any 
 level is predicted by theory. 
 
-
+%TODO: Collapse this table to school district level
 <<nonincumbent2, results='asis'>>=
 races$contestMinor <- 0
 races$contestMinor[races$nrealcand > races$nwins] <- 1
@@ -374,7 +372,7 @@ dist_turn$incumbOnly <- ifelse(dist_turn$nrealcand == dist_turn$ninc, 1, 0)
 rownames(tab1) <- c("Non-Incumbents Run", "Only Incumbents")
 colnames(tab1) <- c("No Serious Challengers", "Serious Challengers")
 
-tmp.cap   <- "Frequency of Incumbency and Contestation."
+tmp.cap   <- "Frequency of Incumbency and Contestation Across School Board Races."
 tmp.label <- "tab:icbychal"
 
 print(xtable(tab1, caption = tmp.cap, 
@@ -383,20 +381,18 @@ print(xtable(tab1, caption = tmp.cap,
 
 @
 
-Measuring candidate emergence and contestation in multi-member seats is not as 
-straightforward as in single member districts. In a partisan single member district, such 
-as a legislative race, a race is almost always contested if no incumbent is running. 
-However, in school board races in Wisconsin, as shown in Table \ref{tab:icbychal} 
-there is rarely a case when a race features all incumbents and there is a serious 
-challenge. This is likely due to the relative infrequency with which school board 
-seats are changed or redrawn. In addition, even if the race is between two incumbents, 
-the research literature around school boards suggests that the only strong signal 
-voters have about candidate policy goals is incumbency status. Thus, voters are 
-unlikely able to parse the policy differences between two incumbents, due in part 
-to the relative dearth of campaign activity, to vote retrospectively. For voters, 
-choosing between two incumbents is likely to present much of a true choice. 
-
-Taking Table \ref{tab:icbychal} into account, I frame contestation in school 
+Table \ref{tab:icbychal} shows the relationship between incumbency and challengers 
+across all school board races in the sample. The modal elections consiste of either 
+contested open seats or uncontested races with only incumbents. Measuring candidate 
+emergence and contestation in multi-member seats is not as straightforward as in single 
+member districts. \footnote{In school board races in Wisconsin there is rarely a seriously 
+contested race with all incumbents. This is due to the relative infrequency with 
+which school board seats are changed or redrawn. In addition, even if the race is 
+between two incumbents, the research literature around school boards suggests 
+that the strongest signal most voters have about candidate policy goals is incumbency status. 
+Thus, voters are unlikely able to parse the policy differences between two incumbents. 
+For voters, choosing between two incumbents is not likely to present much of a true choice.} Taking 
+Table \ref{tab:icbychal} into account, I frame contestation in school 
 boards as a three step process. First, voters have to have a choice of a candidate
 that is not an incumbent. If all the candidates are incumbents, then voters cannot 
 reasonably be said to have a choice and it can be assumed that the school board 
@@ -418,7 +414,7 @@ tab1 <- table(tabdf$contestSer[tabdf$incumbOnly ==0],
 colnames(tab1) <- c("Incumbents All Win", "Incumbent Defeated")
 rownames(tab1) <- c("No Serious Challengers", "Serious Challengers")
 
-tmp.cap   <- "Frequency of Incumbency Defeat and Contestation."
+tmp.cap   <- "Frequency of Incumbency Defeat and Contestation in School Districts."
 tmp.label <- "tab:icbydef"
 
 print(xtable(tab1, caption = tmp.cap, 
@@ -460,20 +456,19 @@ A first condition of contestation is that someone other than incumbents run for
 office. The least competitive of all elections is that in which voters not only 
 have no choice, but they have no choice and all candidates are incumbents -- the 
 status quo is maintained by default. Nearly 
-\Sexpr{iPer(sum(tablestruc$incumbOnly)/sum(tablestruc$races)*100)}, or between 
-100 and 150 races, of races each year feature all incumbents. Of these, 
-\Sexpr{nrow(races[races$incumbOnly ==1 & races$contestMinor == 1, ])} such races 
-are considered contested. 
+\Sexpr{iPer(sum(tablestruc$"Incumb. Only")/sum(tablestruc$"SB Races")*100)}, or between 
+100 and 150 races, of races each year feature all incumbents. 
 
 \subsubsection{Who Counts as a Candidate?}
 
-The definition of a minor candidate is inherently subjective. Previous work in the 
+The definition of a candidate is inherently subjective. Previous work in the 
 literature has excluded candidates who receive fewer than 5\% of the overall vote, 
 while other studies have focused exclusively on contested inbument held seats in 
 open jurisdictions \citep{krebs,oliver}. Due to the diversity of school board 
 electoral organization, school district size, and the relatively low number of votes 
 necessary to secure a victory, I define minor candidates as those candidates who 
-receive fewer than 20 votes on the ballot. This is a liberal enough interpretation 
+receive fewer than 20 votes on the ballot and I exclude all such candidates from 
+measures of contestation. This is a liberal enough interpretation 
 of candidate seriousness to include write-in challenges and has the potential to 
 bias results by inflating the number of contested races. However, with the 
 median winning candidate needing only \Sexpr{iNum(median(dat$votes[dat$winner ==1], na.rm=TRUE))} 
@@ -549,17 +544,16 @@ p2 <- qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013
 grid.arrange(p1, p2, main = "Comparing School Board Contestation Measures")
 @
 
-
-% Compare other measures of contestation, number of candidates per seat, etc. 
-
+% TODO: Fix colors here
 Figure \ref{fig:candidatedescriptives4} depicts the pattern of school board candidate 
-emergence over time. Contested elections are in blue and uncontested races are in 
-salmon. A slight trend toward fewer contested races is evident in both panels. 
-The top panel, excluding minor candidates, changes the share of elections 
-that are contested each year, but does not change the pattern across years. 
+emergence over time including and excluding these candidates. Contested elections are in
+blue and uncontested races are in salmon. A slight trend toward fewer contested races is 
+evident in both panels. The top panel, excluding minor candidates, changes the share of 
+elections that are contested each year slightly, but does not change the overall pattern 
+across years. 
 
 
-<<perseatcontests,  echo=FALSE, fig.cap="Serious candidates per open seat by school year in Wisconsin school districts over time.">>=
+<<perseatcontests,  echo=FALSE, fig.cap="Serious candidates per available seat by school year in Wisconsin school districts over time.">>=
 
 races$candPerSeat <- races$nrealcand / races$nwins
 
@@ -578,14 +572,13 @@ Another way we might measure the level of candidate emergence in school board ra
 would be to look at the number of candidates per seat. This measure would 
 differentiate between districts with wide spread contestation and those with 
 simply a single contested seat. As Figure \ref{fig:perseatcontests} demonstrates, 
-the level of contestation per open seat does not change much across the years with 
+the level of contestation per available seat does not change much across the years with 
 the median race having 1 candidate per seat, and the majority of races having between 
 1 and 2 candidates per seat. This means, for example, that a typical pattern 
 of competition in a Wisconsin school board election features four candidates vying 
-for three open seats, or one and a third candidates per open seat. This measure 
+for three available seats, or one and a third candidates per seat. This measure 
 does not appear to capture much information beyond a binary indicator for the 
-presence of more than one candidate per race.\footnote{Consider a sub-analysis 
-using this measure instead in the appendix.} 
+presence of more than one candidate per race.
 
 \subsubsection{District Competitiveness}
 
@@ -594,29 +587,27 @@ conservative because a challenger losing by a single vote is counted the same as
 a race where a challenger gains only a few dozen votes. Political scientists have 
 developed a standardized way to assess the competiveness of an electoral competition 
 when races are for varying number of seats with varying numbers of candidates. 
-This method was introduced in Chapter \ref{chap:wisco}. Table \ref{tab:votemargincalc} 
-reviewed possible measures. 
+This method was introduced in Chapter \ref{chap:wisco}.\footnote{See Table \ref{tab:votemargincalc} 
+for a review of other possible measures.}
 
 The preferred method from the literature is the Blais-Lago metric described 
 in Table \ref{tab:votemargincalc}. This metric has the advantage of better adjusting 
 the vote margin calculation for both the size of the electorate and the size of the 
 election slate, thus making meaningful comparisons across diverse districts possible. 
 While this method still focuses on the most competitive seat in the district, it 
-better enables comparisons across districts. As discussed in Section 
-\ref{subsec:closeraces}, in non-partisan races the Blais-Lago metric is less 
-sharply defined because of the 
-inability to draw ideological distinctions or infer differing policy preferences 
-among candidates not running under a specific party. However, it still represents a 
-standardized metric for the number of votes needed to \emph{change the outcome of 
-a multi-member or single member seat's election.} Thus, the lower the Blais-Lago 
-Quotient, the more competitive the seat. 
+better enables comparisons across districts. It represents a standardized metric for 
+the number of votes needed to change the outcome of a multi-member or single member 
+seat's election. I further standardize this measure so that a higher number, 100, 
+represents the most competitive election, and zero represents the least competitive 
+election.\footnote{This transformation is done by subtracting 100 and taking the 
+absolute value. For each school district, I report the most competitive seat in the 
+district.}
 
-Figure \ref{fig:computeblaisLago1} shows the distribution of the minimum (most 
-competitive seat) Blais-Lago Quotient for school districts for each year of the 
-sample. The top panel shows this including races where no challenge is observed - 
-where the quotient is 100. The bottom panel adjust this and depicts only the 
-\Sexpr{iPer((nrow(dist_turn[dist_turn$nrealcand > dist_turn$nwins,]) / nrow(dist_turn)) *100)} of seats where voters have a choice - as in the second panel of Figure 
-\ref{fig:candidatedescriptives4}. As I noted in Section \ref{subsec:closeraces}, 
+Figure \ref{fig:computeblaisLago1} shows the distribution of Blais-Lago Quotient 
+for school districts for each year of the sample. The top panel shows this including 
+races where no challenge is observed. The bottom panel adjust this and depicts only the 
+\Sexpr{iPer((nrow(dist_turn[dist_turn$nrealcand > dist_turn$nwins,]) / nrow(dist_turn)) *100)} 
+of seats where voters have a choice. As I noted in Section \ref{subsec:closeraces}, 
 school board races that are contested are generally much closer than the contested 
 multi-member districts for national legislatures that the Blais-Lago Quotient was 
 first developed to evaluate \citep{blaislago}. Although incumbent defeat may be 
