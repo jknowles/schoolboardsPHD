@@ -1409,9 +1409,9 @@ closeLRT$callSmall <- m.slope@call
 
 \subsection{Social Groups}
 
-To test the argument that voter turnout may be influenced by the share of the 
-electorate that is made up of unionized teachers, I combine features from the 
-previous models in an attempt to find evidence of such an effect.  
+To test the argument that voter turnout may be influenced by interest group 
+strength, I combine features from the previous models in an attempt to find 
+evidence of such an effect.  
 
 
 \subsubsection{Teachers' Unions}
@@ -1525,15 +1525,13 @@ teachTab1 <- apsrtable(teachRLM3, teachRLM4, teachRLM5, teachRLM6,
           Sweave=FALSE, stars = "default", size = "scriptsize")
 @
 
-% TODO: rewrite results as this is no longer the results for the new measure 
-% Results are completely different
 
 Table \ref{tab:meInf} provides some evidence to support that teacher's unions 
-may have an effect on the turnout. The key variables here are the teacher share 
+may have an effect on turnout. The key variables here are the teacher share 
 of voters and its interaction with the share of incumbents in the race. I 
 expect teachers' unions to be more active and exert more influence on turnout 
 when there are more non-incumbents in the race. The main effects of the share 
-of voters who are teachers is negative and significant but it is quite small. 
+of voters who are teachers is negative and significant but small. 
 The interaction term is negative, which suggests that as fewer incumbents are in 
 the race and unions are stronger, turnout is supressed. However, this effect is 
 not statistically significant. 
@@ -1546,8 +1544,8 @@ expected signs, although some like competitiveness have a smaller effect than
 in prior models.\footnote{The models reported here use teacher share of the 
 number of voters in the school board election two years prior. This is used to 
 avoid endogeneity and to better reflect the strategic interaction between school 
-board vote turnout and district size. Using the teacher share of VAP does not 
-result in the same finding.} 
+board vote turnout and district size. Using the teacher share of VAP results in 
+the same sign, but statistically insignificant effects.} 
 
 This result is counter to the theoretical expectations described above where more 
 union membership would drive turnout up as a greater share of the population would 
@@ -1558,10 +1556,7 @@ be captured by a large interest group, they have  less of an incentive to vote.
 The threat of controlling the spring electorate for an interest group is enough 
 to deter unorganized voters from participating. This type of behavior is the 
 type of behavior that worries critics of special purpose governments like 
-school districts \citep{fosterK,burnsN,berry2}.\footnote{This effect is not 
-replicated in the district fixed effects specification.}
-
-
+school districts \citep{fosterK,burnsN,berry2}.
 
 <<teachInfMM, results='asis'>>=
 teachCoefnames2 <- c("Intercept", "Teacher \\% SB Vote",  
@@ -1632,7 +1627,7 @@ teachLRT$callSmall <- m.slope@call
 
 \subsubsection{Partisanship}
 
-Table \ref{tab:mePartisan} provides no evidence for a partisan dimension in school 
+Table \ref{tab:mePartisan} provides no evidence to support a partisan dimension in school 
 board turnout. While other variables hold their relationship from the tables 
 above, the new variables for partisanship and party divide in the electorate are 
 not statistically significant and their interaction with the size of the community 
@@ -1646,7 +1641,6 @@ they are non-partisan the party leadership has little incentive to prioritize th
 \footnote{There is no evidence in the fixed effect models either.}
 
 <<partyMods, results ='hide'>>=
-#TODO: Fix this -- make it the division between two-party share of these
 moddat <- dist_turn[, c("turnout", "year", "fallTurnout", "incumShare",
                         "VAP_adjLOG", "distid", "per_white_all", "per65o", 
                         "PerBachelorOrAbove", "OOH_share", "median_incomeLOG", 
@@ -1790,17 +1784,7 @@ rm(partyRLM1, partyRLM2, partyRLM3, partyRLM4, teachRLM, teachRLM2,
 
 \subsection{School Board Vote Roll Off}
 
-School board turnout is an important measure to consider when exploring the 
-democratic nature of school boards, but it has some problems. Most importantly, 
-school board is unlikely to be the only race of importance to voters in any given 
-election cycle. In 2011, for example, Wisconsin had its highest recorded turnout 
-for a non-partisan spring election as the state supreme court race became a de 
-facto referendum on Governor Scott Walker and Act 10. The increase in school 
-board turnout in this election cannot be attributed to school board races. 
-
-However, by looking at the number of voters who did vote in the top ticket race 
-but not in the school board race, we can gauge citizen engagement or lack thereof 
-with school board races. In this section I explore whether any of the models 
+In this section I explore whether any of the models 
 above explain the difference between top ticket turnout and school board turnout. 
 As much as rolloff coincides with political relevance of the school board race 
 to the electorate, the relationships observed above should also be observed in 
@@ -1979,21 +1963,21 @@ apsrtable(undervoteMMteach, undervoteMMteachB, undervoteMMparty, undervoteMMpart
 @
 
 
-Table \ref{tab:meUndv2} which shows the models for interest group influence on 
-school board rolloff provides the most interesting results. The results for the 
+Table \ref{tab:meUndv2} shows the models for interest group influence on 
+school board rolloff and provides the most interesting results. The results for the 
 control variables are largely the same as in Table \ref{tab:meUndv1}, but here the 
-undervote results are different than the results for total turnout. In all three 
+rolloff results are different than the results for total turnout. In all three 
 cases I find evidence of group influence in the completion of spring ballots. In 
 the case of partisan division, this effect is only present in larger communities -- 
 as communities and division get larger, the turnout gap for school board races widens. 
 
 In the case of teachers, as teachers make up a greater share of the electorate 
 fewer spring election voters who go to the polls bother to cast a vote for school 
-board -- paralleling the finding from above for overall turnout. However, in the 
-case of rolloff the effect is not detectably differential by community size. 
+board -- paralleling the finding from above for overall turnout. Community size 
+exacerbates this effect -- in larger communities this effect is stronger. 
 
-There is also evidence in Table \ref{tab:meUndv2} that parties play a role or 
-are related to voter rolloff in school board elections as well. Democratic party strength is also related with fewer voters completing the school board vote. 
+There is also evidence in Table \ref{tab:meUndv2} that Democratic party strength is 
+related with fewer voters completing the school board vote. 
 Partisan division increases rolloff, but is strongly interacted with district 
 size -- as communities get larger and party division is stronger, rolloff grows. 
 
@@ -2013,7 +1997,10 @@ Instead of a more sample-dependent model fit statistics like the Akaike's An
 Information Criterion, I prefer an estimate of the predictive power of the 
 model for the observations in the sample. To assess this, I use a boostrapped 
 estimate of the Root Mean Squared Error (RMSE) to demonstrate how close the 
-predicted values are to the fitted values across models across many resamples 
+predicted values are to the fitted values across models across many resamples.
+\footnote{To do this, I predict turnout on 150 bootstrap resamples of the data 
+and estimate the RMSE for predictions from the original model across each of these 
+resamples.}
 
 
 <<modFitplot1, eval = TRUE, fig.scap="Comparing Model Fit for Competitiveness Model", fig.cap="Comparing Model Fit for Competitiveness Model. Black represents observed value, purple represents fixed effect estimate, and the red dots are the estimate from the full model.", fig.show='hide'>>=
@@ -2154,7 +2141,7 @@ rmsePlot2 <- ggplot(out, aes(x = mod, y = bootMed)) +
 Figure \ref{fig:printRMSEplot} shows the results for turnout models in the top 
 panel and rolloff models in the bottom panel. The height of the bar represents 
 the RMSE standardized to represent the percentage of a standard deviation the 
-average observation is mis-predicted. A lower figure is better. The red error 
+average observation is mispredicted. A lower figure is better. The red error 
 bar represents the bootstrapped RMSE plus or minus two standard deviations of 
 all of the resampled RMSE values. Overall the rolloff models perform better than the 
 turnout models, but none of the models are significantly better fitting than any 
@@ -2195,15 +2182,14 @@ teachers in the school district. This effect is smaller in smaller communities.
 There appears to be an influence of teachers on rolloff as well -- but only 
 when measured as a share of the voting age population. These effects are quite 
 modest with turnout averaging around 18\% a 0.25\% point increase in turnout in 
-a median size district equates to just 13 additional voters. 
+the median size district equates to just 13 additional voters. 
 
 There is no evidence of a role of political parties in school board spring election 
-turnout, but there is evidence off an effect on rolloff. The effect on rolloff is 
-much larger than effects on turnout. A one point increase in rolloff represents 
-a 25\% increase in rolloff for a typical district. However, in the median 
-district this represents 50 fewer school board election voters -- well below the 
-median victory margin in the closest race in each district, approximately 
-290 votes. 
+turnout, but there is evidence off an effect on rolloff. A one standard deviation 
+increase in partisan division represents a 25\% increase in rolloff for a typical 
+district. However, in the median district this represents 50 fewer school board 
+election voters -- well below the median victory margin in the closest race in each 
+district, approximately 290 votes. 
 
 
 % Describe model results
@@ -2383,7 +2369,7 @@ effSizeScale(undervoteMMpartyB, scales = moddatScaleUndervote, betaChg = 0,
 \begin{table}[h!]
 \begin{center}
 \begin{scriptsize}
-\caption[Summary of Evidence for All Models on Turnout and Rolloff]{Summary of model results. Large districts are in the middle of top VAP quartile; small districts at midpoint of bottom quartile.}
+\caption[Summary of Evidence for All Models on Turnout and Rolloff]{Summary of substantive model results. Large districts are in the middle of top VAP quartile; small districts at midpoint of bottom quartile.}
 \label{tab:turnoutRESULTS}
 \begin{tabular}{| p{.175\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.125\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.34\textwidth} | >{\centering\arraybackslash\hspace{0pt}}p{.34\textwidth} |} 
 \hline
@@ -2481,22 +2467,22 @@ ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr,
 # confint(fullmodMMni, method = "Wald", level = 0.9)
 @
 
-Figure \ref{fig:fixefSub1} shows the effect of four of the key variables of interest 
-from the models above. These plots show four randomly sampled 
+Figure \ref{fig:fixefSub1} shows the simulated effect of four variables on turnout. 
+These plots show four randomly sampled 
 observations (represented by a different colored line) with the independent 
 variable on the x-axis and the predicted school board turnout on the y-axis. Along 
 the x-axis is a rug-plot showing the relative density of observations at each 
-range of the x-variable to help demonstrate where the model may be extrapolating 
-with less data. The two dashed lines shown represent the inter-quartile range or 
-the predicted values from the model being simulated. This is presented to provide 
+range of the x-variable to demonstrate where the model is extrapolating 
+with less data. The two dashed horizontal lines shown represent the inter-quartile range 
+of the predicted values. This is presented to provide 
 a reference for how powerful the effect of the independent variable -- as shown 
 by the slope of the line -- is relative to the overall variability in turnout. 
 
 In Figure \ref{fig:fixefSub1} the modest effects in Table \ref{tab:turnoutRESULTS} 
-are illustrated. The weakly negative effect for the teacher share of voters 
+are illustrated. The negative effect for the teacher share of voters 
 on turnout in the top right panel show the modest impact interest groups may play 
 in school board votes. The positive effect of competitiveness on turnout is 
-depicted in the bottom left -- this impact is again quite modest. On the other 
+depicted in the bottom left. On the other 
 diagonal there is an expected relationship between prior turnout and current 
 turnout as positive and fairly strong. Partisan division has no measurable effect 
 on turnout. 
@@ -2705,11 +2691,8 @@ to spring election. Figure \ref{fig:randomEffectplot1} demonstrates the variabil
 in the district intercepts from one of the models.\footnote{This figure is derived 
 from the partisanship model in particular, but the school district intercepts are 
 remarkably stable across all of the model specifications and this figure can be 
-interpreted as representative of all of these models.} This figure can be 
-interpreted as the deviation of the intercept of a school district from the 
-average district. 
-
-This figure represents the change in turnout for a randomly selected school district 
+interpreted as representative of all of these models.} This figure represents the 
+change in turnout for a randomly selected school district 
 election as it is moved from the lowest through the highest school district 
 intercept. Thus, it represents how much turnout would change in a school district 
 election if it were modified by the effect of each other school district in the 
@@ -2805,7 +2788,7 @@ p4 <- plotMCMCre(plotdf, scale = 1.96, var = "mean",
 grid.arrange(p1, p2, p3, p4)
 @
 
-
+%TODO: Consider dropping to appendix
 Figure \ref{fig:randomEffectplot2} shows the standardized intercepts for each 
 election cycle -- here the year effects are measured in standard deviations from 
 the grand average of 0 marked by the red line. From 2004 to 2009 elections were 
@@ -3040,9 +3023,9 @@ p4 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   labs(x = "Blais-Lago", y = "Voter Rolloff") 
 
 @
+%TODO identify teachUndEff y-axis scale
 
-The main effect of district size and prior turnout on rolloff are broadly similar 
-to the effects on school board turnout in general. Here I depict the evidence 
+Here I depict the evidence 
 that influences on voter rolloff appear more pronounced than influences on turnout 
 and are strongly interacted with community size. 
 
@@ -3072,11 +3055,9 @@ district size, but for school board seat competitiveness. Each panel represents
 one quartile of the voting age population variable. Competitiveness has an 
 almost imperceptible role in small districts, but as districts get larger toward 
 the right, more competitive races result in reduced voter rolloff. In larger 
-communities, turnout may be driven by other factors aside from the 
-competitiveness of the board race, indeed the effect is quite modest for 
-turnout, and thus may be influenced to not complete their ballot for school 
-board when they have not heard anything about the race because it is not 
-seriously contested. 
+communities, competitive races may be more necessary to drive turnout because 
+personal contact is more difficult and media coverage of local elections is 
+scarce \citep{oliver}.
 
 <<teachUndEff, fig.scap="Interaction Effect of Teacher Share on Rolloff", fig.height=4, fig.cap="Interaction between teacher share of the VAP and district VAP on school board voter rolloff. Each panel displays a random sample of districts within a quartile of the VAP distribution. Each line represents the predicted rolloff for a single district as the teacher share of VAP is increased. The horizontal dotted lines represent the interquartile range of the rolloff variable.">>=
 p3
