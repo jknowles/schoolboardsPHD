@@ -774,7 +774,7 @@ FUNCTION {format.tr.number}
 
 FUNCTION {format.article.crossref}
 { "See"
-  "\citeN{" * crossref * "}" *
+  "\cite{" * crossref * "}" *
 }
 
 FUNCTION {format.crossref.editor}
@@ -820,12 +820,12 @@ FUNCTION {format.book.crossref}
     }
     { format.crossref.editor * }
   if$
-  " \citeN{" * crossref * "}" *
+  " \cite{" * crossref * "}" *
 }
 
 FUNCTION {format.incoll.inproc.crossref}
 { "See"
-  " \citeN{" * crossref * "}" *
+  " \cite{" * crossref * "}" *
 }
 
 % format.lab.names:
@@ -1634,7 +1634,7 @@ FUNCTION {begin.bib}
     'skip$
     { preamble$ write$ newline$ }
   if$
-  "\begin{thebibliography}{}" write$ newline$
+  "\begin{wb-bib}{}" write$ newline$
 }
 
 
@@ -1646,7 +1646,7 @@ ITERATE {call.type$}
 
 FUNCTION {end.bib}
 { newline$
-  "\end{thebibliography}" write$ newline$
+  "\end{wb-bib}" write$ newline$
 }
 
 EXECUTE {end.bib}

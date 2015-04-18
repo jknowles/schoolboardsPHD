@@ -34,15 +34,6 @@
 
 \begin{document}
 
-%%% Uncomment the following if your .bib contains references that you will not 
-%%% explicitly cite, but that should be in the final bibliography:
-% \nocite{*}
-% 
-% \ifpdf
-% \DeclareGraphicsExtensions{.pdf, .jpg, .tif}
-% \else
-% \DeclareGraphicsExtensions{.eps, .jpg}
-% \fi
 
 \maketitle
 
@@ -62,9 +53,7 @@
 
 % Do you want chapter bibliographies?
 % http://wiki.xn--davidhaberthr-7ob.ch/latex#chapterbib
-
 % \include{related/related}
-
 %% etc, etc.
 
 %% Do you have appendices?  If so, add them here, just like chapters.
@@ -78,14 +67,12 @@
 \include{backmatter/colophon}
 \end{colophon}
 
-
-
 %% McBride is a very nice style (some version is included in this distribution)
 %% To include multiple bibliographies you must set up the BIBINPUTS and BSTINPUTS 
 %% global variables in your path. This can be done in R and an example is given in the 
 %% build.R file
-
-\bibliographystyle{includes/mcbride}
+% Had to manually modify chicago.bst to include wb-epi environment and change citeN to cite
+\bibliographystyle{includes/chicago}
 \bibliography{bib2,candidacy,turnoutBIB,personalcorresp,methods,nonpartisanelections}
 
 

@@ -1,12 +1,14 @@
 # TO-DO
-* Confirm how I aggregate turnout across districts in chapter 2 and 3
-* Chapter 3 fixes, Blais-Lago direction, APSRTABLE, squared VAP (after rescale)
-* APSRTABLEs, use captions judiciously, switch to controlling size within apsrtable 
-      call for all models
+* Fix numbering in tables at front
+X * Fix bibliography style
+* CHeck all bibliography entries
+* Address faculty comments
+* Address my comments
+* Acknowledgements
+* Research Log finished up
+* Appendix on data cleaned up
+* Epigraphs for chapters?
 * Fix figure captions to include short and long captions
-* Fix merging of districtwide and non-districtwide races in chapter5
-X * Add a new coding rule -- a winner can't be a minor candidate
-X * Include districtwide dummy in Walker models
 * Create school board race rule variables: 
   * All at large seats (all districtwide)
   * Consistent 3 year cycle?
@@ -14,31 +16,12 @@ X * Include districtwide dummy in Walker models
   * Board size
 * Add board size to regressions in turnout, candidacy, and walker chapters
 * User teacher share of voters as an alternative to WERC strength in walker chapter
-X * Investigate races with no winners
-* Check out Sturgeon Bay results (find more), find Sun Prairie
 * Post-dissertation publication plan (book + articles?)
-X * Outreach to committee members plan
-X * Find last committee member (meet w/ John, consider Jee-Sun)
 * Prepare a data codebook and prepare data for publication online
 * Integrate data into MasterText folder
-* Check all lags
-* Check DPI data
 * Add data on school closures
-X * School board contract extension and school board turnover?
-* Update autoplot to na.omit after fortify
-* Fix eeptools plots
 * Update the bibliography to be Chicago and not McBride
 * Implement perl script for WordCount
-X * build connectors and scrapers for data
 * Write unit tests for data module
 * Make final manual changes to dataAssemble.R to correct for data errors in the VAP data
-X * Finalize chapter 4 policy implication review/motivation/theory draft
 * Ensure that years line up right in cleandandprep_CANDIDACY file
-  - Clean up data and drop unused variables
-
-########################
-# Data cleaning
-#########################
-X * Check winners counts for sanity by calculating board size and comparing to number of winners
-X * Get board size into the dataset, compare with winner lists
-* Look at Door County school districts using data received from County Clerk

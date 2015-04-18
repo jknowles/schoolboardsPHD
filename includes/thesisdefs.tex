@@ -347,57 +347,59 @@
 % the chapter.  Isn't elegance wonderful?
 %
 %=============================================================================
+\newlength{\majorheadskip}
+\majorheadskip 50pt
 
-% \def\@tableof#1#2#3#4#5{
-% { % limit scope of following declarations!!
-%   \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
-%   \addtolength{\textheight}{-40pt}       % -24-16
-%   \addtolength{\majorheadskip}{-40pt}    % -24-16
-%   \addtolength{\headheight}{52pt}        %  36+16
-%   \addtolength{\headsep}{-12pt}          % -12
-%   \separatorpage{DISCARD THIS PAGE}
-%   \chapter*{#1}
-%   #5
-%   \relax\markboth{#1}{#1}
-%   \hbox to \hsize{#2 \hfil Page}
-%   \singlespace
-%   \setcounter{#3}{0}
-%   \setcounter{listofheading}{1}  % change from 0 to 1 by mccauley, 14may93
-%   \def\@oddhead{\vbox to \headheight{\vspace{4pt}
-%     \hbox to \hsize{\hfil\textrm{\thepage}} \vfil
-%     \ifnum\value{#3}=1
-%       \ifnum\value{listofheading}=2
-%         \hbox to \hsize{Appendix\hfil} \vspace{4pt} \fi
-%       \ifnum\value{listofheading}=1
-%         \stepcounter{listofheading} \fi
-%       \hbox to \hsize{#2 \hfil Page}
-%     \else
-%       \setcounter{#3}{1}
-%     \fi}}
-%   \def\@evenhead{\vbox to \headheight{\vspace{4pt}
-%     \hbox to \hsize{\textrm{\thepage}\hfil} \vfil
-%     \ifnum\value{#3}=1
-%       \ifnum\value{listofheading}=2
-%         \hbox to \hsize{Appendix\hfil} \vspace{4pt} \fi
-%       \ifnum\value{listofheading}=1
-%         \stepcounter{listofheading} \fi
-%       \hbox to \hsize{#2 \hfil Page}
-%     \else
-%       \setcounter{#3}{1}
-%     \fi}}
-%   \@starttoc{#4}  \if@restonecol\twocolumn\fi
-%   \newpage
-% }}
-% 
-% \def\tableofcontents{\@tableof{TABLE OF CONTENTS}{}{tocpage}{toc}{}}
-% 
-% \def\listoffigures{
-%   \@tableof{LIST OF FIGURES}{Figure}{lofpage}{lof}
-%   {\protect\addcontentsline{toc}{chapter}{LIST OF FIGURES}}}
-% 
-% \def\listoftables{
-%   \@tableof{LIST OF TABLES}{Table}{lotpage}{lot}
-%   {\protect\addcontentsline{toc}{chapter}{LIST OF TABLES}}}
+\def\@tableof#1#2#3#4#5{
+{ % limit scope of following declarations!!
+  \@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn\fi
+  \addtolength{\textheight}{-40pt}       % -24-16
+  \addtolength{\majorheadskip}{-40pt}    % -24-16
+  \addtolength{\headheight}{52pt}        %  36+16
+  \addtolength{\headsep}{-12pt}          % -12
+  \separatorpage{DISCARD THIS PAGE}
+  \chapter*{#1}
+  #5
+  \relax\markboth{#1}{#1}
+  \hbox to \hsize{#2 \hfil Page}
+  \singlespace
+  \setcounter{#3}{0}
+  \setcounter{listofheading}{1}  % change from 0 to 1 by mccauley, 14may93
+  \def\@oddhead{\vbox to \headheight{\vspace{4pt}
+    \hbox to \hsize{\hfil\textrm{\thepage}} \vfil
+    \ifnum\value{#3}=1
+      \ifnum\value{listofheading}=2
+        \hbox to \hsize{Appendix\hfil} \vspace{4pt} \fi
+      \ifnum\value{listofheading}=1
+        \stepcounter{listofheading} \fi
+      \hbox to \hsize{#2 \hfil Page}
+    \else
+      \setcounter{#3}{1}
+    \fi}}
+  \def\@evenhead{\vbox to \headheight{\vspace{4pt}
+    \hbox to \hsize{\textrm{\thepage}\hfil} \vfil
+    \ifnum\value{#3}=1
+      \ifnum\value{listofheading}=2
+        \hbox to \hsize{Appendix\hfil} \vspace{4pt} \fi
+      \ifnum\value{listofheading}=1
+        \stepcounter{listofheading} \fi
+      \hbox to \hsize{#2 \hfil Page}
+    \else
+      \setcounter{#3}{1}
+    \fi}}
+  \@starttoc{#4}  \if@restonecol\twocolumn\fi
+  \newpage
+}}
+
+\def\tableofcontents{\@tableof{TABLE OF CONTENTS}{}{tocpage}{toc}{}}
+
+\def\listoffigures{
+  \@tableof{LIST OF FIGURES}{Figure}{lofpage}{lof}
+  {\protect\addcontentsline{toc}{chapter}{LIST OF FIGURES}}}
+
+\def\listoftables{
+  \@tableof{LIST OF TABLES}{Table}{lotpage}{lot}
+  {\protect\addcontentsline{toc}{chapter}{LIST OF TABLES}}}
 
 %=============================================================================
 % BIBLIOGRAPHY
@@ -424,7 +426,7 @@
 %   This command does nothing more than change REFERENCES to BIBLIOGRAPHY
 %============================================================================
 \def\@bibchaptitle{References}
-\def\altbibtitle{\def\@bibchaptitle{References}}
+\def\altbibtitle{\def\@bibchaptitle{Bibliography}}
 \def\thebibliography#1{
   \separatorpage{\@bibchaptitle}
   \global\@bibpresenttrue
