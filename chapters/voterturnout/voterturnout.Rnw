@@ -413,7 +413,12 @@ the number of voters within the school district. In order to combat this I use
 the number of votes cast divided by the number of winners for each race within a 
 school district. I then aggregate the races when there is no districtwide race, and 
 when a district wide race is present, I use the maximum turnout in that race. 
-To determine the voting age population (VAP) of the school district in Wisconsin, I
+
+For the denominator I use the voting age population (VAP) as a measure of the 
+number of eligible voters in the district boundaries -- this measure is the 
+only measure reliably calculated on a regular basis at the level of detail 
+necessary to produce school district specifcic estimates. To determine the 
+voting age population (VAP) of the school district in Wisconsin, I
 employ the finest resolution estimate of voting age population available -- VAP
 estimates by minor civil division (MCD) conducted by the Wisconsin Department of
 Administration described in Chapter \ref{chap:wisco} Section 
@@ -480,7 +485,16 @@ I describe the key variables for the theories in Table \ref{tab:turnoutH}
 and how I operationalize them with Wisconsin data. I start with the models based on 
 electorate size and explore if at the  small electorate sizes common in school 
 board elections there is evidence that voters are more likely to turnout than 
-in larger school board races. Figure \ref{fig:turnoutSize} shows that there is 
+in larger school board races. I use VAP as an estimate of the actual electorate size 
+in school board elections. This is a conservative measure given that the actual spring 
+electorate can be as small as 15\% of the voting age population.\footnote{If is is assumed that voters 
+adjust the electorate size equally across jurisdictions when making their 
+assessment of the perceived uiltity of voting, then this is not a factor. If there 
+is evidence that voters in different jurisdictions have more information about 
+the likely electorate size in a school board election, and this varies across 
+jurisdictions, then this becomes more problematic.}
+
+Figure \ref{fig:turnoutSize} shows that there is 
 a consistent negative relationship between electorate size and school board 
 election turnout across the years of data available in Wisconsin. As population 
 increases, Wisconsin school board elections have lower turnout with a correlation of 
@@ -825,7 +839,6 @@ correlated with fall turnout than with spring turnout. This provides some eviden
 that the school board electorate is different than the general election 
 electorate -- as shown by \citet{oliver}. 
 
-
 \section{Methods}
 
 This paper has two main methodological approaches to evaluating theories of voter 
@@ -840,43 +853,40 @@ and the school board election narrowing should be attributed to increased intere
 by voters in school board elections. 
 
 \subsection{Estimation Equations}
-
-In my first set of models I look for evidence that the explanations described in Table 
-\ref{tab:turnoutH} for voter turnout in elections are supported in the data 
-available on Wisconsin school boards. In the second case, I change my dependent variable to be the distance between the turnout for 
-the school board races in a school district, and the top non-partisan statewide 
-race in the district. In each case, I start with a specification that pools 
+Each model is fit twice, once with turnout as the dependent variable and once for 
+rolloff. For each variable I use multiple specifications to test the robustness of the 
+relationship to varying assumptions. I start with a specification that pools 
 observations across years and districts and estimates the impact of the key independent 
 variable and a few key demographic control variables described in Section 
 \ref{sec:turnData}. These equations look like: 
 
-\[(1) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{t} + \psi Z_{t}+\epsilon_{t} \] \\
+\[(1) \hspace{0.4 in} VP_{it} = \alpha + \beta X_{t} + \psi Z_{it}+\epsilon_{t} \] \\
 
-Here $VP_{t}$ is voter turnout in the spring election $t$. $\alpha$ is the intercept and $X_{t}$ 
-represents a vector of covariates including the control variables described 
-above for school district $i$. All models control for competition, demographic 
-covariates, district size, and whether or not turnout was measured by a district 
+Here $VP_{it}$ is voter turnout in a school district $i$ for the spring election $t$. 
+$\alpha$ is the intercept and $X_{it}$ represents a vector of covariates including the 
+control variables described above for school district $i$ in year $t$. All models control for 
+competition, demographic covariates, district size, and whether or not turnout was measured by a district 
 wide race.\footnote{The districtwide variable is a dummy variable to control for the 
 measurement error associated with school districts where there was no district wide 
-race to estimate voter turnout in board elections from.} I include the term $Z_{t}$ to represent the variable 
-of interest in each model. 
+race to estimate voter turnout in board elections from.} I include the term $Z_{it}$ to represent the variable 
+of interest in each model. The $Z_{it}$ vector includes different variables across 
+the different models including lagged turnout, district size, race competitiveness, and 
+social group membership in the school district. 
 
 The size of the electorate is important in many theories of voter turnout. 
-\citet{dahl1973size} first hypothesized that the motivation to participate would be higher in small electorates, and there has been some evidence to support this \citep{Frandsen2002}. Thus, in all models size is included in the $X_{t}$ vector and in 
+\citet{dahl1973size} hypothesized that the motivation to participate would be higher 
+in small electorates, and there has been some evidence to support this \citep{Frandsen2002}. 
+Thus, in all models size is included in the $X_{it}$ vector and in 
 some models it is included as an interaction to test for differential impacts 
 of key variables across the size of the electorate. 
 
-The $Z_{t}$ vector includes different variables across the different models including 
-lagged turnout, district size, race competitiveness, and social group membership in the school district. For example, a high predictive value of lagged turnout would suggest the electorate is habit forming -- especially if the effect is magnified in smaller districts\citep{habit02}.
-
-The pivotal-voter model is a modification of the rational voter model. I use a 
+The pivotal-voter model is a subset of the rational voter model. I use a 
 similar method as \citet{Coate2008582} to test whether turnout is higher in elections 
 that are closer and if this effect is greater in smaller electorates.
-Thus I include in the $Z_{t}$ vector a measure of the margin of victory. I also 
+Thus I include in the $Z_{it}$ vector a measure of the margin of victory. I also 
 include an interaction effect to explore whether or not voters are more likely 
-to turn out for close races in small electorates, where their $P$, probability of 
-deciding the election, is greatest. From a rational choice perspective, the smaller electorate would drive turnout because the costs of non-voting can be more easily estimated by voters in small electorates, and the expected benefit of such 
-non-voting is smaller. This interaction model is represented in equation 2. 
+to turn out for close races in small electorates, where their probability of 
+deciding the election, is greatest. This interaction model is represented in equation 2. 
 
 \[(2) \hspace{0.4 in} VP_{t} = \alpha + \beta X_{t} + \psi Z_{t} x \lambda S_{t} +
 \epsilon_{t} \] \\
@@ -889,8 +899,10 @@ has been little work explicitly testing the influence of political parties in
 non-partisan school board races, but some evidence that the 
 share of teachers in the electorate is an important driver of turnout and 
 policy change in school board elections \citep{RefWorks:207, 
-RefWorks:218,RefWorks:320}. A last model will be fit to include all of the various 
-models above to check for robustness against omitted variables. 
+RefWorks:218,RefWorks:320}.
+
+% TODO: A last model will be fit to include all of the various models
+% above to check for robustness against omitted variables. 
 
 \subsection{Model Specifications}
 \label{subsec:spec}
@@ -908,9 +920,9 @@ the standard errors from these models are overly optimistic because each
 school district is observed between two and ten times and the assumption of independent 
 and identically distributed random variables is violated. To correct for this, 
 I adjust the standard errors by using the Huber-White estimator of the covariance 
-matrix through the \texttt{robcov} function implemented in \citet{rms}'s \texttt{rms} 
-package. This will correct for the clustering of school districts
-between the observations and avoid overly optimistic standard errors for 
+matrix.\footnote{I do this with the \texttt{robcov} function implemented in 
+\citet{rms}'s \texttt{rms} R package.} This will correct for the clustering of 
+school districtsbetween the observations and avoid overly optimistic standard errors for 
 the $\beta$ coefficients \citep{hwhite,hwhite2,pjhuber}.
 
 Results from these models are placed in Appendix \ref{sec:appendixT}. 
@@ -921,36 +933,31 @@ within districts and number of observations per district varies. The district
 estimates themselves are problematic, the model is likely underpowered to fit 
 them properly and they are likely too sensitive to outliers and therefore overfit. 
 There are two approaches to adjusting for this -- penalized estimation or partial 
-pooling approach using a mixed effect model. With over 300 grouping parameters 
-to estimate, it is better to turn to a partial pooling approach that allows 
-estimates of the district effect to be shrunk toward the pooled grand estimate 
-in order to avoid overfit. A partial pooling approach is also known as a mixed 
-effect or hierarchical linear model (HLM). Partial pooling models can be fit in R 
-using the \texttt{lme4} package \citep{lme4, gelhill}. I employ the same 
+pooling approach using a mixed effect model. The partial pooling approach is also known as a mixed 
+effect or hierarchical linear model (HLM).\footnote{Partial pooling models can be fit in R 
+using the \texttt{lme4} package \citep{lme4, gelhill}.} I employ the same 
 specification as the fixed effect model before, but now model the district effects 
 as random effects in order to avoid overfit. 
 
-This multilevel approach is not common in longitudinal applications in political science, but has been used by \citet{oliver} to understand the relationship between 
-individual survey respondents and their communities in a study of local elections. 
-The choice between these two approaches is as much theoretical as it is econometric, 
-and as a result I run my analyses with both approaches.\footnote{The Hausman test 
+The formal econometric results suggest that the random effects of the multilevel 
+model are appropriate.\footnote{The Hausman test 
 can be used to formally test the specification of random or fixed effects and the 
 results of this test for all models is included in the Methodological Appendix 
-\ref{sec:appendixT} \citep{haustest}.} The formal econometric results suggest 
-that the random effects of the multilevel model are appropriate. 
-It is also useful because this approach is flexible for cases with unbalanced 
+\ref{sec:appendixT} \citep{haustest}.} The choice between these two approaches is as 
+much theoretical as it is econometric, and as a result I run my analyses with both 
+approaches. It is also useful because this approach is flexible for cases with unbalanced 
 repeated measures and allows the analyst to disentangle the effects of time 
 specific variables from the overall variability among individual units, e.g. school 
-districts \cite{mlmod,raudbryk}. Furthermore, my data does not 
+districts \citep{mlmod,raudbryk}. Furthermore, my data does not 
 include all Wisconsin school districts, but instead a large sample of districts. 
 This makes the ability to model the variation between districts of interest to 
 understand the range of plausible district variation across the broader population 
-of school districts. 
+of school districts -- an attractive feature of the mixed model approach.
 
 The equation below depicts the multilevel framework:
 
 \begin{align*} 
-VP_{i} &= \alpha + \gamma_{j} + \beta X_{ij} + \lambda Z_{ij} + \epsilon_{ij}  \\ 
+VP_{ij} &= \alpha + \gamma_{j} + \beta X_{ij} + \lambda Z_{ij} + \epsilon_{ij}  \\ 
 \gamma_{j} &=  \alpha_{j} + \epsilon_{j}
 \end{align*}
 
@@ -960,9 +967,8 @@ Here the $\gamma_{j}$ terms represent independent intercepts for each school
 district as predicted by $\alpha_{j}$, a unique intercept for each school district. 
 $X_{ij}$ is a vector of time variant school district 
 characteristics such as prior turnout. In the mixed-effect 
-framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
-is explained by the linear combination of $\alpha$ and $\zeta$. The equation above 
-is flexible to the inclusion of the other predictors identified. 
+framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution. 
+The equation above is flexible to the inclusion of the other predictors identified. 
 
 This method does not account for the time structure of the data, as no 
 explicit parameterization of time is included. As I have no reason to believe that 
@@ -994,7 +1000,6 @@ and year was compared against a model with random effects only for district. The
 results of these tests for all of the models is included in the Appendix \ref{sec:appendixT}. 
 
 \subsection{Computation}
-
 
 <<simpleModel, results='hide'>>=
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "turnoutLag1","year", "contest",
@@ -1037,7 +1042,7 @@ observations that fall outside of five standard deviations of the normal values
 for the dependent variable. There are \Sexpr{table(moddat$outflag>5)[[2]]} cases where 
 the value of the dependent variable is more than five standard deviations above 
 the group average. This is less than half of 1\% of the observations and is unlikely 
-to be influential, however, it is also likely that such deviations are due to 
+to be influential. Such deviations are likely due to 
 measurement error either in the VAP denominator or in the aggregation of district 
 board election vote counts themselves. I also use two control variables to adjust 
 for measurement error -- the first is a dummy variable indicating whether turnout 
@@ -1057,17 +1062,13 @@ case \citep{gelhill}.
 
 \section{Results}
 
-I now review the results for models for all of the theories discussed above -- 
+I now review the results for models for each theory -- 
 habit forming voters, rational voters, pivotal voters, and social group motivated 
-voters. I fit both a fixed-effect OLS regression and a mixed-effect linear 
-model for each of these theories including control variables and the key predictors. 
-I fist look at evidence for these theories in each of these models for an effect 
-on turnout in the spring school board races. Then I apply these same models to 
-the rolloff of voters in the spring election. Finally, I conclude by interpreting 
-the substantive effect of these variables to weigh how large the effects of 
-these characteristics might be on school board election turnout. 
-
-%TODO: Check out districtwide vs. distWideMix
+voters. I first look at evidence for these theories in each of these models for 
+an effect on turnout in the spring school board races. Then I apply these same 
+models to the rolloff of voters in the spring election. Finally, I conclude by 
+interpreting the substantive effect of these characteristics on school board 
+election turnout. 
 
 \subsection{Habit Forming Voters}
 
@@ -1129,8 +1130,9 @@ lagmodTab <- apsrtable(dumbRLM1, dumbRLMbest, dumbRLM2, se="robust",
 
 @
 
-Table \ref{tab:meTurnout} confirms the theoretical expectations from above to a 
-large extent. The higher the prior school board election turnout, the higher 
+The results in Table \ref{tab:meTurnout} show, as expected, voter turnout is 
+heavily autocorrelated in school board elections. The higher the prior school board 
+election turnout, the higher 
 the turnout in the current school board election. The effect is largely the same 
 even when controlling for fall turnout and the competitiveness of the races. 
 Additionally, as expected, larger districts have lower turnout. Other variables 
@@ -1146,8 +1148,11 @@ significant.}
 
 An additional benefit of the random effect specification is that it allows me to 
 measure the variation between years and between districts. As Table 
-\ref{tab:meTurnout} shows, there is substantial between district and across year 
-variation in turnout for spring non-partisan school board elections. 
+\ref{tab:meTurnout} shows, there is substantial between district and between year 
+variation in turnout for spring non-partisan school board elections. This 
+suggests that time-invariant unobservable characteristics about school districts 
+and cross-state election year specific characteristics explain much of the 
+turnout in local school board elections.
 
 <<model1robustness>>=
 dumbRLM1b <- ols(turnout ~ turnoutLag2 + fallTurnout + VAP_adjLOG + VAP_adjLOG_sq + 
@@ -1248,17 +1253,7 @@ lagLRT$callSmall <- m.slope@call
 \subsection{Rational Voters}
 
 My second empirical question is to examine the relationship between electorate size 
-and turnout, and electorate size, margin of victory and turnout. I use an 
-adjusted estimate of the voting age population - the denominator in the turnout
-variable - to serve as an estimate of the electorate size.\footnote{Address 
-possible endogeneity here with the dependent variable.} This is a conservative 
-estimate of the actual electorate size in school board elections, which as can 
-be as low as 15\% of the voting age population. If is is assumed that voters 
-adjust the electorate size equally across jurisdictions when making their 
-assessment of the perceived uiltity of voting, then this is not a factor. If there 
-is evidence that voters in different jurisdicstions have more information about 
-the likely electorate size in a school board election, and this varies across 
-jurisdictions, then this becomes more problematic. 
+and turnout, and electorate size, margin of victory and turnout.
 
 <<closeModRLM, results ='asis'>>=
 moddat <- dist_turn[, c("turnout", "turnoutLag2", "year", "fallTurnout", 
@@ -1338,22 +1333,17 @@ rm(ADMIN, VAP_dist, dist.tmp, dvp, errors, plotdf, presTurn, canInterp,
    dumbRLMbestb, i, j)
 @
 
-
-Table \ref{tab:meClose} shows the partial-pooling results for two different 
-models of competitiveness in school board elections. I use the continuous measure 
+The key coefficient in Table \ref{tab:meClose} is the measure of competitiveness 
+and its interaction with electorate size. I use the continuous measure 
 of the Blais-Lago quotient to represent how competitive 
-the races are, with a higher values corresponding to less competitive races. The 
+the races are, with a higher values corresponding to more competitive races. The 
 control variables are the same from those in Table \ref{tab:meTurnout}. As 
 expected, uncontested races have lower turnout than contested races. Also, as the 
 share of all candidates in the race who are incumbents increases, not unsurprisingly, 
-turnout decreases. 
-
-The Blais-Lago quotient is statistically significant and in the expected 
-direction -- more competitive elections result in more turnout. However, the 
-expectation that the relationship between competitiveness and district size would 
-have an effect on turnout is not confirmed here - the interaction term 
-is not statistically significant although it is in the right direction.
-\footnote{The fixed effect models are largely the same.}
+turnout decreases. However, the expectation that the relationship between 
+competitiveness and district size would have an effect on turnout is not confirmed 
+here - the interaction term is not statistically significant although it is in the 
+right direction.\footnote{The fixed effect models are largely the same.}
 
 
 <<closeModMM, results='asis'>>=
