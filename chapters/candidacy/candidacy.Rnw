@@ -630,26 +630,24 @@ grid.arrange(p1, p2, main = "Comparing Measures of Competitiveness Over Time")
 
 \subsubsection{Incumbent Defeat}
 
-Traditionally, the school board literature has not been concerned as much with 
-overall levels of contestation, but instead the frequency with which incumbents 
-are defeated. Incumbent defeat is a good measure of the democratic functioning 
+Traditionally, the school board literature has focused on  the frequency of 
+incumbent defeat. Incumbent defeat is a good measure of the democratic functioning 
 of the school district as a government because it reflects the ability of voters 
 to exercise a preference for change and to ``throw the bums out''. 
 Incumbent defeat is at the heart of the dissatisfaction theory of school board 
-participation \cite{RefWorks:297}. Previous research has found that apolitical 
+participation \citep{RefWorks:297}. Previous research has found that apolitical 
 forms of board member turnover often swamp political forms of turnover and skew 
 results \citep{RefWorks:311}. These studies used surveys of former board members 
 and asked whether their reason for no longer serving was political or apolitical -- 
 allowing the observation of candidates who chose not to run due to political pressure 
 or a perception of a strong emerging challenger. This is a limitation of the current 
-study is identifying seat 
-vacancies due to retirement or plausible threat where a candidate does not mount a 
+study is identifying seat vacancies due to retirement or plausible threat where a candidate does not mount a 
 campaign. This is less troubling in the school board case because the cost of 
 campaigning is so low that presumably a challenged incumbent would still stand 
-for election. Moreso, direct observation allows me to look at electoral defeat 
+for election. Moreso, direct observation allows me to directly observe electoral 
 for the first time, something which previously has only been analyzed through 
-candidate self-report. 
-
+candidate self-report. This alternative form of measurement is a way to triangulate 
+the findings of previous work. 
 
 <<incdefeat, echo=FALSE, fig.cap="Annual share of Wisconsin school board elections featuring an incumbent with a defeated incumbent 2002-2012.">>=
 
@@ -681,21 +679,18 @@ forms of office, but it is not as low as might be expected. \citet{oliver}'s stu
 of the suburban voter found 10 out of 11 mayoral incumbents securing re-election 
 and 47 out of 56 city council incumbents winning re-election. This result is encouraging 
 and it suggests the potential to explore theories for why voters may prefer 
-challengers over incumbents, including retrospective voting. 
-
-Next I turn my attention to the selection of variables to explain the variability 
-in these dependent variables. 
+challengers over incumbents. Next I turn my attention to the selection of variables 
+to explain the variability in these dependent variables. 
 
 \clearpage
 
 \subsection{Independent Variables}
 
 \subsubsection{Demographics}
-The first set of variables I include are basic demographic variables. As shown 
-in \citet{oliver} these variables are important to take into consideration when 
-considering the factors that influence candidate participation in local elections. 
-
-The first of these variables I consider is the voting age population (VAP) of 
+Both \citet{oliver} and \citet{RefWorks:297} find community demographics, and 
+importantly their change, critical in understanding electoral variation both 
+between school boards and within them across time. The first of these variables 
+I consider is the voting age population (VAP) of 
 the school district. VAP represents the pool of voters and also of potential 
 candidates for school board in a community. I expect this variable to be 
 positively related to contestation of school board elections both because of the 
@@ -706,14 +701,17 @@ important indicator of the level of electoral participation. I consider two type
 of homogeneity -- racial and generational. First, I include a measure of the 
 percentage of the adult population in the school district that is white. While 
 Wisconsin is an overwhelmingly white state, I expect racial homogeneity to be 
-negatively associated with more school board contestation. Additionally, prior 
-research has shown that voter (and property tax payer) age is associated with 
+negatively associated with more school board contestation -- there will be less 
+competition for resources neighborhood to neighborhood in the community. Additionally, 
+prior research has shown that voter (and property tax payer) age is associated with 
 support for local schools. The greater the percentage of elderly in the school 
 district, the more participation I expect to see \citep{RefWorks:332}. 
 Additionally, given the results of surveys that indicate school board members 
 are more likely to be white and elderly, I expect that the increase in these 
 variables is an increase in supply of potential candidates, and thus should be 
-positively related to board contestation \citep{RefWorks:321, RefWorks:322, RefWorks:333}. 
+positively related to board contestation. Previous research has shown that school 
+board candidates are disproportionately drawn from white, upper middle class, retired 
+populations \citep{RefWorks:321, RefWorks:322, RefWorks:333}. 
 
 The last two demographic variables are measures of wealth and income. A key feature 
 of school boards is 
@@ -725,22 +723,24 @@ governments like school boards \citep{berry2}. Homeowners are more directly awar
 of property tax rates, longer term residents of the community, and thus expected 
 to be more sensitive to changes in the property tax rate that is under control 
 of school boards. As an additional control, I include a measure of median household 
-income, but as other studies have noted, this does not exhibit much variation 
-within Wisconsin as it does in other jurisdictions \citep{akrTax}.
+income, but as other studies of Wisconsin school districts have noted, this does 
+not exhibit much variation within Wisconsin as it does in other jurisdictions 
+\citep{akrTax}.
 
 \subsubsection{Fiscal}
 
 Next, I consider variables measuring the scope of the school district relative 
-to other local governments. As \citet{berry2} finds stacking of local governments 
-with overlapping taxing jurisdictions divides the attention of voters, I consider 
+to other local governments. \citet{berry2} finds stacking of local governments 
+with overlapping taxing jurisdictions divides the attention of voters; I consider 
 whether overlapping fiscal authority might divide the attention of potential 
 candidates and make school boards less attractive. The first variable I consider 
 is what share of its total revenue a school district raises from property taxes. 
 While the intricacies of the Wisconsin school funding formula are beyond the 
-scope of this paper, the result of this formula is that there is much variation 
+scope of this study, the result of this formula is that there is much variation 
 in the share of district revenues that are raised by local property owners. 
 I expect the greater the share of revenue from property taxes, the more likely 
-candidates are to participate. However, the share of revenue derived from 
+candidates are to participate because there is greater fiscal power with higher 
+tax rates. However, the share of revenue derived from 
 property tax may not be particularly salient to the voting population, especially 
 not those without school aged children. 
 
@@ -756,13 +756,22 @@ I expect this variable to be negatively related to candidacy with districts
 that have more savings having less contestation as a result of lower overall 
 fiscal pressure. A final measure of fiscal health is the level of per pupil 
 spending in the school district. I expect higher spending districts to have 
-higher levels of candidate contestation. %TODO: why
+higher levels of candidate contestation because of increased accountability 
+pressure from the public.
+
+It would be fair to argue that these measures seem unlikely to be salient to the 
+voting public. However, voters in these off-cycle non-partisan races are very 
+different than voters in the general election with evidence suggesting they are 
+much more highly informed on local matters, longer term residents of the community, 
+and very engaged in local affairs year round \citep{oliver}. This suggests that 
+key information about the fiscal health of the community is likely to be 
+familiar to the spring electorate. 
 
 \subsubsection{Political}
 Next, I look to explore the influence of political factors in the emergence of 
 challenges to incumbents. First, I include a variable to control for the 
 different structure of school board elections each year by controlling for the number of 
-races in each school district. This variable should be positive related with 
+races in each school district. This variable should be positively related with 
 more incumbency challenge as it represents more opportunities for a challenge 
 to emerge when multiple races exist. I also test for advantage of incumbency 
 by including a measure of the share of candidates who are incumbents. I expect 
@@ -796,7 +805,7 @@ and depress the need for electoral competition.
 
 \subsubsection{Policy}
 A final set of total variables is policy related concerns. These variables 
-explore the idea that candidates may desire to emerge in response to underlying 
+explore the idea that candidates may emerge in response to underlying 
 policy changes in the district. Policy concerns allow me to test whether or not 
 voters in school board races are retrospective. A challenge with retrospective 
 voting is the irregular timing of school board seat opening relative to other 
@@ -825,17 +834,18 @@ school funding is governed by a state funding formula with a revenue limit for
 %TODO: Finish this footnote
 school districts. More links and details...} Attempting 
 a bond or override referenda is one of the more high profile actions a school 
-board can take -- asking the public to increase property tax rates in return 
-for improved quality of educational services. As such, I expect failed referenda 
-to precede challenges to school board, and I expect merely offering a referenda 
-to also be related to increased challenges. 
+board can take -- asking the public to vote for an increase of property tax rates 
+in return for improved quality of educational services. As such, I expect 
+failed referenda to precede challenges to school board, and I expect merely 
+offering a referenda to also be related to increased challenges. 
 
 Three other policy indicators are relevant to board challenge. The first is the 
 percentage of school age children in non-public schools. I expect as this 
 percentage increases, competition for school boards will decrease due to a 
-reduced interest among more educated and affluent families attending private 
-schools in shaping the policy of the local school board. I also look at measures 
-of student performance to test whether districts with higher or lower performance 
+reduced interest among more affluent or more religiously conservative 
+families attending private schools in shaping the policy of the local 
+school board. I also look at measures of student performance to test whether 
+districts with higher or lower performance 
 are more likely to have candidates emerge. School districts with lower performing 
 students should, all else equal, have more candidates emerge as citizen dissatisfaction 
 with board and district performance should be higher. Finally, I include a measure 
@@ -907,6 +917,7 @@ variables and describe the process of reducing the list of factors in Table \ref
 to a manageable subset for inclusion in statistical models that can evaluate their 
 impact. 
 
+%TODO: Pretty names for heatmaps
 <<cleanupIV, echo=FALSE, results='hide'>>=
 # library(GGally)
 dist_turn$contest <- "Uncontested"
@@ -975,7 +986,7 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray40")
   labs(x = "", y = "")
 @
 
-In Figure \ref{fig:demogCorr1} we see a depiction of the correlations between key 
+In Figure \ref{fig:demogCorr1} I depict the correlations between key 
 demographic variables with dark red and green representing the highest negative 
 and positive correlations respectively.\footnote{These figures represent the correlation 
 matrix for the complete pooled dataset across years and school districts. Correlations 
@@ -983,12 +994,10 @@ for individual years follow similar patterns, but are not shown. The Pearson cor
 coefficient is reported.} The most problematic correlations are 
 between the median household income and percentage of pupils in the school district 
 eligible for free and reduced price lunch. The other large correlation is 
-between the number of pupils in the district and the VAP. In the 
-models below, I choose one variable from each of these pairs. Household median 
+between the number of pupils in the district and the VAP. Household median 
 income is also strongly correlated with the proportion of the population with a 
 BA or above and with the proportion of owner-occupied housing. As a result, 
-it may be necessary to drop median income in favor of these two variables in the 
-models below. 
+I drop median income in favor of these two variables in the models below. 
 
 <<fiscal1, fig.cap="Correlations of Fiscal Variables", fig.height=5.5, fig.width=7.5>>=
 
@@ -1013,15 +1022,15 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")
 Figure \ref{fig:fiscal1} shows the correlations among the fiscal measures for school 
 districts. Here there are fewer extermely high correlations. The largest correlations 
 belong to two pairs of four variables. Understandably, our two measures of equalized 
-district costs, \texttt{TDC\_MEMBER} (Total district cost per member) and 
-\texttt{TEC\_MEMBER} (Total Complete Educational Cost per member), are very highly 
-correlated with the only differences being relative spending on transportation and 
-food services. In the models below, only one of these will ever be included. The 
+district costs, total district cost (TDC) per member and total complete educational cost 
+(TCEC) per member, are very highly correlated with the only differences being relative spending 
+on transportation and food services. In the models below, I use TCEC. The 
 next set of high correlations have to do with property tax rates and population. 
 The share of the millrate within the school district attributable to school district 
 taxation is highly correlated with the tax rate set by the school district. 
 Additionally, the amount of property value per tax filer in the community is 
-highly correlated with the millrate in a negative direction.  %TODO: Solution?
+highly correlated with the millrate in a negative direction. In most cases, 
+I include only the millrate. 
 
 <<politic1, fig.cap="Correlations of Political Variables", fig.height=5.5, fig.width=7.5>>=
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
@@ -1042,7 +1051,7 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")
 @
 
 The political variables in Figure \ref{fig:politic1} are largely free of high 
-correlations among them. The strongest relationships are between partisan division 
+correlations. The strongest relationships are between partisan division 
 and the share of the two party vote -- an expected correlation. Higher fall turnout 
 is also correlated with partisan division. 
 
