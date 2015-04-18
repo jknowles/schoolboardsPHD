@@ -1089,13 +1089,13 @@ xtable(round(cor(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout),
 
 \section{Methods}
 
-For each of the dependent variables described above, I fit four separate models 
+For each of my meaures of contestation, I fit four separate models 
 looking at the impact of demographic, fiscal, political, and policy characteristics 
 of school districts on the probability of a contested school board race. All models 
 contain the demographic variables. I then fit a full model which includes variables 
 from all of the models. This approach allows me to evaluate the relative power of 
 these differing factors in explaining the competitiveness of board elections. 
-
+%TODO: Change model to a logistic regression
 To assess the probability of a contested election in a school district in a given 
 election cycle, I start with a model of candidate emergence:
 
@@ -1139,12 +1139,9 @@ district that are still relatively small when compared across all districts.
 There are a number of approaches available to estimating longitudinal and panel 
 data. One way to adjust for this is to estimate fixed effects for school districts. 
 While this approach is common in other studies of local government in political science, 
-I prefer the alternative approach of multi-level modeling \citep{oliver12}. 
-The multilevel approach is not common in longitudinal applications in political 
-science, but has been used by \citet{oliver12} to understand the relationship between 
-individual survey respondents and their communities in a study of local elections. 
-The choice between these two approaches is as much theoretical as it is econometric, 
-and as a result I run my analyses with both approaches.\footnote{The Hausman test can be used to formally 
+I prefer the alternative approach of multi-level modeling. The choice between these two 
+approaches is as much theoretical as it is econometric, and as a result I run my analyses 
+with both approaches.\footnote{The Hausman test can be used to formally 
 test the specification of random or fixed effects and the results of this test for all 
 models is included in the Methodological Appendix \ref{sec:appendix} \citep{haustest}.} 
 However, I prefer the multi-level approach because the panel here is not balanced, 
@@ -1158,37 +1155,32 @@ of school districts.
 The multilevel modeling approach, also known as hierarchical linear modeling (HLM), 
 is flexible for cases with unbalanced repeated measures and allows the analyst to 
 disentangle the effects of time specific variables from the overall variability 
-among individual units, e.g. school districts \cite{mlmod,raudbryk}. One way to depict 
+among individual units, e.g. school districts \citep{mlmod,raudbryk}. One way to depict 
 this approach is in the equation:
-
+% TODO: Show this as a logistic regression
 \begin{align*} 
-\Pr_{CE_{ij}} &= \alpha_{i} + \beta X_{i} + \gamma_{j} + \epsilon   \\ 
-\gamma_{j} &=  \alpha_{j} + \zeta Z_{j}
+\Pr_{CE_{ij}} &= \alpha_{i} + \beta X_{ij} + \gamma_{j} + \epsilon_{ij}   \\ 
+\gamma_{j} &=  \alpha_{j} + \epsilon_{j}
 \end{align*}
 
-The only difference between this approach and the generalized linear models above 
-is that there are group-level terms. 
-In the model I use \texttt{i} for the specific elections nested within the school 
-districts, \texttt{j}. Here the $\gamma_{j}$ terms represent independent intercepts for each school 
-district as predicted by $Z_{j}$, a vector of school district characteristics 
-that are time invariant. $X_{t}$ is a vector of time variant school district 
-characteristics, some of which may be lagged. In the mixed-effect 
-framework the $\gamma_{j}$ are assumed to be drawn from a normal distribution that 
-is explained by the linear combination of $\alpha$ and $\zeta$. 
+In this model I use \texttt{i} for the specific elections nested within the school 
+districts, \texttt{j}. The $\gamma_{j}$ terms represent independent intercepts for each school 
+districts, modeled as being drawn from a normal distribution. $X_{ij}$ is a vector of time 
+variant school district characteristics, some of which may be lagged. 
 
 This method does not account for the time structure of the data, as no 
 explicit parameterization of time is included. As I have no reason to believe that 
-time linearly related to the probability of an election being contested, this is 
+time linearly relates to the probability of an election being contested, this is 
 appropriate. However, I do want to control for secular effects of election year 
 variability that reaches across districts. One approach would be to include 
 fixed effects for years in the $X$ vector. However, the multilevel approach is 
 flexible enough to allow for a third group -- years, to be included in the model. 
 The model below includes a third grouping level for years. 
-
+% TODO: Check this out
 \begin{align*} 
-\Pr_{CE_{ij}} &= \alpha_{i} + \beta X_{i} + \gamma_{j} + \lambda_{t} + \epsilon   \\ 
-\gamma_{j} &=  \alpha_{j} + \zeta Z_{j} \\
-\lambda_{t} &= \alpha_{t}
+\Pr_{CE_{ijt}} &= \alpha_{i} + \beta X_{ijt} + \gamma_{j} + \lambda_{t} + \epsilon_{ijt}   \\ 
+\gamma_{j} &= \alpha_{j} + \epsilon_{j}
+\lambda_{t} &= \alpha_{t} + \epsilon_{t}
 \end{align*}
 
 This approach allows year parameters to be estimated independently without assuming 
@@ -1197,12 +1189,12 @@ and time. This is beneficial as there does not appear to be a linear time trend
 in Figure \ref{fig:incdefeat} or Figure \ref{fig:candidatedescriptives4}. 
 It also results in estimates the $\beta$ coefficients that are conditional 
 on the group specific variances captured in the $\gamma$ and $\lambda$ vectors. 
-This allows us to take advantage of the repeated measure structure of the data and 
+This allows me to take advantage of the repeated measure structure of the data and 
 avoid overconfidence in estimates resulting from comparisons within and across groups. 
 The models are fit after grand-centering and rescaling all variables by their 
-standard deivations in order to avoid convergence issues following the guidance of \citet{gelhill}. 
-I modify the optimizer settings when necessary to ensure all models converge, estimating 
-the models using the \texttt{lme4} package in R \citep{lme4, cran}. For the mixed model 
+standard deivations in order to avoid convergence issues following the guidance of \citet{gelhill}.
+\footnote{I modify the optimizer settings when necessary to ensure all models converge, estimating 
+the models using the \texttt{lme4} package in R \citep{lme4, cran}.} For the mixed model 
 approach, I also fit the four models -- demographic, fiscal, political, and policy. 
 
 \subsection{Model Comparison}
@@ -1210,8 +1202,8 @@ approach, I also fit the four models -- demographic, fiscal, political, and poli
 Next, I need a way to compare the models to evaluate the variables that best explain 
 the emergence of candidates. Model comparison is difficult, especially in the case 
 of binomial regression where more traditional measures like $R^{2}$ are not available. 
-Furthermore, model-based measures like psuedo-$R^{2}$ are sample dependent and not 
-valid across varying dependent variables. Additionally, there is no intuitive way 
+Furthermore, model-based measures like psuedo-$R^{2}$, AIC, and BIC are sample dependent 
+and not valid across varying dependent variables. Additionally, there is no intuitive way 
 to empirically judge whether or not models are ``good enough'' in explaining the 
 dependent variable. To address this, I adopt predictive measures of accuracy -- 
 the ability of models to correctly predict observations as either a contested or 
@@ -1265,10 +1257,10 @@ for this data.
 
 \section{Results}
 
-I present results across three dependent variables for four models. I begin by 
+I present results across four dependent variables for each of the four models. I begin by 
 discussing the results for each dependent variable separately. In the text, I 
 report the results for of the mixed-effect models and I leave the results of the 
-pooled models for the appendix \ref{sec:appendix}. I prefer the mixed-effect 
+fixed effect models for the appendix \ref{sec:appendix}. I prefer the mixed-effect 
 models for reasons stated above, and because they represent a closer estimation 
 of the impact of the variables of interest by eliminating the variance attributable 
 to unobservable time-invariant characteristics of school districts. 
@@ -1378,8 +1370,8 @@ divided by 2 standard deviations"
 stars.note <- apsrtable:::stars.note
 coef.note <- "Year fixed effect coefficients excluded"
 
-coefnames1 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% OOH",  "Exurb", "Rural", "Contestation Lag", 
+coefnames1 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +", 
+               "\\% White", "\\% Owner Occupied",  "Exurb", "Rural", "Contestation Lag", 
                "Rev. Lim. Attpt.", "Rev. Lim. Pass", "Bond Attpt.", "Bond Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Rev. Prop. Tax", "Cost per Pupil", 
@@ -1397,7 +1389,8 @@ glmNItab <-apsrtable(demogsNI, politicNI, fiscalNI, policyNI, fullmodNI, se = "r
                         "Policy", "Full"), 
           caption = "Models of Incumbent Lockout in School Board Elections",
           notes = list(stars.note, rescalenote, coef.note),
-          Sweave=FALSE, digits = 3, coef.names = coefnames1, size="scriptsize")
+          Sweave=FALSE, digits = 3, coef.names = coefnames1, size="scriptsize", 
+          stars = "default")
 
 @
 
@@ -1443,21 +1436,22 @@ apsrtable(demogsMMni, politicMMni, fiscalMMni, policyMMni, fullmodMMni,
                         "Policy", "Full"), 
           caption = "Mixed Models of Incumbent Lockout in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames1, size="scriptsize")
+          Sweave=FALSE, digits = 3, coef.names = coefnames1, size="scriptsize", 
+          stars = "default")
 
 @
 
-
+%TODO: Explain why observations are dropped in tables above
 The models in Table \ref{tab:glmerModsNI} are disappointing overall. Not only are 
 most variables not statistically significant, many of them are not of the correct 
-sign. The demographic variables fair poorly, although they are generally in the 
-correct direction. The most consistent result is that the measure of the size 
+sign.\footnote{The demographic variables fair poorly, although they are generally in the 
+correct direction.} The most consistent result is that the measure of the size 
 of the community, voting age population, is positively related to a greater probability 
 of non-incumbents participating in a race. The other variables that seek to control 
 for the pool of candidates, however, are not statistically significant and some run 
 counter to evidence from surveys showing board members are more highly educated, 
 older, and less likely to be minorities. Thus, we would expect a greater share 
-of these demographics in the community to be positively related to more non-incumbents. 
+of these groups in the community to be positively related to more non-incumbents. 
 
 More disappointingly, the substantive variables provide relatively few detectable 
 effects. The only variables that are statistically significant are the presence 
@@ -1484,7 +1478,7 @@ for voters. These models are better supported by the variables I selected to
 test than the models predicting non-incumbents running - a positive sign. 
 \footnote{These models do not consider races where a candidate with few votes is 
 included in the ballot. However, the results here are robust to coding all districts 
-with even a nominal challenge as contestesd races.}
+with even a nominal challenge as contested races.}
 
 First, larger districts correctly are associated with more contestation, 
 confirming the predictions about the importance of size posited by \citet{oliver12}. 
@@ -1496,10 +1490,11 @@ that communities with greater levels of education in their population are less
 likely to experience school board choice. This is counter to our expectation but 
 may reflect that these communities have greater consensus about the value and nature 
 of locally provided education. 
-
+%TODO: Check this after models and seeds are fixed
 Unsurprisingly, the measure for the number of incumbents is strongly 
-negatively related to the the likelihood the race will be contested. 
-However, some policy decisions of school boards do 
+negatively related to the the likelihood the race will be contested, suggesting 
+that like incumbents in other elections, incumbents in school board races may 
+also deter challengers. However, some policy decisions of school boards do 
 appear to significantly affect the presence of new candidates for board - notably 
 the decision to offer and the passage of an override referendum, the millrate 
 for the district, and the community's history of recent bond referenda attempts. 
@@ -1510,9 +1505,8 @@ for school board members -- if they misjudge the community and the referendum fa
 they increase their chance for a contested election. 
 
 Even more support for fiscally minded voters emerges with a positive relationship 
-between districts with higher tax rates and more historical bond referenda offered 
-and likelihood of a challenge. School board races are more contentious when taxation 
-rates rise and also as districts have offered more bond referenda historically. 
+between districts with higher tax rates. Board races are more contentious when taxation 
+rates rise. 
 
 
 <<glmmodsContest, results='hide'>>=
@@ -1563,8 +1557,8 @@ rescalenote <- "All continuous variables rescaled to center 0
 stars.note <- apsrtable:::stars.note
 
 
-coefnames2 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% OOH", "Exurb", "Rural", "Lagged Contestation", 
+coefnames2 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +", 
+               "\\% White", "\\% Owner Occupied", "Exurb", "Rural", "Lagged Contestation", 
                "\\% Incumbents", 
                "Override Attpt.", "Override Pass", "Debt Ques.", "Debt Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
@@ -1583,7 +1577,8 @@ glmContab <- apsrtable(demogsCon, politicCon, fiscalCon, policyCon, fullmodCon, 
                         "Policy", "Full"), 
           caption = "Models of Contestation in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames2, size="scriptsize")
+          Sweave=FALSE, digits = 3, coef.names = coefnames2, 
+          size="scriptsize", stars = "default")
 
 @
 
@@ -1627,7 +1622,8 @@ apsrtable(demogsMMCon, politicMMCon, fiscalMMCon, policyMMCon, fullmodMMCon,
                         "Policy", "Full"), 
           caption = "Mixed Models of Contestation in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames2, size="scriptsize")
+          Sweave=FALSE, digits = 3, coef.names = coefnames2, 
+          size="scriptsize", stars = "default")
 @
 
 \subsection{Competitiveness}
@@ -1645,9 +1641,10 @@ elections. Within districts this suggests that as the millrate increases, the
 competitiveness increases -- though the change in millrate variable itself is not 
 statistically significant.
 
-
 The more often the district has attempted to override revenue limits is, 
-counterintuitively, less associated with competitve elections. Districts with 
+counterintuitively, less associated with competitve elections. This perhaps 
+represents a community that has reached consensus about supporting public schools 
+and as such, has less electoral competition. Districts with 
 higher per pupil expenditures are also marked by less competitive elections. Without 
 measures of board member preferences there are at least two equally plausible 
 explanations for this result. First, these communities may have higher costs because 
@@ -1655,10 +1652,8 @@ of a policy consensus around more public support for education and thus higher
 per pupil expenditures. That is, elections are not competitive because there is 
 already a community consensus that is reflected in current board policy. Thus, 
 candidates do not run or challenges are not spirited because all candidates 
-broadly support the same policy.
-
-Alternatively, it may be that these communities are less competitive because no 
-challengers ever emerge in the first place. 
+broadly support the same policy. Alternatively, it may be that these communities 
+are less competitive because no challengers ever emerge in the first place. 
 
 
 <<blqGLMs, eval=TRUE, results='hide'>>=
@@ -1704,8 +1699,8 @@ rescalenote <- "All continuous variables rescaled to center 0
 stars.note <- apsrtable:::stars.note
 
 
-coefnames4 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% OOH", "Exurb", "Rural",
+coefnames4 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +", 
+               "\\% White", "\\% Owner Occupied", "Exurb", "Rural",
                "Major Contestation Lag", "\\% Incumbents", "\\% Yes Rev. Limit", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
@@ -1723,7 +1718,8 @@ glmBLQtab <- apsrtable(demogsBLQ, politicBLQ, fiscalBLQ, policyBLQ, fullmodBLQ, 
                         "Policy", "Full"), 
           caption = "Linear Models of Blais-Lago Quotient of Competitiveness in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames4, size="scriptsize")
+          Sweave=FALSE, digits = 3, coef.names = coefnames4, 
+          size="scriptsize", stars = "default")
 
 @
 
@@ -1758,10 +1754,11 @@ apsrtable(demogsMMblq, politicMMblq, fiscalMMblq, policyMMblq, fullmodMMblq,
                         "Policy", "Full"), 
           caption = "Linear Mixed Models of Blais-Lago Quotient of Competitiveness in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames4, size="scriptsize")
+          Sweave=FALSE, digits = 3, coef.names = coefnames4, 
+          size="scriptsize", stars = "default")
 
 @
-
+% TODO: Robustness of above models with a reduced sample
 
 \subsection{Incumbent Defeat}
 
@@ -1769,14 +1766,9 @@ Table \ref{tab:glmerModsID} shows the results for incumbent defeat. These result
 are less promising than those in Table \ref{tab:glmerModsCon} for candidates emerging. 
 Again, population size is strongly positively related with more incumbent defeats. 
 However, other demographic variables do not seem to be predictive of incumbents 
-being defeated. 
-
-In fact, incumbent defeat proves very difficult to predict. Outside of the 
+being defeated. In fact, incumbent defeat proves very difficult to predict. Outside of the 
 percentage of incumbents on the ballot -- a control to account for the varying 
-opportunity for incumbent defeat election to election -- only the passage of a 
-revenue limit maintains its predictive power in the full model. 
-
-
+opportunity for incumbent defeat election to election. 
 
 % VAP = correct, larger = more defeats, but peters out in fuller models
 % No other demographics matter
@@ -1835,8 +1827,8 @@ rescalenote <- "All continuous variables rescaled to center 0
 stars.note <- apsrtable:::stars.note
 
 
-coefnames3 <- c("Intercept", "VAP", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% OOH", "Exurb", "Rural", "Lagged Contestation", 
+coefnames3 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +", 
+               "\\% White", "\\% Owner Occupied", "Exurb", "Rural", "Contestation Lag", 
                "\\% Incumbents", "\\% Yes Rev. Limit", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
                "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
@@ -1854,7 +1846,8 @@ glmDtab <- apsrtable(demogsD, politicD, fiscalD, policyD, fullmodD, se = "robust
                         "Policy", "Full"), 
           caption = "Logit Models of Incumbent Defeat in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames3, size="scriptsize")
+          Sweave=FALSE, digits = 3, coef.names = coefnames3, 
+          size="scriptsize", stars = "default")
 
 @
 
@@ -1894,10 +1887,10 @@ apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
                         "Policy", "Full"), 
           caption = "Mixed Models of Incumbent Defeat in School Board Elections",
           notes = list(stars.note, rescalenote),
-          Sweave=FALSE, digits = 3, coef.names = coefnames3, size="scriptsize")
+          Sweave=FALSE, digits = 3, coef.names = coefnames3, 
+          size="scriptsize", stars="default")
 
 @
-
 
 \clearpage
 
@@ -1912,7 +1905,7 @@ these effects all appear quite small.\footnote{The confidence intervals are not
 those reported by the estimate, but are constructed from simulations of the posterior 
 for the mixed level models and represents the median estimate plus or minus 
 two standard deviations of the simulated values of the parameter across 1,000 
-simulations.}
+simulations. These are standardized coefficients.}
 
 This section seeks to explore the effects that do matter from Figure 
 \ref{fig:fixefplot1} to 
@@ -1962,11 +1955,14 @@ ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr,
 # confint(fullmodMMni, method = "Wald", level = 0.9)
 @
 
+%TODO: Fix fixefSub1
+
 In Figure \ref{fig:fixefSub1} I provide a series of simulation results for three 
 variables. Each numbered panel represents a simulated case. Each column of panels 
-represents a dependent variable, in this case from left to right, the probability 
-of a contested seat, the probability of a contested seat, and the Blais-Lago 
-quotient. Each plot contains two dotted lines which represent the $25^{th}$ 
+represents a combination of a predictor and a dependent variable, in this case from left 
+to right, the probability of a contested seat by millrate share, the probability of a 
+contested seat by electorate size, and the Blais-Lago quotient by cost. Each plot 
+contains two dotted lines which represent the $25^{th}$ 
 and $75^{th}$ percentiles of the value of the dependent variable as fit by the 
 model. These lines are reference frames for examining the third solid line which 
 represents the simulated value of the dependent variable for each observation as the 
@@ -2056,7 +2052,7 @@ over time. In this section, I employ a similar graphical technique as in the
 previous section to depict the magnitude of the impact that year and district 
 effects have in the models for the outcome variables.
 
-Figure \ref{fig:randomEffectplot1} simulates the variance in the predicted 
+Figure \ref{fig:randomEffectplot31} simulates the variance in the predicted 
 probabilities of each outcome across school districts. As in Figure 
 \ref{fig:fixefSub1}, each panel represents a single case. Within that panel, the 
 predicted probability for that case is estimated if that case had been observed 
@@ -2087,9 +2083,10 @@ range of the predicted probabilities.
 In general, it seems that between-district variation is much larger than the 
 substantive impact of independent variables. While some of the variables in 
 Figure \ref{fig:fixefSub1} had substantial variation, the estimates were noisier 
-in these cases.  
+in these cases.  A similar graphic is included in the Appendix depicting the 
+estimates of the year effects. 
 
-<<randomEffectplot1, eval=TRUE, fig.cap="Substantive Impact of District Intercepts">>=
+<<randomEffectplot31, eval=TRUE, fig.cap="Substantive Impact of District Intercepts">>=
 replotdf <- substEffSimRE(fullmodMMni, "distid", ncases=6, alpha = 0.1)
 replotdf$distid <- as.character(replotdf$distid)
 NIre <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
@@ -2194,43 +2191,44 @@ model fit metrics now.
 
 
 <<generateROC, eval=TRUE>>=
+set.seed(51315)
 library(ROCR)
 
 rocNInull <- makeROCdf(update(demogsMMni, . ~ + 1 + (1|distid) + year), "null")
-rocNI1 <- makeROCdf(demogsMMni, "demog")
-rocNI2 <- makeROCdf(fiscalMMni, "fiscal")
-rocNI3 <- makeROCdf(policyMMni, "policy")
-rocNI4 <- makeROCdf(politicMMni, "politic")
-rocNI5 <- makeROCdf(fullmodMMni, "full")
+rocNI1 <- makeROCdf(demogsMMni, "Demog.")
+rocNI2 <- makeROCdf(fiscalMMni, "Fiscal")
+rocNI3 <- makeROCdf(policyMMni, "Policy")
+rocNI4 <- makeROCdf(politicMMni, "Political")
+rocNI5 <- makeROCdf(fullmodMMni, "Full")
 
 rocNI <- do.call(rbind, list(rocNInull, rocNI1, rocNI2, rocNI3, rocNI4, rocNI5))
 rm(rocNInull, rocNI1, rocNI2, rocNI3, rocNI4, rocNI5)
 rocNI$dv <- "No Incumbents"
 
 rocConnull <- makeROCdf(update(demogsMMCon, . ~ + 1 + (1|distid) + year), "null")
-rocCon1 <- makeROCdf(demogsMMCon, "demog")
-rocCon2 <- makeROCdf(fiscalMMCon, "fiscal")
-rocCon3 <- makeROCdf(policyMMCon, "policy")
-rocCon4 <- makeROCdf(politicMMCon, "politic")
-rocCon5 <- makeROCdf(fullmodMMCon, "full")
+rocCon1 <- makeROCdf(demogsMMCon, "Demog.")
+rocCon2 <- makeROCdf(fiscalMMCon, "Fiscal")
+rocCon3 <- makeROCdf(policyMMCon, "Policy")
+rocCon4 <- makeROCdf(politicMMCon, "Political")
+rocCon5 <- makeROCdf(fullmodMMCon, "Full")
 
 rocCon <- do.call(rbind, list(rocConnull, rocCon1, rocCon2, rocCon3, rocCon4, rocCon5))
 rm(rocConnull, rocCon1, rocCon2, rocCon3, rocCon4, rocCon5)
 rocCon$dv <- "Contested Race"
 
 rocDnull <- makeROCdf(update(demogsMMd, . ~ + 1 + (1|distid) + year), "null")
-rocD1 <- makeROCdf(demogsMMd, "demog")
-rocD2 <- makeROCdf(fiscalMMd, "fiscal")
-rocD3 <- makeROCdf(policyMMd, "policy")
-rocD4 <- makeROCdf(politicMMd, "politic")
-rocD5 <- makeROCdf(fullmodMMd, "full")
+rocD1 <- makeROCdf(demogsMMd, "Demog.")
+rocD2 <- makeROCdf(fiscalMMd, "Fiscal")
+rocD3 <- makeROCdf(policyMMd, "Policy")
+rocD4 <- makeROCdf(politicMMd, "Political")
+rocD5 <- makeROCdf(fullmodMMd, "Full")
 
 rocD <- do.call(rbind, list(rocDnull, rocD1, rocD2, rocD3, rocD4, rocD5))
 rm(rocDnull, rocD1, rocD2, rocD3, rocD4, rocD5)
 rocD$dv <- "Incumbent Defeat"
 @
 
-<<rocplot1, echo=FALSE, fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type", fig.keep='last', fig.width=6.75, fig.height=5>>=
+<<rocplot1, echo=FALSE, fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type. The diagonal line represents a model equal to random chance, the top left corner represents the best prediction performance.", fig.keep='last', fig.width=6.75, fig.height=5, fig.scap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type.">>=
 
 roc <- do.call(rbind, list(rocNI, rocCon, rocD))
 rm(rocNI, rocCon, rocD)
@@ -2266,7 +2264,7 @@ ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = d
 
 @
 
-<<rocplot2, echo=FALSE, fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV", fig.keep='last', fig.width=6.75, fig.height=5>>=
+<<rocplot2, echo=FALSE, fig.scap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV", fig.keep='last', fig.width=6.75, fig.height=5,fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV. The diagonal line represents a model equal to random chance, the top left corner represents the best prediction performance.">>=
 
 ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = mod)) + 
   geom_line(size= I(1.1), se = FALSE, stat = "smooth") +
@@ -2289,11 +2287,13 @@ ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = m
 In Figure \ref{fig:rocplot1} each model is represented in an individual panel. 
 The x-axis represents the false-alarm rate, or uncontested elections that would be 
 classified as contested elections. The y-axis represents the true contested elections
-that would be correctly classified.The ROC curves along these dimensions for the 
+that would be correctly classified. The closer the line is to the top left, the closer 
+the model is to achieving perfect prediction. The dashed diagonal line represents random 
+chance and is included for reference in each panel. The ROC curves along these dimensions for the 
 predictions produced by each model are represented by individual 
 curves for each dependent variable. A null model consisting of year fixed 
 effects and random intercepts for each school district is represented in each panel 
-by the dashed gray curves. From Figure \ref{fig:rocplot1} a clear pattern emerges. 
+by the dashed gray curves. A clear pattern emerges. 
 First, incumbent defeat is much more difficult to predict than either the presence 
 of all incumbents, or a serious challenger -- these two curves are substantially 
 higher than the green curve representing incumbent defeat in all panels. Second, 
@@ -2306,25 +2306,26 @@ This is further explored in Figure \ref{fig:rocplot2} where the same ROC curves
 are reorganized into each of the three dependent variables, with each model being 
 represented by a colored line and the null model again in gray. This makes it 
 clear that a simple random intercept model with fixed year effects has the same 
-explanatory power as the other models that include district level explanatory 
-values. This suggests that the bulk of the variation in school board contestation 
+explanatory power as the other models that include election level predictors. This 
+suggests that the bulk of the variation in school board contestation 
 is the result of individual district patterns and year to year fluctuations in 
-political participation. 
-
+political participation. These results also serve as a caution about overinterpreting the 
+coefficients above -- while some of them may be statistically significant, they 
+provide very little additional predictive power beyond the unobservable district 
+and year effects modeled by the hierarchical parameters in the model. 
 
 \clearpage
-
 \section{Discussion}
 
-The results above have demonstrated that the decision to contest school board 
+The study shows that the decision to contest school board 
 elections, and thus for new candidates to emerge, is not well explained by 
-attributes of the school districts themselves. Across an array of attributes 
+observable attributes of the school districts themselves. Across an array of attributes 
 such as the demographic makeup of the district, the fiscal health of the district, 
 the local politics of school district finances, and the policy decisions of the 
 school boards themselves -- very little of the variation in school board 
 contestation was explained. The biggest factor in school board election contestation 
 from the data in Wisconsin was the unobserved variance between districts themselves 
-as demonstrated by the simulations plotted in Figure \ref{fig:randomEffectplot1}. 
+as demonstrated by the simulations plotted in Figure \ref{fig:randomEffectplot31}. 
 
 This finding is important for three reasons. First, by eliminating a number of 
 possible between-district explanations, these findings provide evidence that the 
@@ -2396,31 +2397,39 @@ explain this competition led to few observable results, which suggests further s
 is needed to understand what issues or policy concerns lead to competitive elections. 
 Without a deeper understanding than can be given by the statewide measures used 
 in this study, it is clear that any community divisions that may drive board competition 
-will continue to go undetected. For adherents of dissatisfaction theory, this study 
+will continue to go undetected. 
+
+For adherents of dissatisfaction theory, this study 
 has eliminated some easily observable antecedents of voter dissatisfaction, but has 
 certainly not eliminated the likely possibility that voter dissatisfaction with 
 boards is more closely related to specific policy decisions. In fact, consistent 
-evidence was found that the highest of high profile board decisions, offering a 
+evidence was found that the highest profile board decisions, offering a 
 referenda for school funding, was related to competition for board seats. This 
 suggests that other high profile decisions not captured here, such as a change in the 
 curriculum or the modification of graduation requirements, may also be more than 
 sufficient to activate voters and be part of the large variation between districts 
-observed in the models above. 
+observed in the models above. Without political party gatekeepers or consistently 
+polarized issues, a potential candidate may find the barriers to seeking office 
+remarkably low in Wisconsin -- representing great democratic potential. From the 
+community side though, it is clear that the smaller size of school board electorates 
+greatly reduces the pool of likely candidates with time, resources, and interests. 
+This suggests a need to consider how to expand the demographic pools from which 
+school board members are drawn to convert democratic potential into actualized 
+democracy. 
 
 The next chapters will explore the motivations of voters to help further understand 
 this puzzle. Then I will turn my attention to using exogenous variation to test 
-the causal impact of changes to compensation plans on voter and candidate activity 
+the causal impact of changes to the balance of power between school boards and 
+employees in collective bargaining on voter and candidate activity 
 in board elections. Finally, I will turn my attention toward investigating if 
 board turnover leads to any detectable changes in school district policies in an 
 effort to answer the question -- if an incumbent loses in a school board election 
 that is marked by low turnout, does anything happen?
 
-%TODO: Group center achievement
-%TODO: Group center finances like costs
-
-
 \section{Technical Appendix}
 \label{sec:appendix}
+%TODO: Group center achievement
+%TODO: Group center finances like costs
 
 All analyses were done using R \citep{cran}. Source code and data available online. 
 
