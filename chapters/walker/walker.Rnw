@@ -1783,9 +1783,9 @@ increase in the probability of a race being contested in the post Act 10 period
 across any of the models in Table \ref{tab:causSerCon}. The sign of the 
 treatment in both years one and two is negative across the models, and the 
 interaction effect with the lagged variable, the estimate of the regime change 
-in the post Act 10 period, is close to zero and non-significant. Given what 
-was demonstrated in Chapter \ref{chap:candidacy} about the difficulty in 
-predicting contestation, this is not surprising. 
+in the post Act 10 period, is close to zero and non-significant. Given the 
+descriptive data on contestation in Chapter \ref{chap:aboutwisco}, this 
+is not surprising. 
 
 Competitiveness, measured by the Blais-Lago quotient, is only slightly more 
 promising. The results in Table \ref{tab:causBL} show a consistent decrease in 
@@ -1795,7 +1795,7 @@ where theory suggested that competitiveness should increase as the voting pool
 expanded and the dividing lines between candidates was sharpened. This will be 
 explored further in seeking out mediating factors that might explain this result. 
 
-Incumbent defeat is next. Table \ref{tab:causID} provides no evidence 
+Incumbent defeat presented in Table \ref{tab:causID}. There is no evidence 
 that incumbents were defeated at a higer rate in the Act 10 period than before. 
 Turnout and rolloff provide the most exciting results. Table \ref{tab:causTurn} 
 shows broad agreement that the level of turnout was increased in 2011 and to a 
@@ -1828,7 +1828,11 @@ result in an adjustment through more incumbent defeat and more contested seats.
 Without exploring mediating factors it is difficult to conclude whether this means 
 incumbent school board members were satisfactorily aligned with the preferences 
 of their communities, or that voters failed to receive enough additional information 
-from the Act 10 shock to lead to turnover and change in school boards. Now, I 
+from the Act 10 shock to lead to turnover and change in school boards. It should 
+be noted that the lack of findings is not from a lack of data -- there are 
+results on over 300 districts across at least 5 elections -- providing this study 
+with plenty of power. Instead, the impact, if any, of the Act 10 period must have 
+been small. Now, I 
 turn my attention to the mediation analysis to attempt to unpack these questions. 
 
 
@@ -1846,17 +1850,19 @@ qplot(factor(year), exp(plotPred), data = plotdf2, geom = 'boxplot') +
 \subsection{Mediation Analysis}
 
 While the results above can be interpreted as the causal estimate of the political 
-upheaval surrounding Act 10 on democratic activity in school boards, questions 
-remain. Most importantly, it is important to explore the potential for mediating 
+upheaval surrounding Act 10 on democratic activity in school boards, it is important 
+to explore the potential for mediating 
 factors on the causal estimate. To do this, I fit longitudinal models as above, 
 but I include mediating factors as interactions with the treatment indicator. 
 
 These mediating measures were observed post-treatment, but I argue that they 
 can be interpreted as a consistent measure of school district attributes that 
 existed pre-treatment. There is no empirical way to validate this assumption, but 
-using this assumption allows me to explore a rich set of potential mediating 
+using this assumption, however, making it allows me to explore a rich set of potential mediating 
 factors to understand what conditions exacerbated or attenuated the actualization 
-of political activity in school boards. 
+of political activity in school boards. Thus, in lieu of school district level 
+opinion polling statewide, I opt to use these indicators of measures of community 
+preferences. 
 
 I now analyze the impact of each mediating factor. 
 
@@ -1879,11 +1885,9 @@ little evidence of any mediating effect of recall polarization for any democrati
 activity except for voter turnout. In this case, voter turnout in both 2011 and 
 2012 was \emph{negatively} impacted by recall polarization. In other words, 
 voters were less likely to participate in spring elections in polarized communities 
-than they were in less polarized communities in both 2011 and 2012. This could 
-be due to voter fatigue, or voter disengagement due to negative campaigning, 
-both of which were prevalent in this period \citep{NegativeCamp1999}.\footnote{The 
+than they were in less polarized communities in both 2011 and 2012.\footnote{The 
 main effect of recall polarization being virtually 0 across all models also suggests 
-that this measure is capturing a distinct post-treatment effect.}
+that this measure is capturing a distinct post-treatment effect.} 
 
 %tab:polarMed
 <<polarizationMediation, results = 'asis'>>=
@@ -2069,7 +2073,9 @@ Alternatively, voters in communities with historically strong unions may have
 been motivated to go to the polls to defeat union backed candidates. 
 There is weak evidence of this second interpretation by the fact that stronger 
 unions are associated with higher rates of incumbent defeat post Act 10 relative 
-to pre Act 10 with a statistically significant effect in 2012. 
+to pre Act 10 with a statistically significant effect in 2012. Either way, 
+there is evidence that unions are an important factor in mediating or 
+magnifying democratic expression in school board elections. 
 
 %tab:unionMed
 <<unionStrength, results="asis">>=
@@ -2644,7 +2650,8 @@ debate about the rights of public employees, the role of the state government
 in public schools, and the value of supporting public schools. Additionally, 
 partisan cues were introduced that provided, or perhaps forced, voters and 
 candidates to organize school boards into Republican and Democrat with respect 
-to their support or opposition to Governor Scott Walker. 
+to their support or opposition to Governor Scott Walker. And, for all this the 
+resulting impact on actualized democratic behavior was minimal.
 
 School board scholars have focused on the relative inactivity in school board 
 elections as either symptomatic of regulatory capture of these governments by 
@@ -2657,15 +2664,9 @@ In Wisconsin's spring 2011 and 2012 elections these barriers were dramatically
 reduced. Theory suggests that as a result of this voter participation should 
 have increased, races should have become more competitive, and incumbents 
 should have been defeated more often. This did not happen. Instead, races 
-were less competitive, incumbents were slightly safer, while turnout increased 
-but so did the number of voters who rolled off the school board. This could have 
-occurred for a number of reasons. For example, voters may have doubled down on 
-their school boards because they felt well represented by the candidates elected 
-in the pre Act 10 period. Thus, while overall these results were unexpected, 
-there is a need for further theory to unpack what might lead to this. 
-
-To approach this problem, I looked for evidence of interest groups causing 
-differential effects of the Act 10 period. Specifically, I looked at two measures 
+were less competitive, and while turnout increased so did the number of voters 
+who rolled off. To try to explain this, I next looked for evidence of interest 
+groups causing differential effects of the Act 10 period. Specifically, I looked at two measures 
 of interest group strength -- teacher union certification election results and 
 community polarization measured by the Gubernatorial recall election. There was 
 little mediating effect of polarization except on turnout, where curiously, more 
@@ -2674,7 +2675,10 @@ polarized communities had decreased school board election turnout in both the
 races particularly in these communities that is difficult to square with either 
 the dissatisfaction or continuous participation theories -- both theories would 
 suggest that these communities should exhibit greater participation because of 
-greater disagreement about the role of public schools. 
+greater disagreement about the role of public schools. One possible explanation 
+here is that local education issues, no matter the broader politics, remain 
+non-partisan and resistant to ideology. There is also the fact that citizens 
+regularly rate public schools as bad, but their own public school as good. 
 
 Strong unions were associated with greater turnout as well in the Act 10 period. 
 Though organized interest groups are usually associated with preferring lower 
@@ -2692,8 +2696,12 @@ statewide sample with hundreds of within year observations, and one to two
 thousand overall, only finds weak and sporadic effects of a historic education 
 politics shakeup on school board elections, it is hard to conclude that school 
 boards are faithfully reflecting the preferences of the communities they serve 
-if their representation does not change in response to such events. 
-
+if their representation does not change in response to such events. This result 
+suggests that statewide forces are unlikely to convert democratic potential into 
+actualized democratic behavior. Even with an unprecedented increase in stakes and 
+information available, board elections remained stubbornly quiet affairs by these 
+measures. This suggests that large policy change is needed to increase participation 
+in elections. 
 
 \clearpage
 
