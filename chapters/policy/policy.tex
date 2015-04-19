@@ -325,6 +325,47 @@ this sample is only for school districts with a high school.}
 
 \end{knitrout}
 
+The final set of outcomes are fiscal outcomes. One of the few factors related 
+to the emergence of contested elections from Chapter \ref{chap:candidacy} was 
+fiscal performance. For this chapter, I focus on two salient factors in the 
+community, the change in the millrate on property taxes and the median teacher 
+salary. 
+
+In Wisconsin the school funding formula puts restrictions on school millrates with 
+overall revenue limits. Additionally, the amount of state funding school districts 
+receive is highly variable with a few districts receiving only a nominal amount 
+of money from the state -- and thus deriving almost all school funding from 
+local property taxes. So, while a change in a millrate does not represent a change 
+in a school district's fiscal fortunes on its own, it does represent a highly 
+salient impact of the school district on residents of the district through a 
+higher property tax bill. Figure \ref{fig:millratePlot} shows the general trend 
+of increasing and then receding school district millrates across the study period. 
+But, substantial variation between districts exists. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-millratePlot-1} \caption[Annual Change in District Millrate]{Smoothed lines for annual change in the millrate for each district in the sample, measured in mills.}\label{fig:millratePlot}
+\end{figure}
+
+
+\end{knitrout}
+
+Figure \ref{fig:teachSalPlot} shows the trajectory of the median teacher salary 
+for the school districts in the sample. In general, during this period all teacher 
+salaries followed the same trajectory, but the variation between districts in 
+median salary is quite large -- nearly \$8,000 between the first and third 
+quartiles. This figure is important because this accounts for the majority of 
+district expenses. 
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap6-teachSalPlot-1} \caption[Annual Change in Median Teacher Salary]{Smoothed lines for annual change in the median teacher salary for each district in the sample.}\label{fig:teachSalPlot}
+\end{figure}
+
+
+\end{knitrout}
+
+
 \clearpage
 
 \section{Methods}
@@ -701,6 +742,13 @@ turnover.
 
 \subsection{Fiscal Outcomes}
 
+Table \ref{tab:millrateDelta} shows the results for the dissatisfaction factor 
+on the millrate change in school districts two years later. Across specifications 
+there is a consistent negative coefficient suggesting that stronger dissatisfaction 
+leads to a millrate decrease in the future. However, this coefficient is only 
+statistically significant in the lagged specification, and none of the models 
+have a respectable $R^{2}$. 
+
 \begin{table}[!ht]
 \caption{Dissatisfaction and Millrate Changes}
 \label{tab:millrateDelta} 
@@ -741,6 +789,13 @@ Resid. sd          & 0.778             & 0.776             & 0.763             \
  \end{table}
 
 
+Table \ref{tab:salaryLag} shows the results for the teacher median salary. In 
+all the specifications dissatisfaction is associated with a decrease in teacher 
+salary (dependent variable is on the log-scale here), but only in the simple 
+specification is this effect statistically significant. It's easy to see why, 
+while the simple model explains a healthy amount of the variance in teacher 
+salary, including the fixed effects or the lags reduces the variance too greatly 
+for the dissatisfaction factor to retain its predictive power. 
 
 \begin{table}[!ht]
 \caption{Dissatisfaction and Teacher Salary Changes}
@@ -806,14 +861,38 @@ across increasingly restrictive model specifications provides strong evidence
 that an increase in candidates, challengers and defeats for school board in a 
 school district increases the likelihood the superintendent will turnover. 
 
+Finally, on the fiscal measures there was some evidence that dissatisfaction is 
+associated with a decrease in property taxes -- but the effect was weak. It 
+appears more likely that school board challenges are unable to affect either 
+salary schedules or tax rates. Of the findings in this chapter, these are 
+likely the least generalizable to other states given the peculiarities of 
+Wisconsin's revenue limit and equalization aid funding system -- which shapes 
+both which districts have millrate flexibility and limits funds available for 
+salary expenditures. 
+
 Future work is needed to explore the mechanisms here. First, a limitation of 
 this study is the inability to distinguish between types of superintendent 
 turnover including retirement, buyout, and firing. Another limitation is the 
 limited window -- using a twice lagged model is preferable, but both board 
 and superintendent turnover may need to be analyzed from a three year rolling 
-average basis to best measure this. 
+average basis to best measure this. For the fiscal measures, it remains to be 
+seen if the new powers granted to school boards by Act 10 result in a change 
+in this relationship and an increased responsiveness of school boards to 
+community dissatisfaction using new fiscal flexibility. 
 
-
+These results provide a first step, perhaps, toward answering the puzzle posed 
+in the previous chapters. If democratic potential is so high in school board 
+elections, why is actualized democracy so weak? One answer might be the dismal 
+prospects for school boards to meaningfully change salient high-profile indicators 
+of school district functioning -- student performance, leadership, and salaries 
+and tax rates. The average citizen would be forgiven from opting out of learning 
+about, or worse sitting on, an elected body which is unable to make measureable 
+changes in schools. While the evidence presented in this chapter is just one 
+set of measures of one slice of school district functioning, it's longitudinal 
+nature allows a window into the true impact of school boards that previous 
+cross-sectional studies could not provide. The democratic promise appears, from 
+this view, to go unfulfilled in response to the weak track record of school board 
+election activity resulting in meaningful change. 
 
 
 \section{Appendix}
