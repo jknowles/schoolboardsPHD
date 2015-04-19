@@ -308,7 +308,7 @@ tablestruc <- ddply(races, .(year), summarize,
 names(tablestruc) <- c("Year", "Districts", "Races")
 tmp.cap   <- "Frequency of multiple races within a district by year."
 tmp.label <- "tab:mrfreq"
-print(xtable(t(tablestruc[tablestruc$year > 2001 & tablestruc$year < 2013, ]), 
+print(xtable(t(tablestruc[tablestruc$Year > 2001 & tablestruc$Year < 2013, ]), 
              caption = tmp.cap, 
              label = tmp.label), include.colnames = FALSE, 
       include.rownames=TRUE)
@@ -450,13 +450,19 @@ print(xtable(tablestruc,
              caption = tmp.cap, 
              label = tmp.label, digits = 0), include.colnames = TRUE, 
       include.rownames=FALSE)
+
+tablestruc <- ddply(races[races$nwins > 0,], .(year), summarize, 
+                    districts = length(unique(distid)), 
+                    races = length(raceid2), 
+                    nonIncumbents = sum(ifelse(nrealcand > ninc, 1, 0)), 
+                    incumbOnly = sum(ifelse(nrealcand == ninc, 1, 0)))
 @
 
 A first condition of contestation is that someone other than incumbents run for 
 office. The least competitive of all elections is that in which voters not only 
 have no choice, but they have no choice and all candidates are incumbents -- the 
 status quo is maintained by default. Nearly 
-\Sexpr{iPer(sum(tablestruc$"Incumb. Only")/sum(tablestruc$"SB Races")*100)}, or between 
+\Sexpr{iPer(sum(tablestruc[,"incumbOnly"])/sum(tablestruc[,"races"])*100)}, or between 
 100 and 150 races, of races each year feature all incumbents. 
 
 \subsubsection{Who Counts as a Candidate?}
