@@ -45,7 +45,7 @@ government.
 Another advantage of selecting Wisconsin is the comparative advantage
 I have had in gathering the necessary data to study a substantial proportion of the 
 school board races within the state.\footnote{For details on this, see the 
-Appendix \ref{app:data}.} WIth close relationships to policymakers in my role 
+Appendix \ref{app:data}.} With close relationships to policymakers in my role 
 as a research analyst at the SEA I have been able to collect a diverse set of 
 data on Wisconsin school districts. A final advantage is the ability 
 to test theories of the linkage between school board and state level politics thanks 
@@ -66,7 +66,7 @@ I have collected on school board election results in detail and provide descript
 statistics of the frequency of incumbency challenges and open races, voter turnout, 
 and the socio-demographic diversity of the constituencies served by Wisconsin school 
 boards. This overview serves as the groundwork for the three subsequent chapters 
-which examine how well theories of political engagement explain candidate emergenceand voter 
+which examine how well theories of political engagement explain candidate emergence and voter 
 turnout in school board elections, as well as any subsequent policy shifts. 
 
 \section{Background and Legal Basis of Wisconsin School District Elections}
@@ -116,7 +116,7 @@ of 3-11 members each representing either a specific region of the school distric
 the entire district. Figure \ref{fig:boardsize} shows the sizes of school boards 
 in Wisconsin over the time period being studied. This is calculated using a database 
 of school board members provided by the Wisconsin Association of School Boards (WASB).
-\footnote{There was one anomaly with this data where school board seats were underreported 
+\footnote{There was one anomaly with this data where school board seats were under reported 
 in the 2007 data due to a reporting error. As a result, I have added one to number of 
 seats for all school districts in the 2007 data.} The only restriction on the way 
 seats are allocated is that the plan is proposed with a petition by a threshold 
@@ -598,7 +598,7 @@ contestedSer <- nrow(races[(races$nrealcand - races$nminor) > races$nwins &
 base <- nrow(races[races$electiontype == 1,])
 @
 
-Actualized democracy requires voters to have candidates to choose amongst. 
+Actualized democracy requires voters to have candidates to choose among. 
 In order to assess this I first identify the number of races where 
 there are more candidates on the ballot than winners. This is a nominal measure 
 of the level of choice that voters are presented with. \Sexpr{iPer(contested/base*100)} 
@@ -771,6 +771,7 @@ calculating the margin of victory in school board races.
 \begin{footnotesize}
 \caption{Methods of Calculating Vote Margin}
 \label{tab:votemargincalc}
+{\renewcommand{\arraystretch}{2}%
 \begin{tabular}{| p{.15\textwidth} | p{.3\textwidth} | >{\centering}p{.275\textwidth}| p{.175\textwidth}|}
 \hline
 \textbf{Name}  & \textbf{Description} & \textbf{Formula} & \textbf{Citation} \\ \hline
@@ -778,7 +779,7 @@ Vote Margin  & Minimum votes needed for a losing candidate to win & $min(votes_{
 Hare Quota Difference & Average distance of winners from minimum winning vote count & $\sum \frac{votes_{iw}}{votes_{total}} - \frac{1}{n_{candidates}}n_{winners}$  & \citet{Jesse1999323}   \\ \hline
 Psuedo Two Candidate Races & Combine candidates and challengers into plurality races & No formula & \citet{jackmanwinsky} \\ \hline
 Blais-Lago Quotient & Adjustment of vote margin to normalize across district types & $100 \times \frac{\frac{VoteMargin}{TotalVotes}}{Seats}$ & \citet{blaislago} \\ \hline
-\end{tabular}
+\end{tabular}}
 \end{footnotesize}
 \end{center}
 \end{table}
@@ -793,7 +794,8 @@ choice perspective that voters evaluate electoral closeness by the pure number
 of votes separating candidates -- the probability of their vote changing the outcome 
 \citep{VoteCalculus68,RefWorks:351}. 
 
-The vote margin metric has two disadvantages. First, it only measures the competitiveness 
+The vote margin metric has two disadvantages. First, it only measures the 
+competitiveness 
 of the most competitive part of a multimember district. The rest of the seats in 
 such a district may be very lopsided. In cases where party membership of the 
 candidates is known this can still be meaningful since if the competitive division 
@@ -816,7 +818,7 @@ voters may vote once for each seat, it properly represents the plurality necessa
 win a seat on boards across the state.} This measure better captures the competitiveness 
 of the entire race because multiple candidate races where some of the victors win 
 in blowouts will be less competitive than if they were measured solely on the 
-closest single matchup within their district. This method also has the benefit 
+closest single match up within their district. This method also has the benefit 
 of being more normalized across disparate electorate sizes by differencing out the 
 required plurality from the measure, thereby adjusting for differential electorate 
 size. 
@@ -824,7 +826,7 @@ size.
 The second option is to construct psuedo races of two candidates each from within 
 the multi-member districts. This is the approach taken by \citet{jackmanwinsky} to 
 evaluate the competitiveness of multimember districts in US state legislative elections. 
-This is an elegant approach becasue it appears to best reflect 
+This is an elegant approach because it appears to best reflect 
 the decision process of individual voters -- voters who split their ticket between 
 parties are likely doing so based on their evaluation of an individual candidate.
 This approach was possible because of the partisan nature of these seats, allowing 
@@ -898,10 +900,12 @@ Figures \ref{fig:winmarginplots} and \ref{fig:winmarginplots2} show the distribu
 of the Blais-Lago Quotient and the Hare Quota distance for contested school board 
 races respectively. They show that school board races, when they are contested, 
 tend to be fairly competitive. \citet{blaislago} find that national legislative 
-districts in four countries had average quotients ranging from 16.77 in Portugal to 26.88 
-in Spain. All Wisconsin school board elections in the study have a quotient of 
-\Sexpr{round(mean(plotdf$blaisLago), digits=2)}. However, the \Sexpr{iPer(nrow(plotdf[plotdf$cand > plotdf$winners,])/nrow(plotdf) * 100)} of races that were contested featured a 
-quotient of \Sexpr{round(mean(plotdf$blaisLago[plotdf$cand > plotdf$winners]), digits=2)}.
+districts in four countries had average quotients ranging from 16.77 in Portugal 
+to 26.88 in Spain. All Wisconsin school board elections in the study have a 
+quotient of \Sexpr{round(mean(plotdf$blaisLago), digits=2)}. However, the 
+\Sexpr{iPer(nrow(plotdf[plotdf$cand > plotdf$winners,])/nrow(plotdf) * 100)} of 
+races that were contested featured a quotient of 
+\Sexpr{round(mean(plotdf$blaisLago[plotdf$cand > plotdf$winners]), digits=2)}.
 This is substantially more competitive, and Figure \ref{fig:winmarginplots2} shows 
 why this might be the case. The interquartile 
 range of the Hare Quota distance for contested school board races is roughly 25 to 
@@ -929,7 +933,6 @@ competitionMeasures <- ddply(plotdf, .(year), summarize,
                             closeblaisLago = length(blaisLago[blaisLago < 2.5]))
 qplot(blaisLago, data=plotdf[plotdf$blaisLago < 50,], binwidth = 1) + scale_x_continuous(breaks = seq(0,50, by = 1))
 @
-
 
 The Blais-Lago quotient is the best measure of competitiveness. Not only does it 
 generalize across the diverse election types in Wisconsin, but it also captures 
@@ -990,8 +993,11 @@ candidates to convince only a handful of voters to change their minds.
 \subsection{Incumbent Defeat}
 
 As we saw in Chapter \ref{chap:intro}, incumbent defeat is an important concept 
-in the school board literature \citep{RefWorks:311,RefWorks:264}. Incumbent defeat has been shown to be difficult to measure in the school board election literature due to a lack of available records; most prior studies have relied instead on surveys of 
-current and former school board members. Using self-reports and lists of current 
+in the school board literature \citep{RefWorks:311,RefWorks:264}. Incumbent 
+defeat has been shown to be difficult to measure in the school board election 
+literature due to a lack of available records; most prior studies have relied 
+instead on surveys of current and former school board members. Using self-reports 
+and lists of current 
 and past members of school board members does not provide a reliable way to distinguish 
 between political and apolitical forms of turnover \citep{RefWorks:311}. Using 
 incumbent electoral defeat is not a perfect measure, because it does not capture 
@@ -1043,7 +1049,6 @@ much more engaged in and informed about local issues. This, coupled with the low
 of entry into a school board campaign, may explain why incumbent defeat is more 
 frequent. This will be explored further in Chapter \ref{chap:candidacy}.
 
-
 \subsection{Voter Turnout}
 \label{subsec:turnout}
 
@@ -1055,7 +1060,7 @@ Board report, available online: \url{http://gab.wi.gov/sites/default/files/page/
 rule of thumb that off-cycle partisan elections have a fifteen percentage point 
 drop from the presidential election and non-partisan local elections experience a 
 further fifteen point drop. This would mean Wisconsin should see 55\% turnout in 
-gubernatiroal races and 40\% turnout in local elections. Numbers on typical school 
+gubernatorial races and 40\% turnout in local elections. Numbers on typical school 
 board election turnout are not available in the literature, so it is difficult to 
 assess the degree Wisconsin's off-cycle races differ from other races nationally. 
 Perhaps this is due tot eh difficulty in assessing turnout in special jurisdiction 
@@ -1078,20 +1083,24 @@ the entire period of study. Unfortunately, the state of Wisconsin does not maint
 county, municipality, or ward level registered voter or eligible voter counts 
 historically.
 
-To determine the VAP of the school district in Wisconsin, I employ the finest resolution 
-estimate of voting age population available -- VAP estimates by minor civil division (MCD) 
-produced by the Wisconsin Department of Administration.\footnote{ Minor civil division is a 
-term used by the US Census Bureau to denote the primary governmental and/or administrative 
-divisions within a county. In Wisconsin these include cities, towns, villages and 
-unincorporated areas. Statistics available online: \url{http://gab.wi.gov/elections-voting/results}. 
-Statistics for Wisconsin Minor Civil Divisions are maintained by the Department of Administration 
-Demographic Services Center: \url{http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9}} However, MCDs are not perfectly coterminous with school 
-districts -- school districts 
+To determine the VAP of the school district in Wisconsin, I employ the finest 
+resolution estimate of voting age population available -- VAP estimates by minor 
+civil division (MCD) produced by the Wisconsin Department of Administration.
+\footnote{ Minor civil division is a term used by the US Census Bureau to denote 
+the primary governmental and/or administrative divisions within a county. In 
+Wisconsin these include cities, towns, villages and unincorporated areas. 
+Statistics available online: \url{http://gab.wi.gov/elections-voting/results}. 
+Statistics for Wisconsin Minor Civil Divisions are maintained by the Department 
+of Administration Demographic Services Center: 
+\url{http://www.doa.state.wi.us/section\_detail.asp?linkcatid=11\&linkid=64\&locid=9}}
+However, MCDs are not perfectly coterminous with school districts -- school districts 
 are contiguous only at the ward level where VAP estimates are not available. In 
-order to estimate the proportion of each MCD's VAP that belongs to a given school district, 
-I use property tax records provided by the Wisconsin Department of Revenue (DOR). 
-These records annually report for each school district every MCD that is located entirely or partially within the boundaries of the school district, as well as the share of property wealth 
-(as measured by equalized values, or EQV), for that MCD that the school district 
+order to estimate the proportion of each MCD's VAP that belongs to a given school
+district, I use property tax records provided by the Wisconsin Department of 
+Revenue (DOR). These records annually report for each school district every MCD 
+that is located entirely or partially within the boundaries of the school district, 
+as well as the share of property wealth (as measured by equalized values, or EQV), 
+for that MCD that the school district 
 is authorized to levy tax for. For each year, the share of every MCD's EQV that 
 was allocated to each school district was calculated. I use this share to 
 prorate the population of each MCD both for the purposes of 
@@ -1181,7 +1190,8 @@ a presidential or gubernatorial race, the election rules vary across school dist
 jurisdictions. In some districts, voters may have multiple votes to cast in the election 
 and in each race -- eliminating the ability to judge voter turnout based on the 
 number of votes cast. In other districts, only a subsection of the electorate may 
-be eligible to vote for a school district office due to apportionment within the district. 
+be eligible to vote for a school district office due to apportionment within 
+the district. 
 
 <<turnoutgraph, echo=FALSE, fig.cap="Turnout for district wide school board races.", fig.height=4.5>>=
 races <- as.data.frame(races)
@@ -1221,11 +1231,12 @@ qplot(year, turnout, data = races.tmp, geom = 'boxplot') +
 @
 
 There is one set of cases for which estimating voter turnout is easy - the case 
-where a school board seat is chosen district wide. As shown in Table \ref{tab:yearsample}, 
-this is the vast majority of Wisconsin school districts. To determine if a seat 
-was apportioned or district wide, I coded the seats for labels such as ``Area", ``District", 
-``Region", or ``Village" as opposed to ``At-Large". In these districtwide races, 
-the number of voters is simply the number of votes cast divided by the number of seats elected. As district 
+where a school board seat is chosen district wide. As shown in Table 
+\ref{tab:yearsample}, this is the vast majority of Wisconsin school districts. 
+To determine if a seat was apportioned or district wide, I coded the seats for 
+labels such as ``Area", ``District", ``Region", or ``Village" as opposed to 
+``At-Large". In these district wide races, the number of voters is simply the 
+number of votes cast divided by the number of seats elected. As district 
 wide is the default in state law, in the absence of evidence, I assume the race is 
 district wide.  Figure \ref{fig:turnoutgraph} shows that district wide school board 
 races feature an average turnout below 25\%. 
@@ -1319,12 +1330,12 @@ This still represents an underestimate, as districts with apportioned seats
 do not always elect all seats within district in the same election cycle. However, 
 the underestimate represents the best possible estimate and can be partially 
 controlled for in subsequent analyses by including indicator variables for boards 
-with elections that are not districtwide. 
+with elections that are not district wide. 
 
 Putting these two together, we can estimate overall voter turnout in school board 
 races by school district, over time. First, I take the maximum number of voters in a
 district wide race, where available. If no such race is present in a given district 
-in a given year, I then use the adjusted districtwide turnout based on the 
+in a given year, I then use the adjusted district wide turnout based on the 
 apportioned seats available. If both races are present, only a district wide race 
 is used. 
 
@@ -1438,22 +1449,21 @@ after the passage of Act 10 and the election of Governor Scott Walker.
 \subsection{Rolloff}
 \label{subsec:undervote}
 
-School board races are far down the ballot from other races that are occuring 
+School board races are far down the ballot from other races that are occurring 
 during the spring non-partisan elections cycle in Wisconsin and the spring of 
 2011 was marked by a highly contested statewide race for the Supreme Court. The 
 election was seen as a referendum on the recent passage of Act 10 and Governor 
 Scott Walker's first year in office and was characterized by unprecedented turnout. 
-The influence of the strength or weakeness of the top ticket race confounds our 
+The influence of the strength or weakness of the top ticket race confounds our 
 understanding of voter turnout in school board elections. One way to approach this 
 is to consider studying the dropoff in votes cast from the statewide top of the 
 ticket race to the school board races further down the ballot -- a phenomenon 
-known as voter rolloff \citep{wattenberg00}. 
-For the 2007-2012 period, I estimate the top ticket 
-turnout in each school district. Importantly, in this period, several different 
-office types were the top ticket due to the pattern of statewide office terms 
-in Wisconsin. These consist of primarily state supreme court races, but as there 
-seven justices elected to ten-year terms, the state supreme court does not have 
-an election every spring: 
+known as voter rolloff \citep{wattenberg00}. For the 2007-2012 period, I estimate 
+the top ticket turnout in each school district. Importantly, in this period, 
+several different office types were the top ticket due to the pattern of 
+statewide office terms in Wisconsin. These consist of primarily state supreme 
+court races, but as there seven justices elected to ten-year terms, the state 
+supreme court does not have an election every spring: 
 
 \begin{myitemize}
   \item 2007 - State Supreme Court Race
@@ -1465,7 +1475,7 @@ an election every spring:
 \end{myitemize}
 
 
-<<undervoting, fig.cap="Spring Turnout For Top Ticket and School Board Compared">>=
+<<undervoting, fig.cap="Comparing School Board and Spring Top Ticket Turnout">>=
 load("../../data/cache/springElectionVotes.rda")
 # load("data/cache/springElectionVotes.rda")
 springVotes$votesTopTicketSpring <- springVotes$VotesCast
@@ -1529,7 +1539,8 @@ election \citep{wattenberg00}. In the non-partisan context of judicial elections
 there is evidence that rolloff is lessened in competitive races where information 
 is increased \citep{streb09}. 
 
-To estimate rolloff, I apply the same method described in Section \ref{subsec:turnout} to 
+To estimate rolloff, I apply the same method described in Section 
+\ref{subsec:turnout} to 
 estimate school district level voter turnout in top ticket races. This method 
 poses a few different complications when applied 
 to the spring election. First, spring election records provided by the Wisconsin 
@@ -1542,9 +1553,10 @@ had a top ticket race of Wisconsin Appeals Court judges. The other jurisdictions
 had only local elections on the ballot. To avoid losing these observations, I impute 
 the 2010 estimated turnout as if the top ticket was a state supreme court race or 
 election for state superintendent.\footnote{Imputation was done using model averaging 
-of three separate k-nearest-neighbor models using votes cast in other spring elections as the 
-primary predictors.} I expect the majority of Wisconsin districts to exhibit an 
-undervote in school board elections relative to these top ticket races. 
+of three separate k-nearest-neighbor models using votes cast in other spring 
+elections as the primary predictors.} I expect the majority of Wisconsin 
+districts to exhibit rolloff in school board elections relative to these 
+top ticket races. 
 
 Figure \ref{fig:undervoting} shows the relationship between top ticket turnout 
 and school board turnout. Imputed cases are shown in red to make them distinct. The 
@@ -1622,33 +1634,35 @@ of contestation and turnout in school board elections across a variety of contex
 within the same state political system. 
 
 School boards, despite their lower ballot entry and campaign costs, are contested 
-less than half the time. School board seats are less prestigious, carry little financial benefit 
-for members, and often require late evening meetings -- making them less attractive 
-to potential candidates. School boards are also not shown to be a stepping stone 
-to further political office, reducing their attractiveness to potential political 
-candidates. Despite this, the democratic potential for school boards remain high -- 
-school board may be the most obtainable elected office in the U.S. democracy today. 
+less than half the time. School board seats are less prestigious, carry little 
+financial benefit for members, and often require late evening meetings -- making 
+them less attractive to potential candidates. School boards are also not shown 
+to be a stepping stone to further political office, reducing their attractiveness 
+to potential political candidates. Despite this, the democratic potential for 
+school boards remain high -- school board may be the most obtainable elected 
+office in the U.S. democracy today. 
 
 Chapter 3 will seek to explore further the predictors of candidates 
 emerging for office by exploring what local and state level factors may explain the 
 emergence of a challenger to a school board election. Theory suggests that events 
 like failed school bond referenda, turnover in district leadership, or fiscal pressure 
-may drive local challenges. Theory also suggests that changing the powers of the school board, 
-partisan identification of school board candidates, or political polarization may 
-drive school board challenges to emerge statewide. Evidence of these state and 
-local factors will be evaluated to test whether theories of candidate 
-emergence apply to school boards. 
+may drive local challenges. Theory also suggests that changing the powers of 
+the school board, partisan identification of school board candidates, or 
+political polarization may drive school board challenges to emerge statewide. 
+Evidence of these state and local factors will be evaluated to test whether 
+theories of candidate emergence apply to school boards. 
 
-With voters, the democratic potential is much lower. Voters vote less in school board elections as well. In Wisconsin school board elections 
+With voters, the democratic potential is much lower. Voters vote less in 
+school board elections as well. In Wisconsin school board elections 
 are held during the non-partisan spring elections, which have much lower turnout 
 than partisan fall elections. In general, school board voter turnout hovers around 
 20\% in school districts, but has plenty of variability. Voter turnout should be 
 depressed in school board elections because of both their non-partisan nature and 
 their lower probability of being contested. School board voters also face an 
-information deficit with much less information about the policy positions of candidates, 
-incumbents, or the school district as a whole. 
+information deficit with much less information about the policy positions of 
+candidates, incumbents, or the school district as a whole. 
 
-Chapter 4 will futher explore the puzzle of low school board turnout. I test 
+Chapter 4 will further explore the puzzle of low school board turnout. I test 
 multiple theories of school board turnout in the new domain of local school 
 board elections and evaluate how well they explain variability within and between 
 school board elections. 
@@ -1657,3 +1671,10 @@ Chapter 5 will evaluate the effect of statewide policy shocks like the passage
 of Act 10 and budget cuts. This will represent the fullest test of dissatisfaction 
 theory to date and the first time exogenous policy shocks are leveraged to 
 explore the causal relationship between changes in policy and voter turnout. 
+
+In Chapter 6 I take up a final question of whether or not the results of school 
+board elections matter. I investigate if contestation for school board seats 
+or incumbent defeat have impacts on school district policy. I look for impact 
+of school board elections on student outcomes, district leadership, and district 
+finances. 
+

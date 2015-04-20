@@ -168,11 +168,11 @@ candidates. In large jurisdictions the supply can be safely assumed to be
 saturated, but in a community of a few thousand adults eligible for office, it 
 can not. Understanding the traits of the ``political person'' can help 
 operationalize measures that control for the size of the potential candidate pool 
-in comparing across jurisidctions. Furthermore, work on lower levels of government 
+in comparing across jurisdictions. Furthermore, work on lower levels of government 
 may uncover other important linkages and help inform how such local institutions 
 can be shaped in such a way as to foster the development of quality candidates. 
 The pool of candidates in small restricted jurisdictions is an important constraint 
-on the democratic potential of those communities and forms a key tradeoff with the more 
+on the democratic potential of those communities and forms a key trade off with the more 
 personal campaigning possible in such situations. 
 
 
@@ -231,15 +231,15 @@ service agencies) or special (school, fire, or water districts, etc.) purpose
 variability in electoral participation across local governmental units around the 
 concepts of size, scope, and bias. In this framework, the amount and type of 
 political contestation for local offices is shaped by the relative size of the 
-governmental unit, the scope of that unit's policymaking, and the specificity or 
+governmental unit, the scope of that unit's policy making, and the specificity or 
 universality of the benefits and services provided by that unit to the population. 
 Thus, in order to understand the likelihood of new candidates to run for office, 
 we must account for the size of the population from which candidates may be drawn, 
 the variation in the level of services the governmental unit provides, and the 
 degree to which those services are distributed evenly within the community. 
 Chapter \ref{chap:wisco} demonstrates that Wisconsin school districts have variation 
-in Oliver's categories of size and bais, but almost all school districts are equal 
-in the scope of their policymaking as they are proscribed in state law. 
+in Oliver's categories of size and bias, but almost all school districts are equal 
+in the scope of their policy making as they are proscribed in state law. 
 
 % \citet{krebs} provides a model for a study of the effect of incumbency and the 
 % participation of candidates in local elections. That study restricts candidates 
@@ -346,7 +346,7 @@ candidates, and I focus on predictors for when it does not occur. However, merel
 having non-incumbents on the ballot does not mean voters have a full choice, 
 as non-incumbents often run unopposed so the second level of competitiveness is the 
 presence of more candidates than seats on the ballot. Finally, the ultimate measure of 
-competitivenss is whether or not any incumbents are defeated or at risk of defeat. 
+competitiveness is whether or not any incumbents are defeated or at risk of defeat. 
 I investigate the ability of political theory to explain each of these three levels 
 of competitiveness to understand if school district election competitiveness at any 
 level is predicted by theory. 
@@ -382,7 +382,7 @@ print(xtable(tab1, caption = tmp.cap,
 @
 
 Table \ref{tab:icbychal} shows the relationship between incumbency and challengers 
-across all school board races in the sample. The modal elections consiste of either 
+across all school board races in the sample. The modal elections consists of either 
 contested open seats or uncontested races with only incumbents. Measuring candidate 
 emergence and contestation in multi-member seats is not as straightforward as in single 
 member districts. \footnote{In school board races in Wisconsin there is rarely a seriously 
@@ -469,7 +469,7 @@ status quo is maintained by default. Nearly
 
 The definition of a candidate is inherently subjective. Previous work in the 
 literature has excluded candidates who receive fewer than 5\% of the overall vote, 
-while other studies have focused exclusively on contested inbument held seats in 
+while other studies have focused exclusively on contested incumbent held seats in 
 open jurisdictions \citep{krebs,oliver}. Due to the diversity of school board 
 electoral organization, school district size, and the relatively low number of votes 
 necessary to secure a victory, I define minor candidates as those candidates who 
@@ -591,7 +591,7 @@ presence of more than one candidate per race.
 Incumbent defeat is a good measure of strong candidates emerging, but it is overly 
 conservative because a challenger losing by a single vote is counted the same as 
 a race where a challenger gains only a few dozen votes. Political scientists have 
-developed a standardized way to assess the competiveness of an electoral competition 
+developed a standardized way to assess the competitiveness of an electoral competition 
 when races are for varying number of seats with varying numbers of candidates. 
 This method was introduced in Chapter \ref{chap:wisco}.\footnote{See Table \ref{tab:votemargincalc} 
 for a review of other possible measures.}
@@ -796,7 +796,7 @@ partisan polarization of the community by measuring the distance from an even
 vote share between Republican and Democratic communities by taking the absolute 
 value of the difference between the Democratic vote share and the expected vote 
 share in a perfectly polarized community of 0.5. The greater this difference, the 
-less likely I believe candidate emergence will be due to the homogenous nature 
+less likely I believe candidate emergence will be due to the homogeneous nature 
 of voter preferences in the community. 
 
 A criticism of of special district elections, like school boards, is their susceptibility 
@@ -876,7 +876,7 @@ These expectations are summarized in Table \ref{tab:candIV}.
 \label{tab:candIV}
 \begin{tabular}{| p{.45\textwidth} | p{.12\textwidth} | p{.35\textwidth} |} 
 \hline
-\textbf{Variable}  & \textbf{Expected Sign} & \textbf{Shortname} \\ \hline
+\textbf{Variable}  & \textbf{Expected Sign} & \textbf{Short name} \\ \hline
 Demographics  &  & \\ \hline 
 Voting Age Population (VAP) & + & VAP \\
 \% white VAP & + & per\_white \\
@@ -995,7 +995,7 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray40")
 In Figure \ref{fig:demogCorr1} I depict the correlations between key 
 demographic variables with dark red and green representing the highest negative 
 and positive correlations respectively.\footnote{These figures represent the correlation 
-matrix for the complete pooled dataset across years and school districts. Correlations 
+matrix for the complete pooled data set across years and school districts. Correlations 
 for individual years follow similar patterns, but are not shown. The Pearson correlation 
 coefficient is reported.} The most problematic correlations are 
 between the median household income and percentage of pupils in the school district 
@@ -1026,7 +1026,7 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")
 @
 
 Figure \ref{fig:fiscal1} shows the correlations among the fiscal measures for school 
-districts. Here there are fewer extermely high correlations. The largest correlations 
+districts. Here there are fewer extremely high correlations. The largest correlations 
 belong to two pairs of four variables. Understandably, our two measures of equalized 
 district costs, total district cost (TDC) per member and total complete educational cost 
 (TCEC) per member, are very highly correlated with the only differences being relative spending 
@@ -1095,7 +1095,7 @@ xtable(round(cor(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout),
 
 \section{Methods}
 
-For each of my meaures of contestation, I fit four separate models 
+For each of my measures of contestation, I fit four separate models 
 looking at the impact of demographic, fiscal, political, and policy characteristics 
 of school districts on the probability of a contested school board race. All models 
 contain the demographic variables. I then fit a full model which includes variables 
@@ -1136,10 +1136,10 @@ the \texttt{lmtest} and \texttt{sandwich} packages for R
 
 This approach still makes assumptions about the structure of the data that 
 are unrealistic. Most importantly, this approach compares each school district year 
-to all other school district years in the dataset and ignores any explicit 
+to all other school district years in the data set and ignores any explicit 
 interdependence on prior years within the same district. This fails to take advantage 
 of the repeated measures available for each school district due to the panel nature 
-of the dataset and reduces the importance of large changes in $X$ values within a 
+of the data set and reduces the importance of large changes in $X$ values within a 
 district that are still relatively small when compared across all districts. 
 
 There are a number of approaches available to estimating longitudinal and panel 
@@ -1198,7 +1198,7 @@ on the group specific variances captured in the $\gamma$ and $\lambda$ vectors.
 This allows me to take advantage of the repeated measure structure of the data and 
 avoid overconfidence in estimates resulting from comparisons within and across groups. 
 The models are fit after grand-centering and rescaling all variables by their 
-standard deivations in order to avoid convergence issues following the guidance of \citet{gelhill}.
+standard deviations in order to avoid convergence issues following the guidance of \citet{gelhill}.
 \footnote{I modify the optimizer settings when necessary to ensure all models converge, estimating 
 the models using the \texttt{lme4} package in R \citep{lme4, cran}.} For the mixed model 
 approach, I also fit the four models -- demographic, fiscal, political, and policy. 
@@ -1220,7 +1220,7 @@ elections, I need a measure of correct classification that is robust to class
 imbalance. This allows me to avoid spurious confidence in my models due to the fact 
 that simply predicting most races as uncontested would yield a high percentage of 
 correct classifications. For this, I use the receiver operator characteristic, or ROC,  
-which provides a measure of the tradeoff between detection (true positive identification) 
+which provides a measure of the trade off between detection (true positive identification) 
 and false alarm rates (false positive identification) across different values of 
 the cutoff of the probability estimate from a model \citep{hanley, zwieg}. Of 
 particular value is the area-under-the-curve which summarizes the accuracy of 
@@ -1469,7 +1469,7 @@ leading to more non-incumbents, and a larger fund balance being associated with
 decreased challenger participation in the election. 
 
 In all the models, quite a bit of variation is explained by variability between 
-districts as captued by the district effects. The district intercepts vary about 
+districts as captured by the district effects. The district intercepts vary about 
 as much as moving one standard deviation in the voting age population, suggesting 
 that much of the variation in determining if any non-incumbents are running is up 
 to district factors that are not measured here. 
@@ -1648,7 +1648,7 @@ competitiveness increases -- though the change in millrate variable itself is no
 statistically significant.
 
 The more often the district has attempted to override revenue limits is, 
-counterintuitively, less associated with competitve elections. This perhaps 
+counter intuitively, less associated with competitive elections. This perhaps 
 represents a community that has reached consensus about supporting public schools 
 and as such, has less electoral competition. Districts with 
 higher per pupil expenditures are also marked by less competitive elections. Without 
@@ -2070,7 +2070,7 @@ interquartile-range (IQR) of the fitted values from the models to give a sense
 of the variability in the predicted probabilities across cases. In other words, 
 each panel shows the magnitude of moving from the district that has the least 
 impact on the outcome to the district that has the most. While this is not a 
-realistic counterfactual in the sense that it is not possible to hold all else 
+realistic counter factual in the sense that it is not possible to hold all else 
 constant while moving across districts, it does help graphically depict the 
 amount of variability that exists across districts that is captured by the 
 district-level intercepts estimated in each of the models.
@@ -2186,7 +2186,7 @@ grid.arrange(NIdef, NIcon, NIre, NIblq, nrow = 1)
 After exploring these effects, the question stands -- which set of variables best 
 explain the pattern of contested elections and candidate emergence in Wisconsin. 
 Testing for the impact of individual variables is difficult because of the likelihood 
-of collinearity leading to overly pessimistic estimates of the impact of variables 
+of colinearity leading to overly pessimistic estimates of the impact of variables 
 on the outcome. Measures of goodness of fit provide a sense of the variation in 
 the data explained by the whole model, but are poor choices for cross-model comparison 
 and are on a scale that is hard to interpret. In the case of the main variables 
