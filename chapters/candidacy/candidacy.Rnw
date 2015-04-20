@@ -837,8 +837,9 @@ to school funding formulas like Wisconsin and Massachusetts, where schools must
 operate under a revenue limit unless given explicit authority via an 
 election to exceed that limit with additional property tax revenue.\footnote{Wisconsin 
 school funding is governed by a state funding formula with a revenue limit for 
-%TODO: Finish this footnote
-school districts. More links and details...} Attempting 
+school districts. Wisconsin's revenue limit sets a cap on district spending in 
+certain categories, more information can be found here: \url{http://sfs.dpi.wi.gov/sfs_revlim} Wisconsin also has a state equalization aid formula, more information 
+can be found here: \url{http://sfs.dpi.wi.gov/sfs_equalaid}} Attempting 
 a bond or override referenda is one of the more high profile actions a school 
 board can take -- asking the public to vote for an increase of property tax rates 
 in return for improved quality of educational services. As such, I expect 
@@ -856,7 +857,10 @@ are more likely to have candidates emerge. School districts with lower performin
 students should, all else equal, have more candidates emerge as citizen dissatisfaction 
 with board and district performance should be higher. Finally, I include a measure 
 of the share of district salaries spent on administrators. All else equal, I expect 
-more administrative school districts to have fewer board challenges. % TODO: why
+more administrative school districts to have fewer board challenges. This 
+expectation comes from the education administration literature which suggests 
+that school board conflict comes from administration and boards not having a 
+shared vision \citep{RefWorks:233}. 
 
 Finally, I seek to control for autocorrelation in board contestation. If board 
 elections are competitive consecutively because of sustained community dissatisfaction 
@@ -1086,7 +1090,8 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")
 The story is the same for policy measures in Figure \ref{fig:policy1}. The only 
 large correlations are between reading and math state standardized assessment 
 proficiency rates, a measure of academic performance of the district. Superintendent 
-turnover in year t-1 and year t is also highly correlated. %TODO: More detail here
+turnover in year t-1 and year t is also highly correlated. Otherwise, there 
+are no concerns about these measures. 
 
 <<skiptables, eval=FALSE, echo=FALSE>>=
 xtable(round(cor(dist_turn[dist_turn$year == 2011 & !is.na(dist_turn$turnout), 
@@ -1101,7 +1106,6 @@ of school districts on the probability of a contested school board race. All mod
 contain the demographic variables. I then fit a full model which includes variables 
 from all of the models. This approach allows me to evaluate the relative power of 
 these differing factors in explaining the competitiveness of board elections. 
-%TODO: Change model to a logistic regression
 To assess the probability of a contested election in a school district in a given 
 election cycle, I start with a model of candidate emergence:
 
@@ -1114,7 +1118,8 @@ The $X$ represent a vector of measures of conditions
 in the school district leading up to the time candidates choose to run for office, 
 the period between the previous election and the current election. Estimating 
 $\beta$ provides a way to test for the importance of each of the conditions in 
-the school districts. 
+the school districts.\footnote{I use the logistic transformation for binomial 
+outcomes, though for simplicity I do not represent the model this way here.}
 
 The first way to estimate $\Pr_{CE_{t}}$ is by estimating a logistic regression. 
 Logistic regression allows for the estimation of a binomial outcome using linear 
@@ -1163,7 +1168,7 @@ is flexible for cases with unbalanced repeated measures and allows the analyst t
 disentangle the effects of time specific variables from the overall variability 
 among individual units, e.g. school districts \citep{mlmod,raudbryk}. One way to depict 
 this approach is in the equation:
-% TODO: Show this as a logistic regression
+
 \begin{align*} 
 \Pr_{CE_{ij}} &= \alpha_{i} + \beta X_{ij} + \gamma_{j} + \epsilon_{ij}   \\ 
 \gamma_{j} &=  \alpha_{j} + \epsilon_{j}
@@ -1182,7 +1187,7 @@ variability that reaches across districts. One approach would be to include
 fixed effects for years in the $X$ vector. However, the multilevel approach is 
 flexible enough to allow for a third group -- years, to be included in the model. 
 The model below includes a third grouping level for years. 
-% TODO: Check this out
+
 \begin{align*} 
 \Pr_{CE_{ijt}} &= \alpha_{i} + \beta X_{ijt} + \gamma_{j} + \lambda_{t} + \epsilon_{ijt}   \\ 
 \gamma_{j} &= \alpha_{j} + \epsilon_{j}
@@ -2434,8 +2439,6 @@ that is marked by low turnout, does anything happen?
 
 \section{Technical Appendix}
 \label{sec:appendix}
-%TODO: Group center achievement
-%TODO: Group center finances like costs
 
 All analyses were done using R \citep{cran}. Source code and data available online. 
 

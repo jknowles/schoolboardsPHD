@@ -30,7 +30,6 @@ rm(list=ls())
 
 setwd("../..")
 
-
 # Set texenv
 BIBINPUTS=paste0(getwd(),"/","bib") #Path to tex file in Windows
 BSTINPUTS=paste0(getwd(),"/","includes")

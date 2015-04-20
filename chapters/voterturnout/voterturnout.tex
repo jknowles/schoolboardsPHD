@@ -211,7 +211,7 @@ from deviating from the group's behavior, and the ability of group members to
 monitor one another. These factors are essential to preventing free riding \citep[see][]{Olson65}.  
 \citet{SchrWinden1991} identify opinion leaders within these groups as a key 
 transmitter of this social pressure. These leaders have incentives to increase turnout such 
-as increasing their influence with elected officianls, and voters wanting to build 
+as increasing their influence with elected officials, and voters wanting to build 
 credibility with these leaders find that turning out to vote is important. In the case 
 of school board elections such local effects might be amplified in communities with 
 strong local organizations where monitoring costs are low.\footnote{\citet{Morton91} finds that there is an equilibrium 
@@ -398,13 +398,13 @@ school districts have diverse electoral structure and no requirements
 on election reporting to a central authority, it is often difficult to ascertain 
 the number of voters within the school district. In order to combat this I use 
 the number of votes cast divided by the number of winners for each race within a 
-school district. I then aggregate the races when there is no districtwide race, and 
+school district. I then aggregate the races when there is no district wide race, and 
 when a district wide race is present, I use the maximum turnout in that race. 
 
 For the denominator I use the voting age population (VAP) as a measure of the 
 number of eligible voters in the district boundaries -- this measure is the 
 only measure reliably calculated on a regular basis at the level of detail 
-necessary to produce school district specifcic estimates. To determine the 
+necessary to produce school district specific estimates. To determine the 
 voting age population (VAP) of the school district in Wisconsin, I
 employ the finest resolution estimate of voting age population available -- VAP
 estimates by minor civil division (MCD) conducted by the Wisconsin Department of
@@ -476,7 +476,7 @@ in larger school board races. I use VAP as an estimate of the actual electorate 
 in school board elections. This is a conservative measure given that the actual spring 
 electorate can be as small as 15\% of the voting age population.\footnote{If is is assumed that voters 
 adjust the electorate size equally across jurisdictions when making their 
-assessment of the perceived uiltity of voting, then this is not a factor. If there 
+assessment of the perceived utility of voting, then this is not a factor. If there 
 is evidence that voters in different jurisdictions have more information about 
 the likely electorate size in a school board election, and this varies across 
 jurisdictions, then this becomes more problematic.}
@@ -493,7 +493,7 @@ in the outcome and thus increase the potential benefits associated with voting
 \citep{Mueller3, aldrich1993, Downs57}. However, this does not represent a full test 
 of this theory, as voters are also voting up ticket in statewide non-partisan races 
 such as Supreme Court and State Superintendent, and school board turnout is also
-driven by these races.\footnote{ They may not though because upticket races have 
+driven by these races.\footnote{ They may not though because up ticket races have 
 a statewide electorate and little chance for influence by individual voters.} 
 
 
@@ -705,7 +705,7 @@ Here $VP_{it}$ is voter turnout in a school district $i$ for the spring election
 $\alpha$ is the intercept and $X_{it}$ represents a vector of covariates including the 
 control variables described above for school district $i$ in year $t$. All models control for 
 competition, demographic covariates, district size, and whether or not turnout was measured by a district 
-wide race.\footnote{The districtwide variable is a dummy variable to control for the 
+wide race.\footnote{The district wide variable is a dummy variable to control for the 
 measurement error associated with school districts where there was no district wide 
 race to estimate voter turnout in board elections from.} I include the term $Z_{it}$ to represent the variable 
 of interest in each model. The $Z_{it}$ vector includes different variables across 
@@ -761,7 +761,7 @@ and identically distributed random variables is violated. To correct for this,
 I adjust the standard errors by using the Huber-White estimator of the covariance 
 matrix.\footnote{I do this with the \texttt{robcov} function implemented in 
 \citet{rms}'s \texttt{rms} R package.} This will correct for the clustering of 
-school districtsbetween the observations and avoid overly optimistic standard errors for 
+school districts between the observations and avoid overly optimistic standard errors for 
 the $\beta$ coefficients \citep{hwhite,hwhite2,pjhuber}.
 
 Results from these models are placed in Appendix \ref{sec:appendixT}. 
@@ -855,7 +855,7 @@ board election vote counts themselves. I also use two control variables to adjus
 for measurement error -- the first is a dummy variable indicating whether turnout 
 for the top ticket spring race has been imputed and the second is an indicator 
 of whether or not there are overlapping district wide and apportioned school board 
-seats which may confound the esimate of the number of voters.
+seats which may confound the estimate of the number of voters.
 
 Additionally, I grand-center and rescale 
 all of my continuous variables in order to speed model convergence and avoid 
@@ -1055,7 +1055,7 @@ expect teachers' unions to be more active and exert more influence on turnout
 when there are more non-incumbents in the race. The main effects of the share 
 of voters who are teachers is negative and significant but small. 
 The interaction term is negative, which suggests that as fewer incumbents are in 
-the race and unions are stronger, turnout is supressed. However, this effect is 
+the race and unions are stronger, turnout is suppressed. However, this effect is 
 not statistically significant. 
 
 Judging statistical significance of interaction predictors, however, is notoriously 
@@ -1411,7 +1411,7 @@ how well the models actually fit the data at hand. Assessing model fit in a mixe
 model framework is not as straightforward as with a standard OLS regression. 
 Instead of a more sample-dependent model fit statistics like the Akaike's An 
 Information Criterion, I prefer an estimate of the predictive power of the 
-model for the observations in the sample. To assess this, I use a boostrapped 
+model for the observations in the sample. To assess this, I use a bootstrapped 
 estimate of the Root Mean Squared Error (RMSE) to demonstrate how close the 
 predicted values are to the fitted values across models across many resamples.
 \footnote{To do this, I predict turnout on 150 bootstrap resamples of the data 
@@ -1698,7 +1698,7 @@ in school board elections enough to move between quartiles. Though this effect
 is quite striking it is important to remember that these are simulations and have 
 their limitations -- the simulation in the final panel, for the largest 
 districts, depicts the very unlikely scenario in which the most populated 
-Wisconsins school districts have a population consisting of 5\% teachers 
+Wisconsin school districts have a population consisting of 5\% teachers 
 employed in public schools. However, despite this fact, it is clear that there 
 is a sizable impact on rolloff explained by the share of the VAP that are teachers. 
 
