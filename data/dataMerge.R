@@ -1,9 +1,11 @@
+# Build VAP Panel
+# Finalized on 04/21/2015
+# Combines VAP estimates of municipalities into school districts
+# Uses data from the GAB and election returns to construct turnout data as well
+# -----------------------------------------------------------------------------
 # Merge in other electoral data
 
-################################################################################
 ## Read in CSV Files of voter turnout
-## 
-################################################################################
 library(stringr)
 library(data.table)
 library(eeptools)
@@ -529,24 +531,43 @@ annlchg$VAP_flag4[is.na(annlchg$VAP_flag4)] <- 0
 annlchg$VAP_flag_rollup <- annlchg$VAP_flag1 + annlchg$VAP_flag2 + annlchg$VAP_flag3 + 
   annlchg$VAP_flag4
 
-
-
 ################################################################################
 # Manually adjust Kohler (2842)
 # OTHERS??
-# 665
-# 6328
-# 3976 (Norris, should be dropped)
-# 3510
-# 1092
-# 5593
-# 4011
-# 3787
+# 665 - big jump in 2010
+# 6328 - looks fine, steadily increasing
+# 3976 (Norris, should be dropped), does get dropped
+# 3510 - steady increase, OK
+# 1092 - 2004 is too low for VAP
+# 5593 - huge jump in 2003-2004 (1k)
+# 4011 - steady increase seems fine
+# 3787 - instability and too low in 2001, 2002, 2003
 ################################################################################
 
 annlchg$VAP[annlchg$distid==2842 & annlchg$year == 2005] <- 1995
 annlchg$LastCensusPop[annlchg$distid==2842 & annlchg$year == 2005] <- 2675
 annlchg$LastCensusVAP[annlchg$distid==2842 & annlchg$year == 2005] <- 1930
+
+# Smooth out 2010 census weirdness
+annlchg$VAP[annlchg$distid == 665 & annlchg$year == 2010] <- 2900
+annlchg$VAP[annlchg$distid == 665 & annlchg$year == 2011] <- 3400
+annlchg$VAP[annlchg$distid == 665 & annlchg$year == 2012] <- 3600
+annlchg$VAP[annlchg$distid == 1092 & annlchg$year == 2004] <- 23000
+
+# Linearly increase to 9200 level or so
+annlchg$VAP[annlchg$distid == 3787 & annlchg$year == 2001] <- 7800
+annlchg$VAP[annlchg$distid == 3787 & annlchg$year == 2002] <- 8000
+annlchg$VAP[annlchg$distid == 3787 & annlchg$year == 2003] <- 8150
+annlchg$VAP[annlchg$distid == 3787 & annlchg$year == 2004] <- 8350
+annlchg$VAP[annlchg$distid == 3787 & annlchg$year == 2005] <- 8600
+annlchg$VAP[annlchg$distid == 3787 & annlchg$year == 2006] <- 8900
+
+annlchg$VAP[annlchg$distid == 5593 & annlchg$year == 2002] <- 4250
+annlchg$VAP[annlchg$distid == 5593 & annlchg$year == 2003] <- 4500
+annlchg$VAP[annlchg$distid == 5593 & annlchg$year == 2004] <- 4750
+annlchg$VAP[annlchg$distid == 5593 & annlchg$year == 2005] <- 5000
+
+annlchg$VAP[annlchg$distid == 1092 & annlchg$year == 2004] <- 23000
 
 ################################################################################
 # Interpolate remaining outliers
@@ -643,7 +664,6 @@ rm(annlchg.tmp, tmp, sdprop,  annlchg)
 rm(m1, m2, m3, m4, wghts)
 ################################################################################
 ## Add the regular voter turnout from standard elections
-## 
 ################################################################################
 
 setwd("../Data/Raw Files/Election Data")
@@ -763,7 +783,6 @@ for(i in unique(dvp$distid)){
 }
 
 ###############################################################################################
-
 rm(district_vote_panel)
 
 dvp$TOPturnout1 <- dvp$TOPTOTVOTES / dvp$TOTPOP
@@ -771,24 +790,18 @@ dvp$TOPdemShare <- dvp$TOPDEM / dvp$TOPTOTVOTES
 dvp$TOPrepShare <- dvp$TOPREP / dvp$TOPTOTVOTES
 dvp$SECdemShare <- dvp$SECDEM / dvp$SECTOT
 dvp$SECrepShare <- dvp$SECREP / dvp$SECTOT
-
-
 dvp$TOTPOP_CHG <- NULL
 dvp$SECdemShare <- ifelse(is.finite(dvp$SECdemShare), dvp$SECdemShare, 0)
 dvp$SECrepShare <- ifelse(is.finite(dvp$SECrepShare), dvp$SECrepShare, 0)
 
 # Clean up divide by 0 errors
 # consider what to do with outliers / badly measured turnout
-
 names(dvp) <- tolower(names(dvp))
-
 dvp <- as.data.frame(dvp)
 dvp2 <- dvp
 dvp2$year <- as.numeric(dvp2$year) + 1
 dvp <- rbind(dvp, dvp2)
-
 rm(vptemp, vaplong, cw)
-
 dvp$year <- as.numeric(dvp$year)
 presTurn <- subset(dvp, year == 2000 | year == 2004 | year == 2008 | year ==2012)
 presTurn <- subset(presTurn, select = c("distid", "year", "toptotvotes", 
@@ -796,7 +809,7 @@ presTurn <- subset(presTurn, select = c("distid", "year", "toptotvotes",
 govTurn <- subset(dvp, year == 2002 | year == 2006 | year ==2010)
 govTurn <- subset(govTurn, select = c("distid", "year", "toptotvotes", 
                                       "topturnout1", "topdem", "toprep"))
-
+# Aligns presidential election to be repeated until the next presidential election
 presTurn.tmp <- presTurn
 presTurn.tmp$year <- presTurn.tmp$year + 1
 presTurn <- rbind(presTurn, presTurn.tmp)
@@ -805,7 +818,7 @@ presTurn <- rbind(presTurn, presTurn.tmp)
 presTurn.tmp$year <- presTurn.tmp$year + 1
 presTurn <- rbind(presTurn, presTurn.tmp)
 rm(presTurn.tmp)
-
+# Aligns gubernatorial election to be repeated until the next presidential election
 govTurn.tmp <- govTurn
 govTurn.tmp$year <- govTurn.tmp$year + 1
 govTurn <- rbind(govTurn, govTurn.tmp)
