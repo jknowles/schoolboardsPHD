@@ -4,13 +4,12 @@ mine alone. To produce this dissertation the following build process was employe
 
 \begin{enumerate}
 \item Chapters were drafted using the R knitr package and analysis and text were 
-combined using the knitr workflow
-\item The Wisconsin Thesis \LaTeX template was used and incorporated the .tex files 
-produced by knitr for the chapters as well as the other .tex files
-\item The bibliography files were included using bibtex of .bib files developed 
-independently for each chapter
-\item The file change history and version control was maintained using git with 
-GitHub serving as the remote backup
+combined using the knitr workflow into individual \LaTeX documents
+\item The Wisconsin Thesis template was used and incorporated these .tex files 
+into one document
+\item The bibliography files were included using \texttt{bibtex}
+\item The project was kept under version control using 
+\texttt{git} with GitHub serving as the remote backup
 \item The dissertation was built within RStudio using R scripts calling MikTex 
 and bibtex libraries
 \end{enumerate}
@@ -20,7 +19,7 @@ nature of this dissertation. All of the tools used are open source and freely
 available on any major computing platform. The analyses for the dissertation 
 were built as nearly as possible to be reproducible from the data cleaning and 
 reformating stage, all the way to the fitting of the statistical models and the 
-producing of formatted tables of results. All of this code and supporting 
+production of formatted tables of results. All of this code and supporting 
 documentation will be maintained open sourced and freely available in the hope 
 that others who are interested will be able to build on and extend the work 
 presented here, or at least learn more about the process. 
@@ -54,5 +53,3 @@ environment:
     splines~3.1.2, stringi~0.4-1, svUnit~0.7-12, tidyr~0.2.0, tools~3.1.2,
     ucminf~1.1-3
 \end{itemize}
-
-Additional tools used include MikTeX for Windows. 
