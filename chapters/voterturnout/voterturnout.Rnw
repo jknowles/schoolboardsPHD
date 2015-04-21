@@ -15,6 +15,7 @@ library(xtable)
 library(eeptools)
 options(xtable.include.rownames = FALSE, xtable.table.placement = "ht")
 source("data/cleanandprep_TURNOUT.R")
+set.seed(51315)
 @
 
 
@@ -684,7 +685,7 @@ ggplot(plotdf2, aes(x = factor(year),
   geom_hline(yintercept = 0,  color = I("red"), linetype = 4) + 
   theme_dpi() + labs(x = "Year", y = "Correlation Coefficient")
 @
-%TODO: Why is this figure so patterned
+
 <<unionInfhide, fig.show='hide'>>=
 qplot(teachShareofVoters2, turnout, 
       data = plotdf) + 
@@ -722,11 +723,6 @@ competitiveness and turnout. In fact, \citet{RefWorks:207} would argue
 this represents the ideal condition for a union, freeing their members from the need 
 to be politically active and influencing the school board through the 
 candidate recruitment and nomination process instead. 
-
-% Here rewrite
-% TODO: Fix paragraph about competitiveness
-% Competitiveness has a very modest positive effect on turnout across 
-% all observations
 
 Figure \ref{fig:partisan2} takes a different approach to this problem by looking 
 at the information voters may have about their community -- the level of partisan 
@@ -901,8 +897,6 @@ share of teachers in the electorate is an important driver of turnout and
 policy change in school board elections \citep{RefWorks:207, 
 RefWorks:218,RefWorks:320}.
 
-% TODO: A last model will be fit to include all of the various models
-% above to check for robustness against omitted variables. 
 
 \subsection{Model Specifications}
 \label{subsec:spec}
@@ -1870,8 +1864,6 @@ election was 1,810, then the turnout for the top ticket race would be
 ballot fatigue is not that uncommon and matches findings in other elections 
 \citep{streb09,wattenberg00}.
 
-%TODO: Pump out fixed effect models here
-
 <<undervoteMMfits1, results='asis'>>=
 undervoteMMlag <- lmer(turnoutDiff ~ turnoutLag2 + fallTurnout + 
                          VAP_adjLOG + VAP_adjLOG_sq + per_white_all + 
@@ -2160,7 +2152,6 @@ to improve the prediction.
 grid.arrange(rmsePlot1, rmsePlot2, left = "Mean Model Error in Std. Dev.")
 @
 
-%TODO: cut out substantive effect plots
 \subsection{Substantive Effects}
 
 After finding evidence in favor of voters behaving as theory might expect, I now 
@@ -2438,6 +2429,7 @@ grouping variables have on turnout and rolloff.
 
 
 <<fixefplot1, eval=FALSE, fig.cap="Coefficient Plot for Full Model Fixed Effects",fig.height=8.5, fig.width=8, fig.show='hide'>>=
+set.seed(51315)
 sim1 <- FEsim(mixedMod1lagsb, nsims = 1000); sim1$dv <- "Lags"
 sim2 <- FEsim(mixedModcloseC, nsims = 1000); sim2$dv <- "Close"
 sim3 <- FEsim(fullmodMMd, nsims = 1000); sim3$dv <- "Defeat"
@@ -2494,7 +2486,7 @@ unmoved by these factors.
 
 
 <<fixefSub1, eval=TRUE, fig.scap="Substantive Effect on School Board Turnout Across Cases",fig.cap="Effect of four variables on school board turnout. Each panel represents the results from a different model for a different explanatory variable. Each line in each panel represents a randomly selected school district. The line represents the change in the expected turnout for that case as the value of the explanatory value is increased across the distribution.">>=
-
+set.seed(51315)
 seplotdf <- 1
 while(class(seplotdf) != "data.frame"){
   seplotdf <- try(substEffSimFE(mixedModP, "partyDivisionFall", ncases = 4L, 
@@ -2716,7 +2708,6 @@ between school districts. This effect exists even with the inclusion of strong
 demographic and historical controls like school district size and historical 
 school board turnout. 
 
-
 <<randomEffectplot1, eval=TRUE, fig.scap="Exploring the Variance in District Effects on School Board Turnout", fig.cap="Simulated effect of district effects on turnout. As a case moves from the lowest turnout effect to the highest turnout effect, the effect of the district on turnout is represented by the line with a 90 percent confidence interval represented by the gray ribbon. This figure shows the results for the partisan divide model, but all models reported in the text show a similar distribution. The horizontal bars represent the interquartile range of the dependent variable, and the vertical bars represent the 20th and 80th percentile of school district effects.", fig.height=3.5>>=
 replotdf <- 1
 while(class(replotdf) != "data.frame"){
@@ -2788,99 +2779,6 @@ p4 <- plotMCMCre(plotdf, scale = 1.96, var = "mean",
 grid.arrange(p1, p2, p3, p4)
 @
 
-%TODO: Consider dropping to appendix
-Figure \ref{fig:randomEffectplot2} shows the standardized intercepts for each 
-election cycle -- here the year effects are measured in standard deviations from 
-the grand average of 0 marked by the red line. From 2004 to 2009 elections were 
-relatively consistent with one another in terms of turnout. From 2010 to 2012, 
-turnout was first depressed, and then heightened across the state. Most interestingly 
-is that two years of elevated turnout across the state (net of district-election and 
-district-average effects) were in 2011 and 2012 after the election of Governor Scott Walker and the introduction of Act 10. 
-
-<<rePlotHide2, fig.show='hide'>>=
-replotdf <- 1
-while(class(replotdf) != "data.frame"){
-  replotdf <- try(substEffSimRE(mixedModclose, "year", ncases = 1, alpha = 0.1), 
-                  silent = TRUE)
-}
-
-replotdf$year <- as.character(replotdf$year)
-
-replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
-replotdf$yhatUnscale <- replotdf$yhatUnscale / 100
-replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
-replotdf$lwrUnscale <- replotdf$lwrUnscale / 100
-replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
-replotdf$uprUnscale <- replotdf$uprUnscale / 100
-
-lowerBar <- ((quantile(fitted(mixedModP), prob = 0.2) * 2 * moddatScaleParty["turnout", 2]) + 
-      moddatScaleParty["turnout", 1]) /100
-upperBar <- ((quantile(fitted(mixedModP), prob = 0.8) * 2 * moddatScaleParty["turnout", 2]) + 
-      moddatScaleParty["turnout", 1]) / 100
-
-ggplot(data = replotdf, aes(x = year, y = yhatUnscale, 
-                            ymin = lwrUnscale, ymax = uprUnscale)) + 
-  geom_errorbar(width = .4) + geom_point()+
-  theme_dpi(base_size=12) + 
-  theme(
-                      strip.text = element_blank(), 
-                      strip.background = element_blank(), 
-                      panel.grid.minor = element_blank()) + 
-  geom_hline(yintercept = lowerBar, linetype = 2) + 
-  geom_hline(yintercept = upperBar, linetype = 2) + 
-  facet_wrap(~caseID, ncol = 1) + 
-  labs(x = "Year", y = "Predicted SB Turnout") + 
-  scale_y_continuous(label = percent)
-
-
-plotdf <- REsim(mixedModP, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 2",]
-p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-               sd = "sd", sigmaScale = sigma(mixedModP)) + 
-  labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
-  ylim(c(-2, 3.5))
-plotdf <- REsim(mixedModclose, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 2",]
-p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-                 sd = "sd", sigmaScale = sigma(mixedModclose)) + 
-  labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
-  ylim(c(-2, 3.5))
-plotdf <- REsim(mixedModteach, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 2",]
-p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
-                 sd = "sd", sigmaScale = sigma(mixedModteach))+ 
-  labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
-  ylim(c(-2, 3.5))
-plotdf <- REsim(mixedMod1lagsb, nsims = 1000)
-plotdf <- plotdf[plotdf$level == "Level 2",]
-
-grid.arrange(p1, p2, p3, main = "Variance in Year Intercepts Across Models")
-@
-
-<<randomEffectplot2, eval=TRUE, fig.scap="Comparing Year Effects for Turnout",fig.height=4, fig.cap="Estimated year effects in model effect size terms. Each point represents the estimated standard deviation increase or decrease in turnout for a given election year across all school districts. Confidence intervals are the 90 percent confidence interval across 1000 simulations of the model random effects.">>=
-
-plotdf$median <- plotdf$median / sigma(mixedMod1lagsb)
-plotdf$sd <- plotdf$sd / sigma(mixedMod1lagsb)
-
-ggplot(plotdf, aes(x = as.numeric(X1), y = median, ymin = median - 1.6 * sd, 
-       ymax = median + 1.6*sd)) + geom_pointrange() + 
-  labs(x= "Year", y = "Intercept", "Year Effect Sizes") + 
-  scale_x_continuous(breaks = c(2003:2012), labels = c(2003:2012)) + 
-  scale_y_continuous(breaks = seq(-1.5, 1.5, by = .25)) + 
-  geom_hline(yintercept = 0, size =I(1.05), color = I("red")) +
-  theme(axis.text.x=element_text(), panel.grid = element_line(), 
-         panel.grid.major = element_line(linetype="dotted", colour ="black"),
-        panel.grid.major.x = element_blank(), 
-         panel.grid.minor = element_blank(), 
-         panel.background = element_rect(fill = "white", colour = NA), 
-            panel.border = element_rect(fill = NA, colour = "grey50"), 
-        axis.title = element_text(size = rel(0.8), face = "bold"), 
-            axis.title.y = element_text(vjust = 0.35, angle = 90), 
-            axis.text = element_text(size = rel(0.8), colour = "black"), 
-        axis.ticks = element_line(colour = "black", 
-                size = rel(1.5)), legend.key = element_rect(colour = "grey80"), 
-            legend.title = element_text(), legend.text = element_text())
-@
 
 \clearpage
 
@@ -2913,7 +2811,7 @@ p1 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   geom_hline(yintercept = upperBar) + 
   geom_rug(data = dist_turn, aes(x = turnoutLag2, y = turnoutDiff)) + 
   theme_dpi(base_size=12) + 
-  labs(x = "Lagged Turnout Prior", y = "Voter Rolloff") + 
+  labs(x = "Lagged Turnout Prior", y = "Voter Rolloff in % Points") + 
   scale_x_continuous(label = percent) + 
   scale_y_continuous(limits = c(-.2, .2))
 
@@ -2949,7 +2847,7 @@ p2 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   geom_hline(yintercept = upperBar, linetype = 2) + 
   geom_rug(data = dist_turn, aes(x = partyDivisionFall, y = turnoutDiff)) + 
   theme_dpi(base_size=12) + 
-  labs(x = "Fall Party Division", y = "Voter Rolloff") 
+  labs(x = "Fall Party Division", y = "Voter Rolloff in % Points") 
 
 # -------------------------------------------------------------------------------
 seplotdf <- 1
@@ -2984,7 +2882,7 @@ p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   theme_dpi(base_size=12) + 
   scale_x_continuous(limits = c(0, .06), label = percent) + 
   scale_y_continuous(limits = c(-.15, .2)) +
-  labs(x = "Teacher Share of VAP", y = "Voter Rolloff") 
+  labs(x = "Teacher Share of VAP", y = "Voter Rolloff in % Points") 
 
 # -------------------------------------------------------------------------------
 seplotdf <- 1
@@ -3020,10 +2918,9 @@ p4 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   geom_rug(data = dist_turn, aes(x = minBlaisLago, y = turnoutDiff)) + 
   theme_dpi(base_size=12) + 
   scale_y_continuous(limits = c(-.15, .2)) + 
-  labs(x = "Blais-Lago", y = "Voter Rolloff") 
+  labs(x = "Blais-Lago", y = "Voter Rolloff in % Points") 
 
 @
-%TODO identify teachUndEff y-axis scale
 
 Here I depict the evidence 
 that influences on voter rolloff appear more pronounced than influences on turnout 
@@ -3216,9 +3113,16 @@ these findings.
 \subsection{Theory}
 
 Actualized democracy in the form of voter turnout is rare in school board elections. 
-However, unlike the case of contestation, the democratic  potential is also low given 
-the structural and informational barriers to voting. 
-%TODO: Finish thought, polish up appendix
+However, unlike the case of contestation, the democratic potential is also low given 
+the structural and informational barriers to voting. This chapter has shown that 
+many of the forces that shape voter turnout in state and national 
+elections also shape turnout in spring non-partisan elections. However, this 
+turnout still remains very small and these forces are very likely shaping an 
+unrepresentative subset of the residents in a school district. There is evidence 
+that school board election turnout is shaped by interest groups. However, this 
+low turnout is only consequential if this subset of the electorate is representing 
+interests out of alignment with the wider voting age population of the school 
+district. This is the question that I turn to in the next chapter. 
 
 \clearpage
 
@@ -3251,7 +3155,14 @@ p2
 
 \subsection{Random Effect Specification Tests}
 
-<<LRTresults, echo=TRUE, results='markup'>>=
+Likelihood Ratio Test results for models with and without a third level of 
+year effects. In all cases the year effects should be retained. I used the 
+simulated finite sample distribution of the Restricted Likelihood Ratio Test 
+\citep{rlrt1, rlrt2, rlrt3}. Computation implemented using the \texttt{RLRsim} 
+package for R \citep{rlrt2}. 
+
+
+<<LRTresults, echo=FALSE, results='hide'>>=
 # Lag Model LRT
 print(lagLRT)
 # Competitive Model LRT
@@ -3260,11 +3171,118 @@ print(closeLRT)
 print(partyLRT)
 # Teacher Model LRT
 print(teachLRT)
+
+lagLRT$p.value <- ifelse(lagLRT$p.value < 0.01, 0.01, lagLRT$p.value)
+closeLRT$p.value <- ifelse(closeLRT$p.value < 0.01, 0.01, closeLRT$p.value)
+partyLRT$p.value <- ifelse(partyLRT$p.value < 0.01, 0.01, partyLRT$p.value)
+teachLRT$p.value <- ifelse(teachLRT$p.value < 0.01, 0.01, teachLRT$p.value)
 @
 
-\clearpage
 
-\subsection{District and Year Fixed Effect Results}
+\begin{myitemize}
+\item Lag Model: p-value < \Sexpr{lagLRT$p.value}
+\item Competitiveness Model: p-value < \Sexpr{closeLRT$p.value}
+\item Partisanship Model: p-value < \Sexpr{partyLRT$p.value}
+\item Teacher Influence Model: p-value < \Sexpr{teachLRT$p.value}
+\end{myitemize}
+
+\subsection{Additional Substantive Effect Plots}
+
+Figure \ref{fig:randomEffectplot2} shows the standardized intercepts for each 
+election cycle -- here the year effects are measured in standard deviations from 
+the grand average of 0 marked by the red line. From 2004 to 2009 elections were 
+relatively consistent with one another in terms of turnout. From 2010 to 2012, 
+turnout was first depressed, and then heightened across the state. Most interestingly 
+is that two years of elevated turnout across the state (net of district-election and 
+district-average effects) were in 2011 and 2012 after the election of Governor Scott Walker and the introduction of Act 10. 
+
+<<rePlotHide2, fig.show='hide'>>=
+replotdf <- 1
+while(class(replotdf) != "data.frame"){
+  replotdf <- try(substEffSimRE(mixedModclose, "year", ncases = 1, alpha = 0.1), 
+                  silent = TRUE)
+}
+
+replotdf$year <- as.character(replotdf$year)
+
+replotdf$yhatUnscale <- (replotdf[, "yhat"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$yhatUnscale <- replotdf$yhatUnscale / 100
+replotdf$lwrUnscale <- (replotdf[, "lwr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$lwrUnscale <- replotdf$lwrUnscale / 100
+replotdf$uprUnscale <- (replotdf[, "upr"] * 2 * moddatScaleParty[1, 2]) + moddatScaleParty[1, 1]
+replotdf$uprUnscale <- replotdf$uprUnscale / 100
+
+lowerBar <- ((quantile(fitted(mixedModP), prob = 0.2) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) /100
+upperBar <- ((quantile(fitted(mixedModP), prob = 0.8) * 2 * moddatScaleParty["turnout", 2]) + 
+      moddatScaleParty["turnout", 1]) / 100
+
+ggplot(data = replotdf, aes(x = year, y = yhatUnscale, 
+                            ymin = lwrUnscale, ymax = uprUnscale)) + 
+  geom_errorbar(width = .4) + geom_point()+
+  theme_dpi(base_size=12) + 
+  theme(
+                      strip.text = element_blank(), 
+                      strip.background = element_blank(), 
+                      panel.grid.minor = element_blank()) + 
+  geom_hline(yintercept = lowerBar, linetype = 2) + 
+  geom_hline(yintercept = upperBar, linetype = 2) + 
+  facet_wrap(~caseID, ncol = 1) + 
+  labs(x = "Year", y = "Predicted SB Turnout") + 
+  scale_y_continuous(label = percent)
+
+
+plotdf <- REsim(mixedModP, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+p1 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+               sd = "sd", sigmaScale = sigma(mixedModP)) + 
+  labs(title = "Partisan Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModclose, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+p2 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModclose)) + 
+  labs(title = "Competitiveness Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedModteach, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+p3 <- plotMCMCre(plotdf, scale = 1.96, var = "mean", 
+                 sd = "sd", sigmaScale = sigma(mixedModteach))+ 
+  labs(title = "Teach Share Model", x= "District", y = "Intercept")+ 
+  ylim(c(-2, 3.5))
+plotdf <- REsim(mixedMod1lagsb, nsims = 1000)
+plotdf <- plotdf[plotdf$level == "Level 2",]
+
+grid.arrange(p1, p2, p3, main = "Variance in Year Intercepts Across Models")
+@
+
+<<randomEffectplot2, eval=TRUE, fig.scap="Comparing Year Effects for Turnout",fig.height=4, fig.cap="Estimated year effects in model effect size terms. Each point represents the estimated standard deviation increase or decrease in turnout for a given election year across all school districts. Confidence intervals are the 90 percent confidence interval across 1000 simulations of the model random effects.">>=
+
+plotdf$median <- plotdf$median / sigma(mixedMod1lagsb)
+plotdf$sd <- plotdf$sd / sigma(mixedMod1lagsb)
+
+ggplot(plotdf, aes(x = as.numeric(X1), y = median, ymin = median - 1.6 * sd, 
+       ymax = median + 1.6*sd)) + geom_pointrange() + 
+  labs(x= "Year", y = "Intercept", "Year Effect Sizes") + 
+  scale_x_continuous(breaks = c(2003:2012), labels = c(2003:2012)) + 
+  scale_y_continuous(breaks = seq(-1.5, 1.5, by = .25)) + 
+  geom_hline(yintercept = 0, size =I(1.05), color = I("red")) +
+  theme(axis.text.x=element_text(), panel.grid = element_line(), 
+         panel.grid.major = element_line(linetype="dotted", colour ="black"),
+        panel.grid.major.x = element_blank(), 
+         panel.grid.minor = element_blank(), 
+         panel.background = element_rect(fill = "white", colour = NA), 
+            panel.border = element_rect(fill = NA, colour = "grey50"), 
+        axis.title = element_text(size = rel(0.8), face = "bold"), 
+            axis.title.y = element_text(vjust = 0.35, angle = 90), 
+            axis.text = element_text(size = rel(0.8), colour = "black"), 
+        axis.ticks = element_line(colour = "black", 
+                size = rel(1.5)), legend.key = element_rect(colour = "grey80"), 
+            legend.title = element_text(), legend.text = element_text())
+@
+
+
+\subsection{District and Year Fixed Effect Results for Turnout}
 
 District fixed effect model results. 
 
