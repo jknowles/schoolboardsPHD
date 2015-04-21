@@ -32,8 +32,8 @@ dist_turn$incDefeats <- ifelse(dist_turn$incDefeats > 0, 1, 0)
 # dist_turn$minBlaisLago[dist_turn$minBlaisLago == 0] <- .0001
 # dist_turn$minBlaisLago <- log(dist_turn$minBlaisLago)
 # dist_turn$partyDivisionRecent <- log(dist_turn$partyDivisionRecent)
-
 library(gridExtra)
+set.seed(51315)
 @
 
 

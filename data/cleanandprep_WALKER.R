@@ -337,6 +337,36 @@ dist_turn$minBlaisLago <- abs(abs(dist_turn$minBlaisLago) - 100)
 # reset districtwide
 dist_turn$distWidemix <- ifelse(dist_turn$distWidemix > 1, 1, 0)
 #
+
+#--------------------------
+load("data/cache/boardSize.rda")
+dist_turn <- merge(dist_turn, boardSize, by.x = c("distid", "year"), 
+                   by.y = c("agency", "year"), all.x=TRUE)
+rm(boardSize)
+dist_turn$incDefeats <- NULL
+incDefeat <- ddply(dat[dat$electiontype == 1,], 
+                   .(distid, year), 
+                   summarise, 
+                   incsDefeated = sum(incumbent[winner == 0]), 
+                   incsTotal = sum(incumbent), 
+                   candTotal = length(candidateid[candidateid != 99]),
+                   candReal = length(candidateid[candidateid != 99 & minor < 1]),
+                   winnersTotal = sum(winner))
+
+# TODO:
+# Why is this?
+# incumbents defeated can exceed number of winners, especially when races 
+# consolidate
+
+dist_turn <- merge(dist_turn, incDefeat, by = c("distid", "year")) 
+dist_turn$candReal <- ifelse(dist_turn$candReal == 0, dist_turn$candTotal, 
+                             dist_turn$candReal)
+dist_turn$boardTurnover <- dist_turn$incsDefeated / dist_turn$servingMembers
+dist_turn$boardSeatsUp <- dist_turn$winnersTotal / dist_turn$servingMembers
+dist_turn$challengRate <- 1 - (dist_turn$incsTotal / dist_turn$candTotal)
+dist_turn$dissatFactor <- 1 - (dist_turn$winnersTotal / dist_turn$candTotal)
+dist_turn$dissatFactor2 <- 1 - (dist_turn$winnersTotal / dist_turn$candReal)
+dist_turn$incDefeats <- ifelse(dist_turn$incsDefeated > 0, 1, 0)
 ################################################################################
 # Read in contract extension data
 ################################################################################
