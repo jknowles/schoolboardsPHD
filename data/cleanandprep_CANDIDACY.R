@@ -105,7 +105,8 @@ dist_turn <- ddply(races.tmp, .(distid, year), summarise,
                    nminor = sum(nminor), votes = sum(votes), 
                    VAP_adj = statamode(VAP_adj), 
                    incDefeats = sum(nincDefInd),
-                   nraces = length(distid))
+                 nraces = length(distid))
+
 
 dist_turn$districtwide <- 1
 ############
@@ -387,6 +388,12 @@ dist_turn <- as.data.table(dist_turn)[,
                                       by = "distid"]
 dist_turn <- as.data.table(dist_turn)[, 
                                       nrealcandLag:= lg(nrealcand),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      dissatFactor_fw:= fw(dissatFactor),
+                                      by = "distid"]
+dist_turn <- as.data.table(dist_turn)[, 
+                                      challengRate_fw:= fw(challengRate),
                                       by = "distid"]
 
 dist_turn <- as.data.frame(dist_turn)

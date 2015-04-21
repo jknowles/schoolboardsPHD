@@ -88,13 +88,9 @@ incDefeat <- ddply(dat[dat$electiontype == 1,],
                    candTotal = length(candidateid[candidateid != 99]),
                    candReal = length(candidateid[candidateid != 99 & minor < 1]),
                    winnersTotal = sum(winner))
-
-# TODO:
-# Why is this?
 # incumbents defeated can exceed number of winners, especially when races 
 # consolidate
 fw  <- function(x) c(x[2:length(x)], NA)
-
 dist_turn <- merge(dist_turn, incDefeat, by = c("distid", "year")) 
 dist_turn$candReal <- ifelse(dist_turn$candReal == 0, dist_turn$candTotal, 
                              dist_turn$candReal)
@@ -598,7 +594,7 @@ lagModReadFE <- lm(READ_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag 
 lagModReadFE$se <- sqrt(diag(get_CL_vcov(lagModReadFE, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -638,7 +634,7 @@ lagModReadFEd <- update(lagModReadFEc, . ~ dissatFactor_lag + . -
 lagModReadFEd$se <- sqrt(diag(get_CL_vcov(lagModReadFEd, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 readChalRateTab <- apsrtable(simpModReadC, lagModReadC, lagModReadFEc, se = "robust", 
@@ -733,8 +729,8 @@ lagModMathFE <- lm(MATH_PROFADV_PER ~ incsDefeatedFac_lag + econ_disadv_per_lag 
 lagModMathFE$se <- sqrt(diag(get_CL_vcov(lagModMathFE, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                 "ln(VAP)",
-                 "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                 "Electorate Size",
+                 "Econ. Disadv. \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -775,7 +771,7 @@ lagModMathFEd <- update(lagModMathFEc, . ~ dissatFactor_lag + . -
 lagModMathFEd$se <- sqrt(diag(get_CL_vcov(lagModMathFEd, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 mathChalRateTab <- apsrtable(simpModMathc, lagModMathC, lagModMathFEc, se = "robust", 
@@ -788,7 +784,7 @@ mathChalRateTab <- apsrtable(simpModMathc, lagModMathC, lagModMathFEc, se = "rob
           coef.names = prettyNames, size = "small")
 
 prettyNames <- c("Intercept", "Dissat. Factor", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "Prof Rate Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "Prof Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 mathDRateTab <- apsrtable(simpModMathD, lagModMathD, lagModMathFEd, se = "robust", 
           stars = "default", digits = 3, model.names = c("Simple", "Lag", "FE"), 
@@ -852,7 +848,7 @@ lagModGradFE$se <- sqrt(diag(get_CL_vcov(lagModGradFE,
                                          modeldata$distid[!is.na(modeldata$gradRate)])))
 
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "Grad Rate Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "Grad Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -884,7 +880,7 @@ lagModGradFEc$se <- sqrt(diag(get_CL_vcov(lagModGradFEc,
                                          modeldata$distid[!is.na(modeldata$gradRate)])))
 
 prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "Grad Rate Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "Grad Rate Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -972,7 +968,7 @@ fullModSupFE <- bayesglm(NEW_SUP ~ incsDefeatedFac_lag +
                    per65o_lag + distid, data = modeldata, family = "binomial")
 fullModSupFE$se <- sqrt(diag(get_CL_vcov(fullModSupFE, modeldata$distid)))
 prettyNames <- c("Intercept", "Inc. Def. Lag", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "New Sup. Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "New Sup. Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -1000,7 +996,7 @@ fullModSupFEc <- update(fullModSupFE, . ~ challengRate_lag + . - incsDefeatedFac
 fullModSupFEc$se <- sqrt(diag(get_CL_vcov(fullModSupFEc, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Challenge Rate", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "New Sup. Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "New Sup. Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 apsrtable(simpModSupc, fullModSupc, fullModSupFEc, se = "robust", 
@@ -1023,7 +1019,7 @@ fullModSupFEd <- update(fullModSupFEc, . ~ dissatFactor_lag + . - challengRate_l
 fullModSupFEd$se <- sqrt(diag(get_CL_vcov(fullModSupFEc, modeldata$distid)))
 
 prettyNames <- c("Intercept", "Dissat. Factor", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "New Sup. Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "New Sup. Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 apsrtable(simpModSupd, fullModSupd, fullModSupFEd, se = "robust", 
@@ -1094,7 +1090,7 @@ millDeltaFE <- lm(millrate_delta ~ dissatFactor_lag + econ_disadv_per_lag +
 millDeltaFE$se <- sqrt(diag(get_CL_vcov(millDeltaFE, modeldata$distid)))
 
 prettyNames <- c("Intercept", "D-Factor", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "MillRate delta Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "MillRate delta Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District fixed effects not displayed."
@@ -1141,7 +1137,7 @@ FEmodSal <- lm(ADJ_MEDIAN_SALARY_TEACH ~ dissatFactor_lag + econ_disadv_per_lag 
 millDeltaFE$se <- sqrt(diag(get_CL_vcov(FEmodSal, modeldata$distid)))
 
 prettyNames <- c("Intercept", "D-Factor", "Exurb", "Rural", "Board Size",
-                  "ln(VAP)", "FRL \\%", "Teach Salary Lag", "\\% Bach. +", 
+                  "Electorate Size", "Econ. Disadv. \\%", "Teach Salary Lag", "\\% Bach. +", 
                  "\\% Over 65")
 
 fe.note <- "District and year fixed effects not displayed."

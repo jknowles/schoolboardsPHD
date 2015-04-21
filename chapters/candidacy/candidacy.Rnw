@@ -4,7 +4,6 @@
 
 
 <<rsetup, results='hide', echo=FALSE, message=FALSE, warning=FALSE>>=
-
 opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE, 
                fig.path="../../phd_figs/chap3-", 
                cache.path = "../../phd_cache/chap3-",
@@ -351,7 +350,6 @@ I investigate the ability of political theory to explain each of these three lev
 of competitiveness to understand if school district election competitiveness at any 
 level is predicted by theory. 
 
-%TODO: Collapse this table to school district level
 <<nonincumbent2, results='asis'>>=
 races$contestMinor <- 0
 races$contestMinor[races$nrealcand > races$nwins] <- 1
@@ -360,14 +358,13 @@ races$contestSer[(races$nrealcand - races$nminor) > races$nwins] <- 1
 races$incumbOnly <- ifelse(races$nrealcand == races$ninc, 1, 0)
 
 # table(dist_turn$contestSer, dist_turn$incDefeats)
-
-tab1 <- table(races$incumbOnly, races$contestSer)
 dist_turn$contestSer <- 0
 dist_turn$contestSer[(dist_turn$nrealcand - dist_turn$nminor) > dist_turn$nwins] <- 1
 dist_turn$contestMinor <- 0
 dist_turn$contestMinor[dist_turn$nrealcand > dist_turn$nwins] <- 1
 dist_turn$incumbOnly <- ifelse(dist_turn$nrealcand == dist_turn$ninc, 1, 0)
-
+tab1 <- table(dist_turn$incumbOnly, dist_turn$contestSer)
+tab2 <- table(races$incumbOnly, races$contestSer)
 
 rownames(tab1) <- c("Non-Incumbents Run", "Only Incumbents")
 colnames(tab1) <- c("No Serious Challengers", "Serious Challengers")
@@ -382,7 +379,7 @@ print(xtable(tab1, caption = tmp.cap,
 @
 
 Table \ref{tab:icbychal} shows the relationship between incumbency and challengers 
-across all school board races in the sample. The modal elections consists of either 
+across all school district elections in the sample. The modal elections consists of either 
 contested open seats or uncontested races with only incumbents. Measuring candidate 
 emergence and contestation in multi-member seats is not as straightforward as in single 
 member districts. \footnote{In school board races in Wisconsin there is rarely a seriously 
@@ -483,7 +480,6 @@ votes to secure victory, 20 votes seems sizable enough to exert influence on the
 
 <<candidatedescriptives4, echo=FALSE, fig.cap="Annual share of contested school board elections under two different measures of candidate contestation.">>=
 library(scales)
-
 # 
 races$contested <- 0
 races$contested[races$nrealcand > races$nwins & 
@@ -499,8 +495,6 @@ races$contestedSerInc <- 0
 races$contestedSerInc[(races$nrealcand - races$nminor) > races$ninc & 
                           races$ninc > 0 & races$electiontype == 1] <- 1
 # 
-
-
 a <- table(races$contestedSer, races$year)
 a.tmp <- prop.table(a, margin = 2) 
 a <- t(a)
@@ -512,16 +506,20 @@ a.tmp$Var1 <- as.numeric(as.character(a.tmp$Var1))
 a$Var2 <- ifelse(a$Var2 == 0, "No", "Yes")
 a$Var2 <- factor(a$Var2, levels = c("Yes", "No"))
 a.tmp$Var2 <- ifelse(a.tmp$Var2 == 0, "No", "Yes")
-a.tmp$Var2 <- factor(a.tmp$Var2, levels = c("Yes", "No"))
+# a.tmp$Var2 <- factor(a.tmp$Var2, levels = c("Yes", "No"))
 
 p1 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Districts", title = "Excluding Minor Candidates", 
-       fill = "Contested?") + theme_bw()
+       fill = "Contested?") + theme_bw() +
+  scale_fill_brewer(type = "qual", palette = 6) 
 
 p1 <- qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013,], 
             geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Percent of Races", title = "Excluding Minor Candidates", 
-       fill = "Contested?") + theme_bw() + scale_y_continuous(label = percent)
+       fill = "Contested?") + theme_bw() + scale_y_continuous(label = percent) +
+  scale_fill_brewer(type = "qual", palette = 6) +
+  guides(colour = FALSE, fill = guide_legend(reverse = TRUE, 
+                                             override.aes = list(colour = NULL)))
 
 
 a <- table(races$contested, races$year)
@@ -535,22 +533,25 @@ a.tmp$Var1 <- as.numeric(as.character(a.tmp$Var1))
 a$Var2 <- ifelse(a$Var2 == 0, "No", "Yes")
 a$Var2 <- factor(a$Var2, levels = c("Yes", "No"))
 a.tmp$Var2 <- ifelse(a.tmp$Var2 == 0, "No", "Yes")
-a.tmp$Var2 <- factor(a.tmp$Var2, levels = c("Yes", "No"))
+# a.tmp$Var2 <- factor(a.tmp$Var2, levels = c("Yes", "No"))
 
 p2 <- qplot(factor(Var1), Freq, data=a[a$Var1 > 2002 & a$Var1 < 2013,], geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Races", title = "Including Minor Candidates", 
-       fill = "Contested?")+ theme_bw()
+       fill = "Contested?")+ theme_bw() + 
+  scale_fill_brewer(type = "qual", palette = 6) 
 
 p2 <- qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013,], 
             geom='bar', stat='identity', fill=Var2, position='stack', color = I("black")) + 
   labs(x= "Year", y = "Percent of Races", title = "Including Minor Candidates", 
-       fill = "Contested?") + theme_bw() + scale_y_continuous(label = percent)
+       fill = "Contested?") + theme_bw() + scale_y_continuous(label = percent) +
+  scale_fill_brewer(type = "qual", palette = 6) +
+  guides(colour = FALSE, fill = guide_legend(reverse = TRUE, 
+                                             override.aes = list(colour = NULL)))
 
 
 grid.arrange(p1, p2, main = "Comparing School Board Contestation Measures")
 @
 
-% TODO: Fix colors here
 Figure \ref{fig:candidatedescriptives4} depicts the pattern of school board candidate 
 emergence over time including and excluding these candidates. Contested elections are in
 blue and uncontested races are in salmon. A slight trend toward fewer contested races is 
@@ -656,7 +657,6 @@ candidate self-report. This alternative form of measurement is a way to triangul
 the findings of previous work. 
 
 <<incdefeat, echo=FALSE, fig.cap="Annual share of Wisconsin school board elections featuring an incumbent with a defeated incumbent 2002-2012.">>=
-
 races$nincDefInd <- ifelse(races$nincDef >0, 1, 0)
 
 a <- table(races$nincDefInd[races$ninc > 0], races$year[races$ninc > 0])
@@ -668,13 +668,16 @@ a.tmp <- as.data.frame(a.tmp)
 a$Var1 <- as.numeric(as.character(a$Var1))
 a.tmp$Var1 <- as.numeric(as.character(a.tmp$Var1))
 a.tmp$Var2 <- ifelse(a.tmp$Var2 == 0, "No", "Yes")
-a.tmp$Var2 <- factor(a.tmp$Var2, levels = c("Yes", "No"))
+# a.tmp$Var2 <- factor(a.tmp$Var2, levels = c("Yes", "No"))
 qplot(factor(Var1), Freq, data=a.tmp[a.tmp$Var1 > 2002 & a.tmp$Var1 < 2013,], 
             geom='bar', stat='identity', fill=Var2, position='stack', 
       color = I("black")) + 
   labs(x= "Year", y = "Percent of Races", 
        title = "Percentage of Races with Incumbents Defeated", 
-       fill = "Inc. Defeat") + theme_bw() + scale_y_continuous(label = percent)
+       fill = "Inc. Defeat") + theme_bw() + scale_y_continuous(label = percent) +
+  scale_fill_brewer(type = "qual", palette = 6) +
+  guides(colour = FALSE, fill = guide_legend(reverse = TRUE, 
+                                             override.aes = list(colour = NULL)))
 @
 
 Figure \ref{fig:incdefeat} shows the rate of incumbent defeat in Wisconsin. The 
@@ -782,7 +785,7 @@ more incumbency challenge as it represents more opportunities for a challenge
 to emerge when multiple races exist. I also test for advantage of incumbency 
 by including a measure of the share of candidates who are incumbents. I expect 
 this variable to be negatively related to challenge as incumbents should deter 
-challengers. %TODO: citation
+challengers. 
 
 Next, I explore the impact of both turnout and partisanship in general elections 
 on local elections. I am interested in the role partisan divisions among voters 
@@ -819,7 +822,6 @@ offices. Whereas the state and federal legislatures are elected on a regular cyc
 school board seats are more like senate seats -- they come up for election at 
 different times in different jurisdictions, and thus they may be influenced by 
 distinct policy evaluations from voters depending on the year they are up for election. 
-%TODO: Not perfect due to timing
 
 First, I assess the impact that a change in superintendent has on school board 
 challengers. Because theory suggests that board turnover often precedes 
@@ -827,7 +829,7 @@ superintendent turnover, I posit that a new superintendent should signal a
 decrease in candidate challenges to board members as the citizen dissatisfaction 
 that sparked the turnover has been relieved \cite{RefWorks:336, RefWorks:340}. 
 I test for a new superintendent either in the prior year or two years prior. 
-% TODO: Test for superintendent churn for 5 years
+
 Next, I include measures of school district funding referenda. Wisconsin has 
 two common types of school referenda measures -- bond and override referenda. 
 Bond referenda are familiar across the United States as authority for a school 
@@ -927,7 +929,6 @@ variables and describe the process of reducing the list of factors in Table \ref
 to a manageable subset for inclusion in statistical models that can evaluate their 
 impact. 
 
-%TODO: Pretty names for heatmaps
 <<cleanupIV, echo=FALSE, results='hide'>>=
 # library(GGally)
 dist_turn$contest <- "Uncontested"
@@ -979,9 +980,63 @@ nopanel <- theme(panel.background=element_blank(),
                                axis.text = element_text(colour = "black"))
 @
 
+<<prettyNameR, results='hide', echo='FALSE'>>=
+
+varNamer <- function(x){
+  x <- as.character(x)
+  x[x=="per65o"] <- "% 65 +"
+  x[x=="PerBachelorOrAbove"] <- "% Bach. +"
+  x[x=="OOH_share"] <- "% Owner Occupied"
+  x[x=="econ_disadv_per"] <- "% Economic Disadv."
+  x[x=="per_white_all"] <- "% White"
+  x[x=="NonWhitePublicPupilPer"] <- "% Non-white Pupils"
+  x[x=="VAP_adjLOG"] <- "Electorate Size"
+  x[x=="median_incomeLOG"] <- "Median Income"
+  x[x=="publicPupilCountLOG"] <- "Pupil Count"
+  x[x=="PROPERTYTAX_REV_SHARE"] <- "% of Revenue by Prop. Tax"
+  x[x=="balance_member_lag"] <- "Cash Reserves"
+  x[x=="TCEC_MEMBER"] <- "Total Cost to Educate"
+  x[x=="TEC_MEMBER"] <- "Total Educational Cost"
+  x[x=="NonSDMill"] <- "Non School Property Tax Rate"
+  x[x=="millrate"] <- "School District Millrate"
+  x[x=="schoolMillShare"] <- "% Property Tax for Schools"
+  x[x=="millrate_delta"] <- "Change in School Millrate"
+  x[x=="total_cat_aids_member"] <- "Total Categorical Aids"
+  x[x=="teachSalDiff"] <- "Teacher Salary - Median Income"
+  x[x=="eqv_taxfiler"] <- "Property Wealth per Taxfiler"
+  x[x=="recentTwoPartyShareDem"] <- "% Democratic"
+  x[x=="incumRun"] <- "Incumbents in Race"
+  x[x=="nraces"] <- "Number of Races"
+  x[x=="partyDivisionRecent"] <- "Party Polarization"
+  x[x=="nwins"] <- "Seats Up"
+  x[x=="teachShareofVoters"] <- "% of Electorate FTE"
+  x[x=="overrideYesPer"] <- "% for Revenue Limit Override"
+  x[x=="fallTurnout"] <- "Turnout in Last Fall election"
+  x[x=="NEW_SUP"] <- "New Superintendent"
+  x[x=="MATH_PROFADV_PER"] <- "% Proficient or Adv. Math"
+  x[x=="READ_PROFADV_PER"] <- "% Proficient or Adv. Read"
+  x[x=="debtFail"] <- "Bond Referenda Failure"
+  x[x=="overrideFail"] <- "Override Referenda Failure"
+  x[x=="overrideQues"] <- "Override Referenda Offered"
+  x[x=="debtQues"] <- "Debt Referenda Offered"
+  x[x=="NonPublicPupilPer"] <- "% Private School"
+  x[x=="ADMIN_SHARE"] <- "% of Staff Administrative"
+  x[x=="ADMIN_SHARE_COMP"] <- "% of Salary for Administrators"
+  x[x=="debtPass"] <- "Debt Referenda Pass"
+  x[x=="overridePass"] <- "Override Referenda Pass"
+  x[x=="DEBT_ATTEMPT_CUMUL93"] <- "Cumulative Debt Attempts since '93"
+  x[x=="OVERRIDE_ATTEMPT_CUMUL93"] <- "Cumulative Override Attempts since '93"
+  x[x=="SUP_TURNOVER_PRIOR_YEAR"] <- "Superintendent Turnover Last Year"
+  return(x)
+}
+
+@
+
 <<demogCorr1, fig.cap="Correlations of Demographic Variables", fig.height=5.5, fig.width=7.5>>=
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% demogIdx)], use = "pairwise"), 3)) 
+cormat$Var1 <- varNamer(cormat$Var1)
+cormat$Var2 <- varNamer(cormat$Var2)
 
 cormat$value2 <- cut(cormat$value, 
                      breaks=c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1), 
@@ -992,8 +1047,13 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray40")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value), size = 2) + nopanel + 
-  labs(x = "", y = "")
+  geom_text(aes(label = value), size = 3) + nopanel + 
+  labs(x = "", y = "") +  
+  guides(colour = FALSE, fill = guide_legend(reverse = TRUE, 
+                                             override.aes = list(colour = NULL)))  +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 12)) +
+  scale_y_discrete(labels = function(x) str_wrap(x, width = 12))
+
 @
 
 In Figure \ref{fig:demogCorr1} I depict the correlations between key 
@@ -1010,11 +1070,11 @@ BA or above and with the proportion of owner-occupied housing. As a result,
 I drop median income in favor of these two variables in the models below. 
 
 <<fiscal1, fig.cap="Correlations of Fiscal Variables", fig.height=5.5, fig.width=7.5>>=
-
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% fiscalIdx)], 
               use = "pairwise"), 3)) 
-
+cormat$Var1 <- varNamer(cormat$Var1)
+cormat$Var2 <- varNamer(cormat$Var2)
 cormat$value2 <- cut(cormat$value, 
                      breaks=c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1), 
                      include.lowest=TRUE, 
@@ -1024,8 +1084,12 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value), size = 2)  + nopanel + 
-  labs(x = "", y = "")
+  geom_text(aes(label = value), size = 3)  + nopanel + 
+  labs(x = "", y = "") +  
+  guides(colour = FALSE, fill = guide_legend(reverse = TRUE, 
+                                             override.aes = list(colour = NULL)))+
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 12)) +
+  scale_y_discrete(labels = function(x) str_wrap(x, width = 12))
 
 @
 
@@ -1046,7 +1110,8 @@ I include only the millrate.
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% politicIdx)], 
               use = "pairwise"), 3)) 
-
+cormat$Var1 <- varNamer(cormat$Var1)
+cormat$Var2 <- varNamer(cormat$Var2)
 cormat$value2 <- cut(cormat$value, 
                      breaks=c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1), 
                      include.lowest=TRUE, 
@@ -1056,8 +1121,12 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value), size = 2)  + nopanel + 
-  labs(x = "", y = "")
+  geom_text(aes(label = value), size = 3)  + nopanel + 
+  labs(x = "", y = "") +  
+  guides(colour = FALSE, fill = guide_legend(reverse = TRUE, 
+                                             override.aes = list(colour = NULL)))+
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 12)) +
+  scale_y_discrete(labels = function(x) str_wrap(x, width = 12))
 @
 
 The political variables in Figure \ref{fig:politic1} are largely free of high 
@@ -1073,7 +1142,8 @@ policyIdx2 <- policyIdx[c(1:3, 8:9, 13:15)]
 cormat <- melt(round(cor(dist_turn[!is.na(dist_turn$turnout), 
               which(names(dist_turn) %in% policyIdx2)],  
               use = "pairwise"), 3)) 
-
+cormat$Var1 <- varNamer(cormat$Var1)
+cormat$Var2 <- varNamer(cormat$Var2)
 cormat$value2 <- cut(cormat$value, 
                      breaks=c(-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1), 
                      include.lowest=TRUE, 
@@ -1084,7 +1154,11 @@ qplot(x=Var1, y=Var2, data=cormat, fill=value2, geom="tile", color = I("gray70")
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
   geom_text(aes(label = value), size = 3)  + nopanel + 
-  labs(x = "", y = "")
+  labs(x = "", y = "") +  
+  guides(colour = FALSE, fill = guide_legend(reverse = TRUE, 
+                                             override.aes = list(colour = NULL)))+
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 12)) +
+  scale_y_discrete(labels = function(x) str_wrap(x, width = 12))
 @
 
 The story is the same for policy measures in Figure \ref{fig:policy1}. The only 
@@ -1289,13 +1363,17 @@ group factors. Thus, I explore how much additional classification power the scho
 district annual attributes provide in explaining the likelihood candidates emerge 
 or incumbents are defeated in a school board race. 
 
-<<cleanModData, results='asis'>>=
+<<distTransform, results='hide'>>=
 dist_turn$nonincumbRun <- ifelse(dist_turn$onlyIncum == 1, 0, 1)
 dist_turn$partyDivisionRecent <- log(dist_turn$partyDivisionRecent)
+@
+
+<<cleanModData, results='hide'>>=
 demogIdx <- c(demogIdx, "locale2")
 dvs <- c("contestSer", "contestMinor", "contestMinorLag", 
          "contestSerLag", "incDefeats", "onlyIncum", "incumShare", "nonincumbRun", 
-         "minBlaisLago", "turnout", "turnoutLag1", "turnoutLag2")
+         "minBlaisLago", "turnout", "turnoutLag1", "turnoutLag2", "dissatFactor_fw", 
+         "dissatFactor")
 ids <- c("distid", "year", "districtwide")
 moddat <- dist_turn[, c(dvs, ids, demogIdx, fiscalIdx, policyIdx, politicIdx)]
 
@@ -1334,10 +1412,111 @@ nums <- sapply(moddat, is.numeric)
 moddat[, nums] <- apply(moddat[, nums], 2, rescale)
 @
 
+\subsection{Dissatisfaction}
+
+<<glmmodsDF, results='hide'>>=
+moddat2 <- moddat[!is.na(moddat$dissatFactor_fw) & 
+                    !is.na(moddat$dissatFactor), ]
+
+demogsDF <- lm(dissatFactor_fw ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + locale2 + dissatFactor + year, 
+              data = moddat2) #bach and 65o switch?
+
+demogSE <- get_CL_vcov(demogsDF, moddat2$distid)
+demogsDF$se <- sqrt(diag(demogSE))
+
+politicDF <- update(demogsDF, . ~ . + overrideQues + overridePass + 
+                      debtQues + debtPass +  partyDivisionRecent +
+                    teachShareofVoters + fallTurnout + nraces) 
+
+politicSE <- get_CL_vcov(politicDF, moddat2$distid)
+politicDF$se <- sqrt(diag(politicSE))
+
+fiscalDF <- update(demogsDF, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta)
+
+fiscalSE <- get_CL_vcov(fiscalDF, moddat2$distid)
+fiscalDF$se <- sqrt(diag(fiscalSE))
+
+policyDF <- update(demogsDF, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+policySE <- get_CL_vcov(policyDF, moddat2$distid)
+policyDF$se <- sqrt(diag(policySE))
+
+fullmodDF <- update(politicDF, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta + 
+                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+fullmodSE <- get_CL_vcov(fullmodDF, moddat2$distid)
+fullmodDF$se <- sqrt(diag(fullmodSE))
+rescalenote <- "All continuous variables mean centered and 
+divided by 2 standard deviations"
+stars.note <- apsrtable:::stars.note
+coef.note <- "Year fixed effect coefficients excluded"
+
+coefnames1 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +", 
+               "\\% White", "\\% Owner Occupied",  "Exurb", "Rural", "Dissat. Lag", 
+               "Rev. Lim. Attpt.", "Rev. Lim. Pass", "Bond Attpt.", "Bond Pass", 
+               "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
+               "\\% Millrate for Schl.", "\\% Rev. Prop. Tax", "Cost per Pupil", 
+               "Bal. per Pupil", "Millrate $\\Delta$", "\\% Salary Admin.", 
+               "New Sup.", "\\% Private School", "Cumul. Bond Att.", 
+               "Cumul. Ref Att.")
+
+glmDFtab <- apsrtable(demogsDF, politicDF, fiscalDF, policyDF, fullmodDF, 
+                     se = "robust", 
+          float = "longtable",
+          label="tab:glmModsDF", 
+          omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          model.names=c("Demog.", "Politic", 
+                        "Fiscal",
+                        "Policy", "Full"), 
+          caption = "Models of Dissatisfaction Factor in School Board Elections",
+          notes = list(stars.note, rescalenote, coef.note),
+          Sweave=FALSE, digits = 3, coef.names = coefnames1, size="scriptsize", 
+          stars = "default")
+@
+
+<<lmermodsDF, results='hide'>>=
+demogsMMdf <- lmer(dissatFactor_fw ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
+              OOH_share + locale2 + dissatFactor + year + (1|distid), 
+              data = moddat) 
+
+politicMMdf <- update(demogsMMdf, . ~ . + overrideQues + overridePass + 
+                      debtQues + debtPass +   partyDivisionRecent +
+                    teachShareofVoters + fallTurnout + nwins) 
+
+fiscalMMdf <- update(demogsMMdf, . ~ . + schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta)
+
+policyMMdf <- update(demogsMMdf, . ~ . + ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+fullmodMMdf <- update(politicMMdf, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHARE + 
+                   TCEC_MEMBER + balance_member_lag + millrate_delta + 
+                    ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
+                   DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93)
+
+
+lmerDFtab <- apsrtable(demogsMMdf, politicMMdf, fiscalMMdf, policyMMdf, fullmodMMdf,
+          float = "longtable",
+          label="tab:glmerModsDF", 
+          omitcoef=list("year", 
+                        expression(grep("year", coefnames, value = TRUE))), 
+          model.names=c("Demog.", "Politic", 
+                        "Fiscal",
+                        "Policy", "Full"), 
+          caption = "Mixed Models of Dissatisfaction Factor in School Board Elections",
+          notes = list(stars.note, rescalenote),
+          Sweave=FALSE, digits = 3, coef.names = coefnames1, size="scriptsize", 
+          stars = "default")
+
+@
 \subsection{Presence of Non-incumbents}
 
 <<glmmodsNI, results='hide'>>=
-
 # moddat <- moddat[moddat$year != "2002" & moddat$year != "2003", ]
 moddat2 <- moddat[!is.na(moddat$contestSerLag), ]
 
@@ -1405,16 +1584,12 @@ glmNItab <-apsrtable(demogsNI, politicNI, fiscalNI, policyNI, fullmodNI, se = "r
 
 @
 
-
-
 <<glmermodsNI, results='asis'>>=
 library(optimx)
 ctrl2 <- glmerControl(optimizer = "optimx", calc.derivs = FALSE, 
                      optCtrl = list(method = "nlminb", starttests = FALSE, 
                                     kkt = FALSE, maxit = 4000))
 ctrl <- glmerControl(optimizer = "Nelder_Mead", calc.derivs = FALSE)
-
-
 
 demogsMMni <- glmer(nonincumbRun ~ VAP_adjLOG + per65o + PerBachelorOrAbove + per_white_all +
               OOH_share + locale2 + contestSerLag + year + (1|distid), 
@@ -1436,7 +1611,6 @@ fullmodMMni <- update(politicMMni, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SH
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, 
                    control = ctrl2)
 
-
 apsrtable(demogsMMni, politicMMni, fiscalMMni, policyMMni, fullmodMMni,
           float = "longtable",
           label="tab:glmerModsNI", 
@@ -1449,10 +1623,8 @@ apsrtable(demogsMMni, politicMMni, fiscalMMni, policyMMni, fullmodMMni,
           notes = list(stars.note, rescalenote),
           Sweave=FALSE, digits = 3, coef.names = coefnames1, size="scriptsize", 
           stars = "default")
-
 @
 
-%TODO: Explain why observations are dropped in tables above
 The models in Table \ref{tab:glmerModsNI} are disappointing overall. Not only are 
 most variables not statistically significant, many of them are not of the correct 
 sign.\footnote{The demographic variables fair poorly, although they are generally in the 
@@ -1471,7 +1643,9 @@ seats open in the race, and the dollars per pupil in the district's savings acco
 These variables are all in the correct sign with a referenda attempt increasing 
 the likelihood that non-incumbents will participate in the race, more seats open 
 leading to more non-incumbents, and a larger fund balance being associated with 
-decreased challenger participation in the election. 
+decreased challenger participation in the election.\footnote{Observations are 
+dropped from these models if they have no lagged observation of the dependent 
+variable.}
 
 In all the models, quite a bit of variation is explained by variability between 
 districts as captured by the district effects. The district intercepts vary about 
@@ -1501,7 +1675,7 @@ that communities with greater levels of education in their population are less
 likely to experience school board choice. This is counter to our expectation but 
 may reflect that these communities have greater consensus about the value and nature 
 of locally provided education. 
-%TODO: Check this after models and seeds are fixed
+
 Unsurprisingly, the measure for the number of incumbents is strongly 
 negatively related to the the likelihood the race will be contested, suggesting 
 that like incumbents in other elections, incumbents in school board races may 
@@ -1886,7 +2060,16 @@ fullmodMMd <- update(politicMMd, . ~ . +  schoolMillShare + PROPERTYTAX_REV_SHAR
                    TCEC_MEMBER + balance_member_lag + millrate_delta + 
                     ADMIN_SHARE_COMP + NEW_SUP + NonPublicPupilPer + 
                    DEBT_ATTEMPT_CUMUL93 + OVERRIDE_ATTEMPT_CUMUL93, 
-                   control = ctrl)
+                   control = ctrl2)
+
+coefnames3 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +", 
+               "\\% White", "\\% Owner Occupied", "Exurb", "Rural", 
+               "\\% Incumbents", "\\% Yes Rev. Limit", 
+               "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
+               "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
+               "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
+               "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
+               "Cumul. Override Att.")
 
 apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
           float = "longtable",
@@ -1937,6 +2120,7 @@ variables, I provide simulations from the models above that show the impact on t
 probability of contestation conditional on changes in those variables. 
 
 <<fixefplot1, eval=TRUE, fig.cap="Coefficient Plot of Coefficients for Full Models",fig.height=9.5, fig.width=8, results='hide'>>=
+set.seed(51315)
 sim1 <- FEsim(fullmodMMCon, nsims = 1000); sim1$dv <- "Contest"
 sim2 <- FEsim(fullmodMMni, nsims = 1000); sim2$dv <- "No Incumb."
 sim3 <- FEsim(fullmodMMd, nsims = 1000); sim3$dv <- "Defeat"
@@ -1951,6 +2135,7 @@ simPlot$lwr <- simPlot$meanEff - (alpha*simPlot$sdEff)
 
 simPlot$color <- "Not Sig."
 simPlot$color <- ifelse(simPlot$lwr >0 | simPlot$upr < 0, "Sig", "Not Sig.")
+simPlot <- simPlot[!simPlot$variable %in% grep("year", simPlot$variable, value=TRUE),]
 
 ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr, 
                     ymin = lwr, color = color)) + 
@@ -1962,11 +2147,7 @@ ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr,
   facet_wrap(~dv) + 
   theme_dpi(base_size=10) +theme(legend.position = "bottom") + 
   labs(x = "Variable", y = "Effect", color = "Stat. Sig.")
-
-# confint(fullmodMMni, method = "Wald", level = 0.9)
 @
-
-%TODO: Fix fixefSub1
 
 In Figure \ref{fig:fixefSub1} I provide a series of simulation results for three 
 variables. Each numbered panel represents a simulated case. Each column of panels 
@@ -1987,11 +2168,6 @@ shows the density of observed values of the x-variable.
 Taken together, each panel shows the behavior of variables in the models on 
 specific observations and allows us to answer the question -- how would contestation 
 change if the x-variable increased or decreased? 
-
-% List of effects to make plots for
-% School mill share COntest / competitive
-% VAP Contest
-% TCEC_MEMBER Competitive
 
 <<fixefSub1, fig.cap="Simulated Effect of Key Variables on Contestation Levels Across Models">>=
 seplotdf <- substEffSimFE(fullmodMMCon, "schoolMillShare", ncases = 4L, 
@@ -2025,30 +2201,30 @@ p2 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhat)) +
 seplotdf <- substEffSimFE(fullmodMMblq, "TCEC_MEMBER", ncases = 4L, 
                           unscale = moddatScale, re = TRUE)
 
-seplotdf$yhatUnscale <- exp(seplotdf[, "yhat"] * 2 * moddatScale["minBlaisLago", 2]) + 
+seplotdf$yhatUnscale <- (seplotdf[, "yhat"] * 2 * moddatScale["minBlaisLago", 2]) + 
   moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
-seplotdf$lwrUnscale <- exp(seplotdf[, "lwr"] * 2 * moddatScale["minBlaisLago", 2]) + 
+seplotdf$lwrUnscale <- (seplotdf[, "lwr"] * 2 * moddatScale["minBlaisLago", 2]) + 
   moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
-seplotdf$uprUnscale <- exp(seplotdf[, "upr"] * 2 * moddatScale["minBlaisLago", 2]) + 
+seplotdf$uprUnscale <- (seplotdf[, "upr"] * 2 * moddatScale["minBlaisLago", 2]) + 
   moddatScale["minBlaisLago", 1] # assumes first slot in mod frame is DV
 seplotdf <- seplotdf[seplotdf$uprUnscale < 100,]
-lowerBar <- exp((quantile(fitted(fullmodMMblq), prob = 0.25) * 2 * moddatScale["minBlaisLago", 2]) + 
-      moddatScale["minBlaisLago", 1])
-upperBar <- exp((quantile(fitted(fullmodMMblq), prob = 0.75) * 2 * moddatScale["minBlaisLago", 2]) + 
-      moddatScale["minBlaisLago", 1])
+lowerBar <- (quantile(fitted(fullmodMMblq), prob = 0.25) * 2 * moddatScale["minBlaisLago", 2]) + 
+      moddatScale["minBlaisLago", 1]
+upperBar <- (quantile(fitted(fullmodMMblq), prob = 0.75) * 2 * moddatScale["minBlaisLago", 2]) + 
+      moddatScale["minBlaisLago", 1]
 
-p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = exp(yhatUnscale))) +
+p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   geom_line(aes(group = caseID)) + 
-    geom_ribbon(aes(ymin=exp(lwrUnscale), ymax=ifelse(exp(uprUnscale) > 100, 
-                                                      100, exp(uprUnscale)), 
+    geom_ribbon(aes(ymin=lwrUnscale, ymax=ifelse(uprUnscale > 100, 
+                                                      100, uprUnscale), 
                     group = caseID), alpha=0.4) + 
   facet_wrap(~caseID) + 
   geom_rug(data = dist_turn, aes(x = TCEC_MEMBER, y = NULL)) + 
   geom_hline(yintercept = lowerBar, linetype = 2) + 
   geom_hline(yintercept = upperBar, linetype = 2) + 
   theme_dpi(base_size=12) + 
-  labs(x = "TCEC_MEMBER", y = "Blais-Lago", title = "BLQ Model") + 
-  scale_y_log10()
+  labs(x = "TCEC_MEMBER", y = "Blais-Lago", title = "BLQ Model") 
+  # scale_y_log10(limits=c(1, 100), breaks = c(1, 25, 50, 75, 100))
 
 grid.arrange(p1, p2, p3, nrow = 1)
 @
@@ -2098,6 +2274,8 @@ in these cases.  A similar graphic is included in the Appendix depicting the
 estimates of the year effects. 
 
 <<randomEffectplot31, eval=TRUE, fig.cap="Substantive Impact of District Intercepts">>=
+set.seed(51315)
+
 replotdf <- substEffSimRE(fullmodMMni, "distid", ncases=6, alpha = 0.1)
 replotdf$distid <- as.character(replotdf$distid)
 NIre <- ggplot(data = replotdf, aes(x = reorder(distid, -yhat), y = yhat, 
@@ -2444,29 +2622,31 @@ All analyses were done using R \citep{cran}. Source code and data available onli
 
 \subsection{Pooled GLM Model Results}
 
-\begin{tiny}
 <<printGLMni, results='asis'>>=
 glmNItab
 @
-\end{tiny}
 
-\begin{tiny}
 <<printGLMcon, results='asis'>>=
 glmContab
 @
-\end{tiny}
 
-\begin{tiny}
 <<printGLMblq, results='asis',eval=TRUE>>=
 glmBLQtab
 @
-\end{tiny}
 
-\begin{tiny}
 <<printGLMd, results='asis',eval=TRUE>>=
 glmDtab
 @
-\end{tiny}
+
+\subsection{Dissatisfaction Factor Model}
+
+<<printGLMdf, results='asis',eval=TRUE>>=
+glmDFtab
+@
+
+<<printlmerDFtab, results='asis', eval=TRUE>>=
+lmerDFtab
+@
 
 \subsection{Year Effects Across Models}
 
@@ -2546,7 +2726,7 @@ grid.arrange(p1, p2, p3, p4, ncol = 1)
 
 \subsection{Model Specification Tests}
 
-<<hausmantest, eval=TRUE, results='asis'>>=
+<<hausmantest, eval=TRUE, results='asis', cache=TRUE>>=
 phDemog1 <- phtest_glmer(demogsMMd, update(demogsD, . ~. + distid))
 phDemog2 <- phtest_glmer(demogsMMni, update(demogsNI, . ~. + distid))
 phDemog3 <- phtest_glmer(demogsMMCon, update(demogsCon, . ~. + distid))
