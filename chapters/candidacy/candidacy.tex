@@ -281,7 +281,7 @@ with each race electing multiple winners.\footnote{See Appendix \ref{app:data} f
 details about the coding of races.}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Apr 21 19:03:40 2015
+% Tue Apr 21 22:19:29 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllllllllll}
@@ -334,7 +334,7 @@ of competitiveness to understand if school district election competitiveness at 
 level is predicted by theory. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Apr 21 19:03:40 2015
+% Tue Apr 21 22:19:29 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -372,7 +372,7 @@ Table \ref{tab:icbydef} shows that in races in which
 at least one of the candidates is not an incumbent incumbent defeat is rare. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Apr 21 19:03:41 2015
+% Tue Apr 21 22:19:29 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -395,7 +395,7 @@ explain the variation in these three degrees of contestation.
 \subsubsection{Non-incumbents}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue Apr 21 19:03:41 2015
+% Tue Apr 21 22:19:29 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrll}
@@ -801,59 +801,7 @@ impact.
 
 
 
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlstd{varNamer} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)\{}
-  \hlstd{x} \hlkwb{<-} \hlkwd{as.character}\hlstd{(x)}
-  \hlstd{x[x}\hlopt{==}\hlstr{"per65o"}\hlstd{]} \hlkwb{<-} \hlstr{"% 65 +"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"PerBachelorOrAbove"}\hlstd{]} \hlkwb{<-} \hlstr{"% Bach. +"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"OOH_share"}\hlstd{]} \hlkwb{<-} \hlstr{"% Owner Occupied"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"econ_disadv_per"}\hlstd{]} \hlkwb{<-} \hlstr{"% Economic Disadv."}
-  \hlstd{x[x}\hlopt{==}\hlstr{"per_white_all"}\hlstd{]} \hlkwb{<-} \hlstr{"% White"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"NonWhitePublicPupilPer"}\hlstd{]} \hlkwb{<-} \hlstr{"% Non-white Pupils"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"VAP_adjLOG"}\hlstd{]} \hlkwb{<-} \hlstr{"Electorate Size"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"median_incomeLOG"}\hlstd{]} \hlkwb{<-} \hlstr{"Median Income"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"publicPupilCountLOG"}\hlstd{]} \hlkwb{<-} \hlstr{"Pupil Count"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"PROPERTYTAX_REV_SHARE"}\hlstd{]} \hlkwb{<-} \hlstr{"% of Revenue by Prop. Tax"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"balance_member_lag"}\hlstd{]} \hlkwb{<-} \hlstr{"Cash Reserves"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"TCEC_MEMBER"}\hlstd{]} \hlkwb{<-} \hlstr{"Total Cost to Educate"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"TEC_MEMBER"}\hlstd{]} \hlkwb{<-} \hlstr{"Total Educational Cost"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"NonSDMill"}\hlstd{]} \hlkwb{<-} \hlstr{"Non School Property Tax Rate"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"millrate"}\hlstd{]} \hlkwb{<-} \hlstr{"School District Millrate"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"schoolMillShare"}\hlstd{]} \hlkwb{<-} \hlstr{"% Property Tax for Schools"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"millrate_delta"}\hlstd{]} \hlkwb{<-} \hlstr{"Change in School Millrate"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"total_cat_aids_member"}\hlstd{]} \hlkwb{<-} \hlstr{"Total Categorical Aids"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"teachSalDiff"}\hlstd{]} \hlkwb{<-} \hlstr{"Teacher Salary - Median Income"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"eqv_taxfiler"}\hlstd{]} \hlkwb{<-} \hlstr{"Property Wealth per Taxfiler"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"recentTwoPartyShareDem"}\hlstd{]} \hlkwb{<-} \hlstr{"% Democratic"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"incumRun"}\hlstd{]} \hlkwb{<-} \hlstr{"Incumbents in Race"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"nraces"}\hlstd{]} \hlkwb{<-} \hlstr{"Number of Races"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"partyDivisionRecent"}\hlstd{]} \hlkwb{<-} \hlstr{"Party Polarization"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"nwins"}\hlstd{]} \hlkwb{<-} \hlstr{"Seats Up"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"teachShareofVoters"}\hlstd{]} \hlkwb{<-} \hlstr{"% of Electorate FTE"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"overrideYesPer"}\hlstd{]} \hlkwb{<-} \hlstr{"% for Revenue Limit Override"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"fallTurnout"}\hlstd{]} \hlkwb{<-} \hlstr{"Turnout in Last Fall election"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"NEW_SUP"}\hlstd{]} \hlkwb{<-} \hlstr{"New Superintendent"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"MATH_PROFADV_PER"}\hlstd{]} \hlkwb{<-} \hlstr{"% Proficient or Adv. Math"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"READ_PROFADV_PER"}\hlstd{]} \hlkwb{<-} \hlstr{"% Proficient or Adv. Read"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"debtFail"}\hlstd{]} \hlkwb{<-} \hlstr{"Bond Referenda Failure"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"overrideFail"}\hlstd{]} \hlkwb{<-} \hlstr{"Override Referenda Failure"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"overrideQues"}\hlstd{]} \hlkwb{<-} \hlstr{"Override Referenda Offered"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"debtQues"}\hlstd{]} \hlkwb{<-} \hlstr{"Debt Referenda Offered"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"NonPublicPupilPer"}\hlstd{]} \hlkwb{<-} \hlstr{"% Private School"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"ADMIN_SHARE"}\hlstd{]} \hlkwb{<-} \hlstr{"% of Staff Administrative"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"ADMIN_SHARE_COMP"}\hlstd{]} \hlkwb{<-} \hlstr{"% of Salary for Administrators"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"debtPass"}\hlstd{]} \hlkwb{<-} \hlstr{"Debt Referenda Pass"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"overridePass"}\hlstd{]} \hlkwb{<-} \hlstr{"Override Referenda Pass"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"DEBT_ATTEMPT_CUMUL93"}\hlstd{]} \hlkwb{<-} \hlstr{"Cumulative Debt Attempts since '93"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"OVERRIDE_ATTEMPT_CUMUL93"}\hlstd{]} \hlkwb{<-} \hlstr{"Cumulative Override Attempts since '93"}
-  \hlstd{x[x}\hlopt{==}\hlstr{"SUP_TURNOVER_PRIOR_YEAR"}\hlstd{]} \hlkwb{<-} \hlstr{"Superintendent Turnover Last Year"}
-  \hlkwd{return}\hlstd{(x)}
-\hlstd{\}}
-\end{alltt}
-\end{kframe}
-\end{knitrout}
+
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -1019,8 +967,8 @@ The model below includes a third grouping level for years.
 
 \begin{align*} 
 \Pr_{CE_{ijt}} &= \alpha_{i} + \beta X_{ijt} + \gamma_{j} + \lambda_{t} + \epsilon_{ijt}   \\ 
-\gamma_{j} &= \alpha_{j} + \epsilon_{j}
-\lambda_{t} &= \alpha_{t} + \epsilon_{t}
+\gamma_{j} &= \alpha_{j} + \epsilon_{j} \\ 
+\lambda_{t} &= \alpha_{t} + \epsilon_{t} \\
 \end{align*}
 
 This approach allows year parameters to be estimated independently without assuming 
@@ -1138,67 +1086,67 @@ or incumbents are defeated in a school board race.
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
- %                      & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
-Intercept              & 0.971 ^{**}       & 1.009 ^*          & 1.065 ^{**}       & 0.980 ^{**}       & 1.160 ^{**}      \\ 
-                       & (0.375)           & (0.403)           & (0.377)           & (0.378)           & (0.413)          \\ 
-Electorate Size        & 0.827 ^{***}      & 0.433 ^*          & 0.845 ^{***}      & 0.827 ^{***}      & 0.307            \\ 
-                       & (0.142)           & (0.209)           & (0.162)           & (0.174)           & (0.261)          \\ 
-\% Over 65            & 0.183             & 0.126             & 0.219             & 0.191             & 0.183            \\ 
-                       & (0.143)           & (0.154)           & (0.162)           & (0.149)           & (0.176)          \\ 
-\% Bachelor +         & -0.154            & -0.002            & -0.098            & -0.123            & 0.024            \\ 
-                       & (0.114)           & (0.169)           & (0.164)           & (0.117)           & (0.203)          \\ 
-\% White              & -0.159            & -0.168            & -0.104            & -0.204            & -0.225           \\ 
-                       & (0.126)           & (0.137)           & (0.150)           & (0.128)           & (0.163)          \\ 
-\% Owner Occupied     & 0.190             & 0.130             & 0.150             & 0.252 ^\dagger   & 0.154            \\ 
-                       & (0.144)           & (0.153)           & (0.156)           & (0.152)           & (0.184)          \\ 
-Exurb                  & 0.105             & 0.133             & 0.231             & 0.128             & 0.174            \\ 
-                       & (0.362)           & (0.384)           & (0.369)           & (0.362)           & (0.394)          \\ 
-Rural                  & 0.102             & 0.037             & 0.194             & 0.095             & 0.048            \\ 
-                       & (0.350)           & (0.371)           & (0.357)           & (0.352)           & (0.382)          \\ 
-Contestation Lag       & 0.468 ^{***}      & 0.496 ^{***}      & 0.468 ^{***}      & 0.464 ^{***}      & 0.486 ^{***}     \\ 
-                       & (0.094)           & (0.097)           & (0.094)           & (0.095)           & (0.098)          \\ 
-Rev. Lim. Attpt.       &                   & 0.653 ^*          &                   &                   & 0.576 ^\dagger  \\ 
-                       &                   & (0.290)           &                   &                   & (0.294)          \\ 
-Rev. Lim. Pass         &                   & -0.288            &                   &                   & -0.295           \\ 
-                       &                   & (0.345)           &                   &                   & (0.346)          \\ 
-Bond Attpt.            &                   & -0.014            &                   &                   & 0.008            \\ 
-                       &                   & (0.284)           &                   &                   & (0.287)          \\ 
-Bond Pass              &                   & -0.007            &                   &                   & -0.012           \\ 
-                       &                   & (0.349)           &                   &                   & (0.349)          \\ 
-\% Polarized          &                   & -0.079            &                   &                   & -0.082           \\ 
-                       &                   & (0.106)           &                   &                   & (0.108)          \\ 
-\% Teach. Voters      &                   & -0.049            &                   &                   & -0.108           \\ 
-                       &                   & (0.158)           &                   &                   & (0.175)          \\ 
-Fall Turnout           &                   & 0.007             &                   &                   & 0.015            \\ 
-                       &                   & (0.171)           &                   &                   & (0.182)          \\ 
-Number Seats           &                   & 1.055 ^{***}      &                   &                   & 1.064 ^{***}     \\ 
-                       &                   & (0.111)           &                   &                   & (0.111)          \\ 
-\% Millrate for Schl. &                   &                   & 0.045             &                   & -0.003           \\ 
-                       &                   &                   & (0.106)           &                   & (0.115)          \\ 
-\% Rev. Prop. Tax     &                   &                   & -0.117            &                   & -0.002           \\ 
-                       &                   &                   & (0.169)           &                   & (0.197)          \\ 
-Cost per Pupil         &                   &                   & 0.308 ^\dagger   &                   & 0.206            \\ 
-                       &                   &                   & (0.186)           &                   & (0.202)          \\ 
-Bal. per Pupil         &                   &                   & -0.264 ^\dagger  &                   & -0.350 ^*        \\ 
-                       &                   &                   & (0.138)           &                   & (0.146)          \\ 
-Millrate $\Delta$     &                   &                   & 0.026             &                   & 0.021            \\ 
-                       &                   &                   & (0.102)           &                   & (0.105)          \\ 
-\% Salary Admin.      &                   &                   &                   & -0.013            & -0.080           \\ 
-                       &                   &                   &                   & (0.124)           & (0.130)          \\ 
-New Sup.               &                   &                   &                   & 0.168             & 0.163            \\ 
-                       &                   &                   &                   & (0.133)           & (0.136)          \\ 
-\% Private School     &                   &                   &                   & -0.102            & -0.079           \\ 
-                       &                   &                   &                   & (0.117)           & (0.129)          \\ 
-Cumul. Bond Att.       &                   &                   &                   & -0.101            & -0.041           \\ 
-                       &                   &                   &                   & (0.125)           & (0.135)          \\ 
-Cumul. Ref Att.        &                   &                   &                   & 0.271 ^*          & 0.158            \\ 
-                       &                   &                   &                   & (0.126)           & (0.139)           \\
- $N$                    & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
-AIC                    & 3029.546          & 2938.902          & 3033.456          & 3032.160          & 2948.712         \\ 
-N Groups               & 310               & 310               & 310               & 310               & 310              \\ 
-Group Names            & distid            & distid            & distid            & distid            & distid           \\ 
-Group:distid Effs.     & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
-Group:distid Var.      & 0.478             & 0.515             & 0.459             & 0.46              & 0.5               \\ \hline
+ %                  & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
+Intercept          & 0.971 ^{**}       & 1.009 ^*          & 1.065 ^{**}       & 0.980 ^{**}       & 1.160 ^{**}      \\ 
+                   & (0.375)           & (0.403)           & (0.377)           & (0.378)           & (0.413)          \\ 
+Electorate Size    & 0.827 ^{***}      & 0.433 ^*          & 0.845 ^{***}      & 0.827 ^{***}      & 0.307            \\ 
+                   & (0.142)           & (0.209)           & (0.162)           & (0.174)           & (0.261)          \\ 
+\% Over 65        & 0.183             & 0.126             & 0.219             & 0.191             & 0.183            \\ 
+                   & (0.143)           & (0.154)           & (0.162)           & (0.149)           & (0.176)          \\ 
+\% Bachelor +     & -0.154            & -0.002            & -0.098            & -0.123            & 0.024            \\ 
+                   & (0.114)           & (0.169)           & (0.164)           & (0.117)           & (0.203)          \\ 
+\% White          & -0.159            & -0.168            & -0.104            & -0.204            & -0.225           \\ 
+                   & (0.126)           & (0.137)           & (0.150)           & (0.128)           & (0.163)          \\ 
+\% Owner Occupied & 0.190             & 0.130             & 0.150             & 0.252 ^\dagger   & 0.154            \\ 
+                   & (0.144)           & (0.153)           & (0.156)           & (0.152)           & (0.184)          \\ 
+Exurb              & 0.105             & 0.133             & 0.231             & 0.128             & 0.174            \\ 
+                   & (0.362)           & (0.384)           & (0.369)           & (0.362)           & (0.394)          \\ 
+Rural              & 0.102             & 0.037             & 0.194             & 0.095             & 0.048            \\ 
+                   & (0.350)           & (0.371)           & (0.357)           & (0.352)           & (0.382)          \\ 
+Contest. Lag       & 0.468 ^{***}      & 0.496 ^{***}      & 0.468 ^{***}      & 0.464 ^{***}      & 0.486 ^{***}     \\ 
+                   & (0.094)           & (0.097)           & (0.094)           & (0.095)           & (0.098)          \\ 
+Rev. Lim. Attpt.   &                   & 0.653 ^*          &                   &                   & 0.576 ^\dagger  \\ 
+                   &                   & (0.290)           &                   &                   & (0.294)          \\ 
+Rev. Lim. Pass     &                   & -0.288            &                   &                   & -0.295           \\ 
+                   &                   & (0.345)           &                   &                   & (0.346)          \\ 
+Bond Attpt.        &                   & -0.014            &                   &                   & 0.008            \\ 
+                   &                   & (0.284)           &                   &                   & (0.287)          \\ 
+Bond Pass          &                   & -0.007            &                   &                   & -0.012           \\ 
+                   &                   & (0.349)           &                   &                   & (0.349)          \\ 
+\% Polarized      &                   & -0.079            &                   &                   & -0.082           \\ 
+                   &                   & (0.106)           &                   &                   & (0.108)          \\ 
+\% Teach. Voters  &                   & -0.049            &                   &                   & -0.108           \\ 
+                   &                   & (0.158)           &                   &                   & (0.175)          \\ 
+Fall Turnout       &                   & 0.007             &                   &                   & 0.015            \\ 
+                   &                   & (0.171)           &                   &                   & (0.182)          \\ 
+Number Seats       &                   & 1.055 ^{***}      &                   &                   & 1.064 ^{***}     \\ 
+                   &                   & (0.111)           &                   &                   & (0.111)          \\ 
+\% Tax for Schl.  &                   &                   & 0.045             &                   & -0.003           \\ 
+                   &                   &                   & (0.106)           &                   & (0.115)          \\ 
+\% Rev. Prop. Tax &                   &                   & -0.117            &                   & -0.002           \\ 
+                   &                   &                   & (0.169)           &                   & (0.197)          \\ 
+Cost per Pupil     &                   &                   & 0.308 ^\dagger   &                   & 0.206            \\ 
+                   &                   &                   & (0.186)           &                   & (0.202)          \\ 
+Bal. per Pupil     &                   &                   & -0.264 ^\dagger  &                   & -0.350 ^*        \\ 
+                   &                   &                   & (0.138)           &                   & (0.146)          \\ 
+Millrate $\Delta$ &                   &                   & 0.026             &                   & 0.021            \\ 
+                   &                   &                   & (0.102)           &                   & (0.105)          \\ 
+\% Salary Admin.  &                   &                   &                   & -0.013            & -0.080           \\ 
+                   &                   &                   &                   & (0.124)           & (0.130)          \\ 
+New Sup.           &                   &                   &                   & 0.168             & 0.163            \\ 
+                   &                   &                   &                   & (0.133)           & (0.136)          \\ 
+\% Priv. School   &                   &                   &                   & -0.102            & -0.079           \\ 
+                   &                   &                   &                   & (0.117)           & (0.129)          \\ 
+Cumul. Bond Att.   &                   &                   &                   & -0.101            & -0.041           \\ 
+                   &                   &                   &                   & (0.125)           & (0.135)          \\ 
+Cumul. Ref Att.    &                   &                   &                   & 0.271 ^*          & 0.158            \\ 
+                   &                   &                   &                   & (0.126)           & (0.139)           \\
+ $N$                & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
+AIC                & 3029.546          & 2938.902          & 3033.456          & 3032.160          & 2948.712         \\ 
+N Groups           & 310               & 310               & 310               & 310               & 310              \\ 
+Group Names        & distid            & distid            & distid            & distid            & distid           \\ 
+Group:distid Effs. & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
+Group:distid Var.  & 0.478             & 0.515             & 0.459             & 0.46              & 0.5               \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables mean centered and 
 divided by 2 standard deviations}} 
@@ -1286,69 +1234,69 @@ rates rise.
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
- %                      & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
-Intercept              & 0.880 ^*          & 0.379             & 0.941 ^*          & 1.063 ^*          & 0.580            \\ 
-                       & (0.416)           & (0.431)           & (0.421)           & (0.423)           & (0.447)          \\ 
-Electorate Size        & 1.065 ^{***}      & 1.571 ^{***}      & 0.847 ^{***}      & 0.941 ^{***}      & 1.187 ^{***}     \\ 
-                       & (0.169)           & (0.237)           & (0.193)           & (0.204)           & (0.295)          \\ 
-\% Over 65            & 0.150             & 0.301 ^\dagger   & 0.444 ^*          & 0.292             & 0.579 ^{**}      \\ 
-                       & (0.171)           & (0.177)           & (0.196)           & (0.180)           & (0.203)          \\ 
-\% Bachelor +         & -0.350 ^{**}      & -0.314            & 0.009             & -0.333 ^*         & -0.020           \\ 
-                       & (0.135)           & (0.193)           & (0.202)           & (0.139)           & (0.239)          \\ 
-\% White              & 0.077             & 0.146             & -0.061            & 0.045             & -0.020           \\ 
-                       & (0.130)           & (0.135)           & (0.167)           & (0.132)           & (0.169)          \\ 
-\% Owner Occupied     & 0.075             & 0.109             & -0.128            & 0.184             & 0.070            \\ 
-                       & (0.171)           & (0.171)           & (0.186)           & (0.180)           & (0.209)          \\ 
-Exurb                  & -0.090            & 0.245             & -0.273            & -0.257            & -0.119           \\ 
-                       & (0.397)           & (0.407)           & (0.407)           & (0.401)           & (0.421)          \\ 
-Rural                  & 0.193             & 0.512             & -0.023            & 0.011             & 0.107            \\ 
-                       & (0.388)           & (0.395)           & (0.397)           & (0.393)           & (0.412)          \\ 
-Lagged Contestation    & 0.226 ^*          & 0.214 ^\dagger   & 0.212 ^\dagger   & 0.229 ^*          & 0.200 ^\dagger  \\ 
-                       & (0.111)           & (0.112)           & (0.111)           & (0.111)           & (0.113)          \\ 
-\% Incumbents         &                   & -0.308 ^\dagger  &                   &                   & -0.321 ^*        \\ 
-                       &                   & (0.160)           &                   &                   & (0.161)          \\ 
-Override Attpt.        &                   & 0.252             &                   &                   & 0.262            \\ 
-                       &                   & (0.284)           &                   &                   & (0.290)          \\ 
-Override Pass          &                   & -0.023            &                   &                   & 0.004            \\ 
-                       &                   & (0.350)           &                   &                   & (0.352)          \\ 
-Debt Ques.             &                   & 0.540             &                   &                   & 0.561            \\ 
-                       &                   & (0.346)           &                   &                   & (0.355)          \\ 
-Debt Pass              &                   & -0.260            &                   &                   & -0.306           \\ 
-                       &                   & (0.425)           &                   &                   & (0.430)          \\ 
-\% Polarized          &                   & 0.096             &                   &                   & 0.135            \\ 
-                       &                   & (0.117)           &                   &                   & (0.119)          \\ 
-\% Teach. Voters      &                   & 0.547 ^{**}       &                   &                   & 0.409 ^\dagger  \\ 
-                       &                   & (0.191)           &                   &                   & (0.213)          \\ 
-Fall Turnout           &                   & -0.133            &                   &                   & -0.263           \\ 
-                       &                   & (0.201)           &                   &                   & (0.216)          \\ 
-Number Seats           &                   & -0.335 ^{**}      &                   &                   & -0.290 ^*        \\ 
-                       &                   & (0.112)           &                   &                   & (0.114)          \\ 
-\% Millrate for Schl. &                   &                   & 0.315 ^*          &                   & 0.269 ^*         \\ 
-                       &                   &                   & (0.132)           &                   & (0.136)          \\ 
-\% Revenue Prop. Tax  &                   &                   & -0.394 ^\dagger  &                   & -0.168           \\ 
-                       &                   &                   & (0.208)           &                   & (0.233)          \\ 
-Cost per Pupil         &                   &                   & -0.369            &                   & -0.389           \\ 
-                       &                   &                   & (0.231)           &                   & (0.240)          \\ 
-Balance per Pupil      &                   &                   & -0.066            &                   & 0.007            \\ 
-                       &                   &                   & (0.170)           &                   & (0.172)          \\ 
-Millrate $\Delta$     &                   &                   & -0.030            &                   & -0.022           \\ 
-                       &                   &                   & (0.118)           &                   & (0.119)          \\ 
-\% Salary - Admin.    &                   &                   &                   & -0.141            & -0.097           \\ 
-                       &                   &                   &                   & (0.150)           & (0.152)          \\ 
-New Superintendent     &                   &                   &                   & -0.106            & -0.099           \\ 
-                       &                   &                   &                   & (0.147)           & (0.148)          \\ 
-\% Private School     &                   &                   &                   & -0.259 ^\dagger  & -0.168           \\ 
-                       &                   &                   &                   & (0.140)           & (0.148)          \\ 
-Cumul. Bond Att.       &                   &                   &                   & 0.289 ^\dagger   & 0.186            \\ 
-                       &                   &                   &                   & (0.153)           & (0.157)          \\ 
-Cumul. Override Att.   &                   &                   &                   & -0.041            & -0.045           \\ 
-                       &                   &                   &                   & (0.137)           & (0.146)           \\
- $N$                    & 2010              & 2010              & 2010              & 2010              & 2010             \\ 
-AIC                    & 2247.656          & 2237.377          & 2245.796          & 2249.367          & 2245.032         \\ 
-N Groups               & 310               & 310               & 310               & 310               & 310              \\ 
-Group Names            & distid            & distid            & distid            & distid            & distid           \\ 
-Group:distid Effs.     & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
-Group:distid Var.      & 0.569             & 0.527             & 0.562             & 0.556             & 0.529             \\ \hline
+ %                     & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
+Intercept             & 0.880 ^*          & 0.379             & 0.941 ^*          & 1.063 ^*          & 0.580            \\ 
+                      & (0.416)           & (0.431)           & (0.421)           & (0.423)           & (0.447)          \\ 
+Electorate Size       & 1.065 ^{***}      & 1.571 ^{***}      & 0.847 ^{***}      & 0.941 ^{***}      & 1.187 ^{***}     \\ 
+                      & (0.169)           & (0.237)           & (0.193)           & (0.204)           & (0.295)          \\ 
+\% Over 65           & 0.150             & 0.301 ^\dagger   & 0.444 ^*          & 0.292             & 0.579 ^{**}      \\ 
+                      & (0.171)           & (0.177)           & (0.196)           & (0.180)           & (0.203)          \\ 
+\% Bachelor +        & -0.350 ^{**}      & -0.314            & 0.009             & -0.333 ^*         & -0.020           \\ 
+                      & (0.135)           & (0.193)           & (0.202)           & (0.139)           & (0.239)          \\ 
+\% White             & 0.077             & 0.146             & -0.061            & 0.045             & -0.020           \\ 
+                      & (0.130)           & (0.135)           & (0.167)           & (0.132)           & (0.169)          \\ 
+\% Owner Occupied    & 0.075             & 0.109             & -0.128            & 0.184             & 0.070            \\ 
+                      & (0.171)           & (0.171)           & (0.186)           & (0.180)           & (0.209)          \\ 
+Exurb                 & -0.090            & 0.245             & -0.273            & -0.257            & -0.119           \\ 
+                      & (0.397)           & (0.407)           & (0.407)           & (0.401)           & (0.421)          \\ 
+Rural                 & 0.193             & 0.512             & -0.023            & 0.011             & 0.107            \\ 
+                      & (0.388)           & (0.395)           & (0.397)           & (0.393)           & (0.412)          \\ 
+Lag. Contest.         & 0.226 ^*          & 0.214 ^\dagger   & 0.212 ^\dagger   & 0.229 ^*          & 0.200 ^\dagger  \\ 
+                      & (0.111)           & (0.112)           & (0.111)           & (0.111)           & (0.113)          \\ 
+\% Incumbents        &                   & -0.308 ^\dagger  &                   &                   & -0.321 ^*        \\ 
+                      &                   & (0.160)           &                   &                   & (0.161)          \\ 
+Override Attpt.       &                   & 0.252             &                   &                   & 0.262            \\ 
+                      &                   & (0.284)           &                   &                   & (0.290)          \\ 
+Override Pass         &                   & -0.023            &                   &                   & 0.004            \\ 
+                      &                   & (0.350)           &                   &                   & (0.352)          \\ 
+Debt Ques.            &                   & 0.540             &                   &                   & 0.561            \\ 
+                      &                   & (0.346)           &                   &                   & (0.355)          \\ 
+Debt Pass             &                   & -0.260            &                   &                   & -0.306           \\ 
+                      &                   & (0.425)           &                   &                   & (0.430)          \\ 
+\% Polarized         &                   & 0.096             &                   &                   & 0.135            \\ 
+                      &                   & (0.117)           &                   &                   & (0.119)          \\ 
+\% Teach. Voters     &                   & 0.547 ^{**}       &                   &                   & 0.409 ^\dagger  \\ 
+                      &                   & (0.191)           &                   &                   & (0.213)          \\ 
+Fall Turnout          &                   & -0.133            &                   &                   & -0.263           \\ 
+                      &                   & (0.201)           &                   &                   & (0.216)          \\ 
+Number Seats          &                   & -0.335 ^{**}      &                   &                   & -0.290 ^*        \\ 
+                      &                   & (0.112)           &                   &                   & (0.114)          \\ 
+\% Tax for Schl.     &                   &                   & 0.315 ^*          &                   & 0.269 ^*         \\ 
+                      &                   &                   & (0.132)           &                   & (0.136)          \\ 
+\% Revenue Prop. Tax &                   &                   & -0.394 ^\dagger  &                   & -0.168           \\ 
+                      &                   &                   & (0.208)           &                   & (0.233)          \\ 
+Cost per Pupil        &                   &                   & -0.369            &                   & -0.389           \\ 
+                      &                   &                   & (0.231)           &                   & (0.240)          \\ 
+Balance per Pupil     &                   &                   & -0.066            &                   & 0.007            \\ 
+                      &                   &                   & (0.170)           &                   & (0.172)          \\ 
+Millrate $\Delta$    &                   &                   & -0.030            &                   & -0.022           \\ 
+                      &                   &                   & (0.118)           &                   & (0.119)          \\ 
+\% Salary - Admin.   &                   &                   &                   & -0.141            & -0.097           \\ 
+                      &                   &                   &                   & (0.150)           & (0.152)          \\ 
+New Sup.              &                   &                   &                   & -0.106            & -0.099           \\ 
+                      &                   &                   &                   & (0.147)           & (0.148)          \\ 
+\% Priv. School      &                   &                   &                   & -0.259 ^\dagger  & -0.168           \\ 
+                      &                   &                   &                   & (0.140)           & (0.148)          \\ 
+Cumul. Bond Att.      &                   &                   &                   & 0.289 ^\dagger   & 0.186            \\ 
+                      &                   &                   &                   & (0.153)           & (0.157)          \\ 
+Cumul. Override Att.  &                   &                   &                   & -0.041            & -0.045           \\ 
+                      &                   &                   &                   & (0.137)           & (0.146)           \\
+ $N$                   & 2010              & 2010              & 2010              & 2010              & 2010             \\ 
+AIC                   & 2247.656          & 2237.377          & 2245.796          & 2249.367          & 2245.032         \\ 
+N Groups              & 310               & 310               & 310               & 310               & 310              \\ 
+Group Names           & distid            & distid            & distid            & distid            & distid           \\ 
+Group:distid Effs.    & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
+Group:distid Var.     & 0.569             & 0.527             & 0.562             & 0.556             & 0.529             \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
@@ -1396,64 +1344,64 @@ are less competitive because no challengers ever emerge in the first place.
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
- %                      & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
-Intercept              & 0.101             & 0.006             & 0.128             & 0.122             & 0.015            \\ 
-                       & (0.099)           & (0.074)           & (0.098)           & (0.101)           & (0.074)          \\ 
-Electorate Size        & 0.183 ^{***}      & 0.250 ^{***}      & 0.107 ^*          & 0.215 ^{***}      & 0.245 ^{***}     \\ 
-                       & (0.045)           & (0.042)           & (0.048)           & (0.052)           & (0.051)          \\ 
-\% Over 65            & -0.003            & 0.002             & 0.086 ^\dagger   & 0.024             & 0.059            \\ 
-                       & (0.045)           & (0.033)           & (0.049)           & (0.046)           & (0.036)          \\ 
-\% Bachelor +         & -0.079 ^*         & -0.121 ^{**}      & 0.007             & -0.073 ^\dagger  & -0.038           \\ 
-                       & (0.036)           & (0.035)           & (0.048)           & (0.036)           & (0.042)          \\ 
-\% White              & 0.032             & -0.012            & -0.027            & 0.026             & -0.036           \\ 
-                       & (0.038)           & (0.028)           & (0.042)           & (0.039)           & (0.031)          \\ 
-\% Owner Occupied     & 0.019             & 0.038             & -0.037            & 0.046             & 0.012            \\ 
-                       & (0.046)           & (0.033)           & (0.048)           & (0.048)           & (0.038)          \\ 
-Exurb                  & -0.103            & -0.015            & -0.174 ^\dagger  & -0.115            & -0.063           \\ 
-                       & (0.102)           & (0.072)           & (0.101)           & (0.103)           & (0.072)          \\ 
-Rural                  & -0.063            & 0.040             & -0.146            & -0.077            & -0.016           \\ 
-                       & (0.099)           & (0.070)           & (0.099)           & (0.100)           & (0.071)          \\ 
-Major Contestation Lag & -0.000            & -0.006            & -0.002            & -0.001            & -0.006           \\ 
-                       & (0.018)           & (0.017)           & (0.018)           & (0.018)           & (0.017)          \\ 
-\% Incumbents         &                   & -0.282 ^{***}     &                   &                   & -0.283 ^{***}    \\ 
-                       &                   & (0.016)           &                   &                   & (0.016)          \\ 
-\% Yes Rev. Limit     &                   & 0.026 ^\dagger   &                   &                   & 0.038 ^*         \\ 
-                       &                   & (0.016)           &                   &                   & (0.016)          \\ 
-\% Polarized          &                   & -0.011            &                   &                   & -0.006           \\ 
-                       &                   & (0.018)           &                   &                   & (0.018)          \\ 
-\% Teach. Voters      &                   & 0.042             &                   &                   & 0.019            \\ 
-                       &                   & (0.033)           &                   &                   & (0.036)          \\ 
-Fall Turnout           &                   & 0.028             &                   &                   & 0.014            \\ 
-                       &                   & (0.035)           &                   &                   & (0.037)          \\ 
-Number Seats           &                   & -0.373 ^{***}     &                   &                   & -0.368 ^{***}    \\ 
-                       &                   & (0.021)           &                   &                   & (0.021)          \\ 
-\% Millrate for Schl. &                   &                   & 0.097 ^{**}       &                   & 0.082 ^{**}      \\ 
-                       &                   &                   & (0.032)           &                   & (0.024)          \\ 
-\% Revenue Prop. Tax  &                   &                   & -0.086 ^\dagger  &                   & -0.082 ^\dagger \\ 
-                       &                   &                   & (0.050)           &                   & (0.041)          \\ 
-Cost per Pupil         &                   &                   & -0.148 ^{**}      &                   & -0.104 ^*        \\ 
-                       &                   &                   & (0.047)           &                   & (0.040)          \\ 
-Balance per Pupil      &                   &                   & -0.028            &                   & 0.039            \\ 
-                       &                   &                   & (0.033)           &                   & (0.028)          \\ 
-Millrate $\Delta$     &                   &                   & 0.021             &                   & 0.018            \\ 
-                       &                   &                   & (0.019)           &                   & (0.017)          \\ 
-\% Salary - Admin.    &                   &                   &                   & 0.023             & 0.050 ^\dagger  \\ 
-                       &                   &                   &                   & (0.029)           & (0.025)          \\ 
-New Superintendent     &                   &                   &                   & 0.010             & 0.001            \\ 
-                       &                   &                   &                   & (0.023)           & (0.022)          \\ 
-\% Private School     &                   &                   &                   & -0.070 ^\dagger  & -0.035           \\ 
-                       &                   &                   &                   & (0.037)           & (0.027)          \\ 
-Cumul. Bond Att.       &                   &                   &                   & 0.034             & -0.006           \\ 
-                       &                   &                   &                   & (0.037)           & (0.027)          \\ 
-Cumul. Override Att.   &                   &                   &                   & -0.042            & -0.045 ^\dagger \\ 
-                       &                   &                   &                   & (0.033)           & (0.025)           \\
- $N$                    & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
-AIC                    & 3492.442          & 3018.501          & 3490.907          & 3511.649          & 3037.717         \\ 
-N Groups               & 310               & 310               & 310               & 310               & 310              \\ 
-Group Names            & distid            & distid            & distid            & distid            & distid           \\ 
-Group:distid Effs.     & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
-Group:distid Var.      & 0.27              & 0.161             & 0.262             & 0.269             & 0.153            \\ 
-Sigma                  & 0.4152            & 0.392             & 0.4146            & 0.4152            & 0.3913            \\ \hline
+ %                     & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
+Intercept             & 0.101             & 0.006             & 0.128             & 0.122             & 0.015            \\ 
+                      & (0.099)           & (0.074)           & (0.098)           & (0.101)           & (0.074)          \\ 
+Electorate Size       & 0.183 ^{***}      & 0.250 ^{***}      & 0.107 ^*          & 0.215 ^{***}      & 0.245 ^{***}     \\ 
+                      & (0.045)           & (0.042)           & (0.048)           & (0.052)           & (0.051)          \\ 
+\% Over 65           & -0.003            & 0.002             & 0.086 ^\dagger   & 0.024             & 0.059            \\ 
+                      & (0.045)           & (0.033)           & (0.049)           & (0.046)           & (0.036)          \\ 
+\% Bachelor +        & -0.079 ^*         & -0.121 ^{**}      & 0.007             & -0.073 ^\dagger  & -0.038           \\ 
+                      & (0.036)           & (0.035)           & (0.048)           & (0.036)           & (0.042)          \\ 
+\% White             & 0.032             & -0.012            & -0.027            & 0.026             & -0.036           \\ 
+                      & (0.038)           & (0.028)           & (0.042)           & (0.039)           & (0.031)          \\ 
+\% Owner Occupied    & 0.019             & 0.038             & -0.037            & 0.046             & 0.012            \\ 
+                      & (0.046)           & (0.033)           & (0.048)           & (0.048)           & (0.038)          \\ 
+Exurb                 & -0.103            & -0.015            & -0.174 ^\dagger  & -0.115            & -0.063           \\ 
+                      & (0.102)           & (0.072)           & (0.101)           & (0.103)           & (0.072)          \\ 
+Rural                 & -0.063            & 0.040             & -0.146            & -0.077            & -0.016           \\ 
+                      & (0.099)           & (0.070)           & (0.099)           & (0.100)           & (0.071)          \\ 
+Contest. Lag          & -0.000            & -0.006            & -0.002            & -0.001            & -0.006           \\ 
+                      & (0.018)           & (0.017)           & (0.018)           & (0.018)           & (0.017)          \\ 
+\% Incumbents        &                   & -0.282 ^{***}     &                   &                   & -0.283 ^{***}    \\ 
+                      &                   & (0.016)           &                   &                   & (0.016)          \\ 
+\% Yes Rev. Limit    &                   & 0.026 ^\dagger   &                   &                   & 0.038 ^*         \\ 
+                      &                   & (0.016)           &                   &                   & (0.016)          \\ 
+\% Polarized         &                   & -0.011            &                   &                   & -0.006           \\ 
+                      &                   & (0.018)           &                   &                   & (0.018)          \\ 
+\% Teach. Voters     &                   & 0.042             &                   &                   & 0.019            \\ 
+                      &                   & (0.033)           &                   &                   & (0.036)          \\ 
+Fall Turnout          &                   & 0.028             &                   &                   & 0.014            \\ 
+                      &                   & (0.035)           &                   &                   & (0.037)          \\ 
+Number Seats          &                   & -0.373 ^{***}     &                   &                   & -0.368 ^{***}    \\ 
+                      &                   & (0.021)           &                   &                   & (0.021)          \\ 
+\% Tax for Schl.     &                   &                   & 0.097 ^{**}       &                   & 0.082 ^{**}      \\ 
+                      &                   &                   & (0.032)           &                   & (0.024)          \\ 
+\% Revenue Prop. Tax &                   &                   & -0.086 ^\dagger  &                   & -0.082 ^\dagger \\ 
+                      &                   &                   & (0.050)           &                   & (0.041)          \\ 
+Cost per Pupil        &                   &                   & -0.148 ^{**}      &                   & -0.104 ^*        \\ 
+                      &                   &                   & (0.047)           &                   & (0.040)          \\ 
+Balance per Pupil     &                   &                   & -0.028            &                   & 0.039            \\ 
+                      &                   &                   & (0.033)           &                   & (0.028)          \\ 
+Millrate $\Delta$    &                   &                   & 0.021             &                   & 0.018            \\ 
+                      &                   &                   & (0.019)           &                   & (0.017)          \\ 
+\% Salary - Admin.   &                   &                   &                   & 0.023             & 0.050 ^\dagger  \\ 
+                      &                   &                   &                   & (0.029)           & (0.025)          \\ 
+New Sup.              &                   &                   &                   & 0.010             & 0.001            \\ 
+                      &                   &                   &                   & (0.023)           & (0.022)          \\ 
+\% Priv. School      &                   &                   &                   & -0.070 ^\dagger  & -0.035           \\ 
+                      &                   &                   &                   & (0.037)           & (0.027)          \\ 
+Cumul. Bond Att.      &                   &                   &                   & 0.034             & -0.006           \\ 
+                      &                   &                   &                   & (0.037)           & (0.027)          \\ 
+Cumul. Override Att.  &                   &                   &                   & -0.042            & -0.045 ^\dagger \\ 
+                      &                   &                   &                   & (0.033)           & (0.025)           \\
+ $N$                   & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
+AIC                   & 3492.442          & 3018.501          & 3490.907          & 3511.649          & 3037.717         \\ 
+N Groups              & 310               & 310               & 310               & 310               & 310              \\ 
+Group Names           & distid            & distid            & distid            & distid            & distid           \\ 
+Group:distid Effs.    & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
+Group:distid Var.     & 0.27              & 0.161             & 0.262             & 0.269             & 0.153            \\ 
+Sigma                 & 0.4152            & 0.392             & 0.4146            & 0.4152            & 0.3913            \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
@@ -1489,61 +1437,61 @@ opportunity for incumbent defeat election to election.
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
- %                      & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
-Intercept              & -1.095 ^{***}     & -0.965 ^{**}      & -1.024 ^{**}      & -1.109 ^{***}     & -0.950 ^{**}     \\ 
-                       & (0.327)           & (0.343)           & (0.333)           & (0.332)           & (0.356)          \\ 
-Electorate Size        & 0.351 ^*          & 0.229             & 0.344 ^*          & 0.235             & 0.146            \\ 
-                       & (0.146)           & (0.207)           & (0.169)           & (0.182)           & (0.255)          \\ 
-\% Over 65            & 0.077             & 0.002             & 0.047             & 0.028             & -0.026           \\ 
-                       & (0.157)           & (0.164)           & (0.176)           & (0.163)           & (0.184)          \\ 
-\% Bachelor +         & -0.305 ^*         & -0.326 ^\dagger  & -0.419 ^*         & -0.337 ^{**}      & -0.422 ^\dagger \\ 
-                       & (0.129)           & (0.188)           & (0.189)           & (0.131)           & (0.226)          \\ 
-\% White              & -0.038            & -0.120            & -0.081            & -0.026            & -0.132           \\ 
-                       & (0.120)           & (0.130)           & (0.155)           & (0.121)           & (0.159)          \\ 
-\% Owner Occupied     & -0.001            & 0.020             & 0.053             & -0.082            & -0.055           \\ 
-                       & (0.161)           & (0.166)           & (0.178)           & (0.169)           & (0.199)          \\ 
-Exurb                  & 0.329             & 0.276             & 0.339             & 0.321             & 0.286            \\ 
-                       & (0.291)           & (0.301)           & (0.302)           & (0.293)           & (0.311)          \\ 
-Rural                  & 0.166             & 0.135             & 0.179             & 0.153             & 0.140            \\ 
-                       & (0.283)           & (0.291)           & (0.291)           & (0.286)           & (0.303)          \\ 
-\% Incumbents         &                   & 0.605 ^{**}       &                   &                   & 0.617 ^{**}      \\ 
-                       &                   & (0.200)           &                   &                   & (0.201)          \\ 
-\% Yes Rev. Limit     &                   & 0.194 ^\dagger   &                   &                   & 0.206 ^\dagger  \\ 
-                       &                   & (0.101)           &                   &                   & (0.105)          \\ 
-\% Polarized          &                   & -0.037            &                   &                   & -0.051           \\ 
-                       &                   & (0.110)           &                   &                   & (0.111)          \\ 
-\% Teach. Voters      &                   & -0.197            &                   &                   & -0.156           \\ 
-                       &                   & (0.185)           &                   &                   & (0.205)          \\ 
-Fall Turnout           &                   & 0.037             &                   &                   & 0.069            \\ 
-                       &                   & (0.193)           &                   &                   & (0.209)          \\ 
-Number Seats           &                   & -0.059            &                   &                   & -0.051           \\ 
-                       &                   & (0.104)           &                   &                   & (0.105)          \\ 
-\% Millrate for Schl. &                   &                   & -0.042            &                   & 0.025            \\ 
-                       &                   &                   & (0.125)           &                   & (0.134)          \\ 
-\% Revenue Prop. Tax  &                   &                   & 0.174             &                   & 0.072            \\ 
-                       &                   &                   & (0.195)           &                   & (0.219)          \\ 
-Cost per Pupil         &                   &                   & 0.064             &                   & 0.059            \\ 
-                       &                   &                   & (0.226)           &                   & (0.241)          \\ 
-Balance per Pupil      &                   &                   & -0.163            &                   & -0.157           \\ 
-                       &                   &                   & (0.147)           &                   & (0.149)          \\ 
-Millrate $\Delta$     &                   &                   & -0.080            &                   & -0.071           \\ 
-                       &                   &                   & (0.124)           &                   & (0.124)          \\ 
-\% Salary - Admin.    &                   &                   &                   & -0.025            & -0.033           \\ 
-                       &                   &                   &                   & (0.150)           & (0.152)          \\ 
-New Superintendent     &                   &                   &                   & 0.104             & 0.107            \\ 
-                       &                   &                   &                   & (0.142)           & (0.143)          \\ 
-\% Private School     &                   &                   &                   & 0.220 ^\dagger   & 0.211            \\ 
-                       &                   &                   &                   & (0.133)           & (0.139)          \\ 
-Cumul. Bond Att.       &                   &                   &                   & 0.031             & 0.044            \\ 
-                       &                   &                   &                   & (0.125)           & (0.128)          \\ 
-Cumul. Override Att.   &                   &                   &                   & 0.017             & -0.053           \\ 
-                       &                   &                   &                   & (0.112)           & (0.120)           \\
- $N$                    & 1968              & 1968              & 1968              & 1968              & 1968             \\ 
-AIC                    & 2282.128          & 2279.538          & 2289.955          & 2288.807          & 2294.558         \\ 
-N Groups               & 309               & 309               & 309               & 309               & 309              \\ 
-Group Names            & distid            & distid            & distid            & distid            & distid           \\ 
-Group:distid Effs.     & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
-Group:distid Var.      & 0.26              & 0.259             & 0.257             & 0.24              & 0.238             \\ \hline
+ %                     & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
+Intercept             & -1.095 ^{***}     & -0.965 ^{**}      & -1.024 ^{**}      & -1.109 ^{***}     & -0.950 ^{**}     \\ 
+                      & (0.327)           & (0.343)           & (0.333)           & (0.332)           & (0.356)          \\ 
+Electorate Size       & 0.351 ^*          & 0.229             & 0.344 ^*          & 0.235             & 0.146            \\ 
+                      & (0.146)           & (0.207)           & (0.169)           & (0.182)           & (0.255)          \\ 
+\% Over 65           & 0.077             & 0.002             & 0.047             & 0.028             & -0.026           \\ 
+                      & (0.157)           & (0.164)           & (0.176)           & (0.163)           & (0.184)          \\ 
+\% Bachelor +        & -0.305 ^*         & -0.326 ^\dagger  & -0.419 ^*         & -0.337 ^{**}      & -0.422 ^\dagger \\ 
+                      & (0.129)           & (0.188)           & (0.189)           & (0.131)           & (0.226)          \\ 
+\% White             & -0.038            & -0.120            & -0.081            & -0.026            & -0.132           \\ 
+                      & (0.120)           & (0.130)           & (0.155)           & (0.121)           & (0.159)          \\ 
+\% Owner Occupied    & -0.001            & 0.020             & 0.053             & -0.082            & -0.055           \\ 
+                      & (0.161)           & (0.166)           & (0.178)           & (0.169)           & (0.199)          \\ 
+Exurb                 & 0.329             & 0.276             & 0.339             & 0.321             & 0.286            \\ 
+                      & (0.291)           & (0.301)           & (0.302)           & (0.293)           & (0.311)          \\ 
+Rural                 & 0.166             & 0.135             & 0.179             & 0.153             & 0.140            \\ 
+                      & (0.283)           & (0.291)           & (0.291)           & (0.286)           & (0.303)          \\ 
+\% Incumbents        &                   & 0.605 ^{**}       &                   &                   & 0.617 ^{**}      \\ 
+                      &                   & (0.200)           &                   &                   & (0.201)          \\ 
+\% Yes Rev. Limit    &                   & 0.194 ^\dagger   &                   &                   & 0.206 ^\dagger  \\ 
+                      &                   & (0.101)           &                   &                   & (0.105)          \\ 
+\% Polarized         &                   & -0.037            &                   &                   & -0.051           \\ 
+                      &                   & (0.110)           &                   &                   & (0.111)          \\ 
+\% Teach. Voters     &                   & -0.197            &                   &                   & -0.156           \\ 
+                      &                   & (0.185)           &                   &                   & (0.205)          \\ 
+Fall Turnout          &                   & 0.037             &                   &                   & 0.069            \\ 
+                      &                   & (0.193)           &                   &                   & (0.209)          \\ 
+Number Seats          &                   & -0.059            &                   &                   & -0.051           \\ 
+                      &                   & (0.104)           &                   &                   & (0.105)          \\ 
+\% Tax for Schl.     &                   &                   & -0.042            &                   & 0.025            \\ 
+                      &                   &                   & (0.125)           &                   & (0.134)          \\ 
+\% Revenue Prop. Tax &                   &                   & 0.174             &                   & 0.072            \\ 
+                      &                   &                   & (0.195)           &                   & (0.219)          \\ 
+Cost per Pupil        &                   &                   & 0.064             &                   & 0.059            \\ 
+                      &                   &                   & (0.226)           &                   & (0.241)          \\ 
+Balance per Pupil     &                   &                   & -0.163            &                   & -0.157           \\ 
+                      &                   &                   & (0.147)           &                   & (0.149)          \\ 
+Millrate $\Delta$    &                   &                   & -0.080            &                   & -0.071           \\ 
+                      &                   &                   & (0.124)           &                   & (0.124)          \\ 
+\% Salary - Admin.   &                   &                   &                   & -0.025            & -0.033           \\ 
+                      &                   &                   &                   & (0.150)           & (0.152)          \\ 
+New Sup.              &                   &                   &                   & 0.104             & 0.107            \\ 
+                      &                   &                   &                   & (0.142)           & (0.143)          \\ 
+\% Private School    &                   &                   &                   & 0.220 ^\dagger   & 0.211            \\ 
+                      &                   &                   &                   & (0.133)           & (0.139)          \\ 
+Cumul. Bond Att.      &                   &                   &                   & 0.031             & 0.044            \\ 
+                      &                   &                   &                   & (0.125)           & (0.128)          \\ 
+Cumul. Override Att.  &                   &                   &                   & 0.017             & -0.053           \\ 
+                      &                   &                   &                   & (0.112)           & (0.120)           \\
+ $N$                   & 1968              & 1968              & 1968              & 1968              & 1968             \\ 
+AIC                   & 2282.128          & 2279.538          & 2289.955          & 2288.807          & 2294.558         \\ 
+N Groups              & 309               & 309               & 309               & 309               & 309              \\ 
+Group Names           & distid            & distid            & distid            & distid            & distid           \\ 
+Group:distid Effs.    & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
+Group:distid Var.     & 0.26              & 0.259             & 0.257             & 0.24              & 0.238             \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
@@ -1857,6 +1805,8 @@ All analyses were done using R \citep{cran}. Source code and data available onli
 
 \subsection{Pooled GLM Model Results}
 
+Not printed.
+
 \begin{scriptsize}
 \begin{longtable}{ l D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3}D{.}{.}{3} }
 \caption{Models of Incumbent Lockout in School Board Elections}
@@ -1864,65 +1814,65 @@ All analyses were done using R \citep{cran}. Source code and data available onli
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
- %                      & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
-Intercept              & 0.883 ^*          & 0.839 ^*          & 0.975 ^*          & 0.887 ^*          & 0.965 ^*         \\ 
-                       & (0.386)           & (0.395)           & (0.397)           & (0.392)           & (0.411)          \\ 
-Electorate Size        & 0.744 ^{***}      & 0.741 ^{***}      & 0.801 ^{***}      & 0.754 ^{***}      & 0.707 ^{**}      \\ 
-                       & (0.115)           & (0.182)           & (0.150)           & (0.150)           & (0.243)          \\ 
-\% Over 65            & 0.172             & 0.164             & 0.186             & 0.169             & 0.189            \\ 
-                       & (0.135)           & (0.146)           & (0.150)           & (0.147)           & (0.166)          \\ 
-\% Bachelor +         & -0.126            & -0.081            & -0.085            & -0.097            & -0.007           \\ 
-                       & (0.093)           & (0.145)           & (0.151)           & (0.102)           & (0.186)          \\ 
-\% White              & -0.156 ^\dagger  & -0.161 ^\dagger  & -0.069            & -0.198 ^*         & -0.142           \\ 
-                       & (0.087)           & (0.095)           & (0.126)           & (0.089)           & (0.132)          \\ 
-\% Owner Occupied     & 0.182             & 0.184             & 0.148             & 0.232 ^\dagger   & 0.188            \\ 
-                       & (0.123)           & (0.126)           & (0.141)           & (0.134)           & (0.163)          \\ 
-Exurb                  & 0.081             & 0.087             & 0.236             & 0.116             & 0.178            \\ 
-                       & (0.379)           & (0.386)           & (0.397)           & (0.387)           & (0.409)          \\ 
-Rural                  & 0.059             & 0.047             & 0.172             & 0.065             & 0.098            \\ 
-                       & (0.362)           & (0.369)           & (0.382)           & (0.371)           & (0.395)          \\ 
-Contestation Lag       & 0.589 ^{***}      & 0.597 ^{***}      & 0.582 ^{***}      & 0.579 ^{***}      & 0.579 ^{***}     \\ 
-                       & (0.101)           & (0.102)           & (0.100)           & (0.102)           & (0.102)          \\ 
-Rev. Lim. Attpt.       &                   & 0.681 ^{**}       &                   &                   & 0.594 ^*         \\ 
-                       &                   & (0.251)           &                   &                   & (0.255)          \\ 
-Rev. Lim. Pass         &                   & -0.292            &                   &                   & -0.302           \\ 
-                       &                   & (0.302)           &                   &                   & (0.301)          \\ 
-Bond Attpt.            &                   & -0.027            &                   &                   & 0.028            \\ 
-                       &                   & (0.271)           &                   &                   & (0.275)          \\ 
-Bond Pass              &                   & -0.040            &                   &                   & -0.052           \\ 
-                       &                   & (0.332)           &                   &                   & (0.336)          \\ 
-\% Polarized          &                   & -0.046            &                   &                   & -0.044           \\ 
-                       &                   & (0.105)           &                   &                   & (0.106)          \\ 
-\% Teach. Voters      &                   & 0.031             &                   &                   & -0.070           \\ 
-                       &                   & (0.156)           &                   &                   & (0.171)          \\ 
-Fall Turnout           &                   & -0.029            &                   &                   & -0.010           \\ 
-                       &                   & (0.173)           &                   &                   & (0.180)          \\ 
-Number Seats           &                   & 0.058             &                   &                   & 0.036            \\ 
-                       &                   & (0.103)           &                   &                   & (0.104)          \\ 
-\% Millrate for Schl. &                   &                   & 0.057             &                   & 0.051            \\ 
-                       &                   &                   & (0.110)           &                   & (0.117)          \\ 
-\% Rev. Prop. Tax     &                   &                   & -0.121            &                   & -0.124           \\ 
-                       &                   &                   & (0.163)           &                   & (0.181)          \\ 
-Cost per Pupil         &                   &                   & 0.363 ^*          &                   & 0.289            \\ 
-                       &                   &                   & (0.184)           &                   & (0.191)          \\ 
-Bal. per Pupil         &                   &                   & -0.229            &                   & -0.219           \\ 
-                       &                   &                   & (0.140)           &                   & (0.142)          \\ 
-Millrate $\Delta$     &                   &                   & 0.027             &                   & 0.036            \\ 
-                       &                   &                   & (0.110)           &                   & (0.111)          \\ 
-\% Salary Admin.      &                   &                   &                   & -0.004            & -0.021           \\ 
-                       &                   &                   &                   & (0.108)           & (0.111)          \\ 
-New Sup.               &                   &                   &                   & 0.177             & 0.177            \\ 
-                       &                   &                   &                   & (0.134)           & (0.135)          \\ 
-\% Private School     &                   &                   &                   & -0.076            & -0.094           \\ 
-                       &                   &                   &                   & (0.113)           & (0.123)          \\ 
-Cumul. Bond Att.       &                   &                   &                   & -0.113            & -0.087           \\ 
-                       &                   &                   &                   & (0.105)           & (0.114)          \\ 
-Cumul. Ref Att.        &                   &                   &                   & 0.271 ^*          & 0.131            \\ 
-                       &                   &                   &                   & (0.122)           & (0.123)           \\
- $N$                    & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
-AIC                    & 3041.500          & 3045.638          & 3043.228          & 3042.211          & 3054.366         \\ 
-BIC                    & 3467.089          & 3660.377          & 3587.037          & 3586.019          & 3905.544         \\ 
-$\log L$              & -1448.750         & -1418.819         & -1429.614         & -1429.105         & -1383.183         \\ \hline
+ %                  & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
+Intercept          & 0.883 ^*          & 0.839 ^*          & 0.975 ^*          & 0.887 ^*          & 0.965 ^*         \\ 
+                   & (0.386)           & (0.395)           & (0.397)           & (0.392)           & (0.411)          \\ 
+Electorate Size    & 0.744 ^{***}      & 0.741 ^{***}      & 0.801 ^{***}      & 0.754 ^{***}      & 0.707 ^{**}      \\ 
+                   & (0.115)           & (0.182)           & (0.150)           & (0.150)           & (0.243)          \\ 
+\% Over 65        & 0.172             & 0.164             & 0.186             & 0.169             & 0.189            \\ 
+                   & (0.135)           & (0.146)           & (0.150)           & (0.147)           & (0.166)          \\ 
+\% Bachelor +     & -0.126            & -0.081            & -0.085            & -0.097            & -0.007           \\ 
+                   & (0.093)           & (0.145)           & (0.151)           & (0.102)           & (0.186)          \\ 
+\% White          & -0.156 ^\dagger  & -0.161 ^\dagger  & -0.069            & -0.198 ^*         & -0.142           \\ 
+                   & (0.087)           & (0.095)           & (0.126)           & (0.089)           & (0.132)          \\ 
+\% Owner Occupied & 0.182             & 0.184             & 0.148             & 0.232 ^\dagger   & 0.188            \\ 
+                   & (0.123)           & (0.126)           & (0.141)           & (0.134)           & (0.163)          \\ 
+Exurb              & 0.081             & 0.087             & 0.236             & 0.116             & 0.178            \\ 
+                   & (0.379)           & (0.386)           & (0.397)           & (0.387)           & (0.409)          \\ 
+Rural              & 0.059             & 0.047             & 0.172             & 0.065             & 0.098            \\ 
+                   & (0.362)           & (0.369)           & (0.382)           & (0.371)           & (0.395)          \\ 
+Contest. Lag       & 0.589 ^{***}      & 0.597 ^{***}      & 0.582 ^{***}      & 0.579 ^{***}      & 0.579 ^{***}     \\ 
+                   & (0.101)           & (0.102)           & (0.100)           & (0.102)           & (0.102)          \\ 
+Rev. Lim. Attpt.   &                   & 0.681 ^{**}       &                   &                   & 0.594 ^*         \\ 
+                   &                   & (0.251)           &                   &                   & (0.255)          \\ 
+Rev. Lim. Pass     &                   & -0.292            &                   &                   & -0.302           \\ 
+                   &                   & (0.302)           &                   &                   & (0.301)          \\ 
+Bond Attpt.        &                   & -0.027            &                   &                   & 0.028            \\ 
+                   &                   & (0.271)           &                   &                   & (0.275)          \\ 
+Bond Pass          &                   & -0.040            &                   &                   & -0.052           \\ 
+                   &                   & (0.332)           &                   &                   & (0.336)          \\ 
+\% Polarized      &                   & -0.046            &                   &                   & -0.044           \\ 
+                   &                   & (0.105)           &                   &                   & (0.106)          \\ 
+\% Teach. Voters  &                   & 0.031             &                   &                   & -0.070           \\ 
+                   &                   & (0.156)           &                   &                   & (0.171)          \\ 
+Fall Turnout       &                   & -0.029            &                   &                   & -0.010           \\ 
+                   &                   & (0.173)           &                   &                   & (0.180)          \\ 
+Number Seats       &                   & 0.058             &                   &                   & 0.036            \\ 
+                   &                   & (0.103)           &                   &                   & (0.104)          \\ 
+\% Tax for Schl.  &                   &                   & 0.057             &                   & 0.051            \\ 
+                   &                   &                   & (0.110)           &                   & (0.117)          \\ 
+\% Rev. Prop. Tax &                   &                   & -0.121            &                   & -0.124           \\ 
+                   &                   &                   & (0.163)           &                   & (0.181)          \\ 
+Cost per Pupil     &                   &                   & 0.363 ^*          &                   & 0.289            \\ 
+                   &                   &                   & (0.184)           &                   & (0.191)          \\ 
+Bal. per Pupil     &                   &                   & -0.229            &                   & -0.219           \\ 
+                   &                   &                   & (0.140)           &                   & (0.142)          \\ 
+Millrate $\Delta$ &                   &                   & 0.027             &                   & 0.036            \\ 
+                   &                   &                   & (0.110)           &                   & (0.111)          \\ 
+\% Salary Admin.  &                   &                   &                   & -0.004            & -0.021           \\ 
+                   &                   &                   &                   & (0.108)           & (0.111)          \\ 
+New Sup.           &                   &                   &                   & 0.177             & 0.177            \\ 
+                   &                   &                   &                   & (0.134)           & (0.135)          \\ 
+\% Priv. School   &                   &                   &                   & -0.076            & -0.094           \\ 
+                   &                   &                   &                   & (0.113)           & (0.123)          \\ 
+Cumul. Bond Att.   &                   &                   &                   & -0.113            & -0.087           \\ 
+                   &                   &                   &                   & (0.105)           & (0.114)          \\ 
+Cumul. Ref Att.    &                   &                   &                   & 0.271 ^*          & 0.131            \\ 
+                   &                   &                   &                   & (0.122)           & (0.123)           \\
+ $N$                & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
+AIC                & 3041.500          & 3045.638          & 3043.228          & 3042.211          & 3054.366         \\ 
+BIC                & 3467.089          & 3660.377          & 3587.037          & 3586.019          & 3905.544         \\ 
+$\log L$          & -1448.750         & -1418.819         & -1429.614         & -1429.105         & -1383.183         \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables mean centered and 
 divided by 2 standard deviations}}\\
@@ -1938,67 +1888,67 @@ divided by 2 standard deviations}}\\
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
- %                      & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
-Intercept              & 0.700 ^\dagger   & 0.370             & 0.748 ^\dagger   & 0.885 ^*          & 0.525            \\ 
-                       & (0.375)           & (0.390)           & (0.386)           & (0.389)           & (0.409)          \\ 
-Electorate Size        & 0.951 ^{***}      & 1.470 ^{***}      & 0.761 ^{***}      & 0.843 ^{***}      & 1.130 ^{***}     \\ 
-                       & (0.152)           & (0.208)           & (0.179)           & (0.173)           & (0.251)          \\ 
-\% Over 65            & 0.094             & 0.247             & 0.352 ^*          & 0.222             & 0.514 ^{**}      \\ 
-                       & (0.154)           & (0.163)           & (0.176)           & (0.169)           & (0.189)          \\ 
-\% Bachelor +         & -0.320 ^{**}      & -0.311 ^\dagger  & 0.004             & -0.310 ^*         & -0.024           \\ 
-                       & (0.112)           & (0.180)           & (0.187)           & (0.122)           & (0.238)          \\ 
-\% White              & 0.083             & 0.175             & -0.037            & 0.056             & 0.006            \\ 
-                       & (0.118)           & (0.107)           & (0.151)           & (0.111)           & (0.147)          \\ 
-\% Owner Occupied     & 0.035             & 0.053             & -0.145            & 0.130             & 0.007            \\ 
-                       & (0.157)           & (0.156)           & (0.175)           & (0.163)           & (0.195)          \\ 
-Exurb                  & -0.095            & 0.112             & -0.265            & -0.255            & -0.231           \\ 
-                       & (0.370)           & (0.384)           & (0.388)           & (0.385)           & (0.405)          \\ 
-Rural                  & 0.180             & 0.377             & -0.014            & 0.005             & 0.007            \\ 
-                       & (0.356)           & (0.363)           & (0.372)           & (0.375)           & (0.387)          \\ 
-Lagged Contestation    & 0.404 ^{***}      & 0.391 ^{***}      & 0.382 ^{***}      & 0.395 ^{***}      & 0.368 ^{**}      \\ 
-                       & (0.115)           & (0.116)           & (0.115)           & (0.115)           & (0.117)          \\ 
-\% Incumbents         &                   & -0.251            &                   &                   & -0.265 ^\dagger \\ 
-                       &                   & (0.157)           &                   &                   & (0.157)          \\ 
-Override Attpt.        &                   & 0.220             &                   &                   & 0.263            \\ 
-                       &                   & (0.280)           &                   &                   & (0.283)          \\ 
-Override Pass          &                   & -0.019            &                   &                   & -0.004           \\ 
-                       &                   & (0.353)           &                   &                   & (0.359)          \\ 
-Debt Ques.             &                   & 0.500 ^\dagger   &                   &                   & 0.511 ^\dagger  \\ 
-                       &                   & (0.282)           &                   &                   & (0.290)          \\ 
-Debt Pass              &                   & -0.246            &                   &                   & -0.300           \\ 
-                       &                   & (0.363)           &                   &                   & (0.367)          \\ 
-\% Polarized          &                   & 0.073             &                   &                   & 0.118            \\ 
-                       &                   & (0.109)           &                   &                   & (0.108)          \\ 
-\% Teach. Voters      &                   & 0.522 ^{**}       &                   &                   & 0.402 ^*         \\ 
-                       &                   & (0.165)           &                   &                   & (0.178)          \\ 
-Fall Turnout           &                   & -0.106            &                   &                   & -0.230           \\ 
-                       &                   & (0.204)           &                   &                   & (0.217)          \\ 
-Number Seats           &                   & -0.267 ^*         &                   &                   & -0.278 ^*        \\ 
-                       &                   & (0.111)           &                   &                   & (0.111)          \\ 
-\% Millrate for Schl. &                   &                   & 0.266 ^*          &                   & 0.239 ^*         \\ 
-                       &                   &                   & (0.121)           &                   & (0.119)          \\ 
-\% Revenue Prop. Tax  &                   &                   & -0.354 ^\dagger  &                   & -0.172           \\ 
-                       &                   &                   & (0.202)           &                   & (0.214)          \\ 
-Cost per Pupil         &                   &                   & -0.345            &                   & -0.434 ^\dagger \\ 
-                       &                   &                   & (0.241)           &                   & (0.255)          \\ 
-Balance per Pupil      &                   &                   & -0.031            &                   & 0.046            \\ 
-                       &                   &                   & (0.160)           &                   & (0.162)          \\ 
-Millrate $\Delta$     &                   &                   & -0.032            &                   & -0.030           \\ 
-                       &                   &                   & (0.114)           &                   & (0.115)          \\ 
-\% Salary - Admin.    &                   &                   &                   & -0.106            & -0.051           \\ 
-                       &                   &                   &                   & (0.157)           & (0.157)          \\ 
-New Superintendent     &                   &                   &                   & -0.097            & -0.091           \\ 
-                       &                   &                   &                   & (0.139)           & (0.141)          \\ 
-\% Private School     &                   &                   &                   & -0.218 ^\dagger  & -0.140           \\ 
-                       &                   &                   &                   & (0.118)           & (0.129)          \\ 
-Cumul. Bond Att.       &                   &                   &                   & 0.290 ^*          & 0.199            \\ 
-                       &                   &                   &                   & (0.146)           & (0.146)          \\ 
-Cumul. Override Att.   &                   &                   &                   & -0.053            & -0.067           \\ 
-                       &                   &                   &                   & (0.114)           & (0.115)           \\
- $N$                    & 2010              & 2010              & 2010              & 2010              & 2010             \\ 
-AIC                    & 2259.518          & 2250.768          & 2256.726          & 2259.843          & 2254.829         \\ 
-BIC                    & 2663.142          & 2856.204          & 2772.468          & 2775.585          & 3084.501         \\ 
-$\log L$              & -1057.759         & -1017.384         & -1036.363         & -1037.922         & -979.415          \\ \hline
+ %                     & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
+Intercept             & 0.700 ^\dagger   & 0.370             & 0.748 ^\dagger   & 0.885 ^*          & 0.525            \\ 
+                      & (0.375)           & (0.390)           & (0.386)           & (0.389)           & (0.409)          \\ 
+Electorate Size       & 0.951 ^{***}      & 1.470 ^{***}      & 0.761 ^{***}      & 0.843 ^{***}      & 1.130 ^{***}     \\ 
+                      & (0.152)           & (0.208)           & (0.179)           & (0.173)           & (0.251)          \\ 
+\% Over 65           & 0.094             & 0.247             & 0.352 ^*          & 0.222             & 0.514 ^{**}      \\ 
+                      & (0.154)           & (0.163)           & (0.176)           & (0.169)           & (0.189)          \\ 
+\% Bachelor +        & -0.320 ^{**}      & -0.311 ^\dagger  & 0.004             & -0.310 ^*         & -0.024           \\ 
+                      & (0.112)           & (0.180)           & (0.187)           & (0.122)           & (0.238)          \\ 
+\% White             & 0.083             & 0.175             & -0.037            & 0.056             & 0.006            \\ 
+                      & (0.118)           & (0.107)           & (0.151)           & (0.111)           & (0.147)          \\ 
+\% Owner Occupied    & 0.035             & 0.053             & -0.145            & 0.130             & 0.007            \\ 
+                      & (0.157)           & (0.156)           & (0.175)           & (0.163)           & (0.195)          \\ 
+Exurb                 & -0.095            & 0.112             & -0.265            & -0.255            & -0.231           \\ 
+                      & (0.370)           & (0.384)           & (0.388)           & (0.385)           & (0.405)          \\ 
+Rural                 & 0.180             & 0.377             & -0.014            & 0.005             & 0.007            \\ 
+                      & (0.356)           & (0.363)           & (0.372)           & (0.375)           & (0.387)          \\ 
+Lag. Contest.         & 0.404 ^{***}      & 0.391 ^{***}      & 0.382 ^{***}      & 0.395 ^{***}      & 0.368 ^{**}      \\ 
+                      & (0.115)           & (0.116)           & (0.115)           & (0.115)           & (0.117)          \\ 
+\% Incumbents        &                   & -0.251            &                   &                   & -0.265 ^\dagger \\ 
+                      &                   & (0.157)           &                   &                   & (0.157)          \\ 
+Override Attpt.       &                   & 0.220             &                   &                   & 0.263            \\ 
+                      &                   & (0.280)           &                   &                   & (0.283)          \\ 
+Override Pass         &                   & -0.019            &                   &                   & -0.004           \\ 
+                      &                   & (0.353)           &                   &                   & (0.359)          \\ 
+Debt Ques.            &                   & 0.500 ^\dagger   &                   &                   & 0.511 ^\dagger  \\ 
+                      &                   & (0.282)           &                   &                   & (0.290)          \\ 
+Debt Pass             &                   & -0.246            &                   &                   & -0.300           \\ 
+                      &                   & (0.363)           &                   &                   & (0.367)          \\ 
+\% Polarized         &                   & 0.073             &                   &                   & 0.118            \\ 
+                      &                   & (0.109)           &                   &                   & (0.108)          \\ 
+\% Teach. Voters     &                   & 0.522 ^{**}       &                   &                   & 0.402 ^*         \\ 
+                      &                   & (0.165)           &                   &                   & (0.178)          \\ 
+Fall Turnout          &                   & -0.106            &                   &                   & -0.230           \\ 
+                      &                   & (0.204)           &                   &                   & (0.217)          \\ 
+Number Seats          &                   & -0.267 ^*         &                   &                   & -0.278 ^*        \\ 
+                      &                   & (0.111)           &                   &                   & (0.111)          \\ 
+\% Tax for Schl.     &                   &                   & 0.266 ^*          &                   & 0.239 ^*         \\ 
+                      &                   &                   & (0.121)           &                   & (0.119)          \\ 
+\% Revenue Prop. Tax &                   &                   & -0.354 ^\dagger  &                   & -0.172           \\ 
+                      &                   &                   & (0.202)           &                   & (0.214)          \\ 
+Cost per Pupil        &                   &                   & -0.345            &                   & -0.434 ^\dagger \\ 
+                      &                   &                   & (0.241)           &                   & (0.255)          \\ 
+Balance per Pupil     &                   &                   & -0.031            &                   & 0.046            \\ 
+                      &                   &                   & (0.160)           &                   & (0.162)          \\ 
+Millrate $\Delta$    &                   &                   & -0.032            &                   & -0.030           \\ 
+                      &                   &                   & (0.114)           &                   & (0.115)          \\ 
+\% Salary - Admin.   &                   &                   &                   & -0.106            & -0.051           \\ 
+                      &                   &                   &                   & (0.157)           & (0.157)          \\ 
+New Sup.              &                   &                   &                   & -0.097            & -0.091           \\ 
+                      &                   &                   &                   & (0.139)           & (0.141)          \\ 
+\% Priv. School      &                   &                   &                   & -0.218 ^\dagger  & -0.140           \\ 
+                      &                   &                   &                   & (0.118)           & (0.129)          \\ 
+Cumul. Bond Att.      &                   &                   &                   & 0.290 ^*          & 0.199            \\ 
+                      &                   &                   &                   & (0.146)           & (0.146)          \\ 
+Cumul. Override Att.  &                   &                   &                   & -0.053            & -0.067           \\ 
+                      &                   &                   &                   & (0.114)           & (0.115)           \\
+ $N$                   & 2010              & 2010              & 2010              & 2010              & 2010             \\ 
+AIC                   & 2259.518          & 2250.768          & 2256.726          & 2259.843          & 2254.829         \\ 
+BIC                   & 2663.142          & 2856.204          & 2772.468          & 2775.585          & 3084.501         \\ 
+$\log L$             & -1057.759         & -1017.384         & -1036.363         & -1037.922         & -979.415          \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
@@ -2013,61 +1963,61 @@ $\log L$              & -1057.759         & -1017.384         & -1036.363       
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
- %                      & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
-Intercept              & 0.062             & -0.034            & 0.074             & 0.077             & -0.028           \\ 
-                       & (0.065)           & (0.056)           & (0.066)           & (0.070)           & (0.054)          \\ 
-Electorate Size        & 0.164 ^{***}      & 0.258 ^{***}      & 0.075 ^\dagger   & 0.197 ^{***}      & 0.247 ^{***}     \\ 
-                       & (0.036)           & (0.038)           & (0.045)           & (0.051)           & (0.046)          \\ 
-\% Over 65            & 0.012             & 0.012             & 0.103 ^*          & 0.036             & 0.060 ^\dagger  \\ 
-                       & (0.045)           & (0.034)           & (0.051)           & (0.046)           & (0.036)          \\ 
-\% Bachelor +         & -0.080 ^*         & -0.125 ^{***}     & 0.023             & -0.072 ^*         & -0.040           \\ 
-                       & (0.033)           & (0.035)           & (0.056)           & (0.033)           & (0.044)          \\ 
-\% White              & 0.023             & -0.015            & -0.049            & 0.020             & -0.036           \\ 
-                       & (0.035)           & (0.030)           & (0.043)           & (0.035)           & (0.038)          \\ 
-\% Owner Occupied     & 0.033             & 0.048             & -0.030            & 0.056             & 0.022            \\ 
-                       & (0.042)           & (0.035)           & (0.043)           & (0.044)           & (0.032)          \\ 
-Exurb                  & -0.104            & 0.006             & -0.195 ^*         & -0.119            & -0.046           \\ 
-                       & (0.075)           & (0.054)           & (0.078)           & (0.078)           & (0.052)          \\ 
-Rural                  & -0.073            & 0.064             & -0.170 ^{**}      & -0.082            & 0.008            \\ 
-                       & (0.061)           & (0.046)           & (0.063)           & (0.064)           & (0.044)          \\ 
-Major Contestation Lag & 0.094 ^{***}      & 0.031 ^\dagger   & 0.087 ^{***}      & 0.092 ^{***}      & 0.028            \\ 
-                       & (0.023)           & (0.018)           & (0.023)           & (0.024)           & (0.018)          \\ 
-\% Incumbents         &                   & -0.277 ^{***}     &                   &                   & -0.281 ^{***}    \\ 
-                       &                   & (0.022)           &                   &                   & (0.022)          \\ 
-\% Yes Rev. Limit     &                   & 0.013             &                   &                   & 0.031 ^\dagger  \\ 
-                       &                   & (0.018)           &                   &                   & (0.018)          \\ 
-\% Polarized          &                   & -0.012            &                   &                   & -0.002           \\ 
-                       &                   & (0.020)           &                   &                   & (0.019)          \\ 
-\% Teach. Voters      &                   & 0.052             &                   &                   & 0.025            \\ 
-                       &                   & (0.035)           &                   &                   & (0.036)          \\ 
-Fall Turnout           &                   & 0.026             &                   &                   & 0.013            \\ 
-                       &                   & (0.040)           &                   &                   & (0.041)          \\ 
-Number Seats           &                   & -0.431 ^{***}     &                   &                   & -0.421 ^{***}    \\ 
-                       &                   & (0.031)           &                   &                   & (0.032)          \\ 
-\% Millrate for Schl. &                   &                   & 0.087 ^*          &                   & 0.070 ^{**}      \\ 
-                       &                   &                   & (0.036)           &                   & (0.026)          \\ 
-\% Revenue Prop. Tax  &                   &                   & -0.089            &                   & -0.084 ^\dagger \\ 
-                       &                   &                   & (0.064)           &                   & (0.045)          \\ 
-Cost per Pupil         &                   &                   & -0.209 ^{***}     &                   & -0.109 ^*        \\ 
-                       &                   &                   & (0.056)           &                   & (0.051)          \\ 
-Balance per Pupil      &                   &                   & 0.012             &                   & 0.061 ^*         \\ 
-                       &                   &                   & (0.040)           &                   & (0.027)          \\ 
-Millrate $\Delta$     &                   &                   & 0.022             &                   & 0.015            \\ 
-                       &                   &                   & (0.020)           &                   & (0.017)          \\ 
-\% Salary - Admin.    &                   &                   &                   & 0.018             & 0.047            \\ 
-                       &                   &                   &                   & (0.040)           & (0.030)          \\ 
-New Superintendent     &                   &                   &                   & 0.004             & -0.002           \\ 
-                       &                   &                   &                   & (0.025)           & (0.022)          \\ 
-\% Private School     &                   &                   &                   & -0.060 ^\dagger  & -0.032           \\ 
-                       &                   &                   &                   & (0.032)           & (0.024)          \\ 
-Cumul. Bond Att.       &                   &                   &                   & 0.026             & -0.007           \\ 
-                       &                   &                   &                   & (0.045)           & (0.026)          \\ 
-Cumul. Override Att.   &                   &                   &                   & -0.056            & -0.034 ^\dagger \\ 
-                       &                   &                   &                   & (0.036)           & (0.020)           \\
- $N$                    & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
-$R^2$                  & 0.052             & 0.307             & 0.074             & 0.057             & 0.321            \\ 
-adj. $R^2$             & 0.046             & 0.301             & 0.066             & 0.049             & 0.313            \\ 
-Resid. sd              & 0.492             & 0.421             & 0.487             & 0.491             & 0.418             \\ \hline
+ %                     & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
+Intercept             & 0.062             & -0.034            & 0.074             & 0.077             & -0.028           \\ 
+                      & (0.065)           & (0.056)           & (0.066)           & (0.070)           & (0.054)          \\ 
+Electorate Size       & 0.164 ^{***}      & 0.258 ^{***}      & 0.075 ^\dagger   & 0.197 ^{***}      & 0.247 ^{***}     \\ 
+                      & (0.036)           & (0.038)           & (0.045)           & (0.051)           & (0.046)          \\ 
+\% Over 65           & 0.012             & 0.012             & 0.103 ^*          & 0.036             & 0.060 ^\dagger  \\ 
+                      & (0.045)           & (0.034)           & (0.051)           & (0.046)           & (0.036)          \\ 
+\% Bachelor +        & -0.080 ^*         & -0.125 ^{***}     & 0.023             & -0.072 ^*         & -0.040           \\ 
+                      & (0.033)           & (0.035)           & (0.056)           & (0.033)           & (0.044)          \\ 
+\% White             & 0.023             & -0.015            & -0.049            & 0.020             & -0.036           \\ 
+                      & (0.035)           & (0.030)           & (0.043)           & (0.035)           & (0.038)          \\ 
+\% Owner Occupied    & 0.033             & 0.048             & -0.030            & 0.056             & 0.022            \\ 
+                      & (0.042)           & (0.035)           & (0.043)           & (0.044)           & (0.032)          \\ 
+Exurb                 & -0.104            & 0.006             & -0.195 ^*         & -0.119            & -0.046           \\ 
+                      & (0.075)           & (0.054)           & (0.078)           & (0.078)           & (0.052)          \\ 
+Rural                 & -0.073            & 0.064             & -0.170 ^{**}      & -0.082            & 0.008            \\ 
+                      & (0.061)           & (0.046)           & (0.063)           & (0.064)           & (0.044)          \\ 
+Contest. Lag          & 0.094 ^{***}      & 0.031 ^\dagger   & 0.087 ^{***}      & 0.092 ^{***}      & 0.028            \\ 
+                      & (0.023)           & (0.018)           & (0.023)           & (0.024)           & (0.018)          \\ 
+\% Incumbents        &                   & -0.277 ^{***}     &                   &                   & -0.281 ^{***}    \\ 
+                      &                   & (0.022)           &                   &                   & (0.022)          \\ 
+\% Yes Rev. Limit    &                   & 0.013             &                   &                   & 0.031 ^\dagger  \\ 
+                      &                   & (0.018)           &                   &                   & (0.018)          \\ 
+\% Polarized         &                   & -0.012            &                   &                   & -0.002           \\ 
+                      &                   & (0.020)           &                   &                   & (0.019)          \\ 
+\% Teach. Voters     &                   & 0.052             &                   &                   & 0.025            \\ 
+                      &                   & (0.035)           &                   &                   & (0.036)          \\ 
+Fall Turnout          &                   & 0.026             &                   &                   & 0.013            \\ 
+                      &                   & (0.040)           &                   &                   & (0.041)          \\ 
+Number Seats          &                   & -0.431 ^{***}     &                   &                   & -0.421 ^{***}    \\ 
+                      &                   & (0.031)           &                   &                   & (0.032)          \\ 
+\% Tax for Schl.     &                   &                   & 0.087 ^*          &                   & 0.070 ^{**}      \\ 
+                      &                   &                   & (0.036)           &                   & (0.026)          \\ 
+\% Revenue Prop. Tax &                   &                   & -0.089            &                   & -0.084 ^\dagger \\ 
+                      &                   &                   & (0.064)           &                   & (0.045)          \\ 
+Cost per Pupil        &                   &                   & -0.209 ^{***}     &                   & -0.109 ^*        \\ 
+                      &                   &                   & (0.056)           &                   & (0.051)          \\ 
+Balance per Pupil     &                   &                   & 0.012             &                   & 0.061 ^*         \\ 
+                      &                   &                   & (0.040)           &                   & (0.027)          \\ 
+Millrate $\Delta$    &                   &                   & 0.022             &                   & 0.015            \\ 
+                      &                   &                   & (0.020)           &                   & (0.017)          \\ 
+\% Salary - Admin.   &                   &                   &                   & 0.018             & 0.047            \\ 
+                      &                   &                   &                   & (0.040)           & (0.030)          \\ 
+New Sup.              &                   &                   &                   & 0.004             & -0.002           \\ 
+                      &                   &                   &                   & (0.025)           & (0.022)          \\ 
+\% Priv. School      &                   &                   &                   & -0.060 ^\dagger  & -0.032           \\ 
+                      &                   &                   &                   & (0.032)           & (0.024)          \\ 
+Cumul. Bond Att.      &                   &                   &                   & 0.026             & -0.007           \\ 
+                      &                   &                   &                   & (0.045)           & (0.026)          \\ 
+Cumul. Override Att.  &                   &                   &                   & -0.056            & -0.034 ^\dagger \\ 
+                      &                   &                   &                   & (0.036)           & (0.020)           \\
+ $N$                   & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
+$R^2$                 & 0.052             & 0.307             & 0.074             & 0.057             & 0.321            \\ 
+adj. $R^2$            & 0.046             & 0.301             & 0.066             & 0.049             & 0.313            \\ 
+Resid. sd             & 0.492             & 0.421             & 0.487             & 0.491             & 0.418             \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
@@ -2082,61 +2032,61 @@ Resid. sd              & 0.492             & 0.421             & 0.487          
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
- %                      & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
-Intercept              & -1.396 ^{***}     & -1.299 ^{**}      & -1.359 ^{***}     & -1.399 ^{***}     & -1.265 ^{**}     \\ 
-                       & (0.389)           & (0.396)           & (0.400)           & (0.391)           & (0.415)          \\ 
-Electorate Size        & 0.341 ^*          & 0.272             & 0.333 ^\dagger   & 0.261             & 0.190            \\ 
-                       & (0.170)           & (0.238)           & (0.201)           & (0.187)           & (0.276)          \\ 
-\% Over 65            & 0.013             & -0.054            & 0.038             & -0.013            & -0.039           \\ 
-                       & (0.170)           & (0.180)           & (0.185)           & (0.172)           & (0.196)          \\ 
-\% Bachelor +         & -0.328 ^*         & -0.329 ^\dagger  & -0.345 ^\dagger  & -0.356 ^*         & -0.359           \\ 
-                       & (0.143)           & (0.198)           & (0.187)           & (0.146)           & (0.231)          \\ 
-\% White              & 0.043             & -0.023            & 0.018             & 0.044             & -0.040           \\ 
-                       & (0.103)           & (0.116)           & (0.152)           & (0.101)           & (0.153)          \\ 
-\% Owner Occupied     & -0.054            & -0.032            & -0.051            & -0.105            & -0.123           \\ 
-                       & (0.179)           & (0.182)           & (0.204)           & (0.182)           & (0.220)          \\ 
-Exurb                  & 0.267             & 0.254             & 0.265             & 0.258             & 0.227            \\ 
-                       & (0.314)           & (0.320)           & (0.329)           & (0.320)           & (0.334)          \\ 
-Rural                  & 0.151             & 0.155             & 0.136             & 0.133             & 0.112            \\ 
-                       & (0.326)           & (0.336)           & (0.338)           & (0.331)           & (0.353)          \\ 
-Contestation Lag       & 0.078             & 0.094             & 0.077             & 0.083             & 0.098            \\ 
-                       & (0.115)           & (0.117)           & (0.115)           & (0.115)           & (0.118)          \\ 
-\% Incumbents         &                   & 0.510 ^*          &                   &                   & 0.521 ^*         \\ 
-                       &                   & (0.218)           &                   &                   & (0.219)          \\ 
-\% Yes Rev. Limit     &                   & 0.213 ^*          &                   &                   & 0.233 ^*         \\ 
-                       &                   & (0.100)           &                   &                   & (0.105)          \\ 
-\% Polarized          &                   & -0.077            &                   &                   & -0.085           \\ 
-                       &                   & (0.108)           &                   &                   & (0.110)          \\ 
-\% Teach. Voters      &                   & -0.115            &                   &                   & -0.124           \\ 
-                       &                   & (0.189)           &                   &                   & (0.210)          \\ 
-Fall Turnout           &                   & 0.022             &                   &                   & 0.052            \\ 
-                       &                   & (0.188)           &                   &                   & (0.203)          \\ 
-Number Seats           &                   & -0.033            &                   &                   & -0.022           \\ 
-                       &                   & (0.123)           &                   &                   & (0.124)          \\ 
-\% Millrate for Schl. &                   &                   & 0.060             &                   & 0.115            \\ 
-                       &                   &                   & (0.128)           &                   & (0.132)          \\ 
-\% Revenue Prop. Tax  &                   &                   & 0.025             &                   & -0.036           \\ 
-                       &                   &                   & (0.206)           &                   & (0.232)          \\ 
-Cost per Pupil         &                   &                   & 0.028             &                   & 0.020            \\ 
-                       &                   &                   & (0.219)           &                   & (0.233)          \\ 
-Balance per Pupil      &                   &                   & -0.100            &                   & -0.100           \\ 
-                       &                   &                   & (0.155)           &                   & (0.162)          \\ 
-Millrate $\Delta$     &                   &                   & -0.094            &                   & -0.087           \\ 
-                       &                   &                   & (0.112)           &                   & (0.113)          \\ 
-\% Salary - Admin.    &                   &                   &                   & 0.019             & 0.021            \\ 
-                       &                   &                   &                   & (0.163)           & (0.164)          \\ 
-New Superintendent     &                   &                   &                   & 0.063             & 0.073            \\ 
-                       &                   &                   &                   & (0.155)           & (0.157)          \\ 
-\% Private School     &                   &                   &                   & 0.169             & 0.191            \\ 
-                       &                   &                   &                   & (0.132)           & (0.139)          \\ 
-Cumul. Bond Att.       &                   &                   &                   & 0.059             & 0.057            \\ 
-                       &                   &                   &                   & (0.122)           & (0.129)          \\ 
-Cumul. Override Att.   &                   &                   &                   & 0.003             & -0.067           \\ 
-                       &                   &                   &                   & (0.130)           & (0.144)           \\
- $N$                    & 1770              & 1770              & 1770              & 1770              & 1770             \\ 
-AIC                    & 2042.748          & 2043.397          & 2051.614          & 2050.890          & 2059.627         \\ 
-BIC                    & 2437.217          & 2569.356          & 2555.658          & 2554.934          & 2804.735         \\ 
-$\log L$              & -949.374          & -925.699          & -933.807          & -933.445          & -893.813          \\ \hline
+ %                     & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
+Intercept             & -1.396 ^{***}     & -1.299 ^{**}      & -1.359 ^{***}     & -1.399 ^{***}     & -1.265 ^{**}     \\ 
+                      & (0.389)           & (0.396)           & (0.400)           & (0.391)           & (0.415)          \\ 
+Electorate Size       & 0.341 ^*          & 0.272             & 0.333 ^\dagger   & 0.261             & 0.190            \\ 
+                      & (0.170)           & (0.238)           & (0.201)           & (0.187)           & (0.276)          \\ 
+\% Over 65           & 0.013             & -0.054            & 0.038             & -0.013            & -0.039           \\ 
+                      & (0.170)           & (0.180)           & (0.185)           & (0.172)           & (0.196)          \\ 
+\% Bachelor +        & -0.328 ^*         & -0.329 ^\dagger  & -0.345 ^\dagger  & -0.356 ^*         & -0.359           \\ 
+                      & (0.143)           & (0.198)           & (0.187)           & (0.146)           & (0.231)          \\ 
+\% White             & 0.043             & -0.023            & 0.018             & 0.044             & -0.040           \\ 
+                      & (0.103)           & (0.116)           & (0.152)           & (0.101)           & (0.153)          \\ 
+\% Owner Occupied    & -0.054            & -0.032            & -0.051            & -0.105            & -0.123           \\ 
+                      & (0.179)           & (0.182)           & (0.204)           & (0.182)           & (0.220)          \\ 
+Exurb                 & 0.267             & 0.254             & 0.265             & 0.258             & 0.227            \\ 
+                      & (0.314)           & (0.320)           & (0.329)           & (0.320)           & (0.334)          \\ 
+Rural                 & 0.151             & 0.155             & 0.136             & 0.133             & 0.112            \\ 
+                      & (0.326)           & (0.336)           & (0.338)           & (0.331)           & (0.353)          \\ 
+Contest. Lag          & 0.078             & 0.094             & 0.077             & 0.083             & 0.098            \\ 
+                      & (0.115)           & (0.117)           & (0.115)           & (0.115)           & (0.118)          \\ 
+\% Incumbents        &                   & 0.510 ^*          &                   &                   & 0.521 ^*         \\ 
+                      &                   & (0.218)           &                   &                   & (0.219)          \\ 
+\% Yes Rev. Limit    &                   & 0.213 ^*          &                   &                   & 0.233 ^*         \\ 
+                      &                   & (0.100)           &                   &                   & (0.105)          \\ 
+\% Polarized         &                   & -0.077            &                   &                   & -0.085           \\ 
+                      &                   & (0.108)           &                   &                   & (0.110)          \\ 
+\% Teach. Voters     &                   & -0.115            &                   &                   & -0.124           \\ 
+                      &                   & (0.189)           &                   &                   & (0.210)          \\ 
+Fall Turnout          &                   & 0.022             &                   &                   & 0.052            \\ 
+                      &                   & (0.188)           &                   &                   & (0.203)          \\ 
+Number Seats          &                   & -0.033            &                   &                   & -0.022           \\ 
+                      &                   & (0.123)           &                   &                   & (0.124)          \\ 
+\% Tax for Schl.     &                   &                   & 0.060             &                   & 0.115            \\ 
+                      &                   &                   & (0.128)           &                   & (0.132)          \\ 
+\% Revenue Prop. Tax &                   &                   & 0.025             &                   & -0.036           \\ 
+                      &                   &                   & (0.206)           &                   & (0.232)          \\ 
+Cost per Pupil        &                   &                   & 0.028             &                   & 0.020            \\ 
+                      &                   &                   & (0.219)           &                   & (0.233)          \\ 
+Balance per Pupil     &                   &                   & -0.100            &                   & -0.100           \\ 
+                      &                   &                   & (0.155)           &                   & (0.162)          \\ 
+Millrate $\Delta$    &                   &                   & -0.094            &                   & -0.087           \\ 
+                      &                   &                   & (0.112)           &                   & (0.113)          \\ 
+\% Salary - Admin.   &                   &                   &                   & 0.019             & 0.021            \\ 
+                      &                   &                   &                   & (0.163)           & (0.164)          \\ 
+New Sup.              &                   &                   &                   & 0.063             & 0.073            \\ 
+                      &                   &                   &                   & (0.155)           & (0.157)          \\ 
+\% Private School    &                   &                   &                   & 0.169             & 0.191            \\ 
+                      &                   &                   &                   & (0.132)           & (0.139)          \\ 
+Cumul. Bond Att.      &                   &                   &                   & 0.059             & 0.057            \\ 
+                      &                   &                   &                   & (0.122)           & (0.129)          \\ 
+Cumul. Override Att.  &                   &                   &                   & 0.003             & -0.067           \\ 
+                      &                   &                   &                   & (0.130)           & (0.144)           \\
+ $N$                   & 1770              & 1770              & 1770              & 1770              & 1770             \\ 
+AIC                   & 2042.748          & 2043.397          & 2051.614          & 2050.890          & 2059.627         \\ 
+BIC                   & 2437.217          & 2569.356          & 2555.658          & 2554.934          & 2804.735         \\ 
+$\log L$             & -949.374          & -925.699          & -933.807          & -933.445          & -893.813          \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables rescaled to center 0 
                 and divided by 2 standard deviations.}} 
@@ -2153,65 +2103,65 @@ $\log L$              & -949.374          & -925.699          & -933.807        
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
- %                      & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
-Intercept              & 0.041             & -0.038            & 0.058             & 0.064             & 0.004            \\ 
-                       & (0.066)           & (0.068)           & (0.068)           & (0.068)           & (0.071)          \\ 
-Electorate Size        & 0.182 ^{***}      & 0.268 ^{***}      & 0.170 ^{***}      & 0.187 ^{***}      & 0.252 ^{***}     \\ 
-                       & (0.027)           & (0.036)           & (0.032)           & (0.032)           & (0.046)          \\ 
-\% Over 65            & 0.032             & 0.055 ^\dagger   & 0.065 ^*          & 0.051             & 0.083 ^*         \\ 
-                       & (0.029)           & (0.031)           & (0.032)           & (0.032)           & (0.035)          \\ 
-\% Bachelor +         & -0.059 ^{**}      & -0.036            & -0.011            & -0.056 ^{**}      & -0.005           \\ 
-                       & (0.020)           & (0.031)           & (0.034)           & (0.021)           & (0.041)          \\ 
-\% White              & -0.005            & 0.002             & -0.001            & -0.016            & -0.007           \\ 
-                       & (0.020)           & (0.019)           & (0.025)           & (0.020)           & (0.024)          \\ 
-\% Owner Occupied     & 0.022             & 0.028             & -0.008            & 0.043             & 0.033            \\ 
-                       & (0.029)           & (0.029)           & (0.033)           & (0.031)           & (0.037)          \\ 
-Exurb                  & 0.034             & 0.098             & 0.044             & 0.030             & 0.099            \\ 
-                       & (0.065)           & (0.064)           & (0.068)           & (0.065)           & (0.068)          \\ 
-Rural                  & 0.021             & 0.084             & 0.019             & 0.008             & 0.069            \\ 
-                       & (0.062)           & (0.063)           & (0.066)           & (0.064)           & (0.067)          \\ 
-Dissat. Lag            & 0.175 ^{***}      & 0.164 ^{***}      & 0.170 ^{***}      & 0.172 ^{***}      & 0.159 ^{***}     \\ 
-                       & (0.023)           & (0.023)           & (0.022)           & (0.022)           & (0.023)          \\ 
-Rev. Lim. Attpt.       &                   & 0.054             &                   &                   & 0.040            \\ 
-                       &                   & (0.047)           &                   &                   & (0.048)          \\ 
-Rev. Lim. Pass         &                   & -0.051            &                   &                   & -0.056           \\ 
-                       &                   & (0.058)           &                   &                   & (0.058)          \\ 
-Bond Attpt.            &                   & 0.092 ^\dagger   &                   &                   & 0.092 ^\dagger  \\ 
-                       &                   & (0.050)           &                   &                   & (0.050)          \\ 
-Bond Pass              &                   & -0.156 ^*         &                   &                   & -0.155 ^*        \\ 
-                       &                   & (0.063)           &                   &                   & (0.063)          \\ 
-\% Polarized          &                   & -0.021            &                   &                   & -0.020           \\ 
-                       &                   & (0.018)           &                   &                   & (0.018)          \\ 
-\% Teach. Voters      &                   & 0.096 ^{**}       &                   &                   & 0.071 ^*         \\ 
-                       &                   & (0.031)           &                   &                   & (0.034)          \\ 
-Fall Turnout           &                   & -0.027            &                   &                   & -0.039           \\ 
-                       &                   & (0.037)           &                   &                   & (0.041)          \\ 
-Number Seats           &                   & -0.079 ^{***}     &                   &                   & -0.081 ^{***}    \\ 
-                       &                   & (0.019)           &                   &                   & (0.019)          \\ 
-\% Millrate for Schl. &                   &                   & 0.045 ^*          &                   & 0.034            \\ 
-                       &                   &                   & (0.022)           &                   & (0.022)          \\ 
-\% Rev. Prop. Tax     &                   &                   & -0.071 ^\dagger  &                   & -0.035           \\ 
-                       &                   &                   & (0.036)           &                   & (0.039)          \\ 
-Cost per Pupil         &                   &                   & 0.028             &                   & 0.028            \\ 
-                       &                   &                   & (0.041)           &                   & (0.040)          \\ 
-Bal. per Pupil         &                   &                   & -0.042            &                   & -0.033           \\ 
-                       &                   &                   & (0.027)           &                   & (0.026)          \\ 
-Millrate $\Delta$     &                   &                   & -0.025            &                   & -0.026           \\ 
-                       &                   &                   & (0.024)           &                   & (0.024)          \\ 
-\% Salary Admin.      &                   &                   &                   & 0.020             & 0.028            \\ 
-                       &                   &                   &                   & (0.033)           & (0.032)          \\ 
-New Sup.               &                   &                   &                   & 0.033             & 0.036            \\ 
-                       &                   &                   &                   & (0.027)           & (0.027)          \\ 
-\% Private School     &                   &                   &                   & -0.036 ^\dagger  & -0.026           \\ 
-                       &                   &                   &                   & (0.021)           & (0.022)          \\ 
-Cumul. Bond Att.       &                   &                   &                   & 0.030             & 0.021            \\ 
-                       &                   &                   &                   & (0.023)           & (0.022)          \\ 
-Cumul. Ref Att.        &                   &                   &                   & 0.021             & 0.025            \\ 
-                       &                   &                   &                   & (0.022)           & (0.021)           \\
- $N$                    & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
-$R^2$                  & 0.076             & 0.089             & 0.081             & 0.079             & 0.094            \\ 
-adj. $R^2$             & 0.070             & 0.081             & 0.073             & 0.071             & 0.083            \\ 
-Resid. sd              & 0.482             & 0.479             & 0.481             & 0.482             & 0.479             \\ \hline
+ %                  & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
+Intercept          & 0.041             & -0.038            & 0.058             & 0.064             & 0.004            \\ 
+                   & (0.066)           & (0.068)           & (0.068)           & (0.068)           & (0.071)          \\ 
+Electorate Size    & 0.182 ^{***}      & 0.268 ^{***}      & 0.170 ^{***}      & 0.187 ^{***}      & 0.252 ^{***}     \\ 
+                   & (0.027)           & (0.036)           & (0.032)           & (0.032)           & (0.046)          \\ 
+\% Over 65        & 0.032             & 0.055 ^\dagger   & 0.065 ^*          & 0.051             & 0.083 ^*         \\ 
+                   & (0.029)           & (0.031)           & (0.032)           & (0.032)           & (0.035)          \\ 
+\% Bachelor +     & -0.059 ^{**}      & -0.036            & -0.011            & -0.056 ^{**}      & -0.005           \\ 
+                   & (0.020)           & (0.031)           & (0.034)           & (0.021)           & (0.041)          \\ 
+\% White          & -0.005            & 0.002             & -0.001            & -0.016            & -0.007           \\ 
+                   & (0.020)           & (0.019)           & (0.025)           & (0.020)           & (0.024)          \\ 
+\% Owner Occupied & 0.022             & 0.028             & -0.008            & 0.043             & 0.033            \\ 
+                   & (0.029)           & (0.029)           & (0.033)           & (0.031)           & (0.037)          \\ 
+Exurb              & 0.034             & 0.098             & 0.044             & 0.030             & 0.099            \\ 
+                   & (0.065)           & (0.064)           & (0.068)           & (0.065)           & (0.068)          \\ 
+Rural              & 0.021             & 0.084             & 0.019             & 0.008             & 0.069            \\ 
+                   & (0.062)           & (0.063)           & (0.066)           & (0.064)           & (0.067)          \\ 
+Dissat. Lag        & 0.175 ^{***}      & 0.164 ^{***}      & 0.170 ^{***}      & 0.172 ^{***}      & 0.159 ^{***}     \\ 
+                   & (0.023)           & (0.023)           & (0.022)           & (0.022)           & (0.023)          \\ 
+Rev. Lim. Attpt.   &                   & 0.054             &                   &                   & 0.040            \\ 
+                   &                   & (0.047)           &                   &                   & (0.048)          \\ 
+Rev. Lim. Pass     &                   & -0.051            &                   &                   & -0.056           \\ 
+                   &                   & (0.058)           &                   &                   & (0.058)          \\ 
+Bond Attpt.        &                   & 0.092 ^\dagger   &                   &                   & 0.092 ^\dagger  \\ 
+                   &                   & (0.050)           &                   &                   & (0.050)          \\ 
+Bond Pass          &                   & -0.156 ^*         &                   &                   & -0.155 ^*        \\ 
+                   &                   & (0.063)           &                   &                   & (0.063)          \\ 
+\% Polarized      &                   & -0.021            &                   &                   & -0.020           \\ 
+                   &                   & (0.018)           &                   &                   & (0.018)          \\ 
+\% Teach. Voters  &                   & 0.096 ^{**}       &                   &                   & 0.071 ^*         \\ 
+                   &                   & (0.031)           &                   &                   & (0.034)          \\ 
+Fall Turnout       &                   & -0.027            &                   &                   & -0.039           \\ 
+                   &                   & (0.037)           &                   &                   & (0.041)          \\ 
+Number Seats       &                   & -0.079 ^{***}     &                   &                   & -0.081 ^{***}    \\ 
+                   &                   & (0.019)           &                   &                   & (0.019)          \\ 
+\% Tax for Schl.  &                   &                   & 0.045 ^*          &                   & 0.034            \\ 
+                   &                   &                   & (0.022)           &                   & (0.022)          \\ 
+\% Rev. Prop. Tax &                   &                   & -0.071 ^\dagger  &                   & -0.035           \\ 
+                   &                   &                   & (0.036)           &                   & (0.039)          \\ 
+Cost per Pupil     &                   &                   & 0.028             &                   & 0.028            \\ 
+                   &                   &                   & (0.041)           &                   & (0.040)          \\ 
+Bal. per Pupil     &                   &                   & -0.042            &                   & -0.033           \\ 
+                   &                   &                   & (0.027)           &                   & (0.026)          \\ 
+Millrate $\Delta$ &                   &                   & -0.025            &                   & -0.026           \\ 
+                   &                   &                   & (0.024)           &                   & (0.024)          \\ 
+\% Salary Admin.  &                   &                   &                   & 0.020             & 0.028            \\ 
+                   &                   &                   &                   & (0.033)           & (0.032)          \\ 
+New Sup.           &                   &                   &                   & 0.033             & 0.036            \\ 
+                   &                   &                   &                   & (0.027)           & (0.027)          \\ 
+\% Private School &                   &                   &                   & -0.036 ^\dagger  & -0.026           \\ 
+                   &                   &                   &                   & (0.021)           & (0.022)          \\ 
+Cumul. Bond Att.   &                   &                   &                   & 0.030             & 0.021            \\ 
+                   &                   &                   &                   & (0.023)           & (0.022)          \\ 
+Cumul. Ref Att.    &                   &                   &                   & 0.021             & 0.025            \\ 
+                   &                   &                   &                   & (0.022)           & (0.021)           \\
+ $N$                & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
+$R^2$              & 0.076             & 0.089             & 0.081             & 0.079             & 0.094            \\ 
+adj. $R^2$         & 0.070             & 0.081             & 0.073             & 0.071             & 0.083            \\ 
+Resid. sd          & 0.482             & 0.479             & 0.481             & 0.482             & 0.479             \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables mean centered and 
 divided by 2 standard deviations}}\\
@@ -2227,68 +2177,68 @@ divided by 2 standard deviations}}\\
 \hline 
   & \multicolumn{ 1 }{ c }{ Demog. } & \multicolumn{ 1 }{ c }{ Politic } & \multicolumn{ 1 }{ c }{ Fiscal } & \multicolumn{ 1 }{ c }{ Policy } & \multicolumn{ 1 }{ c }{ Full } \\ \hline
 \endhead
- %                      & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
-Intercept              & 0.044             & -0.008            & 0.065             & 0.068             & 0.036            \\ 
-                       & (0.071)           & (0.073)           & (0.072)           & (0.072)           & (0.076)          \\ 
-Electorate Size        & 0.192 ^{***}      & 0.261 ^{***}      & 0.170 ^{***}      & 0.198 ^{***}      & 0.230 ^{***}     \\ 
-                       & (0.031)           & (0.043)           & (0.035)           & (0.037)           & (0.053)          \\ 
-\% Over 65            & 0.036             & 0.057 ^\dagger   & 0.078 ^*          & 0.056             & 0.100 ^*         \\ 
-                       & (0.032)           & (0.033)           & (0.036)           & (0.034)           & (0.038)          \\ 
-\% Bachelor +         & -0.064 ^*         & -0.041            & -0.009            & -0.060 ^*         & -0.002           \\ 
-                       & (0.026)           & (0.036)           & (0.038)           & (0.027)           & (0.044)          \\ 
-\% White              & -0.006            & 0.008             & -0.011            & -0.016            & -0.017           \\ 
-                       & (0.027)           & (0.027)           & (0.032)           & (0.027)           & (0.033)          \\ 
-\% Owner Occupied     & 0.022             & 0.024             & -0.012            & 0.044             & 0.020            \\ 
-                       & (0.033)           & (0.033)           & (0.036)           & (0.035)           & (0.040)          \\ 
-Exurb                  & 0.035             & 0.075             & 0.039             & 0.030             & 0.061            \\ 
-                       & (0.069)           & (0.070)           & (0.071)           & (0.070)           & (0.073)          \\ 
-Rural                  & 0.016             & 0.053             & 0.008             & 0.003             & 0.023            \\ 
-                       & (0.067)           & (0.068)           & (0.069)           & (0.068)           & (0.071)          \\ 
-Dissat. Lag            & 0.101 ^{***}      & 0.098 ^{***}      & 0.096 ^{***}      & 0.100 ^{***}      & 0.092 ^{***}     \\ 
-                       & (0.019)           & (0.019)           & (0.019)           & (0.019)           & (0.019)          \\ 
-Rev. Lim. Attpt.       &                   & 0.058             &                   &                   & 0.053            \\ 
-                       &                   & (0.045)           &                   &                   & (0.046)          \\ 
-Rev. Lim. Pass         &                   & -0.055            &                   &                   & -0.058           \\ 
-                       &                   & (0.056)           &                   &                   & (0.056)          \\ 
-Bond Attpt.            &                   & 0.099 ^\dagger   &                   &                   & 0.099 ^\dagger  \\ 
-                       &                   & (0.050)           &                   &                   & (0.051)          \\ 
-Bond Pass              &                   & -0.153 ^*         &                   &                   & -0.155 ^*        \\ 
-                       &                   & (0.061)           &                   &                   & (0.061)          \\ 
-\% Polarized          &                   & -0.021            &                   &                   & -0.020           \\ 
-                       &                   & (0.021)           &                   &                   & (0.021)          \\ 
-\% Teach. Voters      &                   & 0.090 ^*          &                   &                   & 0.066 ^\dagger  \\ 
-                       &                   & (0.034)           &                   &                   & (0.038)          \\ 
-Fall Turnout           &                   & -0.024            &                   &                   & -0.034           \\ 
-                       &                   & (0.038)           &                   &                   & (0.040)          \\ 
-Number Seats           &                   & -0.006            &                   &                   & -0.006           \\ 
-                       &                   & (0.020)           &                   &                   & (0.020)          \\ 
-\% Millrate for Schl. &                   &                   & 0.050 ^\dagger   &                   & 0.042            \\ 
-                       &                   &                   & (0.025)           &                   & (0.025)          \\ 
-\% Rev. Prop. Tax     &                   &                   & -0.074 ^\dagger  &                   & -0.036           \\ 
-                       &                   &                   & (0.039)           &                   & (0.043)          \\ 
-Cost per Pupil         &                   &                   & 0.014             &                   & -0.002           \\ 
-                       &                   &                   & (0.042)           &                   & (0.044)          \\ 
-Bal. per Pupil         &                   &                   & -0.057 ^\dagger  &                   & -0.054 ^\dagger \\ 
-                       &                   &                   & (0.029)           &                   & (0.029)          \\ 
-Millrate $\Delta$     &                   &                   & -0.028            &                   & -0.028           \\ 
-                       &                   &                   & (0.021)           &                   & (0.021)          \\ 
-\% Salary Admin.      &                   &                   &                   & 0.018             & 0.025            \\ 
-                       &                   &                   &                   & (0.027)           & (0.027)          \\ 
-New Sup.               &                   &                   &                   & 0.029             & 0.032            \\ 
-                       &                   &                   &                   & (0.026)           & (0.026)          \\ 
-\% Private School     &                   &                   &                   & -0.040            & -0.026           \\ 
-                       &                   &                   &                   & (0.027)           & (0.028)          \\ 
-Cumul. Bond Att.       &                   &                   &                   & 0.031             & 0.024            \\ 
-                       &                   &                   &                   & (0.027)           & (0.029)          \\ 
-Cumul. Ref Att.        &                   &                   &                   & 0.019             & 0.014            \\ 
-                       &                   &                   &                   & (0.026)           & (0.027)           \\
- $N$                    & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
-AIC                    & 3807.116          & 3827.809          & 3820.036          & 3828.071          & 3866.346         \\ 
-N Groups               & 310               & 310               & 310               & 310               & 310              \\ 
-Group Names            & distid            & distid            & distid            & distid            & distid           \\ 
-Group:distid Effs.     & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
-Group:distid Var.      & 0.133             & 0.131             & 0.134             & 0.132             & 0.133            \\ 
-Sigma                  & 0.4651            & 0.4646            & 0.4642            & 0.4652            & 0.4638            \\ \hline
+ %                  & Demog.            & Politic           & Fiscal            & Policy            & Full             \\ 
+Intercept          & 0.044             & -0.008            & 0.065             & 0.068             & 0.036            \\ 
+                   & (0.071)           & (0.073)           & (0.072)           & (0.072)           & (0.076)          \\ 
+Electorate Size    & 0.192 ^{***}      & 0.261 ^{***}      & 0.170 ^{***}      & 0.198 ^{***}      & 0.230 ^{***}     \\ 
+                   & (0.031)           & (0.043)           & (0.035)           & (0.037)           & (0.053)          \\ 
+\% Over 65        & 0.036             & 0.057 ^\dagger   & 0.078 ^*          & 0.056             & 0.100 ^*         \\ 
+                   & (0.032)           & (0.033)           & (0.036)           & (0.034)           & (0.038)          \\ 
+\% Bachelor +     & -0.064 ^*         & -0.041            & -0.009            & -0.060 ^*         & -0.002           \\ 
+                   & (0.026)           & (0.036)           & (0.038)           & (0.027)           & (0.044)          \\ 
+\% White          & -0.006            & 0.008             & -0.011            & -0.016            & -0.017           \\ 
+                   & (0.027)           & (0.027)           & (0.032)           & (0.027)           & (0.033)          \\ 
+\% Owner Occupied & 0.022             & 0.024             & -0.012            & 0.044             & 0.020            \\ 
+                   & (0.033)           & (0.033)           & (0.036)           & (0.035)           & (0.040)          \\ 
+Exurb              & 0.035             & 0.075             & 0.039             & 0.030             & 0.061            \\ 
+                   & (0.069)           & (0.070)           & (0.071)           & (0.070)           & (0.073)          \\ 
+Rural              & 0.016             & 0.053             & 0.008             & 0.003             & 0.023            \\ 
+                   & (0.067)           & (0.068)           & (0.069)           & (0.068)           & (0.071)          \\ 
+Dissat. Lag        & 0.101 ^{***}      & 0.098 ^{***}      & 0.096 ^{***}      & 0.100 ^{***}      & 0.092 ^{***}     \\ 
+                   & (0.019)           & (0.019)           & (0.019)           & (0.019)           & (0.019)          \\ 
+Rev. Lim. Attpt.   &                   & 0.058             &                   &                   & 0.053            \\ 
+                   &                   & (0.045)           &                   &                   & (0.046)          \\ 
+Rev. Lim. Pass     &                   & -0.055            &                   &                   & -0.058           \\ 
+                   &                   & (0.056)           &                   &                   & (0.056)          \\ 
+Bond Attpt.        &                   & 0.099 ^\dagger   &                   &                   & 0.099 ^\dagger  \\ 
+                   &                   & (0.050)           &                   &                   & (0.051)          \\ 
+Bond Pass          &                   & -0.153 ^*         &                   &                   & -0.155 ^*        \\ 
+                   &                   & (0.061)           &                   &                   & (0.061)          \\ 
+\% Polarized      &                   & -0.021            &                   &                   & -0.020           \\ 
+                   &                   & (0.021)           &                   &                   & (0.021)          \\ 
+\% Teach. Voters  &                   & 0.090 ^*          &                   &                   & 0.066 ^\dagger  \\ 
+                   &                   & (0.034)           &                   &                   & (0.038)          \\ 
+Fall Turnout       &                   & -0.024            &                   &                   & -0.034           \\ 
+                   &                   & (0.038)           &                   &                   & (0.040)          \\ 
+Number Seats       &                   & -0.006            &                   &                   & -0.006           \\ 
+                   &                   & (0.020)           &                   &                   & (0.020)          \\ 
+\% Tax for Schl.  &                   &                   & 0.050 ^\dagger   &                   & 0.042            \\ 
+                   &                   &                   & (0.025)           &                   & (0.025)          \\ 
+\% Rev. Prop. Tax &                   &                   & -0.074 ^\dagger  &                   & -0.036           \\ 
+                   &                   &                   & (0.039)           &                   & (0.043)          \\ 
+Cost per Pupil     &                   &                   & 0.014             &                   & -0.002           \\ 
+                   &                   &                   & (0.042)           &                   & (0.044)          \\ 
+Bal. per Pupil     &                   &                   & -0.057 ^\dagger  &                   & -0.054 ^\dagger \\ 
+                   &                   &                   & (0.029)           &                   & (0.029)          \\ 
+Millrate $\Delta$ &                   &                   & -0.028            &                   & -0.028           \\ 
+                   &                   &                   & (0.021)           &                   & (0.021)          \\ 
+\% Salary Admin.  &                   &                   &                   & 0.018             & 0.025            \\ 
+                   &                   &                   &                   & (0.027)           & (0.027)          \\ 
+New Sup.           &                   &                   &                   & 0.029             & 0.032            \\ 
+                   &                   &                   &                   & (0.026)           & (0.026)          \\ 
+\% Private School &                   &                   &                   & -0.040            & -0.026           \\ 
+                   &                   &                   &                   & (0.027)           & (0.028)          \\ 
+Cumul. Bond Att.   &                   &                   &                   & 0.031             & 0.024            \\ 
+                   &                   &                   &                   & (0.027)           & (0.029)          \\ 
+Cumul. Ref Att.    &                   &                   &                   & 0.019             & 0.014            \\ 
+                   &                   &                   &                   & (0.026)           & (0.027)           \\
+ $N$                & 2727              & 2727              & 2727              & 2727              & 2727             \\ 
+AIC                & 3807.116          & 3827.809          & 3820.036          & 3828.071          & 3866.346         \\ 
+N Groups           & 310               & 310               & 310               & 310               & 310              \\ 
+Group Names        & distid            & distid            & distid            & distid            & distid           \\ 
+Group:distid Effs. & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)       & (Intercept)      \\ 
+Group:distid Var.  & 0.133             & 0.131             & 0.134             & 0.132             & 0.133            \\ 
+Sigma              & 0.4651            & 0.4646            & 0.4642            & 0.4652            & 0.4638            \\ \hline
  \multicolumn{6}{l}{\footnotesize{$^\dagger$ significant at $p<.10$; $^* p<.05$; $^{**} p<.01$; $^{***} p<.001$}}\\
 \multicolumn{6}{l}{\footnotesize{All continuous variables mean centered and 
 divided by 2 standard deviations}} 

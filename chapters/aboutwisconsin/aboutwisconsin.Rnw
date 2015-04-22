@@ -319,8 +319,8 @@ row.names(ab) <- c("Var", rnames)
 tabDigits <- c(0,0,2,2,1,1,1,0,0,0,0,0,2,2)
 tabDigitsMat <- cbind(rep(0, 14), tabDigits, tabDigits, tabDigits, tabDigits)
 tabDigitsMat <- as.matrix(tabDigitsMat, ncol = 5)
-sampleStats <- xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that did not and are not included in the study. Data from the 2010-2011 school year. Table excludes 
-                      Milwaukee Public Schools.", digits = tabDigitsMat)
+sampleStats <- xtable(ab[-1,], label="tab:samplecomp", caption = "Comparing school districts that provided board election results to those that are not included in the study. Data from the 2010-2011 school year. Table excludes 
+                      Milwaukee.", digits = tabDigitsMat)
 
 align(sampleStats) <- c('p{1.5in}','p{.8in}','p{.8in}','p{.8in}','p{.8in}')
 

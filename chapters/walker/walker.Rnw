@@ -1844,7 +1844,7 @@ across any of the models in Table \ref{tab:causSerCon}. The sign of the
 treatment in both years one and two is negative across the models, and the 
 interaction effect with the lagged variable, the estimate of the regime change 
 in the post Act 10 period, is close to zero and non-significant. Given the 
-descriptive data on contestation in Chapter \ref{chap:aboutwisco}, this 
+descriptive data on contestation in Chapter \ref{chap:wisco}, this 
 is not surprising. 
 
 Competitiveness, measured by the Blais-Lago quotient, is only slightly more 
@@ -2097,11 +2097,12 @@ polarMedTable <- apsrtable(full2, full3, full4, full5, full6,
                            se = "robust", digits = 3, 
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
-          caption = "Mediation Estimates of Polarization on Board Elections - Multilevel Models",           label = "tab:polarMedHLM", notes = list(stars.note), 
+          caption = "Mediation Estimates of Polarization on Board Elections",
+          label = "tab:polarMedHLM", notes = list(stars.note), 
           omitcoef=c("ImputedFlagYes", "distWidemixYes"),
           coef.names=coefNames2,
         Sweave = FALSE, 
-          stars = "default", size = "scriptsize")
+          stars = "default", size = "scriptsize", float='longtable')
 @
 
 
@@ -2296,11 +2297,11 @@ unionMedtable <- apsrtable(full2, full3, full4, full5, full6,
                            se = "robust", digits = 3, 
                   model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
-          caption = "Mediation Estimates of Union Strength on Board Elections - Multilevel Models",           
+          caption = "Mediation Estimates of Union Strength on Board Elections",           
           label = "tab:unionMedHLM", notes = list(stars.note), Sweave = FALSE, 
           stars = "default", size="scriptsize",  
           omitcoef=c("ImputedFlagYes", "distWidemixYes"),
-          coef.names=coefNames2)
+          coef.names=coefNames2, float='longtable')
 @
 
 %unionMedAlternate
@@ -2463,11 +2464,11 @@ unionMedtable2 <- apsrtable(full2, full3, full4, full5, full6,
                            se = "robust", digits = 3, 
                   model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
-          caption = "Mediation Estimates of Teacher Share on Board Elections - Multilevel Models",           
+          caption = "Mediation Estimates of Teacher Share on Board Elections",           
           label = "tab:unionMedHLM", notes = list(stars.note), Sweave = FALSE, 
           stars = "default", size="scriptsize",  
           omitcoef=c("ImputedFlagYes", "distWidemixYes"),
-          coef.names=coefNames2)
+          coef.names=coefNames2, float='longtable')
 @
 %tab:recallTurnMed
 
@@ -2636,12 +2637,12 @@ unionMedtable3 <- apsrtable(full2, full3, full4, full5, full6,
                            se = "robust", digits = 3, 
                   model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
-          caption = "Mediation Estimates of Union Strength on Board Elections - Multilevel Models",           
+          caption = "Mediation Estimates of Union Strength on Board Elections",           
           label = "tab:unionMedHLM", notes = list(stars.note,sampNote), 
           Sweave = FALSE, 
           stars = "default", size="scriptsize",  
           omitcoef=c("ImputedFlagYes", "distWidemixYes"),
-          coef.names=coefNames2)
+          coef.names=coefNames2, float='longtable')
 @
 
 
@@ -2775,6 +2776,14 @@ full6 <- glmer(incDefeats ~ incDefeats_lag + treatmentDiff + VAP_adjLOG_sq_lag +
                treatmentDiff * RecallTurnout_lag + distWidemix +(1|distid), 
              data = outdata, family = "binomial")
 
+
+coefNames2 <- c("Intercept", "Spring 2011", "Spring 2012", 
+                  "Electorate Size\\textsuperscript{2}",  "Electorate Size", 
+                "\\% Over 65", "N Races", "\\% Owner Occupied", 
+                "\\% Bach. +", "Exurb", "Rural", "Recall Turnout", 
+                 "Spring 2011 x Recall", "Spring 2012 x Recall", "BL Lag", 
+                "Turn Lag", "Roll Lag", "Inc. Def. Lag")
+
 recallTurnMedTable2 <- apsrtable(simp1, simp3, simp4, 
                                  simp5, simp6, 
                                  se = "robust", digits = 3, 
@@ -2789,9 +2798,11 @@ recallTurnMedTable <- apsrtable(full1, full3, full4, full5, full6,
           model.names = c("Ser. Cont.", "Compet.", 
                           "Turnout", "Rolloff", "Inc. Def."), 
           stars = "default", 
-          caption = "Mediation Estimates of Recall Turnout on Board Elections - HLM", 
+          caption = "Mediation Estimates of Recall Turnout on Board Elections", 
           label = "tab:recallTurnMedHLM", notes = list(stars.note), 
-          Sweave = FALSE, size = "scriptsize")
+          Sweave = FALSE, size = "scriptsize", 
+           omitcoef=c("ImputedFlagYes", "distWidemixYes"),
+          coef.names=coefNames2, float='longtable')
 @
 
 \subsubsection{Full Mediation}
@@ -2981,7 +2992,8 @@ apsrtable(simp1, simp3, simp4, simp5, simp6, se = "robust", digits = 3,
           size="scriptsize")
 
 coefNames2 <- c("Intercept", "Spring 2011", "Spring 2012", "Electorate Size", 
-                  "Electorate Size\\textsuperscript{2}",  "\\% Over 65", "N Races", "\\% Owner Occupied", 
+                  "Electorate Size\\textsuperscript{2}",  "\\% Over 65", "N Races", 
+                "\\% Owner Occupied", 
                 "\\% Bach. +", "Exurb", "Rural", "Recall Turn.", "Recall Polar.", 
                 "Lag", "Spring 2011 x Recall Turn", "Spring 2012 x Recall Turn", 
                 "Spring 2011 x Recall Polar", "Spring 2012 x Recall Polar", "BL Lag", 
@@ -2992,11 +3004,11 @@ recallMedTable <- apsrtable(full2, full3, full4, full5, full6,
                             model.names = c("Ser. Cont.", "Compet.", 
                                             "Turnout", "Rolloff", "Inc. Def."), 
                     stars = "default", 
-        caption = "Mediation Estimates of Recall on Board Elections - Multilevel Models",           
+        caption = "Mediation Estimates of Recall on Board Elections",           
           label = "tab:recallAllMedHLM", notes = list(stars.note), 
           Sweave = FALSE, size = "scriptsize",
            omitcoef=c("ImputedFlagYes", "distWidemixYes"),
-          coef.names=coefNames2)
+          coef.names=coefNames2, float='longtable')
 @
 
 % Rolloff and turnout evidence for polarization and turnout on treatment

@@ -327,13 +327,13 @@ plotdf <- ddply(dist_turn, .(year), summarise,
                 candAvg = mean(candTotal))
 
 p1 <- qplot(year, dfactor1, data = plotdf, 
-      geom = "bar", stat='identity', color = I("black"), fill = "gray80") + 
+      geom = "bar", stat='identity', color = I("black"), fill = I("gray80")) + 
   scale_x_continuous(breaks = c(2001:2012)) + theme_bw() + 
   scale_y_continuous(label = percent) + 
   labs(x = "Year", y = "DFACTOR")
 
 p2 <-  qplot(year, crate, data = plotdf, 
-      geom = "bar", stat='identity', color = I("black"), fill = "gray80") + 
+      geom = "bar", stat='identity', color = I("black"), fill = I("gray80")) + 
   scale_x_continuous(breaks = c(2001:2012)) + theme_bw() + 
   scale_y_continuous(label = percent) + 
   labs(x = "Year", y = "CRATE")

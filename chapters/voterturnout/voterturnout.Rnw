@@ -812,7 +812,7 @@ cormat$value2 <- cut(cormat$value,
 qplot(x=X1, y=X2, data=cormat, fill=value2, geom="tile", color = I("gray40")) + 
   scale_fill_brewer(palette = "RdYlGn",name="Correlation", 
                     breaks = levels(cormat$value2), drop =FALSE)+
-  geom_text(aes(label = value), size = 3) + nopanel + 
+  geom_text(aes(label = value), size = 4) + nopanel + 
   labs(x = "", y = "") + theme(legend.position = "none")
 
 @
@@ -1776,7 +1776,7 @@ rm(partyRLM1, partyRLM2, partyRLM3, partyRLM4, teachRLM, teachRLM2,
 
 \clearpage
 
-\subsection{School Board Vote Roll Off}
+\subsection{School Board Vote Rolloff}
 
 In this section I explore whether any of the models 
 above explain the difference between top ticket turnout and school board turnout. 

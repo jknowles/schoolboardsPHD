@@ -980,7 +980,7 @@ nopanel <- theme(panel.background=element_blank(),
                                axis.text = element_text(colour = "black"))
 @
 
-<<prettyNameR, results='hide', echo='FALSE'>>=
+<<prettyNameR, results='hide', echo=FALSE>>=
 
 varNamer <- function(x){
   x <- as.character(x)
@@ -1264,8 +1264,8 @@ The model below includes a third grouping level for years.
 
 \begin{align*} 
 \Pr_{CE_{ijt}} &= \alpha_{i} + \beta X_{ijt} + \gamma_{j} + \lambda_{t} + \epsilon_{ijt}   \\ 
-\gamma_{j} &= \alpha_{j} + \epsilon_{j}
-\lambda_{t} &= \alpha_{t} + \epsilon_{t}
+\gamma_{j} &= \alpha_{j} + \epsilon_{j} \\ 
+\lambda_{t} &= \alpha_{t} + \epsilon_{t} \\
 \end{align*}
 
 This approach allows year parameters to be estimated independently without assuming 
@@ -1459,7 +1459,7 @@ coefnames1 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +",
                "\\% White", "\\% Owner Occupied",  "Exurb", "Rural", "Dissat. Lag", 
                "Rev. Lim. Attpt.", "Rev. Lim. Pass", "Bond Attpt.", "Bond Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
-               "\\% Millrate for Schl.", "\\% Rev. Prop. Tax", "Cost per Pupil", 
+               "\\% Tax for Schl.", "\\% Rev. Prop. Tax", "Cost per Pupil", 
                "Bal. per Pupil", "Millrate $\\Delta$", "\\% Salary Admin.", 
                "New Sup.", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Ref Att.")
@@ -1561,12 +1561,12 @@ stars.note <- apsrtable:::stars.note
 coef.note <- "Year fixed effect coefficients excluded"
 
 coefnames1 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% Owner Occupied",  "Exurb", "Rural", "Contestation Lag", 
+               "\\% White", "\\% Owner Occupied",  "Exurb", "Rural", "Contest. Lag", 
                "Rev. Lim. Attpt.", "Rev. Lim. Pass", "Bond Attpt.", "Bond Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
-               "\\% Millrate for Schl.", "\\% Rev. Prop. Tax", "Cost per Pupil", 
+               "\\% Tax for Schl.", "\\% Rev. Prop. Tax", "Cost per Pupil", 
                "Bal. per Pupil", "Millrate $\\Delta$", "\\% Salary Admin.", 
-               "New Sup.", "\\% Private School", "Cumul. Bond Att.", 
+               "New Sup.", "\\% Priv. School", "Cumul. Bond Att.", 
                "Cumul. Ref Att.")
 
 glmNItab <-apsrtable(demogsNI, politicNI, fiscalNI, policyNI, fullmodNI, se = "robust", 
@@ -1743,13 +1743,13 @@ stars.note <- apsrtable:::stars.note
 
 
 coefnames2 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% Owner Occupied", "Exurb", "Rural", "Lagged Contestation", 
+               "\\% White", "\\% Owner Occupied", "Exurb", "Rural", "Lag. Contest.", 
                "\\% Incumbents", 
                "Override Attpt.", "Override Pass", "Debt Ques.", "Debt Pass", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
-               "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
+               "\\% Tax for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
                "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
-               "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
+               "New Sup.", "\\% Priv. School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
 glmContab <- apsrtable(demogsCon, politicCon, fiscalCon, policyCon, fullmodCon, se = "robust", 
@@ -1886,11 +1886,11 @@ stars.note <- apsrtable:::stars.note
 
 coefnames4 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +", 
                "\\% White", "\\% Owner Occupied", "Exurb", "Rural",
-               "Major Contestation Lag", "\\% Incumbents", "\\% Yes Rev. Limit", 
+               "Contest. Lag", "\\% Incumbents", "\\% Yes Rev. Limit", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
-               "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
+               "\\% Tax for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
                "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
-               "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
+               "New Sup.", "\\% Priv. School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
 glmBLQtab <- apsrtable(demogsBLQ, politicBLQ, fiscalBLQ, policyBLQ, fullmodBLQ, se = "robust", 
@@ -2013,12 +2013,12 @@ stars.note <- apsrtable:::stars.note
 
 
 coefnames3 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +", 
-               "\\% White", "\\% Owner Occupied", "Exurb", "Rural", "Contestation Lag", 
+               "\\% White", "\\% Owner Occupied", "Exurb", "Rural", "Contest. Lag", 
                "\\% Incumbents", "\\% Yes Rev. Limit", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
-               "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
+               "\\% Tax for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
                "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
-               "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
+               "New Sup.", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
 glmDtab <- apsrtable(demogsD, politicD, fiscalD, policyD, fullmodD, se = "robust", 
@@ -2066,9 +2066,9 @@ coefnames3 <- c("Intercept", "Electorate Size", "\\% Over 65", "\\% Bachelor +",
                "\\% White", "\\% Owner Occupied", "Exurb", "Rural", 
                "\\% Incumbents", "\\% Yes Rev. Limit", 
                "\\% Polarized", "\\% Teach. Voters", "Fall Turnout", "Number Seats", 
-               "\\% Millrate for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
+               "\\% Tax for Schl.", "\\% Revenue Prop. Tax", "Cost per Pupil", 
                "Balance per Pupil", "Millrate $\\Delta$", "\\% Salary - Admin.", 
-               "New Superintendent", "\\% Private School", "Cumul. Bond Att.", 
+               "New Sup.", "\\% Private School", "Cumul. Bond Att.", 
                "Cumul. Override Att.")
 
 apsrtable(demogsMMd, politicMMd, fiscalMMd, policyMMd, fullmodMMd,
@@ -2621,6 +2621,8 @@ that is marked by low turnout, does anything happen?
 All analyses were done using R \citep{cran}. Source code and data available online. 
 
 \subsection{Pooled GLM Model Results}
+
+Not printed.
 
 <<printGLMni, results='asis'>>=
 glmNItab
