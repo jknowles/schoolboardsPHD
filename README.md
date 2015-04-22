@@ -1,4 +1,4 @@
-# School Boards and Policy Shocks
+# School Boards and the Democratic Promise
 
 ### A PhD Dissertation in Political Science
 
