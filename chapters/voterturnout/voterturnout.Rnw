@@ -1102,7 +1102,7 @@ stars.note <- apsrtable:::stars.note
 se.note <- apsrtable:::se.note
 
 coefnamesLag <- c("Intercept","Lagged Turnout (2)", "Fall Turnout", "Electorate Size", 
-                  "$Electorate Size^{2}$", "\\% White", 
+                  "Electorate Size\\textsuperscript{2}", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% Owner Occupied", 
                   "Median Income", "District-wide", "Competitiveness")
 
@@ -1170,7 +1170,7 @@ dumbRLM2b$se <- sqrt(diag(vcov(robcov(dumbRLM2, cluster = moddat$distid))))
 stars.note <- apsrtable:::stars.note
 se.note <- apsrtable:::se.note
 coefnamesLag2 <- c("Intercept","Lagged Turnout (1)", "Fall Turnout", "Electorate Size", 
-                  "$Electorate Size^{2}$", "\\% White", 
+                  "Electorate Size\\textsuperscript{2}", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% Owner Occupied", 
                   "Median Income", "District-wide", "Competitiveness")
 appA1 <- apsrtable(dumbRLM1b, dumbRLMbestb, dumbRLM2b, se="robust", 
@@ -1211,7 +1211,7 @@ coefnamesLag3 <- c("Intercept","Lagged Turnout (2)", "Electorate Size",
                  "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% Owner Occupied", 
                   "Median Income", "District-wide", "Competitiveness", 
-                  "Fall Turnout",  "$Electorate Size^{2}$")
+                  "Fall Turnout",  "Electorate Size\\textsuperscript{2}")
 tabnote <- "Model includes both year and district random effects modeled as intercepts."
 
 apsrtable(mixedModlags, mixedMod1lagsb, caption = "Partial Pooling Model of Lagged Turnout",
@@ -1302,7 +1302,7 @@ closeRLM4$se <- sqrt(diag(vcov(robcov(closeRLM4, cluster = moddat$distid))))
 
 
 closeCoefs1 <- c("Intercept", "Electorate Size", 
-                  "$Elec. Size^{2}$", "\\% White", 
+                  "Electorate Size\\textsuperscript{2}", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% Owner Occupied", 
                 "Median Income", "District-wide", "Incumbent Share",
                  "Competitiveness", "Elec. Size x Competitiveness")
@@ -1364,8 +1364,8 @@ mixedModcloseC <- lmer(turnout ~  VAP_adjLOG +  VAP_adjLOG_sq +
                    (1|year) + (1|distid), 
               data = moddat, REML = TRUE)
 
-closeCoefs2 <- c("Intercept", "ln(VAP)", 
-                  "$ln(VAP)^{2}$", "\\% White", 
+closeCoefs2 <- c("Intercept", "Electorate Size", 
+                  "Electorate Size\\textsuperscript{2}", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
                   "ln(MedianIncome)", "District-wide", "Incumbent Share", 
                    "Blais-Lago", "VAP x Blais-Lago")
@@ -1499,7 +1499,7 @@ teachRLM6$se <- sqrt(diag(vcov(robcov(teachRLM6, cluster = moddat$distid))))
 
 
 teachCoefnames <- c("Intercept", "Teacher \\% Electorate", "Lag Turnout", 
-                 "Competitiveness", "Electorate Size", "$Elec. Size^{2}$", "\\% White", 
+                 "Competitiveness", "Electorate Size", "Electorate Size\\textsuperscript{2}", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% OOH", 
                   "Median Income", "District-wide", "Incumbent Share", 
                   "Teacher \\% X Elec. Size", "Teacher \\% of SB Vote", 
@@ -1554,7 +1554,7 @@ school districts \citep{fosterK,burnsN,berry2}.
 
 <<teachInfMM, results='asis'>>=
 teachCoefnames2 <- c("Intercept", "Teacher \\% SB Vote",  
-                 "Competitiveness",  "Electorate Size",  "$Elec. Size^{2}$", 
+                 "Competitiveness",  "Electorate Size",  "Electorate Size\\textsuperscript{2}", 
                   "\\% White", "\\% Over 65", "\\% Bach. +", "\\% Owner Occupied", 
                   "Median Income", "District-wide", "Incumbent Share",
                   "Teacher \\% of SB X Inc Share")
@@ -1700,7 +1700,7 @@ partyRLM4 <- ols(turnout ~ fallTwoPartyShareDem*VAP_adjLOG + fallTurnout + minBl
 partyRLM4$se <- sqrt(diag(vcov(robcov(partyRLM4, cluster = moddat$distid))))
 
 partyCoefNames <- c("Intercept", "Fall Turnout", 
-                 "Competitiveness", "Electorate Size", "$Elec. Size^{2}$", "\\% White", 
+                 "Competitiveness", "Electorate Size", "Electorate Size\\textsuperscript{2}", "\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% Owner Occupied", 
                   "Median Income", "District-wide", "Incumbent Share", 
                   "Fall Party Divide", "Fall 2 Party Dem.", 
@@ -1726,11 +1726,11 @@ partyModtab <- apsrtable(partyRLM1, partyRLM2, partyRLM3, partyRLM4,
 
 <<partyMixedMods, results='asis'>>=
 partyCoefNames2 <- c("Intercept", "Fall Party Divide", "Fall Turnout", 
-                 "Competitiveness", "Electorate Size", "$Elec. Size^{2}$","\\% White", 
+                 "Competitiveness", "Electorate Size", "Electorate Size\\textsuperscript{2}","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% Owner Occupied", 
                   "Median Income", "District-wide", "Incumbent Share", 
                  "Party Division x Elec. Size", 
-                 "Fall 2 Party Dem.", "$2 Party Dem^{2}$","2 Party Dem x Elec. Size")
+                 "Fall 2 Party Dem.", "2 Party Dem\\textsuperscript{2}","2 Party Dem x Elec. Size")
 
 mixedModP <- lmer(turnout ~ partyDivisionFall + fallTurnout + minBlaisLago + 
                     VAP_adjLOG + VAP_adjLOG_sq +per_white_all + per65o + 
@@ -1911,7 +1911,7 @@ undervoteMMpartyB <- lmer(turnoutDiff ~ partyDivisionFall*VAP_adjLOG +  VAP_adjL
               data = moddat, REML = TRUE)
 
 coefNamesUnd1 <- c("Intercept", "Turnout Lag (2)","Fall Turnout", 
-                 "Electorate Size", "$Elec. Size^{2}$","\\% White", 
+                 "Electorate Size", "Electorate Size\\textsuperscript{2}","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% Owner Occupied", 
                   "ln(MedianIncome)", "District-wide", "Incumbent Share","Imputed",
                  "Competitiveness", "Competitiveness X Elec. Size")
@@ -1939,7 +1939,7 @@ In small communities this relationship does not matter.
 
 <<undervoteMMfits2, results='asis'>>=
 coefNamesUnd2 <- c("Intercept", "Teacher Share Elec.", "Fall Turnout", 
-                   "Competitiveness", "Electorate Size", "$Elec. Size^{2}$","\\% White", 
+                   "Competitiveness", "Electorate Size", "Electorate Size\\textsuperscript{2}","\\% White", 
                   "\\% Over 65", "\\% Bach. +", "\\% Owner Occupied", 
                   "Median Income", "District-wide", "Incumbent Share","Imputed", 
                  "Teacher Share x Elec. Size", "Teach. Share of SB", "Teach. Share SB x Elec. Size",

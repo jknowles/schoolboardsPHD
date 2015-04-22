@@ -206,6 +206,9 @@ dist_turn <- merge(dist_turn, ADMIN, by.x = c("DISTID", "year"),
                    by.y =c("DISTID", "YEAR"))
 
 dist_turn$teachShareofVoters <- round(dist_turn$FTE_TEACH,0) / round(dist_turn$VAP_adj,0)
+dist_turn$teachShareofVoters2 <- round(dist_turn$FTE_TEACH, 0) / round(dist_turn$votersLag2, 0)
+dist_turn$teachShareofVoters2[dist_turn$teachShareofVoters2 > 0.46 & 
+                                !is.na(dist_turn$teachShareofVoters2)] <- 0.46
 
 rm(ADMIN)
 
