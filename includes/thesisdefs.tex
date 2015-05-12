@@ -48,13 +48,13 @@
 \gdef\@degree{Doctor of Philosophy}    %Default is PhD
 \gdef\@doctype{A dissertation}         %Default is dissertation
 
-\gdef\@defensedate{05/01/2015} 
+\gdef\@defensedate{05/13/2015} 
 \gdef\@committee{
   David Canon, Professor, Political Science\\
   John Witte, Professor Emeritus, Political Science\\
   Kathy Cramer, Professor, Political Science\\
   Julie Underwood, Dean, School of Education\\
-  Jee-Sun Kim, Assistant Professor, Education Psychology\\
+  Jee-Seon Kim, Assistant Professor, Education Psychology\\
 }
 
 \gdef\@department{(Political Science)} 
@@ -67,24 +67,23 @@
 % -- your titlepage when converting from report style. -> from Purdue, but I
 %        left it here since it seems compatible with UW-Madison, Eric
 %-----------------------------------------------------------------------------
-    \def\thanks##1{\typeout{Warning: `thanks' deleted from thesis titlepage.}}
+\def\thanks##1{\typeout{Warning: `thanks' deleted from thesis titlepage.}}
     \let\footnotesize\small \let\footnoterule\relax \setcounter{page}{1}
-    \vspace*{-0.6in}
     \begin{center}
       {\textbf{\expandafter\expandafter{\@title}}} \\[\@thesistitlebigskip]
-       by \\[\@thesistitlesmallskip]
+       by \\[\@thesistitlemedskip]
       \@author \\[\@thesistitlebigskip]
       \@doctype\ submitted in partial fulfillment of \\
       the requirements for the degree of\\[\@thesistitlebigskip]
       \@degree \\[\@thesistitlemedskip]
       \@department \\[\@thesistitlebigskip]
-      at the \\
-      UNIVERSITY OF WISCONSIN--MADISON \\
-      \@date \\[\@thesistitlebigskip]
+      at the \\[\@thesistitlemedskip]
+      UNIVERSITY OF WISCONSIN--MADISON\\[\@thesistitlemedskip]
+      \@date
     \end{center}
-    \hspace*{-0.7in}Date of final oral examination: \@defensedate \\[\@thesistitlesmallskip]
+    \hspace*{-0.7in}Date of final oral examination: \@defensedate \\[\@thesistitlemedskip]
     \hspace*{-0.7in}The dissertation is approved by the following members of the 
-     Final Oral Committee:\\
+    Final Oral Committee:\\
     \@committee
   \end{titlepage}
   \setcounter{footnote}{0}
@@ -96,7 +95,6 @@
   \gdef\@department{}
   %\gdef\@author{}\gdef\@title{}
 }
-
 
 %=============================================================================
 % ABSTRACT
