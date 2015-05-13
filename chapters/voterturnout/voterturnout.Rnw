@@ -2149,6 +2149,7 @@ There is room for future work to improve these models through identifying measur
 to improve the prediction. 
 
 <<printRMSEplot, fig.scap="Comparing Model Fit Across Variables", fig.cap="Figures show the bootstrapped root mean square error (RMSE) of competing models across 150 bootstrapped replications along with a confidence interval. A lower RMSE corresponds to a more accurate prediction and better explanation of the dependent variable.", fig.height=4,fig.width=8>>==
+library(gridExtra)
 grid.arrange(rmsePlot1, rmsePlot2, left = "Mean Model Error in Std. Dev.")
 @
 

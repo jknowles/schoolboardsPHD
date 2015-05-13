@@ -474,6 +474,7 @@ of increasing and then receding school district millrates across the study perio
 But, substantial variation between districts exists. 
 
 <<millratePlot, fig.scap="Annual Change in District Millrate", fig.cap="Smoothed lines for annual change in the millrate for each district in the sample, measured in mills.", fig.height=3.75>>=
+
 ggplot(dist_turn, aes(x = year, y = millrate_delta, group = distid)) + 
   geom_line(stat="smooth", se = FALSE, color = I("black"), alpha = I(0.45)) + 
   scale_x_continuous(breaks = c(2002:2013), "Year") + 
