@@ -37,7 +37,7 @@ Sys.setenv(BIBINPUTS=BIBINPUTS, BSTINPUTS=BSTINPUTS)
 
 # Build PDF
 system("pdflatex dissertation")
-system("bibtex dissertation")
+system("biber dissertation")
 system("pdflatex dissertation")
 system("pdflatex dissertation")
 system("pdflatex dissertation")

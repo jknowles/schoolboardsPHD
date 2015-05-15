@@ -22,14 +22,14 @@
 \usepackage{alltt}
 \usepackage{array}
 \graphicspath{{phd_figs}}
-
+\usepackage[notes,natbib,isbn=false,backend=biber]{biblatex-chicago}  
 %\usepackage[usenames,dvipsnames]{pstricks}
 
 %% You should use natbib
 
-\usepackage{natbib}
+% \usepackage{natbib}
 
-\bibpunct{(}{)}{;}{a}{,}{,}
+% \bibpunct{(}{)}{;}{a}{,}{,}
 
 %% You probably need appendix, if you want appendices
 \IfFileExists{appendix.sty}{%
@@ -280,3 +280,14 @@
     .pdf,.PDF,%
     .png,.PNG,%
     .jpg,.jpeg}
+
+
+\addbibresource[label=intro]{bib2.bib}
+\addbibresource[label=ridge]{candidacy.bib}
+
+\addbibresource[label=intro]{turnoutBIB.bib}
+\addbibresource[label=ridge]{personalcorresp.bib}
+\addbibresource[label=ridge]{nonpartisanelections.bib}
+\addbibresource[label=ridge]{methods.bib}
+    
+% \bibliography{bib2,candidacy,turnoutBIB,personalcorresp,methods,nonpartisanelections}
