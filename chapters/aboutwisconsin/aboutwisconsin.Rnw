@@ -46,7 +46,8 @@ Another advantage of selecting Wisconsin is the comparative advantage
 I have had in gathering the necessary data to study a substantial proportion of the 
 school board races within the state.\footnote{For details on this, see the 
 Appendix \ref{app:data}.} With close relationships to policymakers in my role 
-as a research analyst at the SEA I have been able to collect a diverse set of 
+as a research analyst at the state education department I have been able to 
+collect a diverse set of 
 data on Wisconsin school districts. A final advantage is the ability 
 to test theories of the linkage between school board and state level politics thanks 
 to the dramatic shock to education policy that accompanied the election of Wisconsin 
@@ -253,7 +254,7 @@ board races. Figure \ref{fig:racesgraph} shows the number of races
 provided by each school district, with the median highlighted by a red vertical line. 
 \Sexpr{iNum(table(rowSums(continuity) >5)[[2]])} districts had 
 a race in each year between 2007 and 2012, while \Sexpr{iNum(table(rowSums(continuity) >5)[[1]])} 
-did not. \footnote{In some cases a district like Milwaukee may only hold board elections 
+did not.\footnote{In some cases a district like Milwaukee may only hold board elections 
 on an every other year cycle.} I distinguish these cases from others by verifying 
 the absence of a ballot for school board, as opposed to the absence of records. 
  

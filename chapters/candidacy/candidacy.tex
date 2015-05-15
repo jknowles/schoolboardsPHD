@@ -281,7 +281,7 @@ with each race electing multiple winners.\footnote{See Appendix \ref{app:data} f
 details about the coding of races.}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue May 12 17:05:20 2015
+% Fri May 15 00:48:01 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rlllllllllll}
@@ -334,7 +334,7 @@ of competitiveness to understand if school district election competitiveness at 
 level is predicted by theory. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue May 12 17:05:20 2015
+% Fri May 15 00:48:01 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -354,7 +354,7 @@ Table \ref{tab:icbychal} shows the relationship between incumbency and challenge
 across all school district elections in the sample. The modal elections consists of either 
 contested open seats or uncontested races with only incumbents. Measuring candidate 
 emergence and contestation in multi-member seats is not as straightforward as in single 
-member districts. \footnote{In school board races in Wisconsin there is rarely a seriously 
+member districts.\footnote{In school board races in Wisconsin there is rarely a seriously 
 contested race with all incumbents. This is due to the relative infrequency with 
 which school board seats are changed or redrawn. In addition, even if the race is 
 between two incumbents, the research literature around school boards suggests 
@@ -372,7 +372,7 @@ Table \ref{tab:icbydef} shows that in races in which
 at least one of the candidates is not an incumbent incumbent defeat is rare. 
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue May 12 17:05:20 2015
+% Fri May 15 00:48:01 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{rrr}
@@ -395,7 +395,7 @@ explain the variation in these three degrees of contestation.
 \subsubsection{Non-incumbents}
 
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
-% Tue May 12 17:05:20 2015
+% Fri May 15 00:48:02 2015
 \begin{table}[ht]
 \centering
 \begin{tabular}{lrrll}
@@ -1540,7 +1540,7 @@ probability of contestation conditional on changes in those variables.
 
 \end{knitrout}
 
-In Figure \ref{fig:fixefSub1} I provide a series of simulation results for three 
+In Figure \ref{fig:candfixefSub1} I provide a series of simulation results for three 
 variables. Each numbered panel represents a simulated case. Each column of panels 
 represents a combination of a predictor and a dependent variable, in this case from left 
 to right, the probability of a contested seat by millrate share, the probability of a 
@@ -1562,7 +1562,7 @@ change if the x-variable increased or decreased?
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-fixefSub1-1} \caption[Simulated Effect of Key Variables on Contestation Levels Across Models]{Simulated Effect of Key Variables on Contestation Levels Across Models}\label{fig:fixefSub1}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-candfixefSub1-1} \caption[Simulated Effect of Key Variables on Contestation Levels Across Models]{Simulated Effect of Key Variables on Contestation Levels Across Models}\label{fig:candfixefSub1}
 \end{figure}
 
 
@@ -1580,7 +1580,7 @@ effects have in the models for the outcome variables.
 
 Figure \ref{fig:randomEffectplot31} simulates the variance in the predicted 
 probabilities of each outcome across school districts. As in Figure 
-\ref{fig:fixefSub1}, each panel represents a single case. Within that panel, the 
+\ref{fig:candfixefSub1}, each panel represents a single case. Within that panel, the 
 predicted probability for that case is estimated if that case had been observed 
 in each district, ordered by the impact each district has on the outcome. Thus, 
 the line in each panel be interpreted as, all else constant, how much would the 
@@ -1608,7 +1608,7 @@ range of the predicted probabilities.
 
 In general, it seems that between-district variation is much larger than the 
 substantive impact of independent variables. While some of the variables in 
-Figure \ref{fig:fixefSub1} had substantial variation, the estimates were noisier 
+Figure \ref{fig:candfixefSub1} had substantial variation, the estimates were noisier 
 in these cases.  A similar graphic is included in the Appendix depicting the 
 estimates of the year effects. 
 
@@ -1641,7 +1641,7 @@ model fit metrics now.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-rocplot1-1} \caption[ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type.]{ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type. The diagonal line represents a model equal to random chance, the top left corner represents the best prediction performance.}\label{fig:rocplot1}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-rocplot1-1} \caption[ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type.]{ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type. The diagonal line represents a model equal to random chance, the top left corner represents the best prediction performance. The dashed line represents a null model with only group-specific intercepts, but no predictors.}\label{fig:rocplot1}
 \end{figure}
 
 
@@ -1649,7 +1649,7 @@ model fit metrics now.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap3-rocplot2-1} \caption[ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV]{ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV. The diagonal line represents a model equal to random chance, the top left corner represents the best prediction performance.}\label{fig:rocplot2}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap3-rocplot2-1} \caption[ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV]{ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV. The diagonal line represents a model equal to random chance, the top left corner represents the best prediction performance. The dashed line represents a null model with only group-specific intercepts, but no predictors.}\label{fig:rocplot2}
 \end{figure}
 
 
@@ -2260,6 +2260,7 @@ represented by the horizontal lines in each panel.
 
 \end{knitrout}
 
+\clearpage
 
 \subsection{Model Specification Tests}
 

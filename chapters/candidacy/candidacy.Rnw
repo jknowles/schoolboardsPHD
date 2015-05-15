@@ -382,7 +382,7 @@ Table \ref{tab:icbychal} shows the relationship between incumbency and challenge
 across all school district elections in the sample. The modal elections consists of either 
 contested open seats or uncontested races with only incumbents. Measuring candidate 
 emergence and contestation in multi-member seats is not as straightforward as in single 
-member districts. \footnote{In school board races in Wisconsin there is rarely a seriously 
+member districts.\footnote{In school board races in Wisconsin there is rarely a seriously 
 contested race with all incumbents. This is due to the relative infrequency with 
 which school board seats are changed or redrawn. In addition, even if the race is 
 between two incumbents, the research literature around school boards suggests 
@@ -2149,7 +2149,7 @@ ggplot(simPlot, aes(x = variable, y = meanEff, ymax = upr,
   labs(x = "Variable", y = "Effect", color = "Stat. Sig.")
 @
 
-In Figure \ref{fig:fixefSub1} I provide a series of simulation results for three 
+In Figure \ref{fig:candfixefSub1} I provide a series of simulation results for three 
 variables. Each numbered panel represents a simulated case. Each column of panels 
 represents a combination of a predictor and a dependent variable, in this case from left 
 to right, the probability of a contested seat by millrate share, the probability of a 
@@ -2169,7 +2169,7 @@ Taken together, each panel shows the behavior of variables in the models on
 specific observations and allows us to answer the question -- how would contestation 
 change if the x-variable increased or decreased? 
 
-<<fixefSub1, fig.cap="Simulated Effect of Key Variables on Contestation Levels Across Models">>=
+<<candfixefSub1, fig.cap="Simulated Effect of Key Variables on Contestation Levels Across Models">>=
 seplotdf <- substEffSimFE(fullmodMMCon, "schoolMillShare", ncases = 4L, 
                           unscale = moddatScale, re = TRUE)
 
@@ -2223,7 +2223,8 @@ p3 <- ggplot(seplotdf, aes(x = newvarUnscale, y = yhatUnscale)) +
   geom_hline(yintercept = lowerBar, linetype = 2) + 
   geom_hline(yintercept = upperBar, linetype = 2) + 
   theme_dpi(base_size=12) + 
-  labs(x = "TCEC_MEMBER", y = "Blais-Lago", title = "BLQ Model") 
+  labs(x = "TCEC_MEMBER", y = "Blais-Lago", title = "BLQ Model") + 
+  theme(axis.text.x = element_text(angle = 15))
   # scale_y_log10(limits=c(1, 100), breaks = c(1, 25, 50, 75, 100))
 
 grid.arrange(p1, p2, p3, nrow = 1)
@@ -2241,7 +2242,7 @@ effects have in the models for the outcome variables.
 
 Figure \ref{fig:randomEffectplot31} simulates the variance in the predicted 
 probabilities of each outcome across school districts. As in Figure 
-\ref{fig:fixefSub1}, each panel represents a single case. Within that panel, the 
+\ref{fig:candfixefSub1}, each panel represents a single case. Within that panel, the 
 predicted probability for that case is estimated if that case had been observed 
 in each district, ordered by the impact each district has on the outcome. Thus, 
 the line in each panel be interpreted as, all else constant, how much would the 
@@ -2269,7 +2270,7 @@ range of the predicted probabilities.
 
 In general, it seems that between-district variation is much larger than the 
 substantive impact of independent variables. While some of the variables in 
-Figure \ref{fig:fixefSub1} had substantial variation, the estimates were noisier 
+Figure \ref{fig:candfixefSub1} had substantial variation, the estimates were noisier 
 in these cases.  A similar graphic is included in the Appendix depicting the 
 estimates of the year effects. 
 
@@ -2417,7 +2418,7 @@ rm(rocDnull, rocD1, rocD2, rocD3, rocD4, rocD5)
 rocD$dv <- "Incumbent Defeat"
 @
 
-<<rocplot1, echo=FALSE, fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type. The diagonal line represents a model equal to random chance, the top left corner represents the best prediction performance.", fig.keep='last', fig.width=6.75, fig.height=5, fig.scap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type.">>=
+<<rocplot1, echo=FALSE, fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type. The diagonal line represents a model equal to random chance, the top left corner represents the best prediction performance. The dashed line represents a null model with only group-specific intercepts, but no predictors.", fig.keep='last', fig.width=6.75, fig.height=5, fig.scap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by Model Type.">>=
 
 roc <- do.call(rbind, list(rocNI, rocCon, rocD))
 rm(rocNI, rocCon, rocD)
@@ -2453,7 +2454,7 @@ ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = d
 
 @
 
-<<rocplot2, echo=FALSE, fig.scap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV", fig.keep='last', fig.width=6.75, fig.height=5,fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV. The diagonal line represents a model equal to random chance, the top left corner represents the best prediction performance.">>=
+<<rocplot2, echo=FALSE, fig.scap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV", fig.keep='last', fig.width=6.75, fig.height=5,fig.cap="ROC Curves for Models of Election Contestation in Wisconsin School Boards by DV. The diagonal line represents a model equal to random chance, the top left corner represents the best prediction performance. The dashed line represents a null model with only group-specific intercepts, but no predictors.">>=
 
 ggplot(roc[roc$mod != "null",], aes(x = fpr, y = tpr, group = modType, color = mod)) + 
   geom_line(size= I(1.1), se = FALSE, stat = "smooth") +
@@ -2725,6 +2726,7 @@ p4 <- ggplot(seplotdf, aes(x = year, y = exp(yhatUnscale))) +
 grid.arrange(p1, p2, p3, p4, ncol = 1)
 @
 
+\clearpage
 
 \subsection{Model Specification Tests}
 

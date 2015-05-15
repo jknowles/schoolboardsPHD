@@ -649,7 +649,7 @@ of data is available on the population of Wisconsin school districts.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{../../phd_figs/chap4-demog1-1} \caption[Correlation Plot of Demographic Variables and Turnout across Sample]{Cells are shaded in proportion to the magnitude and direction of the bivariate correlation across all observations in the sample.}\label{fig:demog1}
+\includegraphics[width=\maxwidth]{../../phd_figs/chap4-demog1-1} \caption[Correlation Plot of Demographic Variables and Turnout across Sample]{Correlation Plot of Demographic Variables and Turnout across Sample. Cells are shaded in proportion to the magnitude and direction of the bivariate correlation across all observations in the sample.}\label{fig:demog1}
 \end{figure}
 
 
@@ -1126,6 +1126,8 @@ Sigma                               & 0.3557        & 0.3558        \\ \hline
 
 
 
+\clearpage
+
 \subsubsection{Partisanship}
 
 Table \ref{tab:mePartisan} provides no evidence to support a partisan dimension in school 
@@ -1425,18 +1427,23 @@ panel and rolloff models in the bottom panel. The height of the bar represents
 the RMSE standardized to represent the percentage of a standard deviation the 
 average observation is mispredicted. A lower figure is better. The red error 
 bar represents the bootstrapped RMSE plus or minus two standard deviations of 
-all of the resampled RMSE values. Overall the rolloff models perform better than the 
-turnout models, but none of the models are significantly better fitting than any 
-of the others within each dependent variable. 
+all of the resampled RMSE values. The values are right around 0.6 for all of 
+models suggesting that the average predicted value is 0.6 standard deviations 
+from the observed value. For example, turnout has a standard deviation of 10\% 
+points. This means that if the observed value for turnout was 27\%, then the average 
+predicted value would deviate from 27\% plus or minus 0.6 times the standard deviation, 
+or 6\%. 
 
-This suggests two things. First, the demographic variables and the year and 
-district effects are doing most of the work in explaining the dependent variables. 
-Any additional variance explained by the theoretically interesting variables has 
-marginal impact on accurately predicting the dependent variable. Second, there 
-is significant unexplained variance in turnout that is not covered by any of the 
-measures in any of the models or in the district or election specific intercepts. 
-There is room for future work to improve these models through identifying measures 
-to improve the prediction. 
+Overall the rolloff models perform better than the turnout models, but none of the 
+models are significantly better fitting than any of the others within each 
+dependent variable. This suggests two things. First, the demographic variables 
+and the year and district effects are doing most of the work in explaining the 
+dependent variables. Any additional variance explained by the theoretically 
+interesting variables has marginal impact on accurately predicting the dependent 
+variable. Second, there is significant unexplained variance in turnout that is not 
+covered by any of the measures in any of the models or in the district or election 
+specific intercepts. There is room for future work to improve these models through 
+identifying measures to improve the prediction. 
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
@@ -1615,7 +1622,7 @@ for in each district, and its corresponding 90\% confidence interval, from lowes
 highest to depict the variability in district intercepts. The horizontal dashed 
 lines represent the middle two quartiles of fitted school board election turnout 
 from the model. The vertical lines mark the top most and bottom most decile of 
-school district effects. \footnote{Extracting the parameter estimates from 
+school district effects.\footnote{Extracting the parameter estimates from 
 random effect models is not straightforward and there are many ways to estimate 
 the resulting confidence intervals. Here I use the simulation method proposed 
 by \citet{gelhill} and implemented in the excellent \texttt{arm} package 
@@ -1775,8 +1782,8 @@ what in particular is shaping voter behavior. However, at the community level
 there is evidence that having more competitive elections drives turnout up. 
 
 The evidence of direct influence of social groups is less consistent and strong. 
-I was only to test for the influence of a couple of interest groups -- 
-political parties and teacher unions. Teacher unions appear to suppress turnout, 
+I test for the influence of two of interest groups -- political parties and 
+teacher unions. Teacher unions appear to suppress turnout, 
 albeit to a modest degree. They also increase rolloff, again to a higher degree 
 in larger communities than in smaller communities. This may be due to a deterrent 
 effect -- if the nomination process is controlled by interest groups, voters 
@@ -1914,7 +1921,7 @@ district-average effects) were in 2011 and 2012 after the election of Governor S
 
 \subsection{District and Year Fixed Effect Results for Turnout}
 
-District fixed effect model results. 
+Available for review from the author upon request. 
 
 
 
