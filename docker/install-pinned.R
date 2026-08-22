@@ -56,19 +56,4 @@ if (length(failed)) {
   quit(status = 1)
 }
 
-# Every pinned package must load and report the pinned version. --no-test-load
-# above skips the per-package load test for speed, so this is where we actually
-# prove the library is coherent.
-msg("verifying all %d packages load at the pinned version...", nrow(lock))
-bad <- character()
-for (i in seq_len(nrow(lock))) {
-  p <- lock$package[i]; want <- lock$version[i]
-  ok <- suppressWarnings(suppressMessages(
-    requireNamespace(p, lib.loc = c(LIB, .libPaths()), quietly = TRUE)))
-  if (!ok) { bad <- c(bad, sprintf("%s (will not load)", p)); next }
-  got <- as.character(utils::packageVersion(p, lib.loc = c(LIB, .libPaths())))
-  if (!identical(got, want)) bad <- c(bad, sprintf("%s (want %s, got %s)", p, want, got))
-}
-if (length(bad)) { msg("VERIFY FAILED:"); for (b in bad) msg("  %s", b); quit(status = 1) }
-
-msg("all %d packages installed and verified at pinned versions", nrow(lock))
+msg("all %d packages installed; version check runs in the next layer", nrow(lock))

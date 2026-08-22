@@ -64,6 +64,30 @@ RUN set -eux; \
     test -e /usr/local/lib/libnlopt.so; \
     cd / && rm -rf /build/nlopt-2.4.2 /build/nlopt-2.4.2.tar.gz
 
+# --- 1c. Reference BLAS ------------------------------------------------------
+# rocker links R against Debian wheezy's OpenBLAS (2012). OpenBLAS picks its
+# kernels by probing the CPU at runtime, and a 2012 build has never heard of
+# AMD Zen 3, so on this hardware even `matrix %*% matrix` dies with
+#
+#     *** caught illegal operation ***  cause 'illegal operand'
+#
+# which surfaced as a SIGILL deep inside plyr::id() during dataAssemble.R.
+#
+# Reference (netlib) BLAS is the fix, and it is also the *more faithful* choice:
+# the 2015 build ran on Windows, where R ships its own reference Rblas.dll. An
+# optimised BLAS reorders floating-point summation, so using one here would risk
+# last-bit differences in every lme4 fit relative to 2015 -- a reproduction
+# hazard quite apart from the crash.
+#
+# LD_LIBRARY_PATH rather than a symlink: `ldconfig` regenerates SONAME links in
+# /usr/lib from the installed libraries, so any symlink pointing
+# libopenblas.so.0 at reference BLAS is silently undone the next time anything
+# calls it. A directory earlier in the search path cannot be clobbered that way.
+RUN set -eux; \
+    mkdir -p /opt/refblas; \
+    cp /usr/lib/libblas/libblas.so.3.0 /opt/refblas/libopenblas.so.0
+ENV LD_LIBRARY_PATH=/opt/refblas
+
 # --- 2. Kill the dead package repository ------------------------------------
 # The stock Rprofile.site sets CRAN to https://mran.microsoft.com/snapshot/
 # 2014-10-31 -- twice. Microsoft retired MRAN in July 2023, so install.packages()
@@ -107,9 +131,14 @@ ENV LANG=en_US.UTF-8 \
 
 # --- 4. The pinned package set ----------------------------------------------
 COPY vendor /build/vendor
-COPY install-pinned.R /build/install-pinned.R
 COPY packages-2015.tsv /build/packages-2015.tsv
+COPY install-pinned.R /build/install-pinned.R
 RUN Rscript /build/install-pinned.R && rm -rf /build/vendor
+
+# Separate layer on purpose: the check below is the part most likely to need
+# adjusting, and it must not invalidate the package build above it.
+COPY verify-pinned.R /build/verify-pinned.R
+RUN Rscript /build/verify-pinned.R
 
 # --- 5. Record what we actually got -----------------------------------------
 # This is the honest counterpart to backmatter/colophon.tex. The diff between

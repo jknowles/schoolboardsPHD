@@ -165,7 +165,35 @@ pdflatex -jobname=dissertation "\RequirePackage[latin1]{inputenc}\input{disserta
 want this *fixed*, that is a `modernize` change, and it will legitimately alter
 the rendered text.
 
-### 8. Locale changes the answer
+### 8. OpenBLAS, and why an optimised BLAS was a trap
+
+rocker links R 3.1.2 against Debian wheezy's **OpenBLAS** (2012). OpenBLAS
+selects its kernels by probing the CPU at run time, and a 2012 build has never
+heard of AMD Zen 3 — so on that hardware even
+
+```r
+matrix(1:6, 3) %*% matrix(1:6, 2)
+```
+
+dies with `*** caught illegal operation *** cause 'illegal operand'`. It first
+surfaced as a SIGILL deep inside `plyr::id()` while `dataAssemble.R` was running
+a `ddply`, which made it look like a plyr problem; a two-line bisection showed a
+bare matrix multiply was enough.
+
+The fix is reference (netlib) BLAS, and it matters well beyond the crash. **The
+2015 build ran on Windows, where R ships its own reference `Rblas.dll`.** An
+optimised BLAS reorders floating-point summation, so had OpenBLAS merely *worked*
+it would have been a silent fidelity hazard — last-bit differences in every
+`lme4` fit, invisible until they moved a rounded coefficient. Reference BLAS is
+simultaneously the fix and the faithful choice.
+
+One implementation note: pointing the `libopenblas.so.0` symlink at reference
+BLAS does not hold, because `ldconfig` regenerates SONAME links in `/usr/lib`
+from the installed libraries and silently undoes it. The image ships reference
+BLAS as `/opt/refblas/libopenblas.so.0` and sets `LD_LIBRARY_PATH`, which cannot
+be clobbered that way.
+
+### 9. Locale changes the answer
 
 `data/dataAssemble.R` indexes `list.dirs()` **positionally** (`struc[5]`,
 `struc[6]`) and concatenates the district CSVs in that order. That order is
@@ -254,7 +282,26 @@ standard error or significance marker.
 `pdftotext` diff is List-of-Tables line grouping and pagination, which is what
 "byte-identical PDF is not the goal" meant in practice.
 
-<!-- STATUS: Tier 1 and Tier 2 to be completed once the R image finishes.
+### Tier 1 — chapter 2: byte-identical
+
+`aboutwisconsin` is the right first target: purely descriptive, no RNG, and it
+exercises the entire toolchain (vendored CSVs → `dataAssemble.R` → `plyr` →
+`xtable` → figures).
+
+```
+PASS  aboutwisconsin.tex  (byte-identical; 8 xtable timestamp comments differ)
+```
+
+The only differences in the whole file are eight lines of the form
+`% Fri May 15 00:46:16 2015`, which `xtable` stamps into a LaTeX comment above
+every table it writes. That is a build artifact — nothing downstream reads it and
+it cannot match by construction. `scripts/verify.sh` normalises exactly those
+lines and nothing else, so a real difference anywhere still fails the tier.
+
+Every coefficient, count, percentage, table cell and inline `\Sexpr` value in
+chapter 2 reproduces exactly.
+
+<!-- STATUS: remaining chapters to be completed.
      - sessionInfo diff (reference/sessionInfo-rebuild.txt vs colophon)
      - per-chapter tier-1 result
      - any cache reuse, named explicitly -->

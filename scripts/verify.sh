@@ -39,6 +39,11 @@ done
 
 [ -d "$REF" ] || { echo "missing $REF -- the 2015 oracle is not present"; exit 2; }
 
+# Drop xtable's "% Fri May 15 00:46:16 2015" generation-date comments.
+strip_ts() {
+  grep -vE '^% (Mon|Tue|Wed|Thu|Fri|Sat|Sun) [A-Z][a-z]{2} +[0-9]+ [0-9:]+ [0-9]{4}$' "$1"
+}
+
 green() { printf '\033[32m%s\033[0m\n' "$1"; }
 red()   { printf '\033[31m%s\033[0m\n' "$1"; }
 dim()   { printf '\033[2m%s\033[0m\n'  "$1"; }
@@ -57,12 +62,18 @@ for c in "${CHAPTERS[@]}"; do
 
   if cmp -s "$new" "$old"; then
     green "  PASS  $c.tex  ($(wc -l < "$new") lines, byte-identical)"
+  elif diff -q <(strip_ts "$old") <(strip_ts "$new") >/dev/null; then
+    # xtable stamps the generation date into a LaTeX comment on every table it
+    # writes. That is a build artifact, not a result -- it cannot match and
+    # nothing downstream reads it. Everything else must still be byte-identical.
+    nts=$(diff "$old" "$new" | grep -c '^[<>]')
+    green "  PASS  $c.tex  (byte-identical; $((nts/2)) xtable timestamp comments differ)"
   else
     fails=$((fails+1))
-    nd=$(diff <(sed 's/[[:space:]]\+/ /g' "$old") <(sed 's/[[:space:]]\+/ /g' "$new") | grep -c '^[<>]')
-    red  "  FAIL  $c.tex  ($nd differing lines)"
+    nd=$(diff <(strip_ts "$old") <(strip_ts "$new") | grep -c '^[<>]')
+    red  "  FAIL  $c.tex  ($nd differing lines, excluding xtable timestamps)"
     echo "        first differences:"
-    diff "$old" "$new" | head -12 | sed 's/^/        /'
+    diff <(strip_ts "$old") <(strip_ts "$new") | head -14 | sed 's/^/        /'
     echo "        full diff: diff $old $new"
   fi
 done
