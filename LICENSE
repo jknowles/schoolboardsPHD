@@ -1,0 +1,119 @@
+# Licensing
+
+*School Boards and the Democratic Promise* — Jared E. Knowles, PhD dissertation,
+University of Wisconsin–Madison, 2015.
+
+Copyright © 2015 Jared E. Knowles, except where noted below.
+
+A dissertation repository is not one work under one licence. It is scholarship,
+software, public records, and other people's LaTeX, sitting in one directory
+tree. Each is licensed on its own terms.
+
+| What | Where | Licence |
+|---|---|---|
+| **Scholarship** — the dissertation text, figures, and the deposited PDF | `chapters/`, `frontmatter/`, `backmatter/`, `appendix/`, `img/`, `phd_figs/`, `dissertation.pdf`, `README.md`, `reference/2015-build/` | [CC BY 4.0](LICENSES/CC-BY-4.0.txt) |
+| **Software** — analysis code and build infrastructure | `R/`, `data/*.R`, `scripts/`, `docker/*.R`, `docker/Dockerfile*`, `docker/entrypoint.sh`, `Makefile`, `build.R`, and the code chunks inside `chapters/*/*.Rnw` | [MIT](#mit-license) |
+| **Data** — election returns and administrative records | `vendor/Data/`, `data/cache/`, `Wisconsin_SB_election_export_06042017.*` | Public records; see [Data](#data) |
+| **Third-party** | `includes/`, `bib/*.bst`, `docker/vendor/` | Unchanged, under their own terms; see [Third-party](#third-party-components) |
+
+If you use the research, cite the dissertation. If you use the code, the MIT
+notice is enough. Attribution for CC BY 4.0 is satisfied by citing:
+
+> Knowles, Jared E. (2015). *School Boards and the Democratic Promise.*
+> PhD dissertation, University of Wisconsin–Madison.
+
+## Why these licences
+
+**CC BY 4.0 for the scholarship.** It is the norm for openly licensed academic
+work and it lets others quote, translate, teach from, and build on the text with
+nothing more than a citation — which is what scholarship is for. The author
+retains copyright in the dissertation; the university deposit and ProQuest hold
+only non-exclusive distribution rights, so this licence is the author's to grant.
+No non-commercial clause: `NC` reliably blocks legitimate reuse — course packs,
+Wikipedia, open textbooks, replication in a commercially funded lab — while doing
+nothing to stop the enclosure it is imagined to prevent.
+
+**MIT for the code.** The point of publishing analysis code is that someone else
+can run it, lift a function out of it, and not have to think about the licence.
+
+**Public records for the data**, because that is what they are.
+
+## Data
+
+The election returns, board rosters, and administrative records are **public
+records** obtained from Wisconsin county clerks, the Wisconsin Department of
+Public Instruction, the Wisconsin Employment Relations Commission, the U.S.
+Census, and the National Center for Education Statistics. Facts are not
+copyrightable in the United States.
+
+To the extent any compilation copyright or database right subsists in the way
+these records were assembled here, the author waives it under
+[CC0 1.0](LICENSES/CC0-1.0.txt). Use them freely.
+
+**On the named individuals.** `data/cache/SchoolBoardRosterVerification.csv` and
+`data/cache/districtadmin0211.csv` contain names, and in the roster's case
+mailing addresses, of elected school board members and appointed district
+administrators. These are public officials and the records are public rosters and
+election returns, published as such. See `vendor/README.md` and the data
+collection appendix for provenance. The waiver above concerns copyright only and
+is not a licence to use personal information in ways the law otherwise restricts.
+
+## Third-party components
+
+None of these are the author's work and none are relicensed here.
+
+**UW–Madison thesis template** — `includes/thesisdefs.tex`,
+`includes/preamble.tex`, `includes/mcbride.bst`, `includes/README`.
+Copyright © 2008–2009 William C. Benton, under the **LaTeX Project Public
+License**; the licence text is at `includes/LICENSE`. `mcbride.bst` derives from
+`chicago2.bst` by Chung-chieh Shan, also LPPL. Any errors introduced by
+modification here are the author's alone.
+
+**Bibliography styles** — `includes/chicago.bst` derives from `chicago.bst`
+v4 (1992) by Glenn Paulley, University of Waterloo, modified here to add the
+`wb-epi` environment and change `citeN` to `cite`. `bib/apsa-leeper.bst` derives
+from the Harvard-family `apsr.bst`. Both carry the standard BibTeX-style
+condition that modified copies be renamed, which the filenames respect.
+
+**Vendored R packages** — `docker/vendor/*.tar.gz` are **unmodified source
+tarballs** redistributed from the CRAN Archive so the 2015 environment can be
+rebuilt without depending on a decade-old repository staying online. Each carries
+its own licence inside its `DESCRIPTION` and `LICENSE` files: predominantly
+GPL-2 and GPL-3, with MIT, LGPL, Apache-2.0, BSD-3-Clause and BSL-1.0 among them.
+`inst/pins/packages-2015.tsv` lists every package, version and checksum.
+
+Redistributing unmodified GPL source with its licence intact is exactly what the
+GPL permits, and placing those tarballs alongside this repository's own code is
+mere aggregation — it does not make this project a derivative work of them, and
+does not extend the GPL to the code licensed MIT above.
+
+**NLopt** — `docker/vendor/nlopt-2.4.2.tar.gz` is the unmodified upstream
+release by Steven G. Johnson, under LGPL-2.1-or-later with portions under MIT.
+
+**Base image** — the container builds `FROM rocker/r-ver:3.1.2`, which is not
+redistributed here.
+
+## MIT License
+
+Copyright © 2015 Jared E. Knowles
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+*This file describes how the author licenses the work. It is not legal advice.*
