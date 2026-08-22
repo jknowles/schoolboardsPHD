@@ -1,0 +1,60 @@
+# ---------------------------------------------------------------------------
+# The typesetting half of the build.
+#
+# Kept separate from the R 3.1.2 image on purpose. The acceptance test for this
+# reproduction is that the regenerated chapters/*/*.tex are byte-identical to
+# 2015 -- a pure R question. Byte-identical PDF across TeX versions is not
+# achievable (font subset tags and creation timestamps differ by design), so
+# there is nothing to gain from freezing a 2012-era TeX Live, and plenty to lose
+# in fighting wheezy's package set.
+#
+# The 2015 build used MiKTeX on Windows. This uses Debian's TeX Live. Tier 3 of
+# scripts/verify.sh compares the extracted text layer, which is the part that
+# carries the content.
+# ---------------------------------------------------------------------------
+FROM debian:bookworm-slim
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        texlive-latex-base \
+        texlive-latex-recommended \
+        texlive-latex-extra \
+        texlive-fonts-recommended \
+        texlive-fonts-extra \
+        texlive-science \
+        lmodern \
+        texlive-bibtex-extra \
+        biber \
+        poppler-utils \
+        make; \
+    rm -rf /var/lib/apt/lists/*
+
+# The generated .tex reference figures as ../../phd_figs/<name>, which LaTeX
+# resolves from the main document's directory -- the repository root -- putting
+# them two levels above it. MiKTeX accepted this in 2015. Rather than rewrite
+# build output, provide the path (entrypoint) and allow ".." in input paths,
+# which TeX Live's paranoid default (openin_any=p) otherwise refuses.
+RUN echo 'openin_any = a' >> /usr/share/texmf/web2c/texmf.cnf
+
+# Create the layout symlinks at BUILD time, not run time. The containers run
+# as the invoking user (docker run -u), who cannot write to /work/dissertation
+# because root owns it. Symlinks are allowed to dangle until the repository is
+# mounted underneath them, at which point they resolve.
+#
+#   /work/dissertation/Data -> .../MasterText/vendor/Data
+#       makes data/dataAssemble.R:9's "../Data/sbelectionresults" resolve
+#   /work/phd_figs          -> .../MasterText/phd_figs
+#       makes the generated .tex's "../../phd_figs/<name>" resolve for LaTeX
+RUN set -eux; \
+    mkdir -p /work/dissertation/MasterText; \
+    ln -sfn /work/dissertation/MasterText/vendor/Data /work/dissertation/Data; \
+    ln -sfn /work/dissertation/MasterText/phd_figs    /work/phd_figs; \
+    chmod -R 0777 /work
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+WORKDIR /work/dissertation/MasterText
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["pdflatex", "--version"]

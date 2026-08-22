@@ -1,0 +1,155 @@
+# ---------------------------------------------------------------------------
+# The 2015 analysis environment, reconstructed.
+#
+# This image runs the R half of the build: knitting the five .Rnw chapters into
+# .tex and producing the figures. LaTeX is deliberately NOT here -- see the
+# note at the bottom.
+#
+# Base is rocker/r-ver:3.1.2, which is genuinely R 3.1.2 on debian:wheezy. That
+# matters more than it might look: R changed the default sample() algorithm in
+# 3.6.0 (sample.kind Rounding -> Rejection), and this dissertation draws from
+# boot(R=150), PBmodcomp(nsim=200), arm::sim(n.sims=1000), exactRLRT, and two
+# unseeded sample() calls in chapter 4. Running the real interpreter sidesteps
+# the whole problem rather than papering over it with RNGversion().
+# ---------------------------------------------------------------------------
+FROM rocker/r-ver:3.1.2
+
+# --- 1. Make apt usable again ----------------------------------------------
+# Wheezy is long past EOL. Its archive still serves packages, but the release
+# signing keys expired years ago and the Release files are stale, so apt
+# refuses by default. The image already points at archive.debian.org.
+RUN set -eux; \
+    printf 'Acquire::Check-Valid-Until "false";\n' > /etc/apt/apt.conf.d/99no-check-valid; \
+    printf 'APT::Get::AllowUnauthenticated "true";\n' > /etc/apt/apt.conf.d/99allow-unauth; \
+    apt-get -o Acquire::Check-Valid-Until=false update; \
+    apt-get install -y --no-install-recommends --allow-unauthenticated \
+        ca-certificates locales make perl ed pkg-config; \
+    rm -rf /var/lib/apt/lists/*
+
+# gcc, g++, gfortran, make, libblas and liblapack are already present in this
+# image, and were verified to compile Rcpp 0.11.5 and stringi 0.4-1 (which
+# builds a bundled ICU 52 from source) before this Dockerfile was written.
+# 'ed' is added because nloptr's configure patches NLopt sources with it.
+
+# --- 1b. NLopt 2.4.2 --------------------------------------------------------
+# nloptr 1.0.4's configure looks for a system NLopt header and, failing that,
+# downloads nlopt-2.4.2.tar.gz from ab-initio.mit.edu and builds it in place.
+# That URL is still up, but depending on a single decade-old academic host at
+# image-build time is exactly the fragility this project exists to remove --
+# and wheezy only packages NLopt 2.3, which would silently substitute a
+# different optimiser version underneath lme4.
+#
+# So NLopt 2.4.2 -- the version nloptr 1.0.4 pins and 2015 therefore used -- is
+# vendored and built here. configure then reports "Suitable NLopt library
+# found" and skips both the download and its ed-based source patches (which are
+# compilation fixes, not numerical ones).
+COPY vendor/nlopt-2.4.2.tar.gz /build/nlopt-2.4.2.tar.gz
+RUN set -eux; \
+    echo "8099633de9d71cbc06cd435da993eb424bbcdbded8f803cdaa9fb8c6e09c8e89  /build/nlopt-2.4.2.tar.gz" | sha256sum -c -; \
+    cd /build && tar -xzf nlopt-2.4.2.tar.gz && cd nlopt-2.4.2; \
+    ./configure --prefix=/usr/local --enable-shared --enable-static --with-cxx \
+                --without-octave --without-matlab --without-guile --without-python >/dev/null; \
+    make -j"$(nproc)" >/dev/null && make install >/dev/null; \
+    # --with-cxx makes NLopt install itself as libnlopt_cxx, but its own
+    # generated nlopt.pc still advertises "-lnlopt", so nloptr's system-library
+    # path links against a name that does not exist ("cannot find -lnlopt").
+    # Alias rather than dropping --with-cxx: nloptr's own bundled build links
+    # libnlopt_cxx.a, so this keeps the same library 2015 used.
+    for ext in so so.0 so.0.8.2 a; do \
+      [ -e "/usr/local/lib/libnlopt_cxx.$ext" ] && \
+        ln -sf "libnlopt_cxx.$ext" "/usr/local/lib/libnlopt.$ext"; \
+    done; \
+    ldconfig; \
+    test -f /usr/local/include/nlopt.h; \
+    test -e /usr/local/lib/libnlopt.so; \
+    cd / && rm -rf /build/nlopt-2.4.2 /build/nlopt-2.4.2.tar.gz
+
+# --- 2. Kill the dead package repository ------------------------------------
+# The stock Rprofile.site sets CRAN to https://mran.microsoft.com/snapshot/
+# 2014-10-31 -- twice. Microsoft retired MRAN in July 2023, so install.packages()
+# in the unmodified image fails with "cannot open the connection" (verified).
+# Posit's package manager is no substitute: its earliest CRAN snapshot is
+# 2017-10-10 and 2015-05-15 returns 404 (also verified). Nothing in this image
+# should reach for a repository at all -- every package arrives as a checksummed
+# tarball -- so point it at a local path that does not exist and let any
+# accidental install.packages() fail loudly instead of silently fetching
+# something modern.
+RUN set -eux; \
+    printf '%s\n' \
+      '# MRAN was retired in July 2023. This environment installs only from' \
+      '# vendored, checksummed source tarballs -- see inst/pins/packages-2015.tsv.' \
+      '# A bare install.packages() should fail loudly rather than quietly pull a' \
+      '# modern version and invalidate the reproduction.' \
+      "options(repos = c(CRAN = 'file:///nonexistent-by-design'))" \
+      "# NB: 'curl' not 'libcurl' -- R gained the libcurl method in 3.2.0." \
+      "options(download.file.method = 'curl')" \
+      > /usr/local/lib/R/etc/Rprofile.site
+
+# --- 3. Locale --------------------------------------------------------------
+# This is a real reproduction variable, not boilerplate. data/dataAssemble.R
+# indexes list.dirs() positionally (struc[5], struc[6]) and rbind.fill()s the
+# district CSVs in that order, and the order is locale-dependent: under
+# LC_COLLATE=C "Cedar Grove Belgium" sorts before "Cedarburg", under en_US it
+# sorts after, with the same flip on DC Everest, De Pere, De Soto, Elk Mound and
+# La Crosse. That changes the row order of the assembled frame, which changes
+# the RNG stream feeding chapter 4's unseeded sample() calls.
+#
+# Default is en_US.UTF-8: the 2015 build ran on Windows under
+# "English_United States.1252", which collates closer to en_US than to C.
+# Override at run time (docker run -e LC_ALL=C.UTF-8) to test the alternative
+# if chapter output diverges in a way that looks like ordering.
+RUN set -eux; \
+    sed -i 's/^# *en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen; \
+    locale-gen en_US.UTF-8
+ENV LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8 \
+    LC_COLLATE=en_US.UTF-8
+
+# --- 4. The pinned package set ----------------------------------------------
+COPY vendor /build/vendor
+COPY install-pinned.R /build/install-pinned.R
+COPY packages-2015.tsv /build/packages-2015.tsv
+RUN Rscript /build/install-pinned.R && rm -rf /build/vendor
+
+# --- 5. Record what we actually got -----------------------------------------
+# This is the honest counterpart to backmatter/colophon.tex. The diff between
+# them is the real statement of how close the reconstruction came, and it ships
+# with the release rather than being asserted.
+RUN Rscript -e 'writeLines(capture.output(sessionInfo()), "/build/sessionInfo-image.txt")' \
+ && Rscript -e 'ip <- installed.packages()[, c("Package","Version")]; \
+                write.table(ip[order(rownames(ip)), ], "/build/installed-packages.tsv", \
+                            sep="\t", quote=FALSE, row.names=FALSE)'
+
+# Create the layout symlinks at BUILD time, not run time. The containers run
+# as the invoking user (docker run -u), who cannot write to /work/dissertation
+# because root owns it. Symlinks are allowed to dangle until the repository is
+# mounted underneath them, at which point they resolve.
+#
+#   /work/dissertation/Data -> .../MasterText/vendor/Data
+#       makes data/dataAssemble.R:9's "../Data/sbelectionresults" resolve
+#   /work/phd_figs          -> .../MasterText/phd_figs
+#       makes the generated .tex's "../../phd_figs/<name>" resolve for LaTeX
+RUN set -eux; \
+    mkdir -p /work/dissertation/MasterText; \
+    ln -sfn /work/dissertation/MasterText/vendor/Data /work/dissertation/Data; \
+    ln -sfn /work/dissertation/MasterText/phd_figs    /work/phd_figs; \
+    chmod -R 0777 /work
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# The repository mounts here, one level below /work/dissertation, so that
+# data/dataAssemble.R's "../Data/sbelectionresults" resolves to the vendored
+# CSVs without editing that line. entrypoint.sh wires up the symlinks.
+WORKDIR /work/dissertation/MasterText
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["R", "--version"]
+
+# --- Why there is no LaTeX in this image ------------------------------------
+# Wheezy ships TeX Live 2012, and the acceptance test for this project is that
+# the regenerated chapters/*/*.tex are byte-identical to the 2015 originals --
+# a pure R question that LaTeX plays no part in. Byte-identical PDF output
+# across TeX versions is not achievable anyway (font subset tags and timestamps
+# differ), so typesetting is a separate, later, and much less fragile step, run
+# on a modern TeX Live. Freezing the analysis environment is what matters;
+# freezing the typesetter is not.
