@@ -9,3 +9,13 @@
 chapters/*/cache
 phd_cache
 *.png
+# --- Added 2026-08 (resurrection work) -------------------------------------
+# The 2015 reference build is the reproduction oracle. It is mostly .pdf/.png,
+# which the rules above exclude, so re-include it explicitly.
+!reference/2015-build/
+!reference/2015-build/**
+
+# The 2015 knitr caches are 138 MB and only needed as a fallback if a
+# stochastic chunk cannot be reproduced bit-exactly. Archived outside the repo;
+# checksums are in reference/2015-knitr-cache-MANIFEST.sha256.
+reference/2015-knitr-cache/
