@@ -24,3 +24,7 @@
 *.zip    binary
 *.doc    binary
 *.docx   binary
+
+# Vendored source data is a byte-exact mirror of the 2015 raw tree. Git must
+# never transform it -- checksums in vendor/README.md are the proof of fidelity.
+vendor/** -text
