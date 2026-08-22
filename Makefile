@@ -11,10 +11,10 @@
 #   make shell      interactive R 3.1.2 shell in the container
 #   make audit      prove no 2015 source file has been modified
 #
-# The repository is mounted one level below /work/dissertation so that
-# data/dataAssemble.R's "../Data/sbelectionresults" resolves to the vendored
-# CSVs. entrypoint.sh wires up that symlink plus the two other compatibility
-# shims. Nothing in the 2015 source is edited to make this work.
+# The raw election CSVs live in data/raw/ and dataAssemble.R reads them by a
+# repo-relative path, so the build no longer needs the container to fake a
+# filesystem layout. The mount point is kept nested only because the generated
+# .tex still references figures as ../../phd_figs/ -- see REPRODUCING.md.
 # ---------------------------------------------------------------------------
 
 R_IMAGE   := schoolboards-phd:r312
@@ -123,7 +123,7 @@ restore-deposit:
 	                chapters/walker/walker.tex
 	@echo "restored the 2015 chapter .tex"
 
-# Removes build products only. Never touches reference/ or vendor/.
+# Removes build products only. Never touches reference/ or data/.
 clean-outputs:
 	rm -f dissertation.aux dissertation.bbl dissertation.blg dissertation.log \
 	      dissertation.out dissertation.toc dissertation.lof dissertation.lot \

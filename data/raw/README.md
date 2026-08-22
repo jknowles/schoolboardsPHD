@@ -1,31 +1,33 @@
-# `vendor/` — source data brought inside the repository
+# `data/raw/` — the primary election records
 
 ## Why this exists
 
 `data/dataAssemble.R:9` reads
 
 ```r
-struc <- list.dirs("../Data/sbelectionresults", recursive = FALSE)
+struc <- list.dirs("data/raw/sbelectionresults", recursive = FALSE)
 ```
 
-— a path *outside* the repository, pointing at the author's 2015 Dropbox
-layout. That single line was the only live external dependency in the entire
-build; everything else the chapters need is already committed under
-`data/cache/`.
+Until the `modernize` branch that line read `"../Data/sbelectionresults"` — a
+path *outside* the repository, pointing at the author's 2015 Dropbox layout, and
+the only live external dependency in the entire build. The `resurrect` branch
+satisfied it by rebuilding that directory layout around the repository inside
+the container, so the 2015 code ran unedited. Here the data simply lives in the
+repository and the path is repo-relative, so the build no longer needs the
+container to fake a filesystem.
 
 The original tree is 1.1 GB, but **the CSVs the code actually parses total
 865 KB**. The remaining ~1.1 GB is 982 scanned PDFs, 81 DOCs, 80 ZIPs and 36
 XLS files — the county-clerk records the CSVs were transcribed *from*. Those
 are provenance, never read by any code, and are archived separately.
 
-So the CSVs are vendored here and the container recreates the 2015 directory
-layout around them, which makes `../Data/sbelectionresults` resolve correctly
-**without editing `dataAssemble.R`**. See `REPRODUCING.md`.
+Only the CSVs are kept. The 1.1 GB of scanned source records is archived
+separately; see below.
 
 ## Fidelity
 
-`Data/sbelectionresults/` here is a byte-exact mirror of the CSV subset of the
-2015 source tree. Verified:
+`sbelectionresults/` is a byte-exact mirror of the CSV subset of the 2015
+source tree. Verified:
 
 - All 320 CSVs checksum-match the source (`CSV-MANIFEST.sha256`).
 - `list.dirs(recursive = FALSE)` returns 314 directories with identical
@@ -56,7 +58,7 @@ ASCII, and `New London.csv` uses classic-Mac CR-only line terminators. Both sit
 at the *top level*, outside any district directory, so neither is in the read
 path. The 311 files `dataAssemble.R` actually reads are uniformly ASCII with LF
 endings — confirmed by scanning every byte of all 311. `.gitattributes` marks
-`vendor/**` as `-text` so git never normalises any of this regardless.
+`data/raw/**` as `-text` so git never normalises any of this regardless.
 
 ## A hazard this data carries
 

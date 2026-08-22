@@ -6,7 +6,7 @@
 library(data.table); library(plyr)
 library(tidyr)
 library(magrittr)
-struc <- list.dirs("../Data/sbelectionresults", recursive = FALSE)
+struc <- list.dirs("data/raw/sbelectionresults", recursive = FALSE)
 file.exists(Sys.glob(file.path(struc[5],"*.csv")))
 
 dat <- read.csv(Sys.glob(file.path(struc[6],"*.csv")))

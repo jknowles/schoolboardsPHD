@@ -13,7 +13,7 @@ tree. Each is licensed on its own terms.
 |---|---|---|
 | **Scholarship** — the dissertation text, figures, and the deposited PDF | `chapters/`, `frontmatter/`, `backmatter/`, `appendix/`, `img/`, `phd_figs/`, `dissertation.pdf`, `README.md`, `reference/2015-build/` | [CC BY 4.0](LICENSES/CC-BY-4.0.txt) |
 | **Software** — analysis code and build infrastructure | `R/`, `data/*.R`, `scripts/`, `docker/*.R`, `docker/Dockerfile*`, `docker/entrypoint.sh`, `Makefile`, `build.R`, and the code chunks inside `chapters/*/*.Rnw` | [MIT](#mit-license) |
-| **Data** — election returns and administrative records | `vendor/Data/`, `data/cache/`, `Wisconsin_SB_election_export_06042017.*` | Public records; see [Data](#data) |
+| **Data** — election returns and administrative records | `data/raw/`, `data/cache/`, `Wisconsin_SB_election_export_06042017.*` | Public records; see [Data](#data) |
 | **Third-party** | `includes/`, `bib/*.bst`, `docker/vendor/` | Unchanged, under their own terms; see [Third-party](#third-party-components) |
 
 If you use the research, cite the dissertation. If you use the code, the MIT
@@ -54,7 +54,7 @@ these records were assembled here, the author waives it under
 `data/cache/districtadmin0211.csv` contain names, and in the roster's case
 mailing addresses, of elected school board members and appointed district
 administrators. These are public officials and the records are public rosters and
-election returns, published as such. See `vendor/README.md` and the data
+election returns, published as such. See `data/raw/README.md` and the data
 collection appendix for provenance. The waiver above concerns copyright only and
 is not a licence to use personal information in ways the law otherwise restricts.
 

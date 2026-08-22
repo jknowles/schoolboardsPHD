@@ -42,14 +42,13 @@ RUN echo 'openin_any = a' >> /usr/share/texmf/web2c/texmf.cnf
 # because root owns it. Symlinks are allowed to dangle until the repository is
 # mounted underneath them, at which point they resolve.
 #
-#   /work/dissertation/Data -> .../MasterText/vendor/Data
-#       makes data/dataAssemble.R:9's "../Data/sbelectionresults" resolve
-#   /work/phd_figs          -> .../MasterText/phd_figs
-#       makes the generated .tex's "../../phd_figs/<name>" resolve for LaTeX
+#   /work/phd_figs -> .../MasterText/phd_figs
+#       makes the generated .tex's "../../phd_figs/<name>" resolve for LaTeX.
+#       (The ../Data shim is gone: data/raw/ is in-repo and read by a
+#       repo-relative path.)
 RUN set -eux; \
     mkdir -p /work/dissertation/MasterText; \
-    ln -sfn /work/dissertation/MasterText/vendor/Data /work/dissertation/Data; \
-    ln -sfn /work/dissertation/MasterText/phd_figs    /work/phd_figs; \
+    ln -sfn /work/dissertation/MasterText/phd_figs /work/phd_figs; \
     chmod -R 0777 /work
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

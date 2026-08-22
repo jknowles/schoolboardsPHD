@@ -2,7 +2,7 @@ source("data/dataAssemble.R")
 load("data/cache/DataMergeVAP.rda")
 load("data/cache/fullDataSep2014.rda")
 load("data/cache/boardSize.rda")
-load("data/cache/hsc.rda")
+load("data/cache/HSC.rda")
 
 distAttr <- tmp[, c("distid", "year", "TotalPopulation", "NonSDMill", 
                     "AdjPopulation",
