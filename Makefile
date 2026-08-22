@@ -31,7 +31,7 @@ DOCKER_RUN := docker run --rm -v "$(MOUNT)" -e LC_ALL=$(LOCALE) -e LC_COLLATE=$(
 
 C ?=
 
-.PHONY: all image tex-image chapters chapter pdf verify verify-tex shell audit pins clean-outputs help
+.PHONY: all image tex-image chapters chapter pdf verify verify-tex shell audit pins clean-outputs restore-deposit help
 
 help:
 	@sed -n '3,17p' $(MAKEFILE_LIST) | sed 's/^# \?//'
@@ -111,6 +111,17 @@ all: chapters pdf verify
 
 shell:
 	$(DOCKER_RUN) -it $(R_IMAGE) R
+
+# Put the 2015-deposited .tex back after a rebuild has overwritten them.
+# The rebuild is verified against reference/2015-build/, never committed over
+# the deposit itself.
+restore-deposit:
+	git checkout -- chapters/aboutwisconsin/aboutwisconsin.tex \
+	                chapters/candidacy/candidacy.tex \
+	                chapters/voterturnout/voterturnout.tex \
+	                chapters/policy/policy.tex \
+	                chapters/walker/walker.tex
+	@echo "restored the 2015 chapter .tex"
 
 # Removes build products only. Never touches reference/ or vendor/.
 clean-outputs:

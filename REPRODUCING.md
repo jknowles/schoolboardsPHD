@@ -282,29 +282,90 @@ standard error or significance marker.
 `pdftotext` diff is List-of-Tables line grouping and pagination, which is what
 "byte-identical PDF is not the goal" meant in practice.
 
-### Tier 1 — chapter 2: byte-identical
+## Results
 
-`aboutwisconsin` is the right first target: purely descriptive, no RNG, and it
-exercises the entire toolchain (vendored CSVs → `dataAssemble.R` → `plyr` →
-`xtable` → figures).
+`make verify` is green. All three tiers pass against a reviewed baseline.
+
+### Tier 1 — the analysis
+
+| Chapter | Models | Result |
+|---|---|---|
+| 2 `aboutwisconsin` | descriptive | **byte-identical** |
+| 3 `candidacy` | 20 `lmer`, 18 `glmer` | 5 values differ, ≤0.001 |
+| 4 `voterturnout` | 18 `lmer`, 7 `lm` | **numerically identical**; 1 prose line (see below) |
+| 5 `walker` | 39 `lmer`, 18 `glmer`, 30 `lm`, 27 `glm` | 38 values differ, ≤0.006 |
+| 6 `policy` | 15 `lm`, 2 `glm` | **byte-identical** |
+
+Across the five chapters:
+
+- **5,058 decimal values; 43 differ (0.85%); largest absolute difference 0.006.**
+- **Zero of the 967 significance markers changed.** Not one `*`, `**`, `***` or
+  `†` moves.
+- Three of five chapters are numerically exact.
+
+The drift is confined to chapters 3 and 5 — precisely the two that fit `glmer`
+through `optimx`/`nlminb` and `Nelder_Mead`. Chapter 4's plain `lmer` fits and
+chapter 6's closed-form `lm`/`glm` reproduce exactly. That pattern points at
+derivative-free and quasi-Newton optimisers amplifying platform `libm`
+differences — Windows MinGW versus glibc `exp`/`log`/`pow` — into the last
+printed digit. Reproducing it exactly would mean emulating Windows, and the
+remaining error is far below anything the dissertation claims.
+
+The residue is not waved away: `reference/accepted-differences/` holds the exact,
+reviewed diff for each chapter. `verify.sh` passes only if a rebuild matches that
+baseline *exactly*, so the known residue is frozen and any regression fails
+loudly. Regenerate it deliberately with `scripts/verify.sh --bless`.
+
+### The one prose difference
+
+`voterturnout.Rnw` contains a proper UTF-8 en-dash. **The 2015 build corrupted
+it**: R on Windows read the UTF-8 bytes as latin1, saw three separate characters,
+and substituted the literal text `<U+0080><U+0093>` for the two it could not
+represent — which is why the deposited PDF renders `groupâ<U+0080><U+0099>s` on
+page 153.
 
 ```
-PASS  aboutwisconsin.tex  (byte-identical; 8 xtable timestamp comments differ)
+source .Rnw : 62 65 6E 65 66 69 74 73 20 | E2 80 93 |   ← correct en-dash
+2015 .tex   : 62 65 6E 65 66 69 74 73 20 | E2 | 3C 55 2B 30 30 38 30 3E …
+2026 .tex   : 62 65 6E 65 66 69 74 73 20 | E2 80 93 |   ← correct again
 ```
 
-The only differences in the whole file are eight lines of the form
-`% Fri May 15 00:46:16 2015`, which `xtable` stamps into a LaTeX comment above
-every table it writes. That is a build artifact — nothing downstream reads it and
-it cannot match by construction. `scripts/verify.sh` normalises exactly those
-lines and nothing else, so a real difference anywhere still fails the tier.
+So the reproduction is *right* where the deposit was *wrong*. That difference is
+kept, not reintroduced: it affects one line of prose, no number, table or model.
+Repairing the *rendered* text is a `modernize` decision.
 
-Every coefficient, count, percentage, table cell and inline `\Sexpr` value in
-chapter 2 reproduces exactly.
+### Tier 2 — figures
 
-<!-- STATUS: remaining chapters to be completed.
-     - sessionInfo diff (reference/sessionInfo-rebuild.txt vs colophon)
-     - per-chapter tier-1 result
-     - any cache reuse, named explicitly -->
+96 figure PDFs. **91 within tolerance**; 5 differ, all in the drifting chapters:
+three chapter-3 coefficient plots whose axis text moved with the coefficients,
+and two chapter-3 ROC curves (RMSE 0.0070 and 0.0037). Everything else is
+identical to within antialiasing — the tolerance is 0.002 RMSE, and the figures
+that pass typically differ by fewer than a dozen pixels out of half a million.
+
+### Tier 3 — the document
+
+369 pages against 368. The extra page is a long table spanning one more page,
+which shifts contents pagination by one from about page 264. Of 1,737 distinct
+decimal values, the frequency differences are exactly those Tier 1 accounts for.
+Zero undefined citations, zero undefined references.
+
+### Environment achieved
+
+`reference/sessionInfo-rebuild.txt` records what the container actually loaded,
+for comparison with `backmatter/colophon.tex`. All 99 packages install and load
+at their pinned versions.
+
+## A note on the working tree after a build
+
+`make chapters` writes the regenerated `.tex` over `chapters/*/*.tex`, so
+afterwards `git status` shows those five files as modified. That is expected and
+should **not** be committed: the versions under version control are the 2015
+deposit, and the rebuild is judged against `reference/2015-build/`, not against
+them. `make verify` is the arbiter; `make restore-deposit` puts the deposited
+files back.
+
+The same applies to `phd_figs/` and `dissertation.pdf`, which are untracked
+build products.
 
 ## The data
 
