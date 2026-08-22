@@ -1,0 +1,26 @@
+# Normalise text to LF in the repository.
+#
+# History: this repo was authored on Windows with core.autocrlf unset and no
+# .gitattributes. A later checkout wrote CRLF into the working tree while the
+# committed blobs stayed LF, so `git status` reported all 566 text files as
+# modified indefinitely. The content was byte-identical apart from the CR --
+# verified with `git diff --ignore-cr-at-eol` (empty) and by hashing every
+# binary against HEAD. The working tree was restored rather than renormalised,
+# so no commit rewrites 2015 content. This file stops it recurring.
+* text=auto eol=lf
+
+# Binaries: never touch these.
+*.rda    binary
+*.RData  binary
+*.rdb    binary
+*.rdx    binary
+*.pdf    binary
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.svg    binary
+*.xlsx   binary
+*.xls    binary
+*.zip    binary
+*.doc    binary
+*.docx   binary
