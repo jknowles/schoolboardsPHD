@@ -113,17 +113,34 @@ verify:
 verify-tex:
 	./scripts/verify.sh --tex-only
 
-# The load-bearing claim of the resurrection branch: no 2015 source file was
-# modified or deleted to make any of this work.
+# Audits the load-bearing claim of the RESURRECTION: that the 2015 code was
+# never touched to make it run again. That claim is fixed at v1.0-resurrection,
+# so this checks that range no matter which branch you are standing on --
+# modernize is *supposed* to change code, and auditing HEAD there would report a
+# failure for work that is working as intended.
+#
+# On modernize the equivalent guarantee is `make verify`: every change must
+# leave the results matching the accepted baseline exactly.
+AUDIT_RANGE := v2015-deposit..v1.0-resurrection
+
 audit:
-	@echo "2015 source files modified or deleted since v2015-deposit:"
-	@git diff --diff-filter=MD --name-only v2015-deposit..HEAD \
-	   | grep -E '\.(R|Rnw|tex|bib|bst)$$' \
-	   | sed 's/^/  /' || true
-	@if git diff --diff-filter=MD --name-only v2015-deposit..HEAD \
+	@echo "auditing $(AUDIT_RANGE)"
+	@echo "  (the resurrection claim: environment changed, code untouched)"
+	@echo
+	@echo "2015 source files modified or deleted:"
+	@git diff --diff-filter=MD --name-only $(AUDIT_RANGE) \
+	   | grep -E '\.(R|Rnw|tex|bib|bst)$$' | sed 's/^/  /' || true
+	@if git diff --diff-filter=MD --name-only $(AUDIT_RANGE) \
 	     | grep -qE '\.(R|Rnw|tex|bib|bst)$$'; then \
 	   echo "  ^^ AUDIT FAILED"; exit 1; \
 	 else echo "  none -- clean"; fi
+	@echo
+	@if [ "$$(git rev-parse --abbrev-ref HEAD)" != "resurrect" ]; then \
+	   echo "note: you are on $$(git rev-parse --abbrev-ref HEAD), which is expected to"; \
+	   echo "      change 2015 code; make verify is what holds the line. Modified so far:"; \
+	   git diff --diff-filter=M --name-only v1.0-resurrection..HEAD \
+	     | grep -E '\.(R|Rnw)$$' | sed 's/^/        modified: /' || echo "        (none yet)"; \
+	 fi
 
 all: chapters pdf verify
 

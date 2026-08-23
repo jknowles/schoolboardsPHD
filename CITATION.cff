@@ -1,0 +1,60 @@
+cff-version: 1.2.0
+title: "School Boards and the Democratic Promise: analysis code and reproduction environment"
+message: >-
+  If you use this software or the datasets it contains, please cite the
+  dissertation. If you use the underlying source records, please also cite the
+  archival deposit listed under references.
+type: software
+authors:
+  - family-names: Knowles
+    given-names: Jared E.
+    affiliation: Civilytics Consulting LLC
+    # orcid: "https://orcid.org/0000-0000-0000-0000"
+repository-code: "https://github.com/jknowles/schoolboardsPHD"
+abstract: >-
+  A study of school board elections in Wisconsin from 2002 to 2012 - who runs,
+  who votes, whether it changes anything, and what the upheaval following 2011
+  Wisconsin Act 10 did to all three. This repository holds the analysis code,
+  the transcribed election panel, and a containerised build that reproduces the
+  dissertation's results under the original R 3.1.2 environment, verified
+  against the outputs as deposited in 2015.
+keywords:
+  - school board elections
+  - local elections
+  - education politics
+  - voter turnout
+  - candidate emergence
+  - Wisconsin
+  - reproducible research
+  - research compendium
+license:
+  - CC-BY-4.0   # dissertation text, figures and the deposited PDF
+  - MIT         # analysis code and build infrastructure
+version: "3.0-modernized"
+date-released: 2026-08-23
+
+references:
+  - type: thesis
+    title: "School Boards and the Democratic Promise"
+    authors:
+      - family-names: Knowles
+        given-names: Jared E.
+    thesis-type: "PhD dissertation"
+    institution:
+      name: "University of Wisconsin-Madison"
+    department: "Department of Political Science"
+    year: 2015
+
+  - type: data
+    title: >-
+      Source records for School Boards and the Democratic Promise:
+      Wisconsin school board elections, 2002-2012
+    authors:
+      - family-names: Knowles
+        given-names: Jared E.
+    year: 2026
+    # doi: "10.xxxxx/xxxxxx"   # set once the deposit is published
+    notes: >-
+      3,995 files, 1.6 GB of scanned canvass statements, clerk responses and
+      agency records obtained by public records request. Not required to run the
+      analysis; deposited so the analysis remains auditable.

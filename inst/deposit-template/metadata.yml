@@ -1,0 +1,142 @@
+# Deposit metadata for the source-records archive.
+#
+# Field names follow the DataCite 4.x schema, which is what openICPSR, Harvard
+# Dataverse and Zenodo all map their forms onto. Copy the values across; nothing
+# here needs to be uploaded as a file.
+#
+# Fill in `doi:` once the repository assigns one, then run
+#   scripts/record-deposit-doi.sh <doi>
+# in the software repository to propagate it into CITATION.cff, README.md and
+# data/provenance/README.md.
+
+doi: ~   # assigned on publication
+
+title: >-
+  Source records for School Boards and the Democratic Promise:
+  Wisconsin school board elections, 2002-2012
+
+creators:
+  - name: Knowles, Jared E.
+    givenName: Jared E.
+    familyName: Knowles
+    affiliation: Civilytics Consulting LLC
+    # orcid: 0000-0000-0000-0000   # add if you have one
+
+publicationYear: 2026
+resourceType: Dataset
+resourceTypeGeneral: Dataset
+language: eng
+version: "1.0"
+
+description: |
+  Primary source material underlying "School Boards and the Democratic Promise"
+  (PhD dissertation, University of Wisconsin-Madison, 2015), a study of school
+  board elections across Wisconsin from 2002 to 2012.
+
+  The collection is the evidence layer beneath the dissertation's datasets:
+  approximately one thousand scanned statements of the board of canvassers and
+  clerk responses obtained by public records request from 314 Wisconsin school
+  districts and their county clerks, together with the agency records and raw
+  statistical files from which the analysis variables were constructed.
+
+  It is deposited for verification rather than convenience. The transcribed
+  election-result CSVs, the analysis code, and a containerised build that
+  reproduces the dissertation's results are maintained separately in the
+  software repository listed under relatedIdentifiers; nothing in this archive
+  is required to run that analysis. What this archive supports is checking it.
+
+  Contents: per-district scanned election records and transcribed CSVs (1.1 GB);
+  Wisconsin Employment Relations Commission union recertification election
+  records 2002-2013 (85 MB); election data, High School Completion files,
+  revenue limits and ward geometry (399 MB); 2000 Census election and geography
+  crosswalks; teacher and staff counts; Government Accountability Board voter
+  and candidate counts; Wisconsin Association of School Boards report material;
+  and teacher contract choices following 2011 Act 10.
+
+  Note for reusers: the scanned PDFs are images and carry no text layer. They
+  cannot be searched or parsed without OCR, which is why the dissertation
+  transcribed them by hand.
+
+methods: |
+  Records were assembled between 2012 and 2014, principally by individual public
+  records requests to Wisconsin school districts and county clerks, each released
+  by the responsible records custodian. Agency material was obtained from the
+  Wisconsin Department of Public Instruction, the Employment Relations
+  Commission, the Government Accountability Board and the Department of
+  Administration, supplemented with U.S. Census and NCES district data.
+
+  All records are public. No individual-level voter data is included: the
+  Government Accountability Board and Department of Administration files are
+  aggregate counts by municipality, ward or school district.
+
+  157 files of editor state (.Rproj.user caches, .Rhistory, .RData, .Rproj) were
+  removed before deposit. Nothing else was withheld, redacted or altered. A
+  SHA-256 for every one of the 3,995 files is in MANIFEST.sha256; the 320
+  transcribed CSVs match the software repository byte-for-byte.
+
+subjects:
+  - school board elections
+  - local elections
+  - education politics
+  - Wisconsin
+  - voter turnout
+  - candidate emergence
+  - 2011 Wisconsin Act 10
+  - collective bargaining
+  - public records
+  - education policy
+
+geoLocations:
+  - geoLocationPlace: Wisconsin, United States
+    geoLocationBox:
+      westBoundLongitude: -92.89
+      eastBoundLongitude: -86.76
+      southBoundLatitude: 42.49
+      northBoundLatitude: 47.31
+
+dates:
+  - date: 2012/2014
+    dateType: Collected
+  - date: 2002/2012
+    dateType: Coverage        # period the records describe
+
+relatedIdentifiers:
+  - relationType: IsSupplementTo
+    relatedIdentifierType: URL
+    relatedIdentifier: https://github.com/jknowles/schoolboardsPHD
+    description: Analysis code, transcribed datasets, and containerised build
+
+  - relationType: IsSourceOf
+    relatedIdentifierType: URL
+    relatedIdentifier: ~        # DOI of the dissertation, if it has one
+    description: >-
+      Knowles, Jared E. (2015). School Boards and the Democratic Promise.
+      PhD dissertation, University of Wisconsin-Madison.
+
+rights:
+  - rightsIdentifier: CC0-1.0
+    rightsURI: https://creativecommons.org/publicdomain/zero/1.0/
+    rights: >-
+      Public records of the State of Wisconsin and its subdivisions, carrying no
+      copyright. Any compilation right in their assembly is waived under CC0 1.0.
+
+sizes:
+  - 3995 files
+  - 1.6 GB
+
+formats: [application/pdf, application/msword, text/csv, application/vnd.ms-excel, application/zip]
+
+fundingReferences: []   # none
+
+# --- notes for the deposit form -------------------------------------------
+notes: |
+  openICPSR: 30 GB and 1,000 files per deposit, so upload the single zip rather
+  than the unpacked tree. Choose a CC0 licence and the "uncurated / self-deposit"
+  option unless full ICPSR curation is wanted.
+
+  Harvard Dataverse: 2.5 GB per file, so the 1.6 GB zip uploads directly. Turn
+  OFF automatic unzipping, or Dataverse will create 3,995 individual file
+  entries.
+
+  Zenodo: fits well within 50 GB, but the default limit is 100 files per record,
+  so the zip is required rather than optional.

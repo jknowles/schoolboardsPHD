@@ -37,16 +37,45 @@ useful message instead of a confusing one.
 
 ## Getting the raw tree
 
-The full 1.1 GB source tree is archived outside this repository, checksummed as
-`Data-tree.sha256` (4,152 files), and is destined for a DOI-bearing deposit. Point
-the scripts at it by running them with the working directory at the repository
-root and the archive restored one level above, matching the 2015 layout:
+The full source tree — 3,995 files, 1.6 GB — is archived outside this repository
+and deposited under its own DOI. It is not needed to reproduce anything; it is
+the evidence layer, so that the numbers stay checkable after the working copies
+are gone.
+
+<!-- deposit-doi -->
+
+Restore it one level above the repository, matching the 2015 layout, and the
+scripts here will find it:
 
 ```
 <parent>/
-  Data/            <- the archived raw tree
+  Data/            <- the archived source tree
   MasterText/      <- this repository
 ```
+
+### Rebuilding the deposit
+
+The bundle is reproducible rather than a one-off:
+
+```bash
+scripts/build-deposit.sh ../Data
+```
+
+It stages the tree (excluding editor state — `.Rproj.user`, `.Rhistory`,
+`.RData`, `.Rproj`; 157 files, nothing redacted), writes a SHA-256 manifest over
+all 3,995 remaining files, carries in `inst/deposit-template/`, and zips it to
+about 1.1 GB.
+
+It also **cross-checks the 320 transcribed CSVs against `data/raw/`** and refuses
+to build if they have drifted apart, so the deposit and this repository cannot
+silently disagree about what the records say.
+
+Zip containers are not bit-reproducible across implementations, so the guarantee
+is over contents: two independent builds produce byte-identical
+`MANIFEST.sha256` files, which has been verified.
+
+Once the deposit is published, `scripts/record-deposit-doi.sh <doi>` writes the
+DOI into `CITATION.cff`, `README.md` and this file in one step.
 
 ## The one thing here that is in the build path
 
