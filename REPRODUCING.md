@@ -230,11 +230,15 @@ while every later chunk runs in the chapter directory, which is why those say
 `fig.path="../../phd_figs/"`. Both halves are consistent once you know the
 working directory flips back. Knitting from anywhere else silently breaks it.
 
-**`detachPkgs()`.** `R/thesis_functions.R` force-detaches packages in a
-`sample()`-shuffled loop between chapters, perturbing RNG state. It turns out not
-to matter: every chapter is insulated. Chapters 2, 5 and 6 consume no randomness
-at all, and 3 and 4 both call `set.seed(51315)` before their first stochastic
-call. This is also why chapters can be verified one at a time.
+**`detachPkgs()`.** `R/thesis_functions.R` force-detaches *and unloads* every
+attached package between chapters. (The `sample()`-shuffled variant is
+`cleanNamespace()` in the same file, which is never called.) It does not affect
+results — every chapter is insulated, since chapters 2, 5 and 6 consume no
+randomness and 3 and 4 both `set.seed(51315)` before their first stochastic call
+— but it does affect *reliability*: unloading namespaces mid-session can leave
+one half-torn-down, and chapter 5 has been seen failing in plyr's `ldply` for
+that reason while building cleanly on its own. `resurrect` reproduces the
+behaviour faithfully; `modernize` runs each chapter in its own process instead.
 
 **`struc[5]` / `struc[6]`.** Hardcoded positional indices selecting the CSV that
 supplies the column-name template for the entire assembled frame. Fragile, and
