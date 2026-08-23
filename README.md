@@ -111,3 +111,4 @@ To cite:
 
 > Knowles, Jared E. (2015). *School Boards and the Democratic Promise.*
 > PhD dissertation, University of Wisconsin–Madison.
+> https://doi.org/10.5281/zenodo.22071045

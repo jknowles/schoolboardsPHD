@@ -44,13 +44,20 @@ references:
       name: "University of Wisconsin-Madison"
     department: "Department of Political Science"
     year: 2015
+    doi: "10.5281/zenodo.22071045"
     identifiers:
+      - type: doi
+        value: "10.5281/zenodo.22071046"
+        description: >-
+          Version DOI for the deposited PDF. The doi field above is the Zenodo
+          concept DOI, which always resolves to the latest version and is the
+          one to cite for the work itself.
       - type: other
         value: "ProQuest Dissertations Publishing, 3703066"
         description: >-
-          ProQuest publication number. The dissertation has no DOI: UW-Madison's
-          2015 ProQuest deposits did not mint one, and it appears in neither
-          Crossref nor DataCite.
+          ProQuest publication number. UW-Madison's 2015 ProQuest deposits did
+          not mint a DOI, so the author deposited the submitted PDF to Zenodo in
+          2026 to give the dissertation a persistent identifier.
 
   - type: data
     title: >-
