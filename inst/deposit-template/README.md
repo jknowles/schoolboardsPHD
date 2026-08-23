@@ -1,8 +1,9 @@
-# Source records for *School Boards and the Democratic Promise*
+# Wisconsin School Board Election Records, 2002-2012
 
-Primary source material for Jared E. Knowles, *School Boards and the Democratic
-Promise*, PhD dissertation, University of Wisconsin–Madison, 2015 — a study of
-school board elections across Wisconsin from 2002 to 2012.
+Primary source material underlying Jared E. Knowles, *School Boards and the
+Democratic Promise*, PhD dissertation, University of Wisconsin–Madison, 2015
+(<https://doi.org/10.5281/zenodo.22071045>) — a study of school board elections across
+Wisconsin from 2002 to 2012.
 
 **3,995 files, 1.6 GB.** This is the evidence layer: the records the dissertation's
 datasets were transcribed from. It is deposited so that the analysis remains
@@ -103,5 +104,6 @@ Please cite the dissertation:
 
 > Knowles, Jared E. (2015). *School Boards and the Democratic Promise.*
 > PhD dissertation, University of Wisconsin–Madison.
+> https://doi.org/10.5281/zenodo.22071045
 
-and this deposit by its DOI.
+and this deposit by its own DOI.
