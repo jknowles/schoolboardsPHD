@@ -15,6 +15,28 @@ git diff --diff-filter=MD --name-only v2015-deposit..HEAD | grep -E '\.(R|Rnw|te
 returns nothing, and `make audit` checks that on demand. Every fix below lives in
 a Dockerfile, a symlink, or a new file. Nothing edits a line of 2015 code.
 
+## Which branch you are on
+
+This file describes both branches, because the obstacles were the same and only
+the responses differ.
+
+**`resurrect`** got the 2015 code running by *changing the environment and never
+the code*. Every obstacle below was met with a Dockerfile line, a symlink, or a
+recreated directory layout. `make audit` proves no `.R`, `.Rnw`, `.tex`, `.bib`
+or `.bst` was touched.
+
+**`modernize`** (this branch) fixes several of them at source, with `make verify`
+gating every commit so each change is proven results-neutral before it lands.
+Where the two differ, it is noted inline. In summary:
+
+| | `resurrect` | `modernize` |
+|---|---|---|
+| Raw data | vendored under `vendor/Data/`, reached via a recreated `../Data` layout in the container | lives in `data/raw/`, read by a repo-relative path |
+| `hsc.rda` case bug | symlink created in the image | fixed in `cleanandprep_POLICY.R` |
+| Column template | `struc[6]`, a positional `list.dirs()` index | the file is named |
+| Provenance scripts | in `data/` beside the build path | moved to `data/provenance/` |
+| Chapters | five in one R session, `detachPkgs()` between | one fresh R process each |
+
 ## Quick start
 
 ```bash
@@ -24,7 +46,10 @@ make verify       # compare against reference/2015-build/
 ```
 
 `make tex-image && make pdf` typesets `dissertation.pdf`. `make all` does
-everything. `make help` lists the targets.
+everything. `make help` lists the targets. `make chapter C=policy` builds one.
+
+On `modernize`, `make chapters` runs one fresh R process per chapter rather than
+five in a single session -- see `detachPkgs()` below for why that matters.
 
 ## What "reproduced" means here
 
@@ -106,20 +131,28 @@ bundled build links `libnlopt_cxx.a`.
 
 `data/cleanandprep_POLICY.R:5` loads `data/cache/hsc.rda`. The file on disk is
 `HSC.rda`. Harmless on a case-insensitive filesystem, fatal on Linux — **chapter
-6 cannot build**. `entrypoint.sh` creates a `hsc.rda` symlink rather than
-touching the source.
+6 cannot build**.
+
+*resurrect:* a committed `hsc.rda` symlink, so the source is untouched.
+*modernize:* the load is spelled `HSC.rda` and the symlink is gone.
 
 ### 4. Paths pointing outside the repository
 
 `data/dataAssemble.R:9` reads `../Data/sbelectionresults` — the author's 2015
 Dropbox layout. It was the only live external dependency in the whole build.
 
-The 865 KB of CSVs that the code actually parses are vendored under
-`vendor/Data/` (the surrounding 1.1 GB is scanned county-clerk source records,
-which no code reads). The container then mounts the repository at
-`/work/dissertation/MasterText` so that `../Data/sbelectionresults` **resolves
-correctly without editing that line**. See `vendor/README.md`, including why
-three empty district directories must be preserved.
+The 865 KB of CSVs the code actually parses are in the repository; the
+surrounding 1.1 GB is scanned county-clerk source records, which no code reads.
+
+*resurrect:* the CSVs sat under `vendor/Data/` and the container mounted the
+repository at `/work/dissertation/MasterText`, so `../Data/sbelectionresults`
+resolved correctly **without editing that line**.
+*modernize:* they live in `data/raw/` and the path is repo-relative, so the
+analysis no longer needs the container to fake a filesystem and can run outside
+Docker entirely.
+
+See `data/raw/README.md`, including why three empty district directories must be
+preserved.
 
 ### 5. Figure paths two levels above the repository
 
@@ -242,7 +275,9 @@ behaviour faithfully; `modernize` runs each chapter in its own process instead.
 
 **`struc[5]` / `struc[6]`.** Hardcoded positional indices selecting the CSV that
 supplies the column-name template for the entire assembled frame. Fragile, and
-the reason `vendor/README.md` insists the three empty district directories stay.
+the reason `data/raw/README.md` insists the three empty district directories
+stay. (On `modernize` the template file is named, so only the concatenation
+order still depends on them.)
 
 ## Where the fragility now sits
 
@@ -377,19 +412,22 @@ build products.
 contain names and addresses of school board members and district administrators.
 These are elected and appointed public officials, and the records are public
 election returns and Department of Public Instruction rosters, published as such.
-`vendor/README.md` and (in due course) `DATA.md` document provenance per file.
+`data/raw/README.md` and `data/provenance/README.md` document provenance.
 
 ## Repository layout added by this work
 
 ```
-docker/          Dockerfile.r312, Dockerfile.tex, entrypoint.sh,
-                 resolve-pins.R, fetch-tarballs.R, install-pinned.R,
-                 vendor/  (99 package tarballs + nlopt 2.4.2)
-inst/pins/       packages-2015.tsv  -- the lockfile
-reference/       2015-build/  -- the oracle, checksummed
-scripts/         build_chapters.R (mirrors build.R), verify.sh
-vendor/Data/     the 865 KB of raw election CSVs
-Makefile         image / chapters / pdf / verify / audit
+docker/           Dockerfile.r312, Dockerfile.tex, entrypoint.sh,
+                  resolve-pins.R, fetch-tarballs.R, install-pinned.R,
+                  verify-pinned.R, vendor/ (99 tarballs + nlopt 2.4.2)
+inst/pins/        packages-2015.tsv -- the lockfile, with checksums
+reference/        2015-build/            the oracle, checksummed
+                  accepted-differences/  the reviewed residue
+scripts/          build_chapters.R (mirrors build.R), verify.sh
+data/raw/         the 865 KB of raw election CSVs      (modernize)
+data/provenance/  the scripts that built data/cache/   (modernize)
+.gitea/workflows/ weekly reproduction check           (modernize)
+Makefile          image / chapters / pdf / verify / audit
 ```
 
 `build.R` is untouched and remains the historical 2015 driver.
