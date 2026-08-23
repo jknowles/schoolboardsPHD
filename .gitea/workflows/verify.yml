@@ -1,0 +1,65 @@
+# Rebuild the dissertation and check it against the frozen 2015 outputs.
+#
+# Deliberately not on every push. A full run compiles 99 source packages for
+# R 3.1.2 on Debian wheezy, knits five chapters (chapter 3 alone fits 38 mixed
+# models), and typesets a 369-page document -- roughly 25-30 minutes. Nothing
+# about this repository changes often enough to warrant that per commit.
+#
+# It runs weekly instead, which is the useful cadence: the thing most likely to
+# break is not the code but the outside world -- CRAN Archive moving, Debian
+# wheezy's archive going away, a base image being retired. A weekly run is an
+# early warning that the reproduction has started to rot.
+name: verify-reproduction
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 4 * * 0'   # Sundays, 04:17 UTC
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      # Cheap and worth doing first: if a tarball has been corrupted or
+      # substituted, fail in seconds rather than after a 15-minute image build.
+      - name: Verify the vendored package tarballs against the lockfile
+        run: |
+          docker run --rm -v "$PWD:/w" -w /w r-base:4.4.1 \
+            Rscript docker/fetch-tarballs.R --verify-only
+
+      - name: Build the R 3.1.2 image
+        run: make image
+
+      - name: Build the LaTeX image
+        run: make tex-image
+
+      - name: Knit the chapters
+        run: make chapters
+
+      - name: Typeset the document
+        run: make pdf
+
+      - name: Verify against the 2015 outputs
+        run: make verify
+
+      # The audit only means something on resurrect, where the rule was "change
+      # the environment, never the code". On modernize the code is expected to
+      # change, and `make verify` is what holds the line instead.
+      - name: Audit (resurrect only)
+        if: gitea.ref == 'refs/heads/resurrect'
+        run: make audit
+
+      - name: Upload the rebuilt document and the verification report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: rebuild-${{ gitea.sha }}
+          path: |
+            dissertation.pdf
+            reference/sessionInfo-rebuild.txt
+          retention-days: 30
