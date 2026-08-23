@@ -22,12 +22,16 @@
 #   Rscript scripts/build_chapters.R              # all five, in build.R order
 #   Rscript scripts/build_chapters.R policy       # one chapter
 #
-# Building chapters individually is safe here: every chapter is insulated from
-# cross-chapter RNG state. Chapters 2 (aboutwisconsin), 5 (walker) and 6
-# (policy) consume no randomness at all, and 3 (candidacy) and 4 (voterturnout)
-# both call set.seed(51315) before their first stochastic call. That also means
-# detachPkgs()'s sample()-shuffled unloading between chapters cannot perturb any
-# result, despite looking alarming.
+# Building chapters individually is safe, and on the modernize branch it is how
+# `make chapters` works. Every chapter is insulated from cross-chapter state:
+# chapters 2 (aboutwisconsin), 5 (walker) and 6 (policy) consume no randomness
+# at all, and 3 (candidacy) and 4 (voterturnout) both call set.seed(51315)
+# before their first stochastic call.
+#
+# It is also more reliable. build.R ran all five in one session with
+# detachPkgs() in between, which force-unloads every attached package; when that
+# leaves a namespace half-torn-down a later chapter fails. Chapter 5 was seen
+# dying in plyr's ldply for exactly that reason while building cleanly alone.
 # ---------------------------------------------------------------------------
 
 # chapter directory -> .Rnw basename, in build.R's order
@@ -97,4 +101,4 @@ writeLines(capture.output(sessionInfo()), "reference/sessionInfo-rebuild.txt")
 cat(sprintf("total %.1f min\n", as.numeric(difftime(Sys.time(), started, units = "mins"))))
 cat("sessionInfo written to reference/sessionInfo-rebuild.txt\n")
 if (length(failed)) { cat("FAILED: ", paste(failed, collapse = ", "), "\n", sep = ""); quit(status = 1) }
-cat("all requested chapters knitted\n")
+if (length(want) > 1) cat("all requested chapters knitted\n")

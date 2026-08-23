@@ -1,5 +1,13 @@
 #---------------
-setwd("C:/Users/Jared/Dropbox/Dissertation/Data/Raw Files/HSC")
+# Was: setwd("C:/Users/Jared/Dropbox/Dissertation/Data/Raw Files/HSC")
+# The archived source tree is not in this repository -- see data/provenance/README.md.
+# Point HSC_DIR at it, e.g.
+#   Sys.setenv(HSC_DIR = "~/Reproduction-Archive/Data/Raw Files/HSC")
+hsc_dir <- Sys.getenv("HSC_DIR", unset = "../Data/Raw Files/HSC")
+if (!dir.exists(hsc_dir))
+  stop("HSC source directory not found: ", hsc_dir,
+       "\n  See data/provenance/README.md -- this script needs the archived raw tree.")
+setwd(hsc_dir)
 
 
 myList <- list.files()

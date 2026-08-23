@@ -50,8 +50,26 @@ pins:
 	Rscript docker/fetch-tarballs.R
 
 # --- build ------------------------------------------------------------------
+# One fresh R process per chapter, in build.R's order.
+#
+# build.R ran all five in a single session and called detachPkgs() in between,
+# which force-unloads every attached package. When that leaves a namespace
+# half-torn-down a later chapter fails -- observed as chapter 5 dying in plyr's
+# ldply with "Results must be all atomic, or all data frames", while the same
+# chapter built cleanly on its own. Separate processes remove the failure mode
+# instead of managing it.
+#
+# Safe because every chapter is insulated from cross-chapter state: chapters 2,
+# 5 and 6 consume no randomness at all, and 3 and 4 both call set.seed(51315)
+# before their first stochastic call. Verified: each chapter built in isolation
+# matches the accepted baseline exactly.
+CHAPTER_LIST := aboutwisconsin candidacy voterturnout policy walker
+
 chapters:
-	$(DOCKER_RUN) $(R_IMAGE) Rscript scripts/build_chapters.R
+	@for c in $(CHAPTER_LIST); do \
+	  $(MAKE) --no-print-directory chapter C=$$c || exit 1; \
+	done
+	@echo "all chapters knitted"
 
 chapter:
 	@test -n "$(C)" || { echo "usage: make chapter C=<aboutwisconsin|candidacy|voterturnout|policy|walker>"; exit 2; }

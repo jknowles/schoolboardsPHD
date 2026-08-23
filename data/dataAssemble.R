@@ -7,9 +7,17 @@ library(data.table); library(plyr)
 library(tidyr)
 library(magrittr)
 struc <- list.dirs("data/raw/sbelectionresults", recursive = FALSE)
-file.exists(Sys.glob(file.path(struc[5],"*.csv")))
 
-dat <- read.csv(Sys.glob(file.path(struc[6],"*.csv")))
+# Column-name template for the whole assembled frame. Until modernize this read
+# `struc[6]` -- a positional index into list.dirs(), which quietly made the
+# schema depend on locale collation and on three empty district directories
+# continuing to exist. Naming the file removes both dependencies. It is the same
+# file struc[6] resolved to, so the resulting names are unchanged.
+#
+# NB: the *order* in which the districts are concatenated below is still
+# locale-dependent, and still matters -- it feeds the RNG stream chapter 4 draws
+# from. LC_COLLATE is pinned in the container for that reason; see REPRODUCING.md.
+dat <- read.csv("data/raw/sbelectionresults/Almond Bancroft/Almond-Bancroft.csv")
 dat <- dat[0, ]
 names(dat) <- tolower(names(dat))
 names(dat) <- gsub("\\.", "", names(dat))

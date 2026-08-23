@@ -10,7 +10,7 @@ opts_chunk$set(fig.width=8, fig.height=6, message=FALSE, error=FALSE,
 
 setwd("../../")
 source("data/dataAssemble.R")
-# source("data/dataMerge.R")
+# source("data/provenance/dataMerge.R")  # moved; provenance only, not run
 source("R/thesis_functions.R")
 load("data/cache/DataMergeVAP.rda")
 library(plyr)
